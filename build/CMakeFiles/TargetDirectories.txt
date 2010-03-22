@@ -1,0 +1,1 @@
+/home/bmonkey/workspace/GFX/gl3cone/build/CMakeFiles/glSDL.dir

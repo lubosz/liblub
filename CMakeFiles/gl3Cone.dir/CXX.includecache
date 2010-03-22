@@ -1,0 +1,32 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/bmonkey/workspace/GFX/gl3cone/src/ShaderProgram.cpp
+stdlib.h
+-
+stdio.h
+-
+iostream
+-
+ShaderProgram.h
+/home/bmonkey/workspace/GFX/gl3cone/src/ShaderProgram.h
+
+include/Shader.h
+string
+-
+GL3/gl3.h
+-
+
+include/ShaderProgram.h
+string
+-
+GL3/gl3.h
+-
+Shader.h
+include/Shader.h
+

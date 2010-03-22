@@ -1,0 +1,1 @@
+/usr/bin/c++   -O3   CMakeFiles/glSDL.dir/src/main.cpp.o CMakeFiles/glSDL.dir/src/utils.cpp.o  -o glSDL -rdynamic -lGL -lGLEW -lSDL 
