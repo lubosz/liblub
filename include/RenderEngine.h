@@ -14,11 +14,13 @@
 #include <iostream>
 
 #include "ShaderProgram.h"
+#include "Mesh.h"
 
 class RenderEngine {
 public:
 
-	GLuint vao, vbo[3]; /* Create handles for our Vertex Array Object and three Vertex Buffer Objects */
+	Mesh * tetrahedron;
+
 	GLfloat projectionmatrix[16]; /* Our projection matrix starts with all 0s */
 	GLfloat modelmatrix[16]; /* Our model matrix  */
 

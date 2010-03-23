@@ -30,7 +30,6 @@ Shader::Shader(string fileName, GLenum type) {
 }
 
 Shader::~Shader() {
-	//glDetachShader(shaderprogram, vertexshader);
 	glDeleteShader(shader);
 	free(source);
 }

@@ -9,6 +9,8 @@
 
 
 #include <string>
+#include <list>
+
 /* Ensure we are using opengl's core profile only */
 #define GL3_PROTOTYPES 1
 #include <GL3/gl3.h>
@@ -20,21 +22,21 @@ using namespace std;
 class ShaderProgram {
 public:
 
-	/* These pointers will receive the contents of our shader source code files */
-	//GLchar *vertexsource, *fragmentsource, *geometrysource;
-
-	/* These are handles used to reference the shaders */
-	//GLuint vertexshader, fragmentshader, geometryshader;
-
 	/* This is a handle to the shader program */
 	GLuint program;
-
-	//string shaderDir;
+	list<Shader*> shaders;
+	unsigned attribCount;
 
 	ShaderProgram();
 	virtual ~ShaderProgram();
 
 	void printProgramInfoLog();
 
-	void attachShader(Shader *shader);
+	void attachShader(string fileName, GLenum type);
+	void detachShader(Shader *shader);
+
+	void bindAttrib(string name);
+	void bindAttrib(unsigned position, string name);
+
+	void linkAndUse();
 };

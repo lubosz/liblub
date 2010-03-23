@@ -1,3 +1,5 @@
+#include <boost/multi_array.hpp>
+
 #include "MediaLayer.h"
 #include "RenderEngine.h"
 
@@ -8,6 +10,7 @@ RenderEngine * renderEngine;
 
 int main(int argc, char *argv[])
 {
+
 	mediaLayer = new MediaLayer(PROGRAM_NAME, 750, 750);
 
 	renderEngine = new RenderEngine();
@@ -16,5 +19,4 @@ int main(int argc, char *argv[])
     delete renderEngine;
     delete mediaLayer;
 
-    return 0;
 }
