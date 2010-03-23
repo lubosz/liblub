@@ -6,27 +6,15 @@
 
 #IncludeRegexTransform: 
 
-/home/bmonkey/workspace/GFX/gl3cone/src/ShaderProgram.cpp
-stdlib.h
--
-stdio.h
--
+/home/bmonkey/workspace/GFX/gl3cone/src/Mesh.cpp
+Mesh.h
+/home/bmonkey/workspace/GFX/gl3cone/src/Mesh.h
 iostream
 -
-ShaderProgram.h
-/home/bmonkey/workspace/GFX/gl3cone/src/ShaderProgram.h
 
-include/Shader.h
-string
--
+include/Mesh.h
 GL3/gl3.h
 -
-
-include/ShaderProgram.h
-string
+vector
 -
-GL3/gl3.h
--
-Shader.h
-include/Shader.h
 

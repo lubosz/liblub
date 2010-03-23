@@ -5,9 +5,14 @@ CMakeFiles/gl3Cone.dir/src/MediaLayer.cpp.o
  /home/bmonkey/workspace/GFX/gl3cone/src/MediaLayer.cpp
  include/MediaLayer.h
  include/RenderEngine.h
+CMakeFiles/gl3Cone.dir/src/Mesh.cpp.o
+ /home/bmonkey/workspace/GFX/gl3cone/src/Mesh.cpp
+ include/Mesh.h
 CMakeFiles/gl3Cone.dir/src/RenderEngine.cpp.o
  /home/bmonkey/workspace/GFX/gl3cone/src/RenderEngine.cpp
  include/RenderEngine.h
+ include/Shader.h
+ include/ShaderProgram.h
  include/utils.h
 CMakeFiles/gl3Cone.dir/src/Shader.cpp.o
  /home/bmonkey/workspace/GFX/gl3cone/src/Shader.cpp
@@ -19,7 +24,10 @@ CMakeFiles/gl3Cone.dir/src/ShaderProgram.cpp.o
 CMakeFiles/gl3Cone.dir/src/main.cpp.o
  /home/bmonkey/workspace/GFX/gl3cone/src/main.cpp
  include/MediaLayer.h
+ include/Mesh.h
  include/RenderEngine.h
+ include/Shader.h
+ include/ShaderProgram.h
 CMakeFiles/gl3Cone.dir/src/utils.cpp.o
  /home/bmonkey/workspace/GFX/gl3cone/src/utils.cpp
  include/utils.h

@@ -17,7 +17,6 @@ set(CONE_DEMO_SOURCES
   ${SRC_DIR}/Shader.cpp
   ${SRC_DIR}/RenderEngine.cpp
   ${SRC_DIR}/Mesh.cpp
-  ${SRC_DIR}/Matrix.cpp
 )
 
 add_executable(gl3Cone ${CONE_DEMO_SOURCES})

@@ -1,0 +1,13 @@
+# Blender3D v249 OBJ File: 
+# www.blender3d.org
+mtllib tetrahedron.mtl
+v 1.000000 -1.000000 -1.000000
+v 1.000000 -1.000000 1.000000
+v -1.000000 -1.000000 -0.000000
+v -0.000000 1.000000 0.000000
+usemtl (null)
+s off
+f 1 2 3
+f 1 4 2
+f 2 4 3
+f 4 1 3

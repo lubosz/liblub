@@ -135,6 +135,30 @@ src/MediaLayer.cpp.s:
 	$(MAKE) -f CMakeFiles/gl3Cone.dir/build.make CMakeFiles/gl3Cone.dir/src/MediaLayer.cpp.s
 .PHONY : src/MediaLayer.cpp.s
 
+src/Mesh.o: src/Mesh.cpp.o
+.PHONY : src/Mesh.o
+
+# target to build an object file
+src/Mesh.cpp.o:
+	$(MAKE) -f CMakeFiles/gl3Cone.dir/build.make CMakeFiles/gl3Cone.dir/src/Mesh.cpp.o
+.PHONY : src/Mesh.cpp.o
+
+src/Mesh.i: src/Mesh.cpp.i
+.PHONY : src/Mesh.i
+
+# target to preprocess a source file
+src/Mesh.cpp.i:
+	$(MAKE) -f CMakeFiles/gl3Cone.dir/build.make CMakeFiles/gl3Cone.dir/src/Mesh.cpp.i
+.PHONY : src/Mesh.cpp.i
+
+src/Mesh.s: src/Mesh.cpp.s
+.PHONY : src/Mesh.s
+
+# target to generate assembly for a file
+src/Mesh.cpp.s:
+	$(MAKE) -f CMakeFiles/gl3Cone.dir/build.make CMakeFiles/gl3Cone.dir/src/Mesh.cpp.s
+.PHONY : src/Mesh.cpp.s
+
 src/RenderEngine.o: src/RenderEngine.cpp.o
 .PHONY : src/RenderEngine.o
 
@@ -267,6 +291,9 @@ help:
 	@echo "... src/MediaLayer.o"
 	@echo "... src/MediaLayer.i"
 	@echo "... src/MediaLayer.s"
+	@echo "... src/Mesh.o"
+	@echo "... src/Mesh.i"
+	@echo "... src/Mesh.s"
 	@echo "... src/RenderEngine.o"
 	@echo "... src/RenderEngine.i"
 	@echo "... src/RenderEngine.s"

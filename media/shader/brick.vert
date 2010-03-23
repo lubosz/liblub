@@ -1,4 +1,4 @@
-#version 140
+#version 150 core
 in vec4      MCvertex;
 in vec3      MCnormal;
 uniform mat4 MVMatrix;
@@ -11,7 +11,8 @@ out float    LightIntensity;
 out vec2     MCposition;
 void main()
 {
-    vec3 ecPosition =  vec3(MVMatrix * MCvertex);
+    //vec3 ecPosition =  vec3(MVMatrix * MCvertex);
+    vec3 ecPosition =  vec3(MVMatrix * vec4(MCvertex,0));
     vec3 tnorm      =  normalize(NormalMatrix * MCnormal);
     vec3 lightVec   =  normalize(LightPosition - ecPosition);
     vec3 reflectVec =  reflect(-lightVec, tnorm);

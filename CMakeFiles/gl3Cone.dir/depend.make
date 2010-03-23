@@ -5,8 +5,13 @@ CMakeFiles/gl3Cone.dir/src/MediaLayer.cpp.o: src/MediaLayer.cpp
 CMakeFiles/gl3Cone.dir/src/MediaLayer.cpp.o: include/MediaLayer.h
 CMakeFiles/gl3Cone.dir/src/MediaLayer.cpp.o: include/RenderEngine.h
 
+CMakeFiles/gl3Cone.dir/src/Mesh.cpp.o: src/Mesh.cpp
+CMakeFiles/gl3Cone.dir/src/Mesh.cpp.o: include/Mesh.h
+
 CMakeFiles/gl3Cone.dir/src/RenderEngine.cpp.o: src/RenderEngine.cpp
 CMakeFiles/gl3Cone.dir/src/RenderEngine.cpp.o: include/RenderEngine.h
+CMakeFiles/gl3Cone.dir/src/RenderEngine.cpp.o: include/Shader.h
+CMakeFiles/gl3Cone.dir/src/RenderEngine.cpp.o: include/ShaderProgram.h
 CMakeFiles/gl3Cone.dir/src/RenderEngine.cpp.o: include/utils.h
 
 CMakeFiles/gl3Cone.dir/src/Shader.cpp.o: src/Shader.cpp
@@ -18,7 +23,10 @@ CMakeFiles/gl3Cone.dir/src/ShaderProgram.cpp.o: include/ShaderProgram.h
 
 CMakeFiles/gl3Cone.dir/src/main.cpp.o: src/main.cpp
 CMakeFiles/gl3Cone.dir/src/main.cpp.o: include/MediaLayer.h
+CMakeFiles/gl3Cone.dir/src/main.cpp.o: include/Mesh.h
 CMakeFiles/gl3Cone.dir/src/main.cpp.o: include/RenderEngine.h
+CMakeFiles/gl3Cone.dir/src/main.cpp.o: include/Shader.h
+CMakeFiles/gl3Cone.dir/src/main.cpp.o: include/ShaderProgram.h
 
 CMakeFiles/gl3Cone.dir/src/utils.cpp.o: src/utils.cpp
 CMakeFiles/gl3Cone.dir/src/utils.cpp.o: include/utils.h

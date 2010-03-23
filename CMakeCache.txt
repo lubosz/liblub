@@ -113,7 +113,7 @@ CMAKE_OBJCOPY:FILEPATH=/usr/bin/objcopy
 CMAKE_OBJDUMP:FILEPATH=/usr/bin/objdump
 
 //Value Computed by CMake
-CMAKE_PROJECT_NAME:STATIC=glSDL
+CMAKE_PROJECT_NAME:STATIC=gl3Cone
 
 //Path to a program.
 CMAKE_RANLIB:FILEPATH=/usr/bin/ranlib
@@ -153,12 +153,6 @@ gl3Cone_BINARY_DIR:STATIC=/home/bmonkey/workspace/GFX/gl3cone
 
 //Value Computed by CMake
 gl3Cone_SOURCE_DIR:STATIC=/home/bmonkey/workspace/GFX/gl3cone
-
-//Value Computed by CMake
-glSDL_BINARY_DIR:STATIC=/home/bmonkey/workspace/GFX/gl3cone
-
-//Value Computed by CMake
-glSDL_SOURCE_DIR:STATIC=/home/bmonkey/workspace/GFX/gl3cone
 
 
 ########################

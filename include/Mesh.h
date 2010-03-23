@@ -7,28 +7,23 @@
 
 #pragma once
 
-
-
-
 /* Ensure we are using opengl's core profile only */
 #define GL3_PROTOTYPES 1
 #include <GL3/gl3.h>
+#include <vector>
 
-#include "Matrix.h"
+using namespace std;
 
 class Mesh {
 public:
 	/* Create handles for our Vertex Array Object and three Vertex Buffer Objects */
 	GLuint vao, vbo[3];
 
-	//Matrix vertices;
-	//Matrix vertexColors;
+	unsigned bufferCount, myASS;
 
-	unsigned bufferCount;
-
-	Mesh();
+	Mesh(vector<GLfloat> position, vector<GLfloat> color, vector<GLfloat> normals, vector<GLubyte> index);
 	virtual ~Mesh();
-	void makeTetrahedron();
-	void fillBuffer(vector<GLfloat> content, GLenum target);
+	void addBuffer(vector<GLfloat> content);
+	void addElementBuffer(vector<GLubyte> content);
 };
 

@@ -5,6 +5,7 @@ FILE(REMOVE_RECURSE
   "CMakeFiles/gl3Cone.dir/src/ShaderProgram.cpp.o"
   "CMakeFiles/gl3Cone.dir/src/Shader.cpp.o"
   "CMakeFiles/gl3Cone.dir/src/RenderEngine.cpp.o"
+  "CMakeFiles/gl3Cone.dir/src/Mesh.cpp.o"
   "gl3Cone.pdb"
   "gl3Cone"
 )

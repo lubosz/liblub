@@ -193,6 +193,30 @@ CMakeFiles/gl3Cone.dir/src/RenderEngine.cpp.o.provides: CMakeFiles/gl3Cone.dir/s
 CMakeFiles/gl3Cone.dir/src/RenderEngine.cpp.o.provides.build: CMakeFiles/gl3Cone.dir/src/RenderEngine.cpp.o
 .PHONY : CMakeFiles/gl3Cone.dir/src/RenderEngine.cpp.o.provides.build
 
+CMakeFiles/gl3Cone.dir/src/Mesh.cpp.o: CMakeFiles/gl3Cone.dir/flags.make
+CMakeFiles/gl3Cone.dir/src/Mesh.cpp.o: src/Mesh.cpp
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/bmonkey/workspace/GFX/gl3cone/CMakeFiles $(CMAKE_PROGRESS_7)
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/gl3Cone.dir/src/Mesh.cpp.o"
+	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/gl3Cone.dir/src/Mesh.cpp.o -c /home/bmonkey/workspace/GFX/gl3cone/src/Mesh.cpp
+
+CMakeFiles/gl3Cone.dir/src/Mesh.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/gl3Cone.dir/src/Mesh.cpp.i"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -E /home/bmonkey/workspace/GFX/gl3cone/src/Mesh.cpp > CMakeFiles/gl3Cone.dir/src/Mesh.cpp.i
+
+CMakeFiles/gl3Cone.dir/src/Mesh.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/gl3Cone.dir/src/Mesh.cpp.s"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -S /home/bmonkey/workspace/GFX/gl3cone/src/Mesh.cpp -o CMakeFiles/gl3Cone.dir/src/Mesh.cpp.s
+
+CMakeFiles/gl3Cone.dir/src/Mesh.cpp.o.requires:
+.PHONY : CMakeFiles/gl3Cone.dir/src/Mesh.cpp.o.requires
+
+CMakeFiles/gl3Cone.dir/src/Mesh.cpp.o.provides: CMakeFiles/gl3Cone.dir/src/Mesh.cpp.o.requires
+	$(MAKE) -f CMakeFiles/gl3Cone.dir/build.make CMakeFiles/gl3Cone.dir/src/Mesh.cpp.o.provides.build
+.PHONY : CMakeFiles/gl3Cone.dir/src/Mesh.cpp.o.provides
+
+CMakeFiles/gl3Cone.dir/src/Mesh.cpp.o.provides.build: CMakeFiles/gl3Cone.dir/src/Mesh.cpp.o
+.PHONY : CMakeFiles/gl3Cone.dir/src/Mesh.cpp.o.provides.build
+
 # Object files for target gl3Cone
 gl3Cone_OBJECTS = \
 "CMakeFiles/gl3Cone.dir/src/main.cpp.o" \
@@ -200,7 +224,8 @@ gl3Cone_OBJECTS = \
 "CMakeFiles/gl3Cone.dir/src/MediaLayer.cpp.o" \
 "CMakeFiles/gl3Cone.dir/src/ShaderProgram.cpp.o" \
 "CMakeFiles/gl3Cone.dir/src/Shader.cpp.o" \
-"CMakeFiles/gl3Cone.dir/src/RenderEngine.cpp.o"
+"CMakeFiles/gl3Cone.dir/src/RenderEngine.cpp.o" \
+"CMakeFiles/gl3Cone.dir/src/Mesh.cpp.o"
 
 # External object files for target gl3Cone
 gl3Cone_EXTERNAL_OBJECTS =
@@ -211,6 +236,7 @@ gl3Cone: CMakeFiles/gl3Cone.dir/src/MediaLayer.cpp.o
 gl3Cone: CMakeFiles/gl3Cone.dir/src/ShaderProgram.cpp.o
 gl3Cone: CMakeFiles/gl3Cone.dir/src/Shader.cpp.o
 gl3Cone: CMakeFiles/gl3Cone.dir/src/RenderEngine.cpp.o
+gl3Cone: CMakeFiles/gl3Cone.dir/src/Mesh.cpp.o
 gl3Cone: CMakeFiles/gl3Cone.dir/build.make
 gl3Cone: CMakeFiles/gl3Cone.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --red --bold "Linking CXX executable gl3Cone"
@@ -226,6 +252,7 @@ CMakeFiles/gl3Cone.dir/requires: CMakeFiles/gl3Cone.dir/src/MediaLayer.cpp.o.req
 CMakeFiles/gl3Cone.dir/requires: CMakeFiles/gl3Cone.dir/src/ShaderProgram.cpp.o.requires
 CMakeFiles/gl3Cone.dir/requires: CMakeFiles/gl3Cone.dir/src/Shader.cpp.o.requires
 CMakeFiles/gl3Cone.dir/requires: CMakeFiles/gl3Cone.dir/src/RenderEngine.cpp.o.requires
+CMakeFiles/gl3Cone.dir/requires: CMakeFiles/gl3Cone.dir/src/Mesh.cpp.o.requires
 .PHONY : CMakeFiles/gl3Cone.dir/requires
 
 CMakeFiles/gl3Cone.dir/clean:

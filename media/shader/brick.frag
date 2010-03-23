@@ -1,4 +1,4 @@
-#version 140
+#version 150 core
 uniform vec3 BrickColor, MortarColor;
 uniform vec2 BrickSize;
 uniform vec2 BrickPct;

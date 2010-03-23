@@ -25,24 +25,11 @@ RenderEngine::RenderEngine() {
 	checkVersion();
 	frameCount = 0;
 
-	tetrahedron = new Mesh();
-	tetrahedron->makeTetrahedron();
-
-    shaderProgram = new ShaderProgram();
-
-    shaderProgram->attachShader("tutorial4.vert", GL_VERTEX_SHADER);
-    shaderProgram->attachShader("tutorial4.geom", GL_GEOMETRY_SHADER);
-    shaderProgram->attachShader("tutorial4.frag", GL_FRAGMENT_SHADER);
-
-    /* Bind attribute 0 (coordinates) to in_Position and attribute 1 (colors) to in_Color */
-    shaderProgram->bindAttrib("in_Position");
-    shaderProgram->bindAttrib("in_Color");
-
-    shaderProgram->linkAndUse();
+	shaderProgram = new ShaderProgram();
 
     /* Create our projection matrix with a 45 degree field of view
      * a width to height ratio of 1 and view from .1 to 100 infront of us */
-    perspective(projectionmatrix, 45.0, 1.0, 0.1, 100.0);
+    perspective(projectionmatrix, 90.0, 16.0/9.0, 0.1, 100.0);
 	glError("RenderEngine",92);
 }
 
@@ -52,7 +39,7 @@ RenderEngine::~RenderEngine() {
 	cout << "Shutting down Render Engine...";
 
     delete shaderProgram;
-    delete tetrahedron;
+
 
 	cout << "done.\n";
 	glError("RenderEngine",106);
@@ -68,7 +55,7 @@ void RenderEngine::display() {
 	rotate(modelmatrix, (GLfloat) frameCount * -1.0, X_AXIS);
 	rotate(modelmatrix, (GLfloat) frameCount * 1.0, Y_AXIS);
 	rotate(modelmatrix, (GLfloat) frameCount * 0.5, Z_AXIS);
-	translate(modelmatrix, 0, 0, -5.0);
+	translate(modelmatrix, 0, 0, -2.5);
 
 	/* multiply our modelmatrix and our projectionmatrix. Results are stored in modelmatrix */
 	multiply4x4(modelmatrix, projectionmatrix);
@@ -83,6 +70,7 @@ void RenderEngine::display() {
 
 	/* Invoke glDrawElements telling it to draw a triangle strip using 6 indicies */
 	glDrawElements(GL_TRIANGLE_STRIP, 6, GL_UNSIGNED_BYTE, 0);
+	//glDrawElements(GL_TRIANGLE_FAN, 8, GL_UNSIGNED_BYTE, 0);
 
 	frameCount++;
 }
