@@ -18,10 +18,12 @@ Mesh::Mesh(vector<GLfloat> position, vector<GLfloat> color, vector<GLfloat> norm
     /* Bind our Vertex Array Object as the current used object */
     glBindVertexArray(vao);
     cout << "--buffer #" << bufferCount << "\n";
+    cout << "--wasgehtab #" << wasgehtab << "\n";
     cout << "--myASS #" << myASS << "\n";
     /* Allocate and assign three Vertex Buffer Objects to our handle */
     glGenBuffers(5, vbo);
     cout << "--buffer #" << bufferCount << "\n";
+    cout << "--wasgehtab #" << wasgehtab << "\n";
     cout << "--myASS #" << myASS << "\n";
 
 	addBuffer(position,3);
@@ -53,8 +55,9 @@ void Mesh::addBuffer(vector<GLfloat> content, unsigned size){
 
 	/* Enable attribute index 0 as being used */
 	glEnableVertexAttribArray(myASS);
-	myASS++;
 	cout << "myASS #" << myASS << "\n";
+	myASS++;
+
 
 }
 
@@ -63,5 +66,6 @@ void Mesh::addElementBuffer(vector<GLubyte> content){
 	/* Copy the index data from tetraindicies to our buffer
 	 * 6 * sizeof(GLubyte) is the size of the index array, since it contains 6 GLbyte values */
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, content.size() * sizeof(GLubyte), content.data(),GL_STATIC_DRAW);
+	cout << "myASS #" << myASS << "\n";
 	myASS++;
 }

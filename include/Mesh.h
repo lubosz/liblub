@@ -27,6 +27,6 @@ public:
 	void addElementBuffer(vector<GLubyte> content);
 
 private:
-	unsigned bufferCount, myASS;
+	unsigned bufferCount, wasgehtab, myASS;
 };
 

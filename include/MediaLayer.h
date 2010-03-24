@@ -23,8 +23,6 @@ public:
 	SDL_GLContext mainContext; /* Our opengl context handle */
 	SDL_Event event;
 
-	RenderEngine * renderEngine;
-
 	bool quit;
 
 	MediaLayer(string title, unsigned width, unsigned height);
@@ -33,7 +31,7 @@ public:
 	void sdlDie(string msg);
 
 	void swapBuffers();
-	void renderLoop(RenderEngine * renderEngine);
+	void renderLoop();
 	void eventLoop();
 
 };

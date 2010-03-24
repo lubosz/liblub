@@ -110,12 +110,12 @@ void MediaLayer::eventLoop(){
     }
 }
 
-void MediaLayer::renderLoop(RenderEngine * renderEngine){
+void MediaLayer::renderLoop(){
     while (!quit) {
         /* process pending events */
     	eventLoop();
     	/* update the screen */
-    	renderEngine->display();
+    	RenderEngine::Instance().display();
         swapBuffers();
 
     }

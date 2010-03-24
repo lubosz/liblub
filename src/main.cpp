@@ -17,7 +17,7 @@ RenderEngine * renderEngine;
 void initTexture()
 //void init2DTexture(GLint texName, GLint texWidth, GLint texHeight, GLubyte *texPtr)
 {
-
+	RenderEngine::Instance().glError("main.cpp",20);
 	//GLint texName = "myTexture";
 
 	fipImage *image = new fipImage();
@@ -33,9 +33,9 @@ void initTexture()
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, 0);
 
-    GLint texLoc   = glGetUniformLocation(renderEngine->shaderProgram->program, "myTexture");
+    GLint texLoc   = glGetUniformLocation(RenderEngine::Instance().shaderProgram->program, "myTexture");
     glUniform1i(texLoc, 0);
-
+    RenderEngine::Instance().glError("main.cpp",38);
 
 }
 
@@ -112,49 +112,49 @@ void makeCube(){
 }
 
 void vertexColorShader(){
-	renderEngine->shaderProgram->attachShader("tutorial4.vert", GL_VERTEX_SHADER);
-	renderEngine->shaderProgram->attachShader("tutorial4.geom", GL_GEOMETRY_SHADER);
-	renderEngine->shaderProgram->attachShader("tutorial4.frag", GL_FRAGMENT_SHADER);
+	RenderEngine::Instance().shaderProgram->attachShader("tutorial4.vert", GL_VERTEX_SHADER);
+	RenderEngine::Instance().shaderProgram->attachShader("tutorial4.geom", GL_GEOMETRY_SHADER);
+	RenderEngine::Instance().shaderProgram->attachShader("tutorial4.frag", GL_FRAGMENT_SHADER);
 
     /* Bind attribute 0 (coordinates) to in_Position and attribute 1 (colors) to in_Color */
-	renderEngine->shaderProgram->bindAttrib("in_Position");
-	renderEngine->shaderProgram->bindAttrib("in_Color");
-	renderEngine->shaderProgram->bindAttrib("in_Normal");
+	RenderEngine::Instance().shaderProgram->bindAttrib("in_Position");
+	RenderEngine::Instance().shaderProgram->bindAttrib("in_Color");
+	RenderEngine::Instance().shaderProgram->bindAttrib("in_Normal");
 }
 
 void brickShader(){
-	renderEngine->shaderProgram->attachShader("brick.vert", GL_VERTEX_SHADER);
-	renderEngine->shaderProgram->attachShader("brick.frag", GL_FRAGMENT_SHADER);
+	RenderEngine::Instance().shaderProgram->attachShader("brick.vert", GL_VERTEX_SHADER);
+	RenderEngine::Instance().shaderProgram->attachShader("brick.frag", GL_FRAGMENT_SHADER);
 
     /* Bind attribute 0 (coordinates) to in_Position and attribute 1 (colors) to in_Color */
-	renderEngine->shaderProgram->bindAttrib("in_Position");
-	renderEngine->shaderProgram->bindAttrib(3,"MCnormal");
-	//renderEngine->shaderProgram->bindAttrib("in_Color");
+	RenderEngine::Instance().shaderProgram->bindAttrib("in_Position");
+	RenderEngine::Instance().shaderProgram->bindAttrib(3,"MCnormal");
+	//RenderEngine::Instance().shaderProgram->bindAttrib("in_Color");
 }
 
 void textureShader(){
-	//initTexture();
+	initTexture();
 
-	renderEngine->shaderProgram->attachShader("texture.vert", GL_VERTEX_SHADER);
-	renderEngine->shaderProgram->attachShader("texture.frag", GL_FRAGMENT_SHADER);
+	RenderEngine::Instance().shaderProgram->attachShader("texture.vert", GL_VERTEX_SHADER);
+	RenderEngine::Instance().shaderProgram->attachShader("texture.frag", GL_FRAGMENT_SHADER);
 
     /* Bind attribute 0 (coordinates) to in_Position and attribute 1 (colors) to in_Color */
-	renderEngine->shaderProgram->bindAttrib("in_Position");
-	renderEngine->shaderProgram->bindAttrib("in_Color");
-	renderEngine->shaderProgram->bindAttrib("in_Normal");
-	renderEngine->shaderProgram->bindAttrib("in_Uv");
+	RenderEngine::Instance().shaderProgram->bindAttrib("in_Position");
+	RenderEngine::Instance().shaderProgram->bindAttrib("in_Color");
+	RenderEngine::Instance().shaderProgram->bindAttrib("in_Normal");
+	RenderEngine::Instance().shaderProgram->bindAttrib("in_Uv");
 }
 
 void initScene(){
 
-	renderEngine->glError("main.cpp",150);
+	RenderEngine::Instance().glError("main.cpp",150);
 	makeTetrahedron();
-	renderEngine->glError("main.cpp",152);
+	RenderEngine::Instance().glError("main.cpp",152);
 	//makeCube();
 	//vertexColorShader();
 	//brickShader();
 	textureShader();
-	renderEngine->glError("main.cpp",157);
+	RenderEngine::Instance().glError("main.cpp",157);
 
 
 
@@ -166,14 +166,14 @@ int main(int argc, char *argv[])
 	mediaLayer = new MediaLayer(PROGRAM_NAME, 1024, 576);
 	RenderEngine::Instance().glError("main.cpp",164);
 	//RenderEngine::RenderEngine();
-	//renderEngine->glError("main.cpp",164);
+	//RenderEngine::Instance().glError("main.cpp",164);
 	//renderEngine = new RenderEngine();
-	renderEngine->glError("main.cpp",166);
+	RenderEngine::Instance().glError("main.cpp",166);
 	initScene();
-	renderEngine->glError("main.cpp",168);
-	renderEngine->shaderProgram->linkAndUse();
+	RenderEngine::Instance().glError("main.cpp",168);
+	RenderEngine::Instance().shaderProgram->linkAndUse();
 
-	renderEngine->glError("main.cpp",171);
+	RenderEngine::Instance().glError("main.cpp",171);
 
 	GLint program = RenderEngine::Instance().shaderProgram->program;
 	glUniform3f(glGetUniformLocation(program, "BrickColor"), 1.0, 0.3, 0.2);
@@ -182,7 +182,7 @@ int main(int argc, char *argv[])
 	glUniform2f(glGetUniformLocation(program, "BrickPct"), 0.90, 0.85);
 	RenderEngine::Instance().glError("main.cpp",176);
 
-	mediaLayer->renderLoop(renderEngine);
+	mediaLayer->renderLoop();
 	RenderEngine::Instance().glError("main.cpp",179);
     //delete renderEngine;
     delete mediaLayer;
