@@ -37,6 +37,5 @@ void translate(GLfloat *matrix, GLfloat x, GLfloat y, GLfloat z);
 /* Rotate a matrix by an angle on a X, Y, or Z axis specified by the AXIS enum*/
 void rotate(GLfloat *matrix, GLfloat angle, AXIS axis);
 
-/* A simple function that will read a file into an allocated char pointer buffer */
-char* filetobuf(string file);
+void transpose3x3(GLfloat *matrix);
 

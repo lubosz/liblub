@@ -11,7 +11,7 @@
 #include "Shader.h"
 
 Shader::Shader(string fileName, GLenum type) {
-	shaderDir = "media/shader/";
+	shaderDir = "media/shaders/";
 
 	/* Read our shaders into the appropriate buffers */
 	source = readFile(shaderDir + fileName);

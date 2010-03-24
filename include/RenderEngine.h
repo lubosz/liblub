@@ -17,10 +17,14 @@
 
 using namespace std;
 
-
-
 class RenderEngine {
 public:
+
+	static RenderEngine& Instance()
+	 {
+	    static RenderEngine singleton;
+	    return singleton;
+	  }
 
 	ShaderProgram * shaderProgram;
 
@@ -29,10 +33,22 @@ public:
 
 	unsigned frameCount;
 
-	RenderEngine();
-	virtual ~RenderEngine();
-	void display();
+	//RenderEngine();
+	//virtual ~RenderEngine();
+
+
+
 	void glError(string file, int line);
 	void checkVersion();
 	GLboolean QueryExtension(char *extName);
+	void display();
+
+private:
+	RenderEngine();                                 // Private constructor
+	~RenderEngine();
+  RenderEngine(const RenderEngine&);                 // Prevent copy-construction
+  RenderEngine& operator=(const RenderEngine&);      // Prevent assignment
+
+
+
 };

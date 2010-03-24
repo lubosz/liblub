@@ -19,11 +19,14 @@ public:
 	/* Create handles for our Vertex Array Object and three Vertex Buffer Objects */
 	GLuint vao, vbo[3];
 
-	unsigned bufferCount, myASS;
 
-	Mesh(vector<GLfloat> position, vector<GLfloat> color, vector<GLfloat> normals, vector<GLubyte> index);
+
+	Mesh(vector<GLfloat> position, vector<GLfloat> color, vector<GLfloat> normals, vector<GLfloat> uv, vector<GLubyte> index);
 	virtual ~Mesh();
-	void addBuffer(vector<GLfloat> content);
+	void addBuffer(vector<GLfloat> content, unsigned size);
 	void addElementBuffer(vector<GLubyte> content);
+
+private:
+	unsigned bufferCount, myASS;
 };
 

@@ -1,4 +1,8 @@
-#include <boost/multi_array.hpp>
+/* Ensure we are using opengl's core profile only */
+#define GL3_PROTOTYPES 1
+#include <GL3/gl3.h>
+
+#include <FreeImagePlus.h>
 
 #include "MediaLayer.h"
 #include "RenderEngine.h"
@@ -10,12 +14,38 @@
 MediaLayer * mediaLayer;
 RenderEngine * renderEngine;
 
+void initTexture()
+//void init2DTexture(GLint texName, GLint texWidth, GLint texHeight, GLubyte *texPtr)
+{
+
+	//GLint texName = "myTexture";
+
+	fipImage *image = new fipImage();
+	image->load("media/textures/bunny.png", PNG_DEFAULT);
+
+    glBindTexture(GL_TEXTURE_2D, 0);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, image->getWidth(), image->getHeight(), 0, GL_RGB, GL_UNSIGNED_BYTE, image->accessPixels());
+
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, 0);
+
+    GLint texLoc   = glGetUniformLocation(renderEngine->shaderProgram->program, "myTexture");
+    glUniform1i(texLoc, 0);
+
+
+}
+
+
 void makeTetrahedron(){
 	vector<GLfloat> vertices = {
-			1.0, -1.0, -1.0,
-			1.0, -1.0, 1.0,
-			-1.0, -1.0, 0.0,
-			0.0, 1.0, 0.0
+		    1.0,  1.0,  1.0,
+		    -1.0, -1.0,  1.0,
+		    -1.0,  1.0, -1.0,
+		    1.0, -1.0, -1.0
 	};
 
 	vector<GLfloat> vertexColors = {
@@ -25,16 +55,29 @@ void makeTetrahedron(){
 		1.0,  1.0,  1.0
 	};
 
+	vector<GLfloat> uvCoords = {
+		1.0,  0.0,
+		0.0,  1.0,
+		0.0,  0.0,
+		1.0,  1.0
+	};
+
 	vector<GLfloat> normals = {
+		    1.0,  1.0,  1.0,
+		    -1.0, -1.0,  1.0,
+		    -1.0,  1.0, -1.0,
+		    1.0, -1.0, -1.0
+			/*
 			0.4, -0.3, -0.8,
 			0.4, -0.3, 0.8,
 			-0.8, -0.5, 0.0,
 			0.0, 0.9, 0.0
+			*/
 	};
 
 	vector<GLubyte> indicies = { 0, 1, 2, 3, 0, 1 };
 
-	Mesh * tetrahedron = new Mesh(vertices,vertexColors,normals,indicies);
+	Mesh * tetrahedron = new Mesh(vertices,vertexColors,normals,uvCoords,indicies);
 
 }
 
@@ -84,18 +127,34 @@ void brickShader(){
 	renderEngine->shaderProgram->attachShader("brick.frag", GL_FRAGMENT_SHADER);
 
     /* Bind attribute 0 (coordinates) to in_Position and attribute 1 (colors) to in_Color */
-	renderEngine->shaderProgram->bindAttrib("MCvertex");
+	renderEngine->shaderProgram->bindAttrib("in_Position");
 	renderEngine->shaderProgram->bindAttrib(3,"MCnormal");
-
 	//renderEngine->shaderProgram->bindAttrib("in_Color");
+}
+
+void textureShader(){
+	//initTexture();
+
+	renderEngine->shaderProgram->attachShader("texture.vert", GL_VERTEX_SHADER);
+	renderEngine->shaderProgram->attachShader("texture.frag", GL_FRAGMENT_SHADER);
+
+    /* Bind attribute 0 (coordinates) to in_Position and attribute 1 (colors) to in_Color */
+	renderEngine->shaderProgram->bindAttrib("in_Position");
+	renderEngine->shaderProgram->bindAttrib("in_Color");
+	renderEngine->shaderProgram->bindAttrib("in_Normal");
+	renderEngine->shaderProgram->bindAttrib("in_Uv");
 }
 
 void initScene(){
 
+	renderEngine->glError("main.cpp",150);
 	makeTetrahedron();
+	renderEngine->glError("main.cpp",152);
 	//makeCube();
-	vertexColorShader();
+	//vertexColorShader();
 	//brickShader();
+	textureShader();
+	renderEngine->glError("main.cpp",157);
 
 
 
@@ -105,13 +164,27 @@ int main(int argc, char *argv[])
 {
 
 	mediaLayer = new MediaLayer(PROGRAM_NAME, 1024, 576);
-
-	renderEngine = new RenderEngine();
+	RenderEngine::Instance().glError("main.cpp",164);
+	//RenderEngine::RenderEngine();
+	//renderEngine->glError("main.cpp",164);
+	//renderEngine = new RenderEngine();
+	renderEngine->glError("main.cpp",166);
 	initScene();
+	renderEngine->glError("main.cpp",168);
 	renderEngine->shaderProgram->linkAndUse();
-	mediaLayer->renderLoop(renderEngine);
 
-    delete renderEngine;
+	renderEngine->glError("main.cpp",171);
+
+	GLint program = RenderEngine::Instance().shaderProgram->program;
+	glUniform3f(glGetUniformLocation(program, "BrickColor"), 1.0, 0.3, 0.2);
+	glUniform3f(glGetUniformLocation(program, "MortarColor"), 0.85, 0.86, 0.84);
+	glUniform2f(glGetUniformLocation(program, "BrickSize"), 0.30, 0.15);
+	glUniform2f(glGetUniformLocation(program, "BrickPct"), 0.90, 0.85);
+	RenderEngine::Instance().glError("main.cpp",176);
+
+	mediaLayer->renderLoop(renderEngine);
+	RenderEngine::Instance().glError("main.cpp",179);
+    //delete renderEngine;
     delete mediaLayer;
 
 }

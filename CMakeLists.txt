@@ -7,7 +7,7 @@ set(SRC_DIR ${CMAKE_SOURCE_DIR}/src)
 #set(CMAKE_CXX_FLAGS "-O3")
 set(CMAKE_CXX_FLAGS "-std=gnu++0x -O0 -g3 -L/usr/local/lib -I/usr/local/include/SDL -D_REENTRANT -Wl,-rpath,/usr/local/lib")
 
-include_directories(include)
+include_directories(include include/tnt)
 #App Shader Demo
 set(CONE_DEMO_SOURCES
   ${SRC_DIR}/main.cpp
@@ -20,4 +20,4 @@ set(CONE_DEMO_SOURCES
 )
 
 add_executable(gl3Cone ${CONE_DEMO_SOURCES})
-target_link_libraries(gl3Cone GL  SDL)
+target_link_libraries(gl3Cone GL  SDL freeimageplus)

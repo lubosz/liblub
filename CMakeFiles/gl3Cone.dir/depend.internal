@@ -5,6 +5,8 @@ CMakeFiles/gl3Cone.dir/src/MediaLayer.cpp.o
  /home/bmonkey/workspace/GFX/gl3cone/src/MediaLayer.cpp
  include/MediaLayer.h
  include/RenderEngine.h
+ include/Shader.h
+ include/ShaderProgram.h
 CMakeFiles/gl3Cone.dir/src/Mesh.cpp.o
  /home/bmonkey/workspace/GFX/gl3cone/src/Mesh.cpp
  include/Mesh.h
@@ -13,6 +15,28 @@ CMakeFiles/gl3Cone.dir/src/RenderEngine.cpp.o
  include/RenderEngine.h
  include/Shader.h
  include/ShaderProgram.h
+ include/tnt/tnt.h
+ include/tnt/tnt_array1d.h
+ include/tnt/tnt_array1d_utils.h
+ include/tnt/tnt_array2d.h
+ include/tnt/tnt_array2d_utils.h
+ include/tnt/tnt_array3d.h
+ include/tnt/tnt_array3d_utils.h
+ include/tnt/tnt_fortran_array1d.h
+ include/tnt/tnt_fortran_array1d_utils.h
+ include/tnt/tnt_fortran_array2d.h
+ include/tnt/tnt_fortran_array2d_utils.h
+ include/tnt/tnt_fortran_array3d.h
+ include/tnt/tnt_fortran_array3d_utils.h
+ include/tnt/tnt_i_refvec.h
+ include/tnt/tnt_math_utils.h
+ include/tnt/tnt_matrix.h
+ include/tnt/tnt_sparse_matrix.h
+ include/tnt/tnt_sparse_vector.h
+ include/tnt/tnt_stopwatch.h
+ include/tnt/tnt_subscript.h
+ include/tnt/tnt_vector.h
+ include/tnt/tnt_version.h
  include/utils.h
 CMakeFiles/gl3Cone.dir/src/Shader.cpp.o
  /home/bmonkey/workspace/GFX/gl3cone/src/Shader.cpp

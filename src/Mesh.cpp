@@ -8,7 +8,7 @@
 #include "Mesh.h"
 #include <iostream>
 
-Mesh::Mesh(vector<GLfloat> position, vector<GLfloat> color, vector<GLfloat> normals, vector<GLubyte> index){
+Mesh::Mesh(vector<GLfloat> position, vector<GLfloat> color, vector<GLfloat> normals, vector<GLfloat> uv, vector<GLubyte> index){
 	bufferCount = 0;
 	myASS = 0;
 
@@ -20,13 +20,14 @@ Mesh::Mesh(vector<GLfloat> position, vector<GLfloat> color, vector<GLfloat> norm
     cout << "--buffer #" << bufferCount << "\n";
     cout << "--myASS #" << myASS << "\n";
     /* Allocate and assign three Vertex Buffer Objects to our handle */
-    glGenBuffers(4, vbo);
+    glGenBuffers(5, vbo);
     cout << "--buffer #" << bufferCount << "\n";
     cout << "--myASS #" << myASS << "\n";
 
-	addBuffer(position);
-	addBuffer(color);
-	addBuffer(normals);
+	addBuffer(position,3);
+	addBuffer(color,3);
+	addBuffer(normals,3);
+	addBuffer(uv,2);
 
 	addElementBuffer(index);
 }
@@ -39,7 +40,7 @@ Mesh::~Mesh() {
     glDeleteVertexArrays(1, &vao);
 }
 
-void Mesh::addBuffer(vector<GLfloat> content){
+void Mesh::addBuffer(vector<GLfloat> content, unsigned size){
     /* Bind our first VBO as being the active buffer and storing vertex attributes (coordinates) */
     glBindBuffer(GL_ARRAY_BUFFER, vbo[myASS]);
 
@@ -48,7 +49,7 @@ void Mesh::addBuffer(vector<GLfloat> content){
 	glBufferData(GL_ARRAY_BUFFER, content.size() * sizeof(GLfloat), content.data(), GL_STATIC_DRAW);
 
 	/* Specify that our coordinate data is going into attribute index 0, and contains three floats per vertex */
-	glVertexAttribPointer((GLuint) myASS, 3, GL_FLOAT, GL_FALSE, 0, 0);
+	glVertexAttribPointer((GLuint) myASS, size, GL_FLOAT, GL_FALSE, 0, 0);
 
 	/* Enable attribute index 0 as being used */
 	glEnableVertexAttribArray(myASS);

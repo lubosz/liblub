@@ -73,3 +73,15 @@ void rotate(GLfloat *matrix, GLfloat angle, AXIS axis)
 
     multiply4x4(matrix, newmatrix);
 }
+
+void transpose3x3(GLfloat *matrix)
+{
+   GLfloat temp;
+   for(int i=0;i<3;i++)
+       for(int j=i+1;j<3;j++)
+      {
+         temp=matrix[i + (j*3)];
+         matrix[i + (j*3)]=matrix[j + (i*3)];
+         matrix[j + (i*3)]=temp;
+      }
+}
