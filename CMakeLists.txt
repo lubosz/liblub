@@ -15,8 +15,11 @@ set(CONE_DEMO_SOURCES
   ${SRC_DIR}/MediaLayer.cpp
   ${SRC_DIR}/ShaderProgram.cpp
   ${SRC_DIR}/Shader.cpp
+  ${SRC_DIR}/ShaderFactory.cpp
   ${SRC_DIR}/RenderEngine.cpp
   ${SRC_DIR}/Mesh.cpp
+  ${SRC_DIR}/Texture.cpp
+  ${SRC_DIR}/Geometry.cpp
 )
 
 add_executable(gl3Cone ${CONE_DEMO_SOURCES})

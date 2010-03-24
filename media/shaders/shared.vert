@@ -1,18 +1,19 @@
-#version 150 compatibility
+#version 150 core
 
-/*
-in vec4  gl_Vertex;
-in vec3  gl_Normal;
-in vec4  gl_MultiTexCoord0;
-in vec4  gl_MultiTexCoord1;
-in vec4  gl_MultiTexCoord2;
-*/
+uniform mat4 MVMatrix;
+uniform mat4 MVPMatrix;
+uniform mat3 NormalMatrix;
+//uniform vec3 LightPosition;
+
+in vec3 in_Vertex;
+in vec3 in_Normal;
+in vec2 in_Uv;
 
 //  starting texture coordinate
 out vec2 texCoord;
 //  position and light in eye space
 out vec3 eyeSpaceVert;
-out vec3 eyeSpaceLight;
+//out vec3 eyeSpaceLight;
 //  the matrix needed to convert to eye space
 //varying mat3 eyeTransform;
 //*
@@ -24,18 +25,18 @@ out vec3 eyeSpaceNormal;
 
 void main(void)
 { 
-   eyeSpaceVert = (gl_ModelViewMatrix * gl_Vertex).xyz;
+   eyeSpaceVert = (MVMatrix * vec4(in_Vertex,1)).xyz;
    
    // convert to eyeSpace for programs other than Irrlicht
    //eyeSpaceLight = (gl_ModelViewMatrix * vec4(gl_LightSource[0].position.xyz,1.0)).xyz;
    
    // gl_LightSource[n].position is already in eyeSpace from Irrlicht!
-   eyeSpaceLight = gl_LightSource[0].position.xyz;
+   //eyeSpaceLight = LightPosition;
    
   //*
-   eyeSpaceTangent  = gl_NormalMatrix * gl_MultiTexCoord1.xyz;	//tangent;
-   eyeSpaceBinormal = gl_NormalMatrix * (-gl_MultiTexCoord2.xyz);	//binormal;
-   eyeSpaceNormal   = gl_NormalMatrix * gl_Normal;
+   eyeSpaceTangent  = NormalMatrix * vec3(in_Uv,1);	//tangent;
+   eyeSpaceBinormal = NormalMatrix * (-vec3(in_Uv,1));	//binormal;
+   eyeSpaceNormal   = NormalMatrix * in_Normal;
   //*/
   
    /*
@@ -46,7 +47,7 @@ void main(void)
    );
    //*/
    
-   texCoord   = gl_MultiTexCoord0.xy;
+   texCoord   = in_Uv;
    
-   gl_Position = ftransform();
+   gl_Position = MVPMatrix * vec4(in_Vertex,1);
 }

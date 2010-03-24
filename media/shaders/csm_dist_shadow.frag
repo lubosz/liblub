@@ -1,24 +1,28 @@
 #version 150 core
+
 uniform vec4 ambient;
 uniform vec4 diffuse;
+uniform vec3 LightPosition;
+
 uniform float depth;
 uniform float texsize;
-uniform int conesteps;
 uniform float csm_gain;
 uniform float csm_offset;
 uniform float linearAttenuation;
+uniform int conesteps;
+
+uniform sampler2D stepmap;
+uniform sampler2D texmap;
    
 in vec2 texCoord;
 in vec3 eyeSpaceVert;
-in vec3 eyeSpaceLight;
+//in vec3 LightPosition;
 
 in vec3 eyeSpaceTangent;
 in vec3 eyeSpaceBinormal;
 in vec3 eyeSpaceNormal;
 
-
-uniform sampler2D stepmap;
-uniform sampler2D texmap;
+out vec4 FragColor;
 
 void intersect_cone_exp (inout vec3 dp, in vec3 ds, in float dist_factor);
 void intersect_cone_fixed(inout vec3 dp, in vec3 ds);
@@ -61,7 +65,7 @@ void main(void)
    //p -= v*pt_eye.z;
    
    // compute light direction
-   l=eyeSpaceLight.xyz-p;
+   l=LightPosition.xyz-p;
    
    // compute attenuation
    float att = linearAttenuation;
@@ -88,7 +92,7 @@ void main(void)
    l = normalize(l) * att * shad_z*shad_z;
 
    // compute the final color
-   gl_FragColor = vec4(
+   FragColor = vec4(
    			ambient.xyz*c.xyz+
    			c.xyz*diffuse.xyz*max(0.0,dot(l,t.xyz)), 
    			1.0);
