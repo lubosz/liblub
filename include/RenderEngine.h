@@ -7,15 +7,12 @@
 
 #pragma once
 
-/* Ensure we are using opengl's core profile only */
-#define GL3_PROTOTYPES 1
-#include <GL3/gl3.h>
+#include "common.h"
 #include <string>
 #include <iostream>
-
+#include <string.h>
 #include "ShaderProgram.h"
-
-using namespace std;
+#include "SceneGraph.h"
 
 class RenderEngine {
 public:
@@ -27,16 +24,12 @@ public:
 	  }
 
 	ShaderProgram * shaderProgram;
-
-	GLfloat projectionmatrix[16]; /* Our projection matrix starts with all 0s */
-	GLfloat modelmatrix[16]; /* Our model matrix  */
+	SceneGraph * sceneGraph;
 
 	unsigned frameCount;
 
 	//RenderEngine();
 	//virtual ~RenderEngine();
-
-
 
 	void glError(string file, int line);
 	void checkVersion();

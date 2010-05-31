@@ -10,11 +10,15 @@
 #include <vector>
 #include "Shader.h"
 #include "ShaderProgram.h"
+#include "Material.h"
 
 class ShaderFactory {
 public:
 	vector<Shader> shaders;
-	vector<Shader> programs;
+	vector<ShaderProgram> programs;
+
+	typedef std::vector<Material*>  materialList;
+	materialList materials;
 
 	static ShaderFactory& Instance()
 	 {
@@ -22,6 +26,7 @@ public:
 	    return singleton;
 	  }
 
+	void defaultAttribs();
 	void addUniforms();
 
 	void vertexColorShader();
@@ -30,6 +35,11 @@ public:
 	void multiTextureShader();
 	void earthShader();
 	void coneMapShader();
+	void procBump();
+	void convolution();
+	void bump1();
+	void bump2();
+	void relief();
 
 private:
 	ShaderFactory();

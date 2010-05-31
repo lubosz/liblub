@@ -39,4 +39,9 @@ public:
 	void bindAttrib(unsigned position, string name);
 
 	void linkAndUse();
+
+	void setNormalMatrix(GLfloat * modelmatrix);
+	void setModelViewMatrix(GLfloat * mvMatrix);
+	void setModelViewProjectionMatrix(GLfloat * mvpMatrix);
+	void setLightPosition(GLfloat x, GLfloat y, GLfloat z);
 };

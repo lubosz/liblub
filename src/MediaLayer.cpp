@@ -7,6 +7,7 @@
 
 #include <iostream>
 #include "MediaLayer.h"
+#include "Camera.h"
 
 MediaLayer::MediaLayer(string title, unsigned width, unsigned height) {
 	quit = false;
@@ -32,7 +33,7 @@ MediaLayer::MediaLayer(string title, unsigned width, unsigned height) {
 
     /* Create our window centered at 512x512 resolution */
     mainWindow = SDL_CreateWindow(title.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
-        width, height, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN);
+        width, height, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
     if (!mainWindow) /* Die if creation failed */
         sdlDie("Unable to create window");
 
@@ -90,7 +91,33 @@ void MediaLayer::eventLoop(){
                 //if (level < 0) level=0;
                 break;
 
+            case SDLK_UP:
+            case 'w':
+            	//cout << "up\n";
+            	Camera::Instance().move(0,0,.1);
+            	break;
+
+            case SDLK_DOWN:
+            case 's':
+            	Camera::Instance().move(0,0,-.1);
+            	//cout << "down\n";
+            	break;
+
+            case SDLK_LEFT:
+            case 'a':
+            	Camera::Instance().move(.1,0,0);
+            	//cout << "left\n";
+            	break;
+
+            case SDLK_RIGHT:
+            case 'd':
+            	Camera::Instance().move(-.1,0,0);
+            	//cout << "rigt\n";
+            	break;
+
             default:
+            	//cout << "ScanCode:\t" << event.key.keysym.scancode << "\n";
+            	//cout << "sym:\t" << event.key.keysym.sym << "\n";
                  //no default key processing
                  //(stops compiler warnings for unhandled SDL keydefs
                  break;
@@ -98,6 +125,8 @@ void MediaLayer::eventLoop(){
         break;
 
         case SDL_MOUSEMOTION:
+        	Camera::Instance().rotate(event.motion.yrel,0,0);
+        	Camera::Instance().rotate(0,event.motion.xrel,0);
             //pitch += event.motion.yrel;
             //if (pitch < -70) pitch = -70;
             //if (pitch > 70) pitch = 70;
@@ -106,6 +135,32 @@ void MediaLayer::eventLoop(){
          case SDL_QUIT:
             quit = true;
             break;
+
+         case SDL_WINDOWEVENT: //User resized window
+
+        	 switch( event.window.event ){
+				 case SDL_WINDOWEVENT_RESIZED:
+
+
+		        	 cout << "Oldaspect:"<< Camera::Instance().aspect << "\n";
+		        	 cout << "w: " << event.resize.w << "\nh: " << event.resize.h << "\n";
+		        	 cout << "aspect:"<< GLfloat(event.resize.w) / GLfloat(event.resize.h) << "\n";
+
+					 //Camera::Instance().setAspect(GLfloat(event.resize.w) / GLfloat(event.resize.h));
+					 break;
+
+				 default:
+		        	 //cout << "Some win event!\n";
+					 break;
+        	 }
+        	 //mainContext = SDL_GL_CreateContext(mainWindow);
+        	 ////mainWindow = SDL_CreateWindow("loL", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
+        	//		 event.resize.w, event.resize.h, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
+        	 break; //Event handled, fetch next :)
+
+         default:
+        	 cout << "Event:" << event.type << "\n";
+        	 break;
         }
     }
 }

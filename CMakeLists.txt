@@ -1,26 +1,43 @@
 cmake_minimum_required(VERSION 2.6)
-project(gl3Cone)
+project(gl3cone)
 
 set(SRC_DIR ${CMAKE_SOURCE_DIR}/src)
 
-#set(CMAKE_CXX_FLAGS "-O0 -g3")
-#set(CMAKE_CXX_FLAGS "-O3")
-set(CMAKE_CXX_FLAGS "-std=gnu++0x -O0 -g3 -L/usr/local/lib -I/usr/local/include/SDL -D_REENTRANT -Wl,-rpath,/usr/local/lib")
+#Optimization / Debug
+set(CMAKE_CXX_FLAGS "-O0 -g3") #Debug
+#set(CMAKE_CXX_FLAGS "-O3") #Optimized
 
-include_directories(include include/tnt)
-#App Shader Demo
-set(CONE_DEMO_SOURCES
-  ${SRC_DIR}/main.cpp
-  ${SRC_DIR}/utils.cpp
-  ${SRC_DIR}/MediaLayer.cpp
-  ${SRC_DIR}/ShaderProgram.cpp
-  ${SRC_DIR}/Shader.cpp
-  ${SRC_DIR}/ShaderFactory.cpp
-  ${SRC_DIR}/RenderEngine.cpp
-  ${SRC_DIR}/Mesh.cpp
-  ${SRC_DIR}/Texture.cpp
-  ${SRC_DIR}/Geometry.cpp
+#Hack For SDL 1.3 in local
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -L/usr/local/lib -I/usr/local/include/SDL -D_REENTRANT -Wl,-rpath,/usr/local/lib")
+
+#Set c++0x
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++0x")
+
+#MESSAGE("Flags: ${CMAKE_CXX_FLAGS}")
+
+
+include_directories(
+include
+include/tnt
 )
 
-add_executable(gl3Cone ${CONE_DEMO_SOURCES})
-target_link_libraries(gl3Cone GL  SDL freeimageplus)
+#App Shader Demo
+set(CONE_DEMO_SOURCES
+	${SRC_DIR}/Camera.cpp
+	#${SRC_DIR}/Material.cpp
+	${SRC_DIR}/RenderEngine.cpp   
+	${SRC_DIR}/ShaderProgram.cpp   
+	#${SRC_DIR}/utils.cpp
+	${SRC_DIR}/Geometry.cpp  
+	${SRC_DIR}/MediaLayer.cpp  
+	${SRC_DIR}/Shader.cpp
+	${SRC_DIR}/main.cpp
+	${SRC_DIR}/Texture.cpp
+	${SRC_DIR}/Mesh.cpp
+	${SRC_DIR}/TextureFactory.cpp
+	${SRC_DIR}/ShaderFactory.cpp
+	${SRC_DIR}/SceneGraph.cpp
+)
+
+add_executable(gl3cone ${CONE_DEMO_SOURCES})
+target_link_libraries(gl3cone GL GLU SDL freeimageplus)

@@ -2,7 +2,7 @@
 
 uniform sampler2D myTexture;
 
-in float LightIntensity;
+//in float LightIntensity;
 in vec2 TexCoord;
 
 out vec4 FragColor;

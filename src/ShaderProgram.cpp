@@ -76,3 +76,26 @@ void ShaderProgram::linkAndUse(){
     printProgramInfoLog();
     glUseProgram(program);
 }
+
+void ShaderProgram::setNormalMatrix(GLfloat * modelmatrix){
+    GLfloat normalMatrix[9] = {
+                    modelmatrix[0], modelmatrix[1], modelmatrix[2],
+                    modelmatrix[4], modelmatrix[5], modelmatrix[6],
+                    modelmatrix[8], modelmatrix[9], modelmatrix[10]
+    };
+
+	glUniformMatrix3fv(glGetUniformLocation(program, "NormalMatrix"), 1, GL_FALSE, normalMatrix);
+}
+
+void ShaderProgram::setModelViewMatrix(GLfloat * mvMatrix){
+	glUniformMatrix4fv(glGetUniformLocation(program, "MVMatrix"), 1, GL_FALSE, mvMatrix);
+}
+
+void ShaderProgram::setModelViewProjectionMatrix(GLfloat * mvpMatrix){
+    /* Bind our modelmatrix variable to be a uniform called mvpmatrix in our shaderprogram */
+	glUniformMatrix4fv(glGetUniformLocation(program, "MVPMatrix"), 1, GL_FALSE, mvpMatrix);
+}
+
+void ShaderProgram::setLightPosition(GLfloat x, GLfloat y, GLfloat z){
+	glUniform3f(glGetUniformLocation(program, "LightPosition"), x, y, z);
+}

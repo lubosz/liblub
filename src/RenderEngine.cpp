@@ -5,8 +5,9 @@
  *      Author: bmonkey
  */
 
-#include <stdio.h>
-#include <string.h>
+
+
+#include "Camera.h"
 
 //#include <stdlib.h>
 //#include <stdio.h>
@@ -15,9 +16,8 @@
 //#include <string>
 
 #include "RenderEngine.h"
+//#include "tnt.h"
 
-#include "utils.h"
-#include "tnt.h"
 
 using namespace std;
 
@@ -27,10 +27,8 @@ RenderEngine::RenderEngine() {
 	frameCount = 0;
 
 	shaderProgram = new ShaderProgram();
+        sceneGraph = new SceneGraph();
 
-    /* Create our projection matrix with a 45 degree field of view
-     * a width to height ratio of 1 and view from .1 to 100 infront of us */
-    perspective(projectionmatrix, 70.0, 16.0/9.0, 0.1, 100.0);
 	glError("RenderEngine",92);
 }
 
@@ -46,42 +44,25 @@ RenderEngine::~RenderEngine() {
 	glError("RenderEngine",106);
 }
 
+
+
 void RenderEngine::display() {
 	//cout << frameCount << "\n";
-	/* An identity matrix we use to perform the equivalant of glLoadIdentity */
-	const GLfloat identitymatrix[16] = IDENTITY_MATRIX4;
-
-	/* Load the identity matrix into modelmatrix. rotate the model, and move it back 5 */
-	memcpy(modelmatrix, identitymatrix, sizeof(GLfloat) * 16);
-	rotate(modelmatrix, (GLfloat) frameCount * -1.0, X_AXIS);
-	rotate(modelmatrix, (GLfloat) frameCount * 1.0, Y_AXIS);
-	rotate(modelmatrix, (GLfloat) frameCount * 0.5, Z_AXIS);
-	translate(modelmatrix, 0, 0, -2.5);
-
-	GLfloat normalMatrix[9] = {
-			modelmatrix[0], modelmatrix[1], modelmatrix[2],
-			modelmatrix[4], modelmatrix[5], modelmatrix[6],
-			modelmatrix[8], modelmatrix[9], modelmatrix[10]
-	};
-
-	TNT::Matrix<GLfloat> * myNormals = new TNT::Matrix<GLfloat>(3,3,normalMatrix);
-
-	*myNormals = TNT::transpose(*myNormals);
-
-	//cout << "Normals:" << myNormals[0][0] << " " << myNormals[0][1] << " " << myNormals[0][2] << "\n";
-	//transpose3x3(normalMatrix);
-	glUniformMatrix3fv(glGetUniformLocation(shaderProgram->program, "NormalMatrix"), 1, GL_FALSE, normalMatrix);
 
 
-	glUniformMatrix4fv(glGetUniformLocation(shaderProgram->program, "MVMatrix"), 1, GL_FALSE, modelmatrix);
-	/* multiply our modelmatrix and our projectionmatrix. Results are stored in modelmatrix */
-	multiply4x4(modelmatrix, projectionmatrix);
 
-	/* Bind our modelmatrix variable to be a uniform called mvpmatrix in our shaderprogram */
-	glUniformMatrix4fv(glGetUniformLocation(shaderProgram->program, "MVPMatrix"), 1, GL_FALSE, modelmatrix);
+        sceneGraph->transform(frameCount);
+        sceneGraph->bindShaders(shaderProgram);
 
-	glUniform3f(glGetUniformLocation(shaderProgram->program, "LightPosition"), 0.0, 0.0, 4.0);
+        //GLfloat floatanim = 10.0/GLfloat(frameCount%100);
 
+	//glUniform4f(glGetUniformLocation(shaderProgram->program, "ScaleFactor"), floatanim, floatanim, floatanim, floatanim);
+	//glUniform2f(glGetUniformLocation(shaderProgram->program, "Offset"), floatanim, floatanim);
+	/*
+	int mode = int(frameCount/100.0)%10;
+	glUniform1i(glGetUniformLocation(shaderProgram->program, "Mode"), mode);
+	cout << "Mode:\t" << mode << "\n";
+*/
 	/* Make our background black */
 	glClearColor(0.0, 0.0, 0.0, 1.0);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -126,16 +107,33 @@ void RenderEngine::glError(string file, int line) {
 void RenderEngine::checkVersion(){
 	int * maxTex1 = new int();
 	int * maxTex2 = new int();
+
 	glGetIntegerv(GL_MAX_VERTEX_TEXTURE_IMAGE_UNITS,maxTex1);
 	glGetIntegerv(GL_MAX_TEXTURE_IMAGE_UNITS,maxTex2);
 
+	int * MajorVersion = new int();
+	int * MinorVersion = new int();
+
+	glGetIntegerv(GL_MAJOR_VERSION, MajorVersion);
+	glGetIntegerv(GL_MINOR_VERSION, MinorVersion);
+
+
 	cout 	<< "OpenGL:\t" << glGetString(GL_VERSION) << "\n"
 			<< "GLSL:\t" << glGetString(GL_SHADING_LANGUAGE_VERSION) << "\n"
+			<< "GLU:\t" << gluGetString(GLU_VERSION) << "\n"
 			<< "Hardware:\t" << glGetString(GL_VENDOR) << " - " << glGetString(GL_RENDERER) << "\n"
-			//<< "GL_EXTENSIONS:\t" << glGetString(GL_EXTENSIONS) << "\n"
-			<< "MaxTex:\t" << *maxTex1 << " " << *maxTex2
+			//<< "GL_EXTENSIONS:\t" << glGetStringi(GL_EXTENSIONS,0) << "\n"
+			<< "MaxTex:\t" << *maxTex1 << " " << *maxTex2 << "\n"
 			//<< " " << glGetString(GL_MAX_TEXTURE_IMAGE_UNITS)
+			<<"Version:\t"<<*MajorVersion<<"."<<*MinorVersion
 			<< "\n";
+
+	GLint * numext = new GLint();
+	glGetIntegerv(GL_NUM_EXTENSIONS, numext);
+	cout << "Found " << * numext << " GL_EXTENSIONS:\n";
+	for (int i; i < *numext; i++){
+		cout << glGetStringi(GL_EXTENSIONS,i) << " ";
+	}
 }
 
 GLboolean RenderEngine::QueryExtension(char *extName) {

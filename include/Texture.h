@@ -15,7 +15,11 @@ using namespace std;
 
 class Texture {
 public:
+	GLenum glId;
+	string name;
 	GLuint texture;
-	Texture(string filename, GLenum glId);
+	Texture(string filename, GLenum glId, string name);
 	virtual ~Texture();
+	void activate();
+	void uniform(GLuint program);
 };
