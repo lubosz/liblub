@@ -14,19 +14,21 @@
 
 using namespace std;
 
+const unsigned maxBuffers = 7;
+
 class Mesh {
 public:
 	/* Create handles for our Vertex Array Object and three Vertex Buffer Objects */
-	GLuint vao, vbo[3];
+	GLuint vao, vbo[maxBuffers];
 
 
 
-	Mesh(vector<GLfloat> position, vector<GLfloat> color, vector<GLfloat> normals, vector<GLfloat> uv, vector<GLubyte> index);
+	Mesh(vector<GLfloat> position, vector<GLfloat> color, vector<GLfloat> normals, vector<GLfloat> binormals, vector<GLfloat> tangents, vector<GLfloat> uv, vector<GLubyte> index);
 	virtual ~Mesh();
 	void addBuffer(vector<GLfloat> content, unsigned size);
 	void addElementBuffer(vector<GLubyte> content);
 
 private:
-	unsigned bufferCount, wasgehtab, myASS;
+	unsigned bufferCount;
 };
 

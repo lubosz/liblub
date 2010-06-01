@@ -9,6 +9,8 @@
 #include <stdio.h>
 #include <iostream>
 #include "ShaderProgram.h"
+#include <boost/foreach.hpp>
+
 
 ShaderProgram::ShaderProgram() {
 	attribCount = 0;
@@ -75,6 +77,25 @@ void ShaderProgram::linkAndUse(){
     glLinkProgram(program);
     printProgramInfoLog();
     glUseProgram(program);
+}
+
+void ShaderProgram::reload(){
+    glUseProgram(0);
+    program = glCreateProgram();
+
+    BOOST_FOREACH( Shader* shader, shaders )
+    {
+    	/*
+
+        delete shader;
+        */
+    	shader->reload();
+    	//attachShader(shader->fileName,shader->type);
+    }
+
+    linkAndUse();
+	//ShaderFactory::Instance().addUniforms();
+
 }
 
 void ShaderProgram::setNormalMatrix(GLfloat * modelmatrix){

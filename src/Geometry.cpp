@@ -45,10 +45,36 @@ Mesh * Geometry::makeTetrahedron(){
 			*/
 	};
 
+	vector<GLfloat> binormals = {
+		    1.0,  1.0,  1.0,
+		    -1.0, -1.0,  1.0,
+		    -1.0,  1.0, -1.0,
+		    1.0, -1.0, -1.0
+			/*
+			0.4, -0.3, -0.8,
+			0.4, -0.3, 0.8,
+			-0.8, -0.5, 0.0,
+			0.0, 0.9, 0.0
+			*/
+	};
+
+	vector<GLfloat> tangents = {
+		    1.0,  1.0,  1.0,
+		    -1.0, -1.0,  1.0,
+		    -1.0,  1.0, -1.0,
+		    1.0, -1.0, -1.0
+			/*
+			0.4, -0.3, -0.8,
+			0.4, -0.3, 0.8,
+			-0.8, -0.5, 0.0,
+			0.0, 0.9, 0.0
+			*/
+	};
+
 	vector<GLubyte> indicies = { 0, 1, 2, 3, 0, 1 };
 
 	cout << "Making Tetrahedron!!";
-	return new Mesh(vertices,vertexColors,normals,uvCoords,indicies);
+	return new Mesh(vertices,vertexColors,normals,binormals,tangents,uvCoords,indicies);
 
 }
 
@@ -89,6 +115,6 @@ Mesh * Geometry::makeCube(){
 
 	vector<GLubyte> indicies = { 0, 1, 2, 3, 4, 5, 6, 7 };
 
-	return new Mesh(vertices,vertexColors,vertices,uvCoords,indicies);
+	return new Mesh(vertices,vertexColors,vertices,vertices,vertices,uvCoords,indicies);
 
 }

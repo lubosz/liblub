@@ -44,4 +44,5 @@ public:
 	void setModelViewMatrix(GLfloat * mvMatrix);
 	void setModelViewProjectionMatrix(GLfloat * mvpMatrix);
 	void setLightPosition(GLfloat x, GLfloat y, GLfloat z);
+	void reload();
 };

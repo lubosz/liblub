@@ -115,6 +115,11 @@ void MediaLayer::eventLoop(){
             	//cout << "rigt\n";
             	break;
 
+            case 'r':
+            	cout << "Reloading Shaders\n";
+            	RenderEngine::Instance().shaderProgram->reload();
+            	break;
+
             default:
             	//cout << "ScanCode:\t" << event.key.keysym.scancode << "\n";
             	//cout << "sym:\t" << event.key.keysym.sym << "\n";
@@ -142,9 +147,9 @@ void MediaLayer::eventLoop(){
 				 case SDL_WINDOWEVENT_RESIZED:
 
 
-		        	 cout << "Oldaspect:"<< Camera::Instance().aspect << "\n";
-		        	 cout << "w: " << event.resize.w << "\nh: " << event.resize.h << "\n";
-		        	 cout << "aspect:"<< GLfloat(event.resize.w) / GLfloat(event.resize.h) << "\n";
+		        	 //cout << "Oldaspect:"<< Camera::Instance().aspect << "\n";
+		        	 //cout << "w: " << event.resize.w << "\nh: " << event.resize.h << "\n";
+		        	 //cout << "aspect:"<< (float(event.resize.w) / float(event.resize.h)) << "\n";
 
 					 //Camera::Instance().setAspect(GLfloat(event.resize.w) / GLfloat(event.resize.h));
 					 break;

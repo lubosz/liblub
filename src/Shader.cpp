@@ -11,8 +11,21 @@
 #include "Shader.h"
 
 Shader::Shader(string fileName, GLenum type) {
-	shaderDir = "media/shaders/";
 
+	this->fileName = fileName;
+	this->type = type;
+
+	loadAndCompile();
+
+}
+
+Shader::~Shader() {
+	glDeleteShader(shader);
+	free(source);
+}
+
+
+void Shader::loadAndCompile(){
 	/* Read our shaders into the appropriate buffers */
 	source = readFile(shaderDir + fileName);
 
@@ -26,12 +39,6 @@ Shader::Shader(string fileName, GLenum type) {
     glCompileShader(shader);
 
     printShaderInfoLog(shader);
-
-}
-
-Shader::~Shader() {
-	glDeleteShader(shader);
-	free(source);
 }
 
 /* A simple function that will read a file into an allocated char pointer buffer */
@@ -74,4 +81,10 @@ void Shader::printShaderInfoLog(GLuint shader) {
 		printf("Shader Info Log: OK\n");
 	}
 	//printOpenGLError();  // Check for OpenGL errors
+}
+
+void Shader::reload(){
+	glDeleteShader(shader);
+	free(source);
+	loadAndCompile();
 }

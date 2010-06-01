@@ -36,7 +36,7 @@ void main(void)
   
    //	find the distance to the actualy heightfield
    pt_eye = vec3 (texCoord, 0.0);
-   //intersect_square_cone_exp (pt_eye, s, dist_val);
+   intersect_square_cone_exp (pt_eye, s, dist_val);
   
    // get rm and color texture points
    c=texture2D(texmap,pt_eye.xy);
@@ -69,7 +69,7 @@ void main(void)
    pt_light = vec3 ( pt_eye.xy - s.xy * pt_eye.z / s.z, 0.0);
    
    //	with the soft shadows, _fixed is fine
-   //intersect_square_cone_10step (pt_light,s);
+   intersect_square_cone_10step (pt_light,s);
    
    // do the softening and ignore if it's facing the wrong way
    float shad_z = clamp (1.0+(-pt_eye.z+pt_light.z)*5.0, 0.0, 1.0) * step (a, 0.0);
@@ -102,7 +102,7 @@ void intersect_square_cone_exp (inout vec3 dp, in vec3 ds, in float dist_factor)
    t=texture2D(stepmap,dp.xy);
 
 /*
-TODO: Crash!
+TODO: Crash!*/
    while (t.r > dp.z)
    {
      CR = t.g * t.g;
@@ -121,7 +121,7 @@ TODO: Crash!
 	   //	find the new location and height
 	   t=texture2D(stepmap,dp.xy);
    }
-*/
+
    // back out to where the cone was (remove the w component)
    //*
    ht = (t.r - dp.z);
@@ -179,7 +179,7 @@ void intersect_square_cone_10step (inout vec3 dp, in vec3 ds)
    t=texture2D(stepmap,dp.xy);
    dp += ds * w * (t.r - dp.z) / (iz/(t.g*t.g) + 1.0);
 
-   
+   /*
    // and another 5 times 
    t=texture2D(stepmap,dp.xy);
    dp += ds * w * (t.r - dp.z) / (iz/(t.g*t.g) + 1.0);
@@ -191,7 +191,7 @@ void intersect_square_cone_10step (inout vec3 dp, in vec3 ds)
    dp += ds * w * (t.r - dp.z) / (iz/(t.g*t.g) + 1.0);
    t=texture2D(stepmap,dp.xy);
    dp += ds * w * (t.r - dp.z) / (iz/(t.g*t.g) + 1.0);
-     
+     */
    // all done
    return;
 }

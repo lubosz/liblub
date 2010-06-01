@@ -14,6 +14,8 @@
 
 using namespace std;
 
+const string shaderDir = "media/shaders/";
+
 class Shader {
 public:
 	/* These pointers will receive the contents of our shader source code files */
@@ -22,12 +24,16 @@ public:
 	/* These are handles used to reference the shaders */
 	GLuint shader;
 
-	string shaderDir;
+
+	string fileName;
+	GLenum type;
 
 	Shader(string fileName, GLenum type);
 	virtual ~Shader();
 
 	char* readFile(string file);
 	void printShaderInfoLog(GLuint shader);
+	void reload();
+	void loadAndCompile();
 };
 

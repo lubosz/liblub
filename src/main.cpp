@@ -23,9 +23,9 @@ void initScene(){
 	//makeCube();
 	//ShaderFactory::Instance().vertexColorShader();
 	//ShaderFactory::Instance().brickShader();
-	ShaderFactory::Instance().textureShader();
+	//ShaderFactory::Instance().textureShader();
 	//ShaderFactory::Instance().multiTextureShader();
-    //ShaderFactory::Instance().coneMapShader();
+    ShaderFactory::Instance().coneMapShader();
     //ShaderFactory::Instance().earthShader();
 	//ShaderFactory::Instance().procBump();
 	//ShaderFactory::Instance().relief();

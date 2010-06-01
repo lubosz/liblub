@@ -105,17 +105,16 @@ void RenderEngine::glError(string file, int line) {
 
 
 void RenderEngine::checkVersion(){
+	/*
 	int * maxTex1 = new int();
 	int * maxTex2 = new int();
+*/
+	GLint maxTex1, maxTex2,MajorVersion,MinorVersion,numext;
+	glGetIntegerv(GL_MAX_VERTEX_TEXTURE_IMAGE_UNITS,&maxTex1);
+	glGetIntegerv(GL_MAX_TEXTURE_IMAGE_UNITS,&maxTex2);
 
-	glGetIntegerv(GL_MAX_VERTEX_TEXTURE_IMAGE_UNITS,maxTex1);
-	glGetIntegerv(GL_MAX_TEXTURE_IMAGE_UNITS,maxTex2);
-
-	int * MajorVersion = new int();
-	int * MinorVersion = new int();
-
-	glGetIntegerv(GL_MAJOR_VERSION, MajorVersion);
-	glGetIntegerv(GL_MINOR_VERSION, MinorVersion);
+	glGetIntegerv(GL_MAJOR_VERSION, &MajorVersion);
+	glGetIntegerv(GL_MINOR_VERSION, &MinorVersion);
 
 
 	cout 	<< "OpenGL:\t" << glGetString(GL_VERSION) << "\n"
@@ -123,15 +122,15 @@ void RenderEngine::checkVersion(){
 			<< "GLU:\t" << gluGetString(GLU_VERSION) << "\n"
 			<< "Hardware:\t" << glGetString(GL_VENDOR) << " - " << glGetString(GL_RENDERER) << "\n"
 			//<< "GL_EXTENSIONS:\t" << glGetStringi(GL_EXTENSIONS,0) << "\n"
-			<< "MaxTex:\t" << *maxTex1 << " " << *maxTex2 << "\n"
+			<< "MaxTex:\t" << maxTex1 << " " << maxTex2 << "\n"
 			//<< " " << glGetString(GL_MAX_TEXTURE_IMAGE_UNITS)
-			<<"Version:\t"<<*MajorVersion<<"."<<*MinorVersion
+			<<"Version:\t"<<MajorVersion<<"."<<MinorVersion
 			<< "\n";
 
-	GLint * numext = new GLint();
-	glGetIntegerv(GL_NUM_EXTENSIONS, numext);
-	cout << "Found " << * numext << " GL_EXTENSIONS:\n";
-	for (int i; i < *numext; i++){
+
+	glGetIntegerv(GL_NUM_EXTENSIONS, &numext);
+	cout << "Found " << numext << " GL_EXTENSIONS:\n";
+	for (int i = 0; i < numext; i++){
 		cout << glGetStringi(GL_EXTENSIONS,i) << " ";
 	}
 }
