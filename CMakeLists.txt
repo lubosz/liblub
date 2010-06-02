@@ -4,8 +4,8 @@ project(gl3cone)
 set(SRC_DIR ${CMAKE_SOURCE_DIR}/src)
 
 #Optimization / Debug
-set(CMAKE_CXX_FLAGS "-O0 -g3") #Debug
-#set(CMAKE_CXX_FLAGS "-O3") #Optimized
+#set(CMAKE_CXX_FLAGS "-O0 -g3") #Debug
+set(CMAKE_CXX_FLAGS "-O3") #Optimized
 
 #Hack For SDL 1.3 in local
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -L/usr/local/lib -I/usr/local/include/SDL -D_REENTRANT -Wl,-rpath,/usr/local/lib")
@@ -27,7 +27,7 @@ set(CONE_DEMO_SOURCES
 	#${SRC_DIR}/Material.cpp
 	${SRC_DIR}/RenderEngine.cpp   
 	${SRC_DIR}/ShaderProgram.cpp   
-	#${SRC_DIR}/utils.cpp
+	${SRC_DIR}/ObjLoader.cpp
 	${SRC_DIR}/Geometry.cpp  
 	${SRC_DIR}/MediaLayer.cpp  
 	${SRC_DIR}/Shader.cpp

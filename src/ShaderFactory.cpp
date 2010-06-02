@@ -68,6 +68,10 @@ void ShaderFactory::relief(){
 	materials.push_back(new ReliefMat(RenderEngine::Instance().shaderProgram));
 }
 
+void ShaderFactory::ocean(){
+	materials.push_back(new OceanMat(RenderEngine::Instance().shaderProgram));
+}
+
 void ShaderFactory::addUniforms(){
 	GLint program = RenderEngine::Instance().shaderProgram->program;
 

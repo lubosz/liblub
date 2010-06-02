@@ -8,7 +8,7 @@
 #include "Mesh.h"
 #include <iostream>
 
-Mesh::Mesh(vector<GLfloat> position, vector<GLfloat> color, vector<GLfloat> normals, vector<GLfloat> binormals, vector<GLfloat> tangents, vector<GLfloat> uv, vector<GLubyte> index){
+Mesh::Mesh(vector<GLfloat> position, vector<GLfloat> color, vector<GLfloat> normals, vector<GLfloat> binormals, vector<GLfloat> tangents, vector<GLfloat> uv, vector<GLuint> index){
 	bufferCount = 0;
 
     /* Allocate and assign a Vertex Array Object to our handle */
@@ -27,6 +27,7 @@ Mesh::Mesh(vector<GLfloat> position, vector<GLfloat> color, vector<GLfloat> norm
 	addBuffer(tangents,3);
 	addBuffer(uv,2);
 
+	indexSize = index.size();
 	addElementBuffer(index);
 }
 
@@ -57,11 +58,11 @@ void Mesh::addBuffer(vector<GLfloat> content, unsigned size){
 
 }
 
-void Mesh::addElementBuffer(vector<GLubyte> content){
+void Mesh::addElementBuffer(vector<GLuint> content){
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vbo[bufferCount]);
 	/* Copy the index data from tetraindicies to our buffer
 	 * 6 * sizeof(GLubyte) is the size of the index array, since it contains 6 GLbyte values */
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, content.size() * sizeof(GLubyte), content.data(),GL_STATIC_DRAW);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, content.size() * sizeof(GLuint), content.data(),GL_STATIC_DRAW);
 	cout << "Adding Vertex Element Buffer #" << bufferCount << "\n";
 	bufferCount++;
 }

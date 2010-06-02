@@ -71,7 +71,7 @@ Mesh * Geometry::makeTetrahedron(){
 			*/
 	};
 
-	vector<GLubyte> indicies = { 0, 1, 2, 3, 0, 1 };
+	vector<GLuint> indicies = { 0, 1, 2, 3, 0, 1 };
 
 	cout << "Making Tetrahedron!!";
 	return new Mesh(vertices,vertexColors,normals,binormals,tangents,uvCoords,indicies);
@@ -113,7 +113,7 @@ Mesh * Geometry::makeCube(){
 		1.0,  1.0
 	};
 
-	vector<GLubyte> indicies = { 0, 1, 2, 3, 4, 5, 6, 7 };
+	vector<GLuint> indicies = { 0, 1, 2, 3, 4, 5, 6, 7 };
 
 	return new Mesh(vertices,vertexColors,vertices,vertices,vertices,uvCoords,indicies);
 

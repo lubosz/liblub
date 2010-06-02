@@ -40,6 +40,7 @@ public:
 	void bump1();
 	void bump2();
 	void relief();
+	void ocean();
 
 private:
 	ShaderFactory();

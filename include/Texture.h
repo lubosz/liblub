@@ -7,19 +7,24 @@
 
 #pragma once
 
+#include "common.h"
+
 #include <string>
-/* Ensure we are using opengl's core profile only */
-#define GL3_PROTOTYPES 1
-#include <GL3/gl3.h>
-using namespace std;
+#include <FreeImagePlus.h>
+
+const string textureDir = "media/textures/";
+static const string suffixes[6] = {"_RT", "_LF", "_UP", "_DN", "_FR", "_BK"};
 
 class Texture {
 public:
 	GLenum glId;
 	string name;
 	GLuint texture;
+	GLuint textureType;
 	Texture(string filename, GLenum glId, string name);
+	Texture(string filename, GLenum glId, string name, bool cube);
 	virtual ~Texture();
 	void activate();
 	void uniform(GLuint program);
+	fipImage * readImage(string path, GLint * glChannelOrder, GLint * texChannelOrder);
 };

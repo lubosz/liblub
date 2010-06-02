@@ -141,6 +141,19 @@ void MediaLayer::eventLoop(){
             quit = true;
             break;
 
+         case SDL_MOUSEBUTTONDOWN:
+        	 switch( event.button.button ){
+				 case SDL_BUTTON_WHEELUP:
+			        Camera::Instance().move(0,0,.3);
+					 break;
+				 case SDL_BUTTON_WHEELDOWN:
+					 Camera::Instance().move(0,0,-.3);
+					 break;
+				 default:
+		        	 //cout << "Some win event!\n";
+					 break;
+        	 }
+
          case SDL_WINDOWEVENT: //User resized window
 
         	 switch( event.window.event ){

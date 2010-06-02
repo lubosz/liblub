@@ -12,6 +12,7 @@
 
 Shader::Shader(string fileName, GLenum type) {
 
+	cout << "Creating Shader " << fileName << "\n";
 	this->fileName = fileName;
 	this->type = type;
 
@@ -38,7 +39,7 @@ void Shader::loadAndCompile(){
     /* Compile our shader objects */
     glCompileShader(shader);
 
-    printShaderInfoLog(shader);
+    //printShaderInfoLog(shader);
 }
 
 /* A simple function that will read a file into an allocated char pointer buffer */
