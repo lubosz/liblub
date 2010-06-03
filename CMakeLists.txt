@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.6)
-project(gl3cone)
+project(liblub)
 
 set(SRC_DIR ${CMAKE_SOURCE_DIR}/src)
 
@@ -39,5 +39,5 @@ set(CONE_DEMO_SOURCES
 	${SRC_DIR}/SceneGraph.cpp
 )
 
-add_executable(gl3cone ${CONE_DEMO_SOURCES})
-target_link_libraries(gl3cone GL GLU SDL freeimageplus)
+add_executable(liblub ${CONE_DEMO_SOURCES})
+target_link_libraries(liblub GL GLU SDL freeimageplus)

@@ -20,12 +20,11 @@ MediaLayer * mediaLayer;
 void initScene(){
 
 	//Geometry::makeTetrahedron();
-	//ObjLoader * cubeObj = new ObjLoader("monkey.obj");
-	//ObjLoader * cubeObj = new ObjLoader("cube.obj");
-	ObjLoader::Instance().readFile("sphere.obj");
+
+	ObjLoader::Instance().readFile("monkey.obj");
 
 	//makeCube();
-	//ShaderFactory::Instance().vertexColorShader();
+	ShaderFactory::Instance().vertexColorShader();
 	//ShaderFactory::Instance().brickShader();
 	//ShaderFactory::Instance().textureShader();
 	//ShaderFactory::Instance().multiTextureShader();
@@ -35,7 +34,7 @@ void initScene(){
 	//ShaderFactory::Instance().relief();
 	//ShaderFactory::Instance().bump1();
 	//ShaderFactory::Instance().convolution();
-	ShaderFactory::Instance().ocean();
+	//ShaderFactory::Instance().ocean();
 
 	RenderEngine::Instance().shaderProgram->linkAndUse();
 	ShaderFactory::Instance().addUniforms();
