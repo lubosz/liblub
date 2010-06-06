@@ -52,6 +52,7 @@ void RenderEngine::display() {
 
 
         sceneGraph->transform(frameCount);
+
         sceneGraph->bindShaders(shaderProgram);
 
         //GLfloat floatanim = 10.0/GLfloat(frameCount%100);
@@ -68,8 +69,13 @@ void RenderEngine::display() {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	/* Invoke glDrawElements telling it to draw a triangle strip using 6 indicies */
-	glDrawElements(GL_TRIANGLES, ObjLoader::Instance().mesh->indexSize, GL_UNSIGNED_INT, 0);
-	//glDrawElements(GL_TRIANGLE_STRIP, 8, GL_UNSIGNED_BYTE, 0);
+	//glDrawElements(GL_TRIANGLES, ObjLoader::Instance().mesh->indexSize, GL_UNSIGNED_INT, 0);
+	//glDrawElements(GL_TRIANGLE_STRIP, 6, GL_UNSIGNED_INT, 0);
+    //sceneGraph->translate(1,.2,.3);
+    //sceneGraph->bindShaders(shaderProgram);
+    //glDrawElements(GL_TRIANGLES, ObjLoader::Instance().mesh->indexSize, GL_UNSIGNED_INT, 0);
+    glDrawElements(GL_TRIANGLE_STRIP, 6, GL_UNSIGNED_INT, 0);
+
 	//glDrawElements(GL_TRIANGLE_FAN, 8, GL_UNSIGNED_BYTE, 0);
 
 	frameCount++;

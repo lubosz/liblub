@@ -19,14 +19,14 @@ MediaLayer * mediaLayer;
 
 void initScene(){
 
-	//Geometry::makeTetrahedron();
+	Geometry::makeTetrahedron();
 
-	ObjLoader::Instance().readFile("monkey.obj");
+	//ObjLoader::Instance().readFile("monkey.obj");
 
 	//makeCube();
-	ShaderFactory::Instance().vertexColorShader();
+	//ShaderFactory::Instance().vertexColorShader();
 	//ShaderFactory::Instance().brickShader();
-	//ShaderFactory::Instance().textureShader();
+	ShaderFactory::Instance().textureShader();
 	//ShaderFactory::Instance().multiTextureShader();
     //ShaderFactory::Instance().coneMapShader();
     //ShaderFactory::Instance().earthShader();

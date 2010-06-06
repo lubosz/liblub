@@ -93,6 +93,10 @@ void SceneGraph::transform(float frameCount){
 
 }
 
+void SceneGraph::translate(float x, float y, float z){
+    translate(modelmatrix, x, y, z);
+}
+
 void SceneGraph::bindShaders(ShaderProgram * shaderProgram){
 
     shaderProgram->setNormalMatrix(modelmatrix);

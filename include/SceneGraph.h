@@ -44,6 +44,7 @@ public:
 	void animate(float frameCount);
 	void transform(float frameCount);
 	void bindShaders(ShaderProgram * shaderProgram);
+	void translate(float x, float y, float z);
 
 	GLfloat modelmatrix[16]; /* Our model matrix  */
 
