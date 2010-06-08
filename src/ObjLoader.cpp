@@ -136,5 +136,10 @@ void ObjLoader::readFile(string file)
     //cout << "Index Lengths:\t" << vertIndex.size() << " " << normalIndex.size() << " " << uvIndex.size() << "\n";
     cout << "Vertex Count:\t" << vertices.size() << "\n";
 
-    mesh = new Mesh(vertices,vertices,normals,normals,normals,uvCoords,vertIndex);
+    //mesh = new Mesh(vertices,vertices,normals,normals,normals,uvCoords,vertIndex);
+    mesh = new Mesh();
+    mesh->addBuffer(vertices,3,"in_Vertex");
+    mesh->addBuffer(normals,3,"in_Normal");
+    mesh->addBuffer(uvCoords,2,"in_Uv");
+    mesh->addElementBuffer(vertIndex);
 }

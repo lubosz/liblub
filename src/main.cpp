@@ -23,17 +23,18 @@ void initScene(){
 	//Geometry::makeTetrahedron();
 
 	//ObjLoader::Instance().readFile("monkey.obj");
-	ObjLoader::Instance().readFile("monkeySub6.obj");
+	//ObjLoader::Instance().readFile("monkeySub6.obj");
+	ObjLoader::Instance().readFile("monkeyMedium.obj");
 	//ObjLoader::Instance().readFile("cube.obj");
 
 	//makeCube();
 	//ShaderFactory::Instance().vertexColorShader();
-	ShaderFactory::Instance().brickShader();
+	//ShaderFactory::Instance().brickShader();
 	//ShaderFactory::Instance().textureShader();
 	//ShaderFactory::Instance().multiTextureShader();
     //ShaderFactory::Instance().coneMapShader();
     //ShaderFactory::Instance().earthShader();
-	//ShaderFactory::Instance().procBump();
+	ShaderFactory::Instance().procBump();
 	//ShaderFactory::Instance().relief();
 	//ShaderFactory::Instance().bump1();
 	//ShaderFactory::Instance().convolution();

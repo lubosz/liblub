@@ -6,9 +6,13 @@
  */
 
 #include "Mesh.h"
+#include "RenderEngine.h"
 #include <iostream>
 
-Mesh::Mesh(vector<GLfloat> position, vector<GLfloat> color, vector<GLfloat> normals, vector<GLfloat> binormals, vector<GLfloat> tangents, vector<GLfloat> uv, vector<GLuint> index){
+//Mesh::Mesh(vector<GLfloat> position, vector<GLfloat> color, vector<GLfloat> normals, vector<GLfloat> binormals, vector<GLfloat> tangents, vector<GLfloat> uv, vector<GLuint> index){
+Mesh::Mesh(){
+	drawType = GL_POINTS;
+
 	bufferCount = 0;
 
     /* Allocate and assign a Vertex Array Object to our handle */
@@ -19,16 +23,16 @@ Mesh::Mesh(vector<GLfloat> position, vector<GLfloat> color, vector<GLfloat> norm
 
     /* Allocate and assign three Vertex Buffer Objects to our handle */
     glGenBuffers(maxBuffers, vbo);
-
+/*
 	addBuffer(position,3);
 	addBuffer(color,3);
 	addBuffer(normals,3);
 	addBuffer(binormals,3);
 	addBuffer(tangents,3);
 	addBuffer(uv,2);
+*/
 
-	indexSize = index.size();
-	addElementBuffer(index);
+	//addElementBuffer(index);
 }
 
 Mesh::~Mesh() {
@@ -39,7 +43,10 @@ Mesh::~Mesh() {
     glDeleteVertexArrays(1, &vao);
 }
 
-void Mesh::addBuffer(vector<GLfloat> content, unsigned size){
+void Mesh::addBuffer(vector<GLfloat> content, unsigned size, string name){
+	RenderEngine::Instance().shaderProgram->bindAttrib(name);
+	//shaderProgram->bindAttrib(name);
+
     /* Bind our first VBO as being the active buffer and storing vertex attributes (coordinates) */
     glBindBuffer(GL_ARRAY_BUFFER, vbo[bufferCount]);
 
@@ -59,10 +66,19 @@ void Mesh::addBuffer(vector<GLfloat> content, unsigned size){
 }
 
 void Mesh::addElementBuffer(vector<GLuint> content){
+	indexSize = content.size();
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vbo[bufferCount]);
 	/* Copy the index data from tetraindicies to our buffer
 	 * 6 * sizeof(GLubyte) is the size of the index array, since it contains 6 GLbyte values */
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, content.size() * sizeof(GLuint), content.data(),GL_STATIC_DRAW);
 	cout << "Adding Vertex Element Buffer #" << bufferCount << "\n";
 	bufferCount++;
+}
+
+void Mesh::setDrawType(GLint drawType){
+	this->drawType = drawType;
+}
+
+void Mesh::draw(){
+	glDrawElements(drawType, indexSize, GL_UNSIGNED_INT, 0);
 }
