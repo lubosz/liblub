@@ -127,7 +127,7 @@ void RenderEngine::checkVersion(){
 
 	cout 	<< "OpenGL:\t" << glGetString(GL_VERSION) << "\n"
 			<< "GLSL:\t" << glGetString(GL_SHADING_LANGUAGE_VERSION) << "\n"
-			<< "GLU:\t" << gluGetString(GLU_VERSION) << "\n"
+			//<< "GLU:\t" << gluGetString(GLU_VERSION) << "\n"
 			<< "Hardware:\t" << glGetString(GL_VENDOR) << " - " << glGetString(GL_RENDERER) << "\n"
 			//<< "GL_EXTENSIONS:\t" << glGetStringi(GL_EXTENSIONS,0) << "\n"
 			<< "MaxTex:\t" << maxTex1 << " " << maxTex2 << "\n"

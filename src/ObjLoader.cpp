@@ -161,7 +161,7 @@ Mesh * ObjLoader::readFile(string file)
     if (DEBUG) cout << "\n";
 
     unsigned numFaces = vertIndex.size()/3;
-    cout << "Points:" << points << " Indexsize:" << vertIndex.size() <<"\n";
+    cout << "NumFaces:" << numFaces << " IndexSize:" << vertIndex.size() <<"\n";
 
     for (unsigned faceIndex = 0; faceIndex < numFaces; faceIndex++){
     //for (GLuint pointIndex = 0; pointIndex < vertIndex.size(); pointIndex++){
@@ -217,7 +217,7 @@ Mesh * ObjLoader::readFile(string file)
 
     return mesh;
 }
-
+/*
 void ObjLoader::addFace(vector<GLfloat> * hardCopy, vector<GLfloat> * coords, unsigned firstCoord, unsigned length){
 	for (unsigned i = 0; i < length; i++){
 		hardCopy->push_back(coords[  firstCoord+i   ]);
@@ -229,3 +229,4 @@ void ObjLoader::addPoint(vector<GLfloat> * hardCopy, vector<GLfloat> * coords, u
 		hardCopy->push_back(coords[  firstCoord+i   ]);
 	}
 }
+*/

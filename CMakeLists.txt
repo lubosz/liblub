@@ -11,7 +11,6 @@ if (UNIX)
 #Hack For SDL 1.3 in local
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -L/usr/local/lib -I/usr/local/include/SDL -D_REENTRANT -Wl,-rpath,/usr/local/lib")
 
-
 #Set c++0x
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++0x")
 endif (UNIX)
@@ -20,6 +19,7 @@ endif (UNIX)
 
 include_directories(
 include
+include/GL3
 )
 
 #App Shader Demo
