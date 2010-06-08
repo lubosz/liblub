@@ -27,7 +27,7 @@ RenderEngine::RenderEngine() {
 	frameCount = 0;
 
 	shaderProgram = new ShaderProgram();
-        sceneGraph = new SceneGraph();
+    sceneGraph = new SceneGraph();
 
 	glError("RenderEngine",92);
 }
@@ -74,7 +74,8 @@ void RenderEngine::display() {
     //sceneGraph->translate(1,.2,.3);
     //sceneGraph->bindShaders(shaderProgram);
     //glDrawElements(GL_TRIANGLES, ObjLoader::Instance().mesh->indexSize, GL_UNSIGNED_INT, 0);
-    glDrawElements(GL_TRIANGLE_STRIP, 6, GL_UNSIGNED_INT, 0);
+	glDrawElements(GL_POINTS, ObjLoader::Instance().mesh->indexSize, GL_UNSIGNED_INT, 0);
+    //glDrawElements(GL_TRIANGLE_STRIP, 6, GL_UNSIGNED_INT, 0);
 
 	//glDrawElements(GL_TRIANGLE_FAN, 8, GL_UNSIGNED_BYTE, 0);
 
@@ -135,9 +136,10 @@ void RenderEngine::checkVersion(){
 			<< "\n";
 
 
+
 	glGetIntegerv(GL_NUM_EXTENSIONS, &numext);
 	cout << "Found " << numext << " GL_EXTENSIONS:\n";
-	for (int i = 0; i < numext; i++){
+	for (int i = 0; i < numext && DEBUG; i++){
 		cout << glGetStringi(GL_EXTENSIONS,i) << " ";
 	}
 }

@@ -5,6 +5,7 @@
  *      Author: bmonkey
  */
 
+#include "common.h"
 #include "ObjLoader.h"
 
 #include <iostream>
@@ -21,24 +22,31 @@ ObjLoader::~ObjLoader() {
 
 void ObjLoader::readFile(string file)
 {
+
+	string str;
+
+	vector<GLfloat> vertices, uvCoords, normals, glUv, glNormal;
+	vector<GLuint> vertIndex, normalIndex, uvIndex, glIndex;
+
+	int vertIndex1, vertIndex2, vertIndex3, vertIndex4,
+		normalIndex1, normalIndex2, normalIndex3, normalIndex4,
+		uvIndex1, uvIndex2, uvIndex3, uvIndex4;
+
+	float vert1, vert2, vert3,
+		normal1, normal2, normal3,
+		uv1, uv2;
+
 	cout << "Loading obj " << file << "\n";
 	file = meshDir + file;
 	ifstream fileStream(file.c_str());
-	string str;
-	vector<GLfloat> vertices, uvCoords, normals;
-	vector<GLuint> indicies;
-	GLubyte vertexCount;
-	float x,y,z,w;
-	int a,b,c,d,e,f,g,h,i,j,k,l;
+
 	while (getline(fileStream, str)) {
-		//cout << str << "\n";
-		if (sscanf(str.c_str(), "v %f %f %f", &x, &y, &z)){
-			cout << "Vertex: " << x<<" " << y << " " << z <<"\n";
-			vertices.push_back(x);
-			vertices.push_back(y);
-			vertices.push_back(z);
-			//indicies.push_back(vertexCount);
-			//vertexCount++;
+		//Vertex
+		if (sscanf(str.c_str(), "v %f %f %f", &vert1, &vert2, &vert3)){
+			if (DEBUG) cout << "Vertex: " << vert1<<" " << vert2 << " " << vert3 <<"\n";
+			vertices.push_back(vert1);
+			vertices.push_back(vert2);
+			vertices.push_back(vert3);
 		}
 
 		/*
@@ -65,44 +73,68 @@ void ObjLoader::readFile(string file)
 		}
 		*/
 
-		//Triangles
+		//Triangle Indices
 
-		else if (sscanf(str.c_str(), "f %d/%d/%d %d/%d/%d %d/%d/%d", &a, &b, &c, &d, &e, &f, &g, &h, &i)){
-			cout << "Index Triangle 3: " << a<<" " << d << " " << g << " " << "\n";
-			indicies.push_back(a);
-			indicies.push_back(d);
-			indicies.push_back(g);
-		}else if (sscanf(str.c_str(), "f %d/%d %d/%d %d/%d", &a, &b, &c, &d, &e, &f)){
-			cout << "Index Triangle 2: " << a<<" " << b << " " << c << " " << "\n";
-			indicies.push_back(a);
-			indicies.push_back(c);
-			indicies.push_back(e);
-		}else if (sscanf(str.c_str(), "f %f %f %f", &x, &y, &z)){
-			cout << "Index Triangle 1: " << x<<" " << y << " " << z << "\n";
-			indicies.push_back(x);
-			indicies.push_back(y);
-			indicies.push_back(z);
-		}else if (sscanf(str.c_str(), "vt %f %f", &x, &y)){
-			cout << "UV: " << x<<" " << y << "\n";
-			uvCoords.push_back(x);
-			uvCoords.push_back(y);
-		}else if (sscanf(str.c_str(), "vn %f %f %f", &x, &y, &z)){
-			cout << "Normals: " << x<<" " << y << " " << z << "\n";
-			normals.push_back(x);
-			normals.push_back(y);
-			normals.push_back(z);
+		//Index: Vertex Normal UV
+		else if (sscanf(str.c_str(), "f %d/%d/%d %d/%d/%d %d/%d/%d", &vertIndex1, &normalIndex1, &uvIndex1, &vertIndex2, &normalIndex2, &uvIndex2, &vertIndex3, &normalIndex3, &uvIndex3)){
+			if (DEBUG) cout << "Index Triangle 3: " << vertIndex1<<" " << vertIndex2 << " " << vertIndex3 << " " << "\n";
+			vertIndex.push_back(vertIndex1);
+			vertIndex.push_back(vertIndex2);
+			vertIndex.push_back(vertIndex3);
+
+			normalIndex.push_back(normalIndex1);
+			normalIndex.push_back(normalIndex2);
+			normalIndex.push_back(normalIndex3);
+
+			uvIndex.push_back(uvIndex1);
+			uvIndex.push_back(uvIndex2);
+			uvIndex.push_back(uvIndex3);
+
+		//Index: Vertex Normal
+		}else if (sscanf(str.c_str(), "f %d/%d %d/%d %d/%d", &vertIndex1, &normalIndex1, &vertIndex2, &normalIndex2, &vertIndex3, &normalIndex3)){
+			if (DEBUG) cout << "Index Triangle 2: " << &vertIndex1<<" " << &vertIndex2 << " " << &vertIndex3 << " " << "\n";
+			vertIndex.push_back(vertIndex1);
+			vertIndex.push_back(vertIndex2);
+			vertIndex.push_back(vertIndex3);
+
+			normalIndex.push_back(normalIndex1);
+			normalIndex.push_back(normalIndex2);
+			normalIndex.push_back(normalIndex3);
+
+		//Index: Vertex
+		}else if (sscanf(str.c_str(), "f %f %f %f", &vertIndex1, &vertIndex2, &vertIndex3)){
+			if (DEBUG) cout << "Index Triangle 1: " << vertIndex1<<" " << vertIndex2 << " " << vertIndex3 << "\n";
+			vertIndex.push_back(vertIndex1);
+			vertIndex.push_back(vertIndex2);
+			vertIndex.push_back(vertIndex3);
+
+		//UV
+		}else if (sscanf(str.c_str(), "vt %f %f", &uv1, &uv2)){
+			if (DEBUG) cout << "UV: " << uv1<<" " << uv2 << "\n";
+			uvCoords.push_back(uv1);
+			uvCoords.push_back(uv2);
+
+		//Normal
+		}else if (sscanf(str.c_str(), "vn %f %f %f", &normal1, &normal2, &normal3)){
+			if (DEBUG) cout << "Normals: " << normal1<<" " << normal2 << " " << normal3 << "\n";
+			normals.push_back(normal1);
+			normals.push_back(normal2);
+			normals.push_back(normal3);
 		}
 
 	}
 
 	//obj starts counting at 1
-	cout << "Index:\t";
-    BOOST_FOREACH( GLuint index, indicies )
+	if (DEBUG) cout << "Index:\t";
+    BOOST_FOREACH( GLuint index, vertIndex )
     {
     	index--;
-    	cout <<(int)index<<", ";
+    	if (DEBUG) cout <<(int)index<<", ";
     }
-    cout << "\n";
+    if (DEBUG) cout << "\n";
 
-    mesh = new Mesh(vertices,vertices,normals,normals,normals,uvCoords,indicies);
+    //cout << "Index Lengths:\t" << vertIndex.size() << " " << normalIndex.size() << " " << uvIndex.size() << "\n";
+    cout << "Vertex Count:\t" << vertices.size() << "\n";
+
+    mesh = new Mesh(vertices,vertices,normals,normals,normals,uvCoords,vertIndex);
 }

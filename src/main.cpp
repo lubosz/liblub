@@ -4,6 +4,7 @@
 #include "Geometry.h"
 #include "Camera.h"
 #include "ObjLoader.h"
+#include "config.h"
 
 /*
 #include "COLLADAFWRoot.h"
@@ -13,20 +14,22 @@
 #include "COLLADAFWInstanceGeometry.h"
 */
 
-#define PROGRAM_NAME "Cone Step Mapping"
+
 
 MediaLayer * mediaLayer;
 
 void initScene(){
 
-	Geometry::makeTetrahedron();
+	//Geometry::makeTetrahedron();
 
 	//ObjLoader::Instance().readFile("monkey.obj");
+	ObjLoader::Instance().readFile("monkeySub6.obj");
+	//ObjLoader::Instance().readFile("cube.obj");
 
 	//makeCube();
 	//ShaderFactory::Instance().vertexColorShader();
-	//ShaderFactory::Instance().brickShader();
-	ShaderFactory::Instance().textureShader();
+	ShaderFactory::Instance().brickShader();
+	//ShaderFactory::Instance().textureShader();
 	//ShaderFactory::Instance().multiTextureShader();
     //ShaderFactory::Instance().coneMapShader();
     //ShaderFactory::Instance().earthShader();

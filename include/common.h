@@ -1,3 +1,5 @@
+#include "config.h"
+
 #pragma once
 
 #define GL3_PROTOTYPES 1

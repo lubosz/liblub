@@ -8,6 +8,7 @@
 #include <iostream>
 #include "MediaLayer.h"
 #include "Camera.h"
+#include "common.h"
 
 MediaLayer::MediaLayer(string title, unsigned width, unsigned height) {
 	quit = false;
@@ -177,7 +178,7 @@ void MediaLayer::eventLoop(){
         	 break; //Event handled, fetch next :)
 
          default:
-        	 cout << "Event:" << event.type << "\n";
+        	 if (DEBUG) cout << "Event:" << event.type << "\n";
         	 break;
         }
     }
