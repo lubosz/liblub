@@ -3,38 +3,29 @@
 #include "ShaderFactory.h"
 #include "Geometry.h"
 #include "Camera.h"
-#include "ObjLoader.h"
+#include "MeshFactory.h"
 #include "config.h"
-
-/*
-#include "COLLADAFWRoot.h"
-#include "COLLADAFWGeometry.h"
-#include "COLLADAFWNode.h"
-#include "COLLADAFWVisualScene.h"
-#include "COLLADAFWInstanceGeometry.h"
-*/
-
-
 
 MediaLayer * mediaLayer;
 
 void initScene(){
 
-	//Geometry::makeTetrahedron();
-
+	//MeshFactory::Instance().tetrahedron();
+	MeshFactory::Instance().loadObj("monkeyMedium.obj");
+	MeshFactory::Instance().meshes[0]->setDrawType(GL_TRIANGLE_STRIP);
 	//ObjLoader::Instance().readFile("monkey.obj");
 	//ObjLoader::Instance().readFile("monkeySub6.obj");
-	ObjLoader::Instance().readFile("monkeyMedium.obj");
+	//ObjLoader::Instance().readFile("monkeyMedium.obj");
 	//ObjLoader::Instance().readFile("cube.obj");
 
 	//makeCube();
 	//ShaderFactory::Instance().vertexColorShader();
 	//ShaderFactory::Instance().brickShader();
-	//ShaderFactory::Instance().textureShader();
+	ShaderFactory::Instance().textureShader();
 	//ShaderFactory::Instance().multiTextureShader();
     //ShaderFactory::Instance().coneMapShader();
     //ShaderFactory::Instance().earthShader();
-	ShaderFactory::Instance().procBump();
+	//ShaderFactory::Instance().procBump();
 	//ShaderFactory::Instance().relief();
 	//ShaderFactory::Instance().bump1();
 	//ShaderFactory::Instance().convolution();

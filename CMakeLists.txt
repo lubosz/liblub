@@ -37,6 +37,7 @@ set(CONE_DEMO_SOURCES
 	${SRC_DIR}/TextureFactory.cpp
 	${SRC_DIR}/ShaderFactory.cpp
 	${SRC_DIR}/SceneGraph.cpp
+	${SRC_DIR}/MeshFactory.cpp
 )
 
 add_executable(liblub ${CONE_DEMO_SOURCES})

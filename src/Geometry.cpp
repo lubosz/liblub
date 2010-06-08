@@ -12,10 +12,10 @@ using namespace std;
 
 Mesh * Geometry::makeTetrahedron(){
 	vector<GLfloat> vertices = {
-		    1.0,  1.0,  1.0,
-		    -1.0, -1.0,  1.0,
-		    -1.0,  1.0, -1.0,
-		    1.0, -1.0, -1.0
+		1.0,  1.0,  1.0,
+		-1.0, -1.0,  1.0,
+		-1.0,  1.0, -1.0,
+		1.0, -1.0, -1.0
 	};
 
 	vector<GLfloat> vertexColors = {
@@ -33,49 +33,23 @@ Mesh * Geometry::makeTetrahedron(){
 	};
 
 	vector<GLfloat> normals = {
-		    1.0,  1.0,  1.0,
-		    -1.0, -1.0,  1.0,
-		    -1.0,  1.0, -1.0,
-		    1.0, -1.0, -1.0
-			/*
-			0.4, -0.3, -0.8,
-			0.4, -0.3, 0.8,
-			-0.8, -0.5, 0.0,
-			0.0, 0.9, 0.0
-			*/
-	};
-
-	vector<GLfloat> binormals = {
-		    1.0,  1.0,  1.0,
-		    -1.0, -1.0,  1.0,
-		    -1.0,  1.0, -1.0,
-		    1.0, -1.0, -1.0
-			/*
-			0.4, -0.3, -0.8,
-			0.4, -0.3, 0.8,
-			-0.8, -0.5, 0.0,
-			0.0, 0.9, 0.0
-			*/
-	};
-
-	vector<GLfloat> tangents = {
-		    1.0,  1.0,  1.0,
-		    -1.0, -1.0,  1.0,
-		    -1.0,  1.0, -1.0,
-		    1.0, -1.0, -1.0
-			/*
-			0.4, -0.3, -0.8,
-			0.4, -0.3, 0.8,
-			-0.8, -0.5, 0.0,
-			0.0, 0.9, 0.0
-			*/
+		1.0,  1.0,  1.0,
+		-1.0, -1.0,  1.0,
+		-1.0,  1.0, -1.0,
+		1.0, -1.0, -1.0
 	};
 
 	vector<GLuint> indicies = { 0, 1, 2, 3, 0, 1 };
 
 	cout << "Making Tetrahedron!!";
-	//return new Mesh(vertices,vertexColors,normals,binormals,tangents,uvCoords,indicies);
+
 	Mesh * mesh = new Mesh();
+    mesh->addBuffer(vertices,3,"in_Vertex");
+    mesh->addBuffer(vertexColors,3,"in_Color");
+    mesh->addBuffer(normals,3,"in_Normal");
+    mesh->addBuffer(uvCoords,2,"in_Uv");
+    mesh->addElementBuffer(indicies);
+    mesh->setDrawType(GL_TRIANGLE_STRIP);
 	return mesh;
 
 }
@@ -117,8 +91,11 @@ Mesh * Geometry::makeCube(){
 
 	vector<GLuint> indicies = { 0, 1, 2, 3, 4, 5, 6, 7 };
 
-	//return new Mesh(vertices,vertexColors,vertices,vertices,vertices,uvCoords,indicies);
 	Mesh * mesh = new Mesh();
+    mesh->addBuffer(vertices,3,"in_Vertex");
+    mesh->addBuffer(vertexColors,3,"in_Color");
+    mesh->addBuffer(uvCoords,2,"in_Uv");
+    mesh->addElementBuffer(indicies);
 	return mesh;
 
 }

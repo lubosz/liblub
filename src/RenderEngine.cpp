@@ -8,7 +8,7 @@
 
 
 #include "Camera.h"
-#include "ObjLoader.h"
+#include "MeshFactory.h"
 //#include <stdlib.h>
 //#include <stdio.h>
 //#include <math.h>
@@ -76,7 +76,7 @@ void RenderEngine::display() {
     //glDrawElements(GL_TRIANGLES, ObjLoader::Instance().mesh->indexSize, GL_UNSIGNED_INT, 0);
 	//glDrawElements(GL_POINTS, ObjLoader::Instance().mesh->indexSize, GL_UNSIGNED_INT, 0);
     //glDrawElements(GL_TRIANGLE_STRIP, 6, GL_UNSIGNED_INT, 0);
-	ObjLoader::Instance().mesh->draw();
+	MeshFactory::Instance().drawMeshes();
 	//glDrawElements(GL_TRIANGLE_FAN, 8, GL_UNSIGNED_BYTE, 0);
 
 	frameCount++;

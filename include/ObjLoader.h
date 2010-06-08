@@ -20,7 +20,7 @@ public:
 	    return singleton;
 	  }
 
-	void readFile(string file);
+	Mesh* readFile(string file);
 
 	Mesh* mesh;
 	string objSource;

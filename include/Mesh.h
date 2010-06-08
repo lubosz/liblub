@@ -19,8 +19,6 @@ public:
 	unsigned indexSize;
 	GLint drawType;
 
-
-	//Mesh(vector<GLfloat> position, vector<GLfloat> color, vector<GLfloat> normals, vector<GLfloat> binormals, vector<GLfloat> tangents, vector<GLfloat> uv, vector<GLuint> index);
 	Mesh();
 	virtual ~Mesh();
 	void addBuffer(vector<GLfloat> content, unsigned size, string name);

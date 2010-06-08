@@ -9,11 +9,10 @@
 #include "RenderEngine.h"
 #include <iostream>
 
-//Mesh::Mesh(vector<GLfloat> position, vector<GLfloat> color, vector<GLfloat> normals, vector<GLfloat> binormals, vector<GLfloat> tangents, vector<GLfloat> uv, vector<GLuint> index){
 Mesh::Mesh(){
 	drawType = GL_POINTS;
-
 	bufferCount = 0;
+	indexSize = 0;
 
     /* Allocate and assign a Vertex Array Object to our handle */
     glGenVertexArrays(1, &vao);
@@ -23,29 +22,18 @@ Mesh::Mesh(){
 
     /* Allocate and assign three Vertex Buffer Objects to our handle */
     glGenBuffers(maxBuffers, vbo);
-/*
-	addBuffer(position,3);
-	addBuffer(color,3);
-	addBuffer(normals,3);
-	addBuffer(binormals,3);
-	addBuffer(tangents,3);
-	addBuffer(uv,2);
-*/
-
-	//addElementBuffer(index);
 }
 
 Mesh::~Mesh() {
-    glDisableVertexAttribArray(0);
-    glDisableVertexAttribArray(1);
-    glDisableVertexAttribArray(2);
-    glDeleteBuffers(4, vbo);
+	for (int i = 0; i < bufferCount; i++){
+		glDisableVertexAttribArray(i);
+	}
+    glDeleteBuffers(bufferCount, vbo);
     glDeleteVertexArrays(1, &vao);
 }
 
 void Mesh::addBuffer(vector<GLfloat> content, unsigned size, string name){
 	RenderEngine::Instance().shaderProgram->bindAttrib(name);
-	//shaderProgram->bindAttrib(name);
 
     /* Bind our first VBO as being the active buffer and storing vertex attributes (coordinates) */
     glBindBuffer(GL_ARRAY_BUFFER, vbo[bufferCount]);
