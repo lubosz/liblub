@@ -1,6 +1,6 @@
 #version 150 core
 in vec3      in_Position;
-in vec3      MCnormal;
+in vec3      in_Normal;
 uniform mat4 MVMatrix;
 uniform mat4 MVPMatrix;
 uniform mat3 NormalMatrix;
@@ -14,8 +14,9 @@ void main()
     vec4 MCvertex = vec4(in_Position,1);
     //vec3 ecPosition =  vec3(MVMatrix * MCvertex);
     vec3 ecPosition =  vec3(MVMatrix * MCvertex);
-    vec3 tnorm      =  normalize(NormalMatrix * MCnormal);
-    vec3 lightVec   =  normalize(LightPosition - ecPosition);
+    vec3 tnorm      =  normalize(NormalMatrix * in_Normal);
+    //vec3 lightVec   =  normalize(LightPosition - ecPosition);
+	vec3 lightVec   =  normalize(LightPosition);
     vec3 reflectVec =  reflect(-lightVec, tnorm);
     vec3 viewVec    =  normalize(-ecPosition);
     float diffuse   =  max(dot(lightVec, tnorm), 0.0);
