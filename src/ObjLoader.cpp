@@ -76,8 +76,19 @@ Mesh * ObjLoader::readFile(string file)
 		//Triangle Indices
 
 		//Index: Vertex Normal UV
-		else if (sscanf(str.c_str(), "f %d/%d/%d %d/%d/%d %d/%d/%d", &vertIndex1, &normalIndex1, &uvIndex1, &vertIndex2, &normalIndex2, &uvIndex2, &vertIndex3, &normalIndex3, &uvIndex3)){
-			if (DEBUG) cout << "Index Triangle 3: " << vertIndex1<<" " << vertIndex2 << " " << vertIndex3 << " " << "\n";
+		else if (sscanf(str.c_str(), "f %d/%d/%d %d/%d/%d %d/%d/%d",
+				&vertIndex1, &uvIndex1, &normalIndex1,
+				&vertIndex2, &uvIndex2, &normalIndex2,
+				&vertIndex3, &uvIndex3, &normalIndex3)) {
+
+			if (DEBUG) cout << "IndexVert:\t" << vertIndex1<< " " << vertIndex2 << " " << vertIndex3 << "\n";
+			if (DEBUG) cout << "IndexNormal:\t" << normalIndex1<< " " << normalIndex2 << " " << normalIndex3 << "\n";
+			if (DEBUG) cout << "IndexUV:\t" << uvIndex1 << " " << uvIndex2 << " " << uvIndex3 << "\n";
+/*
+			if (DEBUG) cout << "1:\t" << vertIndex1<< " " << normalIndex1 << " " << uvIndex1 << "\n";
+			if (DEBUG) cout << "2:\t" << vertIndex2<< " " << normalIndex2 << " " << uvIndex2 << "\n";
+			if (DEBUG) cout << "3:\t" << vertIndex3 << " " << normalIndex3 << " " << uvIndex3 << "\n";
+	*/
 			vertIndex.push_back(vertIndex1);
 			vertIndex.push_back(vertIndex2);
 			vertIndex.push_back(vertIndex3);
@@ -133,14 +144,26 @@ Mesh * ObjLoader::readFile(string file)
     }
     if (DEBUG) cout << "\n";
 
+    float points = vertices.size()/3;
+    cout << "Points:" << points << " Indexsize:" << vertIndex.size() <<"\n";
+/*
+    for (GLuint vertIndex = 0; vertIndex < GLuint(points); vertIndex++){
+    	for (GLuint indexIndex = 0; indexIndex < vertIndex.size(); indexIndex++){
+    		if ()
+    	}
+
+    }
+*/
     //cout << "Index Lengths:\t" << vertIndex.size() << " " << normalIndex.size() << " " << uvIndex.size() << "\n";
     cout << "Vertex Count:\t" << vertices.size() << "\n";
 
     mesh = new Mesh();
     mesh->addBuffer(vertices,3,"in_Vertex");
+    //mesh->addElementBuffer(vertIndex);
     mesh->addBuffer(normals,3,"in_Normal");
+    //mesh->addElementBuffer(normalIndex);
     mesh->addBuffer(uvCoords,2,"in_Uv");
-    mesh->addElementBuffer(vertIndex);
+    mesh->addElementBuffer(uvIndex);
 
     return mesh;
 }

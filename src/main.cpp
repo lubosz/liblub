@@ -10,9 +10,11 @@ MediaLayer * mediaLayer;
 
 void initScene(){
 
-	//MeshFactory::Instance().tetrahedron();
-	MeshFactory::Instance().loadObj("monkeyMedium.obj");
-	MeshFactory::Instance().meshes[0]->setDrawType(GL_TRIANGLE_STRIP);
+	MeshFactory::Instance().tetrahedron();
+	//MeshFactory::Instance().loadObj("monkeySub6.obj");
+	//MeshFactory::Instance().loadObj("cube.obj");
+
+	//MeshFactory::Instance().meshes[0]->setDrawType(GL_TRIANGLE_STRIP);
 	//ObjLoader::Instance().readFile("monkey.obj");
 	//ObjLoader::Instance().readFile("monkeySub6.obj");
 	//ObjLoader::Instance().readFile("monkeyMedium.obj");

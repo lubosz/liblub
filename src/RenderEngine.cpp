@@ -78,7 +78,7 @@ void RenderEngine::display() {
     //glDrawElements(GL_TRIANGLE_STRIP, 6, GL_UNSIGNED_INT, 0);
 	MeshFactory::Instance().drawMeshes();
 	//glDrawElements(GL_TRIANGLE_FAN, 8, GL_UNSIGNED_BYTE, 0);
-
+	//gluLookAt(1, 0, 1, 1, 0, 0, 0, 1, 0); // eye(x,y,z), focal(x,y,z), up(x,y,z)
 	frameCount++;
 }
 
