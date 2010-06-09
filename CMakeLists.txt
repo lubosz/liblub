@@ -4,8 +4,8 @@ project(liblub)
 set(SRC_DIR ${CMAKE_SOURCE_DIR}/src)
 
 #Optimization / Debug
-#set(CMAKE_CXX_FLAGS "-O0 -g3") #Debug
-set(CMAKE_CXX_FLAGS "-O3") #Optimized
+set(CMAKE_CXX_FLAGS "-O0 -g3") #Debug
+#set(CMAKE_CXX_FLAGS "-O3") #Optimized
 
 if (UNIX)
 #Hack For SDL 1.3 in local

@@ -117,16 +117,22 @@ void RenderEngine::checkVersion(){
 	int * maxTex1 = new int();
 	int * maxTex2 = new int();
 */
-	GLint maxTex1, maxTex2,MajorVersion,MinorVersion,numext;
+	GLint maxTex1, maxTex2,MajorVersion,MinorVersion,numext,pointSize;
 	glGetIntegerv(GL_MAX_VERTEX_TEXTURE_IMAGE_UNITS,&maxTex1);
 	glGetIntegerv(GL_MAX_TEXTURE_IMAGE_UNITS,&maxTex2);
 
 	glGetIntegerv(GL_MAJOR_VERSION, &MajorVersion);
 	glGetIntegerv(GL_MINOR_VERSION, &MinorVersion);
 
+	glPointSize(5);
+
+	glGetIntegerv(GL_POINT_SIZE, &pointSize);
+
+
 
 	cout 	<< "OpenGL:\t" << glGetString(GL_VERSION) << "\n"
 			<< "GLSL:\t" << glGetString(GL_SHADING_LANGUAGE_VERSION) << "\n"
+			<< "Point Size:\t" << pointSize << "\n"
 			//<< "GLU:\t" << gluGetString(GLU_VERSION) << "\n"
 			<< "Hardware:\t" << glGetString(GL_VENDOR) << " - " << glGetString(GL_RENDERER) << "\n"
 			//<< "GL_EXTENSIONS:\t" << glGetStringi(GL_EXTENSIONS,0) << "\n"
@@ -142,6 +148,7 @@ void RenderEngine::checkVersion(){
 	for (int i = 0; i < numext && DEBUG; i++){
 		cout << glGetStringi(GL_EXTENSIONS,i) << " ";
 	}
+	cout << "\n";
 }
 
 GLboolean RenderEngine::QueryExtension(char *extName) {

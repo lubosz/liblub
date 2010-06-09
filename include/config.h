@@ -7,4 +7,4 @@
 
 #pragma once
 #define PROGRAM_NAME "liblub"
-#define DEBUG true
+#define DEBUG 1

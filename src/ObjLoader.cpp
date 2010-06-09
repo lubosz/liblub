@@ -25,10 +25,8 @@ Mesh * ObjLoader::readFile(string file)
 
 	string str;
 
-	vector<GLfloat> vertices, uvCoords, normals,
-					hardVertices, hardUvCoords, hardNormals;
-	vector<GLuint> vertIndex, normalIndex, uvIndex,
-					hardIndex;
+	vector<GLfloat> vertices, uvCoords, normals;
+	vector<GLuint> vertIndex, normalIndex, uvIndex;
 
 	int vertIndex1, vertIndex2, vertIndex3, vertIndex4,
 		normalIndex1, normalIndex2, normalIndex3, normalIndex4,
@@ -137,74 +135,36 @@ Mesh * ObjLoader::readFile(string file)
 
 	}
 
-	//obj starts counting at 1
+	//obj starts counting at 1 opengl at 0
 	if (DEBUG) cout << "Vert Index:\t";
-    BOOST_FOREACH( GLuint index, vertIndex )
-    {
-    	index--;
-    	if (DEBUG) cout <<(int)index<<", ";
-    }
-    if (DEBUG) cout << "\n";
+	decrementIndex(vertIndex);
 	if (DEBUG) cout << "Normal Index:\t";
-    BOOST_FOREACH( GLuint index, normalIndex )
-    {
-    	index--;
-    	if (DEBUG) cout <<(int)index<<", ";
-    }
-    if (DEBUG) cout << "\n";
+	decrementIndex(normalIndex);
 	if (DEBUG) cout << "UV Index:\t";
-    BOOST_FOREACH( GLuint index, uvIndex )
-    {
-    	index--;
-    	if (DEBUG) cout <<(int)index<<", ";
-    }
-    if (DEBUG) cout << "\n";
-
-    unsigned numFaces = vertIndex.size()/3;
-    cout << "NumFaces:" << numFaces << " IndexSize:" << vertIndex.size() <<"\n";
-
-    for (unsigned faceIndex = 0; faceIndex < numFaces; faceIndex++){
-    //for (GLuint pointIndex = 0; pointIndex < vertIndex.size(); pointIndex++){
-    	//for (unsigned indexIndex = 0; indexIndex < vertIndex.size(); indexIndex++){
-    		//if ()
-
-/*    		hardVertices.push_back(vertices[vertIndex[pointIndex]*3]);
-    		hardVertices.push_back(vertices[vertIndex[pointIndex]*3+1]);
-    		hardVertices.push_back(vertices[vertIndex[pointIndex]*3+2]);
-
-    		hardNormals.push_back(vertices[normalIndex[pointIndex]*3]);
-    		hardNormals.push_back(vertices[normalIndex[pointIndex]*3+1]);
-    		hardNormals.push_back(vertices[normalIndex[pointIndex]*3+2]);
-
-    		hardUvCoords.push_back(uvCoords[uvIndex[pointIndex]*2]);
-    		hardUvCoords.push_back(uvCoords[uvIndex[pointIndex]*2+1]);*/
-
-    	unsigned pointIndex = faceIndex * 3;
-    	unsigned firstVert = vertIndex[pointIndex];
+	decrementIndex(uvIndex);
 
 
 
-		hardNormals.push_back(normals[normalIndex[pointIndex]*3]);
-		hardNormals.push_back(normals[normalIndex[pointIndex]*3+1]);
-		hardNormals.push_back(normals[normalIndex[pointIndex]*3+2]);
 
-		hardUvCoords.push_back(uvCoords[uvIndex[pointIndex]*2]);
-		hardUvCoords.push_back(uvCoords[uvIndex[pointIndex]*2+1]);
 
-    		//hardIndex.push_back(pointIndex);
-    	//}
 
-    }
+    cout 	<< "\nIndexed Vertex Count:\t" << vertices.size()/3
+			//<< "\nHard Vertex Count:\t" << hardVertices.size()/3
+    		//<< "\nNumFaces:\t" << numFaces
+    		<< "\nIndexSize:\t" << vertIndex.size()
+    		<< "\nIndexSize/3(Faces):\t" << vertIndex.size()/3
+			<< "\nIndexSize(Points):\t" << vertIndex.size()
+			<< "\nIndexSize*3(Tripel Coords):\t" << vertIndex.size()*3
+			<< "\nIndexSize*2(Tupel Coords):\t" << vertIndex.size()*2
+			<<"\n";
+
+    cout << "Vertices:\n";
+
 
     //cout << "Index Lengths:\t" << vertIndex.size() << " " << normalIndex.size() << " " << uvIndex.size() << "\n";
-    cout << "Vertex Count:\t" << hardVertices.size() << "\tFaces:\t" << hardVertices.size()/3 << "\n";
+    //cout << "Vertex Count:\t" << hardVertices.size() << "\tFaces:\t" << hardVertices.size()/3 << "\n";
 
-    mesh = new Mesh();
-
-    mesh->addBuffer(hardVertices,3,"in_Vertex");
-    mesh->addBuffer(hardNormals,3,"in_Normal");
-    mesh->addBuffer(hardUvCoords,2,"in_Uv");
-    mesh->addElementBuffer(hardIndex);
+    createMesh(vertices,normals,uvCoords,vertIndex);
 
     /*
     mesh->addBuffer(vertices,3,"in_Vertex");
@@ -217,16 +177,84 @@ Mesh * ObjLoader::readFile(string file)
 
     return mesh;
 }
-/*
-void ObjLoader::addFace(vector<GLfloat> * hardCopy, vector<GLfloat> * coords, unsigned firstCoord, unsigned length){
-	for (unsigned i = 0; i < length; i++){
-		hardCopy->push_back(coords[  firstCoord+i   ]);
-	}
+
+void ObjLoader::createMesh(vector<GLfloat> &vertices,vector<GLfloat> &normals,vector<GLfloat> &uvCoords,vector<GLuint> &indices){
+    mesh = new Mesh();
+
+    mesh->addBuffer(vertices,3,"in_Vertex");
+    mesh->addBuffer(normals,3,"in_Normal");
+    mesh->addBuffer(uvCoords,2,"in_Uv");
+    mesh->addElementBuffer(indices);
+}
+
+void ObjLoader::decrementIndex(vector<GLuint> &indices){
+    BOOST_FOREACH( GLuint index, indices )
+    {
+    	index--;
+    	if (DEBUG) cout <<(int)index<<", ";
+    }
+    if (DEBUG) cout << "\n";
+}
+
+void ObjLoader::reOrderHardCopy(vector<GLfloat> &vertices,vector<GLfloat> &normals,vector<GLfloat> &uvCoords,vector<GLuint> &vertIndex,vector<GLuint> &normalIndex,vector<GLuint> &uvIndex){
+	vector<GLfloat> hardVertices, hardUvCoords, hardNormals;
+	vector<GLuint> hardIndex;
+
+    unsigned numFaces = vertIndex.size()/3;
+    //cout << "Vertex Count:\t" << hardVertices.size()<< "NumFaces:" << numFaces << " IndexSize:" << vertIndex.size() <<"\n";
+
+    for (unsigned faceIndex = 0; faceIndex < numFaces; faceIndex++){
+    	if (DEBUG) cout << "Vert\n";
+    	addTriangle(faceIndex,&hardVertices,&vertices,&vertIndex, 3);
+    	if (DEBUG) cout << "Normal\n";
+    	addTriangle(faceIndex,&hardNormals,&normals,&normalIndex, 3);
+    	if (DEBUG) cout << "UV\n";
+    	addTriangle(faceIndex,&hardUvCoords,&uvCoords,&uvIndex, 2);
+    }
+
+    for (unsigned i = 0; i < vertIndex.size(); i++){
+    	hardIndex.push_back(i);
+    }
+
+    if (DEBUG){
+		cout << "Hard Verts\n";
+		printVector(&hardVertices, 3);
+		cout << "Hard Normals\n";
+		printVector(&hardNormals, 3);
+		cout << "Hard UV\n";
+		printVector(&hardUvCoords, 2);
+		cout << "Hard Index\n";
+		//printVector(&hardIndex, 10);
+		BOOST_FOREACH( GLuint index, hardIndex )
+		{
+			cout <<(int)index<<", ";
+		}
+    }
+}
+
+void ObjLoader::addTriangle(unsigned faceIndex,vector<GLfloat> * hardCopy,vector<GLfloat> * coords,vector<unsigned> * index, unsigned length){
+	unsigned pointIndex = faceIndex * 3;
+	if (DEBUG) cout << "Face: " << faceIndex <<"\n";
+	addPoint(hardCopy, coords, index->at(pointIndex), length);
+	addPoint(hardCopy, coords, index->at(pointIndex+1), length);
+	addPoint(hardCopy, coords, index->at(pointIndex+2), length);
 }
 
 void ObjLoader::addPoint(vector<GLfloat> * hardCopy, vector<GLfloat> * coords, unsigned firstCoord, unsigned length){
+	if (DEBUG) cout << "Point: ";
 	for (unsigned i = 0; i < length; i++){
-		hardCopy->push_back(coords[  firstCoord+i   ]);
+		if (DEBUG) cout << hardCopy->size() <<", ";
+
+		hardCopy->push_back(coords->at(firstCoord+i));
 	}
+	if (DEBUG) cout << "\n";
 }
-*/
+
+void ObjLoader::printVector(vector<GLfloat> * printMe, unsigned length){
+    for (unsigned i = 0; i < printMe->size(); i++ )
+    {
+    	 if((i)%length == 0) cout << i/length << ": ";
+         cout << printMe->at(i)<<", ";
+    	 if((i+1)%length == 0) cout << "\n";
+    }
+}

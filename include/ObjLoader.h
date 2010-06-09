@@ -14,20 +14,22 @@ const string meshDir = "media/meshes/";
 class ObjLoader {
 public:
 
-	static ObjLoader& Instance()
-	 {
-	    static ObjLoader singleton;
-	    return singleton;
-	  }
+	ObjLoader();
+	~ObjLoader();
 
 	Mesh* readFile(string file);
 
 	Mesh* mesh;
 	string objSource;
 
-private:
-	ObjLoader();                                 // Private constructor
-	~ObjLoader();
-	ObjLoader(const ObjLoader&);                 // Prevent copy-construction
-	ObjLoader& operator=(const ObjLoader&);      // Prevent assignment
+	void addTriangle(unsigned faceIndex,vector<GLfloat> * hardCopy,vector<GLfloat> * coords,vector<unsigned> * index, unsigned length);
+	void addPoint(vector<GLfloat> * hardCopy, vector<GLfloat> * coords, unsigned firstCoord, unsigned length);
+	void printVector(vector<GLfloat> * printMe, unsigned length);
+	void reOrderHardCopy(vector<GLfloat> &vertices,vector<GLfloat> &normals,vector<GLfloat> &uvCoords,vector<GLuint> &vertIndex,vector<GLuint> &normalIndex,vector<GLuint> &uvIndex);
+	void decrementIndex(vector<GLuint> &indices);
+	void createMesh(vector<GLfloat> &vertices,vector<GLfloat> &normals,vector<GLfloat> &uvCoords,vector<GLuint> &indices);
+
+
+
+
 };

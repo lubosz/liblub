@@ -11,7 +11,7 @@
 #include <boost/foreach.hpp>
 
 MeshFactory::MeshFactory() {
-	// TODO Auto-generated constructor stub
+	objLoader = new ObjLoader();
 
 }
 
@@ -24,7 +24,7 @@ void MeshFactory::tetrahedron(){
 }
 
 void MeshFactory::loadObj(string file){
-	meshes.push_back(ObjLoader::Instance().readFile(file));
+	meshes.push_back(objLoader->readFile(file));
 }
 
 void MeshFactory::drawMeshes(){

@@ -47,7 +47,7 @@ void Mesh::addBuffer(vector<GLfloat> content, unsigned size, string name){
 
 	/* Enable attribute index 0 as being used */
 	glEnableVertexAttribArray(bufferCount);
-	cout << "Adding Vertex Buffer #" << bufferCount << "\n";
+	cout << "Adding Vertex Buffer #" << bufferCount << " Size:"<< content.size() << "\n";
 	bufferCount++;
 
 
@@ -59,7 +59,7 @@ void Mesh::addElementBuffer(vector<GLuint> content){
 	/* Copy the index data from tetraindicies to our buffer
 	 * 6 * sizeof(GLubyte) is the size of the index array, since it contains 6 GLbyte values */
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, content.size() * sizeof(GLuint), content.data(),GL_STATIC_DRAW);
-	cout << "Adding Vertex Element Buffer #" << bufferCount << "\n";
+	cout << "Adding Vertex Element Buffer #" << bufferCount << " Size:"<< content.size() << "\n";
 	bufferCount++;
 }
 

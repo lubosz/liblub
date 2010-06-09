@@ -8,6 +8,7 @@
 #pragma once
 
 #include "Mesh.h"
+#include "ObjLoader.h"
 
 class MeshFactory {
 public:
@@ -24,6 +25,7 @@ public:
 	void loadObj(string file);
 
 	vector<Mesh*> meshes;
+	ObjLoader * objLoader;
 
 private:
 	MeshFactory();                                 // Private constructor
