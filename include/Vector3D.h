@@ -1,0 +1,19 @@
+/*
+ * Vector3D.h
+ *
+ *  Created on: Jun 9, 2010
+ *      Author: bmonkey
+ */
+
+#pragma once
+
+#include "common.h"
+
+class Vector3D {
+public:
+
+	GLfloat x, y, z;
+
+	Vector3D(GLfloat x, GLfloat y, GLfloat z);
+	virtual ~Vector3D();
+};
