@@ -24,21 +24,26 @@ include/GL3
 
 #App Shader Demo
 set(CONE_DEMO_SOURCES
-	${SRC_DIR}/Camera.cpp
-	#${SRC_DIR}/Material.cpp
-	${SRC_DIR}/RenderEngine.cpp   
-	${SRC_DIR}/ShaderProgram.cpp   
-	${SRC_DIR}/ObjLoader.cpp
-	${SRC_DIR}/Geometry.cpp  
-	${SRC_DIR}/MediaLayer.cpp  
-	${SRC_DIR}/Shader.cpp
 	${SRC_DIR}/main.cpp
-	${SRC_DIR}/Texture.cpp
-	${SRC_DIR}/Mesh.cpp
-	${SRC_DIR}/TextureFactory.cpp
-	${SRC_DIR}/ShaderFactory.cpp
-	${SRC_DIR}/SceneGraph.cpp
-	${SRC_DIR}/MeshFactory.cpp
+	${SRC_DIR}/MediaLayer.cpp 
+	${SRC_DIR}/RenderEngine.cpp  	
+	
+	${SRC_DIR}/Scene/Camera.cpp
+	${SRC_DIR}/Scene/SceneGraph.cpp
+	#${SRC_DIR}/Material.cpp
+ 
+	${SRC_DIR}/Material/ShaderProgram.cpp
+	${SRC_DIR}/Material/Shader.cpp
+	${SRC_DIR}/Material/Texture.cpp
+	${SRC_DIR}/Material/TextureFactory.cpp
+	${SRC_DIR}/Material/ShaderFactory.cpp
+
+	${SRC_DIR}/Mesh/ObjLoader.cpp
+	${SRC_DIR}/Mesh/Geometry.cpp  
+	${SRC_DIR}/Mesh/Mesh.cpp
+	${SRC_DIR}/Mesh/MeshFactory.cpp
+	${SRC_DIR}/Mesh/Vector2D.cpp
+	${SRC_DIR}/Mesh/Vector3D.cpp
 )
 
 add_executable(liblub ${CONE_DEMO_SOURCES})

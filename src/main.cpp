@@ -13,11 +13,26 @@ void initScene(){
 	//MeshFactory::Instance().tetrahedron();
 	//MeshFactory::Instance().loadObj("monkey.obj");
 	//MeshFactory::Instance().loadObj("monkeySub6.obj");
-//	MeshFactory::Instance().loadObj("monkeyMedium.obj");
+//MeshFactory::Instance().loadObj("monkeyMedium.obj");
 	MeshFactory::Instance().loadObj("cube.obj");
 	
+	GL_POINTS,
+	GL_LINE_STRIP,
+	GL_LINE_LOOP,
+	GL_LINES,
+	GL_POLYGON,
+	GL_QUAD_STRIP,
+	GL_QUADS,
+	GL_TRIANGLE_STRIP,
+	GL_TRIANGLE_FAN,
+	GL_TRIANGLES,
+	GL_LINES_ADJACENCY,
+	GL_LINE_STRIP_ADJACENCY,
+	GL_TRIANGLES_ADJACENCY,
+	GL_TRIANGLE_STRIP_ADJACENCY;
 
-	MeshFactory::Instance().meshes[0]->setDrawType(GL_TRIANGLE_STRIP);
+
+	MeshFactory::Instance().meshes[0]->setDrawType(GL_LINES_ADJACENCY);
 	//ObjLoader::Instance().readFile("monkey.obj");
 	//ObjLoader::Instance().readFile("monkeySub6.obj");
 	//ObjLoader::Instance().readFile("monkeyMedium.obj");
@@ -26,8 +41,8 @@ void initScene(){
 	//makeCube();
 	//ShaderFactory::Instance().vertexColorShader();
 	//ShaderFactory::Instance().brickShader();
-	//ShaderFactory::Instance().textureShader();
-	ShaderFactory::Instance().multiTextureShader();
+	ShaderFactory::Instance().textureShader();
+	//ShaderFactory::Instance().multiTextureShader();
     //ShaderFactory::Instance().coneMapShader();
     //ShaderFactory::Instance().earthShader();
 	//ShaderFactory::Instance().procBump();

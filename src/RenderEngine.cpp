@@ -9,15 +9,7 @@
 
 #include "Camera.h"
 #include "MeshFactory.h"
-//#include <stdlib.h>
-//#include <stdio.h>
-//#include <math.h>
-
-//#include <string>
-
 #include "RenderEngine.h"
-//#include "tnt.h"
-
 
 using namespace std;
 

@@ -11,9 +11,7 @@
 #include <string>
 #include <list>
 
-/* Ensure we are using opengl's core profile only */
-#define GL3_PROTOTYPES 1
-#include <GL3/gl3.h>
+#include "common.h"
 
 #include "Shader.h"
 
