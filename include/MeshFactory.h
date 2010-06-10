@@ -25,7 +25,6 @@ public:
 	void loadObj(string file);
 
 	vector<Mesh*> meshes;
-	ObjLoader * objLoader;
 
 private:
 	MeshFactory();                                 // Private constructor

@@ -44,6 +44,7 @@ set(CONE_DEMO_SOURCES
 	${SRC_DIR}/Mesh/MeshFactory.cpp
 	${SRC_DIR}/Mesh/Vector2D.cpp
 	${SRC_DIR}/Mesh/Vector3D.cpp
+	${SRC_DIR}/Mesh/Face.cpp
 )
 
 add_executable(liblub ${CONE_DEMO_SOURCES})
