@@ -40,7 +40,8 @@ void Mesh::addBuffer(vector<GLfloat> content, unsigned size, string name){
 
 	/* Copy the vertex data from tetrahedron to our buffer */
 	/* 12 * sizeof(GLfloat) is the size of the tetrahedrom array, since it contains 12 GLfloat values */
-	glBufferData(GL_ARRAY_BUFFER, content.size() * sizeof(GLfloat), content.data(), GL_STATIC_DRAW);
+	//glBufferData(GL_ARRAY_BUFFER, content.size() * sizeof(GLfloat), content.data(), GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, content.size() * sizeof(GLfloat), content.data(), GL_STREAM_DRAW);
 
 	/* Specify that our coordinate data is going into attribute index 0, and contains three floats per vertex */
 	glVertexAttribPointer((GLuint) bufferCount, size, GL_FLOAT, GL_FALSE, 0, 0);
@@ -55,6 +56,10 @@ void Mesh::addBuffer(vector<GLfloat> content, unsigned size, string name){
 
 void Mesh::addElementBuffer(vector<GLuint> content){
 	indexSize = content.size();
+	indices = content;
+
+
+
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vbo[bufferCount]);
 	/* Copy the index data from tetraindicies to our buffer
 	 * 6 * sizeof(GLubyte) is the size of the index array, since it contains 6 GLbyte values */
@@ -68,5 +73,17 @@ void Mesh::setDrawType(GLint drawType){
 }
 
 void Mesh::draw(){
+	/*
+	unsigned vertCount = 3;
+	GLuint glIndices[indices.size()];
+	for (unsigned i = 0; i < indices.size(); i++){
+		glIndices[i] = indices[i];
+	}
+	for (unsigned i = 0; i < (indexSize/3); i++){
+		//glDrawElements(drawType, vertCount, GL_UNSIGNED_INT, &indices.data()[i*3]);
+		glDrawElements(drawType, vertCount, GL_UNSIGNED_INT, &glIndices[i*3]);
+		vertCount+=3;
+	}
+	*/
 	glDrawElements(drawType, indexSize, GL_UNSIGNED_INT, 0);
 }

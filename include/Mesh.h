@@ -18,6 +18,7 @@ public:
 	GLuint vao, vbo[maxBuffers];
 	unsigned indexSize;
 	GLint drawType;
+	vector<GLuint> indices;
 
 	Mesh();
 	virtual ~Mesh();

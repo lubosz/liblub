@@ -10,10 +10,10 @@ MediaLayer * mediaLayer;
 
 void initScene(){
 
-	//MeshFactory::Instance().tetrahedron();
+	MeshFactory::Instance().tetrahedron();
 	//MeshFactory::Instance().loadObj("monkey.obj");
-	MeshFactory::Instance().loadObj("monkeySub6.obj");
-//MeshFactory::Instance().loadObj("monkeyMedium.obj");
+	//MeshFactory::Instance().loadObj("monkeySub6.obj");
+	//MeshFactory::Instance().loadObj("monkeyMedium.obj");
 	//MeshFactory::Instance().loadObj("cube.obj");
 	
 	GL_POINTS,
@@ -43,11 +43,11 @@ void initScene(){
 	//ShaderFactory::Instance().brickShader();
 	//ShaderFactory::Instance().textureShader();
 	//ShaderFactory::Instance().multiTextureShader();
-    //ShaderFactory::Instance().coneMapShader();
+    ShaderFactory::Instance().coneMapShader();
     //ShaderFactory::Instance().earthShader();
 	//ShaderFactory::Instance().procBump();
 	//ShaderFactory::Instance().relief();
-	ShaderFactory::Instance().bump1();
+	//ShaderFactory::Instance().bump1();
 	//ShaderFactory::Instance().convolution();
 	//ShaderFactory::Instance().ocean();
 
