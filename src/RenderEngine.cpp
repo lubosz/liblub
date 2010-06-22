@@ -116,7 +116,7 @@ void RenderEngine::checkVersion(){
 	glGetIntegerv(GL_MAJOR_VERSION, &MajorVersion);
 	glGetIntegerv(GL_MINOR_VERSION, &MinorVersion);
 
-	glPointSize(3);
+	//glPointSize(3);
 
 	glGetIntegerv(GL_POINT_SIZE, &pointSize);
 

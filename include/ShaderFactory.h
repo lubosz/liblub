@@ -41,6 +41,7 @@ public:
 	void bump2();
 	void relief();
 	void ocean();
+	void particle();
 
 private:
 	ShaderFactory();

@@ -69,6 +69,10 @@ void ShaderFactory::ocean(){
 	materials.push_back(new OceanMat(RenderEngine::Instance().shaderProgram));
 }
 
+void ShaderFactory::particle(){
+	materials.push_back(new ParticleMat(RenderEngine::Instance().shaderProgram));
+}
+
 void ShaderFactory::addUniforms(){
 	GLint program = RenderEngine::Instance().shaderProgram->program;
 

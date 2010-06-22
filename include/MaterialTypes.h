@@ -15,9 +15,9 @@ class VertexMaterial : public Material {
 public:
 	VertexMaterial(ShaderProgram * shaderProgram){
 		this->shaderProgram = shaderProgram;
-		shaderProgram->attachShader("tutorial4.vert", GL_VERTEX_SHADER);
-		shaderProgram->attachShader("tutorial4.geom", GL_GEOMETRY_SHADER);
-		shaderProgram->attachShader("tutorial4.frag", GL_FRAGMENT_SHADER);
+		shaderProgram->attachShader("Color/vertexcolor.vert", GL_VERTEX_SHADER);
+		shaderProgram->attachShader("Color/vertexcolor.geom", GL_GEOMETRY_SHADER);
+		shaderProgram->attachShader("Color/vertexcolor.frag", GL_FRAGMENT_SHADER);
 
 		defaultAttribs();
   }
@@ -28,8 +28,8 @@ class BrickMaterial : public Material {
 public:
 	BrickMaterial(ShaderProgram * shaderProgram){
 		this->shaderProgram = shaderProgram;
-		shaderProgram->attachShader("brick.vert", GL_VERTEX_SHADER);
-		shaderProgram->attachShader("brick.frag", GL_FRAGMENT_SHADER);
+		shaderProgram->attachShader("Procedural/brick.vert", GL_VERTEX_SHADER);
+		shaderProgram->attachShader("Procedural/brick.frag", GL_FRAGMENT_SHADER);
 
 		defaultAttribs();
   }
@@ -48,8 +48,8 @@ public:
 		this->shaderProgram = shaderProgram;
 		TextureFactory::Instance().load("bunny.png","myTexture");
 
-		shaderProgram->attachShader("texture.vert", GL_VERTEX_SHADER);
-		shaderProgram->attachShader("texture.frag", GL_FRAGMENT_SHADER);
+		shaderProgram->attachShader("Texture/texture.vert", GL_VERTEX_SHADER);
+		shaderProgram->attachShader("Texture/texture.frag", GL_FRAGMENT_SHADER);
 
 		defaultAttribs();
   }
@@ -63,8 +63,8 @@ public:
 		TextureFactory::Instance().load("bunny.png","myTexture");
 		TextureFactory::Instance().load("jet1.jpg","myOtherTexture");
 
-		shaderProgram->attachShader("multitexture.vert", GL_VERTEX_SHADER);
-		shaderProgram->attachShader("multitexture.frag", GL_FRAGMENT_SHADER);
+		shaderProgram->attachShader("Texture/multitexture.vert", GL_VERTEX_SHADER);
+		shaderProgram->attachShader("Texture/multitexture.frag", GL_FRAGMENT_SHADER);
 
 		defaultAttribs();
   }
@@ -79,8 +79,8 @@ public:
 		TextureFactory::Instance().load("earth/night.jpg","EarthNight");
 		TextureFactory::Instance().load("earth/clouds.jpg","EarthCloudGloss");
 
-		shaderProgram->attachShader("earth.vert", GL_VERTEX_SHADER);
-		shaderProgram->attachShader("earth.frag", GL_FRAGMENT_SHADER);
+		shaderProgram->attachShader("Space/earth.vert", GL_VERTEX_SHADER);
+		shaderProgram->attachShader("Space/earth.frag", GL_FRAGMENT_SHADER);
 
 		defaultAttribs();
   }
@@ -94,9 +94,9 @@ public:
 		TextureFactory::Instance().load("cone/collage_base.jpg","texmap");
 		TextureFactory::Instance().load("cone/collage_step.png","stepmap");
 
-		shaderProgram->attachShader("shared.vert", GL_VERTEX_SHADER);
-                shaderProgram->attachShader("csm_dist_shadow.frag", GL_FRAGMENT_SHADER);
-                //shaderProgram->attachShader("procBump.frag", GL_FRAGMENT_SHADER);
+		shaderProgram->attachShader("Common/shared.vert", GL_VERTEX_SHADER);
+        shaderProgram->attachShader("CSM/csm_dist_shadow.frag", GL_FRAGMENT_SHADER);
+        //shaderProgram->attachShader("procBump.frag", GL_FRAGMENT_SHADER);
 
 		defaultAttribs();
   }
@@ -121,8 +121,8 @@ class ProcBumpMaterial : public Material {
 public:
 	ProcBumpMaterial(ShaderProgram * shaderProgram){
 		this->shaderProgram = shaderProgram;
-		shaderProgram->attachShader("procBump.vert", GL_VERTEX_SHADER);
-		shaderProgram->attachShader("procBump.frag", GL_FRAGMENT_SHADER);
+		shaderProgram->attachShader("Procedural/procBump.vert", GL_VERTEX_SHADER);
+		shaderProgram->attachShader("Procedural/procBump.frag", GL_FRAGMENT_SHADER);
 
 		defaultAttribs();
   }
@@ -141,9 +141,9 @@ public:
 		this->shaderProgram = shaderProgram;
 
 		TextureFactory::Instance().load("bunny.png","BaseImage");
-		RenderEngine::Instance().shaderProgram->attachShader("texture.vert", GL_VERTEX_SHADER);
+		RenderEngine::Instance().shaderProgram->attachShader("Texture/texture.vert", GL_VERTEX_SHADER);
 		//RenderEngine::Instance().shaderProgram->attachShader("convolution.frag", GL_FRAGMENT_SHADER);
-		RenderEngine::Instance().shaderProgram->attachShader("smoothing.frag", GL_FRAGMENT_SHADER);
+		RenderEngine::Instance().shaderProgram->attachShader("Post/smoothing.frag", GL_FRAGMENT_SHADER);
 
 		defaultAttribs();
   }
@@ -167,8 +167,8 @@ public:
 
 		TextureFactory::Instance().load("bunny.png","diffuseTexture");
 		TextureFactory::Instance().load("bunny-bump.png","normalTexture");
-		RenderEngine::Instance().shaderProgram->attachShader("noTangentBump.vert", GL_VERTEX_SHADER);
-		RenderEngine::Instance().shaderProgram->attachShader("noTangentBump.frag", GL_FRAGMENT_SHADER);
+		RenderEngine::Instance().shaderProgram->attachShader("Bump/noTangentBump.vert", GL_VERTEX_SHADER);
+		RenderEngine::Instance().shaderProgram->attachShader("Bump/noTangentBump.frag", GL_FRAGMENT_SHADER);
 
 		defaultAttribs();
   }
@@ -188,8 +188,8 @@ public:
 		TextureFactory::Instance().load("bunny.png","colorMap");
 		TextureFactory::Instance().load("bunny-bump.png","normalMap");
 		TextureFactory::Instance().load("bunny-gloss.png","glossMap");
-		RenderEngine::Instance().shaderProgram->attachShader("noTangentBump2.vert", GL_VERTEX_SHADER);
-		RenderEngine::Instance().shaderProgram->attachShader("noTangentBump2.frag", GL_FRAGMENT_SHADER);
+		RenderEngine::Instance().shaderProgram->attachShader("Bump/noTangentBump2.vert", GL_VERTEX_SHADER);
+		RenderEngine::Instance().shaderProgram->attachShader("Bump/noTangentBump2.frag", GL_FRAGMENT_SHADER);
 
 		defaultAttribs();
   }
@@ -219,8 +219,8 @@ public:
 
 		TextureFactory::Instance().load("cone/collage_base.jpg","texmap");
 		TextureFactory::Instance().load("cone/collage_step.png","reliefmap");
-		RenderEngine::Instance().shaderProgram->attachShader("shared.vert", GL_VERTEX_SHADER);
-		RenderEngine::Instance().shaderProgram->attachShader("relief.frag", GL_FRAGMENT_SHADER);
+		RenderEngine::Instance().shaderProgram->attachShader("Common/shared.vert", GL_VERTEX_SHADER);
+		RenderEngine::Instance().shaderProgram->attachShader("Bump/relief.frag", GL_FRAGMENT_SHADER);
 
 		defaultAttribs();
   }
@@ -251,8 +251,8 @@ public:
 
 		TextureFactory::Instance().loadCubeMap("cubemaps/morning","EnvironmentMap");
 		TextureFactory::Instance().load("ocean/waves2.dds","NormalMap");
-		RenderEngine::Instance().shaderProgram->attachShader("Ocean.vert", GL_VERTEX_SHADER);
-		RenderEngine::Instance().shaderProgram->attachShader("Ocean.frag", GL_FRAGMENT_SHADER);
+		RenderEngine::Instance().shaderProgram->attachShader("Water/Ocean.vert", GL_VERTEX_SHADER);
+		RenderEngine::Instance().shaderProgram->attachShader("Water/Ocean.frag", GL_FRAGMENT_SHADER);
 
 		defaultAttribs();
   }
@@ -282,6 +282,23 @@ public:
 		glUniform1f(glGetUniformLocation(program, "time"), 0.7);
 		glUniform1f(glGetUniformLocation(program, "waveFreq"), 0.028);
 		glUniform1f(glGetUniformLocation(program, "waveAmp"), 1.8);
+
+	}
+};
+
+class ParticleMat : public Material {
+public:
+	ParticleMat(ShaderProgram * shaderProgram){
+		this->shaderProgram = shaderProgram;
+
+		TextureFactory::Instance().load("bunny.png","splatTexture");
+		RenderEngine::Instance().shaderProgram->attachShader("Particle/particle.vert", GL_VERTEX_SHADER);
+		RenderEngine::Instance().shaderProgram->attachShader("Particle/particle.frag", GL_FRAGMENT_SHADER);
+
+		defaultAttribs();
+  }
+	void uniforms(){
+
 
 	}
 };
