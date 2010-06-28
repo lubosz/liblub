@@ -200,25 +200,31 @@ Mesh * Geometry::makeCube(){
 
 }
 
-float Geometry::randomize(float density, float randomness, int variation){
+float Geometry::randomize(float density, float randomness){
 	//return density+(density/(rand()%variation))*randomness;
-	return density;
+
+	float randomValue = 1/float((rand()%20)+1);
+	/*
+	cout << density <<"\n";
+	cout << density+(density*randomValue*randomness) <<"\n\n";
+	*/
+	return density+(density*randomValue*randomness);
 }
 
 
-Mesh * Geometry::makeStars(vector<float> resolution, float density, float randomness, int variation){
+Mesh * Geometry::makeStars(vector<float> resolution, float density, float randomness){
 
 	vector<GLfloat> vertices, colors;
 	vector<GLuint> indicies;
 
 	unsigned i = 0;
-	srand ( time(NULL) );
 
+	srand ( time(NULL) );
 	//(density+(density/rand()%variation)*randomness)
 
-	for (float x = 0; x < resolution.at(0); x+=randomize(density, randomness, variation)){
-		for (float y = 0; y < resolution.at(1); y+=randomize(density, randomness, variation)){
-			for (float z = 0; z < resolution.at(2); z+=randomize(density, randomness, variation)){
+	for (float x = 0; x < resolution.at(0); x+=randomize(density, randomness)){
+		for (float y = 0; y < resolution.at(1); y+=randomize(density, randomness)){
+			for (float z = 0; z < resolution.at(2); z+=randomize(density, randomness)){
 				/*
 				cout << "Point: x" << x <<" y " << y << " z " << z << "\n";
 				cout << "Density: " << density<< "\n"

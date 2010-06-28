@@ -123,9 +123,9 @@ void ObjLoader::readFile()
 			if (DEBUG) cout << "3:\t" << vertIndex3 << " " << normalIndex3 << " " << uvIndex3 << "\n";
 	*/
 
-			Face face = Face(vertIndex1,vertIndex2,vertIndex3);
-			face.setNormalIndices(normalIndex1,normalIndex2,normalIndex3);
-			face.setUvIndices(uvIndex1,uvIndex2,uvIndex3);
+			Face face = Face(vertIndex1-1,vertIndex2-1,vertIndex3-1);
+			face.setNormalIndices(normalIndex1-1,normalIndex2-1,normalIndex3-1);
+			face.setUvIndices(uvIndex1-1,uvIndex2-1,uvIndex3-1);
 			faces.push_back(face);
 			/*
 			vertIndex.push_back(vertIndex1);

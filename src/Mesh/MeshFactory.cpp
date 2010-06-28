@@ -29,7 +29,8 @@ void MeshFactory::cube(){
 
 void MeshFactory::stars(){
 	vector<float> resolution = {100,100,100};
-	meshes.push_back(Geometry::makeStars(resolution,1.0,0.0,10));
+	//meshes.push_back(Geometry::makeStars(resolution,0.4,2.9));
+	meshes.push_back(Geometry::makeStars(resolution,1.0,0.0));
 }
 
 void MeshFactory::loadObj(string file){

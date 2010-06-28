@@ -12,8 +12,9 @@ void initScene(){
 
 	//MeshFactory::Instance().tetrahedron();
 	//MeshFactory::Instance().cube();
-	MeshFactory::Instance().stars();
+	//MeshFactory::Instance().stars();
 	//MeshFactory::Instance().loadObj("monkey.obj");
+	MeshFactory::Instance().loadObj("monkeySmooth.obj");
 	//MeshFactory::Instance().loadObj("monkeySub6.obj");
 	//MeshFactory::Instance().loadObj("monkeyMedium.obj");
 	//MeshFactory::Instance().loadObj("cube.obj");
@@ -37,15 +38,10 @@ void initScene(){
 
 
 	//MeshFactory::Instance().meshes[0]->setDrawType(GL_TRIANGLE_STRIP);
-	//MeshFactory::Instance().meshes[0]->setDrawType(GL_TRIANGLES);
+	MeshFactory::Instance().meshes[0]->setDrawType(GL_TRIANGLES);
 	//MeshFactory::Instance().meshes[0]->setDrawType(GL_LINES);
-	MeshFactory::Instance().meshes[0]->setDrawType(GL_POINTS);
-	//ObjLoader::Instance().readFile("monkey.obj");
-	//ObjLoader::Instance().readFile("monkeySub6.obj");
-	//ObjLoader::Instance().readFile("monkeyMedium.obj");
-	//ObjLoader::Instance().readFile("cube.obj");
+	//MeshFactory::Instance().meshes[0]->setDrawType(GL_POINTS);
 
-	//makeCube();
 	//ShaderFactory::Instance().vertexColorShader();
 	//ShaderFactory::Instance().brickShader();
 	//ShaderFactory::Instance().textureShader();
