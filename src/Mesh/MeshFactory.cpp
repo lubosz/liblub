@@ -35,35 +35,28 @@ MeshFactory::~MeshFactory() {
 	// TODO Auto-generated destructor stub
 }
 
-void MeshFactory::tetrahedron(){
+Mesh *  MeshFactory::tetrahedron(){
 	Mesh * mesh = Geometry::makeTetrahedron();
 	mesh->setDrawType(GL_TRIANGLE_STRIP);
-	meshes.push_back(mesh);
+	return mesh;
 }
 
-void MeshFactory::cube(){
+Mesh *  MeshFactory::cube(){
 	Mesh * mesh = Geometry::makeCube();
 	mesh->setDrawType(GL_TRIANGLES);
-	meshes.push_back(mesh);
+	return mesh;
 }
 
-void MeshFactory::stars(){
+Mesh *  MeshFactory::stars(){
 	vector<float> resolution = {100,100,100};
 	Mesh * mesh = Geometry::makeStars(resolution,1.0,0.0);
 	mesh->setDrawType(GL_POINTS);
 	//meshes.push_back(Geometry::makeStars(resolution,0.4,2.9));
-	meshes.push_back(mesh);
+	return mesh;
 }
 
-void MeshFactory::loadObj(string file){
+Mesh * MeshFactory::load(string file){
 	ObjLoader objLoader = ObjLoader(file);
 	objLoader.mesh->setDrawType(GL_TRIANGLES);
-	meshes.push_back(objLoader.mesh);
-}
-
-void MeshFactory::drawMeshes(){
-    BOOST_FOREACH( Mesh* mesh, meshes )
-    {
-    	mesh->draw();
-    }
+	return objLoader.mesh;
 }

@@ -2,6 +2,8 @@
 
 #include "common.h"
 #include "ShaderProgram.h"
+#include "Singleton.h"
+#include "Node.h"
 #include <stdio.h>
 #include <string.h>
 
@@ -24,10 +26,13 @@ typedef enum {
 	Z_AXIS
 } AXIS;
 
-class SceneGraph
+class SceneGraph: public Singleton<SceneGraph>
 {
 public:
-    SceneGraph();
+	friend class Singleton<SceneGraph>;
+
+	vector<Node> sceneNodes;
+
 
 	/* Multiply 4x4 matrix m1 by 4x4 matrix m2 and store the result in m1 */
 	void multiply4x4(GLfloat *m1, GLfloat *m2);
@@ -43,12 +48,18 @@ public:
 
 	void animate(float frameCount);
 	void transform(float frameCount);
+	void transform();
 	void bindShaders(ShaderProgram * shaderProgram);
 	void translate(float x, float y, float z);
+	void translate(vector<float> translation);
+	void addNode(string name, vector<float> position, Mesh * mesh);
+	void drawNodes(ShaderProgram * shaderProgram);
 
 	GLfloat modelmatrix[16]; /* Our model matrix  */
 
 	/* An identity matrix we use to perform the equivalant of glLoadIdentity */
 
+private:
+    SceneGraph();
 
 };

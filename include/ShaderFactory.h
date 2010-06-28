@@ -11,20 +11,17 @@
 #include "Shader.h"
 #include "ShaderProgram.h"
 #include "Material.h"
+#include "Singleton.h"
 
-class ShaderFactory {
+class ShaderFactory : public Singleton<ShaderFactory>{
 public:
+	friend class Singleton<ShaderFactory>;
+
 	vector<Shader> shaders;
 	vector<ShaderProgram> programs;
 
 	typedef std::vector<Material*>  materialList;
 	materialList materials;
-
-	static ShaderFactory& Instance()
-	 {
-	    static ShaderFactory singleton;
-	    return singleton;
-	  }
 
 	void defaultAttribs();
 	void addUniforms();
@@ -49,7 +46,5 @@ public:
 private:
 	ShaderFactory();
 	virtual ~ShaderFactory();
-	ShaderFactory(const ShaderFactory&);                 // Prevent copy-construction
-	ShaderFactory& operator=(const ShaderFactory&);      // Prevent assignment
 
 };

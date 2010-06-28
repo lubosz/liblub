@@ -13,23 +13,17 @@
 #include <string.h>
 #include "ShaderProgram.h"
 #include "SceneGraph.h"
+#include "Singleton.h"
 
-class RenderEngine {
+class RenderEngine : public Singleton<RenderEngine> {
 public:
 
-	static RenderEngine& Instance()
-	 {
-	    static RenderEngine singleton;
-	    return singleton;
-	  }
+	friend class Singleton<RenderEngine>;
 
 	ShaderProgram * shaderProgram;
-	SceneGraph * sceneGraph;
-
 	unsigned frameCount;
 
-	//RenderEngine();
-	//virtual ~RenderEngine();
+
 
 	void glError(string file, int line);
 	void checkVersion();
@@ -37,11 +31,7 @@ public:
 	void display();
 
 private:
-	RenderEngine();                                 // Private constructor
-	~RenderEngine();
-  RenderEngine(const RenderEngine&);                 // Prevent copy-construction
-  RenderEngine& operator=(const RenderEngine&);      // Prevent assignment
-
-
+	RenderEngine();
+	virtual ~RenderEngine();
 
 };

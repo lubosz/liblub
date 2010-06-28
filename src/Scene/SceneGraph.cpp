@@ -1,6 +1,7 @@
 #include "SceneGraph.h"
 #include "Camera.h"
 #include <math.h>
+#include <boost/foreach.hpp>
 
 SceneGraph::SceneGraph()
 {
@@ -78,6 +79,23 @@ void SceneGraph::animate(float frameCount){
     rotate(modelmatrix, (GLfloat) frameCount * 0.5, Z_AXIS);
 }
 
+void SceneGraph::transform(){
+    /* Load the identity matrix into modelmatrix. rotate the model, and move it back 5 */
+    memcpy(modelmatrix, identitymatrix, sizeof(GLfloat) * 16);
+    //animate(frameCount);
+    //translate(modelmatrix, -5, -5, -5);
+    rotate(modelmatrix, (GLfloat) Camera::Instance().yaw, X_AXIS);
+    rotate(modelmatrix, (GLfloat) Camera::Instance().pitch, Y_AXIS);
+    rotate(modelmatrix, (GLfloat) Camera::Instance().roll, Z_AXIS);
+    //translate(modelmatrix, 0, 0, -2.5);
+    //translate(modelmatrix, 5, 5, 5);
+    translate(modelmatrix, Camera::Instance().x, Camera::Instance().y, Camera::Instance().z);
+
+    //cout<<"Cam " << Camera::Instance().x<<" "<< Camera::Instance().y<<" "<< Camera::Instance().z<<"\n";
+
+
+}
+
 void SceneGraph::transform(float frameCount){
     /* Load the identity matrix into modelmatrix. rotate the model, and move it back 5 */
     memcpy(modelmatrix, identitymatrix, sizeof(GLfloat) * 16);
@@ -99,6 +117,10 @@ void SceneGraph::translate(float x, float y, float z){
     translate(modelmatrix, x, y, z);
 }
 
+void SceneGraph::translate(vector<float> translation){
+    translate(modelmatrix, translation.at(0), translation.at(1), translation.at(2));
+}
+
 void SceneGraph::bindShaders(ShaderProgram * shaderProgram){
 
     shaderProgram->setNormalMatrix(modelmatrix);
@@ -107,4 +129,20 @@ void SceneGraph::bindShaders(ShaderProgram * shaderProgram){
     multiply4x4(modelmatrix, Camera::Instance().projectionmatrix);
     shaderProgram->setModelViewProjectionMatrix(modelmatrix);
     shaderProgram->setLightPosition(-2.0, 1.0, 2.0);
+}
+
+
+void SceneGraph::addNode(string name, vector<float> position, Mesh * mesh){
+	sceneNodes.push_back(Node(name, position, mesh));
+}
+
+void SceneGraph::drawNodes(ShaderProgram * shaderProgram){
+    BOOST_FOREACH( Node node, sceneNodes )
+    {
+        transform();
+        translate(node.getPosition());
+        bindShaders(shaderProgram);
+    	node.draw();
+    }
+
 }

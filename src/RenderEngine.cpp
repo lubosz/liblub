@@ -19,7 +19,6 @@ RenderEngine::RenderEngine() {
 	frameCount = 0;
 
 	shaderProgram = new ShaderProgram();
-    sceneGraph = new SceneGraph();
 
 	//glPointSize(3);
 #ifndef USE_GL3
@@ -61,11 +60,11 @@ void RenderEngine::display() {
 	//cout << frameCount << "\n";
 
 
+/*
+        SceneGraph::Instance().transform(frameCount);
 
-        sceneGraph->transform(frameCount);
-
-        sceneGraph->bindShaders(shaderProgram);
-
+        SceneGraph::Instance().bindShaders(shaderProgram);
+*/
         //GLfloat floatanim = 10.0/GLfloat(frameCount%100);
 
 	//glUniform4f(glGetUniformLocation(shaderProgram->program, "ScaleFactor"), floatanim, floatanim, floatanim, floatanim);
@@ -78,17 +77,17 @@ void RenderEngine::display() {
 	/* Make our background black */
 	glClearColor(0.0, 0.0, 0.0, 1.0);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+/*
+    MeshFactory::Instance().meshes[0]->draw();
+    SceneGraph::Instance().transform(frameCount);
+    SceneGraph::Instance().translate(1,1,1);
+    SceneGraph::Instance().bindShaders(shaderProgram);
+    MeshFactory::Instance().meshes[1]->draw();
+*/
+    SceneGraph::Instance().drawNodes(shaderProgram);
 
-	/* Invoke glDrawElements telling it to draw a triangle strip using 6 indicies */
-	//glDrawElements(GL_TRIANGLES, ObjLoader::Instance().mesh->indexSize, GL_UNSIGNED_INT, 0);
-	//glDrawElements(GL_TRIANGLE_STRIP, 6, GL_UNSIGNED_INT, 0);
-    //sceneGraph->translate(1,.2,.3);
-    //sceneGraph->bindShaders(shaderProgram);
-    //glDrawElements(GL_TRIANGLES, ObjLoader::Instance().mesh->indexSize, GL_UNSIGNED_INT, 0);
-	//glDrawElements(GL_POINTS, ObjLoader::Instance().mesh->indexSize, GL_UNSIGNED_INT, 0);
-    //glDrawElements(GL_TRIANGLE_STRIP, 6, GL_UNSIGNED_INT, 0);
-	MeshFactory::Instance().drawMeshes();
-	//glDrawElements(GL_TRIANGLE_FAN, 8, GL_UNSIGNED_BYTE, 0);
+	//MeshFactory::Instance().drawMeshes();
+
 	//gluLookAt(1, 0, 1, 1, 0, 0, 0, 1, 0); // eye(x,y,z), focal(x,y,z), up(x,y,z)
 	frameCount++;
 }

@@ -9,29 +9,21 @@
 
 #include "Mesh.h"
 #include "ObjLoader.h"
+#include "Singleton.h"
 
-class MeshFactory {
+class MeshFactory : public Singleton<MeshFactory>{
 public:
+	friend class Singleton<MeshFactory>;
 
-	static MeshFactory& Instance()
-	 {
-	    static MeshFactory singleton;
-	    return singleton;
-	  }
-
-	void drawMeshes();
-	void tetrahedron();
 	void addMesh();
-	void cube();
-	void stars();
-	void loadObj(string file);
-
-	vector<Mesh*> meshes;
+	Mesh * tetrahedron();
+	Mesh * cube();
+	Mesh * stars();
+	Mesh * load(string file);
 
 private:
-	MeshFactory();                                 // Private constructor
+	MeshFactory();
 	~MeshFactory();
-	MeshFactory(const MeshFactory&);                 // Prevent copy-construction
-	MeshFactory& operator=(const MeshFactory&);      // Prevent assignment
+
 };
 

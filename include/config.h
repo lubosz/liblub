@@ -12,6 +12,7 @@ using namespace std;
 #define PROGRAM_NAME "liblub"
 const string shaderDir = "media/shaders/";
 const string textureDir = "media/textures/";
+const string meshDir = "media/meshes/";
 static const string suffixes[6] = {"_RT", "_LF", "_DN","_UP", "_FR", "_BK"};
 const unsigned maxBuffers = 4;
 #define DEBUG 0

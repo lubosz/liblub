@@ -12,7 +12,7 @@
 #include "Face.h"
 #include "common.h"
 #include "Mesh.h"
-const string meshDir = "media/meshes/";
+
 
 class ObjLoader {
 public:

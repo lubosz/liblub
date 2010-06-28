@@ -30,6 +30,7 @@ set(CONE_DEMO_SOURCES
 	
 	${SRC_DIR}/Scene/Camera.cpp
 	${SRC_DIR}/Scene/SceneGraph.cpp
+	${SRC_DIR}/Scene/Node.cpp
 	#${SRC_DIR}/Material.cpp
  
 	${SRC_DIR}/Material/ShaderProgram.cpp

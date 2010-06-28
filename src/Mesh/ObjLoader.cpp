@@ -31,7 +31,7 @@ ObjLoader::ObjLoader(string file) {
 
 	//reOrderHardCopy(vertices,normals,uvCoords,vertIndex,normalIndex,uvIndex);
 
-
+if(DEBUG){
     cout 	<< "\nIndexed Vertex Count:\t"
     		<< "\nIndexSize/3 | Faces:\t" << vertIndex.size()/3
 			<< "\nIndexSize | Points:\t" << vertIndex.size() << " | " << vertices.size()/3 << " " << normals.size()/3<< " " << uvCoords.size()/2
@@ -43,6 +43,8 @@ ObjLoader::ObjLoader(string file) {
     cout << "Faces " << faces.size() << "\n";
     cout << "hardVertices Index" << hardVertices.size() << "\n";
     cout << "vertices Index" << vertices.size() << "\n";
+
+}
 
     hardCopyIndex();
 
