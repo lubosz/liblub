@@ -10,7 +10,7 @@
 #include "common.h"
 #include <vector>
 
-const unsigned maxBuffers = 7;
+
 
 class Mesh {
 public:

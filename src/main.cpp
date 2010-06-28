@@ -10,37 +10,14 @@ MediaLayer * mediaLayer;
 
 void initScene(){
 
-	//MeshFactory::Instance().tetrahedron();
+	MeshFactory::Instance().tetrahedron();
 	//MeshFactory::Instance().cube();
-	//MeshFactory::Instance().stars();
+	MeshFactory::Instance().stars();
 	//MeshFactory::Instance().loadObj("monkey.obj");
-	MeshFactory::Instance().loadObj("monkeySmooth.obj");
+	//MeshFactory::Instance().loadObj("monkeySmooth.obj");
 	//MeshFactory::Instance().loadObj("monkeySub6.obj");
 	//MeshFactory::Instance().loadObj("monkeyMedium.obj");
 	//MeshFactory::Instance().loadObj("cube.obj");
-	
-	GL_POINTS,
-	GL_LINE_STRIP,
-	GL_LINE_LOOP,
-	GL_LINES,
-#ifndef USE_GL3
-	GL_POLYGON,
-	GL_QUAD_STRIP,
-	GL_QUADS,
-#endif
-	GL_TRIANGLE_STRIP,
-	GL_TRIANGLE_FAN,
-	GL_TRIANGLES,
-	GL_LINES_ADJACENCY,
-	GL_LINE_STRIP_ADJACENCY,
-	GL_TRIANGLES_ADJACENCY,
-	GL_TRIANGLE_STRIP_ADJACENCY;
-
-
-	//MeshFactory::Instance().meshes[0]->setDrawType(GL_TRIANGLE_STRIP);
-	MeshFactory::Instance().meshes[0]->setDrawType(GL_TRIANGLES);
-	//MeshFactory::Instance().meshes[0]->setDrawType(GL_LINES);
-	//MeshFactory::Instance().meshes[0]->setDrawType(GL_POINTS);
 
 	//ShaderFactory::Instance().vertexColorShader();
 	//ShaderFactory::Instance().brickShader();
@@ -55,8 +32,8 @@ void initScene(){
 	//ShaderFactory::Instance().convolution();
 	//ShaderFactory::Instance().ocean();
 	//ShaderFactory::Instance().env();
-	//ShaderFactory::Instance().normalcolor();
-	ShaderFactory::Instance().stars();
+	ShaderFactory::Instance().normalcolor();
+	//ShaderFactory::Instance().stars();
 
 	RenderEngine::Instance().shaderProgram->linkAndUse();
 	ShaderFactory::Instance().addUniforms();

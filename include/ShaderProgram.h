@@ -23,6 +23,7 @@ public:
 	/* This is a handle to the shader program */
 	GLuint program;
 	list<Shader*> shaders;
+	list<string> boundAttribs;
 	unsigned attribCount;
 
 	ShaderProgram();
@@ -33,6 +34,7 @@ public:
 	void attachShader(string fileName, GLenum type);
 	void detachShader(Shader *shader);
 
+	void bindAttribIfUnbound(string name);
 	void bindAttrib(string name);
 	void bindAttrib(unsigned position, string name);
 

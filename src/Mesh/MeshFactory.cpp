@@ -11,7 +11,23 @@
 #include <boost/foreach.hpp>
 
 MeshFactory::MeshFactory() {
-
+	/* available draw types */
+	GL_POINTS,
+	GL_LINE_STRIP,
+	GL_LINE_LOOP,
+	GL_LINES,
+#ifndef USE_GL3
+	GL_POLYGON,
+	GL_QUAD_STRIP,
+	GL_QUADS,
+#endif
+	GL_TRIANGLE_STRIP,
+	GL_TRIANGLE_FAN,
+	GL_TRIANGLES,
+	GL_LINES_ADJACENCY,
+	GL_LINE_STRIP_ADJACENCY,
+	GL_TRIANGLES_ADJACENCY,
+	GL_TRIANGLE_STRIP_ADJACENCY;
 
 }
 
@@ -20,21 +36,28 @@ MeshFactory::~MeshFactory() {
 }
 
 void MeshFactory::tetrahedron(){
-	meshes.push_back(Geometry::makeTetrahedron());
+	Mesh * mesh = Geometry::makeTetrahedron();
+	mesh->setDrawType(GL_TRIANGLE_STRIP);
+	meshes.push_back(mesh);
 }
 
 void MeshFactory::cube(){
-	meshes.push_back(Geometry::makeCube());
+	Mesh * mesh = Geometry::makeCube();
+	mesh->setDrawType(GL_TRIANGLES);
+	meshes.push_back(mesh);
 }
 
 void MeshFactory::stars(){
 	vector<float> resolution = {100,100,100};
+	Mesh * mesh = Geometry::makeStars(resolution,1.0,0.0);
+	mesh->setDrawType(GL_POINTS);
 	//meshes.push_back(Geometry::makeStars(resolution,0.4,2.9));
-	meshes.push_back(Geometry::makeStars(resolution,1.0,0.0));
+	meshes.push_back(mesh);
 }
 
 void MeshFactory::loadObj(string file){
 	ObjLoader objLoader = ObjLoader(file);
+	objLoader.mesh->setDrawType(GL_TRIANGLES);
 	meshes.push_back(objLoader.mesh);
 }
 

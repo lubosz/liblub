@@ -64,8 +64,21 @@ void ShaderProgram::bindAttrib(unsigned position, string name){
 	glBindAttribLocation(program, position, name.c_str());
 }
 
+void ShaderProgram::bindAttribIfUnbound(string name){
+	//glBindAttribLocation(program, position, name.c_str());
+	BOOST_FOREACH( string attrib, boundAttribs )
+	    {
+	    	if (attrib == name) return;
+	    }
+	cout << "Binding " <<name <<"\n";
+	boundAttribs.push_back(name);
+	bindAttrib(name);
+}
+
+
+
 void ShaderProgram::bindAttrib(string name){
-	glBindAttribLocation(program, attribCount, name.c_str());
+	bindAttrib(attribCount, name);
 	attribCount++;
 }
 
