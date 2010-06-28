@@ -23,6 +23,15 @@ void MeshFactory::tetrahedron(){
 	meshes.push_back(Geometry::makeTetrahedron());
 }
 
+void MeshFactory::cube(){
+	meshes.push_back(Geometry::makeCube());
+}
+
+void MeshFactory::stars(){
+	vector<float> resolution = {100,100,100};
+	meshes.push_back(Geometry::makeStars(resolution,1.0,0.0,10));
+}
+
 void MeshFactory::loadObj(string file){
 	ObjLoader objLoader = ObjLoader(file);
 	meshes.push_back(objLoader.mesh);

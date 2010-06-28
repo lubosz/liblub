@@ -8,7 +8,7 @@
 #include <iostream>
 #include "MediaLayer.h"
 #include "Camera.h"
-#include "common.h"
+
 
 MediaLayer::MediaLayer(string title, unsigned width, unsigned height) {
 	quit = false;
@@ -20,8 +20,9 @@ MediaLayer::MediaLayer(string title, unsigned width, unsigned height) {
     /* Request an opengl 3.2 context.
      * SDL doesn't have the ability to choose which profile at this time of writing,
      * but it should default to the core profile */
-    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
-    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 2);
+
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, LIBLUB_GL_MAJOR_VERION);
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, LIBLUB_GL_MINOR_VERION);
 
     /* Enable double buffering with a 24bit Z buffer.
      * You may need to change this to 16 or 32 for your system */

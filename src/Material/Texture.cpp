@@ -9,6 +9,7 @@
 
 
 #include <iostream>
+#include <math.h>
 
 Texture::Texture(string filename, GLenum glId, string name) {
 	textureType = GL_TEXTURE_2D;
@@ -34,6 +35,44 @@ Texture::Texture(string filename, GLenum glId, string name) {
     glTexImage2D(GL_TEXTURE_2D, 0, *glChannelOrder, image->getWidth(), image->getHeight(), 0, *texChannelOrder, GL_UNSIGNED_BYTE, image->accessPixels());
 }
 
+//Splat texture
+Texture::Texture(GLenum glId, string name, int resolution) {
+    unsigned char* data = createGaussianMap(resolution);
+    glGenTextures(1, &texture);
+    glBindTexture(GL_TEXTURE_2D, texture);
+#ifndef USE_GL3
+    glTexParameteri(GL_TEXTURE_2D, GL_GENERATE_MIPMAP_SGIS, GL_TRUE);
+#else
+    glTexParameteri(GL_TEXTURE_2D, 0, GL_TRUE);
+#endif
+
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, resolution, resolution, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
+	/*
+	textureType = GL_TEXTURE_2D;
+
+	this->glId = glId;
+	this->name = name;
+
+	string path = textureDir + filename;
+	GLint * glChannelOrder = new GLint();
+	GLint * texChannelOrder = new GLint();
+    fipImage * image = readImage(path, glChannelOrder, texChannelOrder);
+
+	glGenTextures(1, &texture);
+
+    glBindTexture(GL_TEXTURE_2D, texture);
+
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+
+    glTexImage2D(GL_TEXTURE_2D, 0, *glChannelOrder, image->getWidth(), image->getHeight(), 0, *texChannelOrder, GL_UNSIGNED_BYTE, image->accessPixels());
+    */
+}
 
 Texture::Texture(string filename, GLenum glId, string name, bool cube) {
 	this->glId = glId;
@@ -42,15 +81,15 @@ Texture::Texture(string filename, GLenum glId, string name, bool cube) {
 	textureType = GL_TEXTURE_CUBE_MAP;
 
 	glGenTextures(1, &texture);
+	glBindTexture(GL_TEXTURE_CUBE_MAP,texture);
 
 /*
     glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_REPEAT);
     glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_REPEAT);
-
-    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 */
 
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 
 
 	for(int face=0; face<6; face++) {
@@ -70,22 +109,73 @@ Texture::~Texture() {
 	// TODO Auto-generated destructor stub
 }
 
+//------------------------------------------------------------------------------
+// Function     	  : EvalHermite
+// Description	    :
+//------------------------------------------------------------------------------
+/**
+* EvalHermite(float pA, float pB, float vA, float vB, float u)
+* @brief Evaluates Hermite basis functions for the specified coefficients.
+*/
+inline float Texture::evalHermite(float pA, float pB, float vA, float vB, float u)
+{
+    float u2=(u*u), u3=u2*u;
+    float B0 = 2*u3 - 3*u2 + 1;
+    float B1 = -2*u3 + 3*u2;
+    float B2 = u3 - 2*u2 + u;
+    float B3 = u3 - u;
+    return( B0*pA + B1*pB + B2*vA + B3*vB );
+}
+
+unsigned char* Texture::createGaussianMap(int N)
+{
+    float *M = new float[2*N*N];
+    unsigned char *B = new unsigned char[4*N*N];
+    float X,Y,Y2,Dist;
+    float Incr = 2.0f/N;
+    int i=0;
+    int j = 0;
+    Y = -1.0f;
+    //float mmax = 0;
+    for (int y=0; y<N; y++, Y+=Incr)
+    {
+        Y2=Y*Y;
+        X = -1.0f;
+        for (int x=0; x<N; x++, X+=Incr, i+=2, j+=4)
+        {
+            Dist = (float)sqrtf(X*X+Y2);
+            if (Dist>1) Dist=1;
+            M[i+1] = M[i] = evalHermite(1.0f,0,0,0,Dist);
+            B[j+3] = B[j+2] = B[j+1] = B[j] = (unsigned char)(M[i] * 255);
+        }
+    }
+    delete [] M;
+    return(B);
+}
+
 void Texture::activate(){
     glActiveTexture(glId);
     //glBindTexture(GL_TEXTURE_2D, texture);
 
+    /** FIXED FUNCTION ONLY?
     if (textureType == GL_TEXTURE_CUBE_MAP){
         glEnable(GL_TEXTURE_CUBE_MAP);
     }
 
-    glBindTexture(textureType, texture);
+    if (glIsEnabled(GL_TEXTURE_CUBE_MAP)){
+    	cout << "GL_TEXTURE_CUBE_MAP is enabled\n";
+    }
+    */
 
+    glBindTexture(textureType, texture);
+/*
     if (textureType == GL_TEXTURE_CUBE_MAP){
+    	cout << "GL_TEXTURE_WRAP_S\n";
         glEnable(GL_TEXTURE_WRAP_S);
         glEnable(GL_TEXTURE_WRAP_T);
         glEnable(GL_TEXTURE_WRAP_R);
     }
-
+*/
 /*
     glTexGeni(GL_S, GL_TEXTURE_, GL_);
     glTexGeni(GL_T, GL_TEXTURE_GEN_MODE, GL_REFLECTION_MAP_ARB);
@@ -95,7 +185,8 @@ void Texture::activate(){
 
 void Texture::uniform(GLuint program){
     GLint texLoc   = glGetUniformLocation(program, name.c_str());
-    glUniform1i(texLoc, texture-1);
+    //glUniform1i(texLoc, texture-1);
+    glUniform1i(texLoc, texture);
 }
 
 fipImage * Texture::readImage(string path, GLint * glChannelOrder, GLint * texChannelOrder){

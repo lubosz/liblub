@@ -34,6 +34,11 @@ void TextureFactory::loadCubeMap(string filename, string name){
 	textures.push_back(someTex);
 }
 
+void TextureFactory::splatTexture(string name, int resolution){
+	Texture * someTex = new Texture(textureEnums[textures.size()], name, resolution);
+	textures.push_back(someTex);
+}
+
 void TextureFactory::uniforms(GLint program){
 
 	GLint texLoc;

@@ -12,8 +12,7 @@
 #include <string>
 #include <FreeImagePlus.h>
 
-const string textureDir = "media/textures/";
-static const string suffixes[6] = {"_RT", "_LF", "_UP", "_DN", "_FR", "_BK"};
+
 
 class Texture {
 public:
@@ -21,10 +20,13 @@ public:
 	string name;
 	GLuint texture;
 	GLuint textureType;
+	Texture(GLenum glId, string name, int resolution);
 	Texture(string filename, GLenum glId, string name);
 	Texture(string filename, GLenum glId, string name, bool cube);
 	virtual ~Texture();
 	void activate();
 	void uniform(GLuint program);
 	fipImage * readImage(string path, GLint * glChannelOrder, GLint * texChannelOrder);
+	unsigned char* createGaussianMap(int N);
+	inline float evalHermite(float pA, float pB, float vA, float vB, float u);
 };

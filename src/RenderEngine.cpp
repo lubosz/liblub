@@ -21,6 +21,25 @@ RenderEngine::RenderEngine() {
 	shaderProgram = new ShaderProgram();
     sceneGraph = new SceneGraph();
 
+	//glPointSize(3);
+#ifndef USE_GL3
+    glEnable( GL_POINT_SMOOTH );
+#endif
+
+    //glEnable(GL_POINT_SPRITE_ARB);
+
+	/** TODO: Deprecated*/
+	#ifndef USE_GL3
+    //glTexEnvi(GL_POINT_SPRITE_ARB, GL_COORD_REPLACE_ARB, GL_TRUE);
+	#endif
+    glEnable(GL_VERTEX_PROGRAM_POINT_SIZE_NV);
+
+    glPointSize(5);
+    //glBlendFunc(GL_SRC_ALPHA, GL_ONE);
+    //glEnable(GL_BLEND);
+    //glDepthMask(GL_FALSE);
+
+
 	glError("RenderEngine",92);
 }
 
@@ -116,7 +135,8 @@ void RenderEngine::checkVersion(){
 	glGetIntegerv(GL_MAJOR_VERSION, &MajorVersion);
 	glGetIntegerv(GL_MINOR_VERSION, &MinorVersion);
 
-	//glPointSize(3);
+
+
 
 	glGetIntegerv(GL_POINT_SIZE, &pointSize);
 
@@ -134,13 +154,14 @@ void RenderEngine::checkVersion(){
 			<< "\n";
 
 
-
+#ifdef USE_GL3
 	glGetIntegerv(GL_NUM_EXTENSIONS, &numext);
 	cout << "Found " << numext << " GL_EXTENSIONS:\n";
 	for (int i = 0; i < numext && DEBUG; i++){
 		cout << glGetStringi(GL_EXTENSIONS,i) << " ";
 	}
 	cout << "\n";
+#endif
 }
 
 GLboolean RenderEngine::QueryExtension(char *extName) {

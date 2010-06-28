@@ -92,7 +92,8 @@ void main(void)
 
 	rotMatrix = mat3(T, B, N);
 
-	gl_Position = MVPMatrix * P;
+	//gl_Position = MVPMatrix * P;
+	gl_Position     = MVPMatrix * vec4(in_Vertex,1);
 
 	// calculate texture coordinates for normal map lookup
 	bumpCoord0.xy = in_Uv * textureScale + time * bumpSpeed;

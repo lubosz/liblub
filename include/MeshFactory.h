@@ -22,6 +22,8 @@ public:
 	void drawMeshes();
 	void tetrahedron();
 	void addMesh();
+	void cube();
+	void stars();
 	void loadObj(string file);
 
 	vector<Mesh*> meshes;

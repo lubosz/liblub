@@ -291,7 +291,7 @@ public:
 	ParticleMat(ShaderProgram * shaderProgram){
 		this->shaderProgram = shaderProgram;
 
-		TextureFactory::Instance().load("bunny.png","splatTexture");
+		TextureFactory::Instance().splatTexture("splatTexture", 32);
 		RenderEngine::Instance().shaderProgram->attachShader("Particle/particle.vert", GL_VERTEX_SHADER);
 		RenderEngine::Instance().shaderProgram->attachShader("Particle/particle.frag", GL_FRAGMENT_SHADER);
 
@@ -302,3 +302,52 @@ public:
 
 	}
 };
+
+class EnvMat : public Material {
+public:
+	EnvMat(ShaderProgram * shaderProgram){
+		this->shaderProgram = shaderProgram;
+
+		//TextureFactory::Instance().load("bunny.png","Map");
+		TextureFactory::Instance().loadCubeMap("cubemaps/sky","EnvMap");
+		RenderEngine::Instance().shaderProgram->attachShader("Texture/cubemap.vert", GL_VERTEX_SHADER);
+		RenderEngine::Instance().shaderProgram->attachShader("Texture/cubemap.frag", GL_FRAGMENT_SHADER);
+
+		defaultAttribs();
+  }
+	void uniforms(){
+		GLuint program = shaderProgram->program;
+
+		//Frag
+		glUniform3f(glGetUniformLocation(program, "BaseColor"), 0.5, 0.5, 1.0);
+		glUniform1f(glGetUniformLocation(program, "MixRatio"), 0.9);
+
+	}
+};
+
+class NormalColorMat : public Material {
+public:
+	NormalColorMat(ShaderProgram * shaderProgram){
+		this->shaderProgram = shaderProgram;
+
+		RenderEngine::Instance().shaderProgram->attachShader("Color/normalcolor.vert", GL_VERTEX_SHADER);
+		RenderEngine::Instance().shaderProgram->attachShader("Color/normalcolor.frag", GL_FRAGMENT_SHADER);
+
+		defaultAttribs();
+  }
+	void uniforms(){}
+};
+
+class StarMat : public Material {
+public:
+	StarMat(ShaderProgram * shaderProgram){
+		this->shaderProgram = shaderProgram;
+
+		RenderEngine::Instance().shaderProgram->attachShader("Particle/stars.vert", GL_VERTEX_SHADER);
+		RenderEngine::Instance().shaderProgram->attachShader("Particle/stars.frag", GL_FRAGMENT_SHADER);
+
+		defaultAttribs();
+  }
+	void uniforms(){}
+};
+

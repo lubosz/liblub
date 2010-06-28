@@ -42,6 +42,9 @@ public:
 	void relief();
 	void ocean();
 	void particle();
+	void env();
+	void normalcolor();
+	void stars();
 
 private:
 	ShaderFactory();

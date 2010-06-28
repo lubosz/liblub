@@ -27,6 +27,7 @@ public:
 
 	void load(string filename, string name);
 	void loadCubeMap(string filename, string name);
+	void splatTexture(string name, int resolution);
 	void uniforms(GLint program);
 private:
 

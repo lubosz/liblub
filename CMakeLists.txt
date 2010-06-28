@@ -19,7 +19,7 @@ endif (UNIX)
 
 include_directories(
 include
-include/GL3
+#include/GL3
 )
 
 #App Shader Demo

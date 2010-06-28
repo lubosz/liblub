@@ -85,5 +85,6 @@ void Mesh::draw(){
 		vertCount+=3;
 	}
 	*/
+	glDrawElementsInstanced(drawType, indexSize, GL_UNSIGNED_INT, 0,6);
 	glDrawElements(drawType, indexSize, GL_UNSIGNED_INT, 0);
 }

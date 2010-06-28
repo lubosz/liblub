@@ -73,6 +73,18 @@ void ShaderFactory::particle(){
 	materials.push_back(new ParticleMat(RenderEngine::Instance().shaderProgram));
 }
 
+void ShaderFactory::env(){
+	materials.push_back(new EnvMat(RenderEngine::Instance().shaderProgram));
+}
+
+void ShaderFactory::normalcolor(){
+	materials.push_back(new NormalColorMat(RenderEngine::Instance().shaderProgram));
+}
+
+void ShaderFactory::stars(){
+	materials.push_back(new StarMat(RenderEngine::Instance().shaderProgram));
+}
+
 void ShaderFactory::addUniforms(){
 	GLint program = RenderEngine::Instance().shaderProgram->program;
 
