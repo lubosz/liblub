@@ -2,14 +2,15 @@
 
 precision highp float;
 
-in vec3 in_Position;
+in vec3 in_Vertex;
 in vec3 in_Color;
 in vec3 in_Normal;
 
 out vec3 geom_Color;
 
+uniform mat4 MVPMatrix;
+
 void main(void) {
-    gl_Position = vec4(in_Position, 1.0);
-    //geom_Color = in_Color;
-    geom_Color = in_Normal;
+    geom_Color = in_Color;
+    gl_Position = MVPMatrix * vec4(in_Vertex,1);
 }

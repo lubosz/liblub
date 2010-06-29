@@ -25,20 +25,17 @@ TextureFactory::TextureFactory() {
 TextureFactory::~TextureFactory() {
 	// TODO Auto-generated destructor stub
 }
-void TextureFactory::load(string filename, string name){
-	Texture * someTex = new Texture(filename, textureEnums[textures.size()], name);
-	textures.push_back(someTex);
+Texture * TextureFactory::load(string filename, string name){
+	return new Texture(filename, textureEnums[textures.size()], name);
 }
-void TextureFactory::loadCubeMap(string filename, string name){
-	Texture * someTex = new Texture(filename, textureEnums[textures.size()], name, true);
-	textures.push_back(someTex);
+Texture * TextureFactory::loadCubeMap(string filename, string name){
+	return new Texture(filename, textureEnums[textures.size()], name, true);
 }
 
-void TextureFactory::splatTexture(string name, int resolution){
-	Texture * someTex = new Texture(textureEnums[textures.size()], name, resolution);
-	textures.push_back(someTex);
+Texture * TextureFactory::splatTexture(string name, int resolution){
+	return new Texture(textureEnums[textures.size()], name, resolution);
 }
-
+/*
 void TextureFactory::uniforms(GLint program){
 
 	GLint texLoc;
@@ -50,3 +47,4 @@ void TextureFactory::uniforms(GLint program){
 		glUniform1i(texLoc, i);
 	}
 }
+*/

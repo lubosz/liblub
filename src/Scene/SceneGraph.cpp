@@ -132,17 +132,31 @@ void SceneGraph::bindShaders(ShaderProgram * shaderProgram){
 }
 
 
+void SceneGraph::addNode(string name, vector<float> position, Mesh * mesh, Material * material){
+	sceneNodes.push_back(Node(name, position, mesh, material));
+	materials.push_back(material);
+}
+
 void SceneGraph::addNode(string name, vector<float> position, Mesh * mesh){
 	sceneNodes.push_back(Node(name, position, mesh));
 }
 
-void SceneGraph::drawNodes(ShaderProgram * shaderProgram){
+void SceneGraph::drawNodes(){
     BOOST_FOREACH( Node node, sceneNodes )
     {
         transform();
         translate(node.getPosition());
-        bindShaders(shaderProgram);
+        glUseProgram(node.getMaterial()->shaderProgram->program);
+        bindShaders(node.getMaterial()->shaderProgram);
     	node.draw();
+    }
+
+}
+
+void SceneGraph::initUniforms(){
+    BOOST_FOREACH( Material* material, materials )
+    {
+        material->uniforms();
     }
 
 }

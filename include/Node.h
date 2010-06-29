@@ -21,6 +21,7 @@ private:
 
 public:
 	Node(string name, vector<float> position, Mesh * mesh);
+	Node(string name, vector<float> position, Mesh * mesh, Material * material);
 	virtual ~Node();
 
     void setMesh(Mesh *mesh);
@@ -29,5 +30,7 @@ public:
     string getName() const;
     vector<float> getPosition() const;
     void setName(string name);
+    Material *getMaterial() const;
+    void setMaterial(Material *material);
 };
 

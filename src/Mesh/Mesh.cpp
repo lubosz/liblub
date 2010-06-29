@@ -36,7 +36,7 @@ Mesh::~Mesh() {
 
 void Mesh::addBuffer(vector<GLfloat> content, unsigned size, string name){
 	//RenderEngine::Instance().shaderProgram->bindAttrib(name);
-	RenderEngine::Instance().shaderProgram->bindAttribIfUnbound(name);
+	//RenderEngine::Instance().shaderProgram->bindAttribIfUnbound(name);
 
     /* Bind our first VBO as being the active buffer and storing vertex attributes (coordinates) */
     glBindBuffer(GL_ARRAY_BUFFER, vbo[bufferCount]);

@@ -119,7 +119,7 @@ void MediaLayer::eventLoop(){
 
             case 'r':
             	cout << "Reloading Shaders\n";
-            	RenderEngine::Instance().shaderProgram->reload();
+            	//RenderEngine::Instance().shaderProgram->reload();
             	break;
 
             default:

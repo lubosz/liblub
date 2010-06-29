@@ -18,7 +18,7 @@ RenderEngine::RenderEngine() {
 	checkVersion();
 	frameCount = 0;
 
-	shaderProgram = new ShaderProgram();
+	//shaderProgram = new ShaderProgram();
 
 	//glPointSize(3);
 #ifndef USE_GL3
@@ -47,7 +47,7 @@ RenderEngine::~RenderEngine() {
     /* Cleanup all the things we bound and allocated */
 	cout << "Shutting down Render Engine...";
 
-    delete shaderProgram;
+    //delete shaderProgram;
 
 
 	cout << "done.\n";
@@ -84,7 +84,7 @@ void RenderEngine::display() {
     SceneGraph::Instance().bindShaders(shaderProgram);
     MeshFactory::Instance().meshes[1]->draw();
 */
-    SceneGraph::Instance().drawNodes(shaderProgram);
+    SceneGraph::Instance().drawNodes();
 
 	//MeshFactory::Instance().drawMeshes();
 

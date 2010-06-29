@@ -13,25 +13,20 @@
 
 class VertexMaterial : public Material {
 public:
-	VertexMaterial(ShaderProgram * shaderProgram){
-		this->shaderProgram = shaderProgram;
-		shaderProgram->attachShader("Color/vertexcolor.vert", GL_VERTEX_SHADER);
-		shaderProgram->attachShader("Color/vertexcolor.geom", GL_GEOMETRY_SHADER);
-		shaderProgram->attachShader("Color/vertexcolor.frag", GL_FRAGMENT_SHADER);
-
-		defaultAttribs();
+	VertexMaterial(){
+		init();
+		attachVertFrag("Color/vertexcolor");
+		done();
   }
 	void uniforms(){}
 };
 
 class BrickMaterial : public Material {
 public:
-	BrickMaterial(ShaderProgram * shaderProgram){
-		this->shaderProgram = shaderProgram;
-		shaderProgram->attachShader("Procedural/brick.vert", GL_VERTEX_SHADER);
-		shaderProgram->attachShader("Procedural/brick.frag", GL_FRAGMENT_SHADER);
-
-		defaultAttribs();
+	BrickMaterial(){
+		init();
+		attachVertFrag("Procedural/brick");
+		done();
   }
 	void uniforms(){
 		cout << "inititalizing brick uniforms.\n";
@@ -44,61 +39,50 @@ public:
 
 class TextureMaterial : public Material {
 public:
-	TextureMaterial(ShaderProgram * shaderProgram){
-		this->shaderProgram = shaderProgram;
-		TextureFactory::Instance().load("bunny.png","myTexture");
-
-		shaderProgram->attachShader("Texture/texture.vert", GL_VERTEX_SHADER);
-		shaderProgram->attachShader("Texture/texture.frag", GL_FRAGMENT_SHADER);
-
-		defaultAttribs();
+	TextureMaterial(){
+		init();
+		addTexture("bunny.png","myTexture");
+		attachVertFrag("Texture/texture");
+		done();
   }
 	void uniforms(){}
+
 };
 
 class MultiTextureMaterial : public Material {
 public:
-	MultiTextureMaterial(ShaderProgram * shaderProgram){
-		this->shaderProgram = shaderProgram;
-		TextureFactory::Instance().load("bunny.png","myTexture");
-		TextureFactory::Instance().load("jet1.jpg","myOtherTexture");
-
-		shaderProgram->attachShader("Texture/multitexture.vert", GL_VERTEX_SHADER);
-		shaderProgram->attachShader("Texture/multitexture.frag", GL_FRAGMENT_SHADER);
-
-		defaultAttribs();
+	MultiTextureMaterial(){
+		init();
+		addTexture("bunny.png","myTexture");
+		addTexture("jet1.jpg","myOtherTexture");
+		attachVertFrag("Texture/multitexture");
+		done();
   }
 	void uniforms(){}
 };
 
 class EarthMaterial : public Material {
 public:
-	EarthMaterial(ShaderProgram * shaderProgram){
-		this->shaderProgram = shaderProgram;
-		TextureFactory::Instance().load("earth/day.jpg","EarthDay");
-		TextureFactory::Instance().load("earth/night.jpg","EarthNight");
-		TextureFactory::Instance().load("earth/clouds.jpg","EarthCloudGloss");
-
-		shaderProgram->attachShader("Space/earth.vert", GL_VERTEX_SHADER);
-		shaderProgram->attachShader("Space/earth.frag", GL_FRAGMENT_SHADER);
-
-		defaultAttribs();
+	EarthMaterial(){
+		init();
+		addTexture("earth/day.jpg","EarthDay");
+		addTexture("earth/night.jpg","EarthNight");
+		addTexture("earth/clouds.jpg","EarthCloudGloss");
+		attachVertFrag("Space/earth");
+		done();
   }
 	void uniforms(){}
 };
 
 class ConeMapMaterial : public Material {
 public:
-	ConeMapMaterial(ShaderProgram * shaderProgram){
-		this->shaderProgram = shaderProgram;
-		TextureFactory::Instance().load("cone/collage_base.jpg","texmap");
-		TextureFactory::Instance().load("cone/collage_step.png","stepmap");
-
+	ConeMapMaterial(){
+		init();
+		addTexture("cone/collage_base.jpg","texmap");
+		addTexture("cone/collage_step.png","stepmap");
 		shaderProgram->attachShader("Common/shared.vert", GL_VERTEX_SHADER);
         shaderProgram->attachShader("CSM/csm_dist_shadow.frag", GL_FRAGMENT_SHADER);
-        //shaderProgram->attachShader("procBump.frag", GL_FRAGMENT_SHADER);
-
-		defaultAttribs();
+        done();
   }
 	void uniforms(){
 		GLuint program = shaderProgram->program;
@@ -119,12 +103,10 @@ public:
 
 class ProcBumpMaterial : public Material {
 public:
-	ProcBumpMaterial(ShaderProgram * shaderProgram){
-		this->shaderProgram = shaderProgram;
-		shaderProgram->attachShader("Procedural/procBump.vert", GL_VERTEX_SHADER);
-		shaderProgram->attachShader("Procedural/procBump.frag", GL_FRAGMENT_SHADER);
-
-		defaultAttribs();
+	ProcBumpMaterial(){
+		init();
+		attachVertFrag("Procedural/procBump");
+		done();
   }
 	void uniforms(){
 		GLuint program = shaderProgram->program;
@@ -137,15 +119,12 @@ public:
 
 class ConvolutionMaterial : public Material {
 public:
-	ConvolutionMaterial(ShaderProgram * shaderProgram){
-		this->shaderProgram = shaderProgram;
-
-		TextureFactory::Instance().load("bunny.png","BaseImage");
-		RenderEngine::Instance().shaderProgram->attachShader("Texture/texture.vert", GL_VERTEX_SHADER);
-		//RenderEngine::Instance().shaderProgram->attachShader("convolution.frag", GL_FRAGMENT_SHADER);
-		RenderEngine::Instance().shaderProgram->attachShader("Post/smoothing.frag", GL_FRAGMENT_SHADER);
-
-		defaultAttribs();
+	ConvolutionMaterial(){
+		init();
+		addTexture("bunny.png","BaseImage");
+		shaderProgram->attachShader("Texture/texture.vert", GL_VERTEX_SHADER);
+		shaderProgram->attachShader("Post/smoothing.frag", GL_FRAGMENT_SHADER);
+		done();
   }
 	void uniforms(){
 		GLuint program = shaderProgram->program;
@@ -162,15 +141,12 @@ public:
 
 class BumpMaterial1 : public Material {
 public:
-	BumpMaterial1(ShaderProgram * shaderProgram){
-		this->shaderProgram = shaderProgram;
-
-		TextureFactory::Instance().load("bunny.png","diffuseTexture");
-		TextureFactory::Instance().load("bunny-bump.png","normalTexture");
-		RenderEngine::Instance().shaderProgram->attachShader("Bump/noTangentBump.vert", GL_VERTEX_SHADER);
-		RenderEngine::Instance().shaderProgram->attachShader("Bump/noTangentBump.frag", GL_FRAGMENT_SHADER);
-
-		defaultAttribs();
+	BumpMaterial1(){
+		init();
+		addTexture("bunny.png","diffuseTexture");
+		addTexture("bunny-bump.png","normalTexture");
+		attachVertFrag("Bump/noTangentBump");
+		done();
   }
 	void uniforms(){
 		GLuint program = shaderProgram->program;
@@ -182,16 +158,13 @@ public:
 
 class BumpMaterial2 : public Material {
 public:
-	BumpMaterial2(ShaderProgram * shaderProgram){
-		this->shaderProgram = shaderProgram;
-
-		TextureFactory::Instance().load("bunny.png","colorMap");
-		TextureFactory::Instance().load("bunny-bump.png","normalMap");
-		TextureFactory::Instance().load("bunny-gloss.png","glossMap");
-		RenderEngine::Instance().shaderProgram->attachShader("Bump/noTangentBump2.vert", GL_VERTEX_SHADER);
-		RenderEngine::Instance().shaderProgram->attachShader("Bump/noTangentBump2.frag", GL_FRAGMENT_SHADER);
-
-		defaultAttribs();
+	BumpMaterial2(){
+		init();
+		addTexture("bunny.png","colorMap");
+		addTexture("bunny-bump.png","normalMap");
+		addTexture("bunny-gloss.png","glossMap");
+		attachVertFrag("Bump/noTangentBump2");
+		done();
   }
 	void uniforms(){
 		GLuint program = shaderProgram->program;
@@ -214,15 +187,13 @@ public:
 
 class ReliefMat : public Material {
 public:
-	ReliefMat(ShaderProgram * shaderProgram){
-		this->shaderProgram = shaderProgram;
-
-		TextureFactory::Instance().load("cone/collage_base.jpg","texmap");
-		TextureFactory::Instance().load("cone/collage_step.png","reliefmap");
-		RenderEngine::Instance().shaderProgram->attachShader("Common/shared.vert", GL_VERTEX_SHADER);
-		RenderEngine::Instance().shaderProgram->attachShader("Bump/relief.frag", GL_FRAGMENT_SHADER);
-
-		defaultAttribs();
+	ReliefMat(){
+		init();
+		addTexture("cone/collage_base.jpg","texmap");
+		addTexture("cone/collage_step.png","reliefmap");
+		shaderProgram->attachShader("Common/shared.vert", GL_VERTEX_SHADER);
+		shaderProgram->attachShader("Bump/relief.frag", GL_FRAGMENT_SHADER);
+		done();
   }
 	void uniforms(){
 		GLuint program = shaderProgram->program;
@@ -246,15 +217,12 @@ public:
 
 class OceanMat : public Material {
 public:
-	OceanMat(ShaderProgram * shaderProgram){
-		this->shaderProgram = shaderProgram;
-
-		TextureFactory::Instance().loadCubeMap("cubemaps/morning","EnvironmentMap");
-		TextureFactory::Instance().load("ocean/waves2.dds","NormalMap");
-		RenderEngine::Instance().shaderProgram->attachShader("Water/Ocean.vert", GL_VERTEX_SHADER);
-		RenderEngine::Instance().shaderProgram->attachShader("Water/Ocean.frag", GL_FRAGMENT_SHADER);
-
-		defaultAttribs();
+	OceanMat(){
+		init();
+		addTextureCube("cubemaps/morning","EnvironmentMap");
+		addTexture("ocean/waves2.dds","NormalMap");
+		attachVertFrag("Water/Ocean");
+		done();
   }
 	void uniforms(){
 		GLuint program = shaderProgram->program;
@@ -288,14 +256,11 @@ public:
 
 class ParticleMat : public Material {
 public:
-	ParticleMat(ShaderProgram * shaderProgram){
-		this->shaderProgram = shaderProgram;
-
-		TextureFactory::Instance().splatTexture("splatTexture", 32);
-		RenderEngine::Instance().shaderProgram->attachShader("Particle/particle.vert", GL_VERTEX_SHADER);
-		RenderEngine::Instance().shaderProgram->attachShader("Particle/particle.frag", GL_FRAGMENT_SHADER);
-
-		defaultAttribs();
+	ParticleMat(){
+		init();
+		addTexture(TextureFactory::Instance().splatTexture("splatTexture", 32));
+		attachVertFrag("Particle/particle");
+		done();
   }
 	void uniforms(){
 
@@ -305,15 +270,11 @@ public:
 
 class EnvMat : public Material {
 public:
-	EnvMat(ShaderProgram * shaderProgram){
-		this->shaderProgram = shaderProgram;
-
-		//TextureFactory::Instance().load("bunny.png","Map");
-		TextureFactory::Instance().loadCubeMap("cubemaps/sky","EnvMap");
-		RenderEngine::Instance().shaderProgram->attachShader("Texture/cubemap.vert", GL_VERTEX_SHADER);
-		RenderEngine::Instance().shaderProgram->attachShader("Texture/cubemap.frag", GL_FRAGMENT_SHADER);
-
-		defaultAttribs();
+	EnvMat(){
+		init();
+		addTextureCube("cubemaps/sky","EnvMap");
+		attachVertFrag("Texture/cubemap");
+		done();
   }
 	void uniforms(){
 		GLuint program = shaderProgram->program;
@@ -327,26 +288,20 @@ public:
 
 class NormalColorMat : public Material {
 public:
-	NormalColorMat(ShaderProgram * shaderProgram){
-		this->shaderProgram = shaderProgram;
-
-		RenderEngine::Instance().shaderProgram->attachShader("Color/normalcolor.vert", GL_VERTEX_SHADER);
-		RenderEngine::Instance().shaderProgram->attachShader("Color/normalcolor.frag", GL_FRAGMENT_SHADER);
-
-		defaultAttribs();
+	NormalColorMat(){
+		init();
+		attachVertFrag("Color/normalcolor");
+		done();
   }
 	void uniforms(){}
 };
 
 class StarMat : public Material {
 public:
-	StarMat(ShaderProgram * shaderProgram){
-		this->shaderProgram = shaderProgram;
-
-		RenderEngine::Instance().shaderProgram->attachShader("Particle/stars.vert", GL_VERTEX_SHADER);
-		RenderEngine::Instance().shaderProgram->attachShader("Particle/stars.frag", GL_FRAGMENT_SHADER);
-
-		defaultAttribs();
+	StarMat(){
+		init();
+		attachVertFrag("Particle/stars");
+		done();
   }
 	void uniforms(){}
 };

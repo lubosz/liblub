@@ -11,6 +11,13 @@ Node::Node(string name, vector<float> position, Mesh * mesh) {
     this->name = name;
     this->position = position;
     this->mesh = mesh;
+}
+
+Node::Node(string name, vector<float> position, Mesh * mesh, Material * material) {
+    this->name = name;
+    this->position = position;
+    this->mesh = mesh;
+    this->material = material;
 
 }
 
@@ -37,6 +44,16 @@ vector<float> Node::getPosition() const
 void Node::setName(string name)
 {
     this->name = name;
+}
+
+Material *Node::getMaterial() const
+{
+    return material;
+}
+
+void Node::setMaterial(Material *material)
+{
+    this->material = material;
 }
 
 void Node::draw(){

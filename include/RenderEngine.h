@@ -20,7 +20,7 @@ public:
 
 	friend class Singleton<RenderEngine>;
 
-	ShaderProgram * shaderProgram;
+	//ShaderProgram * shaderProgram;
 	unsigned frameCount;
 
 

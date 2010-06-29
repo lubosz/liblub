@@ -37,7 +37,7 @@ set(CONE_DEMO_SOURCES
 	${SRC_DIR}/Material/Shader.cpp
 	${SRC_DIR}/Material/Texture.cpp
 	${SRC_DIR}/Material/TextureFactory.cpp
-	${SRC_DIR}/Material/ShaderFactory.cpp
+	#${SRC_DIR}/Material/ShaderFactory.cpp
 
 	${SRC_DIR}/Mesh/ObjLoader.cpp
 	${SRC_DIR}/Mesh/Geometry.cpp  

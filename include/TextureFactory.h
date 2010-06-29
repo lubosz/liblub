@@ -11,31 +11,25 @@
 #include <vector>
 #include "common.h"
 #include "Texture.h"
+#include "Singleton.h"
 
 using namespace std;
 
-class TextureFactory {
+class TextureFactory : public Singleton<TextureFactory>{
 public:
+	friend class Singleton<TextureFactory>;
 
 	vector<Texture*> textures;
 
-	static TextureFactory& Instance()
-	 {
-	    static TextureFactory singleton;
-	    return singleton;
-	  }
-
-	void load(string filename, string name);
-	void loadCubeMap(string filename, string name);
-	void splatTexture(string name, int resolution);
-	void uniforms(GLint program);
+	Texture * load(string filename, string name);
+	Texture * loadCubeMap(string filename, string name);
+	Texture * splatTexture(string name, int resolution);
+	//void uniforms(GLint program);
 private:
 
 	GLenum textureEnums[32];
 
 	TextureFactory();
 	virtual ~TextureFactory();
-	TextureFactory(const TextureFactory&);                 // Prevent copy-construction
-	TextureFactory& operator=(const TextureFactory&);      // Prevent assignment
 };
 

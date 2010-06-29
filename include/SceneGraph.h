@@ -4,6 +4,7 @@
 #include "ShaderProgram.h"
 #include "Singleton.h"
 #include "Node.h"
+#include "Material.h"
 #include <stdio.h>
 #include <string.h>
 
@@ -32,6 +33,7 @@ public:
 	friend class Singleton<SceneGraph>;
 
 	vector<Node> sceneNodes;
+	vector<Material*> materials;
 
 
 	/* Multiply 4x4 matrix m1 by 4x4 matrix m2 and store the result in m1 */
@@ -53,7 +55,9 @@ public:
 	void translate(float x, float y, float z);
 	void translate(vector<float> translation);
 	void addNode(string name, vector<float> position, Mesh * mesh);
-	void drawNodes(ShaderProgram * shaderProgram);
+	void addNode(string name, vector<float> position, Mesh * mesh, Material * material);
+	void drawNodes();
+	void initUniforms();
 
 	GLfloat modelmatrix[16]; /* Our model matrix  */
 
