@@ -21,9 +21,6 @@ public:
 	ShaderProgram * shaderProgram;
 	vector<Texture*> textures;
 
-	//Material(){}
-
-	//virtual void uniforms();
 	virtual void uniforms() = 0;
 
 	void init(){
@@ -71,21 +68,9 @@ public:
 	}
 
 	void initUniforms(){
-		/*
-		GLint texLoc;
-
-		for (int i = 0; i < textures.size(); i++){
-			cout << "Assigning Texture " << i << " " << textures[i]->name << "\n";
-			textures[i]->activate();
-			texLoc   = glGetUniformLocation(shaderProgram->program, textures[i]->name.c_str());
-			//glUniform1i(texLoc, i);
-		}
-		*/
-		shaderProgram->use();
         BOOST_FOREACH( Texture* texture, textures ){
         	texture->activate();
         	texture->bind();
-        	//texture->uniform(shaderProgram->program);
         }
 
 		uniforms();

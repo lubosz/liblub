@@ -49,29 +49,6 @@ Texture::Texture(GLenum glId, string name, int resolution) {
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, resolution, resolution, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
-	/*
-	textureType = GL_TEXTURE_2D;
-
-	this->glId = glId;
-	this->name = name;
-
-	string path = textureDir + filename;
-	GLint * glChannelOrder = new GLint();
-	GLint * texChannelOrder = new GLint();
-    fipImage * image = readImage(path, glChannelOrder, texChannelOrder);
-
-	glGenTextures(1, &texture);
-
-    glBindTexture(GL_TEXTURE_2D, texture);
-
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-
-    glTexImage2D(GL_TEXTURE_2D, 0, *glChannelOrder, image->getWidth(), image->getHeight(), 0, *texChannelOrder, GL_UNSIGNED_BYTE, image->accessPixels());
-    */
 }
 
 Texture::Texture(string filename, GLenum glId, string name, bool cube) {
@@ -82,11 +59,6 @@ Texture::Texture(string filename, GLenum glId, string name, bool cube) {
 
 	glGenTextures(1, &texture);
 	glBindTexture(GL_TEXTURE_CUBE_MAP,texture);
-
-/*
-    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_REPEAT);
-*/
 
 	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
@@ -155,32 +127,6 @@ unsigned char* Texture::createGaussianMap(int N)
 
 void Texture::activate(){
     glActiveTexture(glId);
-    //glBindTexture(GL_TEXTURE_2D, texture);
-
-    /** FIXED FUNCTION ONLY?
-    if (textureType == GL_TEXTURE_CUBE_MAP){
-        glEnable(GL_TEXTURE_CUBE_MAP);
-    }
-
-    if (glIsEnabled(GL_TEXTURE_CUBE_MAP)){
-    	cout << "GL_TEXTURE_CUBE_MAP is enabled\n";
-    }
-    */
-
-
-/*
-    if (textureType == GL_TEXTURE_CUBE_MAP){
-    	cout << "GL_TEXTURE_WRAP_S\n";
-        glEnable(GL_TEXTURE_WRAP_S);
-        glEnable(GL_TEXTURE_WRAP_T);
-        glEnable(GL_TEXTURE_WRAP_R);
-    }
-*/
-/*
-    glTexGeni(GL_S, GL_TEXTURE_, GL_);
-    glTexGeni(GL_T, GL_TEXTURE_GEN_MODE, GL_REFLECTION_MAP_ARB);
-    glTexGeni(GL_R, GL_TEXTURE_GEN_MODE, GL_REFLECTION_MAP_ARB);
-*/
 }
 
 void Texture::bind(){

@@ -1,6 +1,5 @@
 #include "MediaLayer.h"
 #include "RenderEngine.h"
-#include "ShaderFactory.h"
 #include "Geometry.h"
 #include "Camera.h"
 #include "MeshFactory.h"
@@ -75,37 +74,13 @@ void initScene(){
 	//addNode("monkeySmooth.obj",{0,0,0},new MultiTextureMaterial());
 	//niceScene();
 	multiTexScene();
-/*
-	vector<Material*> allMaterials = {
-			new VertexMaterial(),
-			new BrickMaterial(),
-			new TextureMaterial(),
-			new MultiTextureMaterial(),
-			new EarthMaterial(),
-			new ConeMapMaterial(),
-			new ProcBumpMaterial(),
-			new ConvolutionMaterial(),
-			new BumpMaterial1(),
-			new BumpMaterial2(),
-			new ReliefMat(),
-			new OceanMat(),
-			new ParticleMat(),
-			new EnvMat(),
-			new NormalColorMat(),
-			new StarMat()
-
-	};
-*/
-
 
 /*
  vector<Material*> pointMats = {
 			//new StarMat()
 			//new ParticleMat(),
 	};
- */
 
-	/*
 	 vector<Material*> bugMats = {
 	 				//Multitexture bugs!
 
@@ -118,67 +93,13 @@ void initScene(){
 
 
 		};
-	 */
-	/*
+
 	 vector<Material*> worksAlone = {
 				new ConvolutionMaterial(),
 				new ProcBumpMaterial(),
 				new BrickMaterial(),
 		};
 	 */
-
-
-	//addNode("monkeySmooth.obj", {0,0,-5}, new BrickMaterial());
-/*
-
-	addNode("monkeySmooth.obj", {0,0,-5}, new TextureMaterial());
-	addNode("monkeySmooth.obj", {2,0,-5}, new TextureMaterial());
-*/
-	/*
-	addNode("monkeySmooth.obj", {-2,-2,-5}, new ProcBumpMaterial());
-	addNode("monkeySmooth.obj", {0,-2,-5}, new ProcBumpMaterial());
-	addNode("monkeySmooth.obj", {2,-2,-5}, new ProcBumpMaterial());
-	*/
-/*
-	addNode("monkeySmooth.obj", {-2,2,-5}, new BrickMaterial());
-	addNode("monkeySmooth.obj", {0,2,-5}, new BrickMaterial());
-	addNode("monkeySmooth.obj", {2,2,-5}, new BrickMaterial());
-*/
-	//MeshFactory::Instance().stars();
-	//MeshFactory::Instance().tetrahedron();
-	/*
-	SceneGraph::Instance().addNode("Monkey",{0,0,-5}, MeshFactory::Instance().load("monkeySmooth.obj"), new TextureMaterial());
-	SceneGraph::Instance().addNode("Monkey",{0,1,-1}, MeshFactory::Instance().load("monkeySmooth.obj"), new BrickMaterial());
-*/
-
-	//MeshFactory::Instance().loadObj("monkeySmooth.obj");
-	/*
-	addNode(MeshFactory::Instance().stars(),{-5,-5,-5});
-	addNode(MeshFactory::Instance().tetrahedron(),{-3,0,0});
-	addNode(MeshFactory::Instance().cube(),{-3,-3,-3});
-	*/
-	//meshCube("monkeySmooth.obj", 10.0, 2.5);
-
-	/*
-	addNode("monkeySmooth.obj",{0,0,0});
-	addNode("cube.obj",{3,1,1});
-*/
-
-
-	//MeshFactory::Instance().cube();
-
-
-	//MeshFactory::Instance().loadObj("monkey.obj");
-
-	//MeshFactory::Instance().loadObj("monkeySub6.obj");
-	//MeshFactory::Instance().loadObj("monkeyMedium.obj");
-	//MeshFactory::Instance().loadObj("cube.obj");
-
-
-	//RenderEngine::Instance().shaderProgram->linkAndUse();
-	SceneGraph::Instance().initUniforms();
-	//ShaderFactory::Instance().addUniforms();
-
 }
 
 int main(int argc, char *argv[])
@@ -191,7 +112,7 @@ int main(int argc, char *argv[])
 	Camera::Instance().setParams(70.0, 0.1, 100.0);
 	Camera::Instance().setAspect(float(width)/float(height));
 	initScene();
-
+	SceneGraph::Instance().initUniforms();
 
 
 	mediaLayer->renderLoop();

@@ -80,37 +80,20 @@ void SceneGraph::animate(float frameCount){
 }
 
 void SceneGraph::transform(){
-    /* Load the identity matrix into modelmatrix. rotate the model, and move it back 5 */
     memcpy(modelmatrix, identitymatrix, sizeof(GLfloat) * 16);
-    //animate(frameCount);
-    //translate(modelmatrix, -5, -5, -5);
     rotate(modelmatrix, (GLfloat) Camera::Instance().yaw, X_AXIS);
     rotate(modelmatrix, (GLfloat) Camera::Instance().pitch, Y_AXIS);
     rotate(modelmatrix, (GLfloat) Camera::Instance().roll, Z_AXIS);
-    //translate(modelmatrix, 0, 0, -2.5);
-    //translate(modelmatrix, 5, 5, 5);
     translate(modelmatrix, Camera::Instance().x, Camera::Instance().y, Camera::Instance().z);
-
-    //cout<<"Cam " << Camera::Instance().x<<" "<< Camera::Instance().y<<" "<< Camera::Instance().z<<"\n";
-
-
 }
 
 void SceneGraph::transform(float frameCount){
-    /* Load the identity matrix into modelmatrix. rotate the model, and move it back 5 */
     memcpy(modelmatrix, identitymatrix, sizeof(GLfloat) * 16);
     //animate(frameCount);
-    //translate(modelmatrix, -5, -5, -5);
     rotate(modelmatrix, (GLfloat) Camera::Instance().yaw, X_AXIS);
     rotate(modelmatrix, (GLfloat) Camera::Instance().pitch, Y_AXIS);
     rotate(modelmatrix, (GLfloat) Camera::Instance().roll, Z_AXIS);
-    //translate(modelmatrix, 0, 0, -2.5);
-    //translate(modelmatrix, 5, 5, 5);
     translate(modelmatrix, Camera::Instance().x, Camera::Instance().y, Camera::Instance().z);
-
-    //cout<<"Cam " << Camera::Instance().x<<" "<< Camera::Instance().y<<" "<< Camera::Instance().z<<"\n";
-
-
 }
 
 void SceneGraph::translate(float x, float y, float z){
