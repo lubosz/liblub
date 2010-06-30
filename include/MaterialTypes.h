@@ -10,6 +10,7 @@
 #include "ShaderProgram.h"
 #include "Material.h"
 #include "TextureFactory.h"
+#include "RenderEngine.h"
 
 class VertexMaterial : public Material {
 public:
@@ -44,6 +45,7 @@ public:
 		addTexture("bunny.png","myTexture");
 		attachVertFrag("Texture/texture");
 		done();
+
   }
 	void uniforms(){}
 
@@ -275,6 +277,7 @@ public:
 		addTextureCube("cubemaps/sky","EnvMap");
 		attachVertFrag("Texture/cubemap");
 		done();
+		glError("MatTypes",280);
   }
 	void uniforms(){
 		GLuint program = shaderProgram->program;

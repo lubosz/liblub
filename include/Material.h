@@ -12,6 +12,7 @@
 #include "Texture.h"
 #include "ShaderProgram.h"
 #include "TextureFactory.h"
+
 #include <boost/foreach.hpp>
 
 using namespace std;
@@ -25,7 +26,6 @@ public:
 
 	void init(){
 		shaderProgram = new ShaderProgram();
-		cout << "Creating program #" << shaderProgram->program <<"\n";
 	}
 
 	void addTexture(Texture * texture){
@@ -65,15 +65,31 @@ public:
 	void done(){
 		shaderProgram->linkAndUse();
 		defaultAttribs();
+		initUniforms();
+		glError("Material",68);
 	}
 
 	void initUniforms(){
+		cout << "\nInitializing Material Uniforms for Shader #"<<shaderProgram->program<<"\n";
+		/*
+		GLint texLoc;
+		for (int i = 0; i < textures.size(); i++){
+			cout << "Assigning Texture " << i << " " << textures[i]->name << "\n";
+			textures[i]->activate();
+			textures[i]->bind();
+			texLoc   = glGetUniformLocation(shaderProgram->program, textures[i]->name.c_str());
+			glUniform1i(texLoc, i);
+		}
+		*/
+		glError("Material",84);
         BOOST_FOREACH( Texture* texture, textures ){
         	texture->activate();
         	texture->bind();
+        	//texture->uniform(shaderProgram->program);
         }
 
 		uniforms();
+		glError("Material",90);
 
 	}
 
@@ -84,11 +100,15 @@ public:
 	    	texture->bind();
 
 	    }
+		glError("Material",102);
 	}
 
 	void activate(){
-        shaderProgram->use();
+
+        //shaderProgram->use();
         activateTextures();
+		glError("Material::activate",109);
+
 	}
 };
 

@@ -21,21 +21,24 @@ void addNode(Mesh * mesh, vector<float> position, Material * material){
 }
 
 void meshCube(string file, float cubeSize, float step, Material * material){
+	Mesh * mesh = MeshFactory::Instance().load(file);
+
 	for (float x = -cubeSize/2.0; x<cubeSize/2.0; x+=step ){
 		for (float y = -cubeSize/2.0; y<cubeSize/2.0; y+=step ){
 			for (float z = -cubeSize/2.0; z<cubeSize/2.0; z+=step ){
-				addNode(file,{x,y,z}, material);
+				addNode(mesh,{x,y,z}, material);
 			}
 		}
 	}
 }
 
 void meshCube(string file, float cubeSize, float step, vector<Material*> materials){
+	Mesh * mesh = MeshFactory::Instance().load(file);
 	unsigned position = 0;
 	for (float x = -cubeSize/2.0; x<cubeSize/2.0; x+=step ){
 		for (float y = -cubeSize/2.0; y<cubeSize/2.0; y+=step ){
 			for (float z = -cubeSize/2.0; z<cubeSize/2.0; z+=step ){
-				addNode(file,{z,x,y}, materials.at(position%materials.size()));
+				addNode(mesh,{z,x,y}, materials.at(position%materials.size()));
 				position++;
 			}
 		}
@@ -71,7 +74,7 @@ void multiTexScene(){
 }
 
 void initScene(){
-	//addNode("monkeySmooth.obj",{0,0,0},new MultiTextureMaterial());
+	//addNode("monkeySmooth.obj",{0,0,-5}, new EnvMat());
 	//niceScene();
 	multiTexScene();
 
@@ -112,7 +115,7 @@ int main(int argc, char *argv[])
 	Camera::Instance().setParams(70.0, 0.1, 100.0);
 	Camera::Instance().setAspect(float(width)/float(height));
 	initScene();
-	SceneGraph::Instance().initUniforms();
+	//SceneGraph::Instance().initUniforms();
 
 
 	mediaLayer->renderLoop();

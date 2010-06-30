@@ -23,9 +23,6 @@ public:
 	//ShaderProgram * shaderProgram;
 	unsigned frameCount;
 
-
-
-	void glError(string file, int line);
 	void checkVersion();
 	GLboolean QueryExtension(char *extName);
 	void display();

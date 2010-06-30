@@ -10,6 +10,8 @@
 
 TextureFactory::TextureFactory() {
 
+	textureCount = 0;
+
 	textureEnums = {
 			GL_TEXTURE0, GL_TEXTURE1, GL_TEXTURE2, GL_TEXTURE3, GL_TEXTURE4,
 			GL_TEXTURE5, GL_TEXTURE6, GL_TEXTURE7, GL_TEXTURE8, GL_TEXTURE9,
@@ -26,14 +28,17 @@ TextureFactory::~TextureFactory() {
 	// TODO Auto-generated destructor stub
 }
 Texture * TextureFactory::load(string filename, string name){
-	return new Texture(filename, textureEnums[textures.size()], name);
+	return new Texture(filename, textureEnums[textureCount], name);
+	textureCount++;
 }
 Texture * TextureFactory::loadCubeMap(string filename, string name){
-	return new Texture(filename, textureEnums[textures.size()], name, true);
+	return new Texture(filename, textureEnums[textureCount], name, true);
+	textureCount++;
 }
 
 Texture * TextureFactory::splatTexture(string name, int resolution){
-	return new Texture(textureEnums[textures.size()], name, resolution);
+	return new Texture(textureEnums[textureCount], name, resolution);
+	textureCount++;
 }
 /*
 void TextureFactory::uniforms(GLint program){

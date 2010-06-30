@@ -23,6 +23,7 @@ Texture::Texture(string filename, GLenum glId, string name) {
     fipImage * image = readImage(path, glChannelOrder, texChannelOrder);
 
 	glGenTextures(1, &texture);
+	cout << "Creating texture #" << texture << " " << name << "\n";
 
     glBindTexture(GL_TEXTURE_2D, texture);
 
@@ -127,10 +128,12 @@ unsigned char* Texture::createGaussianMap(int N)
 
 void Texture::activate(){
     glActiveTexture(glId);
+    glError("Texture::activate",131);
 }
 
 void Texture::bind(){
 	glBindTexture(textureType, texture);
+    glError("Texture::bind",136);
 }
 
 void Texture::uniform(GLuint program){
@@ -138,6 +141,7 @@ void Texture::uniform(GLuint program){
     GLint texLoc   = glGetUniformLocation(program, name.c_str());
     //glUniform1i(texLoc, texture-1);
     glUniform1i(texLoc, texture);
+    glError("Texture::uniform",144);
 }
 
 fipImage * Texture::readImage(string path, GLint * glChannelOrder, GLint * texChannelOrder){

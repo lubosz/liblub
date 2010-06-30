@@ -1,5 +1,6 @@
 #include "SceneGraph.h"
 #include "Camera.h"
+#include "RenderEngine.h"
 #include <math.h>
 #include <boost/foreach.hpp>
 
@@ -106,17 +107,23 @@ void SceneGraph::translate(vector<float> translation){
 
 void SceneGraph::bindShaders(ShaderProgram * shaderProgram){
 
+	shaderProgram->use();
     shaderProgram->setNormalMatrix(modelmatrix);
 	shaderProgram->setModelViewMatrix(modelmatrix);
     /* multiply our modelmatrix and our projectionmatrix. Results are stored in modelmatrix */
     multiply4x4(modelmatrix, Camera::Instance().projectionmatrix);
     shaderProgram->setModelViewProjectionMatrix(modelmatrix);
     shaderProgram->setLightPosition(-2.0, 1.0, 2.0);
+    glError("SceneGraph::bindShaders",116);
 }
 
 
 void SceneGraph::addNode(string name, vector<float> position, Mesh * mesh, Material * material){
 	sceneNodes.push_back(Node(name, position, mesh, material));
+    BOOST_FOREACH( Material* oldMaterial, materials )
+    {
+        if (oldMaterial == material) return;
+    }
 	materials.push_back(material);
 }
 
@@ -132,13 +139,16 @@ void SceneGraph::drawNodes(){
         bindShaders(node.getMaterial()->shaderProgram);
     	node.draw();
     }
+    glError("SceneGraph",139);
 
 }
 
 void SceneGraph::initUniforms(){
+	cout << "Initializing uniforms for " << materials.size() << " Materials\n\n\n";
     BOOST_FOREACH( Material* material, materials )
     {
         material->initUniforms();
     }
+    glError("SceneGraph",148);
 
 }

@@ -28,6 +28,7 @@ public:
 private:
 
 	GLenum textureEnums[32];
+	unsigned textureCount;
 
 	TextureFactory();
 	virtual ~TextureFactory();
