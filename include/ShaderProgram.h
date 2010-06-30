@@ -39,6 +39,7 @@ public:
 	void bindAttrib(unsigned position, string name);
 
 	void linkAndUse();
+	void use();
 
 	void setNormalMatrix(GLfloat * modelmatrix);
 	void setModelViewMatrix(GLfloat * mvMatrix);

@@ -146,7 +146,6 @@ void SceneGraph::drawNodes(){
     {
         transform();
         translate(node.getPosition());
-        glUseProgram(node.getMaterial()->shaderProgram->program);
         bindShaders(node.getMaterial()->shaderProgram);
     	node.draw();
     }
@@ -156,7 +155,7 @@ void SceneGraph::drawNodes(){
 void SceneGraph::initUniforms(){
     BOOST_FOREACH( Material* material, materials )
     {
-        material->uniforms();
+        material->initUniforms();
     }
 
 }

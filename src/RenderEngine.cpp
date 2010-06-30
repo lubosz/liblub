@@ -75,7 +75,7 @@ void RenderEngine::display() {
 	cout << "Mode:\t" << mode << "\n";
 */
 	/* Make our background black */
-	glClearColor(0.0, 0.0, 0.0, 1.0);
+	glClearColor(backgroundColor[0],backgroundColor[1],backgroundColor[2], 1.0);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 /*
     MeshFactory::Instance().meshes[0]->draw();

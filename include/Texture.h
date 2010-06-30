@@ -25,6 +25,7 @@ public:
 	Texture(string filename, GLenum glId, string name, bool cube);
 	virtual ~Texture();
 	void activate();
+	void bind();
 	void uniform(GLuint program);
 	fipImage * readImage(string path, GLint * glChannelOrder, GLint * texChannelOrder);
 	unsigned char* createGaussianMap(int N);

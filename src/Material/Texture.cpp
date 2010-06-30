@@ -167,7 +167,7 @@ void Texture::activate(){
     }
     */
 
-    glBindTexture(textureType, texture);
+
 /*
     if (textureType == GL_TEXTURE_CUBE_MAP){
     	cout << "GL_TEXTURE_WRAP_S\n";
@@ -183,7 +183,12 @@ void Texture::activate(){
 */
 }
 
+void Texture::bind(){
+	glBindTexture(textureType, texture);
+}
+
 void Texture::uniform(GLuint program){
+	cout << "Assigning Texture "<< "#"<< texture << " " << name << " to program #"<< program << "\n";
     GLint texLoc   = glGetUniformLocation(program, name.c_str());
     //glUniform1i(texLoc, texture-1);
     glUniform1i(texLoc, texture);

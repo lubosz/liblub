@@ -13,6 +13,7 @@ ShaderProgram::ShaderProgram() {
 	attribCount = 0;
     /* Assign our program handle a "name" */
     program = glCreateProgram();
+    cout << "Creating Program #" << program <<"\n";
 }
 
 ShaderProgram::~ShaderProgram() {
@@ -86,7 +87,11 @@ void ShaderProgram::linkAndUse(){
     /* Link our program, and set it as being actively used */
     glLinkProgram(program);
     printProgramInfoLog();
-    glUseProgram(program);
+    use();
+}
+
+void ShaderProgram::use(){
+	glUseProgram(program);
 }
 
 void ShaderProgram::reload(){

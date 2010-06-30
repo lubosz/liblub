@@ -31,16 +31,114 @@ void meshCube(string file, float cubeSize, float step, Material * material){
 	}
 }
 
+void meshCube(string file, float cubeSize, float step, vector<Material*> materials){
+	unsigned position = 0;
+	for (float x = -cubeSize/2.0; x<cubeSize/2.0; x+=step ){
+		for (float y = -cubeSize/2.0; y<cubeSize/2.0; y+=step ){
+			for (float z = -cubeSize/2.0; z<cubeSize/2.0; z+=step ){
+				addNode(file,{z,x,y}, materials.at(position%materials.size()));
+				position++;
+			}
+		}
+	}
+}
+
+void niceScene(){
+	vector<Material*> workMaterials = {
+			//new TextureMaterial(),
+			new EarthMaterial(),
+			new EnvMat(),
+			new NormalColorMat(),
+
+
+	};
+
+	meshCube("monkeySmooth.obj", 5, 2, workMaterials);
+	addNode(MeshFactory::Instance().stars(),{50,50,50},new StarMat());
+}
+
+void multiTexScene(){
+	vector<Material*> textureMats = {
+			new TextureMaterial(),
+			new EarthMaterial(),
+			new EnvMat(),
+			new NormalColorMat(),
+			new MultiTextureMaterial()
+
+
+	};
+
+	meshCube("monkeySmooth.obj", 10, 3, textureMats);
+}
+
 void initScene(){
+	//addNode("monkeySmooth.obj",{0,0,0},new MultiTextureMaterial());
+	//niceScene();
+	multiTexScene();
+/*
+	vector<Material*> allMaterials = {
+			new VertexMaterial(),
+			new BrickMaterial(),
+			new TextureMaterial(),
+			new MultiTextureMaterial(),
+			new EarthMaterial(),
+			new ConeMapMaterial(),
+			new ProcBumpMaterial(),
+			new ConvolutionMaterial(),
+			new BumpMaterial1(),
+			new BumpMaterial2(),
+			new ReliefMat(),
+			new OceanMat(),
+			new ParticleMat(),
+			new EnvMat(),
+			new NormalColorMat(),
+			new StarMat()
+
+	};
+*/
+
 
 /*
-	addNode("monkeySmooth.obj", {-2,0,-5}, new TextureMaterial());
+ vector<Material*> pointMats = {
+			//new StarMat()
+			//new ParticleMat(),
+	};
+ */
+
+	/*
+	 vector<Material*> bugMats = {
+	 				//Multitexture bugs!
+
+				new MultiTextureMaterial(),
+				new OceanMat(), //Alone
+				new ReliefMat(),
+				new BumpMaterial1(),
+				new BumpMaterial2(),
+				new ConeMapMaterial() // Dont do this
+
+
+		};
+	 */
+	/*
+	 vector<Material*> worksAlone = {
+				new ConvolutionMaterial(),
+				new ProcBumpMaterial(),
+				new BrickMaterial(),
+		};
+	 */
+
+
+	//addNode("monkeySmooth.obj", {0,0,-5}, new BrickMaterial());
+/*
+
 	addNode("monkeySmooth.obj", {0,0,-5}, new TextureMaterial());
 	addNode("monkeySmooth.obj", {2,0,-5}, new TextureMaterial());
 */
+	/*
 	addNode("monkeySmooth.obj", {-2,-2,-5}, new ProcBumpMaterial());
 	addNode("monkeySmooth.obj", {0,-2,-5}, new ProcBumpMaterial());
 	addNode("monkeySmooth.obj", {2,-2,-5}, new ProcBumpMaterial());
+	*/
 /*
 	addNode("monkeySmooth.obj", {-2,2,-5}, new BrickMaterial());
 	addNode("monkeySmooth.obj", {0,2,-5}, new BrickMaterial());
@@ -76,21 +174,6 @@ void initScene(){
 	//MeshFactory::Instance().loadObj("monkeyMedium.obj");
 	//MeshFactory::Instance().loadObj("cube.obj");
 
-	//ShaderFactory::Instance().vertexColorShader();
-	//ShaderFactory::Instance().brickShader();
-	//ShaderFactory::Instance().textureShader();
-	//ShaderFactory::Instance().multiTextureShader();
-    //ShaderFactory::Instance().coneMapShader();
-    //ShaderFactory::Instance().earthShader();
-	//ShaderFactory::Instance().procBump();
-	//ShaderFactory::Instance().particle();
-	//ShaderFactory::Instance().relief();
-	//ShaderFactory::Instance().bump1();
-	//ShaderFactory::Instance().convolution();
-	//ShaderFactory::Instance().ocean();
-	//ShaderFactory::Instance().env();
-	//ShaderFactory::Instance().normalcolor();
-	//ShaderFactory::Instance().stars();
 
 	//RenderEngine::Instance().shaderProgram->linkAndUse();
 	SceneGraph::Instance().initUniforms();
