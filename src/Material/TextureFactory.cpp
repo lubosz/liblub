@@ -28,17 +28,20 @@ TextureFactory::~TextureFactory() {
 	// TODO Auto-generated destructor stub
 }
 Texture * TextureFactory::load(string filename, string name){
-	return new Texture(filename, textureEnums[textureCount], name);
+	Texture * texture = new Texture(filename, textureEnums[textureCount], name, textureCount);
 	textureCount++;
+	return texture;
 }
 Texture * TextureFactory::loadCubeMap(string filename, string name){
-	return new Texture(filename, textureEnums[textureCount], name, true);
+	Texture * texture = new Texture(filename, textureEnums[textureCount], name, true);
 	textureCount++;
+	return texture;
 }
 
 Texture * TextureFactory::splatTexture(string name, int resolution){
-	return new Texture(textureEnums[textureCount], name, resolution);
+	Texture * texture = new Texture(textureEnums[textureCount], name, resolution);
 	textureCount++;
+	return texture;
 }
 /*
 void TextureFactory::uniforms(GLint program){

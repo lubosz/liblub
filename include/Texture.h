@@ -16,12 +16,14 @@
 
 class Texture {
 public:
+
 	GLenum glId;
 	string name;
 	GLuint texture;
 	GLuint textureType;
+	GLuint textureID;
 	Texture(GLenum glId, string name, int resolution);
-	Texture(string filename, GLenum glId, string name);
+	Texture(string filename, GLenum glId, string name, GLuint textureID);
 	Texture(string filename, GLenum glId, string name, bool cube);
 	virtual ~Texture();
 	void activate();

@@ -11,9 +11,10 @@
 #include <iostream>
 #include <math.h>
 
-Texture::Texture(string filename, GLenum glId, string name) {
+Texture::Texture(string filename, GLenum glId, string name, GLuint textureID) {
 	textureType = GL_TEXTURE_2D;
 
+	this->textureID = textureID;
 	this->glId = glId;
 	this->name = name;
 
@@ -137,10 +138,9 @@ void Texture::bind(){
 }
 
 void Texture::uniform(GLuint program){
-	cout << "Assigning Texture "<< "#"<< texture << " " << name << " to program #"<< program << "\n";
+	cout << "Assigning Texture "<< "#"<< textureID << " " << name << " to program #"<< program << "\n";
     GLint texLoc   = glGetUniformLocation(program, name.c_str());
-    //glUniform1i(texLoc, texture-1);
-    glUniform1i(texLoc, texture);
+    glUniform1i(texLoc, texture-1);
     glError("Texture::uniform",144);
 }
 

@@ -85,7 +85,7 @@ public:
         BOOST_FOREACH( Texture* texture, textures ){
         	texture->activate();
         	texture->bind();
-        	//texture->uniform(shaderProgram->program);
+        	texture->uniform(shaderProgram->program);
         }
 
 		uniforms();

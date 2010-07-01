@@ -49,4 +49,4 @@ set(CONE_DEMO_SOURCES
 )
 
 add_executable(liblub ${CONE_DEMO_SOURCES})
-target_link_libraries(liblub GL GLU SDL freeimageplus)
+target_link_libraries(liblub GL SDL freeimageplus)

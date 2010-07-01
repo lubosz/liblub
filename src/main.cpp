@@ -45,38 +45,36 @@ void meshCube(string file, float cubeSize, float step, vector<Material*> materia
 	}
 }
 
-void niceScene(){
-	vector<Material*> workMaterials = {
-			//new TextureMaterial(),
-			new EarthMaterial(),
-			new EnvMat(),
-			new NormalColorMat(),
-
-
-	};
-
-	meshCube("monkeySmooth.obj", 5, 2, workMaterials);
-	addNode(MeshFactory::Instance().stars(),{50,50,50},new StarMat());
+void meshPlane(string file, float cubeSize, float step, vector<Material*> materials){
+	Mesh * mesh = MeshFactory::Instance().load(file);
+	unsigned position = 0;
+	for (float x = -cubeSize/2.0; x<cubeSize/2.0; x+=step ){
+		for (float y = -cubeSize/2.0; y<cubeSize/2.0; y+=step ){
+			addNode(mesh,{x,y,-5+x}, materials.at(position%materials.size()));
+			position++;
+		}
+	}
 }
 
-void multiTexScene(){
+void niceScene(){
 	vector<Material*> textureMats = {
 			new TextureMaterial(),
+			new MultiTextureMaterial(),
 			new EarthMaterial(),
 			new EnvMat(),
 			new NormalColorMat(),
-			new MultiTextureMaterial()
-
-
+			new BumpMaterial1(),
+			new BrickMaterial(),
+			new ProcBumpMaterial(),
+			new OceanMat()
 	};
-
-	meshCube("monkeySmooth.obj", 10, 3, textureMats);
+	meshPlane("monkeySmooth.obj", 10, 3, textureMats);
+	addNode(MeshFactory::Instance().stars(),{0,-50,-50},new StarMat());
 }
 
 void initScene(){
-	//addNode("monkeySmooth.obj",{0,0,-5}, new EnvMat());
+	addNode("monkeySmooth.obj",{0,0,-5}, new ConeMapMaterial());
 	//niceScene();
-	multiTexScene();
 
 /*
  vector<Material*> pointMats = {
@@ -88,14 +86,15 @@ void initScene(){
 	 				//Multitexture bugs!
 
 				new MultiTextureMaterial(),
-				new OceanMat(), //Alone
+
 				new ReliefMat(),
 				new BumpMaterial1(),
 				new BumpMaterial2(),
-				new ConeMapMaterial() // Dont do this
+				//new ConeMapMaterial() // Dont do this
 
 
 		};
+
 
 	 vector<Material*> worksAlone = {
 				new ConvolutionMaterial(),
@@ -115,8 +114,6 @@ int main(int argc, char *argv[])
 	Camera::Instance().setParams(70.0, 0.1, 100.0);
 	Camera::Instance().setAspect(float(width)/float(height));
 	initScene();
-	//SceneGraph::Instance().initUniforms();
-
 
 	mediaLayer->renderLoop();
 
