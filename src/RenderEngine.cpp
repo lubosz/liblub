@@ -33,6 +33,11 @@ RenderEngine::RenderEngine() {
 	#endif
     glEnable(GL_VERTEX_PROGRAM_POINT_SIZE_NV);
 
+    /*
+    glEnable(GL_POLYGON_OFFSET_FILL);
+    glPolygonOffset(2.0,2.0);
+*/
+
     glPointSize(5);
     //glBlendFunc(GL_SRC_ALPHA, GL_ONE);
     //glEnable(GL_BLEND);

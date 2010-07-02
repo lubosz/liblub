@@ -40,9 +40,9 @@ public:
 
 class TextureMaterial : public Material {
 public:
-	TextureMaterial(){
+	TextureMaterial(string texture){
 		init();
-		addTexture("bunny.png","myTexture");
+		addTexture(texture,"myTexture");
 		attachVertFrag("Texture/texture");
 		done();
 
@@ -299,6 +299,16 @@ public:
 	void uniforms(){}
 };
 
+class UvColorMat : public Material {
+public:
+	UvColorMat(){
+		init();
+		attachVertFrag("Color/uvcolor");
+		done();
+  }
+	void uniforms(){}
+};
+
 class StarMat : public Material {
 public:
 	StarMat(){
@@ -309,3 +319,29 @@ public:
 	void uniforms(){}
 };
 
+class BigEarthMat : public Material {
+public:
+	BigEarthMat(){
+		init();
+		addTexture("Earth/EarthMap_2500x1250.jpg","myTexture");
+		attachVertFrag("Texture/texture");
+		done();
+
+  }
+	void uniforms(){}
+
+};
+
+
+class MarsMat : public Material {
+public:
+	MarsMat(){
+		init();
+		addTexture("Earth/MarsMap_2500x1250.jpg","myTexture");
+		attachVertFrag("Texture/texture");
+		done();
+
+  }
+	void uniforms(){}
+
+};

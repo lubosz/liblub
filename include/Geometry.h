@@ -16,6 +16,7 @@ public:
 
 	static Mesh * makeTetrahedron();
 	static Mesh * makeCube();
+	static Mesh * makePlane();
 	static Mesh * makeStars(vector<float> resolution, float density, float randomness);
 	static float randomize(float density, float randomness);
 };

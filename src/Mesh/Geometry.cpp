@@ -10,6 +10,49 @@
 
 using namespace std;
 
+Mesh * Geometry::makePlane(){
+	vector<GLfloat> vertices = {
+		-1.0,  -1.0,  0.0,
+		1.0, -1.0,  0.0,
+		-1.0,  1.0, 0.0,
+		1.0, 1.0, 0.0
+	};
+
+	vector<GLfloat> uvCoords = {
+
+		0.0,  0.0,
+		0.0,  1.0,
+		1.0,  0.0,
+		1.0,  1.0
+
+			/*
+			1.0,  1.0,
+			1.0,  1.2,
+			1.2,  1.0,
+			1.2,  1.2
+	*/
+	};
+
+	vector<GLfloat> normals = {
+		0.0, 0.0, 1.0,
+		0.0, 0.0, 1.0,
+		0.0, 0.0, 1.0,
+		0.0, 0.0, 1.0
+	};
+
+	vector<GLuint> indicies = { 0, 1, 3, 0, 2, 3 };
+
+	Mesh * mesh = new Mesh();
+    mesh->addBuffer(vertices,3,"in_Vertex");
+    mesh->addBuffer(vertices,3,"in_Color");
+    mesh->addBuffer(normals,3,"in_Normal");
+    mesh->addBuffer(uvCoords,2,"in_Uv");
+    mesh->addElementBuffer(indicies);
+    //mesh->setDrawType(GL_TRIANGLES);
+	return mesh;
+
+}
+
 Mesh * Geometry::makeTetrahedron(){
 	vector<GLfloat> vertices = {
 		1.0,  1.0,  1.0,

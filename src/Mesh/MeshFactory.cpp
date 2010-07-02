@@ -47,6 +47,12 @@ Mesh *  MeshFactory::cube(){
 	return mesh;
 }
 
+Mesh *  MeshFactory::plane(){
+	Mesh * mesh = Geometry::makePlane();
+	mesh->setDrawType(GL_TRIANGLES);
+	return mesh;
+}
+
 Mesh *  MeshFactory::stars(){
 	vector<float> resolution = {100,100,100};
 	Mesh * mesh = Geometry::makeStars(resolution,1.0,0.0);

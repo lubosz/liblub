@@ -8,6 +8,7 @@
 #include "Mesh.h"
 #include "RenderEngine.h"
 #include <iostream>
+#include <boost/foreach.hpp>
 
 Mesh::Mesh(){
 	drawType = GL_POINTS;
@@ -52,6 +53,11 @@ void Mesh::addBuffer(vector<GLfloat> content, unsigned size, string name){
 	/* Enable attribute index 0 as being used */
 	glEnableVertexAttribArray(bufferCount);
 	cout << "Adding Vertex Buffer #" << bufferCount << " "<< name<< " Size:"<< content.size() << "\n";
+	/*
+	BOOST_FOREACH(float value, content){
+		cout << value << "\n";
+	}
+	*/
 	bufferCount++;
 
 

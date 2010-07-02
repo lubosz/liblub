@@ -19,6 +19,7 @@ public:
 	Mesh * tetrahedron();
 	Mesh * cube();
 	Mesh * stars();
+	Mesh * plane();
 	Mesh * load(string file);
 
 private:

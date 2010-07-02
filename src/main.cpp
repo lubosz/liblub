@@ -58,7 +58,7 @@ void meshPlane(string file, float cubeSize, float step, vector<Material*> materi
 
 void niceScene(){
 	vector<Material*> textureMats = {
-			new TextureMaterial(),
+			new TextureMaterial("bunny.png"),
 			new MultiTextureMaterial(),
 			new EarthMaterial(),
 			new EnvMat(),
@@ -72,8 +72,27 @@ void niceScene(){
 	addNode(MeshFactory::Instance().stars(),{0,-50,-50},new StarMat());
 }
 
+void bufferTest(){
+	Material* material= new VertexMaterial();
+	Material* material1= new NormalColorMat();
+	Material* material2= new TextureMaterial("bunny.png");
+	Mesh * plane = MeshFactory::Instance().plane();
+	addNode(plane,{-2,0,-5}, material);
+	addNode(plane,{0,0,-5}, material1);
+	addNode(plane,{2,0,-5}, material2);
+}
+
 void initScene(){
-	addNode("monkeySmooth.obj",{0,0,-5}, new ConeMapMaterial());
+	//bufferTest();
+
+	Mesh * mesh = MeshFactory::Instance().load("earth.obj");
+	addNode(mesh,{0,0,-5}, new TextureMaterial("Earth/MarsMap_2500x1250.jpg"));
+	addNode(mesh,{2,0,-5}, new TextureMaterial("Earth/EarthMap_2500x1250.jpg"));
+	addNode(mesh,{-2,0,-5}, new TextureMaterial("Earth/MoonMap_2500x1250.jpg"));
+	addNode(mesh,{-2,2,-5}, new NormalColorMat());
+
+
+
 	//niceScene();
 
 /*

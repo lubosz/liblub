@@ -6,7 +6,7 @@ uniform mat3 NormalMatrix;
 uniform vec3 LightPosition;
 
 in vec3 in_Vertex;
-in vec3 in_Normal;
+//in vec3 in_Normal;
 in vec2 in_Uv;
 
 out vec2 TexCoord;
