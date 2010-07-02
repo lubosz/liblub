@@ -56,10 +56,15 @@ public:
 		shaderProgram->attachShader(file + ".frag", GL_FRAGMENT_SHADER);
 	}
 
+	void attachVertGeom(string file){
+		shaderProgram->attachShader(file + ".vert", GL_VERTEX_SHADER);
+		shaderProgram->attachShader(file + ".geom", GL_GEOMETRY_SHADER);
+	}
+
 	void attachVertFragGeom(string file){
 		shaderProgram->attachShader(file + ".vert", GL_VERTEX_SHADER);
+		shaderProgram->attachShader(file + ".geom", GL_GEOMETRY_SHADER);
 		shaderProgram->attachShader(file + ".frag", GL_FRAGMENT_SHADER);
-		shaderProgram->attachShader(file + ".geom", GL_FRAGMENT_SHADER);
 	}
 
 	void done(){

@@ -16,7 +16,7 @@ class VertexMaterial : public Material {
 public:
 	VertexMaterial(){
 		init();
-		attachVertFrag("Color/vertexcolor");
+		attachVertFragGeom("Color/vertexcolor");
 		done();
   }
 	void uniforms(){}
@@ -339,6 +339,23 @@ public:
 		init();
 		addTexture("Earth/MarsMap_2500x1250.jpg","myTexture");
 		attachVertFrag("Texture/texture");
+		done();
+
+  }
+	void uniforms(){}
+
+};
+
+class RemeshMat : public Material {
+public:
+	RemeshMat(){
+		init();
+		//addTexture("remesh/shaderX7.tga","terrain_texture");
+		//addTexture("remesh/shaderX7-disp.tga","displacement_texture");
+		addTexture("remesh/multi.tga","terrain_texture");
+		addTexture("remesh/multi.tga","displacement_texture");
+		//attachVertGeom("Remesh/render");
+		attachVertFragGeom("Remesh/render2");
 		done();
 
   }

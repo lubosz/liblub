@@ -25,6 +25,7 @@ RenderEngine::RenderEngine() {
     glEnable( GL_POINT_SMOOTH );
 #endif
 
+    glEnable(GL_POLYGON_OFFSET_FILL);
     //glEnable(GL_POINT_SPRITE_ARB);
 
 	/** TODO: Deprecated*/

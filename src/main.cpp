@@ -82,18 +82,31 @@ void bufferTest(){
 	addNode(plane,{2,0,-5}, material2);
 }
 
+void planetTest(){
+	vector<Material*> textureMats = {
+			new TextureMaterial("Earth/MarsMap_2500x1250.jpg"),
+			new TextureMaterial("Earth/EarthMap_2500x1250.jpg"),
+			new TextureMaterial("Earth/MoonMap_2500x1250.jpg"),
+			new NormalColorMat(),
+			//new BumpMaterial1(),
+			new EnvMat(),
+			new BrickMaterial(),
+			new ProcBumpMaterial(),
+			new OceanMat()
+	};
+	meshPlane("earth.obj", 10, 3, textureMats);
+}
+
 void initScene(){
 	//bufferTest();
-
-	Mesh * mesh = MeshFactory::Instance().load("earth.obj");
-	addNode(mesh,{0,0,-5}, new TextureMaterial("Earth/MarsMap_2500x1250.jpg"));
-	addNode(mesh,{2,0,-5}, new TextureMaterial("Earth/EarthMap_2500x1250.jpg"));
-	addNode(mesh,{-2,0,-5}, new TextureMaterial("Earth/MoonMap_2500x1250.jpg"));
-	addNode(mesh,{-2,2,-5}, new NormalColorMat());
-
-
-
+	//planetTest();
 	//niceScene();
+	//addNode("earth.obj",{0,0,-5}, new VertexMaterial());
+
+	//addNode("remesh/shaderX7.obj",{0,0,-5}, new TextureMaterial("remesh/multi.tga"));
+	addNode("remesh/shaderX7.obj",{0,0,-5}, new RemeshMat());
+	//addNode("remesh/smoothShaderX7.obj",{2,0,-5}, new TextureMaterial("remesh/shaderX7.tga"));
+	//addNode("remesh/multi.obj",{2,0,-10}, new TextureMaterial("remesh/multi.tga"));
 
 /*
  vector<Material*> pointMats = {
