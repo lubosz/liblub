@@ -23,7 +23,7 @@ include
 )
 
 #App Shader Demo
-set(CONE_DEMO_SOURCES
+set(SOURCES
 	${SRC_DIR}/main.cpp
 	${SRC_DIR}/MediaLayer.cpp 
 	${SRC_DIR}/RenderEngine.cpp  	
@@ -48,5 +48,5 @@ set(CONE_DEMO_SOURCES
 	${SRC_DIR}/Mesh/Face.cpp
 )
 
-add_executable(liblub ${CONE_DEMO_SOURCES})
+add_executable(liblub ${SOURCES})
 target_link_libraries(liblub GL SDL freeimageplus)

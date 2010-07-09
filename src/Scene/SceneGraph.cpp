@@ -1,11 +1,20 @@
 #include "SceneGraph.h"
 #include "Camera.h"
 #include "RenderEngine.h"
+#include "MaterialTypes.h"
+#include "MeshFactory.h"
 #include <math.h>
 #include <boost/foreach.hpp>
 
 SceneGraph::SceneGraph()
 {
+lightPosition = {-2.0, 1.0, 2.0};
+addNode("Light",lightPosition, MeshFactory::Instance().lamp(),new WhiteMat());
+}
+
+void SceneGraph::updateLight(){
+	setPosition("Light", lightPosition);
+	cout << "Updating Light" << lightPosition.at(0) << " " << lightPosition.at(1) << " " << lightPosition.at(2) << "\n";
 
 }
 
@@ -113,10 +122,19 @@ void SceneGraph::bindShaders(ShaderProgram * shaderProgram){
     /* multiply our modelmatrix and our projectionmatrix. Results are stored in modelmatrix */
     multiply4x4(modelmatrix, Camera::Instance().projectionmatrix);
     shaderProgram->setModelViewProjectionMatrix(modelmatrix);
-    shaderProgram->setLightPosition(-2.0, 1.0, 2.0);
+    shaderProgram->setLightPosition(lightPosition.at(0),lightPosition.at(1),lightPosition.at(2));
     glError("SceneGraph::bindShaders",116);
 }
 
+
+void SceneGraph::setPosition(string nodeName, vector<float> position){
+    BOOST_FOREACH( Node node, sceneNodes )
+    {
+        if (node.getName() == nodeName) {
+        	node.setPosition(position);
+        }
+    }
+}
 
 void SceneGraph::addNode(string name, vector<float> position, Mesh * mesh, Material * material){
 	sceneNodes.push_back(Node(name, position, mesh, material));
@@ -151,4 +169,8 @@ void SceneGraph::initUniforms(){
     }
     glError("SceneGraph",148);
 
+}
+
+void SceneGraph::setLightPosition(vector<float> lightPosition){
+	this->lightPosition = lightPosition;
 }

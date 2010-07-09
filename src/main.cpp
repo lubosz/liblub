@@ -63,7 +63,7 @@ void niceScene(){
 			new EarthMaterial(),
 			new EnvMat(),
 			new NormalColorMat(),
-			new BumpMaterial1(),
+			//new BumpMaterial1(),
 			new BrickMaterial(),
 			new ProcBumpMaterial(),
 			new OceanMat()
@@ -98,13 +98,19 @@ void planetTest(){
 }
 
 void initScene(){
+	addNode("earth.obj",{2,0,-5}, new PhongMat());
+	addNode("earth.obj",{0,0,-5}, new PlanetMat("Planets/Mars"));
+	addNode("earth.obj",{-2,0,-5}, new BumpMaterial("Planets/Mars"));
+	addNode("earth.obj",{-2,2,-5}, new TextureMaterial("Planets/Mars.jpg"));
+	addNode("earth.obj",{-2,-2,-5}, new TextureMaterial("Planets/Mars-normal.png"));
+	//addNode("earth.obj",{0,0,-5}, new TextureMaterial("Earth/EarthMap_2500x1250.jpg"));
 	//bufferTest();
 	//planetTest();
 	//niceScene();
 	//addNode("earth.obj",{0,0,-5}, new VertexMaterial());
 
 	//addNode("remesh/shaderX7.obj",{0,0,-5}, new TextureMaterial("remesh/multi.tga"));
-	addNode("remesh/shaderX7.obj",{0,0,-5}, new RemeshMat());
+	//addNode("remesh/shaderX7.obj",{0,0,-5}, new RemeshMat());
 	//addNode("remesh/smoothShaderX7.obj",{2,0,-5}, new TextureMaterial("remesh/shaderX7.tga"));
 	//addNode("remesh/multi.obj",{2,0,-10}, new TextureMaterial("remesh/multi.tga"));
 

@@ -21,6 +21,7 @@ public:
 	Mesh * stars();
 	Mesh * plane();
 	Mesh * load(string file);
+	Mesh * lamp();
 
 private:
 	MeshFactory();

@@ -28,7 +28,7 @@ public:
     void setPosition(vector<float> position);
 	void draw();
     string getName() const;
-    vector<float> getPosition() const;
+    vector<float> getPosition();
     void setName(string name);
     Material *getMaterial() const;
     void setMaterial(Material *material);

@@ -64,10 +64,10 @@ Texture::Texture(string filename, GLenum glId, string name, bool cube) {
 	textureType = GL_TEXTURE_CUBE_MAP;
 
 	glGenTextures(1, &texture);
-	glBindTexture(GL_TEXTURE_CUBE_MAP,texture);
+	glBindTexture(textureType,texture);
 
-	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(textureType, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(textureType, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 
 
 	for(int face=0; face<6; face++) {
@@ -77,7 +77,7 @@ Texture::Texture(string filename, GLenum glId, string name, bool cube) {
 		GLint * texChannelOrder = new GLint();
 		fipImage * image = readImage(path, glChannelOrder, texChannelOrder);
 
-	    glBindTexture(GL_TEXTURE_CUBE_MAP, texture);
+	    glBindTexture(textureType, texture);
 		glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + face, 0, *glChannelOrder, image->getWidth(), image->getHeight(), 0, *texChannelOrder, GL_UNSIGNED_BYTE, image->accessPixels());
 	}
 

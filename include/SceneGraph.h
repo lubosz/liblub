@@ -34,6 +34,7 @@ public:
 
 	vector<Node> sceneNodes;
 	vector<Material*> materials;
+	vector<float> lightPosition;
 
 
 	/* Multiply 4x4 matrix m1 by 4x4 matrix m2 and store the result in m1 */
@@ -58,6 +59,10 @@ public:
 	void addNode(string name, vector<float> position, Mesh * mesh, Material * material);
 	void drawNodes();
 	void initUniforms();
+	void setPosition(string nodeName, vector<float> position);
+	void updateLight();
+
+	void setLightPosition(vector<float> lightPosition);
 
 	GLfloat modelmatrix[16]; /* Our model matrix  */
 

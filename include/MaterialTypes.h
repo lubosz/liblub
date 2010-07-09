@@ -141,13 +141,30 @@ public:
 };
 
 
-class BumpMaterial1 : public Material {
+class BumpMaterial : public Material {
 public:
-	BumpMaterial1(){
+	BumpMaterial(string name){
 		init();
-		addTexture("bunny.png","diffuseTexture");
-		addTexture("bunny-bump.png","normalTexture");
+		addTexture(name+".jpg","diffuseTexture");
+		addTexture(name+"-normal.png","normalTexture");
 		attachVertFrag("Bump/noTangentBump");
+		done();
+  }
+	void uniforms(){
+		GLuint program = shaderProgram->program;
+
+		glUniform1i(glGetUniformLocation(program, "Mode"), 1);
+
+	}
+};
+
+class PlanetMat : public Material {
+public:
+	PlanetMat(string name){
+		init();
+		addTexture(name+".jpg","diffuseTexture");
+		addTexture(name+"-normal.png","normalTexture");
+		attachVertFrag("Space/Planet");
 		done();
   }
 	void uniforms(){
@@ -356,6 +373,32 @@ public:
 		addTexture("remesh/multi.tga","displacement_texture");
 		//attachVertGeom("Remesh/render");
 		attachVertFragGeom("Remesh/render2");
+		done();
+
+  }
+	void uniforms(){}
+
+};
+
+class PhongMat : public Material {
+public:
+	PhongMat(){
+		init();
+		addTexture("Earth/MarsMap_2500x1250.jpg","myTexture");
+		attachVertFrag("Color/PhongNormal");
+		done();
+
+  }
+	void uniforms(){}
+
+};
+
+
+class WhiteMat : public Material {
+public:
+	WhiteMat(){
+		init();
+		attachVertFrag("Color/white");
 		done();
 
   }

@@ -36,7 +36,7 @@ string Node::getName() const
     return name;
 }
 
-vector<float> Node::getPosition() const
+vector<float> Node::getPosition()
 {
     return position;
 }

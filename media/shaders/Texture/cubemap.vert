@@ -1,4 +1,4 @@
-#version 150 core
+#version 330 core
 
 uniform vec3 LightPosition;
 uniform mat4 MVMatrix;
@@ -17,7 +17,7 @@ void main()
     vec3 normal    = normalize(NormalMatrix * in_Normal);
     vec4 pos       = MVMatrix * vec4(in_Vertex,1);
     vec3 eyeDir    = pos.xyz;
-    ReflectDir     = reflect(eyeDir, normal);
+    ReflectDir     = reflect(-eyeDir, normal);
     vec3 lightDir  = normalize(LightPosition - eyeDir);
     LightIntensity = max(dot(lightDir, normal),0.0);
 }

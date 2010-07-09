@@ -1,4 +1,4 @@
-#version 150 core
+#version 330 core
 
 uniform vec3 BaseColor;
 uniform float MixRatio;

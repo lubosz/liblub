@@ -83,35 +83,46 @@ void MediaLayer::eventLoop(){
             	quit = true;
 				break;
 
-            case SDLK_KP_PLUS:
-                //level++;
-                //if (level > 5) level=5;
+            case SDLK_RIGHT:
+                SceneGraph::Instance().lightPosition.at(0) += 1.0;
+                SceneGraph::Instance().updateLight();
                 break;
 
-            case SDLK_KP_MINUS:
-                //level--;
-                //if (level < 0) level=0;
+            case SDLK_LEFT:
+            	SceneGraph::Instance().lightPosition.at(0) -= 1.0;
+                SceneGraph::Instance().updateLight();
                 break;
 
             case SDLK_UP:
+                SceneGraph::Instance().lightPosition.at(1) += 1.0;
+                SceneGraph::Instance().updateLight();
+                break;
+
+            case SDLK_DOWN:
+            	SceneGraph::Instance().lightPosition.at(1) -= 1.0;
+                SceneGraph::Instance().updateLight();
+                break;
+                /*
+            case SDLK_KP_PLUS:
+                break;
+            case SDLK_KP_MINUS:
+                break;
+                 */
             case 'w':
             	//cout << "up\n";
             	Camera::Instance().move(0,0,.1);
             	break;
 
-            case SDLK_DOWN:
             case 's':
             	Camera::Instance().move(0,0,-.1);
             	//cout << "down\n";
             	break;
 
-            case SDLK_LEFT:
             case 'a':
             	Camera::Instance().move(.1,0,0);
             	//cout << "left\n";
             	break;
 
-            case SDLK_RIGHT:
             case 'd':
             	Camera::Instance().move(-.1,0,0);
             	//cout << "rigt\n";
