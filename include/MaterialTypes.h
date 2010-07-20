@@ -12,9 +12,9 @@
 #include "TextureFactory.h"
 #include "RenderEngine.h"
 
-class VertexMaterial : public Material {
+class VertexColorMaterial : public Material {
 public:
-	VertexMaterial(){
+	VertexColorMaterial(){
 		init();
 		attachVertFragGeom("Color/vertexcolor");
 		done();
@@ -404,4 +404,28 @@ public:
   }
 	void uniforms(){}
 
+};
+
+class MandelMat : public Material {
+public:
+	MandelMat(){
+		init();
+		attachVertFrag("Procedural/mandelbrot");
+		done();
+  }
+	void uniforms(){
+		GLuint program = shaderProgram->program;
+
+		glUniform1f(glGetUniformLocation(program, "SpecularContribution"), 1.0);
+		glUniform1f(glGetUniformLocation(program, "DiffuseContribution"), 1.0);
+		glUniform1f(glGetUniformLocation(program, "Shininess"), 1.0);
+		glUniform1f(glGetUniformLocation(program, "MaxIterations"), 100.0);
+		glUniform1f(glGetUniformLocation(program, "Zoom"), 1.0);
+		glUniform1f(glGetUniformLocation(program, "Xcenter"), 1.0);
+		glUniform1f(glGetUniformLocation(program, "Ycenter"), 1.0);
+
+		glUniform3f(glGetUniformLocation(program, "InnerColor"), 1.0, 0.0, 0.0);
+		glUniform3f(glGetUniformLocation(program, "OuterColor1"), 0.0, 1.0, 0.0);
+		glUniform3f(glGetUniformLocation(program, "OuterColor2"), 0.0, 0.0, 1.0);
+	}
 };

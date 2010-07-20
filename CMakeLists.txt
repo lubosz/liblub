@@ -46,6 +46,7 @@ set(SOURCES
 	${SRC_DIR}/Mesh/Vector2D.cpp
 	${SRC_DIR}/Mesh/Vector3D.cpp
 	${SRC_DIR}/Mesh/Face.cpp
+	${SRC_DIR}/Mesh/MengerSponge.cpp
 )
 
 add_executable(liblub ${SOURCES})

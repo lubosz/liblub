@@ -5,6 +5,7 @@
 #include "MeshFactory.h"
 #include "config.h"
 #include "MaterialTypes.h"
+#include "MengerSponge.h"
 
 MediaLayer * mediaLayer;
 
@@ -73,7 +74,7 @@ void niceScene(){
 }
 
 void bufferTest(){
-	Material* material= new VertexMaterial();
+	Material* material= new VertexColorMaterial();
 	Material* material1= new NormalColorMat();
 	Material* material2= new TextureMaterial("bunny.png");
 	Mesh * plane = MeshFactory::Instance().plane();
@@ -97,13 +98,17 @@ void planetTest(){
 	meshPlane("earth.obj", 10, 3, textureMats);
 }
 
-void initScene(){
+void shaderPlanetTest(){
 	addNode("earth.obj",{2,0,-5}, new PhongMat());
 	addNode("earth.obj",{0,0,-5}, new PlanetMat("Planets/Mars"));
 	addNode("earth.obj",{-2,0,-5}, new BumpMaterial("Planets/Mars"));
 	addNode("earth.obj",{-2,2,-5}, new TextureMaterial("Planets/Mars.jpg"));
 	addNode("earth.obj",{-2,-2,-5}, new TextureMaterial("Planets/Mars-normal.png"));
-	//addNode("earth.obj",{0,0,-5}, new TextureMaterial("Earth/EarthMap_2500x1250.jpg"));
+}
+
+void initScene(){
+	MengerSponge * sponge = new MengerSponge(0);
+	addNode(sponge->getMesh(),{0,0,-5}, new MandelMat());
 	//bufferTest();
 	//planetTest();
 	//niceScene();

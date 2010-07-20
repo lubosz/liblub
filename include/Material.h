@@ -45,7 +45,7 @@ public:
 	void defaultAttribs(){
 
 		shaderProgram->bindAttrib("in_Vertex");
-		//shaderProgram->bindAttrib("in_Color");
+		shaderProgram->bindAttrib("in_Color");
 		shaderProgram->bindAttrib("in_Normal");
 		shaderProgram->bindAttrib("in_Uv");
 
