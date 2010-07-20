@@ -1,7 +1,7 @@
 #include "SceneGraph.h"
 #include "Camera.h"
 #include "RenderEngine.h"
-#include "MaterialTypes.h"
+#include "Materials.h"
 #include "MeshFactory.h"
 #include <math.h>
 #include <boost/foreach.hpp>
@@ -145,9 +145,7 @@ void SceneGraph::addNode(string name, vector<float> position, Mesh * mesh, Mater
 	materials.push_back(material);
 }
 
-void SceneGraph::addNode(string name, vector<float> position, Mesh * mesh){
-	sceneNodes.push_back(Node(name, position, mesh));
-}
+
 
 void SceneGraph::drawNodes(){
     BOOST_FOREACH( Node node, sceneNodes )
@@ -173,4 +171,56 @@ void SceneGraph::initUniforms(){
 
 void SceneGraph::setLightPosition(vector<float> lightPosition){
 	this->lightPosition = lightPosition;
+}
+
+void SceneGraph::addNode(string name, vector<float> position, Mesh * mesh){
+	sceneNodes.push_back(Node(name, position, mesh));
+}
+
+void SceneGraph::addNode(string name, string file, vector<float> position, Material * material){
+	addNode(name,position, MeshFactory::Instance().load(file),material);
+}
+
+void SceneGraph::addNode(string file, vector<float> position, Material * material){
+	addNode(file, file, position, material);
+}
+
+void SceneGraph::addNode(Mesh * mesh, vector<float> position, Material * material){
+	addNode("blubb",position, mesh, material);
+}
+
+void SceneGraph::meshCube(string file, float cubeSize, float step, Material * material){
+	Mesh * mesh = MeshFactory::Instance().load(file);
+
+	for (float x = -cubeSize/2.0; x<cubeSize/2.0; x+=step ){
+		for (float y = -cubeSize/2.0; y<cubeSize/2.0; y+=step ){
+			for (float z = -cubeSize/2.0; z<cubeSize/2.0; z+=step ){
+				addNode(mesh,{x,y,z}, material);
+			}
+		}
+	}
+}
+
+void SceneGraph::meshCube(string file, float cubeSize, float step, vector<Material*> materials){
+	Mesh * mesh = MeshFactory::Instance().load(file);
+	unsigned position = 0;
+	for (float x = -cubeSize/2.0; x<cubeSize/2.0; x+=step ){
+		for (float y = -cubeSize/2.0; y<cubeSize/2.0; y+=step ){
+			for (float z = -cubeSize/2.0; z<cubeSize/2.0; z+=step ){
+				addNode(mesh,{z,x,y}, materials.at(position%materials.size()));
+				position++;
+			}
+		}
+	}
+}
+
+void SceneGraph::meshPlane(string file, float cubeSize, float step, vector<Material*> materials){
+	Mesh * mesh = MeshFactory::Instance().load(file);
+	unsigned position = 0;
+	for (float x = -cubeSize/2.0; x<cubeSize/2.0; x+=step ){
+		for (float y = -cubeSize/2.0; y<cubeSize/2.0; y+=step ){
+			addNode(mesh,{x,y,-5+x}, materials.at(position%materials.size()));
+			position++;
+		}
+	}
 }

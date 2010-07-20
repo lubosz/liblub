@@ -68,6 +68,14 @@ public:
 
 	/* An identity matrix we use to perform the equivalant of glLoadIdentity */
 
+	void addNode(string name, string file, vector<float> position, Material * material);
+	void addNode(string file, vector<float> position, Material * material);
+	void addNode(Mesh * mesh, vector<float> position, Material * material);
+
+	void meshCube(string file, float cubeSize, float step, Material * material);
+	void meshCube(string file, float cubeSize, float step, vector<Material*> materials);
+	void meshPlane(string file, float cubeSize, float step, vector<Material*> materials);
+
 private:
     SceneGraph();
 

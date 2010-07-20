@@ -1,11 +1,15 @@
 cmake_minimum_required(VERSION 2.6)
 project(liblub)
 
+set(LIBRARY_OUTPUT_PATH ${CMAKE_SOURCE_DIR}/build)
+set(EXECUTABLE_OUTPUT_PATH ${CMAKE_SOURCE_DIR}/build)
+
 set(SRC_DIR ${CMAKE_SOURCE_DIR}/src)
+set(APP_DIR ${CMAKE_SOURCE_DIR}/examples)
 
 #Optimization / Debug
-set(CMAKE_CXX_FLAGS "-O0 -g3") #Debug
-#set(CMAKE_CXX_FLAGS "-O3") #Optimized
+#set(CMAKE_CXX_FLAGS "-O0 -g3") #Debug
+set(CMAKE_CXX_FLAGS "-O3") #Optimized
 
 if (UNIX)
 #Hack For SDL 1.3 in local
@@ -24,20 +28,19 @@ include
 
 #App Shader Demo
 set(SOURCES
-	${SRC_DIR}/main.cpp
-	${SRC_DIR}/MediaLayer.cpp 
-	${SRC_DIR}/RenderEngine.cpp  	
+
+	${SRC_DIR}/Window/SDL.cpp 
+	
+	${SRC_DIR}/Renderer/OpenGL.cpp  	
 	
 	${SRC_DIR}/Scene/Camera.cpp
 	${SRC_DIR}/Scene/SceneGraph.cpp
 	${SRC_DIR}/Scene/Node.cpp
-	#${SRC_DIR}/Material.cpp
  
 	${SRC_DIR}/Material/ShaderProgram.cpp
 	${SRC_DIR}/Material/Shader.cpp
 	${SRC_DIR}/Material/Texture.cpp
 	${SRC_DIR}/Material/TextureFactory.cpp
-	#${SRC_DIR}/Material/ShaderFactory.cpp
 
 	${SRC_DIR}/Mesh/ObjLoader.cpp
 	${SRC_DIR}/Mesh/Geometry.cpp  
@@ -49,5 +52,14 @@ set(SOURCES
 	${SRC_DIR}/Mesh/MengerSponge.cpp
 )
 
-add_executable(liblub ${SOURCES})
+add_library(liblub ${SOURCES})
 target_link_libraries(liblub GL SDL freeimageplus)
+
+add_executable(planets ${APP_DIR}/planets.cpp)
+target_link_libraries(planets liblub)
+add_executable(buffer ${APP_DIR}/buffer.cpp)
+target_link_libraries(buffer liblub)
+add_executable(nice ${APP_DIR}/nice.cpp)
+target_link_libraries(nice liblub)
+add_executable(sponge ${APP_DIR}/sponge.cpp)
+target_link_libraries(sponge liblub)

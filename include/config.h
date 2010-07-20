@@ -9,7 +9,7 @@
 using namespace std;
 
 #pragma once
-#define PROGRAM_NAME "liblub"
+
 const string shaderDir = "media/shaders/";
 const string textureDir = "media/textures/";
 const string meshDir = "media/meshes/";
@@ -18,4 +18,4 @@ static const float backgroundColor[3] = {0.0,0.0,0.0};
 const unsigned maxBuffers = 4;
 #define DEBUG 0
 #define USE_GL3
-
+#define FPS_INTERVAL 1.0 //seconds.
