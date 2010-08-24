@@ -19,3 +19,4 @@ const unsigned maxBuffers = 4;
 #define DEBUG 0
 #define USE_GL3
 #define FPS_INTERVAL 1.0 //seconds.
+#define VSync 0

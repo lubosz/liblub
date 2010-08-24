@@ -10,7 +10,11 @@
 #include "MediaLayer.h"
 #include "Camera.h"
 
+
 MediaLayer::MediaLayer(string title, unsigned width, unsigned height) {
+
+
+
 	//FPS Stuff
 	fps_lasttime = 0; //the last recorded time.
 	fps_frames = 0; //frames passed since the last recorded fps.
@@ -48,7 +52,7 @@ MediaLayer::MediaLayer(string title, unsigned width, unsigned height) {
     mainContext = SDL_GL_CreateContext(mainWindow);
 
     /* This makes our buffer swap syncronized with the monitor's vertical refresh */
-    SDL_GL_SetSwapInterval(1);
+    SDL_GL_SetSwapInterval(VSync? 1 : 0);
 
     /* Enable Z depth testing so objects closest to the viewpoint are in front of objects further away */
     glEnable(GL_DEPTH_TEST);
@@ -76,7 +80,7 @@ void MediaLayer::swapBuffers(){
     SDL_GL_SwapWindow(mainWindow);
 
     /* Sleep for roughly 33 milliseconds between frames */
-    SDL_Delay(33);
+    //SDL_Delay(33);
 }
 
 void MediaLayer::eventLoop(){
