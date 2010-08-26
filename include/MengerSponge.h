@@ -16,6 +16,8 @@ private:
 
 public:
 	MengerSponge(unsigned recursion);
+	void makeSponge(unsigned recursion,vector<float> position);
+	void makeCube();
 	virtual ~MengerSponge();
 	Mesh * getMesh();
 };

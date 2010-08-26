@@ -6,9 +6,57 @@
  */
 
 #include "MengerSponge.h"
-#include <list>
+#include "Materials.h"
+#include <algorithm>
 
 MengerSponge::MengerSponge(unsigned recursion) {
+
+	makeCube();
+	makeSponge(recursion,{0,0,0});
+
+
+}
+
+MengerSponge::~MengerSponge() {
+	// TODO Auto-generated destructor stub
+}
+
+void MengerSponge::makeSponge(unsigned recursion,vector<float> position){
+
+	if (recursion == 0){
+		Material * material = new MultiTextureMaterial();
+		SceneGraph::Instance().addNode(new Node("", {0,0,-5}, 0.1, mesh,material));
+		SceneGraph::Instance().addNode(new Node("", {-2,0,-5}, 3.0, mesh, material));
+		SceneGraph::Instance().addNode(new Node("", {2,0,-5}, 1.0, mesh, material));
+	}else{
+		makeSponge(recursion--, position);
+		makeSponge(recursion--, position);
+		makeSponge(recursion--, position);
+		makeSponge(recursion--, position);
+		makeSponge(recursion--, position);
+		makeSponge(recursion--, position);
+		makeSponge(recursion--, position);
+		makeSponge(recursion--, position);
+
+		makeSponge(recursion--, position);
+		makeSponge(recursion--, position);
+		makeSponge(recursion--, position);
+		makeSponge(recursion--, position);
+
+		makeSponge(recursion--, position);
+		makeSponge(recursion--, position);
+		makeSponge(recursion--, position);
+		makeSponge(recursion--, position);
+		makeSponge(recursion--, position);
+		makeSponge(recursion--, position);
+		makeSponge(recursion--, position);
+		makeSponge(recursion--, position);
+	}
+
+
+}
+
+void MengerSponge::makeCube(){
 	vector<GLfloat> vertices = {
 			1.0, -1.0, -1.0,
 			1.0, -1.0, 1.0,
@@ -45,51 +93,57 @@ MengerSponge::MengerSponge(unsigned recursion) {
 
 	};
 
-	list<GLuint> blubb;
-	list<GLuint> blubb2 = {
-			4, 0, 3,
-			4, 3, 7,
-				};
-	blubb.merge(blubb2);
-	//blubb.insert(4, 0, 3,4, 3, 7);
+	vector<GLuint> indices;
 
-	vector<GLuint> indicies = {
-
+	vector<GLuint> back = {
 									//Back
 									4, 0, 3,
 									4, 3, 7,
-//Front
+	};
+	indices.insert(indices.end(), back.begin(), back.end());
+
+	vector<GLuint> front = {
+									//Front
 									1,5,2,
 									5,6,2,
-//Left
+	};
+	indices.insert(indices.end(), front.begin(), front.end());
 
+	vector<GLuint> left = {
+									//Left
 									2, 6, 7,
 									2, 7, 3,
-//Right
+	};
+	indices.insert(indices.end(), left.begin(), left.end());
+
+	vector<GLuint> right = {
+									//Right
 									0,4,1,
 									4,5,1,
-//Top
+	};
+	indices.insert(indices.end(), right.begin(), right.end());
+
+	vector<GLuint> top = {
+									//Top
 									4,7,5,
 									7,6,5,
-//Bottom
+	};
+	indices.insert(indices.end(), top.begin(), top.end());
+
+	vector<GLuint> bottom = {
+									//Bottom
 									0,1,2,
 									0,2,3
-
-
 	};
+	indices.insert(indices.end(), bottom.begin(), bottom.end());
 
 	mesh = new Mesh();
     mesh->addBuffer(vertices,3,"in_Vertex");
-    mesh->addBuffer(color,3,"in_Color");
+    //mesh->addBuffer(color,3,"in_Color");
     mesh->addBuffer(vertices,3,"in_Normal");
     mesh->addBuffer(uvCoords,2,"in_Uv");
-    mesh->addElementBuffer(indicies);
+    mesh->addElementBuffer(indices);
     mesh->setDrawType(GL_TRIANGLES);
-
-}
-
-MengerSponge::~MengerSponge() {
-	// TODO Auto-generated destructor stub
 }
 
 Mesh * MengerSponge::getMesh(){
