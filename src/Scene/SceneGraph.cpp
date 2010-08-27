@@ -104,9 +104,11 @@ void SceneGraph::animate(float frameCount){
     rotate(modelmatrix, (GLfloat) frameCount * 0.5, Z_AXIS);
 }
 
-void SceneGraph::transform(){
+void SceneGraph::initNode(){
     memcpy(modelmatrix, identitymatrix, sizeof(GLfloat) * 16);
+}
 
+void SceneGraph::cameraTransform(){
     rotate(modelmatrix, (GLfloat) Camera::Instance().yaw, X_AXIS);
     rotate(modelmatrix, (GLfloat) Camera::Instance().pitch, Y_AXIS);
     rotate(modelmatrix, (GLfloat) Camera::Instance().roll, Z_AXIS);
@@ -172,9 +174,10 @@ void SceneGraph::addNode(string name, vector<float> position, Mesh * mesh, Mater
 void SceneGraph::drawNodes(){
     BOOST_FOREACH( Node node, sceneNodes )
     {
-        transform();
+    	initNode();
         scale(node.getSize());
         translate(node.getPosition());
+    	cameraTransform();
 
 
         bindShaders(node.getMaterial()->shaderProgram);

@@ -54,7 +54,8 @@ public:
 
 	void animate(float frameCount);
 	void transform(float frameCount);
-	void transform();
+	void initNode();
+	void cameraTransform();
 	void bindShaders(ShaderProgram * shaderProgram);
 	void translate(float x, float y, float z);
 	void translate(vector<float> translation);
