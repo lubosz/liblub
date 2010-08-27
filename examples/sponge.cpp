@@ -11,7 +11,7 @@ public:
   }
 
 	void scene(){
-			MengerSponge * sponge = new MengerSponge(0);
+			MengerSponge * sponge = new MengerSponge(3);
 
 	}
 };

@@ -6,13 +6,14 @@
  */
 
 #include "MengerSponge.h"
-#include "Materials.h"
+
 #include <algorithm>
 
 MengerSponge::MengerSponge(unsigned recursion) {
 
+	material = new BrickMaterial();
 	makeCube();
-	makeSponge(recursion,{0,0,0});
+	makeSponge(recursion,{0,0,0}, 1.0f);
 
 
 }
@@ -21,36 +22,48 @@ MengerSponge::~MengerSponge() {
 	// TODO Auto-generated destructor stub
 }
 
-void MengerSponge::makeSponge(unsigned recursion,vector<float> position){
+void MengerSponge::makeSponge(unsigned recursion,vector<float> position, float size){
 
 	if (recursion == 0){
-		Material * material = new MultiTextureMaterial();
-		SceneGraph::Instance().addNode(new Node("", {0,0,-5}, 0.1, mesh,material));
-		SceneGraph::Instance().addNode(new Node("", {-2,0,-5}, 3.0, mesh, material));
-		SceneGraph::Instance().addNode(new Node("", {2,0,-5}, 1.0, mesh, material));
+
+		SceneGraph::Instance().addNode(new Node("", position, size, mesh,material));
 	}else{
-		makeSponge(recursion--, position);
-		makeSponge(recursion--, position);
-		makeSponge(recursion--, position);
-		makeSponge(recursion--, position);
-		makeSponge(recursion--, position);
-		makeSponge(recursion--, position);
-		makeSponge(recursion--, position);
-		makeSponge(recursion--, position);
+		recursion-=1;
+		float trans = size*2/3.0f;
+		//makeSponge(recursion, {position[0],position[1],position[2]}, size/3.0);
 
-		makeSponge(recursion--, position);
-		makeSponge(recursion--, position);
-		makeSponge(recursion--, position);
-		makeSponge(recursion--, position);
+		//TOP
+		makeSponge(recursion, {position[0],position[1]+trans,position[2]+trans}, size/3.0);
+		makeSponge(recursion, {position[0],position[1]+trans,position[2]-trans}, size/3.0);
 
-		makeSponge(recursion--, position);
-		makeSponge(recursion--, position);
-		makeSponge(recursion--, position);
-		makeSponge(recursion--, position);
-		makeSponge(recursion--, position);
-		makeSponge(recursion--, position);
-		makeSponge(recursion--, position);
-		makeSponge(recursion--, position);
+		makeSponge(recursion, {position[0]+trans,position[1]+trans,position[2]}, size/3.0);
+		makeSponge(recursion, {position[0]-trans,position[1]+trans,position[2]}, size/3.0);
+
+		makeSponge(recursion, {position[0]+trans,position[1]+trans,position[2]+trans}, size/3.0);
+		makeSponge(recursion, {position[0]+trans,position[1]+trans,position[2]-trans}, size/3.0);
+
+		makeSponge(recursion, {position[0]-trans,position[1]+trans,position[2]+trans}, size/3.0);
+		makeSponge(recursion, {position[0]-trans,position[1]+trans,position[2]-trans}, size/3.0);
+
+		//MIDDLE
+		makeSponge(recursion, {position[0]+trans,position[1],position[2]+trans}, size/3.0);
+		makeSponge(recursion, {position[0]+trans,position[1],position[2]-trans}, size/3.0);
+
+		makeSponge(recursion, {position[0]-trans,position[1],position[2]+trans}, size/3.0);
+		makeSponge(recursion, {position[0]-trans,position[1],position[2]-trans}, size/3.0);
+
+		//BOTTOM
+		makeSponge(recursion, {position[0],position[1]-trans,position[2]+trans}, size/3.0);
+		makeSponge(recursion, {position[0],position[1]-trans,position[2]-trans}, size/3.0);
+
+		makeSponge(recursion, {position[0]+trans,position[1]-trans,position[2]}, size/3.0);
+		makeSponge(recursion, {position[0]-trans,position[1]-trans,position[2]}, size/3.0);
+
+		makeSponge(recursion, {position[0]+trans,position[1]-trans,position[2]+trans}, size/3.0);
+		makeSponge(recursion, {position[0]+trans,position[1]-trans,position[2]-trans}, size/3.0);
+
+		makeSponge(recursion, {position[0]-trans,position[1]-trans,position[2]+trans}, size/3.0);
+		makeSponge(recursion, {position[0]-trans,position[1]-trans,position[2]-trans}, size/3.0);
 	}
 
 
