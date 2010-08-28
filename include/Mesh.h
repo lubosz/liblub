@@ -10,15 +10,13 @@
 #include "common.h"
 #include <vector>
 
-
-
 class Mesh {
 public:
 	/* Create handles for our Vertex Array Object and three Vertex Buffer Objects */
 	GLuint vao, vbo[maxBuffers];
 	unsigned indexSize;
 	GLint drawType;
-	vector<GLuint> indices;
+	//vector<GLuint> indices;
 
 	Mesh();
 	virtual ~Mesh();

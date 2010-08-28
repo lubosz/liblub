@@ -443,3 +443,15 @@ public:
 		glUniform1f(glGetUniformLocation(program, "Time"), 1.0);
 	}
 };
+
+class GeomTest : public Material {
+public:
+	GeomTest(){
+		init();
+		attachVertFragGeom("Geometry/test");
+		done();
+
+  }
+	void uniforms(){}
+
+};

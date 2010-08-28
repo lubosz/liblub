@@ -65,7 +65,6 @@ void Mesh::addBuffer(vector<GLfloat> content, unsigned size, string name){
 
 void Mesh::addElementBuffer(vector<GLuint> content){
 	indexSize = content.size();
-	indices = content;
 
 
 
