@@ -53,6 +53,21 @@ void SceneGraph::translate(GLfloat *matrix, GLfloat x, GLfloat y, GLfloat z)
     multiply4x4(matrix, newmatrix);
 }
 
+/* Perform scale operations on a matrix */
+void SceneGraph::scale(GLfloat *matrix, GLfloat size)
+{
+    GLfloat newmatrix[16] = IDENTITY_MATRIX4;
+
+/*
+    newmatrix[0] = size;
+    newmatrix[5] = size;
+    newmatrix[10] = size;
+*/
+    newmatrix[15] = 1/size;
+    //cout << "size:" << size << "\n";
+    multiply4x4(matrix, newmatrix);
+}
+
 /* Rotate a matrix by an angle on a X, Y, or Z axis */
 void SceneGraph::rotate(GLfloat *matrix, GLfloat angle, AXIS axis)
 {
@@ -89,11 +104,16 @@ void SceneGraph::animate(float frameCount){
     rotate(modelmatrix, (GLfloat) frameCount * 0.5, Z_AXIS);
 }
 
-void SceneGraph::transform(){
+void SceneGraph::initNode(){
     memcpy(modelmatrix, identitymatrix, sizeof(GLfloat) * 16);
+}
+
+void SceneGraph::cameraTransform(){
     rotate(modelmatrix, (GLfloat) Camera::Instance().yaw, X_AXIS);
     rotate(modelmatrix, (GLfloat) Camera::Instance().pitch, Y_AXIS);
     rotate(modelmatrix, (GLfloat) Camera::Instance().roll, Z_AXIS);
+
+    //scale(modelmatrix, 0.5);
     translate(modelmatrix, Camera::Instance().x, Camera::Instance().y, Camera::Instance().z);
 }
 
@@ -108,6 +128,10 @@ void SceneGraph::transform(float frameCount){
 
 void SceneGraph::translate(float x, float y, float z){
     translate(modelmatrix, x, y, z);
+}
+
+void SceneGraph::scale(float size){
+    scale(modelmatrix, size);
 }
 
 void SceneGraph::translate(vector<float> translation){
@@ -150,8 +174,12 @@ void SceneGraph::addNode(string name, vector<float> position, Mesh * mesh, Mater
 void SceneGraph::drawNodes(){
     BOOST_FOREACH( Node node, sceneNodes )
     {
-        transform();
+    	initNode();
+        scale(node.getSize());
         translate(node.getPosition());
+    	cameraTransform();
+
+
         bindShaders(node.getMaterial()->shaderProgram);
     	node.draw();
     }
@@ -175,6 +203,10 @@ void SceneGraph::setLightPosition(vector<float> lightPosition){
 
 void SceneGraph::addNode(string name, vector<float> position, Mesh * mesh){
 	sceneNodes.push_back(Node(name, position, mesh));
+}
+
+void SceneGraph::addNode(Node * node){
+	sceneNodes.push_back(*node);
 }
 
 void SceneGraph::addNode(string name, string file, vector<float> position, Material * material){

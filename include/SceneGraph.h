@@ -49,14 +49,19 @@ public:
 
 	void transpose3x3(GLfloat *matrix);
 
+	void scale(GLfloat *matrix, GLfloat size);
+	void scale(float size);
+
 	void animate(float frameCount);
 	void transform(float frameCount);
-	void transform();
+	void initNode();
+	void cameraTransform();
 	void bindShaders(ShaderProgram * shaderProgram);
 	void translate(float x, float y, float z);
 	void translate(vector<float> translation);
+	void addNode(Node * node);
 	void addNode(string name, vector<float> position, Mesh * mesh);
-	void addNode(string name, vector<float> position, Mesh * mesh, Material * material);
+	void addNode(string name, vector<float> position, Mesh * mesh, Material * material);;
 	void drawNodes();
 	void initUniforms();
 	void setPosition(string nodeName, vector<float> position);

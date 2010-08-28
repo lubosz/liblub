@@ -6,9 +6,70 @@
  */
 
 #include "MengerSponge.h"
-#include <list>
+
+#include <algorithm>
 
 MengerSponge::MengerSponge(unsigned recursion) {
+
+	material = new BrickMaterial();
+	makeCube();
+	makeSponge(recursion,{0,0,0}, 1.0f);
+
+
+}
+
+MengerSponge::~MengerSponge() {
+	// TODO Auto-generated destructor stub
+}
+
+void MengerSponge::makeSponge(unsigned recursion,vector<float> position, float size){
+
+	if (recursion == 0){
+
+		SceneGraph::Instance().addNode(new Node("", position, size, mesh,material));
+	}else{
+		recursion-=1;
+		float trans = size*2/3.0f;
+		//makeSponge(recursion, {position[0],position[1],position[2]}, size/3.0);
+
+		//TOP
+		makeSponge(recursion, {position[0],position[1]+trans,position[2]+trans}, size/3.0);
+		makeSponge(recursion, {position[0],position[1]+trans,position[2]-trans}, size/3.0);
+
+		makeSponge(recursion, {position[0]+trans,position[1]+trans,position[2]}, size/3.0);
+		makeSponge(recursion, {position[0]-trans,position[1]+trans,position[2]}, size/3.0);
+
+		makeSponge(recursion, {position[0]+trans,position[1]+trans,position[2]+trans}, size/3.0);
+		makeSponge(recursion, {position[0]+trans,position[1]+trans,position[2]-trans}, size/3.0);
+
+		makeSponge(recursion, {position[0]-trans,position[1]+trans,position[2]+trans}, size/3.0);
+		makeSponge(recursion, {position[0]-trans,position[1]+trans,position[2]-trans}, size/3.0);
+
+		//MIDDLE
+		makeSponge(recursion, {position[0]+trans,position[1],position[2]+trans}, size/3.0);
+		makeSponge(recursion, {position[0]+trans,position[1],position[2]-trans}, size/3.0);
+
+		makeSponge(recursion, {position[0]-trans,position[1],position[2]+trans}, size/3.0);
+		makeSponge(recursion, {position[0]-trans,position[1],position[2]-trans}, size/3.0);
+
+		//BOTTOM
+		makeSponge(recursion, {position[0],position[1]-trans,position[2]+trans}, size/3.0);
+		makeSponge(recursion, {position[0],position[1]-trans,position[2]-trans}, size/3.0);
+
+		makeSponge(recursion, {position[0]+trans,position[1]-trans,position[2]}, size/3.0);
+		makeSponge(recursion, {position[0]-trans,position[1]-trans,position[2]}, size/3.0);
+
+		makeSponge(recursion, {position[0]+trans,position[1]-trans,position[2]+trans}, size/3.0);
+		makeSponge(recursion, {position[0]+trans,position[1]-trans,position[2]-trans}, size/3.0);
+
+		makeSponge(recursion, {position[0]-trans,position[1]-trans,position[2]+trans}, size/3.0);
+		makeSponge(recursion, {position[0]-trans,position[1]-trans,position[2]-trans}, size/3.0);
+	}
+
+
+}
+
+void MengerSponge::makeCube(){
 	vector<GLfloat> vertices = {
 			1.0, -1.0, -1.0,
 			1.0, -1.0, 1.0,
@@ -45,56 +106,57 @@ MengerSponge::MengerSponge(unsigned recursion) {
 
 	};
 
-	vector<GLuint> indicies;
+	vector<GLuint> indices;
+
 	vector<GLuint> back = {
-			4, 0, 3,
-			4, 3, 7,
-				};
-	indicies.insert(indicies.end(), back.begin(), back.end());
+									//Back
+									4, 0, 3,
+									4, 3, 7,
+	};
+	indices.insert(indices.end(), back.begin(), back.end());
 
 	vector<GLuint> front = {
-			1,5,2,
-			5,6,2,
-				};
-	indicies.insert(indicies.end(), front.begin(), front.end());
+									//Front
+									1,5,2,
+									5,6,2,
+	};
+	indices.insert(indices.end(), front.begin(), front.end());
 
 	vector<GLuint> left = {
-			2, 6, 7,
-			2, 7, 3,
-				};
-	indicies.insert(indicies.end(), left.begin(), left.end());
+									//Left
+									2, 6, 7,
+									2, 7, 3,
+	};
+	indices.insert(indices.end(), left.begin(), left.end());
 
 	vector<GLuint> right = {
-			0,4,1,
-			4,5,1,
-				};
-	indicies.insert(indicies.end(), right.begin(), right.end());
+									//Right
+									0,4,1,
+									4,5,1,
+	};
+	indices.insert(indices.end(), right.begin(), right.end());
 
 	vector<GLuint> top = {
-			4,7,5,
-			7,6,5,
-				};
-	indicies.insert(indicies.end(), top.begin(), top.end());
+									//Top
+									4,7,5,
+									7,6,5,
+	};
+	indices.insert(indices.end(), top.begin(), top.end());
 
 	vector<GLuint> bottom = {
-			0,1,2,
-			0,2,3
-				};
-	indicies.insert(indicies.end(), bottom.begin(), bottom.end());
-
+									//Bottom
+									0,1,2,
+									0,2,3
+	};
+	indices.insert(indices.end(), bottom.begin(), bottom.end());
 
 	mesh = new Mesh();
     mesh->addBuffer(vertices,3,"in_Vertex");
-    mesh->addBuffer(color,3,"in_Color");
+    //mesh->addBuffer(color,3,"in_Color");
     mesh->addBuffer(vertices,3,"in_Normal");
     mesh->addBuffer(uvCoords,2,"in_Uv");
-    mesh->addElementBuffer(indicies);
+    mesh->addElementBuffer(indices);
     mesh->setDrawType(GL_TRIANGLES);
-
-}
-
-MengerSponge::~MengerSponge() {
-	// TODO Auto-generated destructor stub
 }
 
 Mesh * MengerSponge::getMesh(){

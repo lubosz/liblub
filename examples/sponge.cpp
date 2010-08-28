@@ -11,8 +11,7 @@ public:
   }
 
 	void scene(){
-			MengerSponge * sponge = new MengerSponge(0);
-			SceneGraph::Instance().addNode(sponge->getMesh(),{0,0,-5}, new GeomTest());
+			MengerSponge * sponge = new MengerSponge(3);
 	}
 };
 
