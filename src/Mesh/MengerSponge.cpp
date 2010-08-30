@@ -11,7 +11,7 @@
 
 MengerSponge::MengerSponge(unsigned recursion) {
 
-	material = new BrickMaterial();
+	material = new WhiteMat();
 	makeCube();
 	makeSponge(recursion,{0,0,0}, 1.0f);
 
@@ -156,7 +156,8 @@ void MengerSponge::makeCube(){
     mesh->addBuffer(vertices,3,"in_Normal");
     mesh->addBuffer(uvCoords,2,"in_Uv");
     mesh->addElementBuffer(indices);
-    mesh->setDrawType(GL_TRIANGLES);
+    //mesh->setDrawType(GL_TRIANGLES);
+    mesh->setDrawType(GL_LINES);
 }
 
 Mesh * MengerSponge::getMesh(){

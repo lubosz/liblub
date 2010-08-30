@@ -37,7 +37,9 @@ void Node::setMesh(Mesh *mesh)
 
 void Node::setPosition(vector<float> position)
 {
+	cout << "Old Position: " << this->position.at(0) << " " <<this->position.at(1) << " " <<this->position.at(2) << "\n";
     this->position = position;
+    cout << "New position: " << this->position.at(0) << " " <<this->position.at(1) << " " <<this->position.at(2) << "\n";
 }
 
 string Node::getName() const

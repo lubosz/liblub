@@ -156,6 +156,10 @@ void SceneGraph::setPosition(string nodeName, vector<float> position){
     {
         if (node.getName() == nodeName) {
         	node.setPosition(position);
+        	/*TODO: Does not set and save
+        	sceneNodes.remove(node);
+        	sceneNodes.push_back(node);
+        	*/
         }
     }
 }

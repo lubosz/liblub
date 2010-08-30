@@ -30,25 +30,35 @@ typedef enum {
 class SceneGraph: public Singleton<SceneGraph>
 {
 public:
+	vector<float> lightPosition;
+	void updateLight();
+	void drawNodes();
+
+	void addNode(Node * node);
+	void addNode(Mesh * mesh, vector<float> position, Material * material);
+	void addNode(string file, vector<float> position, Material * material);
+
+	void meshPlane(string file, float cubeSize, float step, vector<Material*> materials);
+
+private:
 	friend class Singleton<SceneGraph>;
 
 	vector<Node> sceneNodes;
 	vector<Material*> materials;
-	vector<float> lightPosition;
 
+	GLfloat modelmatrix[16]; /* Our model matrix  */
 
 	/* Multiply 4x4 matrix m1 by 4x4 matrix m2 and store the result in m1 */
 	void multiply4x4(GLfloat *m1, GLfloat *m2);
-
+	void transpose3x3(GLfloat *matrix);
 
 	/* Perform translation operations on a matrix */
 	void translate(GLfloat *matrix, GLfloat x, GLfloat y, GLfloat z);
+	void translate(float x, float y, float z);
+	void translate(vector<float> translation);
 
 	/* Rotate a matrix by an angle on a X, Y, or Z axis specified by the AXIS enum*/
 	void rotate(GLfloat *matrix, GLfloat angle, AXIS axis);
-
-	void transpose3x3(GLfloat *matrix);
-
 	void scale(GLfloat *matrix, GLfloat size);
 	void scale(float size);
 
@@ -57,31 +67,21 @@ public:
 	void initNode();
 	void cameraTransform();
 	void bindShaders(ShaderProgram * shaderProgram);
-	void translate(float x, float y, float z);
-	void translate(vector<float> translation);
-	void addNode(Node * node);
-	void addNode(string name, vector<float> position, Mesh * mesh);
-	void addNode(string name, vector<float> position, Mesh * mesh, Material * material);;
-	void drawNodes();
+
 	void initUniforms();
 	void setPosition(string nodeName, vector<float> position);
-	void updateLight();
 
 	void setLightPosition(vector<float> lightPosition);
-
-	GLfloat modelmatrix[16]; /* Our model matrix  */
 
 	/* An identity matrix we use to perform the equivalant of glLoadIdentity */
 
 	void addNode(string name, string file, vector<float> position, Material * material);
-	void addNode(string file, vector<float> position, Material * material);
-	void addNode(Mesh * mesh, vector<float> position, Material * material);
+	void addNode(string name, vector<float> position, Mesh * mesh);
+	void addNode(string name, vector<float> position, Mesh * mesh, Material * material);
 
 	void meshCube(string file, float cubeSize, float step, Material * material);
 	void meshCube(string file, float cubeSize, float step, vector<Material*> materials);
-	void meshPlane(string file, float cubeSize, float step, vector<Material*> materials);
 
-private:
     SceneGraph();
 
 };
