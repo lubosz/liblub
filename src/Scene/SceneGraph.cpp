@@ -184,7 +184,7 @@ void SceneGraph::drawNodes(){
     	cameraTransform();
 
 
-        bindShaders(node.getMaterial()->shaderProgram);
+        bindShaders(node.getMaterial()->getShaderProgram());
     	node.draw();
     }
     glError("SceneGraph",139);
