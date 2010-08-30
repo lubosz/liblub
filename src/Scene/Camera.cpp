@@ -30,6 +30,11 @@ Camera::Camera() {
     yaw, pitch, roll = 0;
 }
 
+GLfloat * Camera::getProjectionmatrix()
+{
+    return projectionmatrix;
+}
+
 Camera::~Camera() {
 	// TODO Auto-generated destructor stub
 }

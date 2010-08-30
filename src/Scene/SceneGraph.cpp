@@ -144,7 +144,7 @@ void SceneGraph::bindShaders(ShaderProgram * shaderProgram){
     shaderProgram->setNormalMatrix(modelmatrix);
 	shaderProgram->setModelViewMatrix(modelmatrix);
     /* multiply our modelmatrix and our projectionmatrix. Results are stored in modelmatrix */
-    multiply4x4(modelmatrix, Camera::Instance().projectionmatrix);
+    multiply4x4(modelmatrix, Camera::Instance().getProjectionmatrix());
     shaderProgram->setModelViewProjectionMatrix(modelmatrix);
     shaderProgram->setLightPosition(lightPosition.at(0),lightPosition.at(1),lightPosition.at(2));
     glError("SceneGraph::bindShaders",116);
