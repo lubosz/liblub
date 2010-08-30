@@ -148,7 +148,11 @@ void SceneGraph::bindShaders(ShaderProgram * shaderProgram){
 }
 
 
-void SceneGraph::setPosition(string nodeName, vector<float> position){
+void SceneGraph::setPosition(string nodeName, const vector<float> & position){
+	/*
+	 * (07:08:40 PM) Dodheim: you should probably pass in position by const&
+	 * (07:08:45 PM) Dodheim: passing containers by value is bad
+	 */
     BOOST_FOREACH( Node &node, sceneNodes )
     {
         if (node.getName() == nodeName) {
@@ -157,7 +161,7 @@ void SceneGraph::setPosition(string nodeName, vector<float> position){
     }
 }
 
-void SceneGraph::addNode(string name, vector<float> position, Mesh * mesh, Material * material){
+void SceneGraph::addNode(string name, const vector<float> & position, Mesh * mesh, Material * material){
 	sceneNodes.push_back(Node(name, position, mesh, material));
     BOOST_FOREACH( Material* oldMaterial, materials )
     {
@@ -198,7 +202,7 @@ void SceneGraph::setLightPosition(vector<float> lightPosition){
 	this->lightPosition = lightPosition;
 }
 
-void SceneGraph::addNode(string name, vector<float> position, Mesh * mesh){
+void SceneGraph::addNode(string name, const vector<float> & position, Mesh * mesh){
 	sceneNodes.push_back(Node(name, position, mesh));
 }
 
@@ -206,15 +210,15 @@ void SceneGraph::addNode(Node * node){
 	sceneNodes.push_back(*node);
 }
 
-void SceneGraph::addNode(string name, string file, vector<float> position, Material * material){
+void SceneGraph::addNode(string name, string file, const vector<float> & position, Material * material){
 	addNode(name,position, MeshFactory::Instance().load(file),material);
 }
 
-void SceneGraph::addNode(string file, vector<float> position, Material * material){
+void SceneGraph::addNode(string file, const vector<float> & position, Material * material){
 	addNode(file, file, position, material);
 }
 
-void SceneGraph::addNode(Mesh * mesh, vector<float> position, Material * material){
+void SceneGraph::addNode(Mesh * mesh, const vector<float> & position, Material * material){
 	addNode("blubb",position, mesh, material);
 }
 

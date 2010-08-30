@@ -35,8 +35,8 @@ public:
 	void drawNodes();
 
 	void addNode(Node * node);
-	void addNode(Mesh * mesh, vector<float> position, Material * material);
-	void addNode(string file, vector<float> position, Material * material);
+	void addNode(Mesh * mesh, const vector<float> & position, Material * material);
+	void addNode(string file, const vector<float> & position, Material * material);
 
 	void meshPlane(string file, float cubeSize, float step, vector<Material*> materials);
 
@@ -69,15 +69,15 @@ private:
 	void bindShaders(ShaderProgram * shaderProgram);
 
 	void initUniforms();
-	void setPosition(string nodeName, vector<float> position);
+	void setPosition(string nodeName, const vector<float> & position);
 
 	void setLightPosition(vector<float> lightPosition);
 
 	/* An identity matrix we use to perform the equivalant of glLoadIdentity */
 
-	void addNode(string name, string file, vector<float> position, Material * material);
-	void addNode(string name, vector<float> position, Mesh * mesh);
-	void addNode(string name, vector<float> position, Mesh * mesh, Material * material);
+	void addNode(string name, string file,  const vector<float> & position, Material * material);
+	void addNode(string name, const vector<float> & position, Mesh * mesh);
+	void addNode(string name, const vector<float> & position, Mesh * mesh, Material * material);
 
 	void meshCube(string file, float cubeSize, float step, Material * material);
 	void meshCube(string file, float cubeSize, float step, vector<Material*> materials);
