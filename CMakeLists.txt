@@ -41,6 +41,7 @@ set(SOURCES
 	${SRC_DIR}/Material/Shader.cpp
 	${SRC_DIR}/Material/Texture.cpp
 	${SRC_DIR}/Material/TextureFactory.cpp
+	${SRC_DIR}/Material/Material.cpp
 
 	${SRC_DIR}/Mesh/ObjLoader.cpp
 	${SRC_DIR}/Mesh/Geometry.cpp  
