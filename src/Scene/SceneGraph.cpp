@@ -6,16 +6,13 @@
 #include <math.h>
 #include <boost/foreach.hpp>
 
-SceneGraph::SceneGraph()
-{
-lightPosition = {-2.0, 1.0, 2.0};
-addNode("Light",lightPosition, MeshFactory::Instance().lamp(),new WhiteMat());
+SceneGraph::SceneGraph(){
+	lightPosition = {-2.0, 1.0, 2.0};
+	addNode("Light",lightPosition, MeshFactory::Instance().lamp(),new WhiteMat());
 }
 
 void SceneGraph::updateLight(){
 	setPosition("Light", lightPosition);
-	cout << "Updating Light" << lightPosition.at(0) << " " << lightPosition.at(1) << " " << lightPosition.at(2) << "\n";
-
 }
 
 /* Multiply 4x4 matrix m1 by 4x4 matrix m2 and store the result in m1 */
@@ -152,14 +149,10 @@ void SceneGraph::bindShaders(ShaderProgram * shaderProgram){
 
 
 void SceneGraph::setPosition(string nodeName, vector<float> position){
-    BOOST_FOREACH( Node node, sceneNodes )
+    BOOST_FOREACH( Node &node, sceneNodes )
     {
         if (node.getName() == nodeName) {
         	node.setPosition(position);
-        	/*TODO: Does not set and save
-        	sceneNodes.remove(node);
-        	sceneNodes.push_back(node);
-        	*/
         }
     }
 }
