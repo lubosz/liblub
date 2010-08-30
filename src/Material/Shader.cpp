@@ -89,3 +89,7 @@ void Shader::reload(){
 	free(source);
 	loadAndCompile();
 }
+
+GLuint Shader::getReference() const{
+	return shader;
+}

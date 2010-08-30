@@ -10,12 +10,8 @@
 #include "common.h"
 #include <SDL/SDL.h>
 //#include <SDL/SDL_opengl.h>
-
 #include <string>
-
 #include "RenderEngine.h"
-
-using namespace std;
 
 class MediaLayer {
 

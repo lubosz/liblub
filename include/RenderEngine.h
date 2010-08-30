@@ -17,7 +17,8 @@
 
 class RenderEngine : public Singleton<RenderEngine> {
 public:
-
+	void display();
+private:
 	friend class Singleton<RenderEngine>;
 
 	//ShaderProgram * shaderProgram;
@@ -25,9 +26,7 @@ public:
 
 	void checkVersion();
 	GLboolean QueryExtension(char *extName);
-	void display();
 
-private:
 	RenderEngine();
 	virtual ~RenderEngine();
 

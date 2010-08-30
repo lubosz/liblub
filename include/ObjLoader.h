@@ -16,12 +16,10 @@
 
 class ObjLoader {
 public:
-
 	ObjLoader(string file);
 	~ObjLoader();
-
-
-
+	Mesh * getMesh() const;
+private:
 	Mesh * mesh;
 
 	string filePath;
@@ -45,8 +43,4 @@ public:
 	void decrementIndex(vector<GLuint> &indices);
 	void hardCopyIndex();
 	Mesh * createMesh();
-
-
-
-
 };

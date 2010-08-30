@@ -159,7 +159,3 @@ void MengerSponge::makeCube(){
     //mesh->setDrawType(GL_TRIANGLES);
     mesh->setDrawType(GL_LINES);
 }
-
-Mesh * MengerSponge::getMesh(){
-	return mesh;
-}

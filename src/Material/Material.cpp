@@ -60,7 +60,7 @@ void Material::done() {
 
 void Material::initUniforms() {
 	cout << "\nInitializing Material Uniforms for Shader #"
-			<< shaderProgram->program << "\n";
+			<< shaderProgram->getReference() << "\n";
 	/*
 	 GLint texLoc;
 	 for (int i = 0; i < textures.size(); i++){
@@ -76,7 +76,7 @@ void Material::initUniforms() {
 				{
 					texture->activate();
 					texture->bind();
-					texture->uniform(shaderProgram->program);
+					texture->uniform(shaderProgram->getReference());
 				}
 
 	uniforms();

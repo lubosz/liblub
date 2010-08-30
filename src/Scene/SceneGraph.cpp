@@ -149,10 +149,6 @@ void SceneGraph::bindShaders(ShaderProgram * shaderProgram){
 
 
 void SceneGraph::setPosition(string nodeName, const vector<float> & position){
-	/*
-	 * (07:08:40 PM) Dodheim: you should probably pass in position by const&
-	 * (07:08:45 PM) Dodheim: passing containers by value is bad
-	 */
     BOOST_FOREACH( Node &node, sceneNodes )
     {
         if (node.getName() == nodeName) {

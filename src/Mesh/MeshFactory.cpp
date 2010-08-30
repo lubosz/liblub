@@ -63,12 +63,12 @@ Mesh *  MeshFactory::stars(){
 
 Mesh *  MeshFactory::lamp(){
 	ObjLoader objLoader = ObjLoader("earth.obj");
-	objLoader.mesh->setDrawType(GL_LINES);
-	return objLoader.mesh;
+	objLoader.getMesh()->setDrawType(GL_LINES);
+	return objLoader.getMesh();
 }
 
 Mesh * MeshFactory::load(string file){
 	ObjLoader objLoader = ObjLoader(file);
-	objLoader.mesh->setDrawType(GL_TRIANGLES);
-	return objLoader.mesh;
+	objLoader.getMesh()->setDrawType(GL_TRIANGLES);
+	return objLoader.getMesh();
 }

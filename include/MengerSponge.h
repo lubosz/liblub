@@ -16,10 +16,10 @@ private:
 	Mesh * mesh;
 	Material * material;
 
-public:
-	MengerSponge(unsigned recursion);
 	void makeSponge(unsigned recursion,vector<float> position, float size);
 	void makeCube();
+
+public:
+	MengerSponge(unsigned recursion);
 	virtual ~MengerSponge();
-	Mesh * getMesh();
 };

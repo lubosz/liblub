@@ -31,10 +31,10 @@ public:
   }
 	void uniforms(){
 		cout << "inititalizing brick uniforms.\n";
-		glUniform3f(glGetUniformLocation(shaderProgram->program, "BrickColor"), 1.0, 0.3, 0.2);
-		glUniform3f(glGetUniformLocation(shaderProgram->program, "MortarColor"), 0.85, 0.86, 0.84);
-		glUniform2f(glGetUniformLocation(shaderProgram->program, "BrickSize"), 0.30, 0.15);
-		glUniform2f(glGetUniformLocation(shaderProgram->program, "BrickPct"), 0.90, 0.85);
+		glUniform3f(glGetUniformLocation(shaderProgram->getReference(), "BrickColor"), 1.0, 0.3, 0.2);
+		glUniform3f(glGetUniformLocation(shaderProgram->getReference(), "MortarColor"), 0.85, 0.86, 0.84);
+		glUniform2f(glGetUniformLocation(shaderProgram->getReference(), "BrickSize"), 0.30, 0.15);
+		glUniform2f(glGetUniformLocation(shaderProgram->getReference(), "BrickPct"), 0.90, 0.85);
 	}
 };
 
@@ -87,7 +87,7 @@ public:
         done();
   }
 	void uniforms(){
-		GLuint program = shaderProgram->program;
+		GLuint program = shaderProgram->getReference();
 		glUniform4f(glGetUniformLocation(program, "ambient"), 0.2, 0.2, 0.2, 1.0);
 		glUniform4f(glGetUniformLocation(program, "diffuse"), 0.99, 0.99, 0.99, 1.0);
 
@@ -111,7 +111,7 @@ public:
 		done();
   }
 	void uniforms(){
-		GLuint program = shaderProgram->program;
+		GLuint program = shaderProgram->getReference();
 		glUniform4f(glGetUniformLocation(program, "SurfaceColor"), 0.7, 0.6, 0.18, 1.0);
 		glUniform1f(glGetUniformLocation(program, "BumpDensity"), 16.0);
 		glUniform1f(glGetUniformLocation(program, "BumpSize"), 0.15);
@@ -129,7 +129,7 @@ public:
 		done();
   }
 	void uniforms(){
-		GLuint program = shaderProgram->program;
+		GLuint program = shaderProgram->getReference();
 		// array of offsets for accessing the base image
 		glUniform2f(glGetUniformLocation(program, "Offset"), 0.0, 0.0);
 		// size of kernel (width * height) for this execution
@@ -151,7 +151,7 @@ public:
 		done();
   }
 	void uniforms(){
-		GLuint program = shaderProgram->program;
+		GLuint program = shaderProgram->getReference();
 
 		glUniform1i(glGetUniformLocation(program, "Mode"), 1);
 
@@ -168,7 +168,7 @@ public:
 		done();
   }
 	void uniforms(){
-		GLuint program = shaderProgram->program;
+		GLuint program = shaderProgram->getReference();
 
 		glUniform1i(glGetUniformLocation(program, "Mode"), 1);
 
@@ -186,7 +186,7 @@ public:
 		done();
   }
 	void uniforms(){
-		GLuint program = shaderProgram->program;
+		GLuint program = shaderProgram->getReference();
 
 
 		glUniform1f(glGetUniformLocation(program, "glossMax"), 1.0);
@@ -215,7 +215,7 @@ public:
 		done();
   }
 	void uniforms(){
-		GLuint program = shaderProgram->program;
+		GLuint program = shaderProgram->getReference();
 
 		glUniform1i(glGetUniformLocation(program, "linear_search_steps"), 1);
 		glUniform1i(glGetUniformLocation(program, "binary_search_steps"), 1);
@@ -244,7 +244,7 @@ public:
 		done();
   }
 	void uniforms(){
-		GLuint program = shaderProgram->program;
+		GLuint program = shaderProgram->getReference();
 
 		//Frag
 		glUniform4f(glGetUniformLocation(program, "deepColor"), 0, 0.3, 0.5, 1.0);
@@ -297,7 +297,7 @@ public:
 		glError("MatTypes",280);
   }
 	void uniforms(){
-		GLuint program = shaderProgram->program;
+		GLuint program = shaderProgram->getReference();
 
 		//Frag
 		glUniform3f(glGetUniformLocation(program, "BaseColor"), 0.5, 0.5, 1.0);
@@ -414,7 +414,7 @@ public:
 		done();
   }
 	void uniforms(){
-		GLuint program = shaderProgram->program;
+		GLuint program = shaderProgram->getReference();
 
 		glUniform1f(glGetUniformLocation(program, "SpecularContribution"), 1.0);
 		glUniform1f(glGetUniformLocation(program, "DiffuseContribution"), 1.0);
@@ -439,7 +439,7 @@ public:
 		done();
   }
 	void uniforms(){
-		GLuint program = shaderProgram->program;
+		GLuint program = shaderProgram->getReference();
 		glUniform1f(glGetUniformLocation(program, "Time"), 1.0);
 	}
 };
