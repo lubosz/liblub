@@ -11,7 +11,11 @@
 
 MengerSponge::MengerSponge(unsigned recursion) {
 
-	material = new StarMat();
+	//material = new StarMat();
+	//material = new BrickMaterial();
+	//material = new NormalColorMat();
+	material = new PhongColorMat();
+	//material = new TextureMaterial("Paper_Texture_by_Spiteful_Pie_Stock.jpg");
 	//makeCube();
 	makeSponge(recursion,{0,0,0}, 1.0f);
 /*
@@ -29,8 +33,13 @@ MengerSponge::MengerSponge(unsigned recursion) {
 */
 	mesh = new Mesh();
     mesh->addBuffer(oneMeshVertices,3,"in_Vertex");
+    mesh->addBuffer(oneMeshVertices,3,"in_Normal");
+
+    //mesh->addBuffer(oneMeshNormals,3,"in_Normal");
+
     mesh->addBuffer(oneMeshVertices,3,"in_Color");
-    //mesh->addBuffer(oneMeshVertices,3,"in_Normal");
+
+
     //mesh->addBuffer(oneMeshUVCoords,2,"in_Uv");
     mesh->addElementBuffer(oneMeshIndices);
     mesh->setDrawType(GL_TRIANGLES);
@@ -108,7 +117,7 @@ void MengerSponge::addCube(const vector<float> & position, float size){
 	};
 
 	oneMeshVertices.insert(oneMeshVertices.end(), vertices.begin(), vertices.end());
-/*
+
 	vector<GLfloat> uvCoords = {
 			1.0, 0.0,
 			0.0, 0.0,
@@ -122,7 +131,19 @@ void MengerSponge::addCube(const vector<float> & position, float size){
 	};
 
 	oneMeshUVCoords.insert(oneMeshUVCoords.end(), uvCoords.begin(), uvCoords.end());
-*/
+
+	vector<GLfloat> normals = {
+			1.0, -1.0, -1.0,
+			1.0, -1.0, 1.0,
+			-1.0, -1.0, 1.0,
+			-1.0, -1.0, -1.0,
+			1.0, 1.0, -1.0,
+			1.0, 1.0, 1.0,
+			-1.0, 1.0, 1.0,
+			-1.0, 1.0, -1.0
+	};
+
+	oneMeshNormals.insert(oneMeshNormals.end(), normals.begin(), normals.end());
 
 
 	//cout << "IndexSize: " << indexSize <<"\n";

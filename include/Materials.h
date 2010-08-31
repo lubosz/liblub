@@ -380,12 +380,12 @@ public:
 
 };
 
-class PhongMat : public Material {
+class PhongTextureMat : public Material {
 public:
-	PhongMat(){
+	PhongTextureMat(){
 		init();
 		addTexture("Earth/MarsMap_2500x1250.jpg","myTexture");
-		attachVertFrag("Color/PhongNormal");
+		attachVertFrag("Texture/PhongTexture");
 		done();
 
   }
@@ -393,6 +393,17 @@ public:
 
 };
 
+class PhongColorMat : public Material {
+public:
+	PhongColorMat(){
+		init();
+		attachVertFrag("Color/PhongColor");
+		done();
+
+  }
+	void uniforms(){}
+
+};
 
 class WhiteMat : public Material {
 public:
@@ -454,4 +465,37 @@ public:
   }
 	void uniforms(){}
 
+};
+
+class PhongTextureMat2 : public Material {
+public:
+	PhongTextureMat2(){
+		init();
+		addTexture("Paper_Texture_by_Spiteful_Pie_Stock.jpg","texture");
+		attachVertFrag("Texture/PhongTexture2");
+		done();
+
+  }
+	void uniforms(){
+		GLuint program = shaderProgram->getReference();
+
+		glUniform1f(glGetUniformLocation(program, "shininess"), 0.8);
+		glUniform4f(glGetUniformLocation(program, "specular"), 0.9, 0.9, 0.9, 1.0);
+	}
+};
+
+class FogMaterial : public Material {
+public:
+	FogMaterial(){
+		init();
+		attachVertFrag("Stuff/Fog");
+		done();
+
+  }
+	void uniforms(){
+		GLuint program = shaderProgram->getReference();
+
+		glUniform1f(glGetUniformLocation(program, "uFogPos"), 0.8);
+		glUniform3f(glGetUniformLocation(program, "uEyePos"), 0.0, 0.0, 1.0);
+	}
 };

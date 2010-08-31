@@ -19,6 +19,7 @@ private:
 	vector<GLfloat> oneMeshVertices;
 	vector<GLfloat> oneMeshUVCoords;
 	vector<GLuint> oneMeshIndices;
+	vector<GLfloat> oneMeshNormals;
 
 	void makeSponge(unsigned recursion,const vector<float> & position, float size);
 	void makeCube();

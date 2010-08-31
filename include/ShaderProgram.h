@@ -30,6 +30,7 @@ public:
 	void setNormalMatrix(GLfloat * modelmatrix);
 	void setModelViewMatrix(GLfloat * mvMatrix);
 	void setModelViewProjectionMatrix(GLfloat * mvpMatrix);
+	void setProjectionMatrix(GLfloat * pMatrix);
 	void setLightPosition(GLfloat x, GLfloat y, GLfloat z);
 	GLuint getReference() const;
 private:
