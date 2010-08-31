@@ -10,7 +10,7 @@ public:
   }
 
 	void scene(){
-		SceneGraph::Instance().addNode("earth.obj",{2,0,-5}, new PhongMat());
+		SceneGraph::Instance().addNode("earth.obj",{2,0,-5}, new PhongTextureMat());
 		SceneGraph::Instance().addNode("earth.obj",{0,0,-5}, new PlanetMat("Planets/Mars"));
 		SceneGraph::Instance().addNode("earth.obj",{-2,0,-5}, new BumpMaterial("Planets/Mars"));
 		SceneGraph::Instance().addNode("earth.obj",{-2,2,-5}, new TextureMaterial("Planets/Mars.jpg"));
