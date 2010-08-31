@@ -52,11 +52,11 @@ void ShaderProgram::attachShader(string fileName, GLenum type){
     /* Attach our shaders to our program */
 	Shader * shader = new Shader(fileName, type);
 	shaders.push_back(shader);
-	glAttachShader(program, shader->shader);
+	glAttachShader(program, shader->getReference());
 }
 
 void ShaderProgram::detachShader(Shader *shader){
-	glDetachShader(program, shader->shader);
+	glDetachShader(program, shader->getReference());
 	shaders.remove(shader);
 	delete shader;
 }
@@ -134,4 +134,8 @@ void ShaderProgram::setModelViewProjectionMatrix(GLfloat * mvpMatrix){
 
 void ShaderProgram::setLightPosition(GLfloat x, GLfloat y, GLfloat z){
 	glUniform3f(glGetUniformLocation(program, "LightPosition"), x, y, z);
+}
+
+GLuint ShaderProgram::getReference() const{
+	return program;
 }

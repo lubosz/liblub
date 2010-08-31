@@ -312,3 +312,8 @@ void ObjLoader::printVector(vector<GLfloat> * printMe, unsigned length){
     	 if((i+1)%length == 0) cout << "\n";
     }
 }
+
+Mesh * ObjLoader::getMesh() const
+{
+    return mesh;
+}

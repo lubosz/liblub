@@ -52,6 +52,7 @@ void Mesh::addBuffer(vector<GLfloat> content, unsigned size, string name){
 
 	/* Enable attribute index 0 as being used */
 	glEnableVertexAttribArray(bufferCount);
+	//glVertexAttribDivisor(1,2);
 	cout << "Adding Vertex Buffer #" << bufferCount << " "<< name<< " Size:"<< content.size() << "\n";
 	/*
 	BOOST_FOREACH(float value, content){

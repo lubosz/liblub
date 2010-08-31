@@ -12,21 +12,19 @@
 
 class Mesh {
 public:
-	/* Create handles for our Vertex Array Object and three Vertex Buffer Objects */
-	GLuint vao, vbo[maxBuffers];
-	unsigned indexSize;
-	GLint drawType;
-	//vector<GLuint> indices;
-
 	Mesh();
-	virtual ~Mesh();
 	void addBuffer(vector<GLfloat> content, unsigned size, string name);
 	void addElementBuffer(vector<GLuint> content);
-
 	void setDrawType(GLint drawType);
 	void draw();
-
 private:
+	/* Create handles for our Vertex Array Object and three Vertex Buffer Objects */
+	GLuint vao, vbo[maxBuffers];
+	GLint drawType;
+
+	unsigned indexSize;
 	unsigned bufferCount;
+
+	virtual ~Mesh();
 };
 

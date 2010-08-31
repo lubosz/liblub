@@ -19,31 +19,27 @@ using namespace std;
 
 class ShaderProgram {
 public:
-
-	/* This is a handle to the shader program */
-	GLuint program;
-	list<Shader*> shaders;
-	list<string> boundAttribs;
-	unsigned attribCount;
-
 	ShaderProgram();
-	virtual ~ShaderProgram();
-
-	void printProgramInfoLog();
-
 	void attachShader(string fileName, GLenum type);
-	void detachShader(Shader *shader);
-
+	void use();
 	void bindAttribIfUnbound(string name);
 	void bindAttrib(string name);
 	void bindAttrib(unsigned position, string name);
 
 	void linkAndUse();
-	void use();
-
 	void setNormalMatrix(GLfloat * modelmatrix);
 	void setModelViewMatrix(GLfloat * mvMatrix);
 	void setModelViewProjectionMatrix(GLfloat * mvpMatrix);
 	void setLightPosition(GLfloat x, GLfloat y, GLfloat z);
+	GLuint getReference() const;
+private:
+	/* This is a handle to the shader program */
+	GLuint program;
+	list<Shader*> shaders;
+	list<string> boundAttribs;
+	unsigned attribCount;
+	virtual ~ShaderProgram();
+	void printProgramInfoLog();
+	void detachShader(Shader *shader);
 	void reload();
 };

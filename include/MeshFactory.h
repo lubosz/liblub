@@ -13,9 +13,6 @@
 
 class MeshFactory : public Singleton<MeshFactory>{
 public:
-	friend class Singleton<MeshFactory>;
-
-	void addMesh();
 	Mesh * tetrahedron();
 	Mesh * cube();
 	Mesh * stars();
@@ -24,6 +21,7 @@ public:
 	Mesh * lamp();
 
 private:
+	friend class Singleton<MeshFactory>;
 	MeshFactory();
 	~MeshFactory();
 

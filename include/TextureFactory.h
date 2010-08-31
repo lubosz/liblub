@@ -13,20 +13,14 @@
 #include "Texture.h"
 #include "Singleton.h"
 
-using namespace std;
-
 class TextureFactory : public Singleton<TextureFactory>{
 public:
-	friend class Singleton<TextureFactory>;
-
-	vector<Texture*> textures;
-
 	Texture * load(string filename, string name);
 	Texture * loadCubeMap(string filename, string name);
 	Texture * splatTexture(string name, int resolution);
-	//void uniforms(GLint program);
 private:
-
+	friend class Singleton<TextureFactory>;
+	vector<Texture*> textures;
 	GLenum textureEnums[32];
 	unsigned textureCount;
 

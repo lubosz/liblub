@@ -16,22 +16,23 @@ using namespace std;
 
 class Shader {
 public:
+	Shader(string fileName, GLenum type);
+	GLuint getReference() const;
+	virtual ~Shader();
+	void reload();
+private:
 	/* These pointers will receive the contents of our shader source code files */
 	GLchar *source;
 
 	/* These are handles used to reference the shaders */
 	GLuint shader;
 
-
-	string fileName;
 	GLenum type;
-
-	Shader(string fileName, GLenum type);
-	virtual ~Shader();
+	string fileName;
 
 	char* readFile(string file);
 	void printShaderInfoLog(GLuint shader);
-	void reload();
+
 	void loadAndCompile();
 };
 

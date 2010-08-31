@@ -11,12 +11,12 @@
 
 class Geometry {
 public:
-	float density, randomness;
-	int variation;
-
 	static Mesh * makeTetrahedron();
 	static Mesh * makeCube();
 	static Mesh * makePlane();
 	static Mesh * makeStars(vector<float> resolution, float density, float randomness);
+private:
+	float density, randomness;
+	int variation;
 	static float randomize(float density, float randomness);
 };

@@ -6,16 +6,13 @@
 #include <math.h>
 #include <boost/foreach.hpp>
 
-SceneGraph::SceneGraph()
-{
-lightPosition = {-2.0, 1.0, 2.0};
-addNode("Light",lightPosition, MeshFactory::Instance().lamp(),new WhiteMat());
+SceneGraph::SceneGraph(){
+	lightPosition = {-2.0, 1.0, 2.0};
+	addNode("Light",lightPosition, MeshFactory::Instance().lamp(),new WhiteMat());
 }
 
 void SceneGraph::updateLight(){
 	setPosition("Light", lightPosition);
-	cout << "Updating Light" << lightPosition.at(0) << " " << lightPosition.at(1) << " " << lightPosition.at(2) << "\n";
-
 }
 
 /* Multiply 4x4 matrix m1 by 4x4 matrix m2 and store the result in m1 */
@@ -144,15 +141,15 @@ void SceneGraph::bindShaders(ShaderProgram * shaderProgram){
     shaderProgram->setNormalMatrix(modelmatrix);
 	shaderProgram->setModelViewMatrix(modelmatrix);
     /* multiply our modelmatrix and our projectionmatrix. Results are stored in modelmatrix */
-    multiply4x4(modelmatrix, Camera::Instance().projectionmatrix);
+    multiply4x4(modelmatrix, Camera::Instance().getProjectionmatrix());
     shaderProgram->setModelViewProjectionMatrix(modelmatrix);
     shaderProgram->setLightPosition(lightPosition.at(0),lightPosition.at(1),lightPosition.at(2));
     glError("SceneGraph::bindShaders",116);
 }
 
 
-void SceneGraph::setPosition(string nodeName, vector<float> position){
-    BOOST_FOREACH( Node node, sceneNodes )
+void SceneGraph::setPosition(string nodeName, const vector<float> & position){
+    BOOST_FOREACH( Node &node, sceneNodes )
     {
         if (node.getName() == nodeName) {
         	node.setPosition(position);
@@ -160,7 +157,7 @@ void SceneGraph::setPosition(string nodeName, vector<float> position){
     }
 }
 
-void SceneGraph::addNode(string name, vector<float> position, Mesh * mesh, Material * material){
+void SceneGraph::addNode(string name, const vector<float> & position, Mesh * mesh, Material * material){
 	sceneNodes.push_back(Node(name, position, mesh, material));
     BOOST_FOREACH( Material* oldMaterial, materials )
     {
@@ -180,7 +177,7 @@ void SceneGraph::drawNodes(){
     	cameraTransform();
 
 
-        bindShaders(node.getMaterial()->shaderProgram);
+        bindShaders(node.getMaterial()->getShaderProgram());
     	node.draw();
     }
     glError("SceneGraph",139);
@@ -201,7 +198,7 @@ void SceneGraph::setLightPosition(vector<float> lightPosition){
 	this->lightPosition = lightPosition;
 }
 
-void SceneGraph::addNode(string name, vector<float> position, Mesh * mesh){
+void SceneGraph::addNode(string name, const vector<float> & position, Mesh * mesh){
 	sceneNodes.push_back(Node(name, position, mesh));
 }
 
@@ -209,15 +206,15 @@ void SceneGraph::addNode(Node * node){
 	sceneNodes.push_back(*node);
 }
 
-void SceneGraph::addNode(string name, string file, vector<float> position, Material * material){
+void SceneGraph::addNode(string name, string file, const vector<float> & position, Material * material){
 	addNode(name,position, MeshFactory::Instance().load(file),material);
 }
 
-void SceneGraph::addNode(string file, vector<float> position, Material * material){
+void SceneGraph::addNode(string file, const vector<float> & position, Material * material){
 	addNode(file, file, position, material);
 }
 
-void SceneGraph::addNode(Mesh * mesh, vector<float> position, Material * material){
+void SceneGraph::addNode(Mesh * mesh, const vector<float> & position, Material * material){
 	addNode("blubb",position, mesh, material);
 }
 
