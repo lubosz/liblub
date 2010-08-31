@@ -93,22 +93,32 @@ void MediaLayer::eventLoop(){
 				break;
 
             case SDLK_RIGHT:
-                SceneGraph::Instance().lightPosition.at(0) += 1.0;
+                SceneGraph::Instance().lightPosition.at(0) += .1;
                 SceneGraph::Instance().updateLight();
                 break;
 
             case SDLK_LEFT:
-            	SceneGraph::Instance().lightPosition.at(0) -= 1.0;
+            	SceneGraph::Instance().lightPosition.at(0) -= .1;
                 SceneGraph::Instance().updateLight();
                 break;
 
             case SDLK_UP:
-                SceneGraph::Instance().lightPosition.at(1) += 1.0;
+                SceneGraph::Instance().lightPosition.at(1) += .1;
                 SceneGraph::Instance().updateLight();
                 break;
 
             case SDLK_DOWN:
-            	SceneGraph::Instance().lightPosition.at(1) -= 1.0;
+            	SceneGraph::Instance().lightPosition.at(1) -= .1;
+                SceneGraph::Instance().updateLight();
+                break;
+
+            case '1':
+                SceneGraph::Instance().lightPosition.at(2) += .1;
+                SceneGraph::Instance().updateLight();
+                break;
+
+            case '7':
+            	SceneGraph::Instance().lightPosition.at(2) -= .1;
                 SceneGraph::Instance().updateLight();
                 break;
                 /*
