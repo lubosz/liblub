@@ -54,19 +54,19 @@ void MengerSponge::makeSponge(unsigned recursion,const vector<float> & position,
 		float trans = size*2/3.0f;
 
 		//TOP
-		//makeSponge(recursion, {position[0],position[1]+trans,position[2]+trans}, size/3.0);
-		/*
+		makeSponge(recursion, {position[0],position[1]+trans,position[2]+trans}, size/3.0);
+
 		makeSponge(recursion, {position[0]-trans,position[1]+trans,position[2]}, size/3.0);
 		makeSponge(recursion, {position[0],position[1]+trans,position[2]-trans}, size/3.0);
 		makeSponge(recursion, {position[0]+trans,position[1]+trans,position[2]}, size/3.0);
-		 */
+
 
 		makeSponge(recursion, {position[0]+trans,position[1]+trans,position[2]+trans}, size/3.0);
 		makeSponge(recursion, {position[0]+trans,position[1]+trans,position[2]-trans}, size/3.0);
 
 		makeSponge(recursion, {position[0]-trans,position[1]+trans,position[2]+trans}, size/3.0);
 		makeSponge(recursion, {position[0]-trans,position[1]+trans,position[2]-trans}, size/3.0);
-		/*
+
 		//MIDDLE
 		makeSponge(recursion, {position[0]+trans,position[1],position[2]+trans}, size/3.0);
 		makeSponge(recursion, {position[0]+trans,position[1],position[2]-trans}, size/3.0);
@@ -86,13 +86,16 @@ void MengerSponge::makeSponge(unsigned recursion,const vector<float> & position,
 
 		makeSponge(recursion, {position[0]-trans,position[1]-trans,position[2]+trans}, size/3.0);
 		makeSponge(recursion, {position[0]-trans,position[1]-trans,position[2]-trans}, size/3.0);
-		*/
+
 	}
 
 
 }
 
 void MengerSponge::addCube(const vector<float> & position, float size){
+
+	unsigned indexSize = oneMeshVertices.size()/3;
+
 	vector<GLfloat> vertices = {
 			size + position[0], -size + position[1], -size + position[2],
 			size + position[0], -size + position[1], size + position[2],
@@ -121,7 +124,8 @@ void MengerSponge::addCube(const vector<float> & position, float size){
 	oneMeshUVCoords.insert(oneMeshUVCoords.end(), uvCoords.begin(), uvCoords.end());
 */
 
-	unsigned indexSize = oneMeshIndices.size();
+
+	//cout << "IndexSize: " << indexSize <<"\n";
 
 	vector<GLuint> indices;
 

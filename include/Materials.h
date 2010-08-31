@@ -83,7 +83,7 @@ public:
 		addTexture("cone/collage_base.jpg","texmap");
 		addTexture("cone/collage_step.png","stepmap");
 		shaderProgram->attachShader("Common/shared.vert", GL_VERTEX_SHADER);
-        shaderProgram->attachShader("CSM/csm_dist_shadow.frag", GL_FRAGMENT_SHADER);
+		shaderProgram->attachShader("CSM/csm_dist_shadow.frag", GL_FRAGMENT_SHADER);
         done();
   }
 	void uniforms(){

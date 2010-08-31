@@ -26,6 +26,7 @@ RenderEngine::RenderEngine() {
 #endif
 
     glEnable(GL_POLYGON_OFFSET_FILL);
+    glEnable(GL_CULL_FACE);
     //glEnable(GL_POINT_SPRITE_ARB);
 
 	/** TODO: Deprecated*/
