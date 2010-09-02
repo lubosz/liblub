@@ -9,6 +9,21 @@
 #include <sstream>
 
 FrameBuffer::FrameBuffer() {
+	glError("FrameBuffer",12);
+	//Gen texture for fbo
+    // create a texture object
+    glGenTextures(1, &textureId);
+    glBindTexture(GL_TEXTURE_2D, textureId);
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    //glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+    //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
+    //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, TEXTURE_WIDTH, TEXTURE_HEIGHT, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0);
+    glBindTexture(GL_TEXTURE_2D, 0);
+
     glGenFramebuffers(1, &fboId);
     glBindFramebuffer(GL_FRAMEBUFFER, fboId);
 
@@ -39,6 +54,7 @@ FrameBuffer::FrameBuffer() {
     printFramebufferInfo();
 
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	glError("FrameBuffer",59);
 
 }
 
@@ -306,4 +322,61 @@ string FrameBuffer::convertInternalFormatToString(GLenum format)
     }
 
     return formatName;
+}
+
+GLuint FrameBuffer::getFboId() const
+{
+    return fboId;
+}
+
+GLuint FrameBuffer::getTextureId() const
+{
+    return textureId;
+}
+
+///////////////////////////////////////////////////////////////////////////////
+// check FBO completeness
+///////////////////////////////////////////////////////////////////////////////
+bool FrameBuffer::checkFramebufferStatus()
+{
+    // check FBO status
+    GLenum status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
+    switch(status)
+    {
+    case GL_FRAMEBUFFER_COMPLETE:
+        std::cout << "Framebuffer complete." << std::endl;
+        return true;
+
+    case GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT:
+        std::cout << "[ERROR] Framebuffer incomplete: Attachment is NOT complete." << std::endl;
+        return false;
+
+    case GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT:
+        std::cout << "[ERROR] Framebuffer incomplete: No image is attached to FBO." << std::endl;
+        return false;
+
+    case GL_FRAMEBUFFER_INCOMPLETE_DIMENSIONS_EXT:
+        std::cout << "[ERROR] Framebuffer incomplete: Attached images have different dimensions." << std::endl;
+        return false;
+
+    case GL_FRAMEBUFFER_INCOMPLETE_FORMATS_EXT:
+        std::cout << "[ERROR] Framebuffer incomplete: Color attached images have different internal formats." << std::endl;
+        return false;
+
+    case GL_FRAMEBUFFER_INCOMPLETE_DRAW_BUFFER:
+        std::cout << "[ERROR] Framebuffer incomplete: Draw buffer." << std::endl;
+        return false;
+
+    case GL_FRAMEBUFFER_INCOMPLETE_READ_BUFFER:
+        std::cout << "[ERROR] Framebuffer incomplete: Read buffer." << std::endl;
+        return false;
+
+    case GL_FRAMEBUFFER_UNSUPPORTED:
+        std::cout << "[ERROR] Unsupported by FBO implementation." << std::endl;
+        return false;
+
+    default:
+        std::cout << "[ERROR] Unknow error." << std::endl;
+        return false;
+    }
 }

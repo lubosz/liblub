@@ -14,6 +14,7 @@
 #include "ShaderProgram.h"
 #include "SceneGraph.h"
 #include "Singleton.h"
+#include "FrameBuffer.h"
 
 class RenderEngine : public Singleton<RenderEngine> {
 public:
@@ -23,6 +24,7 @@ private:
 
 	//ShaderProgram * shaderProgram;
 	unsigned frameCount;
+	FrameBuffer *fbo;
 
 	void checkVersion();
 	GLboolean QueryExtension(char *extName);

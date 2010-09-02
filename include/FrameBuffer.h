@@ -18,6 +18,8 @@ class FrameBuffer {
 public:
 	FrameBuffer();
 	virtual ~FrameBuffer();
+    GLuint getFboId() const;
+    GLuint getTextureId() const;
 private:
 	GLuint fboId;                       // ID of FBO
 	GLuint textureId;                   // ID of texture
@@ -29,4 +31,5 @@ private:
 	string getTextureParameters(GLuint id);
 	string getRenderbufferParameters(GLuint id);
 	string convertInternalFormatToString(GLenum format);
+	bool checkFramebufferStatus();
 };

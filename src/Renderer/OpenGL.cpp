@@ -11,6 +11,7 @@
 #include "MeshFactory.h"
 #include "RenderEngine.h"
 
+
 using namespace std;
 
 RenderEngine::RenderEngine() {
@@ -44,7 +45,7 @@ RenderEngine::RenderEngine() {
     //glBlendFunc(GL_SRC_ALPHA, GL_ONE);
     //glEnable(GL_BLEND);
     //glDepthMask(GL_FALSE);
-
+    fbo = new FrameBuffer();
 
 	glError("RenderEngine",92);
 }
@@ -64,6 +65,9 @@ RenderEngine::~RenderEngine() {
 
 
 void RenderEngine::display() {
+
+    // set the rendering destination to FBO
+    glBindFramebuffer(GL_FRAMEBUFFER, fbo->getFboId());
 	//cout << frameCount << "\n";
 
 
@@ -97,6 +101,17 @@ void RenderEngine::display() {
 
 	//gluLookAt(1, 0, 1, 1, 0, 0, 0, 1, 0); // eye(x,y,z), focal(x,y,z), up(x,y,z)
 	frameCount++;
+
+    // back to normal window-system-provided framebuffer
+    glBindFramebuffer(GL_FRAMEBUFFER, 0); // unbind
+
+    // trigger mipmaps generation explicitly
+    // NOTE: If GL_GENERATE_MIPMAP is set to GL_TRUE, then glCopyTexSubImage2D()
+    // triggers mipmap generation automatically. However, the texture attached
+    // onto a FBO should generate mipmaps manually via glGenerateMipmapEXT().
+    glBindTexture(GL_TEXTURE_2D, fbo->getTextureId());
+    glGenerateMipmap(GL_TEXTURE_2D);
+    glBindTexture(GL_TEXTURE_2D, 0);
 }
 
 
