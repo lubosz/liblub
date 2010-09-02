@@ -7,11 +7,16 @@
 
 #pragma once
 
+//#define SDL_NO_COMPAT
+
 #include "common.h"
 #include <SDL/SDL.h>
 //#include <SDL/SDL_opengl.h>
 #include <string>
 #include "RenderEngine.h"
+
+
+
 
 class MediaLayer {
 
@@ -22,7 +27,10 @@ private:
 
 	SDL_WindowID mainWindow;
 	SDL_GLContext mainContext; /* Our opengl context handle */
+    SDL_DisplayMode fsmode;
 	SDL_Event event;
+
+	bool fullscreen;
 
 	string programTile;
 
@@ -30,6 +38,7 @@ private:
 
 	void eventLoop();
 	void sdlDie(string msg);
+	void toggleFullScreen();
 
 public:
 	MediaLayer(string title, unsigned width, unsigned height);

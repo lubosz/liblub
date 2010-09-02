@@ -19,6 +19,7 @@ MediaLayer::MediaLayer(string title, unsigned width, unsigned height) {
 	fps_lasttime = 0; //the last recorded time.
 	fps_frames = 0; //frames passed since the last recorded fps.
 	programTile = title;
+	fullscreen = false;
 
 	quit = false;
     /* Create our window, opengl context, etc... */
@@ -44,7 +45,8 @@ MediaLayer::MediaLayer(string title, unsigned width, unsigned height) {
 
     /* Create our window centered at 512x512 resolution */
     mainWindow = SDL_CreateWindow(title.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
-        width, height, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
+        width, height, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE );
+    //| SDL_WINDOW_FULLSCREEN
     if (!mainWindow) /* Die if creation failed */
         sdlDie("Unable to create window");
 
@@ -57,6 +59,11 @@ MediaLayer::MediaLayer(string title, unsigned width, unsigned height) {
     /* Enable Z depth testing so objects closest to the viewpoint are in front of objects further away */
     glEnable(GL_DEPTH_TEST);
     glDepthFunc(GL_LESS);
+    /*
+    SDL_GetDesktopDisplayMode(&fsmode);
+    cout << fsmode.format << " " << fsmode.w << " " << fsmode.h << " " << fsmode.refresh_rate << " " << long(fsmode.driverdata) << endl;
+    cout << "SDL_SetWindowDisplayMode = " << SDL_SetWindowDisplayMode(mainWindow, &fsmode) << endl;
+    */
 
 }
 
@@ -81,6 +88,21 @@ void MediaLayer::swapBuffers(){
 
     /* Sleep for roughly 33 milliseconds between frames */
     //SDL_Delay(33);
+}
+
+void MediaLayer::toggleFullScreen(){
+	if(fullscreen){
+		if(SDL_SetWindowFullscreen(mainWindow, 0)!=0){
+			printf ("Unable to switch window to fullscreen mode:%s\n", SDL_GetError());
+		}
+		fullscreen = false;
+	}else{
+		if(SDL_SetWindowFullscreen(mainWindow, 1)!=0){
+			printf ("Unable to switch window to fullscreen mode:%s\n", SDL_GetError());
+		}
+		fullscreen = true;
+	}
+
 }
 
 void MediaLayer::eventLoop(){
@@ -150,6 +172,10 @@ void MediaLayer::eventLoop(){
             case 'r':
             	cout << "Reloading Shaders\n";
             	//RenderEngine::Instance().shaderProgram->reload();
+            	break;
+
+            case 'f':
+            	toggleFullScreen();
             	break;
 
             default:
