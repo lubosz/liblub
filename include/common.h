@@ -10,10 +10,9 @@
 #define LIBLUB_GL_MINOR_VERION 3
 #ifndef GLfloat
 #include <GL3/gl3.h>
-#include <GL/glx.h>
+#include <GL3/glx.h>
 #include <GL3/glext.h>
 #include <GL3/glxext.h>
-//#include "gl3.h"
 #endif
 #else
 #define GL_GLEXT_PROTOTYPES 1

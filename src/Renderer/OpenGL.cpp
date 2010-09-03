@@ -68,8 +68,12 @@ void RenderEngine::display() {
 
     // set the rendering destination to FBO
     glBindFramebuffer(GL_FRAMEBUFFER, fbo->getFboId());
-	//cout << frameCount << "\n";
-
+    // Set the render target
+    glDrawBuffer(GL_COLOR_ATTACHMENT0);
+    /*
+    GLenum buffers[] = { GL_COLOR_ATTACHMENT0_EXT, GL_COLOR_ATTACHMENT1_EXT };
+	glDrawBuffers(2, buffers);
+     */
 
 /*
         SceneGraph::Instance().transform(frameCount);
@@ -112,9 +116,8 @@ void RenderEngine::display() {
     glBindTexture(GL_TEXTURE_2D, fbo->getTextureId());
     glGenerateMipmap(GL_TEXTURE_2D);
     glBindTexture(GL_TEXTURE_2D, 0);
+
 }
-
-
 
 
 void RenderEngine::checkVersion(){

@@ -14,6 +14,8 @@ FrameBuffer::FrameBuffer() {
     // create a texture object
     glGenTextures(1, &textureId);
     glBindTexture(GL_TEXTURE_2D, textureId);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, TEXTURE_WIDTH, TEXTURE_HEIGHT, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0);
+
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     //glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
@@ -21,7 +23,7 @@ FrameBuffer::FrameBuffer() {
     //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, TEXTURE_WIDTH, TEXTURE_HEIGHT, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0);
+    glGenerateMipmap(GL_TEXTURE_2D);
     glBindTexture(GL_TEXTURE_2D, 0);
 
     glGenFramebuffers(1, &fboId);
@@ -37,12 +39,20 @@ FrameBuffer::FrameBuffer() {
     glBindRenderbuffer(GL_RENDERBUFFER, rboId);
     glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, TEXTURE_WIDTH, TEXTURE_HEIGHT);
     glBindRenderbuffer(GL_RENDERBUFFER, 0);
+/*
+    GLuint stencilbuffer;                       // ID of Renderbuffer object
+    glGenRenderbuffers(1, &stencilbuffer);
+    glBindRenderbuffer(GL_RENDERBUFFER, stencilbuffer);
+    glRenderbufferStorage(GL_RENDERBUFFER, GL_STENCIL_INDEX1, TEXTURE_WIDTH, TEXTURE_HEIGHT);
+    glBindRenderbuffer(GL_RENDERBUFFER, 0);
+*/
 
     // attach a texture to FBO color attachement point
     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, textureId, 0);
-
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT1, GL_TEXTURE_2D, textureId, 0);
     // attach a renderbuffer to depth attachment point
     glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, rboId);
+    //glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_STENCIL_ATTACHMENT, GL_RENDERBUFFER, stencilbuffer);
 
     //@ disable color buffer if you don't attach any color buffer image,
     //@ for example, rendering depth buffer only to a texture.
@@ -52,6 +62,7 @@ FrameBuffer::FrameBuffer() {
 
     // check FBO status
     printFramebufferInfo();
+    checkFramebufferStatus();
 
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	glError("FrameBuffer",59);
@@ -59,7 +70,8 @@ FrameBuffer::FrameBuffer() {
 }
 
 FrameBuffer::~FrameBuffer() {
-	// TODO Auto-generated destructor stub
+	glDeleteFramebuffers(1, &fboId);
+	glDeleteRenderbuffers(1, &rboId);
 }
 
 void FrameBuffer::printFramebufferInfo()
@@ -212,67 +224,69 @@ string FrameBuffer::convertInternalFormatToString(GLenum format)
     case GL_RGBA:
         formatName = "GL_RGBA";
         break;
+        /*
     case GL_LUMINANCE:
         formatName = "GL_LUMINANCE";
         break;
     case GL_LUMINANCE_ALPHA:
         formatName = "GL_LUMINANCE_ALPHA";
         break;
-    case GL_ALPHA4:
+         */
+    case GL_ALPHA4_EXT:
         formatName = "GL_ALPHA4";
         break;
-    case GL_ALPHA8:
+    case GL_ALPHA8_EXT:
         formatName = "GL_ALPHA8";
         break;
-    case GL_ALPHA12:
+    case GL_ALPHA12_EXT:
         formatName = "GL_ALPHA12";
         break;
-    case GL_ALPHA16:
+    case GL_ALPHA16_EXT:
         formatName = "GL_ALPHA16";
         break;
-    case GL_LUMINANCE4:
+    case GL_LUMINANCE4_EXT:
         formatName = "GL_LUMINANCE4";
         break;
-    case GL_LUMINANCE8:
+    case GL_LUMINANCE8_EXT:
         formatName = "GL_LUMINANCE8";
         break;
-    case GL_LUMINANCE12:
+    case GL_LUMINANCE12_EXT:
         formatName = "GL_LUMINANCE12";
         break;
-    case GL_LUMINANCE16:
+    case GL_LUMINANCE16_EXT:
         formatName = "GL_LUMINANCE16";
         break;
-    case GL_LUMINANCE4_ALPHA4:
+    case GL_LUMINANCE4_ALPHA4_EXT:
         formatName = "GL_LUMINANCE4_ALPHA4";
         break;
-    case GL_LUMINANCE6_ALPHA2:
+    case GL_LUMINANCE6_ALPHA2_EXT:
         formatName = "GL_LUMINANCE6_ALPHA2";
         break;
-    case GL_LUMINANCE8_ALPHA8:
+    case GL_LUMINANCE8_ALPHA8_EXT:
         formatName = "GL_LUMINANCE8_ALPHA8";
         break;
-    case GL_LUMINANCE12_ALPHA4:
+    case GL_LUMINANCE12_ALPHA4_EXT:
         formatName = "GL_LUMINANCE12_ALPHA4";
         break;
-    case GL_LUMINANCE12_ALPHA12:
+    case GL_LUMINANCE12_ALPHA12_EXT:
         formatName = "GL_LUMINANCE12_ALPHA12";
         break;
-    case GL_LUMINANCE16_ALPHA16:
+    case GL_LUMINANCE16_ALPHA16_EXT:
         formatName = "GL_LUMINANCE16_ALPHA16";
         break;
-    case GL_INTENSITY:
+    case GL_INTENSITY_EXT:
         formatName = "GL_INTENSITY";
         break;
-    case GL_INTENSITY4:
+    case GL_INTENSITY4_EXT:
         formatName = "GL_INTENSITY4";
         break;
-    case GL_INTENSITY8:
+    case GL_INTENSITY8_EXT:
         formatName = "GL_INTENSITY8";
         break;
-    case GL_INTENSITY12:
+    case GL_INTENSITY12_EXT:
         formatName = "GL_INTENSITY12";
         break;
-    case GL_INTENSITY16:
+    case GL_INTENSITY16_EXT:
         formatName = "GL_INTENSITY16";
         break;
     case GL_R3_G3_B2:
