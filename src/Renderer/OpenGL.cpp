@@ -11,6 +11,7 @@
 #include "MeshFactory.h"
 #include "RenderEngine.h"
 
+#define USE_FBO
 
 using namespace std;
 
@@ -45,9 +46,12 @@ RenderEngine::RenderEngine() {
     //glBlendFunc(GL_SRC_ALPHA, GL_ONE);
     //glEnable(GL_BLEND);
     //glDepthMask(GL_FALSE);
-    fbo = new FrameBuffer();
+#ifdef USE_FBO
+    fbo = new FrameBuffer(800,800);
 
-	glError("RenderEngine",92);
+    renderPlane = MeshFactory::Instance().plane();
+#endif
+	glError("RenderEngine",52);
 }
 
 RenderEngine::~RenderEngine() {
@@ -66,14 +70,12 @@ RenderEngine::~RenderEngine() {
 
 void RenderEngine::display() {
 
-    // set the rendering destination to FBO
-    glBindFramebuffer(GL_FRAMEBUFFER, fbo->getFboId());
-    // Set the render target
-    glDrawBuffer(GL_COLOR_ATTACHMENT0);
-    /*
-    GLenum buffers[] = { GL_COLOR_ATTACHMENT0_EXT, GL_COLOR_ATTACHMENT1_EXT };
-	glDrawBuffers(2, buffers);
-     */
+#ifdef USE_FBO
+	fbo->bind();
+#endif
+    //GLenum buffers[] = { GL_COLOR_ATTACHMENT0_EXT, GL_COLOR_ATTACHMENT1_EXT };
+	//glDrawBuffers(2, buffers);
+
 
 /*
         SceneGraph::Instance().transform(frameCount);
@@ -89,9 +91,8 @@ void RenderEngine::display() {
 	glUniform1i(glGetUniformLocation(shaderProgram->program, "Mode"), mode);
 	cout << "Mode:\t" << mode << "\n";
 */
-	/* Make our background black */
-	glClearColor(backgroundColor[0],backgroundColor[1],backgroundColor[2], 1.0);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+	clear();
 /*
     MeshFactory::Instance().meshes[0]->draw();
     SceneGraph::Instance().transform(frameCount);
@@ -105,20 +106,21 @@ void RenderEngine::display() {
 
 	//gluLookAt(1, 0, 1, 1, 0, 0, 0, 1, 0); // eye(x,y,z), focal(x,y,z), up(x,y,z)
 	frameCount++;
+#ifdef USE_FBO
+	fbo->unBind();
+	fbo->bindTexture();
 
-    // back to normal window-system-provided framebuffer
-    glBindFramebuffer(GL_FRAMEBUFFER, 0); // unbind
+	clear();
 
-    // trigger mipmaps generation explicitly
-    // NOTE: If GL_GENERATE_MIPMAP is set to GL_TRUE, then glCopyTexSubImage2D()
-    // triggers mipmap generation automatically. However, the texture attached
-    // onto a FBO should generate mipmaps manually via glGenerateMipmapEXT().
-    glBindTexture(GL_TEXTURE_2D, fbo->getTextureId());
-    glGenerateMipmap(GL_TEXTURE_2D);
-    glBindTexture(GL_TEXTURE_2D, 0);
-
+    renderPlane->draw();
+#endif
 }
 
+void RenderEngine::clear(){
+	/* Make our background black */
+	glClearColor(backgroundColor[0],backgroundColor[1],backgroundColor[2], 1.0);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+}
 
 void RenderEngine::checkVersion(){
 	/*

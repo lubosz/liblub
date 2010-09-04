@@ -101,7 +101,7 @@ void SceneGraph::animate(float frameCount){
     rotate(modelmatrix, (GLfloat) frameCount * 0.5, Z_AXIS);
 }
 
-void SceneGraph::initNode(){
+void SceneGraph::identitiy(){
     memcpy(modelmatrix, identitymatrix, sizeof(GLfloat) * 16);
 }
 
@@ -111,15 +111,6 @@ void SceneGraph::cameraTransform(){
     rotate(modelmatrix, (GLfloat) Camera::Instance().roll, Z_AXIS);
 
     //scale(modelmatrix, 0.5);
-    translate(modelmatrix, Camera::Instance().x, Camera::Instance().y, Camera::Instance().z);
-}
-
-void SceneGraph::transform(float frameCount){
-    memcpy(modelmatrix, identitymatrix, sizeof(GLfloat) * 16);
-    //animate(frameCount);
-    rotate(modelmatrix, (GLfloat) Camera::Instance().yaw, X_AXIS);
-    rotate(modelmatrix, (GLfloat) Camera::Instance().pitch, Y_AXIS);
-    rotate(modelmatrix, (GLfloat) Camera::Instance().roll, Z_AXIS);
     translate(modelmatrix, Camera::Instance().x, Camera::Instance().y, Camera::Instance().z);
 }
 
@@ -172,7 +163,7 @@ void SceneGraph::addNode(string name, const vector<float> & position, Mesh * mes
 void SceneGraph::drawNodes(){
     BOOST_FOREACH( Node node, sceneNodes )
     {
-    	initNode();
+    	identitiy();
         scale(node.getSize());
         translate(node.getPosition());
     	cameraTransform();

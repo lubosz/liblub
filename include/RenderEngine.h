@@ -25,10 +25,12 @@ private:
 	//ShaderProgram * shaderProgram;
 	unsigned frameCount;
 	FrameBuffer *fbo;
+	Mesh * renderPlane;
 
 	void checkVersion();
 	GLboolean QueryExtension(char *extName);
 
+	void clear();
 	RenderEngine();
 	virtual ~RenderEngine();
 

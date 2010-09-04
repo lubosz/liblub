@@ -8,23 +8,21 @@
 #pragma once
 
 #include "common.h"
-
-	const int SCREEN_WIDTH = 400;
-	const int SCREEN_HEIGHT = 300;
-	const int TEXTURE_WIDTH = 256;
-	const int TEXTURE_HEIGHT = 256;
+#include "Texture.h"
+#include "Material.h"
 
 class FrameBuffer {
 public:
-	FrameBuffer();
+	FrameBuffer(GLuint width, GLuint height);
 	virtual ~FrameBuffer();
-    GLuint getFboId() const;
-    GLuint getTextureId() const;
+    void bind();
+    void unBind();
+    void bindTexture();
 private:
 	GLuint fboId;                       // ID of FBO
-	GLuint textureId;                   // ID of texture
 	GLuint rboId;                       // ID of Renderbuffer object
-
+	Material * fboMaterial;
+	Texture * fboTexture;
 
 
 	void printFramebufferInfo();

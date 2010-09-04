@@ -22,11 +22,13 @@ public:
     ShaderProgram *getShaderProgram() const;
 	void activate();
 	void initUniforms();
+	void addTexture(Texture * texture);
+	void done();
 protected:
 	ShaderProgram * shaderProgram;
 	void init();
 
-	void addTexture(Texture * texture);
+
 	void addTexture(string file,string name);
 	void addTextureCube(string file,string name);
 
@@ -34,7 +36,7 @@ protected:
 	void attachVertGeom(string file);
 	void attachVertFragGeom(string file);
 
-	void done();
+
 private:
 	vector<Texture*> textures;
 	virtual void uniforms() = 0;

@@ -27,8 +27,13 @@ TextureFactory::TextureFactory() {
 TextureFactory::~TextureFactory() {
 	// TODO Auto-generated destructor stub
 }
+Texture * TextureFactory::texture(GLuint width, GLuint height, string name){
+	Texture * texture = new Texture(width, height, name, textureEnums[textureCount]);
+	textureCount++;
+	return texture;
+}
 Texture * TextureFactory::load(string filename, string name){
-	Texture * texture = new Texture(filename, textureEnums[textureCount], name, textureCount);
+	Texture * texture = new Texture(filename, textureEnums[textureCount], name);
 	textureCount++;
 	return texture;
 }

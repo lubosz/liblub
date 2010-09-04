@@ -11,11 +11,30 @@
 #include <iostream>
 #include <math.h>
 
-Texture::Texture(string filename, GLenum glId, string name, GLuint textureID) {
+Texture::Texture(GLuint width, GLuint height, string name, GLenum glId) {
+	this->name = name;
+	this->glId = glId;
 	textureType = GL_TEXTURE_2D;
 
-	this->textureID = textureID;
+    glGenTextures(1, &texture);
+    cout << "Creating FBO texture #" << texture << " " << name << "\n";
+    glBindTexture(textureType, texture);
+    glTexImage2D(textureType, 0, GL_RGBA8, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0);
+
+    glTexParameterf(textureType, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameterf(textureType, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+    glTexParameterf(textureType, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameterf(textureType, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    glGenerateMipmap(textureType);
+    glBindTexture(textureType, 0);
+}
+
+Texture::Texture(string filename, GLenum glId, string name) {
+	textureType = GL_TEXTURE_2D;
+
+	//this->textureID = textureID;
 	this->glId = glId;
+
 	this->name = name;
 
 	string path = textureDir + filename;
@@ -87,6 +106,11 @@ Texture::~Texture() {
 	// TODO Auto-generated destructor stub
 }
 
+GLuint Texture::getHandler() const
+{
+    return texture;
+}
+
 //------------------------------------------------------------------------------
 // Function     	  : EvalHermite
 // Description	    :
@@ -142,8 +166,10 @@ void Texture::bind(){
 }
 
 void Texture::uniform(GLuint program){
-	cout << "Assigning Texture "<< "#"<< textureID << " " << name << " to program #"<< program << "\n";
+	//cout << "Assigning Texture "<< "#"<< textureID << " " << name << " to program #"<< program << "\n";
+	cout << "Assigning Texture "<< "#"<< " " << name << " to program #"<< program << "\n";
     GLint texLoc   = glGetUniformLocation(program, name.c_str());
+    //TODO: -1?
     glUniform1i(texLoc, texture-1);
     glError("Texture::uniform",144);
 }

@@ -74,7 +74,8 @@ void Material::initUniforms() {
 	glError("Material", 84);
 	BOOST_FOREACH( Texture* texture, textures )
 				{
-					texture->activate();
+					//TODO: Why is this not needed?
+					//texture->activate();
 					texture->bind();
 					texture->uniform(shaderProgram->getReference());
 				}

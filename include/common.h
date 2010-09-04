@@ -54,7 +54,7 @@ static void glError(string file, int line) {
 			break;
 		}
 
-		cerr << "GL_" << error << " - " << file << ':' << line	<< "\n";
+		cerr << "\x1b[1;31m" << "GL_" << error << "\e[m" << " - " << file << ':' << line	 << "\n";
 		err = glGetError();
 	}
 }

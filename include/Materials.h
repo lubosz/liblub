@@ -51,6 +51,18 @@ public:
 
 };
 
+class FBOMaterial : public Material {
+public:
+	FBOMaterial(){
+		init();
+		attachVertFrag("Texture/FBOtexture");
+		//done();
+
+  }
+	void uniforms(){}
+
+};
+
 class MultiTextureMaterial : public Material {
 public:
 	MultiTextureMaterial(){

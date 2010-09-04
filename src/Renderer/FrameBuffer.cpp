@@ -6,25 +6,20 @@
  */
 
 #include "FrameBuffer.h"
+#include "Materials.h"
+#include "SceneGraph.h"
+
 #include <sstream>
 
-FrameBuffer::FrameBuffer() {
+FrameBuffer::FrameBuffer(GLuint width, GLuint height) {
 	glError("FrameBuffer",12);
 	//Gen texture for fbo
     // create a texture object
-    glGenTextures(1, &textureId);
-    glBindTexture(GL_TEXTURE_2D, textureId);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, TEXTURE_WIDTH, TEXTURE_HEIGHT, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0);
-
-    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    //glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-    //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
-    //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
-    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-    glGenerateMipmap(GL_TEXTURE_2D);
-    glBindTexture(GL_TEXTURE_2D, 0);
+	fboTexture = TextureFactory::Instance().texture(width, height, "FBOTex");
+	fboMaterial = new FBOMaterial();
+	fboMaterial->addTexture(fboTexture);
+	fboMaterial->done();
+	//fboTexture->uniform(fboMaterial->getShaderProgram()->getReference());
 
     glGenFramebuffers(1, &fboId);
     glBindFramebuffer(GL_FRAMEBUFFER, fboId);
@@ -37,7 +32,7 @@ FrameBuffer::FrameBuffer() {
     // attach additional image to the stencil attachement point, too.
     glGenRenderbuffers(1, &rboId);
     glBindRenderbuffer(GL_RENDERBUFFER, rboId);
-    glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, TEXTURE_WIDTH, TEXTURE_HEIGHT);
+    glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, width, height);
     glBindRenderbuffer(GL_RENDERBUFFER, 0);
 /*
     GLuint stencilbuffer;                       // ID of Renderbuffer object
@@ -48,8 +43,8 @@ FrameBuffer::FrameBuffer() {
 */
 
     // attach a texture to FBO color attachement point
-    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, textureId, 0);
-    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT1, GL_TEXTURE_2D, textureId, 0);
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, fboTexture->getHandler(), 0);
+    //glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT1, GL_TEXTURE_2D, fboTexture->getHandler(), 0);
     // attach a renderbuffer to depth attachment point
     glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, rboId);
     //glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_STENCIL_ATTACHMENT, GL_RENDERBUFFER, stencilbuffer);
@@ -68,6 +63,42 @@ FrameBuffer::FrameBuffer() {
 	glError("FrameBuffer",59);
 
 }
+
+void FrameBuffer::bind() {
+    // set the rendering destination to FBO
+    glBindFramebuffer(GL_FRAMEBUFFER, fboId);
+    // Set the render target
+    glDrawBuffer(GL_COLOR_ATTACHMENT0);
+}
+
+void FrameBuffer::unBind() {
+    // back to normal window-system-provided framebuffer
+    glBindFramebuffer(GL_FRAMEBUFFER, 0); // unbind
+}
+
+void FrameBuffer::bindTexture() {
+	glBindTexture(GL_TEXTURE_2D, 0);
+	fboMaterial->activate();
+	/*
+	fboTexture->activate();
+	fboTexture->bind();
+*/
+	//fboTexture->activate();
+	SceneGraph::Instance().identitiy();
+	SceneGraph::Instance().bindShaders(fboMaterial->getShaderProgram());
+	//fboMaterial->getShaderProgram()->use();
+	/*
+    // trigger mipmaps generation explicitly
+    // NOTE: If GL_GENERATE_MIPMAP is set to GL_TRUE, then glCopyTexSubImage2D()
+    // triggers mipmap generation automatically. However, the texture attached
+    // onto a FBO should generate mipmaps manually via glGenerateMipmapEXT().
+    glBindTexture(GL_TEXTURE_2D, fbo->getTextureId());
+    glGenerateMipmap(GL_TEXTURE_2D);
+	glBindTexture(GL_TEXTURE_2D, 0);
+    */
+
+}
+
 
 FrameBuffer::~FrameBuffer() {
 	glDeleteFramebuffers(1, &fboId);
@@ -336,16 +367,6 @@ string FrameBuffer::convertInternalFormatToString(GLenum format)
     }
 
     return formatName;
-}
-
-GLuint FrameBuffer::getFboId() const
-{
-    return fboId;
-}
-
-GLuint FrameBuffer::getTextureId() const
-{
-    return textureId;
 }
 
 ///////////////////////////////////////////////////////////////////////////////

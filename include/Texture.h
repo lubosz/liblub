@@ -16,19 +16,21 @@
 
 class Texture {
 public:
+	Texture(GLuint width, GLuint height, string name, GLenum glId);
 	Texture(GLenum glId, string name, int resolution);
-	Texture(string filename, GLenum glId, string name, GLuint textureID);
+	Texture(string filename, GLenum glId, string name);
 	Texture(string filename, GLenum glId, string name, bool cube);
 
 	void activate();
 	void bind();
 	void uniform(GLuint program);
+    GLuint getHandler() const;
 private:
 	GLenum glId;
 	string name;
 	GLuint texture;
 	GLuint textureType;
-	GLuint textureID;
+	//GLuint textureID;
 
 	virtual ~Texture();
 

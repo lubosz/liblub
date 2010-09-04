@@ -40,6 +40,9 @@ public:
 
 	void meshPlane(string file, float cubeSize, float step, vector<Material*> materials);
 
+	void identitiy();
+	void bindShaders(ShaderProgram * shaderProgram);
+
 private:
 	friend class Singleton<SceneGraph>;
 
@@ -64,9 +67,9 @@ private:
 
 	void animate(float frameCount);
 	void transform(float frameCount);
-	void initNode();
+
 	void cameraTransform();
-	void bindShaders(ShaderProgram * shaderProgram);
+
 
 	void initUniforms();
 	void setPosition(string nodeName, const vector<float> & position);

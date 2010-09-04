@@ -15,6 +15,7 @@
 
 class TextureFactory : public Singleton<TextureFactory>{
 public:
+	Texture * texture(GLuint width, GLuint height, string name);
 	Texture * load(string filename, string name);
 	Texture * loadCubeMap(string filename, string name);
 	Texture * splatTexture(string name, int resolution);

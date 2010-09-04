@@ -36,6 +36,7 @@ Mesh::~Mesh() {
 }
 
 void Mesh::addBuffer(vector<GLfloat> content, unsigned size, string name){
+    glError("Mesh::addBuffer",39);
 	//RenderEngine::Instance().shaderProgram->bindAttrib(name);
 	//RenderEngine::Instance().shaderProgram->bindAttribIfUnbound(name);
 
@@ -60,21 +61,20 @@ void Mesh::addBuffer(vector<GLfloat> content, unsigned size, string name){
 	}
 	*/
 	bufferCount++;
-
-
+    glError("Mesh::addBuffer",64);
 }
 
 void Mesh::addElementBuffer(vector<GLuint> content){
+
 	indexSize = content.size();
-
-
-
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vbo[bufferCount]);
+	glError("Mesh::addBuffer",71);
 	/* Copy the index data from tetraindicies to our buffer
 	 * 6 * sizeof(GLubyte) is the size of the index array, since it contains 6 GLbyte values */
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, content.size() * sizeof(GLuint), content.data(),GL_STATIC_DRAW);
 	cout << "Adding Vertex Element Buffer #" << bufferCount << " Size:"<< content.size() << "\n";
 	bufferCount++;
+    glError("Mesh::addElementBuffer",76);
 }
 
 void Mesh::setDrawType(GLint drawType){
