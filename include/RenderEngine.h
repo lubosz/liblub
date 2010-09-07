@@ -19,6 +19,7 @@
 class RenderEngine : public Singleton<RenderEngine> {
 public:
 	void display();
+	void toggleFBO();
 private:
 	friend class Singleton<RenderEngine>;
 
@@ -26,9 +27,11 @@ private:
 	unsigned frameCount;
 	FrameBuffer *fbo;
 	Mesh * renderPlane;
+	bool useFBO;
 
 	void checkVersion();
 	GLboolean QueryExtension(char *extName);
+
 
 	void clear();
 	RenderEngine();

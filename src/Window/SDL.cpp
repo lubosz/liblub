@@ -178,6 +178,10 @@ void MediaLayer::eventLoop(){
             	toggleFullScreen();
             	break;
 
+            case 't':
+            	RenderEngine::Instance().toggleFBO();
+            	break;
+
             default:
             	//cout << "ScanCode:\t" << event.key.keysym.scancode << "\n";
             	//cout << "sym:\t" << event.key.keysym.sym << "\n";

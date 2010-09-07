@@ -12,7 +12,9 @@
                          0.0, 0.0, 0.0, 0.0,\
                          0.0, 0.0, 0.0, 0.0,\
                          0.0, 0.0, 0.0, 0.0 }
-
+/*
+ * //TODO: Matrix class, dry
+ *
 #define IDENTITY_MATRIX4 { 1.0, 0.0, 0.0, 0.0,\
                            0.0, 1.0, 0.0, 0.0,\
                            0.0, 0.0, 1.0, 0.0,\
@@ -20,7 +22,7 @@
 
 
 const GLfloat identitymatrix[16] = IDENTITY_MATRIX4;
-
+*/
 typedef enum {
 	X_AXIS,
 	Y_AXIS,

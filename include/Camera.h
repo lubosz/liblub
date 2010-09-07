@@ -10,6 +10,15 @@
 #include "common.h"
 #include "Singleton.h"
 
+//TODO: Matrix class, dry
+#define IDENTITY_MATRIX4 { 1.0, 0.0, 0.0, 0.0,\
+                           0.0, 1.0, 0.0, 0.0,\
+                           0.0, 0.0, 1.0, 0.0,\
+                           0.0, 0.0, 0.0, 1.0 }
+
+
+const GLfloat identitymatrix[16] = IDENTITY_MATRIX4;
+
 class Camera: public Singleton<Camera>{
 public:
 
@@ -20,6 +29,10 @@ public:
 
 	void setAspect(GLfloat aspect);
 	void setParams(GLfloat fov, GLfloat nearz, GLfloat farz);
+	void identity();
+	/* Generate a perspective view matrix using a field of view angle fov,
+	 * window aspect ratio, near and far clipping planes */
+	void perspective();
 
 private:
 	friend class Singleton<Camera>;
@@ -27,9 +40,7 @@ private:
 
 	GLfloat projectionmatrix[16]; /* Our projection matrix starts with all 0s */
 
-	/* Generate a perspective view matrix using a field of view angle fov,
-	 * window aspect ratio, near and far clipping planes */
-	void perspective();
+
 
 private:
 	Camera(); // Private constructor

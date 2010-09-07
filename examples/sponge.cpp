@@ -5,8 +5,8 @@ class Sponge : public Application {
 
 public:
 	Sponge(){
-		width = 1920;
-		height = 1200;
+		width = 1366;
+		height = 768;
 		programName = "Sponge";
   }
 

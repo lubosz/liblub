@@ -65,6 +65,10 @@ void Camera::setParams(GLfloat fov, GLfloat nearz, GLfloat farz){
 	this->farz = farz;
 }
 
+void Camera::identity(){
+	    memcpy(projectionmatrix, identitymatrix, sizeof(GLfloat) * 16);
+}
+
 
 /* Generate a perspective view matrix using a field of view angle fov,
  * window aspect ratio, near and far clipping planes */

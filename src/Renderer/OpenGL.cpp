@@ -11,14 +11,13 @@
 #include "MeshFactory.h"
 #include "RenderEngine.h"
 
-#define USE_FBO
-
 using namespace std;
 
 RenderEngine::RenderEngine() {
 	glError("RenderEngine",23);
 	checkVersion();
 	frameCount = 0;
+	useFBO = true;
 
 	//shaderProgram = new ShaderProgram();
 
@@ -26,6 +25,9 @@ RenderEngine::RenderEngine() {
 #ifndef USE_GL3
     glEnable( GL_POINT_SMOOTH );
 #endif
+
+	/* Make our background black */
+	glClearColor(backgroundColor[0],backgroundColor[1],backgroundColor[2], 1.0);
 
     glEnable(GL_POLYGON_OFFSET_FILL);
     glEnable(GL_CULL_FACE);
@@ -47,7 +49,9 @@ RenderEngine::RenderEngine() {
     //glEnable(GL_BLEND);
     //glDepthMask(GL_FALSE);
 #ifdef USE_FBO
-    fbo = new FrameBuffer(800,800);
+    fbo = new FrameBuffer(1366,768);
+    //fbo = new FrameBuffer(683,384);
+    //fbo = new FrameBuffer(800,800);
 
     renderPlane = MeshFactory::Instance().plane();
 #endif
@@ -66,12 +70,21 @@ RenderEngine::~RenderEngine() {
 	glError("RenderEngine",106);
 }
 
-
+void RenderEngine::toggleFBO(){
+	if(useFBO){
+		cout << "FBO Rendering diabled" << "\n";
+		useFBO = false;
+	}else{
+		useFBO = true;
+		cout << "FBO Rendering enabled" << "\n";
+	}
+}
 
 void RenderEngine::display() {
 
 #ifdef USE_FBO
-	fbo->bind();
+	if (useFBO)
+		fbo->bind();
 #endif
     //GLenum buffers[] = { GL_COLOR_ATTACHMENT0_EXT, GL_COLOR_ATTACHMENT1_EXT };
 	//glDrawBuffers(2, buffers);
@@ -107,18 +120,19 @@ void RenderEngine::display() {
 	//gluLookAt(1, 0, 1, 1, 0, 0, 0, 1, 0); // eye(x,y,z), focal(x,y,z), up(x,y,z)
 	frameCount++;
 #ifdef USE_FBO
-	fbo->unBind();
-	fbo->bindTexture();
+	if (useFBO){
+		fbo->unBind();
+		fbo->bindTexture();
 
-	clear();
+		clear();
 
-    renderPlane->draw();
+		renderPlane->draw();
+	}
 #endif
 }
 
 void RenderEngine::clear(){
-	/* Make our background black */
-	glClearColor(backgroundColor[0],backgroundColor[1],backgroundColor[2], 1.0);
+
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 

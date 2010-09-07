@@ -19,13 +19,24 @@ Texture::Texture(GLuint width, GLuint height, string name, GLenum glId) {
     glGenTextures(1, &texture);
     cout << "Creating FBO texture #" << texture << " " << name << "\n";
     glBindTexture(textureType, texture);
-    glTexImage2D(textureType, 0, GL_RGBA8, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0);
+    glTexImage2D(textureType, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0);
+/*
+    //glTexParameterf(textureType, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    //glTexParameterf(textureType, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+    glTexParameterf(textureType, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    glTexParameterf(textureType, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    //glTexParameterf(textureType, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    //glTexParameterf(textureType, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 
-    glTexParameterf(textureType, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glTexParameterf(textureType, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-    glTexParameterf(textureType, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-    glTexParameterf(textureType, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-    glGenerateMipmap(textureType);
+    //glGenerateMipmap(textureType);
+*/
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S,  GL_CLAMP_TO_BORDER);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T,  GL_CLAMP_TO_BORDER);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+
     glBindTexture(textureType, 0);
 }
 

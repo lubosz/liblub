@@ -19,20 +19,30 @@ Mesh * Geometry::makePlane(){
 		1.0, 1.0, 0.0
 	};
 	*/
+	/*
 	vector<GLfloat> vertices = {
 			-1.0,  -1.0,  -2.0,
 			1.0, -1.0,  -2.0,
 			-1.0,  1.0, -2.0,
 			1.0, 1.0, -2.0
 		};
+	*/
 
+	vector<GLfloat> vertices = {
+			-1.0, -1.0, -1.0,
+			1.0, -1.0, -1.0,
+			1.0, 1.0, -1.0,
+			-1.0, 1.0, -1.0
+		};
 
 	vector<GLfloat> uvCoords = {
+			0.0,  0.0,
 
-		0.0,  0.0,
-		0.0,  1.0,
 		1.0,  0.0,
-		1.0,  1.0
+		1.0,  1.0,
+
+		0.0,  1.0,
+
 
 			/*
 			1.0,  1.0,
@@ -49,7 +59,9 @@ Mesh * Geometry::makePlane(){
 		0.0, 0.0, 1.0
 	};
 
-	vector<GLuint> indicies = { 0, 1, 3, 3, 2, 0 };
+	//vector<GLuint> indicies = { 0, 1, 3, 3, 2, 0 };
+	vector<GLuint> indicies = { 0, 1, 3, 3, 1, 2 };
+
 	Mesh * mesh = new Mesh();
     mesh->addBuffer(vertices,3,"in_Vertex");
     //mesh->addBuffer(vertices,3,"in_Color");

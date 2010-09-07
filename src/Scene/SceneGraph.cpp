@@ -133,7 +133,9 @@ void SceneGraph::bindShaders(ShaderProgram * shaderProgram){
 	shaderProgram->setModelViewMatrix(modelmatrix);
     /* multiply our modelmatrix and our projectionmatrix. Results are stored in modelmatrix */
 	//shaderProgram->setProjectionMatrix(Camera::Instance().getProjectionmatrix());
-    multiply4x4(modelmatrix, Camera::Instance().getProjectionmatrix());
+    //multiply4x4(modelmatrix, Camera::Instance().getProjectionmatrix());
+
+	multiply4x4(modelmatrix, Camera::Instance().getProjectionmatrix());
     shaderProgram->setModelViewProjectionMatrix(modelmatrix);
     shaderProgram->setLightPosition(lightPosition.at(0),lightPosition.at(1),lightPosition.at(2));
     glError("SceneGraph::bindShaders",116);
@@ -164,6 +166,7 @@ void SceneGraph::drawNodes(){
     BOOST_FOREACH( Node node, sceneNodes )
     {
     	identitiy();
+    	Camera::Instance().perspective();
         scale(node.getSize());
         translate(node.getPosition());
     	cameraTransform();

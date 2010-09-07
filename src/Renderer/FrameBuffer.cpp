@@ -8,6 +8,7 @@
 #include "FrameBuffer.h"
 #include "Materials.h"
 #include "SceneGraph.h"
+#include "Camera.h"
 
 #include <sstream>
 
@@ -15,11 +16,14 @@ FrameBuffer::FrameBuffer(GLuint width, GLuint height) {
 	glError("FrameBuffer",12);
 	//Gen texture for fbo
     // create a texture object
+
 	fboTexture = TextureFactory::Instance().texture(width, height, "FBOTex");
+
 	fboMaterial = new FBOMaterial();
 	fboMaterial->addTexture(fboTexture);
 	fboMaterial->done();
-	//fboTexture->uniform(fboMaterial->getShaderProgram()->getReference());
+
+	//fboMaterial = new TextureMaterial("bunny.png");
 
     glGenFramebuffers(1, &fboId);
     glBindFramebuffer(GL_FRAMEBUFFER, fboId);
@@ -68,7 +72,7 @@ void FrameBuffer::bind() {
     // set the rendering destination to FBO
     glBindFramebuffer(GL_FRAMEBUFFER, fboId);
     // Set the render target
-    glDrawBuffer(GL_COLOR_ATTACHMENT0);
+    //glDrawBuffer(GL_COLOR_ATTACHMENT0);
 }
 
 void FrameBuffer::unBind() {
@@ -79,24 +83,9 @@ void FrameBuffer::unBind() {
 void FrameBuffer::bindTexture() {
 	glBindTexture(GL_TEXTURE_2D, 0);
 	fboMaterial->activate();
-	/*
-	fboTexture->activate();
-	fboTexture->bind();
-*/
-	//fboTexture->activate();
 	SceneGraph::Instance().identitiy();
+	Camera::Instance().identity();
 	SceneGraph::Instance().bindShaders(fboMaterial->getShaderProgram());
-	//fboMaterial->getShaderProgram()->use();
-	/*
-    // trigger mipmaps generation explicitly
-    // NOTE: If GL_GENERATE_MIPMAP is set to GL_TRUE, then glCopyTexSubImage2D()
-    // triggers mipmap generation automatically. However, the texture attached
-    // onto a FBO should generate mipmaps manually via glGenerateMipmapEXT().
-    glBindTexture(GL_TEXTURE_2D, fbo->getTextureId());
-    glGenerateMipmap(GL_TEXTURE_2D);
-	glBindTexture(GL_TEXTURE_2D, 0);
-    */
-
 }
 
 

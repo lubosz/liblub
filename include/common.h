@@ -52,6 +52,9 @@ static void glError(string file, int line) {
 		case GL_INVALID_FRAMEBUFFER_OPERATION:
 			error = "INVALID_FRAMEBUFFER_OPERATION";
 			break;
+		default:
+			error = "Unknown error";
+			break;
 		}
 
 		cerr << "\x1b[1;31m" << "GL_" << error << "\e[m" << " - " << file << ':' << line	 << "\n";
