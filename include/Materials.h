@@ -55,10 +55,7 @@ class FBOMaterial : public Material {
 public:
 	FBOMaterial(){
 		init();
-		attachVertFrag("Texture/FBOtexture");
-		addTexture("Screenshot-1.jpg","otherTex");
-		//done();
-
+		attachVertFrag("Post/FBO");
   }
 	void uniforms(){}
 

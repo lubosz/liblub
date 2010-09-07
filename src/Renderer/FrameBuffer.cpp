@@ -16,6 +16,8 @@ FrameBuffer::FrameBuffer(GLuint width, GLuint height) {
 	glError("FrameBuffer",12);
 	//Gen texture for fbo
     // create a texture object
+	this->width = width;
+	this->height = height;
 
 	fboTexture = TextureFactory::Instance().texture(width, height, "FBOTex");
 
@@ -71,8 +73,12 @@ FrameBuffer::FrameBuffer(GLuint width, GLuint height) {
 void FrameBuffer::bind() {
     // set the rendering destination to FBO
     glBindFramebuffer(GL_FRAMEBUFFER, fboId);
+
     // Set the render target
     //glDrawBuffer(GL_COLOR_ATTACHMENT0);
+
+    //GLenum buffers[] = { GL_COLOR_ATTACHMENT0_EXT, GL_COLOR_ATTACHMENT1_EXT };
+	//glDrawBuffers(2, buffers);
 }
 
 void FrameBuffer::unBind() {
@@ -86,6 +92,7 @@ void FrameBuffer::bindTexture() {
 	SceneGraph::Instance().identitiy();
 	Camera::Instance().identity();
 	SceneGraph::Instance().bindShaders(fboMaterial->getShaderProgram());
+	glViewport(0,0,width, height);
 }
 
 
@@ -107,22 +114,18 @@ void FrameBuffer::printFramebufferInfo()
     int objectId;
 
     // print info of the colorbuffer attachable image
-    for(int i = 0; i < colorBufferCount; ++i)
-    {
+    for(int i = 0; i < colorBufferCount; ++i){
         glGetFramebufferAttachmentParameteriv(GL_FRAMEBUFFER,
-                                                 GL_COLOR_ATTACHMENT0+i,
-                                                 GL_FRAMEBUFFER_ATTACHMENT_OBJECT_TYPE,
-                                                 &objectType);
-        if(objectType != GL_NONE)
-        {
+                                              GL_COLOR_ATTACHMENT0+i,
+                                              GL_FRAMEBUFFER_ATTACHMENT_OBJECT_TYPE,
+                                              &objectType);
+        if(objectType != GL_NONE){
             glGetFramebufferAttachmentParameteriv(GL_FRAMEBUFFER,
-                                                     GL_COLOR_ATTACHMENT0+i,
-                                                     GL_FRAMEBUFFER_ATTACHMENT_OBJECT_NAME,
-                                                     &objectId);
+                                                  GL_COLOR_ATTACHMENT0+i,
+                                                  GL_FRAMEBUFFER_ATTACHMENT_OBJECT_NAME,
+                                                  &objectId);
 
             string formatName;
-
-
 
             cout << "Color Attachment " << i << ": ";
             if(objectType == GL_TEXTURE)

@@ -23,6 +23,7 @@ private:
 	GLuint rboId;                       // ID of Renderbuffer object
 	Material * fboMaterial;
 	Texture * fboTexture;
+	unsigned width, height;
 
 
 	void printFramebufferInfo();

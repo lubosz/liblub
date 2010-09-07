@@ -2,8 +2,6 @@
 
 #pragma once
 
-//#define USE_GL3
-
 #ifdef USE_GL3
 #define GL3_PROTOTYPES 1
 #define LIBLUB_GL_MAJOR_VERION 3
@@ -24,11 +22,8 @@
 #include <GL/glext.h>
 #endif
 
-
-
 #include <iostream>
 using namespace std;
-
 
 static void glError(string file, int line) {
 	GLenum err(glGetError());

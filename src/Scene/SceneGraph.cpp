@@ -163,6 +163,7 @@ void SceneGraph::addNode(string name, const vector<float> & position, Mesh * mes
 
 
 void SceneGraph::drawNodes(){
+	//gluLookAt(1, 0, 1, 1, 0, 0, 0, 1, 0); // eye(x,y,z), focal(x,y,z), up(x,y,z)
     BOOST_FOREACH( Node node, sceneNodes )
     {
     	identitiy();

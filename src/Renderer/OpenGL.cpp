@@ -5,8 +5,6 @@
  *      Author: bmonkey
  */
 
-
-
 #include "Camera.h"
 #include "MeshFactory.h"
 #include "RenderEngine.h"
@@ -17,11 +15,8 @@ RenderEngine::RenderEngine() {
 	glError("RenderEngine",23);
 	checkVersion();
 	frameCount = 0;
-	useFBO = true;
+	useFBO = false;
 
-	//shaderProgram = new ShaderProgram();
-
-	//glPointSize(3);
 #ifndef USE_GL3
     glEnable( GL_POINT_SMOOTH );
 #endif
@@ -42,31 +37,26 @@ RenderEngine::RenderEngine() {
     /*
     glEnable(GL_POLYGON_OFFSET_FILL);
     glPolygonOffset(2.0,2.0);
-*/
+     */
 
     glPointSize(5);
     //glBlendFunc(GL_SRC_ALPHA, GL_ONE);
     //glEnable(GL_BLEND);
     //glDepthMask(GL_FALSE);
+
 #ifdef USE_FBO
     fbo = new FrameBuffer(1366,768);
-    //fbo = new FrameBuffer(683,384);
-    //fbo = new FrameBuffer(800,800);
-
     renderPlane = MeshFactory::Instance().plane();
 #endif
+
 	glError("RenderEngine",52);
 }
 
 RenderEngine::~RenderEngine() {
 	glError("RenderEngine",96);
+	delete fbo;
     /* Cleanup all the things we bound and allocated */
-	cout << "Shutting down Render Engine...";
-
-    //delete shaderProgram;
-
-
-	cout << "done.\n";
+	cout << "Shutting down Render Engine...\n";
 	glError("RenderEngine",106);
 }
 
@@ -86,46 +76,26 @@ void RenderEngine::display() {
 	if (useFBO)
 		fbo->bind();
 #endif
-    //GLenum buffers[] = { GL_COLOR_ATTACHMENT0_EXT, GL_COLOR_ATTACHMENT1_EXT };
-	//glDrawBuffers(2, buffers);
-
 
 /*
+ * 		//Uniform Animation
         SceneGraph::Instance().transform(frameCount);
-
-        SceneGraph::Instance().bindShaders(shaderProgram);
+        GLfloat floatanim = 10.0/GLfloat(frameCount%100);
+        glUniform4f(glGetUniformLocation(shaderProgram->program, "ScaleFactor"), floatanim, floatanim, floatanim, floatanim);
+		glUniform2f(glGetUniformLocation(shaderProgram->program, "Offset"), floatanim, floatanim);
+		int mode = int(frameCount/100.0)%10;
+		glUniform1i(glGetUniformLocation(shaderProgram->program, "Mode"), mode);
+		cout << "Mode:\t" << mode << "\n";
+		frameCount++;
 */
-        //GLfloat floatanim = 10.0/GLfloat(frameCount%100);
-
-	//glUniform4f(glGetUniformLocation(shaderProgram->program, "ScaleFactor"), floatanim, floatanim, floatanim, floatanim);
-	//glUniform2f(glGetUniformLocation(shaderProgram->program, "Offset"), floatanim, floatanim);
-	/*
-	int mode = int(frameCount/100.0)%10;
-	glUniform1i(glGetUniformLocation(shaderProgram->program, "Mode"), mode);
-	cout << "Mode:\t" << mode << "\n";
-*/
-
 	clear();
-/*
-    MeshFactory::Instance().meshes[0]->draw();
-    SceneGraph::Instance().transform(frameCount);
-    SceneGraph::Instance().translate(1,1,1);
-    SceneGraph::Instance().bindShaders(shaderProgram);
-    MeshFactory::Instance().meshes[1]->draw();
-*/
     SceneGraph::Instance().drawNodes();
 
-	//MeshFactory::Instance().drawMeshes();
-
-	//gluLookAt(1, 0, 1, 1, 0, 0, 0, 1, 0); // eye(x,y,z), focal(x,y,z), up(x,y,z)
-	frameCount++;
 #ifdef USE_FBO
 	if (useFBO){
 		fbo->unBind();
 		fbo->bindTexture();
-
 		clear();
-
 		renderPlane->draw();
 	}
 #endif
@@ -137,10 +107,7 @@ void RenderEngine::clear(){
 }
 
 void RenderEngine::checkVersion(){
-	/*
-	int * maxTex1 = new int();
-	int * maxTex2 = new int();
-*/
+
 	GLint maxTex1, maxTex2,MajorVersion,MinorVersion,numext,pointSize;
 	glGetIntegerv(GL_MAX_VERTEX_TEXTURE_IMAGE_UNITS,&maxTex1);
 	glGetIntegerv(GL_MAX_TEXTURE_IMAGE_UNITS,&maxTex2);
@@ -148,12 +115,7 @@ void RenderEngine::checkVersion(){
 	glGetIntegerv(GL_MAJOR_VERSION, &MajorVersion);
 	glGetIntegerv(GL_MINOR_VERSION, &MinorVersion);
 
-
-
-
 	glGetIntegerv(GL_POINT_SIZE, &pointSize);
-
-
 
 	cout 	<< "OpenGL:\t" << glGetString(GL_VERSION) << "\n"
 			<< "GLSL:\t" << glGetString(GL_SHADING_LANGUAGE_VERSION) << "\n"
@@ -165,7 +127,6 @@ void RenderEngine::checkVersion(){
 			//<< " " << glGetString(GL_MAX_TEXTURE_IMAGE_UNITS)
 			<<"Version:\t"<<MajorVersion<<"."<<MinorVersion
 			<< "\n";
-
 
 #ifdef USE_GL3
 	glGetIntegerv(GL_NUM_EXTENSIONS, &numext);
