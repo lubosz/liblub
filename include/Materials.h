@@ -56,6 +56,7 @@ public:
 	FBOMaterial(){
 		init();
 		attachVertFrag("Texture/FBOtexture");
+		addTexture("Screenshot-1.jpg","otherTex");
 		//done();
 
   }
