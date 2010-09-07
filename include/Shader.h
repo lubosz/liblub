@@ -30,7 +30,7 @@ private:
 	GLenum type;
 	string fileName;
 
-	char* readFile(string file);
+	char* readFile(string filePath);
 	void printShaderInfoLog(GLuint shader);
 
 	void loadAndCompile();
