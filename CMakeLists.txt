@@ -54,14 +54,14 @@ set(SOURCES
 	${SRC_DIR}/Mesh/MengerSponge.cpp
 )
 
-add_library(liblub ${SOURCES})
-target_link_libraries(liblub GL SDL freeimageplus)
+add_library(lub ${SOURCES})
+target_link_libraries(lub GL SDL freeimageplus)
 
 add_executable(planets ${APP_DIR}/planets.cpp)
-target_link_libraries(planets liblub)
+target_link_libraries(planets lub)
 add_executable(buffer ${APP_DIR}/buffer.cpp)
-target_link_libraries(buffer liblub)
+target_link_libraries(buffer lub)
 add_executable(nice ${APP_DIR}/nice.cpp)
-target_link_libraries(nice liblub)
+target_link_libraries(nice lub)
 add_executable(sponge ${APP_DIR}/sponge.cpp)
-target_link_libraries(sponge liblub)
+target_link_libraries(sponge lub)
