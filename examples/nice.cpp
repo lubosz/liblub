@@ -13,7 +13,7 @@ public:
 		vector<Material*> textureMats = {
 				new TextureMaterial("bunny.png"),
 				new MultiTextureMaterial(),
-				new EarthMaterial(),
+				//new EarthMaterial(),
 				new EnvMat(),
 				new NormalColorMat(),
 				new BrickMaterial(),
