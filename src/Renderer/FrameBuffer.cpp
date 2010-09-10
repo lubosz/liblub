@@ -19,7 +19,7 @@ FrameBuffer::FrameBuffer(GLuint width, GLuint height) {
 	this->width = width;
 	this->height = height;
 
-	fboTexture = TextureFactory::Instance().texture(width, height, "FBOTex");
+	fboTexture = TextureFactory::Instance().texture(width, height, "RenderTexture");
 
 	fboMaterial = new FBOMaterial();
 	fboMaterial->addTexture(fboTexture);

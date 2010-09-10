@@ -135,6 +135,10 @@ void ShaderProgram::setModelViewProjectionMatrix(GLfloat * mvpMatrix){
     /* Bind our modelmatrix variable to be a uniform called mvpmatrix in our shaderprogram */
 	glUniformMatrix4fv(glGetUniformLocation(program, "MVPMatrix"), 1, GL_FALSE, mvpMatrix);
 }
+void ShaderProgram::setMatrix(GLfloat * matrix, string name){
+    /* Bind our modelmatrix variable to be a uniform called mvpmatrix in our shaderprogram */
+	glUniformMatrix4fv(glGetUniformLocation(program, name.c_str()), 1, GL_FALSE, matrix);
+}
 
 void ShaderProgram::setLightPosition(GLfloat x, GLfloat y, GLfloat z){
 	glUniform3f(glGetUniformLocation(program, "LightPosition"), x, y, z);

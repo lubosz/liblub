@@ -138,6 +138,7 @@ void SceneGraph::bindShaders(ShaderProgram * shaderProgram){
 	multiply4x4(modelmatrix, Camera::Instance().getProjectionmatrix());
     shaderProgram->setModelViewProjectionMatrix(modelmatrix);
     shaderProgram->setLightPosition(lightPosition.at(0),lightPosition.at(1),lightPosition.at(2));
+    shaderProgram->setMatrix(Camera::Instance().getProjectionmatrix(), "invProjView");
     glError("SceneGraph::bindShaders",116);
 }
 

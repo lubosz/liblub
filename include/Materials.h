@@ -55,7 +55,9 @@ class FBOMaterial : public Material {
 public:
 	FBOMaterial(){
 		init();
-		attachVertFrag("Post/FBO");
+		addTexture("GLGE/skydome.png","SkydomeTexture");
+		shaderProgram->attachShader("Texture/texture.vert", GL_VERTEX_SHADER);
+		shaderProgram->attachShader("raysAndSky/2 - Skydome.frag", GL_FRAGMENT_SHADER);
   }
 	void uniforms(){}
 
