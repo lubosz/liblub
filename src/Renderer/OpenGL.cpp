@@ -15,7 +15,6 @@ RenderEngine::RenderEngine() {
 	glError("RenderEngine",23);
 	checkVersion();
 	frameCount = 0;
-	useFBO = false;
 
 #ifndef USE_GL3
     glEnable( GL_POINT_SMOOTH );
@@ -46,7 +45,6 @@ RenderEngine::RenderEngine() {
 
 #ifdef USE_FBO
     fbo = new FrameBuffer(1366,768);
-    renderPlane = MeshFactory::Instance().plane();
 #endif
 
 	glError("RenderEngine",52);
@@ -61,19 +59,12 @@ RenderEngine::~RenderEngine() {
 }
 
 void RenderEngine::toggleFBO(){
-	if(useFBO){
-		cout << "FBO Rendering diabled" << "\n";
-		useFBO = false;
-	}else{
-		useFBO = true;
-		cout << "FBO Rendering enabled" << "\n";
-	}
+	fbo->toggle();
 }
 
 void RenderEngine::display() {
 
 #ifdef USE_FBO
-	if (useFBO)
 		fbo->bind();
 #endif
 
@@ -92,12 +83,7 @@ void RenderEngine::display() {
     SceneGraph::Instance().drawNodes();
 
 #ifdef USE_FBO
-	if (useFBO){
-		fbo->unBind();
-		fbo->bindTexture();
-		clear();
-		renderPlane->draw();
-	}
+	fbo->draw();
 #endif
 }
 

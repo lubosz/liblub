@@ -10,6 +10,7 @@
 #include "common.h"
 #include "Texture.h"
 #include "Material.h"
+#include "Mesh.h"
 
 class FrameBuffer {
 public:
@@ -17,7 +18,8 @@ public:
 	virtual ~FrameBuffer();
     void bind();
     void unBind();
-    void bindTexture();
+    void draw();
+	void toggle();
 private:
 	GLuint fboId;                       // ID of FBO
 	GLuint rboId;                       // ID of Renderbuffer object
@@ -25,6 +27,8 @@ private:
 	Texture * fboTexture;
 	unsigned width, height;
 
+	Mesh * renderPlane;
+	bool useFBO;
 
 	void printFramebufferInfo();
 	string getTextureParameters(GLuint id);

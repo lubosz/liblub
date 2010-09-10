@@ -9,6 +9,7 @@
 #include "Materials.h"
 #include "SceneGraph.h"
 #include "Camera.h"
+#include "MeshFactory.h"
 
 #include <sstream>
 
@@ -18,12 +19,15 @@ FrameBuffer::FrameBuffer(GLuint width, GLuint height) {
     // create a texture object
 	this->width = width;
 	this->height = height;
+	useFBO = false;
 
 	fboTexture = TextureFactory::Instance().texture(width, height, "RenderTexture");
 
 	fboMaterial = new FBOMaterial();
 	fboMaterial->addTexture(fboTexture);
 	fboMaterial->done();
+
+    renderPlane = MeshFactory::Instance().plane();
 
 	//fboMaterial = new TextureMaterial("bunny.png");
 
@@ -71,6 +75,7 @@ FrameBuffer::FrameBuffer(GLuint width, GLuint height) {
 }
 
 void FrameBuffer::bind() {
+	if (!useFBO) return;
     // set the rendering destination to FBO
     glBindFramebuffer(GL_FRAMEBUFFER, fboId);
 
@@ -86,15 +91,28 @@ void FrameBuffer::unBind() {
     glBindFramebuffer(GL_FRAMEBUFFER, 0); // unbind
 }
 
-void FrameBuffer::bindTexture() {
+void FrameBuffer::draw() {
+	if (!useFBO) return;
+	unBind();
+	RenderEngine::Instance().clear();
 	glBindTexture(GL_TEXTURE_2D, 0);
 	fboMaterial->activate();
 	SceneGraph::Instance().identitiy();
 	Camera::Instance().identity();
 	SceneGraph::Instance().bindShaders(fboMaterial->getShaderProgram());
 	glViewport(0,0,width, height);
+	renderPlane->draw();
 }
 
+void FrameBuffer::toggle(){
+	if(useFBO){
+		cout << "FBO Rendering diabled" << "\n";
+		useFBO = false;
+	}else{
+		useFBO = true;
+		cout << "FBO Rendering enabled" << "\n";
+	}
+}
 
 FrameBuffer::~FrameBuffer() {
 	glDeleteFramebuffers(1, &fboId);
