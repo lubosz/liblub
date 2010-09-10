@@ -1,5 +1,6 @@
-#version 150 core
+#version 330 core
 
+//uniform sampler2D Pass2;
 uniform sampler2D FBOTex;
 uniform vec3 LightPosition;
 
