@@ -52,8 +52,10 @@ char* Shader::readFile(string filePath)
 
     file = fopen(filePath.c_str(), "r"); /* Open file for reading */
     if (!file){
-    	cout << "File:" << filePath << "\n";
-		fputs ("File error",stderr);
+    	cout << "\x1b[1;31m"
+		<< "File error: "
+		<< "\e[m"
+		<< filePath << "\n";
 		exit (1);
     }
 
