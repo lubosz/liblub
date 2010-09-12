@@ -13,7 +13,7 @@ SceneGraph::SceneGraph(){
 	//matrixTest->setToIdentity();
 	lightPosition = {-2.0, 1.0, 2.0};
 	addNode("Light",lightPosition, MeshFactory::Instance().lamp(),new WhiteMat());
-	modelMatrix = new QMatrix4x4();
+	modelMatrix = QMatrix4x4();
 }
 
 void SceneGraph::updateLight(){
@@ -29,28 +29,30 @@ void SceneGraph::animate(float frameCount){
 }
 
 void SceneGraph::cameraTransform(){
-    modelMatrix->rotate((qreal) Camera::Instance().yaw, 1.0,0,0);
-    modelMatrix->rotate((qreal) Camera::Instance().pitch, 0,1.0,0);
-    modelMatrix->rotate((qreal) Camera::Instance().roll, 0,0,1.0);
+    modelMatrix.rotate((qreal) Camera::Instance().yaw, 1.0,0,0);
+    modelMatrix.rotate((qreal) Camera::Instance().pitch, 0,1.0,0);
+    modelMatrix.rotate((qreal) Camera::Instance().roll, 0,0,1.0);
 
     //scale(modelmatrix, 0.5);
-    modelMatrix->translate(Camera::Instance().x, Camera::Instance().y, Camera::Instance().z);
+    modelMatrix.translate(Camera::Instance().x, Camera::Instance().y, Camera::Instance().z);
 }
 
 
 void SceneGraph::bindShaders(ShaderProgram * shaderProgram){
+	glError("SceneGraph::bindShaders",42);
 	shaderProgram->use();
-	shaderProgram->bindMatrix3x3(modelMatrix->normalMatrix(), "NormalMatrix");
-	shaderProgram->bindMatrix4x4(*modelMatrix, "MVMatrix");
+	shaderProgram->bindMatrix3x3(modelMatrix.normalMatrix(), "NormalMatrix");
+	shaderProgram->bindMatrix4x4(modelMatrix, "MVMatrix");
     /* multiply our modelmatrix and our projectionmatrix. Results are stored in modelmatrix */
 	//shaderProgram->setProjectionMatrix(Camera::Instance().getProjectionmatrix());
     //multiply4x4(modelmatrix, Camera::Instance().getProjectionmatrix());
-	shaderProgram->bindMatrix4x4(*modelMatrix* *Camera::Instance().getProjectionmatrix(),"MVPMatrix");
-	//modelMatrix->multiply(Camera::Instance().getProjectionmatrix());
+	glError("SceneGraph::bindShaders",49);
+	shaderProgram->bindMatrix4x4(modelMatrix* Camera::Instance().getProjectionmatrix(),"MVPMatrix");
+	//modelMatrix.multiply(Camera::Instance().getProjectionmatrix());
 	//shaderProgram->bindMatrix4x4(*modelMatrix, "MVMatrix");
     shaderProgram->setLightPosition(lightPosition);
 
-    glError("SceneGraph::bindShaders",116);
+    glError("SceneGraph::bindShaders",53);
 }
 
 void SceneGraph::setPosition(string nodeName, const QVector3D& position){
@@ -75,15 +77,15 @@ void SceneGraph::drawNodes(){
 	//gluLookAt(1, 0, 1, 1, 0, 0, 0, 1, 0); // eye(x,y,z), focal(x,y,z), up(x,y,z)
     BOOST_FOREACH( Node node, sceneNodes )
     {
-    	modelMatrix->setToIdentity();
+    	modelMatrix.setToIdentity();
 
-    	modelMatrix->scale(node.getSize());
-    	modelMatrix->translate(node.getPosition());
+    	modelMatrix.scale(node.getSize());
+    	modelMatrix.translate(node.getPosition());
     	cameraTransform();
 
         bindShaders(node.getMaterial()->getShaderProgram());
         node.getMaterial()->getShaderProgram()->bindMatrix4x4(
-        		Camera::Instance().getProjectionmatrix()->inverted(),"invProjView");
+        		Camera::Instance().getProjectionmatrix().inverted(),"invProjView");
 
     	node.draw();
     }

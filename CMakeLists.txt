@@ -24,6 +24,7 @@ endif (UNIX)
 
 INCLUDE(${QT_USE_FILE})
 ADD_DEFINITIONS(${QT_DEFINITIONS})
+SET(QT_USE_QTOPENGL TRUE)
 
 
 include_directories(

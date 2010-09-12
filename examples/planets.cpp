@@ -10,11 +10,11 @@ public:
   }
 
 	void scene(){
-		SceneGraph::Instance().addNode("earth.obj",{2,0,-5}, new PhongTextureMat());
-		SceneGraph::Instance().addNode("earth.obj",{0,0,-5}, new PlanetMat("Planets/Mars"));
-		SceneGraph::Instance().addNode("earth.obj",{-2,0,-5}, new BumpMaterial("Planets/Mars"));
-		SceneGraph::Instance().addNode("earth.obj",{-2,2,-5}, new TextureMaterial("Planets/Mars.jpg"));
-		SceneGraph::Instance().addNode("earth.obj",{-2,-2,-5}, new TextureMaterial("Planets/Mars-normal.png"));
+		SceneGraph::Instance().addNode("earth.obj",{2.0f,0.0f,-5.0f}, new PhongTextureMat());
+		SceneGraph::Instance().addNode("earth.obj",{0.0f,0.0f,-5.0f}, new PlanetMat("Planets/Mars"));
+		SceneGraph::Instance().addNode("earth.obj",{-2.0f,0.0f,-5.0f}, new BumpMaterial("Planets/Mars"));
+		SceneGraph::Instance().addNode("earth.obj",{-2.0f,2.0f,-5.0f}, new TextureMaterial("Planets/Mars.jpg"));
+		SceneGraph::Instance().addNode("earth.obj",{-2.0f,-2.0f,-5.0f}, new TextureMaterial("Planets/Mars-normal.png"));
 	}
 };
 

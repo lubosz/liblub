@@ -17,7 +17,7 @@ public:
 
 	void move(GLfloat x, GLfloat y, GLfloat z);
 	void rotate(GLfloat yaw, GLfloat pitch, GLfloat roll);
-	QMatrix4x4 * getProjectionmatrix();
+	QMatrix4x4 getProjectionmatrix();
 	GLfloat x, y, z, aspect, fov, nearz, farz, yaw, pitch, roll;
 
 	void setAspect(GLfloat aspect);
@@ -31,7 +31,7 @@ private:
 	friend class Singleton<Camera>;
 
 	//GLfloat projectionmatrix[16]; /* Our projection matrix starts with all 0s */
-	QMatrix4x4 * projectionMatrix;
+	QMatrix4x4 projectionMatrix;
 
 private:
 	Camera(); // Private constructor

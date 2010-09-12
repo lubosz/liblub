@@ -1,5 +1,7 @@
 #version 330 core
 
+precision highp float;
+
 in vec3 in_Vertex;
 
 uniform mat4 MVPMatrix;

@@ -22,7 +22,7 @@ using namespace std;
 
 
 Camera::Camera() {
-	projectionMatrix = new QMatrix4x4();
+	projectionMatrix = QMatrix4x4();
     x = 0;
     y = 0;
     z = 0;
@@ -30,7 +30,7 @@ Camera::Camera() {
     yaw, pitch, roll = 0;
 }
 
-QMatrix4x4 * Camera::getProjectionmatrix()
+QMatrix4x4 Camera::getProjectionmatrix()
 {
     return projectionMatrix;
 }
@@ -74,7 +74,7 @@ void Camera::perspective()
 	void 	lookAt ( const QVector3D & eye, const QVector3D & center, const QVector3D & up )
 	*/
 
-	projectionMatrix->perspective(fov,aspect,nearz,farz);
+	projectionMatrix.perspective(fov,aspect,nearz,farz);
 	//x, y, z, , , , , yaw, pitch, roll
 	/*
     GLfloat range;

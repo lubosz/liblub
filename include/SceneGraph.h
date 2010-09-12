@@ -27,7 +27,7 @@ public:
 	void bindShaders(ShaderProgram * shaderProgram);
 
 	//Matrix * modelMatrix;
-	QMatrix4x4 * modelMatrix;
+	QMatrix4x4 modelMatrix;
 
 private:
 	friend class Singleton<SceneGraph>;
@@ -56,6 +56,5 @@ private:
 
 	void meshCube(string file, float cubeSize, float step, Material * material);
 	void meshCube(string file, float cubeSize, float step, vector<Material*> materials);
-
 
 };
