@@ -102,6 +102,7 @@ void FrameBuffer::draw() {
 	SceneGraph::Instance().bindShaders(fboMaterial->getShaderProgram());
 	glViewport(0,0,width, height);
 	renderPlane->draw();
+	Camera::Instance().perspective();
 }
 
 void FrameBuffer::toggle(){

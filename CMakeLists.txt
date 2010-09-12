@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 2.6)
 project(liblub)
 
+FIND_PACKAGE(Qt4 REQUIRED)
+
 set(LIBRARY_OUTPUT_PATH ${CMAKE_SOURCE_DIR}/build)
 set(EXECUTABLE_OUTPUT_PATH ${CMAKE_SOURCE_DIR}/build)
 
@@ -19,6 +21,9 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -L/usr/local/lib -I/usr/local/include/SD
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++0x")
 endif (UNIX)
 #MESSAGE("Flags: ${CMAKE_CXX_FLAGS}")
+
+INCLUDE(${QT_USE_FILE})
+ADD_DEFINITIONS(${QT_DEFINITIONS})
 
 
 include_directories(

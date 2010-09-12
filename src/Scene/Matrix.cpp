@@ -51,6 +51,18 @@ void Matrix::transpose3x3(GLfloat *matrix)
       }
 }
 
+void Matrix::transpose4x4()
+{
+   GLfloat temp;
+   for(int i=0;i<4;i++)
+       for(int j=i+1;j<4;j++)
+      {
+         temp=matrix[i + (j*4)];
+         matrix[i + (j*4)]=matrix[j + (i*4)];
+         matrix[j + (i*4)]=temp;
+      }
+}
+
 void Matrix::identity(){
     memcpy(matrix, identitymatrix, sizeof(GLfloat) * 16);
 }

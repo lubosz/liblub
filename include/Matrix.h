@@ -54,6 +54,8 @@ public:
 
 	void multiply(Matrix * otherMatrix);
 
+	void transpose4x4();
+
 	GLfloat matrix[16]; /* Our model matrix  */
 private:
 

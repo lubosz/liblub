@@ -1,3 +1,6 @@
+#include <QMatrix4x4>
+#include <QVector3D>
+
 #include "SceneGraph.h"
 #include "Camera.h"
 #include "RenderEngine.h"
@@ -6,6 +9,8 @@
 #include <boost/foreach.hpp>
 
 SceneGraph::SceneGraph(){
+	QMatrix4x4 * matrixTest = new QMatrix4x4();
+	matrixTest->setToIdentity();
 	lightPosition = {-2.0, 1.0, 2.0};
 	addNode("Light",lightPosition, MeshFactory::Instance().lamp(),new WhiteMat());
 	modelMatrix = new Matrix();
@@ -43,7 +48,7 @@ void SceneGraph::bindShaders(ShaderProgram * shaderProgram){
 	modelMatrix->multiply(Camera::Instance().getProjectionmatrix());
     modelMatrix->bind(shaderProgram, "MVPMatrix");
     shaderProgram->setLightPosition(lightPosition.at(0),lightPosition.at(1),lightPosition.at(2));
-    Camera::Instance().getProjectionmatrix()->bind(shaderProgram,"invProjView");
+
     glError("SceneGraph::bindShaders",116);
 }
 
@@ -70,12 +75,15 @@ void SceneGraph::drawNodes(){
     BOOST_FOREACH( Node node, sceneNodes )
     {
     	modelMatrix->identity();
-    	Camera::Instance().perspective();
+
     	modelMatrix->scale(node.getSize());
     	modelMatrix->translate(node.getPosition());
     	cameraTransform();
 
         bindShaders(node.getMaterial()->getShaderProgram());
+        Camera::Instance().getProjectionmatrix()->transpose4x4();
+        Camera::Instance().getProjectionmatrix()->bind(node.getMaterial()->getShaderProgram(),"invProjView");
+
     	node.draw();
     }
     glError("SceneGraph",139);
