@@ -33,10 +33,12 @@ set(SOURCES
 	
 	${SRC_DIR}/Renderer/OpenGL.cpp
 	${SRC_DIR}/Renderer/FrameBuffer.cpp
+	${SRC_DIR}/Renderer/RenderPass.cpp
 	
 	${SRC_DIR}/Scene/Camera.cpp
 	${SRC_DIR}/Scene/SceneGraph.cpp
 	${SRC_DIR}/Scene/Node.cpp
+	${SRC_DIR}/Scene/Matrix.cpp
  
 	${SRC_DIR}/Material/ShaderProgram.cpp
 	${SRC_DIR}/Material/Shader.cpp

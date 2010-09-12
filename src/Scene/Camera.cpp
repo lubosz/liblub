@@ -22,7 +22,7 @@ using namespace std;
 
 
 Camera::Camera() {
-    memset(projectionmatrix, 0, sizeof(GLfloat) * 16);
+	projectionMatrix = new Matrix();
     x = 0;
     y = 0;
     z = 0;
@@ -30,9 +30,9 @@ Camera::Camera() {
     yaw, pitch, roll = 0;
 }
 
-GLfloat * Camera::getProjectionmatrix()
+Matrix * Camera::getProjectionmatrix()
 {
-    return projectionmatrix;
+    return projectionMatrix;
 }
 
 Camera::~Camera() {
@@ -65,11 +65,6 @@ void Camera::setParams(GLfloat fov, GLfloat nearz, GLfloat farz){
 	this->farz = farz;
 }
 
-void Camera::identity(){
-	    memcpy(projectionmatrix, identitymatrix, sizeof(GLfloat) * 16);
-}
-
-
 /* Generate a perspective view matrix using a field of view angle fov,
  * window aspect ratio, near and far clipping planes */
 void Camera::perspective()
@@ -79,15 +74,16 @@ void Camera::perspective()
     range = tan(fov * 0.00872664625) * nearz; /* 0.00872664625 = PI/360 */
 
     //projectionmatrix[0] = (2 * nearz) / ((range * aspect) - (-range * aspect));
-    projectionmatrix[0] = nearz / (range * aspect);
+    projectionMatrix->at(0) = nearz / (range * aspect);
+    //projectionmatrix[0] = nearz / (range * aspect);
 
     //projectionmatrix[5] = (2 * nearz) / (2 * range);
-    projectionmatrix[5] = nearz / range;
+    projectionMatrix->at(5) = nearz / range;
 
-    projectionmatrix[10] = -(farz + nearz) / (farz - nearz);
+    projectionMatrix->at(10) = -(farz + nearz) / (farz - nearz);
 
-    projectionmatrix[11] = -1;
-    projectionmatrix[14] = -(2 * farz * nearz) / (farz - nearz);
+    projectionMatrix->at(11) = -1;
+    projectionMatrix->at(14) = -(2 * farz * nearz) / (farz - nearz);
 
     //projectionmatrix[11] = -(2 * farz * nearz) / (farz - nearz);
     //projectionmatrix[14] = -1;

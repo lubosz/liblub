@@ -97,8 +97,8 @@ void FrameBuffer::draw() {
 	RenderEngine::Instance().clear();
 	glBindTexture(GL_TEXTURE_2D, 0);
 	fboMaterial->activate();
-	SceneGraph::Instance().identitiy();
-	Camera::Instance().identity();
+	SceneGraph::Instance().modelMatrix->identity();
+	Camera::Instance().getProjectionmatrix()->identity();
 	SceneGraph::Instance().bindShaders(fboMaterial->getShaderProgram());
 	glViewport(0,0,width, height);
 	renderPlane->draw();

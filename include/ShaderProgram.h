@@ -12,10 +12,8 @@
 #include <list>
 
 #include "common.h"
-
+#include "Matrix.h"
 #include "Shader.h"
-
-using namespace std;
 
 class ShaderProgram {
 public:
@@ -27,12 +25,7 @@ public:
 	void bindAttrib(unsigned position, string name);
 
 	void linkAndUse();
-	void setNormalMatrix(GLfloat * modelmatrix);
-	void setModelViewMatrix(GLfloat * mvMatrix);
-	void setModelViewProjectionMatrix(GLfloat * mvpMatrix);
-	void setProjectionMatrix(GLfloat * pMatrix);
 	void setLightPosition(GLfloat x, GLfloat y, GLfloat z);
-	void setMatrix(GLfloat * matrix, string name);
 	GLuint getReference() const;
 private:
 	/* This is a handle to the shader program */

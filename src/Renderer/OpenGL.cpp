@@ -88,7 +88,6 @@ void RenderEngine::display() {
 }
 
 void RenderEngine::clear(){
-
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
@@ -110,7 +109,6 @@ void RenderEngine::checkVersion(){
 			<< "Hardware:\t" << glGetString(GL_VENDOR) << " - " << glGetString(GL_RENDERER) << "\n"
 			//<< "GL_EXTENSIONS:\t" << glGetStringi(GL_EXTENSIONS,0) << "\n"
 			<< "MaxTex:\t" << maxTex1 << " " << maxTex2 << "\n"
-			//<< " " << glGetString(GL_MAX_TEXTURE_IMAGE_UNITS)
 			<<"Version:\t"<<MajorVersion<<"."<<MinorVersion
 			<< "\n";
 

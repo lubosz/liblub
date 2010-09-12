@@ -9,22 +9,14 @@
 
 #include "common.h"
 #include "Singleton.h"
-
-//TODO: Matrix class, dry
-#define IDENTITY_MATRIX4 { 1.0, 0.0, 0.0, 0.0,\
-                           0.0, 1.0, 0.0, 0.0,\
-                           0.0, 0.0, 1.0, 0.0,\
-                           0.0, 0.0, 0.0, 1.0 }
-
-
-const GLfloat identitymatrix[16] = IDENTITY_MATRIX4;
+#include "Matrix.h"
 
 class Camera: public Singleton<Camera>{
 public:
 
 	void move(GLfloat x, GLfloat y, GLfloat z);
 	void rotate(GLfloat yaw, GLfloat pitch, GLfloat roll);
-    GLfloat * getProjectionmatrix();
+    Matrix * getProjectionmatrix();
 	GLfloat x, y, z, aspect, fov, nearz, farz, yaw, pitch, roll;
 
 	void setAspect(GLfloat aspect);
@@ -37,10 +29,8 @@ public:
 private:
 	friend class Singleton<Camera>;
 
-
-	GLfloat projectionmatrix[16]; /* Our projection matrix starts with all 0s */
-
-
+	//GLfloat projectionmatrix[16]; /* Our projection matrix starts with all 0s */
+	Matrix * projectionMatrix;
 
 private:
 	Camera(); // Private constructor
