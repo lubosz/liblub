@@ -8,6 +8,7 @@
 SceneGraph::SceneGraph(){
 	lightPosition = {-2.0, 1.0, 2.0};
 	addNode("Light",lightPosition, MeshFactory::Instance().lamp(),new WhiteMat());
+	modelMatrix = new Matrix();
 }
 
 void SceneGraph::updateLight(){
