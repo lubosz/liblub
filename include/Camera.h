@@ -7,6 +7,7 @@
 
 #pragma once
 
+#include <QMatrix4x4>
 #include "common.h"
 #include "Singleton.h"
 #include "Matrix.h"
@@ -16,7 +17,7 @@ public:
 
 	void move(GLfloat x, GLfloat y, GLfloat z);
 	void rotate(GLfloat yaw, GLfloat pitch, GLfloat roll);
-    Matrix * getProjectionmatrix();
+	QMatrix4x4 * getProjectionmatrix();
 	GLfloat x, y, z, aspect, fov, nearz, farz, yaw, pitch, roll;
 
 	void setAspect(GLfloat aspect);
@@ -30,7 +31,7 @@ private:
 	friend class Singleton<Camera>;
 
 	//GLfloat projectionmatrix[16]; /* Our projection matrix starts with all 0s */
-	Matrix * projectionMatrix;
+	QMatrix4x4 * projectionMatrix;
 
 private:
 	Camera(); // Private constructor

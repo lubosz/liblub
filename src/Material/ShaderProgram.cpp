@@ -113,10 +113,22 @@ void ShaderProgram::reload(){
 
 }
 
-void ShaderProgram::setLightPosition(GLfloat x, GLfloat y, GLfloat z){
-	glUniform3f(glGetUniformLocation(program, "LightPosition"), x, y, z);
+void ShaderProgram::setLightPosition(const QVector3D& position){
+	glUniform3f(glGetUniformLocation(program, "LightPosition"), position.x(),position.y(),position.z());
 }
 
 GLuint ShaderProgram::getReference() const{
 	return program;
+}
+
+void ShaderProgram::bindMatrix3x3(const QMatrix3x3 & matrix, string name){
+	glUniformMatrix3dv(
+			glGetUniformLocation(program, name.c_str()), 1, GL_FALSE, matrix.data()
+	);
+}
+
+void ShaderProgram::bindMatrix4x4(const QMatrix4x4 & matrix, string name){
+	glUniformMatrix4dv(
+			glGetUniformLocation(program, name.c_str()), 1, GL_FALSE, matrix.data()
+	);
 }

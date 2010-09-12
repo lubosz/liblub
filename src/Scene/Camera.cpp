@@ -22,7 +22,7 @@ using namespace std;
 
 
 Camera::Camera() {
-	projectionMatrix = new Matrix();
+	projectionMatrix = new QMatrix4x4();
     x = 0;
     y = 0;
     z = 0;
@@ -30,7 +30,7 @@ Camera::Camera() {
     yaw, pitch, roll = 0;
 }
 
-Matrix * Camera::getProjectionmatrix()
+QMatrix4x4 * Camera::getProjectionmatrix()
 {
     return projectionMatrix;
 }
@@ -69,9 +69,17 @@ void Camera::setParams(GLfloat fov, GLfloat nearz, GLfloat farz){
  * window aspect ratio, near and far clipping planes */
 void Camera::perspective()
 {
+	/*
+	void 	perspective ( qreal angle, qreal aspect, qreal nearPlane, qreal farPlane )
+	void 	lookAt ( const QVector3D & eye, const QVector3D & center, const QVector3D & up )
+	*/
+
+	projectionMatrix->perspective(fov,aspect,nearz,farz);
+	//x, y, z, , , , , yaw, pitch, roll
+	/*
     GLfloat range;
 
-    range = tan(fov * 0.00872664625) * nearz; /* 0.00872664625 = PI/360 */
+    range = tan(fov * 0.00872664625) * nearz; // 0.00872664625 = PI/360
 
     //projectionmatrix[0] = (2 * nearz) / ((range * aspect) - (-range * aspect));
     projectionMatrix->at(0) = nearz / (range * aspect);
@@ -87,5 +95,6 @@ void Camera::perspective()
 
     //projectionmatrix[11] = -(2 * farz * nearz) / (farz - nearz);
     //projectionmatrix[14] = -1;
+    */
 
 }

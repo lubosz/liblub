@@ -7,13 +7,16 @@
 
 #pragma once
 
+#include "QVector3D"
 #include "Mesh.h"
 #include "Material.h"
+
 
 class Node {
 private:
 	string name;
-	vector<float> position;
+	//vector<float> position;
+	QVector3D position;
 	float size;
 	Node * parent;
 	Mesh * mesh;
@@ -21,17 +24,17 @@ private:
 
 
 public:
-	Node(string name, vector<float> position, Mesh * mesh);
-	Node(string name, vector<float> position, Mesh * mesh, Material * material);
-	Node(string name, vector<float> position, float size, Mesh * mesh, Material * material);
+	Node(string name, const QVector3D& position, Mesh * mesh);
+	Node(string name, const QVector3D& position, Mesh * mesh, Material * material);
+	Node(string name, const QVector3D& position, float size, Mesh * mesh, Material * material);
 	virtual ~Node();
 
 	void setSize(float size);
     void setMesh(Mesh *mesh);
-    void setPosition(vector<float> position);
+    void setPosition(const QVector3D& position);
 	void draw();
     string getName() const;
-    vector<float> getPosition();
+    const QVector3D& getPosition();
     void setName(string name);
     Material *getMaterial() const;
     void setMaterial(Material *material);

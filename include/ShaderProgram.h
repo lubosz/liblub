@@ -6,7 +6,9 @@
  */
 
 #pragma once
-
+#include <QMatrix3x3>
+#include <QMatrix4x4>
+#include <QVector3D>
 
 #include <string>
 #include <list>
@@ -25,8 +27,11 @@ public:
 	void bindAttrib(unsigned position, string name);
 
 	void linkAndUse();
-	void setLightPosition(GLfloat x, GLfloat y, GLfloat z);
+	void setLightPosition(const QVector3D& position);
 	GLuint getReference() const;
+
+	void bindMatrix3x3(const QMatrix3x3 & matrix, string name);
+	void bindMatrix4x4(const QMatrix4x4 & matrix, string name);
 private:
 	/* This is a handle to the shader program */
 	GLuint program;

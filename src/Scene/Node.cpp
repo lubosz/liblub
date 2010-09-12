@@ -7,14 +7,14 @@
 
 #include "Node.h"
 
-Node::Node(string name, vector<float> position, Mesh * mesh) {
+Node::Node(string name, const QVector3D& position, Mesh * mesh) {
     this->name = name;
     this->position = position;
     this->mesh = mesh;
     this->size = 1;
 }
 
-Node::Node(string name, vector<float> position, Mesh * mesh, Material * material) {
+Node::Node(string name, const QVector3D& position, Mesh * mesh, Material * material) {
     this->name = name;
     this->position = position;
     this->mesh = mesh;
@@ -22,7 +22,7 @@ Node::Node(string name, vector<float> position, Mesh * mesh, Material * material
     this->size = 1;
 }
 
-Node::Node(string name, vector<float> position, float size, Mesh * mesh, Material * material){
+Node::Node(string name, const QVector3D& position, float size, Mesh * mesh, Material * material){
     this->name = name;
     this->position = position;
     this->mesh = mesh;
@@ -35,7 +35,7 @@ void Node::setMesh(Mesh *mesh)
     this->mesh = mesh;
 }
 
-void Node::setPosition(vector<float> position)
+void Node::setPosition(const QVector3D& position)
 {
     this->position = position;
 }
@@ -45,7 +45,7 @@ string Node::getName() const
     return name;
 }
 
-vector<float> Node::getPosition()
+const QVector3D& Node::getPosition()
 {
     return position;
 }

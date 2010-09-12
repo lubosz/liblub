@@ -34,16 +34,18 @@ include
 #App Shader Demo
 set(SOURCES
 
-	${SRC_DIR}/Window/SDL.cpp 
+	${SRC_DIR}/Scene/Camera.cpp
+	${SRC_DIR}/Scene/SceneGraph.cpp
+
+	#${SRC_DIR}/Scene/Matrix.cpp
+
+
 	
 	${SRC_DIR}/Renderer/OpenGL.cpp
 	${SRC_DIR}/Renderer/FrameBuffer.cpp
 	${SRC_DIR}/Renderer/RenderPass.cpp
 	
-	${SRC_DIR}/Scene/Camera.cpp
-	${SRC_DIR}/Scene/SceneGraph.cpp
-	${SRC_DIR}/Scene/Node.cpp
-	${SRC_DIR}/Scene/Matrix.cpp
+
  
 	${SRC_DIR}/Material/ShaderProgram.cpp
 	${SRC_DIR}/Material/Shader.cpp
@@ -59,10 +61,14 @@ set(SOURCES
 	${SRC_DIR}/Mesh/Vector3D.cpp
 	${SRC_DIR}/Mesh/Face.cpp
 	${SRC_DIR}/Mesh/MengerSponge.cpp
+	
+	${SRC_DIR}/Scene/Node.cpp
+	
+	${SRC_DIR}/Window/SDL.cpp 
 )
 
 add_library(lub ${SOURCES})
-target_link_libraries(lub GL SDL freeimageplus)
+target_link_libraries(lub GL SDL freeimageplus QtGui)
 
 add_executable(planets ${APP_DIR}/planets.cpp)
 target_link_libraries(planets lub)

@@ -2,6 +2,11 @@
 
 #pragma once
 
+//TODO: Qt Include hack
+#include <qt4/QtCore/qdatastream.h>
+#include <qt4/QtCore/qmetatype.h>
+#include <qt4/QtCore/qtextstream.h>
+
 #ifdef USE_GL3
 #define GL3_PROTOTYPES 1
 #define LIBLUB_GL_MAJOR_VERION 3
