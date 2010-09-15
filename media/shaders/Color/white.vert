@@ -1,9 +1,12 @@
 #version 330 core
 
-precision highp float;
+//#define GL_ARB_gpu_shader_fp64    1
+
+//precision highp float;
 
 in vec3 in_Vertex;
 
+//uniform dmat4 MVPMatrix;
 uniform mat4 MVPMatrix;
 
 void main(void) {

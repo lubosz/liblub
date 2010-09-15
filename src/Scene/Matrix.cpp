@@ -72,12 +72,12 @@ void Matrix::scale(GLfloat size)
 {
     GLfloat newmatrix[16] = IDENTITY_MATRIX4;
 
-/*
+
     newmatrix[0] = size;
     newmatrix[5] = size;
     newmatrix[10] = size;
-*/
-    newmatrix[15] = 1/size;
+    //Alternative
+    //newmatrix[15] = 1/size;
     //cout << "size:" << size << "\n";
     multiply4x4(newmatrix);
 }
@@ -129,10 +129,19 @@ void Matrix::bind(ShaderProgram * program, string name){
 }
 
 void Matrix::bindNormalMatrix(ShaderProgram * program){
-    GLfloat normalMatrix[9] = {
+    GLfloat normalMatrix2[9] = {
                     matrix[0], matrix[1], matrix[2],
                     matrix[4], matrix[5], matrix[6],
                     matrix[8], matrix[9], matrix[10]
     };
-	glUniformMatrix3fv(glGetUniformLocation(program->getReference(), "NormalMatrix"), 1, GL_FALSE, normalMatrix);
+	glUniformMatrix3fv(glGetUniformLocation(program->getReference(), "NormalMatrix"), 1, GL_FALSE, normalMatrix2);
+}
+
+const vector<GLfloat> & Matrix::getNormalMatrix(){
+    normalMatrix = {
+                    matrix[0], matrix[1], matrix[2],
+                    matrix[4], matrix[5], matrix[6],
+                    matrix[8], matrix[9], matrix[10]
+    };
+	return normalMatrix;
 }

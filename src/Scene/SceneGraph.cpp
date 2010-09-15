@@ -35,6 +35,7 @@ void SceneGraph::cameraTransform(){
     modelMatrix.rotate((qreal) Camera::Instance().roll, 0,0,1.0);
 
     modelMatrix.translate(Camera::Instance().x, Camera::Instance().y, Camera::Instance().z);
+    modelMatrix = modelMatrix.transposed();
 
 }
 
@@ -42,20 +43,22 @@ void SceneGraph::cameraTransform(){
 void SceneGraph::bindShaders(ShaderProgram * shaderProgram){
 	glError("SceneGraph::bindShaders",42);
 	shaderProgram->use();
-	//shaderProgram->setUniform(modelMatrix, "MVMatrix");
-	//shaderProgram->setUniform(modelMatrix.normalMatrix(), "NormalMatrix");
+	shaderProgram->setUniform(modelMatrix, "MVMatrix");
+	shaderProgram->setUniform(modelMatrix.normalMatrix(), "NormalMatrix");
 
     /* multiply our modelmatrix and our projectionmatrix. Results are stored in modelmatrix */
 	//shaderProgram->setProjectionMatrix(Camera::Instance().getProjectionmatrix());
     //multiply4x4(modelmatrix, Camera::Instance().getProjectionmatrix());
 	glError("SceneGraph::bindShaders",49);
-	//modelMatrix *= Camera::Instance().getProjectionmatrix();
+	modelMatrix *= Camera::Instance().getProjectionmatrix();
 	//modelMatrix.perspective(120.0,1.0, 0.01, 1000.0);
+
+
 	//modelMatrix.ortho ( -1, 1, -1, 1, .1, 100.0 );
 	//modelMatrix.frustum( -1, 1, -1, 1, .1, 100.0 );
 	//modelMatrix.lookAt({0,0,-2},{0,0,0},{0,1,0});
-	modelMatrix.setToIdentity();
-	modelMatrix.ortho ( -1, 1, -1, 1, .1, 100.0 );
+	//modelMatrix.setToIdentity();
+	//modelMatrix.ortho ( -1, 1, -1, 1, .1, 100.0 );
 	shaderProgram->setUniform(modelMatrix,"MVPMatrix");
 	//modelMatrix.multiply(Camera::Instance().getProjectionmatrix());
 	//shaderProgram->bindMatrix4x4(*modelMatrix, "MVMatrix");
@@ -91,6 +94,7 @@ void SceneGraph::drawNodes(){
 
     	modelMatrix.scale(node.getSize());
     	modelMatrix.translate(node.getPosition());
+    	modelMatrix = modelMatrix.transposed();
     	cameraTransform();
 
         bindShaders(node.getMaterial()->getShaderProgram());

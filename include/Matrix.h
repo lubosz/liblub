@@ -55,8 +55,10 @@ public:
 	void multiply(Matrix * otherMatrix);
 
 	void transpose4x4();
+	const vector<GLfloat>& getNormalMatrix();
 
 	GLfloat matrix[16]; /* Our model matrix  */
+	vector<GLfloat> normalMatrix;
 private:
 
 

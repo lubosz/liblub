@@ -38,7 +38,7 @@ set(SOURCES
 	${SRC_DIR}/Scene/Camera.cpp
 	${SRC_DIR}/Scene/SceneGraph.cpp
 
-	#${SRC_DIR}/Scene/Matrix.cpp
+	${SRC_DIR}/Scene/Matrix.cpp
 
 
 	
@@ -79,3 +79,6 @@ add_executable(nice ${APP_DIR}/nice.cpp)
 target_link_libraries(nice lub)
 add_executable(sponge ${APP_DIR}/sponge.cpp)
 target_link_libraries(sponge lub)
+
+add_executable(matrixTest tests/matrixTest.cpp)
+target_link_libraries(matrixTest lub)

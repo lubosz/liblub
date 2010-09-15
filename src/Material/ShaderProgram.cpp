@@ -122,17 +122,32 @@ GLuint ShaderProgram::getReference() const{
 }
 
 void ShaderProgram::setUniform(const QMatrix3x3 & matrix, string name){
-	glError("SceneGraph::bindMatrix3x3",125);
+	vector<GLfloat> myMatrix;
+	for (int i = 0; i < 3; i++){
+		for (int j = 0; j < 3; j++){
+			myMatrix.push_back(matrix(i,j));
+		}
+	}
 	glUniformMatrix3fv(
-			glGetUniformLocation(program, name.c_str()), 1, GL_FALSE, (GLfloat*)matrix.data()
+			glGetUniformLocation(program, name.c_str()), 1, GL_FALSE, myMatrix.data()
 	);
 	glError("SceneGraph::bindMatrix3x3",129);
 }
 
 void ShaderProgram::setUniform(const QMatrix4x4 & matrix, string name){
-	glError("SceneGraph::bindMatrix4x4",133);
+	vector<GLfloat> myMatrix;
+	for (int i = 0; i < 4; i++){
+		for (int j = 0; j < 4; j++){
+			myMatrix.push_back(matrix(i,j));
+		}
+	}
 	glUniformMatrix4fv(
-			glGetUniformLocation(program, name.c_str()), 1, GL_FALSE, (GLfloat*)matrix.data()
+			glGetUniformLocation(program, name.c_str()), 1, GL_FALSE, myMatrix.data()
 	);
+/*
+	glUniformMatrix4dv(
+			glGetUniformLocation(program, name.c_str()), 1, GL_FALSE, matrix.data()
+	);
+	*/
 	glError("SceneGraph::bindMatrix4x4",137);
 }

@@ -3,9 +3,11 @@
 #pragma once
 
 //TODO: Qt Include hack
-#include <qt4/QtCore/qdatastream.h>
-#include <qt4/QtCore/qmetatype.h>
-#include <qt4/QtCore/qtextstream.h>
+
+#include <QtCore/qdatastream.h>
+#include <QtCore/qmetatype.h>
+#include <QtCore/qtextstream.h>
+
 
 #ifdef USE_GL3
 #define GL3_PROTOTYPES 1
