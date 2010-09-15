@@ -121,7 +121,7 @@ GLuint ShaderProgram::getReference() const{
 	return program;
 }
 
-void ShaderProgram::bindMatrix3x3(const QMatrix3x3 & matrix, string name){
+void ShaderProgram::setUniform(const QMatrix3x3 & matrix, string name){
 	glError("SceneGraph::bindMatrix3x3",125);
 	glUniformMatrix3fv(
 			glGetUniformLocation(program, name.c_str()), 1, GL_FALSE, (GLfloat*)matrix.data()
@@ -129,7 +129,7 @@ void ShaderProgram::bindMatrix3x3(const QMatrix3x3 & matrix, string name){
 	glError("SceneGraph::bindMatrix3x3",129);
 }
 
-void ShaderProgram::bindMatrix4x4(const QMatrix4x4 & matrix, string name){
+void ShaderProgram::setUniform(const QMatrix4x4 & matrix, string name){
 	glError("SceneGraph::bindMatrix4x4",133);
 	glUniformMatrix4fv(
 			glGetUniformLocation(program, name.c_str()), 1, GL_FALSE, (GLfloat*)matrix.data()

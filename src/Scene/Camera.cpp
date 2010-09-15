@@ -75,6 +75,7 @@ void Camera::perspective()
 	*/
 
 	projectionMatrix.perspective(fov,aspect,nearz,farz);
+	projectionMatrix.lookAt({0,0,-2},{0,0,0},{0,1,0});
 	//x, y, z, , , , , yaw, pitch, roll
 	/*
     GLfloat range;

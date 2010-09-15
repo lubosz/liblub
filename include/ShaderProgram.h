@@ -30,8 +30,8 @@ public:
 	void setLightPosition(const QVector3D& position);
 	GLuint getReference() const;
 
-	void bindMatrix3x3(const QMatrix3x3 & matrix, string name);
-	void bindMatrix4x4(const QMatrix4x4 & matrix, string name);
+	void setUniform(const QMatrix3x3 & matrix, string name);
+	void setUniform(const QMatrix4x4 & matrix, string name);
 private:
 	/* This is a handle to the shader program */
 	GLuint program;

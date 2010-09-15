@@ -29,25 +29,34 @@ void SceneGraph::animate(float frameCount){
 }
 
 void SceneGraph::cameraTransform(){
+
     modelMatrix.rotate((qreal) Camera::Instance().yaw, 1.0,0,0);
     modelMatrix.rotate((qreal) Camera::Instance().pitch, 0,1.0,0);
     modelMatrix.rotate((qreal) Camera::Instance().roll, 0,0,1.0);
 
-    //scale(modelmatrix, 0.5);
     modelMatrix.translate(Camera::Instance().x, Camera::Instance().y, Camera::Instance().z);
+
 }
 
 
 void SceneGraph::bindShaders(ShaderProgram * shaderProgram){
 	glError("SceneGraph::bindShaders",42);
 	shaderProgram->use();
-	shaderProgram->bindMatrix3x3(modelMatrix.normalMatrix(), "NormalMatrix");
-	shaderProgram->bindMatrix4x4(modelMatrix, "MVMatrix");
+	//shaderProgram->setUniform(modelMatrix, "MVMatrix");
+	//shaderProgram->setUniform(modelMatrix.normalMatrix(), "NormalMatrix");
+
     /* multiply our modelmatrix and our projectionmatrix. Results are stored in modelmatrix */
 	//shaderProgram->setProjectionMatrix(Camera::Instance().getProjectionmatrix());
     //multiply4x4(modelmatrix, Camera::Instance().getProjectionmatrix());
 	glError("SceneGraph::bindShaders",49);
-	shaderProgram->bindMatrix4x4(modelMatrix* Camera::Instance().getProjectionmatrix(),"MVPMatrix");
+	//modelMatrix *= Camera::Instance().getProjectionmatrix();
+	//modelMatrix.perspective(120.0,1.0, 0.01, 1000.0);
+	//modelMatrix.ortho ( -1, 1, -1, 1, .1, 100.0 );
+	//modelMatrix.frustum( -1, 1, -1, 1, .1, 100.0 );
+	//modelMatrix.lookAt({0,0,-2},{0,0,0},{0,1,0});
+	modelMatrix.setToIdentity();
+	modelMatrix.ortho ( -1, 1, -1, 1, .1, 100.0 );
+	shaderProgram->setUniform(modelMatrix,"MVPMatrix");
 	//modelMatrix.multiply(Camera::Instance().getProjectionmatrix());
 	//shaderProgram->bindMatrix4x4(*modelMatrix, "MVMatrix");
     shaderProgram->setLightPosition(lightPosition);
@@ -78,14 +87,15 @@ void SceneGraph::drawNodes(){
     BOOST_FOREACH( Node node, sceneNodes )
     {
     	modelMatrix.setToIdentity();
+    	//modelMatrix = modelMatrix.inverted();
 
     	modelMatrix.scale(node.getSize());
     	modelMatrix.translate(node.getPosition());
     	cameraTransform();
 
         bindShaders(node.getMaterial()->getShaderProgram());
-        node.getMaterial()->getShaderProgram()->bindMatrix4x4(
-        		Camera::Instance().getProjectionmatrix().inverted(),"invProjView");
+        //node.getMaterial()->getShaderProgram()->bindMatrix4x4(
+        //		Camera::Instance().getProjectionmatrix().inverted(),"invProjView");
 
     	node.draw();
     }
