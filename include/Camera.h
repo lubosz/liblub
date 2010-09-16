@@ -10,33 +10,28 @@
 #include <QMatrix4x4>
 #include "common.h"
 #include "Singleton.h"
-#include "Matrix.h"
 
 class Camera: public Singleton<Camera>{
 public:
 
 	void move(GLfloat x, GLfloat y, GLfloat z);
 	void rotate(GLfloat yaw, GLfloat pitch, GLfloat roll);
-	QMatrix4x4 getProjectionmatrix();
-	Matrix * getProjectionmatrix2();
+
 	GLfloat x, y, z, aspect, fov, nearz, farz, yaw, pitch, roll;
 
 	void setAspect(GLfloat aspect);
 	void setParams(GLfloat fov, GLfloat nearz, GLfloat farz);
 	void identity();
-	/* Generate a perspective view matrix using a field of view angle fov,
-	 * window aspect ratio, near and far clipping planes */
-	void perspective();
-
+    void perspective();
+    void update();
+    QMatrix4x4 getView() const;
+	QMatrix4x4 getProjection() const;
 private:
-	friend class Singleton<Camera>;
+    friend class Singleton<Camera>;
+    QMatrix4x4 projectionMatrix;
+    QMatrix4x4 viewMatrix;
 
-	//GLfloat projectionmatrix[16]; /* Our projection matrix starts with all 0s */
-	QMatrix4x4 projectionMatrix1;
-	Matrix * projectionMatrix;
-
-private:
-	Camera(); // Private constructor
-	~Camera();
+    Camera();
+    ~Camera();
 
 };
