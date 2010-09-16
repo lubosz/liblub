@@ -122,28 +122,18 @@ GLuint ShaderProgram::getReference() const{
 }
 
 void ShaderProgram::setUniform(const QMatrix3x3 & matrix, string name){
-	vector<GLfloat> myMatrix;
-	for (int i = 0; i < 3; i++){
-		for (int j = 0; j < 3; j++){
-			myMatrix.push_back(matrix(i,j));
-		}
-	}
+    GLfloat mat[9];
+    const qreal *data = matrix.constData();
+    for (int i = 0; i < 9; ++i)
+        mat[i] = data[i];
+
 	glUniformMatrix3fv(
-			glGetUniformLocation(program, name.c_str()), 1, GL_FALSE, myMatrix.data()
+			glGetUniformLocation(program, name.c_str()), 1, GL_FALSE, mat
 	);
 	glError("SceneGraph::bindMatrix3x3",129);
 }
 
 void ShaderProgram::setUniform(const QMatrix4x4 & matrix, string name){
-	/*
-	vector<GLfloat> myMatrix;
-	for (int i = 0; i < 4; i++){
-		for (int j = 0; j < 4; j++){
-			myMatrix.push_back(matrix(i,j));
-		}
-	}
-	*/
-	//if (sizeof(qreal) != sizeof(GLfloat)) cout << "oh noez\n";
     GLfloat mat[16];
     const qreal *data = matrix.constData();
     for (int i = 0; i < 16; ++i)
@@ -152,7 +142,7 @@ void ShaderProgram::setUniform(const QMatrix4x4 & matrix, string name){
 	glUniformMatrix4fv(
 			glGetUniformLocation(program, name.c_str()), 1, GL_FALSE, mat
 	);
-/*
+	/* DOUBLE PRECISION
 	glUniformMatrix4dv(
 			glGetUniformLocation(program, name.c_str()), 1, GL_FALSE, matrix.data()
 	);

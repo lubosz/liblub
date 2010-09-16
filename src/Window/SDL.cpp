@@ -13,8 +13,6 @@
 
 MediaLayer::MediaLayer(string title, unsigned width, unsigned height) {
 
-
-
 	//FPS Stuff
 	fps_lasttime = 0; //the last recorded time.
 	fps_frames = 0; //frames passed since the last recorded fps.
@@ -151,21 +149,21 @@ void MediaLayer::eventLoop(){
                  */
             case 'w':
             	//cout << "up\n";
-            	Camera::Instance().move(0,0,.1);
+            	Camera::Instance().move(0,0,-.1);
             	break;
 
             case 's':
-            	Camera::Instance().move(0,0,-.1);
+            	Camera::Instance().move(0,0,.1);
             	//cout << "down\n";
             	break;
 
             case 'a':
-            	Camera::Instance().move(.1,0,0);
+            	Camera::Instance().move(-.1,0,0);
             	//cout << "left\n";
             	break;
 
             case 'd':
-            	Camera::Instance().move(-.1,0,0);
+            	Camera::Instance().move(.1,0,0);
             	//cout << "rigt\n";
             	break;
 

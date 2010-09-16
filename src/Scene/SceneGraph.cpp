@@ -1,6 +1,3 @@
-
-//#include <QVector3D>
-
 #include "SceneGraph.h"
 #include "Camera.h"
 #include "RenderEngine.h"
@@ -9,8 +6,6 @@
 #include <boost/foreach.hpp>
 
 SceneGraph::SceneGraph(){
-	//QMatrix4x4 * matrixTest = new QMatrix4x4();
-	//matrixTest->setToIdentity();
 	lightPosition = {-2.0, 1.0, 2.0};
 	addNode("Light",lightPosition, MeshFactory::Instance().lamp(),new WhiteMat());
 	modelMatrix = QMatrix4x4();
@@ -27,18 +22,6 @@ void SceneGraph::animate(float frameCount){
     rotate(modelmatrix, (GLfloat) frameCount * 0.5, Z_AXIS);
     */
 }
-
-void SceneGraph::cameraTransform(){
-/*
-    modelMatrix.rotate((qreal) Camera::Instance().yaw, 1.0,0,0);
-    modelMatrix.rotate((qreal) Camera::Instance().pitch, 0,1.0,0);
-    modelMatrix.rotate((qreal) Camera::Instance().roll, 0,0,1.0);
-
-    modelMatrix.translate(Camera::Instance().x, Camera::Instance().y, Camera::Instance().z);
-    modelMatrix = modelMatrix.transposed();
-*/
-}
-
 
 void SceneGraph::bindShaders(ShaderProgram * shaderProgram){
 	glError("SceneGraph::bindShaders",42);

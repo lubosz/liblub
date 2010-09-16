@@ -81,5 +81,6 @@ void Camera::update(){
  * window aspect ratio, near and far clipping planes */
 void Camera::perspective()
 {
+	viewMatrix.setToIdentity();
 	projectionMatrix.perspective(fov,aspect,nearz,farz);
 }
