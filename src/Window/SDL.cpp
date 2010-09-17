@@ -18,6 +18,7 @@ MediaLayer::MediaLayer(string title, unsigned width, unsigned height) {
 	fps_frames = 0; //frames passed since the last recorded fps.
 	programTile = title;
 	fullscreen = false;
+	grab = false;
 
 	quit = false;
     /* Create our window, opengl context, etc... */
@@ -57,6 +58,8 @@ MediaLayer::MediaLayer(string title, unsigned width, unsigned height) {
     /* Enable Z depth testing so objects closest to the viewpoint are in front of objects further away */
     glEnable(GL_DEPTH_TEST);
     glDepthFunc(GL_LESS);
+
+    SDL_SetRelativeMouseMode(SDL_TRUE);
     /*
     SDL_GetDesktopDisplayMode(&fsmode);
     cout << fsmode.format << " " << fsmode.w << " " << fsmode.h << " " << fsmode.refresh_rate << " " << long(fsmode.driverdata) << endl;
@@ -148,23 +151,19 @@ void MediaLayer::eventLoop(){
                 break;
                  */
             case 'w':
-            	//cout << "up\n";
-            	Camera::Instance().move(0,0,-.1);
+            	Camera::Instance().forward();
             	break;
 
             case 's':
-            	Camera::Instance().move(0,0,.1);
-            	//cout << "down\n";
+            	Camera::Instance().backward();
             	break;
 
             case 'a':
-            	Camera::Instance().move(-.1,0,0);
-            	//cout << "left\n";
+            	Camera::Instance().left();
             	break;
 
             case 'd':
-            	Camera::Instance().move(.1,0,0);
-            	//cout << "rigt\n";
+            	Camera::Instance().right();
             	break;
 
             case 'r':
@@ -180,21 +179,25 @@ void MediaLayer::eventLoop(){
             	RenderEngine::Instance().toggleFBO();
             	break;
 
+            case 'g':
+            	if (grab){
+            		SDL_SetWindowGrab(mainWindow,0);
+            		cout << "Grab Off\n";
+            		grab = false;
+            	}else{
+            		SDL_SetWindowGrab(mainWindow,1);
+            		cout << "Grab On\n";
+            		grab = true;
+            	}
+            	break;
+
             default:
-            	//cout << "ScanCode:\t" << event.key.keysym.scancode << "\n";
-            	//cout << "sym:\t" << event.key.keysym.sym << "\n";
-                 //no default key processing
-                 //(stops compiler warnings for unhandled SDL keydefs
                  break;
             }
         break;
 
         case SDL_MOUSEMOTION:
-        	Camera::Instance().rotate(event.motion.yrel,0,0);
-        	Camera::Instance().rotate(0,event.motion.xrel,0);
-            //pitch += event.motion.yrel;
-            //if (pitch < -70) pitch = -70;
-            //if (pitch > 70) pitch = 70;
+        	Camera::Instance().setMouseLook(event.motion.xrel, event.motion.yrel);
             break;
 
          case SDL_QUIT:
@@ -204,13 +207,12 @@ void MediaLayer::eventLoop(){
          case SDL_MOUSEBUTTONDOWN:
         	 switch( event.button.button ){
 				 case SDL_BUTTON_WHEELUP:
-			        Camera::Instance().move(0,0,.3);
+			        Camera::Instance().forward();
 					 break;
 				 case SDL_BUTTON_WHEELDOWN:
-					 Camera::Instance().move(0,0,-.3);
+					 Camera::Instance().backward();
 					 break;
 				 default:
-		        	 //cout << "Some win event!\n";
 					 break;
         	 }
 

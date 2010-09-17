@@ -31,6 +31,7 @@ private:
 	SDL_Event event;
 
 	bool fullscreen;
+	bool grab;
 
 	string programTile;
 

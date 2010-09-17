@@ -25,7 +25,7 @@ public:
 	string programName;
 
 	void run(){
-		mediaLayer = new MediaLayer(programName.c_str(), width, height);
+		mediaLayer = new MediaLayer(programName, width, height);
 
 		Camera::Instance().setParams(70.0, 0.1, 100.0);
 		Camera::Instance().setAspect(float(width)/float(height));

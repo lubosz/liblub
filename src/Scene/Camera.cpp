@@ -12,23 +12,19 @@
 #include <math.h>
 #include <string.h>
 
-//#include "utils.h"
-
 #include "Camera.h"
 #include "common.h"
 
 using namespace std;
 
-
-
 Camera::Camera() {
 	projectionMatrix = QMatrix4x4();
 	viewMatrix = QMatrix4x4();
-    x = 0;
-    y = 0;
-    z = -2;
-
+	eye = QVector3D();
+	center = QVector3D(0,0,-2);
     yaw, pitch, roll = 0;
+    speed = .1;
+    mouseSensitivity = 1.0/500.0;
 }
 
 QMatrix4x4 Camera::getProjection() const
@@ -53,16 +49,57 @@ void Camera::setAspect(GLfloat aspect){
 }
 
 void Camera::move(GLfloat x, GLfloat y, GLfloat z){
-	this->x+=x;
-	this->y+=y;
-	this->z+=z;
+	//eye += QVector3D(x,y,z);
+	eye += x*center;
 	update();
 }
 
+void Camera::forward(){
+	eye += speed*center;
+	update();
+}
+
+void Camera::backward(){
+	eye -= speed*center;
+	update();
+}
+
+void Camera::left(){
+	QVector3D side = QVector3D::crossProduct ( center, up );
+	side.normalize();
+	eye -= speed * side;
+	update();
+}
+
+void Camera::right(){
+	QVector3D side = QVector3D::crossProduct ( center, up );
+	side.normalize();
+	eye += speed * side;
+	update();
+}
+
+void Camera::setMouseLook(int mouseXrel, int mouseYrel){
+	QVector3D side = QVector3D::crossProduct ( center, up );
+	side.normalize();
+
+	center += mouseSensitivity * mouseXrel * side;
+	center -= mouseSensitivity * mouseYrel * up;
+
+	update();
+
+	/*
+		cout
+			<< "Center\t" << center.x() << "\t" << center.y() << "\t" << center.z() << "\n"
+			<< "Eye\t" << eye.x() << "\t" << eye.y() << "\t" << eye.z() << "\n"
+			<< "Mouse\t" << mouseX << "\t" << mouseY << "\n"
+			<< "MouseRel\t" << mouseXrel << "\t" << mouseYrel << "\n";
+	*/
+}
+
 void Camera::rotate(GLfloat yaw, GLfloat pitch, GLfloat roll){
-	this->yaw+=yaw;
-	this->pitch+=pitch;
-	this->roll+=roll;
+	this->yaw=yaw;
+	this->pitch=pitch;
+	this->roll=roll;
 	update();
 }
 
@@ -74,7 +111,7 @@ void Camera::setParams(GLfloat fov, GLfloat nearz, GLfloat farz){
 
 void Camera::update(){
 	viewMatrix.setToIdentity();
-	viewMatrix.lookAt({x,y,z},{x+yaw,y+pitch,z-2},{0,1,0});
+	viewMatrix.lookAt(eye,center+eye,up);
 }
 
 /* Generate a perspective view matrix using a field of view angle fov,
