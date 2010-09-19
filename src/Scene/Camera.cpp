@@ -14,6 +14,9 @@
 
 #include "Camera.h"
 #include "common.h"
+#include "SceneGraph.h"
+#include "MeshFactory.h"
+#include "Materials.h"
 
 using namespace std;
 
@@ -21,10 +24,12 @@ Camera::Camera() {
 	projectionMatrix = QMatrix4x4();
 	viewMatrix = QMatrix4x4();
 	eye = QVector3D();
-	center = QVector3D(0,0,-2);
+	center = QVector3D(0,0,-5);
     yaw, pitch, roll = 0;
-    speed = .1;
-    mouseSensitivity = 1.0/500.0;
+    speed = .01;
+    mouseSensitivity = 100.0/1.0;
+    centerNode = new Node("LookAt",center, .1, MeshFactory::Instance().cube(),new WhiteMat());
+    SceneGraph::Instance().addNode(centerNode);
 }
 
 QMatrix4x4 Camera::getProjection() const
@@ -55,12 +60,16 @@ void Camera::move(GLfloat x, GLfloat y, GLfloat z){
 }
 
 void Camera::forward(){
-	eye += speed*center;
+	QVector3D front = center;
+	front.normalize();
+	eye += speed*front;
 	update();
 }
 
 void Camera::backward(){
-	eye -= speed*center;
+	QVector3D front = center;
+	front.normalize();
+	eye -= speed*front;
 	update();
 }
 
@@ -96,6 +105,12 @@ void Camera::setMouseLook(int mouseXrel, int mouseYrel){
 	*/
 }
 
+void Camera::setMouseZoom(int wheelX, int wheelY){
+	//update();
+	cout << "Wheel\t" << wheelX << "\t" << wheelY << "\n";
+
+}
+
 void Camera::rotate(GLfloat yaw, GLfloat pitch, GLfloat roll){
 	this->yaw=yaw;
 	this->pitch=pitch;
@@ -112,6 +127,7 @@ void Camera::setParams(GLfloat fov, GLfloat nearz, GLfloat farz){
 void Camera::update(){
 	viewMatrix.setToIdentity();
 	viewMatrix.lookAt(eye,center+eye,up);
+	centerNode->setPosition(center+eye);
 }
 
 /* Generate a perspective view matrix using a field of view angle fov,

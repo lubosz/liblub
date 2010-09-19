@@ -39,16 +39,16 @@ void SceneGraph::bindShaders(ShaderProgram * shaderProgram){
 }
 
 void SceneGraph::setPosition(string nodeName, const QVector3D& position){
-    BOOST_FOREACH( Node &node, sceneNodes )
+    BOOST_FOREACH( Node *node, sceneNodes )
     {
-        if (node.getName() == nodeName) {
-        	node.setPosition(position);
+        if (node->getName() == nodeName) {
+        	node->setPosition(position);
         }
     }
 }
 
 void SceneGraph::addNode(string name, const QVector3D& position, Mesh * mesh, Material * material){
-	sceneNodes.push_back(Node(name, position, mesh, material));
+	sceneNodes.push_back(new Node(name, position, mesh, material));
     BOOST_FOREACH( Material* oldMaterial, materials )
     {
         if (oldMaterial == material) return;
@@ -57,16 +57,17 @@ void SceneGraph::addNode(string name, const QVector3D& position, Mesh * mesh, Ma
 }
 
 void SceneGraph::drawNodes(){
-    BOOST_FOREACH( Node node, sceneNodes )
+    BOOST_FOREACH( Node * node, sceneNodes )
     {
     	modelMatrix.setToIdentity();
 
-    	modelMatrix.scale(node.getSize());
-    	modelMatrix.translate(node.getPosition());
+    	//
+    	modelMatrix.translate(node->getPosition());
+    	modelMatrix.scale(node->getSize());
 
-        bindShaders(node.getMaterial()->getShaderProgram());
+        bindShaders(node->getMaterial()->getShaderProgram());
 
-    	node.draw();
+    	node->draw();
     }
     glError("SceneGraph",139);
 
@@ -87,11 +88,11 @@ void SceneGraph::setLightPosition(const QVector3D& lightPosition){
 }
 
 void SceneGraph::addNode(string name, const QVector3D& position, Mesh * mesh){
-	sceneNodes.push_back(Node(name, position, mesh));
+	sceneNodes.push_back(new Node(name, position, mesh));
 }
 
 void SceneGraph::addNode(Node * node){
-	sceneNodes.push_back(*node);
+	sceneNodes.push_back(node);
 }
 
 void SceneGraph::addNode(string name, string file, const QVector3D& position, Material * material){

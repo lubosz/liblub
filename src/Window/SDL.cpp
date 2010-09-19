@@ -59,7 +59,8 @@ MediaLayer::MediaLayer(string title, unsigned width, unsigned height) {
     glEnable(GL_DEPTH_TEST);
     glDepthFunc(GL_LESS);
 
-    SDL_SetRelativeMouseMode(SDL_TRUE);
+    //SDL_SetRelativeMouseMode(SDL_TRUE);
+
     /*
     SDL_GetDesktopDisplayMode(&fsmode);
     cout << fsmode.format << " " << fsmode.w << " " << fsmode.h << " " << fsmode.refresh_rate << " " << long(fsmode.driverdata) << endl;
@@ -182,10 +183,14 @@ void MediaLayer::eventLoop(){
             case 'g':
             	if (grab){
             		SDL_SetWindowGrab(mainWindow,0);
+            		//SDL_WM_GrabInput(SDL_GRAB_OFF);
+            		SDL_ShowCursor(1);
             		cout << "Grab Off\n";
             		grab = false;
             	}else{
             		SDL_SetWindowGrab(mainWindow,1);
+            		//SDL_WM_GrabInput(SDL_GRAB_ON);
+            		SDL_ShowCursor(0);
             		cout << "Grab On\n";
             		grab = true;
             	}
@@ -204,17 +209,9 @@ void MediaLayer::eventLoop(){
             quit = true;
             break;
 
-         case SDL_MOUSEBUTTONDOWN:
-        	 switch( event.button.button ){
-				 case SDL_BUTTON_WHEELUP:
-			        Camera::Instance().forward();
-					 break;
-				 case SDL_BUTTON_WHEELDOWN:
-					 Camera::Instance().backward();
-					 break;
-				 default:
-					 break;
-        	 }
+         case SDL_MOUSEWHEEL:
+        	 Camera::Instance().setMouseZoom(event.wheel.x,event.wheel.y);
+        	 break;
 
          case SDL_WINDOWEVENT: //User resized window
 
@@ -252,6 +249,10 @@ void MediaLayer::renderLoop(){
     	/* update the screen */
     	RenderEngine::Instance().display();
         swapBuffers();
+
+        if(grab){
+        	SDL_WarpMouseInWindow(mainWindow, 200, 200);
+        }
 
         //FPS Stuff
         fps_frames++;

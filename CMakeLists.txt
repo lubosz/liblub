@@ -77,6 +77,8 @@ add_executable(nice ${APP_DIR}/nice.cpp)
 target_link_libraries(nice lub)
 add_executable(sponge ${APP_DIR}/sponge.cpp)
 target_link_libraries(sponge lub)
+add_executable(waterplanet ${APP_DIR}/waterplanet.cpp)
+target_link_libraries(waterplanet lub)
 
 #add_executable(matrixTest tests/matrixTest.cpp)
 #target_link_libraries(matrixTest lub)

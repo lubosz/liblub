@@ -23,11 +23,12 @@ public:
 	void meshPlane(string file, float cubeSize, float step, vector<Material*> materials);
 
 	void bindShaders(ShaderProgram * shaderProgram);
+	void setPosition(string nodeName, const QVector3D& position);
 
 private:
 	friend class Singleton<SceneGraph>;
 
-	vector<Node> sceneNodes;
+	vector<Node*> sceneNodes;
 	vector<Material*> materials;
 
     SceneGraph();
@@ -37,7 +38,7 @@ private:
 
 	void initUniforms();
 
-	void setPosition(string nodeName, const QVector3D& position);
+
 
 	void setLightPosition(const QVector3D& lightPosition);
 

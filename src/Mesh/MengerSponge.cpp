@@ -43,7 +43,7 @@ MengerSponge::MengerSponge(unsigned recursion) {
     //mesh->addBuffer(oneMeshUVCoords,2,"in_Uv");
     mesh->addElementBuffer(oneMeshIndices);
     mesh->setDrawType(GL_TRIANGLES);
-    SceneGraph::Instance().addNode(new Node("", QVector3D(0,0,0), 1.0, mesh,material));
+    SceneGraph::Instance().addNode(new Node("", QVector3D(0,0,-10), 10.0, mesh,material));
 
 
 }

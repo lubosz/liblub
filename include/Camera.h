@@ -10,6 +10,7 @@
 #include <QMatrix4x4>
 #include "common.h"
 #include "Singleton.h"
+#include "Node.h"
 
 const QVector3D up = {0,1,0};
 
@@ -38,6 +39,7 @@ public:
 
 
 	void setMouseLook(int mouseXrel, int mouseYrel);
+	void setMouseZoom(int wheelX, int wheelY);
 private:
 	float mouseSensitivity;
 
@@ -45,6 +47,8 @@ private:
     QMatrix4x4 projectionMatrix;
     QMatrix4x4 viewMatrix;
 	float speed;
+
+	Node * centerNode;
 
     Camera();
     ~Camera();

@@ -5,13 +5,13 @@ class Sponge : public Application {
 
 public:
 	Sponge(){
-		width = 1366;
-		height = 768;
+		width = 1920;
+		height = 1200;
 		programName = "Sponge";
   }
 
 	void scene(){
-		MengerSponge * sponge = new MengerSponge(4);
+		MengerSponge * sponge = new MengerSponge(5);
 	}
 };
 
