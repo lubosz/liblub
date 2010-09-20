@@ -24,7 +24,7 @@ MediaLayer::MediaLayer(string title, unsigned width, unsigned height) {
     /* Create our window, opengl context, etc... */
 
     if (SDL_Init(SDL_INIT_VIDEO) < 0) /* Initialize SDL's Video subsystem */
-        sdlDie("Unable to initialize SDL"); /* Or die on error */
+        error("Unable to initialize SDL"); /* Or die on error */
 
     /* Request an opengl 3.2 context.
      * SDL doesn't have the ability to choose which profile at this time of writing,
@@ -47,7 +47,7 @@ MediaLayer::MediaLayer(string title, unsigned width, unsigned height) {
         width, height, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE );
     //| SDL_WINDOW_FULLSCREEN
     if (!mainWindow) /* Die if creation failed */
-        sdlDie("Unable to create window");
+    	error("Unable to create window");
 
     /* Create our opengl context and attach it to our window */
     mainContext = SDL_GL_CreateContext(mainWindow);
@@ -77,7 +77,7 @@ MediaLayer::~MediaLayer() {
 }
 
 /* A simple function that prints a message, the error code returned by SDL, and quits the application */
-void MediaLayer::sdlDie(string msg)
+void MediaLayer::error(string msg)
 {
     printf("%s: %s\n", msg.c_str(), SDL_GetError());
     SDL_Quit();
@@ -203,6 +203,7 @@ void MediaLayer::eventLoop(){
 
         case SDL_MOUSEMOTION:
         	Camera::Instance().setMouseLook(event.motion.xrel, event.motion.yrel);
+        	//Camera::Instance().setMouseLookInverseVP(event.motion.x, event.motion.y);
             break;
 
          case SDL_QUIT:
