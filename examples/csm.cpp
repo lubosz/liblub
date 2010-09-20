@@ -11,7 +11,10 @@ public:
   }
 
 	void scene(){
-		SceneGraph::Instance().addNode(new Node("Planet",{0,0,-10}, 10, MeshFactory::Instance().load("earth.obj"),new ConeMapMaterial()));
+		Material * material = new ConeMapMaterial();
+		//Node * sphere = new Node("Planet",{0,0,-10}, 10, MeshFactory::Instance().load("earth.obj"),material);
+		Node * plane = new Node("Planet",{0,0,-10}, 10, MeshFactory::Instance().plane(),material);
+		SceneGraph::Instance().addNode(plane);
 	}
 };
 
