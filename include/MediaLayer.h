@@ -45,6 +45,10 @@ private:
     xcb_window_t window;
     GLXContext context;
     GLXDrawable drawable;
+
+
+
+    int mouseLastX, mouseLastY;
 #endif
 	bool fullscreen;
 	bool grab;

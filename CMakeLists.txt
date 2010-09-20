@@ -63,14 +63,14 @@ set(SOURCES
 	
 	${SRC_DIR}/Scene/Node.cpp
 	
-	#${SRC_DIR}/Window/SDL.cpp 
-	${SRC_DIR}/Window/XCB.cpp 
+	${SRC_DIR}/Window/SDL.cpp 
+	#${SRC_DIR}/Window/XCB.cpp 
 )
 
 add_library(lub ${SOURCES})
 target_link_libraries(lub GL 
-#SDL
-X11-xcb
+SDL
+#X11-xcb xcb-atom
 freeimageplus QtGui)
 
 add_executable(planets ${APP_DIR}/planets.cpp)
@@ -83,6 +83,8 @@ add_executable(sponge ${APP_DIR}/sponge.cpp)
 target_link_libraries(sponge lub)
 add_executable(waterplanet ${APP_DIR}/waterplanet.cpp)
 target_link_libraries(waterplanet lub)
+add_executable(csm ${APP_DIR}/csm.cpp)
+target_link_libraries(csm lub)
 
 #add_executable(matrixTest tests/matrixTest.cpp)
 #target_link_libraries(matrixTest lub)
