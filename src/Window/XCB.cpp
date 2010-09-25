@@ -59,34 +59,64 @@ MediaLayer::MediaLayer(string title, unsigned width, unsigned height) {
      int num_fb_configs = 0;
      fb_configs = glXGetFBConfigs(display, default_screen, &num_fb_configs);
      if(!fb_configs || num_fb_configs == 0) error("glXGetFBConfigs failed\n");
-     cout << "Number of Framebuffer Configurations" << num_fb_configs << "\n";
+
+     /* SDL:
+      GLXFBConfig *(*glXChooseFBConfig) (Display * disp,
+                                         int screen,
+                                         const int *attrib_list,
+                                         int *nelements);
+
+      glXChooseFBConfig =
+             (GLXFBConfig * (*)(Display *, int, const int *, int *)) glXGetProcAddress((GLubyte *) "glXChooseFBConfig");
+
+framebuffer_config =
+                  glXChooseFBConfig(display,
+                                    DefaultScreen(display), NULL,
+                                    &fbcount)
+
+      */
 
      /* Select first framebuffer config and query visualID */
      GLXFBConfig fb_config = fb_configs[0];
      glXGetFBConfigAttrib(display, fb_config, GLX_VISUAL_ID , &visualID);
 
-           /* Create OpenGL context */
-           context = glXCreateNewContext(display, fb_config, GLX_RGBA_TYPE, 0, True);
-           if(!context)
-           {
-        	   error("glXCreateNewContext failed\n");
-           }
+     /* Simple OpenGL context */
+     //GLXContext context = glXCreateNewContext(display, fb_config, GLX_RGBA_TYPE, 0, True);
+     //if(!context) error("glXCreateNewContext failed\n");
 
-           /* Create XID's for colormap and window */
-           xcb_colormap_t colormap = xcb_generate_id(connection);
-           window = xcb_generate_id(connection);
+     int attribs[] = {
+         GLX_CONTEXT_MAJOR_VERSION_ARB,
+         LIBLUB_GL_MAJOR_VERION,
+         GLX_CONTEXT_MINOR_VERSION_ARB,
+         LIBLUB_GL_MINOR_VERION,
+         0
+     };
 
-           /* Create colormap */
-           xcb_create_colormap(
+     //TODO: WHY!?!
+     //Get a pointer to the context creation function for GL 3.0
+     PFNGLXCREATECONTEXTATTRIBSARBPROC glXCreateContextAttribs =
+         (PFNGLXCREATECONTEXTATTRIBSARBPROC) glXGetProcAddress((GLubyte *)"glXCreateContextAttribsARB");
+
+     if (!glXCreateContextAttribs) error("GL 3.x is not supported");
+
+     // Create a GL 3.x context
+     context = glXCreateContextAttribs(display, fb_config, NULL, True, attribs);
+
+     /* Create XID's for colormap and window */
+     xcb_colormap_t colormap = xcb_generate_id(connection);
+     window = xcb_generate_id(connection);
+
+     /* Create colormap */
+     xcb_create_colormap(
                connection,
                XCB_COLORMAP_ALLOC_NONE,
                colormap,
                screen->root,
                visualID
-               );
+     );
 
-           /* Create window */
-           uint32_t eventmask =
+     /* Create window */
+     uint32_t eventmask =
         		    //XCB_EVENT_MASK_EXPOSURE
         		   	// |
         		   	XCB_EVENT_MASK_KEY_PRESS
@@ -346,7 +376,7 @@ void MediaLayer::setWindowTitle(string title){
                          title.c_str()
     );
 
-    /* set the title of the window icon */
+/* set the title of the window icon */
 /*
     char *iconTitle = "Hello World ! (iconified)";
     xcb_change_property (connection,
@@ -357,108 +387,6 @@ void MediaLayer::setWindowTitle(string title){
                          8,
                          strlen(iconTitle),
                          iconTitle);
-
-    */
-
-
-}
-
-/*
-SDL_GLContext
-X11_GL_CreateContext(_THIS, SDL_Window * window)
-{
-    SDL_WindowData *data = (SDL_WindowData *) window->driverdata;
-    Display *display = data->videodata->display;
-    int screen =
-        ((SDL_DisplayData *) window->display->driverdata)->screen;
-    XWindowAttributes xattr;
-    XVisualInfo v, *vinfo;
-    int n;
-    GLXContext context = NULL;
-
-    // We do this to create a clean separation between X and GLX errors.
-    XSync(display, False);
-    XGetWindowAttributes(display, data->xwindow, &xattr);
-    v.screen = screen;
-    v.visualid = XVisualIDFromVisual(xattr.visual);
-    vinfo = XGetVisualInfo(display, VisualScreenMask | VisualIDMask, &v, &n);
-    if (vinfo) {
-        if (_this->gl_config.major_version < 3) {
-            context =
-                _this->gl_data->glXCreateContext(display, vinfo, NULL, True);
-        } else {
-            // If we want a GL 3.0 context or later we need to get a temporary
-            // context to grab the new context creation function
-            GLXContext temp_context =
-                _this->gl_data->glXCreateContext(display, vinfo, NULL, True);
-            if (!temp_context) {
-                SDL_SetError("Could not create GL context");
-                return NULL;
-            } else {
-                int attribs[] = {
-                    GLX_CONTEXT_MAJOR_VERSION_ARB,
-                    _this->gl_config.major_version,
-                    GLX_CONTEXT_MINOR_VERSION_ARB,
-                    _this->gl_config.minor_version,
-                    0
-                };
-
-                //Get a pointer to the context creation function for GL 3.0
-                PFNGLXCREATECONTEXTATTRIBSARBPROC glXCreateContextAttribs =
-                    (PFNGLXCREATECONTEXTATTRIBSARBPROC) _this->gl_data->
-                    glXGetProcAddress((GLubyte *)
-                                      "glXCreateContextAttribsARB");
-                if (!glXCreateContextAttribs) {
-                    SDL_SetError("GL 3.x is not supported");
-                    context = temp_context;
-                } else {
-                    // Create a GL 3.x context
-                    GLXFBConfig *framebuffer_config = NULL;
-                    int fbcount = 0;
-                    GLXFBConfig *(*glXChooseFBConfig) (Display * disp,
-                                                       int screen,
-                                                       const int *attrib_list,
-                                                       int *nelements);
-
-                    glXChooseFBConfig =
-                        (GLXFBConfig *
-                         (*)(Display *, int, const int *,
-                             int *)) _this->gl_data->
-                        glXGetProcAddress((GLubyte *) "glXChooseFBConfig");
-
-                    if (!glXChooseFBConfig
-                        || !(framebuffer_config =
-                             glXChooseFBConfig(display,
-                                               DefaultScreen(display), NULL,
-                                               &fbcount))) {
-                        SDL_SetError
-                            ("No good framebuffers found. GL 3.x disabled");
-                        context = temp_context;
-                    } else {
-                        context =
-                            glXCreateContextAttribs(display,
-                                                    framebuffer_config[0],
-                                                    NULL, True, attribs);
-                        _this->gl_data->glXDestroyContext(display,
-                                                          temp_context);
-                    }
-                }
-            }
-        }
-        XFree(vinfo);
-    }
-    XSync(display, False);
-
-    if (!context) {
-        SDL_SetError("Could not create GL context");
-        return NULL;
-    }
-
-    if (X11_GL_MakeCurrent(_this, window, context) < 0) {
-        X11_GL_DeleteContext(_this, context);
-        return NULL;
-    }
-
-    return context;
-}
 */
+
+}

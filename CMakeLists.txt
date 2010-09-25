@@ -10,8 +10,8 @@ set(SRC_DIR ${CMAKE_SOURCE_DIR}/src)
 set(APP_DIR ${CMAKE_SOURCE_DIR}/examples)
 
 #Optimization / Debug
-set(CMAKE_CXX_FLAGS "-O0 -g3") #Debug
-#set(CMAKE_CXX_FLAGS "-O3 -msse4 -mssse3") #Optimized
+#set(CMAKE_CXX_FLAGS "-O0 -g3") #Debug
+set(CMAKE_CXX_FLAGS "-O3 -msse4 -mssse3") #Optimized
 
 if (UNIX)
 #Hack For SDL 1.3 in local

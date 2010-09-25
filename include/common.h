@@ -16,8 +16,9 @@
 #ifndef GLfloat
 #include <GL3/gl3.h>
 #include <GL3/glx.h>
-#include <GL3/glext.h>
 #include <GL3/glxext.h>
+#include <GL3/glext.h>
+
 #endif
 #else
 #define GL_GLEXT_PROTOTYPES 1
