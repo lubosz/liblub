@@ -17,6 +17,7 @@
 	#include <X11/Xlib-xcb.h>
 	#include <xcb/xcb.h>
 #endif
+#include <sstream>
 
 #include "RenderEngine.h"
 
@@ -68,11 +69,13 @@ private:
 
 	string programTile;
 
+
 	bool quit;
 
 	void eventLoop();
 	void error(string msg);
 	void toggleFullScreen();
+	void getFPS();
 
 public:
 	MediaLayer(string title, unsigned width, unsigned height);

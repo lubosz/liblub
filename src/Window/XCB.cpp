@@ -7,7 +7,7 @@
 #include "MediaLayer.h"
 
 #include <iostream>
-#include <sstream>
+
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -38,37 +38,32 @@ MediaLayer::MediaLayer(string title, unsigned width, unsigned height) {
 
      /* Get the XCB connection from the display */
      connection = XGetXCBConnection(display);
-     if(!connection){
-         XCloseDisplay(display);
-         error("Can't get xcb connection from display\n");
-     }
+     if(!connection) error("Can't get xcb connection from display\n");
 
      /* Acquire event queue ownership */
      XSetEventQueueOwner(display, XCBOwnsEventQueue);
 
      /* Find XCB screen */
      xcb_screen_t *screen = 0;
-     xcb_screen_iterator_t screen_iter =
-         xcb_setup_roots_iterator(xcb_get_setup(connection));
+     xcb_screen_iterator_t screen_iter = xcb_setup_roots_iterator(xcb_get_setup(connection));
      for(int screen_num = default_screen;
          screen_iter.rem && screen_num > 0;
          --screen_num, xcb_screen_next(&screen_iter));
      screen = screen_iter.data;
 
-     /* Initialize window and OpenGL context, run main loop and deinitialize */
+     /* Initialize window and OpenGL context */
      int visualID = 0;
 
      /* Query framebuffer configurations */
-           GLXFBConfig *fb_configs = 0;
-           int num_fb_configs = 0;
-           fb_configs = glXGetFBConfigs(display, default_screen, &num_fb_configs);
-           if(!fb_configs || num_fb_configs == 0){
-        	   error("glXGetFBConfigs failed\n");
-           }
+     GLXFBConfig *fb_configs = 0;
+     int num_fb_configs = 0;
+     fb_configs = glXGetFBConfigs(display, default_screen, &num_fb_configs);
+     if(!fb_configs || num_fb_configs == 0) error("glXGetFBConfigs failed\n");
+     cout << "Number of Framebuffer Configurations" << num_fb_configs << "\n";
 
-           /* Select first framebuffer config and query visualID */
-           GLXFBConfig fb_config = fb_configs[0];
-           glXGetFBConfigAttrib(display, fb_config, GLX_VISUAL_ID , &visualID);
+     /* Select first framebuffer config and query visualID */
+     GLXFBConfig fb_config = fb_configs[0];
+     glXGetFBConfigAttrib(display, fb_config, GLX_VISUAL_ID , &visualID);
 
            /* Create OpenGL context */
            context = glXCreateNewContext(display, fb_config, GLX_RGBA_TYPE, 0, True);
@@ -91,8 +86,10 @@ MediaLayer::MediaLayer(string title, unsigned width, unsigned height) {
                );
 
            /* Create window */
-           uint32_t eventmask = XCB_EVENT_MASK_EXPOSURE
-        		   	| XCB_EVENT_MASK_KEY_PRESS
+           uint32_t eventmask =
+        		    //XCB_EVENT_MASK_EXPOSURE
+        		   	// |
+        		   	XCB_EVENT_MASK_KEY_PRESS
 					| XCB_EVENT_MASK_POINTER_MOTION
 					/*| XCB_EVENT_MASK_BUTTON_PRESS
 					| XCB_EVENT_MASK_BUTTON_RELEASE
@@ -116,33 +113,10 @@ MediaLayer::MediaLayer(string title, unsigned width, unsigned height) {
                visualID,
                valuemask,
                valuelist
-               );
+           );
 
+           setWindowTitle(programTile);
 
-           /* set the title of the window */
-           xcb_change_property (connection,
-                                XCB_PROP_MODE_REPLACE,
-                                window,
-                                WM_NAME,
-                                STRING,
-                                8,
-                                strlen (programTile.c_str()),
-                                programTile.c_str() );
-
-
-           /* set the title of the window icon */
-/*
-           char *iconTitle = "Hello World ! (iconified)";
-           xcb_change_property (connection,
-                                XCB_PROP_MODE_REPLACE,
-                                windows,
-                                WM_ICON_NAME,
-                                STRING,
-                                8,
-                                strlen(iconTitle),
-                                iconTitle);
-
-           */
 
            // NOTE: window must be mapped before glXMakeContextCurrent
            xcb_map_window(connection, window);
@@ -159,23 +133,14 @@ MediaLayer::MediaLayer(string title, unsigned width, unsigned height) {
                    );
 
            if(!window)
-           {
-               xcb_destroy_window(connection, window);
-               glXDestroyContext(display, context);
-
-               error("glXDestroyContext failed\n");
-           }
+        	   error("glXDestroyContext failed\n");
 
            drawable = glxwindow;
 
            /* make OpenGL context current */
            if(!glXMakeContextCurrent(display, drawable, drawable, context))
-           {
-               xcb_destroy_window(connection, window);
-               glXDestroyContext(display, context);
+        	   error("glXMakeContextCurrent failed\n");
 
-               error("glXMakeContextCurrent failed\n");
-           }
 
            glEnable(GL_DEPTH_TEST);
            glDepthFunc(GL_LESS);
@@ -218,36 +183,19 @@ void MediaLayer::toggleFullScreen(){
 
 }
 
-/* print names of modifiers present in mask */
-void print_modifiers (uint32_t mask)
-{
-    char *MODIFIERS[] = {
-            "Shift", "Lock", "Ctrl", "Alt",
-            "Mod2", "Mod3", "Mod4", "Mod5",
-            "Button1", "Button2", "Button3", "Button4", "Button5"
-    };
-
-    printf ("Modifier mask: ");
-    for (char **modifier = MODIFIERS ; mask; mask >>= 1, ++modifier) {
-        if (mask & 1) {
-            printf (*modifier);
-        }
-    }
-    printf ("\n");
-}
-
 void MediaLayer::eventLoop(){
 
 	event = xcb_wait_for_event (connection);
-
-    switch (event->response_type & ~0x80) {
-
+	//while (event = xcb_wait_for_event (connection)) {
+    switch (event->response_type) {
+/*
         case XCB_EXPOSE:
             expose = (xcb_expose_event_t *)event;
 
             printf ("Window %d exposed. Region to be redrawn at location (%d,%d), with dimension (%d,%d)\n",
                     expose->window, expose->x, expose->y, expose->width, expose->height );
             break;
+*/
 /*
         case XCB_BUTTON_PRESS:
 
@@ -291,6 +239,7 @@ void MediaLayer::eventLoop(){
             mouseLastY = motion->event_y;
 
             Camera::Instance().setMouseLook(relX, relY);
+            if (grab) XWarpPointer(display, None, window, 0, 0, 0, 0, 400, 300);
             //printf ("Mouse moved at coordinates (%d,%d)\n",relX, relY );
             break;
 
@@ -354,33 +303,36 @@ void MediaLayer::eventLoop(){
     }
 
     free (event);
-}
+
+	}
 
 void MediaLayer::renderLoop(){
     while (!quit) {
     	eventLoop();
     	RenderEngine::Instance().display();
 
-    	if (grab) XWarpPointer(display, None, window, 0, 0, 0, 0, 0, 0);
     	swapBuffers();
+    	getFPS();
+     }
+}
 
-        struct timespec now;
-        static struct timespec start;
-        clock_gettime(CLOCK_MONOTONIC, &now);
-        unsigned ticks = (now.tv_sec - start.tv_sec) * 1000 + (now.tv_nsec - start.tv_nsec) / 1000000;
+void MediaLayer::getFPS(){
+    struct timespec now;
+    static struct timespec start;
+    clock_gettime(CLOCK_MONOTONIC, &now);
+    unsigned ticks = (now.tv_sec - start.tv_sec) * 1000 + (now.tv_nsec - start.tv_nsec) / 1000000;
 
-        //FPS Stuff
-        fps_frames++;
-        if (fps_lasttime < ticks - 1000)
-        {
+    //FPS Stuff
+    fps_frames++;
+    if (fps_lasttime < ticks - 1000){
            fps_lasttime = ticks;
            fps_current = fps_frames;
            fps_frames = 0;
-        }
-        stringstream windowTitle;
-        windowTitle << programTile << " - FPS: " << fps_current;
-        setWindowTitle(windowTitle.str());
     }
+    //windowTitle.clear();
+    stringstream windowTitle;
+    windowTitle << programTile << " - FPS: " << fps_current;
+	setWindowTitle(windowTitle.str());
 }
 
 void MediaLayer::setWindowTitle(string title){
@@ -393,4 +345,120 @@ void MediaLayer::setWindowTitle(string title){
                          title.length(),
                          title.c_str()
     );
+
+    /* set the title of the window icon */
+/*
+    char *iconTitle = "Hello World ! (iconified)";
+    xcb_change_property (connection,
+                         XCB_PROP_MODE_REPLACE,
+                         windows,
+                         WM_ICON_NAME,
+                         STRING,
+                         8,
+                         strlen(iconTitle),
+                         iconTitle);
+
+    */
+
+
 }
+
+/*
+SDL_GLContext
+X11_GL_CreateContext(_THIS, SDL_Window * window)
+{
+    SDL_WindowData *data = (SDL_WindowData *) window->driverdata;
+    Display *display = data->videodata->display;
+    int screen =
+        ((SDL_DisplayData *) window->display->driverdata)->screen;
+    XWindowAttributes xattr;
+    XVisualInfo v, *vinfo;
+    int n;
+    GLXContext context = NULL;
+
+    // We do this to create a clean separation between X and GLX errors.
+    XSync(display, False);
+    XGetWindowAttributes(display, data->xwindow, &xattr);
+    v.screen = screen;
+    v.visualid = XVisualIDFromVisual(xattr.visual);
+    vinfo = XGetVisualInfo(display, VisualScreenMask | VisualIDMask, &v, &n);
+    if (vinfo) {
+        if (_this->gl_config.major_version < 3) {
+            context =
+                _this->gl_data->glXCreateContext(display, vinfo, NULL, True);
+        } else {
+            // If we want a GL 3.0 context or later we need to get a temporary
+            // context to grab the new context creation function
+            GLXContext temp_context =
+                _this->gl_data->glXCreateContext(display, vinfo, NULL, True);
+            if (!temp_context) {
+                SDL_SetError("Could not create GL context");
+                return NULL;
+            } else {
+                int attribs[] = {
+                    GLX_CONTEXT_MAJOR_VERSION_ARB,
+                    _this->gl_config.major_version,
+                    GLX_CONTEXT_MINOR_VERSION_ARB,
+                    _this->gl_config.minor_version,
+                    0
+                };
+
+                //Get a pointer to the context creation function for GL 3.0
+                PFNGLXCREATECONTEXTATTRIBSARBPROC glXCreateContextAttribs =
+                    (PFNGLXCREATECONTEXTATTRIBSARBPROC) _this->gl_data->
+                    glXGetProcAddress((GLubyte *)
+                                      "glXCreateContextAttribsARB");
+                if (!glXCreateContextAttribs) {
+                    SDL_SetError("GL 3.x is not supported");
+                    context = temp_context;
+                } else {
+                    // Create a GL 3.x context
+                    GLXFBConfig *framebuffer_config = NULL;
+                    int fbcount = 0;
+                    GLXFBConfig *(*glXChooseFBConfig) (Display * disp,
+                                                       int screen,
+                                                       const int *attrib_list,
+                                                       int *nelements);
+
+                    glXChooseFBConfig =
+                        (GLXFBConfig *
+                         (*)(Display *, int, const int *,
+                             int *)) _this->gl_data->
+                        glXGetProcAddress((GLubyte *) "glXChooseFBConfig");
+
+                    if (!glXChooseFBConfig
+                        || !(framebuffer_config =
+                             glXChooseFBConfig(display,
+                                               DefaultScreen(display), NULL,
+                                               &fbcount))) {
+                        SDL_SetError
+                            ("No good framebuffers found. GL 3.x disabled");
+                        context = temp_context;
+                    } else {
+                        context =
+                            glXCreateContextAttribs(display,
+                                                    framebuffer_config[0],
+                                                    NULL, True, attribs);
+                        _this->gl_data->glXDestroyContext(display,
+                                                          temp_context);
+                    }
+                }
+            }
+        }
+        XFree(vinfo);
+    }
+    XSync(display, False);
+
+    if (!context) {
+        SDL_SetError("Could not create GL context");
+        return NULL;
+    }
+
+    if (X11_GL_MakeCurrent(_this, window, context) < 0) {
+        X11_GL_DeleteContext(_this, context);
+        return NULL;
+    }
+
+    return context;
+}
+*/
