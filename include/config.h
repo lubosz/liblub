@@ -22,4 +22,4 @@ const unsigned maxBuffers = 5; //TODO: This is a very bad solution
 #define FPS_INTERVAL 1.0 //seconds.
 #define VSync 0
 //#define USE_FBO
-#define USE_SDL
+//#define USE_SDL

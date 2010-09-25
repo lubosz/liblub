@@ -15,7 +15,7 @@ set(CMAKE_CXX_FLAGS "-O0 -g3") #Debug
 
 if (UNIX)
 #Hack For SDL 1.3 in local
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -L/usr/local/lib -I/usr/local/include/SDL -D_REENTRANT -Wl,-rpath,/usr/local/lib")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -L/usr/local/lib -L/usr/local/Trolltech/Qt-4.7.0/lib -I/usr/local/include/SDL -D_REENTRANT -Wl,-rpath,/usr/local/lib")
 
 #Set c++0x
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++0x")
@@ -28,9 +28,14 @@ SET(QT_USE_QTOPENGL TRUE)
 
 
 include_directories(
-include
+	include
+	/usr/local/Trolltech/Qt-4.7.0/include/
+	/usr/local/Trolltech/Qt-4.7.0/include/QtGui
 #include/GL3
 )
+
+#Set Options
+OPTION(WITH_SDL "Use SDL" ON)
 
 #App Shader Demo
 set(SOURCES
@@ -63,14 +68,14 @@ set(SOURCES
 	
 	${SRC_DIR}/Scene/Node.cpp
 	
-	${SRC_DIR}/Window/SDL.cpp 
-	#${SRC_DIR}/Window/XCB.cpp 
+	#${SRC_DIR}/Window/SDL.cpp 
+	${SRC_DIR}/Window/XCB.cpp 
 )
 
 add_library(lub ${SOURCES})
 target_link_libraries(lub GL 
-SDL
-#X11-xcb xcb-atom
+#SDL
+X11-xcb xcb-atom
 freeimageplus QtGui)
 
 add_executable(planets ${APP_DIR}/planets.cpp)

@@ -46,9 +46,22 @@ private:
     GLXContext context;
     GLXDrawable drawable;
 
+    //Input
+    xcb_generic_event_t *event;
+    xcb_expose_event_t *expose;
+    xcb_button_press_event_t *bp;
+    xcb_button_release_event_t *br;
+    xcb_motion_notify_event_t *motion;
+    xcb_enter_notify_event_t *enter;
+	xcb_leave_notify_event_t *leave;
+	xcb_key_press_event_t *kp;
+	xcb_key_release_event_t *kr;
 
-
+	int relX, relY;
     int mouseLastX, mouseLastY;
+
+    void setWindowTitle(string title);
+
 #endif
 	bool fullscreen;
 	bool grab;

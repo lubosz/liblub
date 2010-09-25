@@ -103,15 +103,15 @@ public:
 		glUniform4f(glGetUniformLocation(program, "ambient"), 0.2, 0.2, 0.2, 1.0);
 		glUniform4f(glGetUniformLocation(program, "diffuse"), 0.99, 0.99, 0.99, 1.0);
 
-		glUniform1f(glGetUniformLocation(program, "depth"), 0.05);
+		glUniform1f(glGetUniformLocation(program, "depth"), 0.1);
 
 		signed int texture_size = 512;
 		glUniform1f(glGetUniformLocation(program, "texsize"), static_cast<float>(texture_size));
 		glUniform1f(glGetUniformLocation(program, "csm_gain"), 1.0);
-		glUniform1f(glGetUniformLocation(program, "csm_offset"), 0.0);
+		glUniform1f(glGetUniformLocation(program, "csm_offset"), 0.1);
 		glUniform1f(glGetUniformLocation(program, "linearAttenuation"), 1.0);
 
-		glUniform1i(glGetUniformLocation(program, "conesteps"), 20);
+		glUniform1i(glGetUniformLocation(program, "conesteps"), 10);
 	}
 };
 

@@ -24,7 +24,7 @@ RenderEngine::RenderEngine() {
 	glClearColor(backgroundColor[0],backgroundColor[1],backgroundColor[2], 1.0);
 
     glEnable(GL_POLYGON_OFFSET_FILL);
-    glEnable(GL_CULL_FACE);
+    //glEnable(GL_CULL_FACE);
     //glEnable(GL_POINT_SPRITE_ARB);
 
 	/** TODO: Deprecated*/

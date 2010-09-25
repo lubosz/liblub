@@ -1,4 +1,4 @@
-#version 150 core
+#version 330 core
 
 //  input from the user
 uniform float csm_gain;
@@ -12,9 +12,11 @@ uniform vec3 LightPosition;
 
 in vec3 in_Vertex;
 in vec3 in_Normal;
+in vec2 in_Uv;
+/*
 in vec3 in_Binormal;
 in vec3 in_Tangent;
-in vec2 in_Uv;
+*/
 
 //  interpolate these and pass 
 //  them into the fragment shader
@@ -35,7 +37,8 @@ void main(void)
    // convert to eyeSpace for programs other than Irrlicht
    //eyeSpaceLight = (gl_ModelViewMatrix * vec4(gl_LightSource[0].position.xyz,1.0)).xyz;
    // gl_LightSource[n].position is already in eyeSpace from Irrlicht!
-   vec3 eyeSpaceLight = LightPosition.xyz;
+   //vec3 eyeSpaceLight = (MVMatrix * vec4(LightPosition,1.0)).xyz;
+   vec3 eyeSpaceLight = LightPosition;
    
 
 	vec3 eyeSpaceNormal = normalize(NormalMatrix * in_Normal);

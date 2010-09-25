@@ -94,11 +94,13 @@ MediaLayer::MediaLayer(string title, unsigned width, unsigned height) {
            uint32_t eventmask = XCB_EVENT_MASK_EXPOSURE
         		   	| XCB_EVENT_MASK_KEY_PRESS
 					| XCB_EVENT_MASK_POINTER_MOTION
-					| XCB_EVENT_MASK_BUTTON_PRESS
+					/*| XCB_EVENT_MASK_BUTTON_PRESS
 					| XCB_EVENT_MASK_BUTTON_RELEASE
 					| XCB_EVENT_MASK_ENTER_WINDOW
 					| XCB_EVENT_MASK_LEAVE_WINDOW
-					| XCB_EVENT_MASK_KEY_RELEASE;
+					| XCB_EVENT_MASK_KEY_RELEASE
+					*/
+					;
            uint32_t valuelist[] = { eventmask, colormap, 0 };
            uint32_t valuemask = XCB_CW_EVENT_MASK | XCB_CW_COLORMAP;
 
@@ -184,7 +186,6 @@ MediaLayer::MediaLayer(string title, unsigned width, unsigned height) {
            /* Move the window on the top of the stack */
            xcb_configure_window (connection, window, XCB_CONFIG_WINDOW_STACK_MODE, values);
 
-
 }
 
 MediaLayer::~MediaLayer() {
@@ -198,7 +199,7 @@ MediaLayer::~MediaLayer() {
 /* A simple function that prints a message, the error code returned by SDL, and quits the application */
 void MediaLayer::error(string msg)
 {
-	fprintf(stderr, msg.c_str());
+	cerr << msg << "\n";
 	exit(0);
 }
 
@@ -237,43 +238,34 @@ void print_modifiers (uint32_t mask)
 
 void MediaLayer::eventLoop(){
 
-    xcb_generic_event_t *event;
-    xcb_expose_event_t *expose;
-    xcb_button_press_event_t *bp;
-    xcb_button_release_event_t *br;
-    xcb_motion_notify_event_t *motion;
-    xcb_enter_notify_event_t *enter;
-	xcb_leave_notify_event_t *leave;
-	xcb_key_press_event_t *kp;
-	xcb_key_release_event_t *kr;
-
-	int relX, relY;
-
-    //while (event = xcb_wait_for_event (connection)) {
 	event = xcb_wait_for_event (connection);
-        switch (event->response_type & ~0x80) {
+
+    switch (event->response_type & ~0x80) {
+
         case XCB_EXPOSE:
             expose = (xcb_expose_event_t *)event;
 
-            printf ("Window %ld exposed. Region to be redrawn at location (%d,%d), with dimension (%d,%d)\n",
+            printf ("Window %d exposed. Region to be redrawn at location (%d,%d), with dimension (%d,%d)\n",
                     expose->window, expose->x, expose->y, expose->width, expose->height );
             break;
-
+/*
         case XCB_BUTTON_PRESS:
+
             bp = (xcb_button_press_event_t *)event;
             print_modifiers (bp->state);
 
+
             switch (bp->detail) {
             case 4:
-                printf ("Wheel Button up in window %ld, at coordinates (%d,%d)\n",
+                printf ("Wheel Button up in window %d, at coordinates (%d,%d)\n",
                         bp->event, bp->event_x, bp->event_y );
                 break;
             case 5:
-                printf ("Wheel Button down in window %ld, at coordinates (%d,%d)\n",
+                printf ("Wheel Button down in window %d, at coordinates (%d,%d)\n",
                         bp->event, bp->event_x, bp->event_y );
                 break;
             default:
-                printf ("Button %d pressed in window %ld, at coordinates (%d,%d)\n",
+                printf ("Button %d pressed in window %d, at coordinates (%d,%d)\n",
                         bp->detail, bp->event, bp->event_x, bp->event_y );
                 break;
             }
@@ -282,9 +274,10 @@ void MediaLayer::eventLoop(){
             br = (xcb_button_release_event_t *)event;
             print_modifiers(br->state);
 
-            printf ("Button %d released in window %ld, at coordinates (%d,%d)\n",
+            printf ("Button %d released in window %d, at coordinates (%d,%d)\n",
                     br->detail, br->event, br->event_x, br->event_y );
             break;
+*/
 
         case XCB_MOTION_NOTIFY:
             motion = (xcb_motion_notify_event_t *)event;
@@ -301,53 +294,75 @@ void MediaLayer::eventLoop(){
             //printf ("Mouse moved at coordinates (%d,%d)\n",relX, relY );
             break;
 
-        case XCB_ENTER_NOTIFY:
-            enter = (xcb_enter_notify_event_t *)event;
-
-            printf ("Mouse entered window %ld, at coordinates (%d,%d)\n",
-                    enter->event, enter->event_x, enter->event_y );
-            break;
-
-        case XCB_LEAVE_NOTIFY:
-            leave = (xcb_leave_notify_event_t *)event;
-
-            printf ("Mouse left window %ld, at coordinates (%d,%d)\n",
-                    leave->event, leave->event_x, leave->event_y );
-            break;
 
         case XCB_KEY_PRESS:
+        	/*
+
+        	 */
             kp = (xcb_key_press_event_t *)event;
+
+            switch(kp->detail){
+				case 9: //ESCAPE
+					quit = 1;
+					break;
+				case 25: //w
+					Camera::Instance().forward();
+					break;
+				case 38: //a
+					Camera::Instance().left();
+					break;
+				case 39: //s
+					Camera::Instance().backward();
+					break;
+				case 40: //d
+					Camera::Instance().right();
+					break;
+				case 58: //m
+					if (!grab){
+						int grabPointer;
+						/*grabPointer = XGrabPointer(display, window, True, ButtonPressMask,
+							GrabModeAsync, GrabModeAsync, window, None, CurrentTime);
+							*/
+
+						grab = true;
+					}else{
+						grab = false;
+					}
+					break;
+				default:
+					printf("Key type %d\n", kp->detail);
+					break;
+            }
+            //
+            /*
             print_modifiers(kp->state);
-
-            if(kp->event == XK_Escape) quit = 1;
-
-            printf ("Key pressed in window %ld\n",
+            printf ("Key pressed in window %d\n",
                     kp->event);
+            */
             break;
-
+/*
         case XCB_KEY_RELEASE:
             kr = (xcb_key_release_event_t *)event;
             print_modifiers(kr->state);
-            printf ("Key released in window %ld\n",
-                    kr->event);
+            printf ("Key released in window %d\n", kr->event);
             break;
-
+*/
         default:
             /* Unknown event type, ignore it */
-            printf ("Unknown event: %d\n",
-                    event->response_type);
+            //printf ("Unknown event: %d\n", event->response_type);
             break;
-        }
+    }
 
-        free (event);
-    //}
+    free (event);
 }
 
 void MediaLayer::renderLoop(){
     while (!quit) {
     	eventLoop();
     	RenderEngine::Instance().display();
-        swapBuffers();
+
+    	if (grab) XWarpPointer(display, None, window, 0, 0, 0, 0, 0, 0);
+    	swapBuffers();
 
         struct timespec now;
         static struct timespec start;
@@ -364,15 +379,18 @@ void MediaLayer::renderLoop(){
         }
         stringstream windowTitle;
         windowTitle << programTile << " - FPS: " << fps_current;
-
-        xcb_change_property (connection,
-                             XCB_PROP_MODE_REPLACE,
-                             window,
-                             WM_NAME,
-                             STRING,
-                             8,
-                             strlen ( windowTitle.str().c_str()),
-                             windowTitle.str().c_str() );
-        //SDL_SetWindowTitle(mainWindow, windowTitle.str().c_str());
+        setWindowTitle(windowTitle.str());
     }
+}
+
+void MediaLayer::setWindowTitle(string title){
+    xcb_change_property (connection,
+                         XCB_PROP_MODE_REPLACE,
+                         window,
+                         WM_NAME,
+                         STRING,
+                         8,
+                         title.length(),
+                         title.c_str()
+    );
 }

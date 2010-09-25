@@ -12,7 +12,7 @@
 #include "Singleton.h"
 #include "Node.h"
 
-const QVector3D up = {0,1,0};
+const QVector3D up(0,1,0);
 
 class Camera: public Singleton<Camera>{
 public:
