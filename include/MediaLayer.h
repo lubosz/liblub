@@ -69,7 +69,6 @@ private:
 
 	string programTile;
 
-
 	bool quit;
 
 	void eventLoop();

@@ -262,14 +262,14 @@ void MediaLayer::eventLoop(){
 
             //printf ("Mouse moved in window %ld, at coordinates (%d,%d)\n",
             //        motion->event, motion->event_x, motion->event_y );
-            relX = motion->event_x - mouseLastX;
-            mouseLastX = motion->event_x;
+            relX = motion->event_x - 400;
+            //mouseLastX = motion->event_x;
 
-            relY = motion->event_y - mouseLastY;
-            mouseLastY = motion->event_y;
+            relY = motion->event_y - 300;
+            //mouseLastY = motion->event_y;
 
             Camera::Instance().setMouseLook(relX, relY);
-            if (grab) XWarpPointer(display, None, window, 0, 0, 0, 0, 400, 300);
+            if (grab) XWarpPointer(display, None, window, 0, 0, 800, 600, 400, 300);
             //printf ("Mouse moved at coordinates (%d,%d)\n",relX, relY );
             break;
 
@@ -298,13 +298,11 @@ void MediaLayer::eventLoop(){
 					break;
 				case 58: //m
 					if (!grab){
-						int grabPointer;
-						/*grabPointer = XGrabPointer(display, window, True, ButtonPressMask,
+						XGrabPointer(display, window, True, ButtonPressMask,
 							GrabModeAsync, GrabModeAsync, window, None, CurrentTime);
-							*/
-
 						grab = true;
 					}else{
+						XUngrabPointer(display, CurrentTime);
 						grab = false;
 					}
 					break;
