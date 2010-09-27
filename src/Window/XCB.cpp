@@ -268,6 +268,8 @@ void MediaLayer::eventLoop(){
             relY = motion->event_y - 300;
             //mouseLastY = motion->event_y;
 
+            cout << relX << " " << relY << "\n";
+
             Camera::Instance().setMouseLook(relX, relY);
             if (grab) XWarpPointer(display, None, window, 0, 0, 800, 600, 400, 300);
             //printf ("Mouse moved at coordinates (%d,%d)\n",relX, relY );

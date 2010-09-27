@@ -9,9 +9,9 @@
 
 #include "common.h"
 
-#ifdef USE_SDL
+#ifdef WITH_SDL
 	#define SDL_NO_COMPAT
-	#include <SDL/SDL.h>
+	#include "SDL.h"
 #else
 	#include <X11/Xlib.h>
 	#include <X11/Xlib-xcb.h>
@@ -25,7 +25,7 @@ class MediaLayer {
 
 private:
 
-#ifdef USE_SDL
+#ifdef WITH_SDL
 	Uint32 fps_lasttime; //the last recorded time.
 	Uint32 fps_current; //the current FPS.
 	Uint32 fps_frames; //frames passed since the last recorded fps.

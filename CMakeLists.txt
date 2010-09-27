@@ -9,13 +9,17 @@ set(EXECUTABLE_OUTPUT_PATH ${CMAKE_SOURCE_DIR}/build)
 set(SRC_DIR ${CMAKE_SOURCE_DIR}/src)
 set(APP_DIR ${CMAKE_SOURCE_DIR}/examples)
 
+set(SDL_DIR /home/bmonkey/Apps/Graphics/SDL/)
+
 #Optimization / Debug
 #set(CMAKE_CXX_FLAGS "-O0 -g3") #Debug
 set(CMAKE_CXX_FLAGS "-O3 -msse4 -mssse3") #Optimized
 
 if (UNIX)
 #Hack For SDL 1.3 in local
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -L/usr/local/lib -L/usr/local/Trolltech/Qt-4.7.0/lib -I/usr/local/include/SDL -D_REENTRANT -Wl,-rpath,/usr/local/lib")
+#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -L/usr/local/lib -L/usr/local/Trolltech/Qt-4.7.0/lib -I/usr/local/include/SDL -D_REENTRANT -Wl,-rpath,/usr/local/lib")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -L/home/bmonkey/Apps/Graphics/SDL/build/.libs")
+
 
 #Set c++0x
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++0x")
@@ -31,6 +35,7 @@ include_directories(
 	include
 	/usr/local/Trolltech/Qt-4.7.0/include/
 	/usr/local/Trolltech/Qt-4.7.0/include/QtGui
+	${SDL_DIR}include
 #include/GL3
 )
 
@@ -48,8 +53,6 @@ set(SOURCES
 	${SRC_DIR}/Renderer/OpenGL.cpp
 	${SRC_DIR}/Renderer/FrameBuffer.cpp
 	${SRC_DIR}/Renderer/RenderPass.cpp
-	
-
  
 	${SRC_DIR}/Material/ShaderProgram.cpp
 	${SRC_DIR}/Material/Shader.cpp
@@ -67,16 +70,23 @@ set(SOURCES
 	${SRC_DIR}/Mesh/MengerSponge.cpp
 	
 	${SRC_DIR}/Scene/Node.cpp
-	
-	#${SRC_DIR}/Window/SDL.cpp 
-	${SRC_DIR}/Window/XCB.cpp 
 )
 
+IF(WITH_SDL)
+	ADD_DEFINITIONS(-DWITH_SDL)
+	set(SOURCES ${SOURCES} ${SRC_DIR}/Window/SDL.cpp)
+ELSE()
+	set(SOURCES ${SOURCES} ${SRC_DIR}/Window/XCB.cpp)
+ENDIF()
+	 
 add_library(lub ${SOURCES})
-target_link_libraries(lub GL 
-#SDL
-X11-xcb xcb-atom
-freeimageplus QtGui)
+target_link_libraries(lub GL freeimageplus QtGui)
+
+IF(WITH_SDL)
+	target_link_libraries(lub ${SDL_DIR}build/.libs/libSDL.a)
+ELSE()
+	target_link_libraries(lub X11-xcb xcb-atom)
+ENDIF()
 
 add_executable(planets ${APP_DIR}/planets.cpp)
 target_link_libraries(planets lub)

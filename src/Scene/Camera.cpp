@@ -88,12 +88,16 @@ void Camera::right(){
 }
 
 void Camera::setMouseLook(int mouseXrel, int mouseYrel){
+	/*
 	QVector3D side = QVector3D::crossProduct ( center, up );
 	side.normalize();
 
 	center += mouseSensitivity * mouseXrel * side;
 	center -= mouseSensitivity * mouseYrel * up;
+*/
 
+	rotate(0, mouseXrel/2.0, 0);
+	cout << mouseXrel/2.0 << "\n";
 	update();
 
 	/*
@@ -140,6 +144,15 @@ void Camera::rotate(GLfloat yaw, GLfloat pitch, GLfloat roll){
 	this->yaw=yaw;
 	this->pitch=pitch;
 	this->roll=roll;
+
+	QMatrix4x4 rotate = QMatrix4x4();
+	rotate.rotate(yaw, mouseSensitivity, 0.0, 0.0);
+	rotate.rotate(pitch, 0.0, mouseSensitivity, 0.0);
+	rotate.rotate(roll, 0.0, 0.0, mouseSensitivity);
+	//eye = rotate * eye;
+
+	center = center*rotate;
+	//center.normalize();
 	update();
 }
 
