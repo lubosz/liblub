@@ -27,9 +27,9 @@ Camera::Camera() {
 	center = QVector3D(0,0,-5);
     yaw, pitch, roll = 0;
     speed = .1;
-    mouseSensitivity = 1.0/100.0;
+    mouseSensitivity = .5;
     centerNode = new Node("LookAt",center, .1, MeshFactory::Instance().cube(),new WhiteMat());
-    SceneGraph::Instance().addNode(centerNode);
+    //SceneGraph::Instance().addNode(centerNode);
 }
 
 QMatrix4x4 Camera::getProjection() const
@@ -96,8 +96,9 @@ void Camera::setMouseLook(int mouseXrel, int mouseYrel){
 	center -= mouseSensitivity * mouseYrel * up;
 */
 
-	rotate(0, mouseXrel/2.0, 0);
-	cout << mouseXrel/2.0 << "\n";
+	//rotate(0, mouseXrel/2.0, 0);
+	rotate(mouseXrel, mouseYrel, 0);
+	//cout << mouseXrel/2.0 << "\n";
 	update();
 
 	/*
@@ -107,31 +108,6 @@ void Camera::setMouseLook(int mouseXrel, int mouseYrel){
 			<< "Mouse\t" << mouseX << "\t" << mouseY << "\n"
 			<< "MouseRel\t" << mouseXrel << "\t" << mouseYrel << "\n";
 	*/
-}
-
-void Camera::setMouseLookInverseVP(int screenX, int screenY)
-{
-	QMatrix4x4 inverseVP = (projectionMatrix * viewMatrix).inverted();
-
-	qreal nx = (2.0f * screenX) - 1.0f;
-	qreal ny = 1.0f - (2.0f * screenY);
-	QVector3D nearPoint(nx, ny, -1.f);
-	// Use midPoint rather than far point to avoid issues with infinite projection
-	QVector3D midPoint (nx, ny,  0.0f);
-
-	// Get ray origin and ray target on near plane in world space
-	QVector3D rayOrigin, rayTarget;
-
-	rayOrigin = inverseVP * nearPoint;
-	rayTarget = inverseVP * midPoint;
-
-	QVector3D rayDirection = rayTarget - rayOrigin;
-	rayDirection.normalize();
-
-	//center = rayDirection;
-	center = rayTarget-eye;
-	update();
-
 }
 
 void Camera::setMouseZoom(int wheelX, int wheelY){
@@ -146,13 +122,16 @@ void Camera::rotate(GLfloat yaw, GLfloat pitch, GLfloat roll){
 	this->roll=roll;
 
 	QMatrix4x4 rotate = QMatrix4x4();
-	rotate.rotate(yaw, mouseSensitivity, 0.0, 0.0);
-	rotate.rotate(pitch, 0.0, mouseSensitivity, 0.0);
-	rotate.rotate(roll, 0.0, 0.0, mouseSensitivity);
+	/*
+	rotate.rotate(pitch, mouseSensitivity, 0, 0);
+	rotate.rotate(yaw, 0, mouseSensitivity, 0);
+	rotate.rotate(roll, 0, 0, mouseSensitivity);
+	 */
+	rotate.rotate(mouseSensitivity, pitch, yaw, 0);
 	//eye = rotate * eye;
 
 	center = center*rotate;
-	//center.normalize();
+	center.normalize();
 	update();
 }
 

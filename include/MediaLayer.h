@@ -34,6 +34,7 @@ private:
 	SDL_GLContext mainContext; /* Our opengl context handle */
     SDL_DisplayMode fsmode;
 	SDL_Event event;
+	Uint8 *keystate;
 #else
 	unsigned fps_lasttime; //the last recorded time.
 	unsigned fps_current; //the current FPS.

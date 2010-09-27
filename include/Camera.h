@@ -36,9 +36,6 @@ public:
 	void left();
 	void right();
 
-
-	void setMouseLookInverseVP(int screenX, int screenY);
-
 	void setMouseLook(int mouseXrel, int mouseYrel);
 	void setMouseZoom(int wheelX, int wheelY);
 private:

@@ -4,8 +4,8 @@ class Example : public Application {
 
 public:
 	Example(){
-		width = 800;
-		height = 600;
+		width = 1920;
+		height = 1200;
 		programName = "Example";
   }
 

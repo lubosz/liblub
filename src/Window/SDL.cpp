@@ -108,12 +108,32 @@ void MediaLayer::toggleFullScreen(){
 }
 
 void MediaLayer::eventLoop(){
+
+	keystate = SDL_GetKeyboardState(NULL);
+	if ( keystate[SDL_SCANCODE_RETURN] ) printf("<RETURN> is pressed.\n");
+	if ( keystate[SDL_SCANCODE_ESCAPE] ) quit = true;
+	if ( keystate[SDL_SCANCODE_W] ) Camera::Instance().forward();
+	if ( keystate[SDL_SCANCODE_A] ) Camera::Instance().left();
+	if ( keystate[SDL_SCANCODE_S] ) Camera::Instance().backward();
+	if ( keystate[SDL_SCANCODE_D] ) Camera::Instance().right();
+
     while( SDL_PollEvent( &event ) ) {
+
+
+
         switch( event.type ) {
-        case SDL_KEYDOWN:
+        /*
+			case SDL_KEYDOWN:
+			case SDL_KEYUP:
+			case SDL_K
+			*/
+
+			//break;
+        	/*
+
             switch ( event.key.keysym.sym ) {
             case SDLK_ESCAPE:
-            	quit = true;
+
 				break;
 
             case SDLK_RIGHT:
@@ -145,12 +165,12 @@ void MediaLayer::eventLoop(){
             	SceneGraph::Instance().lightPosition += QVector3D(0,0,-0.1);
                 SceneGraph::Instance().updateLight();
                 break;
-                /*
+
             case SDLK_KP_PLUS:
                 break;
             case SDLK_KP_MINUS:
                 break;
-                 */
+
             case 'w':
             	Camera::Instance().forward();
             	break;
@@ -199,8 +219,9 @@ void MediaLayer::eventLoop(){
             default:
                  break;
             }
-        break;
 
+        break;
+ */
         case SDL_MOUSEMOTION:
         	Camera::Instance().setMouseLook(event.motion.xrel, event.motion.yrel);
         	//Camera::Instance().setMouseLookInverseVP(event.motion.x, event.motion.y);
@@ -211,6 +232,7 @@ void MediaLayer::eventLoop(){
             break;
 
          case SDL_MOUSEWHEEL:
+        	 cout << "Wheel\n";
         	 Camera::Instance().setMouseZoom(event.wheel.x,event.wheel.y);
         	 break;
 
