@@ -24,9 +24,6 @@ MediaLayer::MediaLayer(){
 	fullscreen = false;
 	grab = false;
 	quit = false;
-
-	mouseLastX = 0;
-	mouseLastY = 0;
 }
 
 void MediaLayer::init(string title, unsigned width, unsigned height) {

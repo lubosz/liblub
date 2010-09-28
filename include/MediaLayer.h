@@ -17,7 +17,7 @@
 	#include <X11/Xlib-xcb.h>
 
 	#include <xcb/xcb.h>
-	#include <xcb/xcb_keysyms.h>
+
 #endif
 #include <sstream>
 
@@ -43,25 +43,24 @@ private:
 	unsigned fps_current; //the current FPS.
 	unsigned fps_frames; //frames passed since the last recorded fps.
 
-    Display *display;
-    xcb_screen_t *screen;
     int visualID;
     int default_screen;
-    GLXWindow glxwindow;
+
+    Display *display;
+
+    xcb_screen_t *screen;
     xcb_connection_t *connection;
     xcb_window_t window;
+    xcb_colormap_t colormap;
+
+    GLXWindow glxwindow;
     GLXContext context;
     GLXDrawable drawable;
     GLXFBConfig fb_config;
-    xcb_colormap_t colormap;
 
     //Input
     Input * input;
-
-
     uint32_t eventmask;
-
-    int mouseLastX, mouseLastY;
 
     void setWindowTitle(string title);
     void initScreen();
@@ -69,26 +68,19 @@ private:
     void createWindow();
     void initFrameBuffer();
     void createColorMap();
-    void setupEventHandlers();
-    void getKey(xcb_keycode_t key);
-    void setupXi2();
-    void xi2Event();
-    void xcbEventHandlers();
-    void xcbEventLoop();
 
 #endif
 
-  friend class Singleton<MediaLayer>;
+    friend class Singleton<MediaLayer>;
 	friend class Input;
 
 	bool fullscreen;
 	bool grab;
+	bool quit;
 
 	unsigned width, height;
 
 	string programTile;
-
-	bool quit;
 
 	void eventLoop();
 	void eventLoop2();
@@ -96,18 +88,14 @@ private:
 	void toggleFullScreen();
 	void getFPS();
 
-
 	MediaLayer();
 	~MediaLayer();
 
 public:
-
 	void init(string title, unsigned width, unsigned height);
-
-
-
 	void swapBuffers();
 	void renderLoop();
+
 protected:
 	void error(string msg);
 	void shutdown(){

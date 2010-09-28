@@ -11,6 +11,7 @@
 
 Input::Input(xcb_connection_t *connection) {
 	this->connection = connection;
+	syms = xcb_key_symbols_alloc(connection);
 }
 
 Input::~Input() {
@@ -18,6 +19,10 @@ Input::~Input() {
 }
 
 void Input::eventLoop(){
+
+
+
+
 
 	while (event = xcb_poll_for_event (connection)) {
 
@@ -70,14 +75,17 @@ void Input::eventLoop(){
 
 
         case XCB_KEY_PRESS:
+        //case XCB_KEYMAP_NOTIFY:
         case XCB_KEY_RELEASE:
             kp = (xcb_key_press_event_t *)event;
+            pressedKey = xcb_key_symbols_get_keysym (syms, kp->detail,0);
 
-            if(kp->detail == 9) MediaLayer::Instance().shutdown(); //ESCAPE
-            if(kp->detail == 25) Camera::Instance().forward(); //w
-            if(kp->detail == 38) Camera::Instance().left(); //a
-            if(kp->detail == 39) Camera::Instance().backward(); //s
-            if(kp->detail == 40) Camera::Instance().right(); //d
+        	if (pressedKey == XK_Escape) MediaLayer::Instance().shutdown();
+
+        	if (pressedKey == XK_w)  Camera::Instance().forward();
+        	if (pressedKey == XK_a)  Camera::Instance().left();
+        	if (pressedKey == XK_s)  Camera::Instance().backward();
+        	if (pressedKey == XK_d)  Camera::Instance().right();
             /*
             if(kp->detail == 58){ //m
 				if (!grab){
