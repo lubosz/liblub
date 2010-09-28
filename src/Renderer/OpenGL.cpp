@@ -26,6 +26,8 @@ RenderEngine::RenderEngine() {
     glEnable(GL_POLYGON_OFFSET_FILL);
     //glEnable(GL_CULL_FACE);
     //glEnable(GL_POINT_SPRITE_ARB);
+    glEnable(GL_DEPTH_TEST);
+    glDepthFunc(GL_LESS);
 
 	/** TODO: Deprecated*/
 	#ifndef USE_GL3

@@ -23,7 +23,7 @@
 
 #include "RenderEngine.h"
 
-class MediaLayer {
+class MediaLayer : public Singleton<MediaLayer>{
 
 private:
 
@@ -84,6 +84,11 @@ private:
     void createColorMap();
     void setupEventHandlers();
     void getKey(xcb_keycode_t key);
+    void setupXi2();
+    void xi2Event();
+    void xcbEventHandlers();
+    void xcbEventLoop();
+
 
 #define HANDLER_DECLARE( event, name )\
   static int Handle##name( void*, xcb_connection_t*, xcb_##event##_event_t* )
@@ -96,6 +101,9 @@ private:
     //int HandleMotionNotify( void *data, xcb_connection_t * __UNUSED__, xcb_motion_notify_event_t *event );
 
 #endif
+
+  friend class Singleton<MediaLayer>;
+
 	bool fullscreen;
 	bool grab;
 
@@ -110,10 +118,16 @@ private:
 	void error(string msg);
 	void toggleFullScreen();
 	void getFPS();
+	void shutdown(){
+		quit = true;
+	}
+
+	MediaLayer();
+	~MediaLayer();
 
 public:
-	MediaLayer(string title, unsigned width, unsigned height);
-	virtual ~MediaLayer();
+
+	void init(string title, unsigned width, unsigned height);
 
 	void swapBuffers();
 	void renderLoop();

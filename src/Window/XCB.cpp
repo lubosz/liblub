@@ -18,20 +18,22 @@
 #include <X11/extensions/XInput2.h>
 
 
-
-MediaLayer::MediaLayer(string title, unsigned width, unsigned height) {
-
+MediaLayer::MediaLayer(){
 	//FPS Stuff
 	fps_lasttime = 0; //the last recorded time.
 	fps_frames = 0; //frames passed since the last recorded fps.
-	programTile = title;
+
 	fullscreen = false;
 	grab = false;
 	quit = false;
 
 	mouseLastX = 0;
 	mouseLastY = 0;
+}
 
+void MediaLayer::init(string title, unsigned width, unsigned height) {
+
+	programTile = title;
 	this->width = width;
 	this->height = height;
 
@@ -40,14 +42,10 @@ MediaLayer::MediaLayer(string title, unsigned width, unsigned height) {
 	createGLContext();
 	createColorMap();
 
-
-
-
 	createWindow();
 	setupEventHandlers();
 
-    glEnable(GL_DEPTH_TEST);
-    glDepthFunc(GL_LESS);
+
 }
 
 MediaLayer::~MediaLayer() {
@@ -62,32 +60,6 @@ void MediaLayer::initScreen(){
     /* Open Xlib Display */
     display = XOpenDisplay(0);
     if(!display) error("Can't open display\n");
-
-
-
-	/* XInput Extension available? */
-	int event, myError;
-	if (!XQueryExtension(display, "XInputExtension", &opcode, &event, &myError)) error("X Input extension not available.");
-
-	/* Which version of XI2? We support 2.0 */
-	int major = 2, minor = 0;
-	switch(XIQueryVersion(display, &major, &minor)){
-	case Success:
-		cout << "Success!";
-		printf("Success! Server supports %d.%d\n", major, minor);
-		break;
-	case BadRequest:
-		printf("XI2 not available. Server supports %d.%d\n", major, minor);
-		exit(0);
-		break;
-	default:
-		printf("Unknown Error! Server supports %d.%d\n", major, minor);
-		cout << "Unknown Error!\n";
-		exit(0);
-		break;
-	}
-
-
 
     default_screen = DefaultScreen(display);
 
@@ -105,7 +77,6 @@ void MediaLayer::initScreen(){
         screen_iter.rem && screen_num > 0;
         --screen_num, xcb_screen_next(&screen_iter));
     screen = screen_iter.data;
-
 
 }
 
@@ -164,9 +135,29 @@ void MediaLayer::createColorMap() {
 	);
 }
 
-void MediaLayer::setupEventHandlers() {
+void MediaLayer::setupXi2(){
+	/* XInput Extension available? */
+	int event, myError;
+	if (!XQueryExtension(display, "XInputExtension", &opcode, &event, &myError)) error("X Input extension not available.");
 
-	/*
+	/* Which version of XI2? We support 2.0 */
+	int major = 2, minor = 0;
+	switch(XIQueryVersion(display, &major, &minor)){
+	case Success:
+		cout << "Success!";
+		printf("Success! Server supports %d.%d\n", major, minor);
+		break;
+	case BadRequest:
+		printf("XI2 not available. Server supports %d.%d\n", major, minor);
+		exit(0);
+		break;
+	default:
+		printf("Unknown Error! Server supports %d.%d\n", major, minor);
+		cout << "Unknown Error!\n";
+		exit(0);
+		break;
+	}
+
 	//XI2
 	XIEventMask eventmask;
 	unsigned char mask[1] = { 0 }; // the actual mask
@@ -181,11 +172,9 @@ void MediaLayer::setupEventHandlers() {
 
 	// select on the window
 	XISelectEvents(display, window, &eventmask, 1);
-*/
+}
 
-
-
-
+void MediaLayer::setupEventHandlers() {
     free( evenths );
     evenths = (xcb_event_handlers_t *) malloc( sizeof( xcb_event_handlers_t ) );
     xcb_event_handlers_init( connection, evenths );
@@ -198,7 +187,6 @@ void MediaLayer::setupEventHandlers() {
   SETUP_XCB_EVENT_EMITTER( key_press, KeyPress );
 #undef SETUP_XCB_EVENT_EMITTER
 
-
 }
 
 int MediaLayer::HandleMotionNotify( void *data, xcb_connection_t * __UNUSED__, xcb_motion_notify_event_t *event ) {
@@ -206,94 +194,79 @@ int MediaLayer::HandleMotionNotify( void *data, xcb_connection_t * __UNUSED__, x
 }
 
 int MediaLayer::HandleKeyPress( void *data, xcb_connection_t * __UNUSED__, xcb_key_press_event_t *event ) {
-    //Camera::Instance().setMouseLook(event->event_x - 400, event->event_y - 300);
-	cout << event->detail << "\n";
-	//this->getKey(event->detail);
+	//cout << event->detail << "\n";
 
     xcb_key_symbols_t *syms;
 	syms = xcb_key_symbols_alloc(__UNUSED__);
-	xcb_keysym_t myass = xcb_key_symbols_get_keysym (syms, event->detail,0);
-	cout << xcb_is_keypad_key(myass) << "\n";
+	xcb_keysym_t pressedKey = xcb_key_symbols_get_keysym (syms, event->detail,0);
 
+	if (pressedKey == XK_Escape) MediaLayer::Instance().shutdown();
 
+	if (pressedKey == XK_w)  Camera::Instance().forward();
+	if (pressedKey == XK_a)  Camera::Instance().left();
+	if (pressedKey == XK_s)  Camera::Instance().backward();
+	if (pressedKey == XK_d)  Camera::Instance().right();
 }
 
-void MediaLayer::getKey(xcb_keycode_t key){
+void MediaLayer::createWindow() {
+	eventmask =
+			//XCB_EVENT_MASK_EXPOSURE |
+			XCB_EVENT_MASK_KEY_PRESS |
+			XCB_EVENT_MASK_POINTER_MOTION |
+			XCB_EVENT_MASK_KEY_RELEASE
+			/*
+			|
+	 		XCB_EVENT_MASK_BUTTON_PRESS |
+			XCB_EVENT_MASK_BUTTON_RELEASE |
+			XCB_EVENT_MASK_ENTER_WINDOW |
+			XCB_EVENT_MASK_LEAVE_WINDOW
+			 */
+			;
+	uint32_t valuelist[] = { eventmask, colormap, 0 };
+	uint32_t valuemask = XCB_CW_EVENT_MASK | XCB_CW_COLORMAP;
 
-}
+	xcb_create_window(
+			connection,
+			XCB_COPY_FROM_PARENT,
+			window,
+			screen->root,
+			0, 0,
+			width, height,
+			0,
+			XCB_WINDOW_CLASS_INPUT_OUTPUT,
+			visualID,
+			valuemask,
+			valuelist
+	);
 
-void MediaLayer::createWindow(){
+	setWindowTitle(programTile);
 
+	// NOTE: window must be mapped before glXMakeContextCurrent
+	xcb_map_window(connection, window);
 
+	/* Create GLX Window */
+	drawable = 0;
 
+	glxwindow = glXCreateWindow(display, fb_config, window, 0);
 
+	if (!window)
+		error("glXDestroyContext failed\n");
 
+	drawable = glxwindow;
 
-	     /* Create window */
-	     eventmask =
-	        		    //XCB_EVENT_MASK_EXPOSURE
-	        		   	// |
-	        		   	XCB_EVENT_MASK_KEY_PRESS
-						| XCB_EVENT_MASK_POINTER_MOTION
-						| XCB_EVENT_MASK_KEY_RELEASE
-						/*| XCB_EVENT_MASK_BUTTON_PRESS
-						| XCB_EVENT_MASK_BUTTON_RELEASE
-						| XCB_EVENT_MASK_ENTER_WINDOW
-						| XCB_EVENT_MASK_LEAVE_WINDOW
+	/* make OpenGL context current */
+	if (!glXMakeContextCurrent(display, drawable, drawable, context))
+		error("glXMakeContextCurrent failed\n");
 
-						*/
-						;
-	           uint32_t valuelist[] = { eventmask, colormap, 0 };
-	           uint32_t valuemask = XCB_CW_EVENT_MASK | XCB_CW_COLORMAP;
+	const static uint32_t values[] = { XCB_STACK_MODE_ABOVE };
 
-	           xcb_create_window(
-	               connection,
-	               XCB_COPY_FROM_PARENT,
-	               window,
-	               screen->root,
-	               0, 0,
-	               width, height,
-	               0,
-	               XCB_WINDOW_CLASS_INPUT_OUTPUT,
-	               visualID,
-	               valuemask,
-	               valuelist
-	           );
-
-	           setWindowTitle(programTile);
-
-
-	           // NOTE: window must be mapped before glXMakeContextCurrent
-	           xcb_map_window(connection, window);
-
-	           /* Create GLX Window */
-	           drawable = 0;
-
-	           glxwindow =
-	               glXCreateWindow(
-	                   display,
-	                   fb_config,
-	                   window,
-	                   0
-	                   );
-
-	           if(!window)
-	        	   error("glXDestroyContext failed\n");
-
-	           drawable = glxwindow;
-
-
-
-	           /* make OpenGL context current */
-	           if(!glXMakeContextCurrent(display, drawable, drawable, context))
-	        	   error("glXMakeContextCurrent failed\n");
-
-	           const static uint32_t values[] = { XCB_STACK_MODE_ABOVE };
-
-
-
-	           /* Move the window on the top of the stack */
-	           xcb_configure_window (connection, window, XCB_CONFIG_WINDOW_STACK_MODE, values);
+	/* Move the window on the top of the stack */
+	xcb_configure_window(
+			connection,
+			window,
+			XCB_CONFIG_WINDOW_STACK_MODE,
+			values
+	);
 }
 
 /* A simple function that prints a message, the error code returned by SDL, and quits the application */
@@ -315,15 +288,21 @@ void MediaLayer::toggleFullScreen(){
 
 		fullscreen = true;
 	}
-
 }
 
 void MediaLayer::eventLoop(){
-   	//XI2
-	//XEvent myEvent;
-   	//XNextEvent(display, &myEvent);
+	//choose an alternative:
+	//xcbEventHandlers();
+	//xi2Event();
+	xcbEventLoop();
+}
 
-	/*
+void MediaLayer::xi2Event(){
+   	//XI2
+	XEvent myEvent;
+   	XNextEvent(display, &myEvent); //TODO: Crashes here
+
+
 	if (myEvent.xcookie.type == GenericEvent &&
 			myEvent.xcookie.extension == opcode &&
 	    XGetEventData(display, &myEvent.xcookie))
@@ -338,21 +317,13 @@ void MediaLayer::eventLoop(){
 	    }
 	}
 	XFreeEventData(display, &myEvent.xcookie);
-	*/
-
-	xcb_event_poll_for_event_loop(evenths);
-	//cout << xcb_event_handle (evenths, event) << "\n";
-
 }
 
-void MediaLayer::eventLoop2(){
+void MediaLayer::xcbEventHandlers(){
+	xcb_event_poll_for_event_loop(evenths);
+}
 
-
-
-
-	//event = xcb_wait_for_event (connection);
-
-
+void MediaLayer::xcbEventLoop(){
 
 	while (event = xcb_poll_for_event (connection)) {
 
@@ -417,9 +388,6 @@ void MediaLayer::eventLoop2(){
 
         case XCB_KEY_PRESS:
         case XCB_KEY_RELEASE:
-        	/*
-
-        	 */
             kp = (xcb_key_press_event_t *)event;
 
             if(kp->detail == 9) quit = 1; //ESCAPE
