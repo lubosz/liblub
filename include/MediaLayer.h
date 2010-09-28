@@ -15,13 +15,14 @@
 #else
 	#include <X11/Xlib.h>
 	#include <X11/Xlib-xcb.h>
-	#include <xcb/xcb_event.h>
+
 	#include <xcb/xcb.h>
 	#include <xcb/xcb_keysyms.h>
 #endif
 #include <sstream>
 
 #include "RenderEngine.h"
+#include "Input.h"
 
 class MediaLayer : public Singleton<MediaLayer>{
 
@@ -55,25 +56,11 @@ private:
     xcb_colormap_t colormap;
 
     //Input
-    int opcode;
+    Input * input;
+
 
     uint32_t eventmask;
 
-
-    xcb_event_handlers_t *evenths;
-
-
-    xcb_generic_event_t *event;
-    xcb_expose_event_t *expose;
-    xcb_button_press_event_t *bp;
-    xcb_button_release_event_t *br;
-    xcb_motion_notify_event_t *motion;
-    xcb_enter_notify_event_t *enter;
-	xcb_leave_notify_event_t *leave;
-	xcb_key_press_event_t *kp;
-	xcb_key_release_event_t *kr;
-
-	int relX, relY;
     int mouseLastX, mouseLastY;
 
     void setWindowTitle(string title);
@@ -89,20 +76,10 @@ private:
     void xcbEventHandlers();
     void xcbEventLoop();
 
-
-#define HANDLER_DECLARE( event, name )\
-  static int Handle##name( void*, xcb_connection_t*, xcb_##event##_event_t* )
-
-  HANDLER_DECLARE( motion_notify, MotionNotify );
-  HANDLER_DECLARE( key_press, KeyPress );
-
-#undef HANDLER_DECLARE
-
-    //int HandleMotionNotify( void *data, xcb_connection_t * __UNUSED__, xcb_motion_notify_event_t *event );
-
 #endif
 
   friend class Singleton<MediaLayer>;
+	friend class Input;
 
 	bool fullscreen;
 	bool grab;
@@ -115,12 +92,10 @@ private:
 
 	void eventLoop();
 	void eventLoop2();
-	void error(string msg);
+
 	void toggleFullScreen();
 	void getFPS();
-	void shutdown(){
-		quit = true;
-	}
+
 
 	MediaLayer();
 	~MediaLayer();
@@ -129,7 +104,13 @@ public:
 
 	void init(string title, unsigned width, unsigned height);
 
+
+
 	void swapBuffers();
 	void renderLoop();
-
+protected:
+	void error(string msg);
+	void shutdown(){
+		quit = true;
+	}
 };

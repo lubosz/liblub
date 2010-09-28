@@ -15,8 +15,6 @@
 #include "Camera.h"
 
 #include <xcb/xcb_atom.h>
-#include <X11/extensions/XInput2.h>
-
 
 MediaLayer::MediaLayer(){
 	//FPS Stuff
@@ -43,8 +41,12 @@ void MediaLayer::init(string title, unsigned width, unsigned height) {
 	createColorMap();
 
 	createWindow();
-	setupEventHandlers();
 
+#ifdef XI2
+	input = new Input(display, window);
+#else
+	input = new Input(connection);
+#endif
 
 }
 
@@ -135,79 +137,6 @@ void MediaLayer::createColorMap() {
 	);
 }
 
-void MediaLayer::setupXi2(){
-	/* XInput Extension available? */
-	int event, myError;
-	if (!XQueryExtension(display, "XInputExtension", &opcode, &event, &myError)) error("X Input extension not available.");
-
-	/* Which version of XI2? We support 2.0 */
-	int major = 2, minor = 0;
-	switch(XIQueryVersion(display, &major, &minor)){
-	case Success:
-		cout << "Success!";
-		printf("Success! Server supports %d.%d\n", major, minor);
-		break;
-	case BadRequest:
-		printf("XI2 not available. Server supports %d.%d\n", major, minor);
-		exit(0);
-		break;
-	default:
-		printf("Unknown Error! Server supports %d.%d\n", major, minor);
-		cout << "Unknown Error!\n";
-		exit(0);
-		break;
-	}
-
-	//XI2
-	XIEventMask eventmask;
-	unsigned char mask[1] = { 0 }; // the actual mask
-
-	eventmask.deviceid = 2;
-	eventmask.mask_len = sizeof(mask); // always in bytes
-	eventmask.mask = mask;
-	// now set the mask
-	XISetMask(mask, XI_ButtonPress);
-	XISetMask(mask, XI_Motion);
-	XISetMask(mask, XI_KeyPress);
-
-	// select on the window
-	XISelectEvents(display, window, &eventmask, 1);
-}
-
-void MediaLayer::setupEventHandlers() {
-    free( evenths );
-    evenths = (xcb_event_handlers_t *) malloc( sizeof( xcb_event_handlers_t ) );
-    xcb_event_handlers_init( connection, evenths );
-
-	//cb_event_set_key_press_handler(evenths, )
-
-#define SETUP_XCB_EVENT_EMITTER( event, handler )\
-  xcb_event_set_##event##_handler( evenths, Handle##handler, this )
-  SETUP_XCB_EVENT_EMITTER( motion_notify, MotionNotify );
-  SETUP_XCB_EVENT_EMITTER( key_press, KeyPress );
-#undef SETUP_XCB_EVENT_EMITTER
-
-}
-
-int MediaLayer::HandleMotionNotify( void *data, xcb_connection_t * __UNUSED__, xcb_motion_notify_event_t *event ) {
-    Camera::Instance().setMouseLook(event->event_x - 400, event->event_y - 300);
-}
-
-int MediaLayer::HandleKeyPress( void *data, xcb_connection_t * __UNUSED__, xcb_key_press_event_t *event ) {
-	//cout << event->detail << "\n";
-
-    xcb_key_symbols_t *syms;
-	syms = xcb_key_symbols_alloc(__UNUSED__);
-	xcb_keysym_t pressedKey = xcb_key_symbols_get_keysym (syms, event->detail,0);
-
-	if (pressedKey == XK_Escape) MediaLayer::Instance().shutdown();
-
-	if (pressedKey == XK_w)  Camera::Instance().forward();
-	if (pressedKey == XK_a)  Camera::Instance().left();
-	if (pressedKey == XK_s)  Camera::Instance().backward();
-	if (pressedKey == XK_d)  Camera::Instance().right();
-}
-
 void MediaLayer::createWindow() {
 	eventmask =
 			//XCB_EVENT_MASK_EXPOSURE |
@@ -290,147 +219,9 @@ void MediaLayer::toggleFullScreen(){
 	}
 }
 
-void MediaLayer::eventLoop(){
-	//choose an alternative:
-	//xcbEventHandlers();
-	//xi2Event();
-	xcbEventLoop();
-}
-
-void MediaLayer::xi2Event(){
-   	//XI2
-	XEvent myEvent;
-   	XNextEvent(display, &myEvent); //TODO: Crashes here
-
-
-	if (myEvent.xcookie.type == GenericEvent &&
-			myEvent.xcookie.extension == opcode &&
-	    XGetEventData(display, &myEvent.xcookie))
-	{
-	    switch(myEvent.xcookie.evtype)
-	    {
-	        case XI_ButtonPress:
-	        case XI_Motion:
-	        case XI_KeyPress:
-	            cout << myEvent.xcookie.data << "\n";
-	            break;
-	    }
-	}
-	XFreeEventData(display, &myEvent.xcookie);
-}
-
-void MediaLayer::xcbEventHandlers(){
-	xcb_event_poll_for_event_loop(evenths);
-}
-
-void MediaLayer::xcbEventLoop(){
-
-	while (event = xcb_poll_for_event (connection)) {
-
-    switch (event->response_type & ~0x80) {
-/*
-        case XCB_EXPOSE:
-            expose = (xcb_expose_event_t *)event;
-
-            printf ("Window %d exposed. Region to be redrawn at location (%d,%d), with dimension (%d,%d)\n",
-                    expose->window, expose->x, expose->y, expose->width, expose->height );
-            break;
-*/
-/*
-        case XCB_BUTTON_PRESS:
-
-            bp = (xcb_button_press_event_t *)event;
-            print_modifiers (bp->state);
-
-
-            switch (bp->detail) {
-            case 4:
-                printf ("Wheel Button up in window %d, at coordinates (%d,%d)\n",
-                        bp->event, bp->event_x, bp->event_y );
-                break;
-            case 5:
-                printf ("Wheel Button down in window %d, at coordinates (%d,%d)\n",
-                        bp->event, bp->event_x, bp->event_y );
-                break;
-            default:
-                printf ("Button %d pressed in window %d, at coordinates (%d,%d)\n",
-                        bp->detail, bp->event, bp->event_x, bp->event_y );
-                break;
-            }
-            break;
-        case XCB_BUTTON_RELEASE:
-            br = (xcb_button_release_event_t *)event;
-            print_modifiers(br->state);
-
-            printf ("Button %d released in window %d, at coordinates (%d,%d)\n",
-                    br->detail, br->event, br->event_x, br->event_y );
-            break;
-*/
-
-        case XCB_MOTION_NOTIFY:
-            motion = (xcb_motion_notify_event_t *)event;
-
-            //printf ("Mouse moved in window %ld, at coordinates (%d,%d)\n",
-            //        motion->event, motion->event_x, motion->event_y );
-            relX = motion->event_x - 400;
-            //mouseLastX = motion->event_x;
-
-            relY = motion->event_y - 300;
-            //mouseLastY = motion->event_y;
-
-            //cout << relX << " " << relY << "\n";
-
-            Camera::Instance().setMouseLook(relX, relY);
-            if (grab) XWarpPointer(display, None, window, motion->event_x, motion->event_y, 800, 600, 400, 300);
-            //printf ("Mouse moved at coordinates (%d,%d)\n",relX, relY );
-            break;
-
-
-        case XCB_KEY_PRESS:
-        case XCB_KEY_RELEASE:
-            kp = (xcb_key_press_event_t *)event;
-
-            if(kp->detail == 9) quit = 1; //ESCAPE
-            if(kp->detail == 25) Camera::Instance().forward(); //w
-            if(kp->detail == 38) Camera::Instance().left(); //a
-            if(kp->detail == 39) Camera::Instance().backward(); //s
-            if(kp->detail == 40) Camera::Instance().right(); //d
-            if(kp->detail == 58){ //m
-				if (!grab){
-					XGrabPointer(display, window, True, ButtonPressMask,
-						GrabModeAsync, GrabModeAsync, window, None, CurrentTime);
-					grab = true;
-				}else{
-					XUngrabPointer(display, CurrentTime);
-					grab = false;
-				}
-            }
-            /*
-            printf("Key type %d\n", kp->detail);
-            print_modifiers(kp->state);
-            */
-            break;
-/*
-
-            kr = (xcb_key_release_event_t *)event;
-            print_modifiers(kr->state);
-            printf ("Key released in window %d\n", kr->event);
-            break;
-*/
-        default:
-            /* Unknown event type, ignore it */
-            //printf ("Unknown event: %d\n", event->response_type);
-            break;
-    }
-
-    free (event);
-
-	}
-}
-
 void MediaLayer::renderLoop(){
     while (!quit) {
-    	eventLoop();
+    	input->eventLoop();
     	RenderEngine::Instance().display();
 
     	swapBuffers();
