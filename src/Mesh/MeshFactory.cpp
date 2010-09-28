@@ -61,6 +61,12 @@ Mesh *  MeshFactory::stars(){
 	return mesh;
 }
 
+Mesh *  MeshFactory::spiral(){
+	Mesh * mesh = Geometry::makeSpiral(500000,1.0,0.0);
+	mesh->setDrawType(GL_POINTS);
+	return mesh;
+}
+
 Mesh *  MeshFactory::lamp(){
 	ObjLoader objLoader = ObjLoader("earth.obj");
 	objLoader.getMesh()->setDrawType(GL_LINES);

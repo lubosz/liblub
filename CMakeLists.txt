@@ -1,6 +1,10 @@
 cmake_minimum_required(VERSION 2.6)
 project(liblub)
 
+#Set Options
+OPTION(WITH_SDL "Use SDL" ON)
+OPTION(RELEASE "Release" OFF)
+
 FIND_PACKAGE(Qt4 REQUIRED)
 
 set(LIBRARY_OUTPUT_PATH ${CMAKE_SOURCE_DIR}/build)
@@ -12,8 +16,11 @@ set(APP_DIR ${CMAKE_SOURCE_DIR}/examples)
 set(SDL_DIR /home/bmonkey/Apps/Graphics/SDL/)
 
 #Optimization / Debug
-#set(CMAKE_CXX_FLAGS "-O0 -g3") #Debug
-set(CMAKE_CXX_FLAGS "-O3 -msse4 -mssse3") #Optimized
+IF(RELEASE)
+    set(CMAKE_CXX_FLAGS "-O3 -msse4 -mssse3") #Optimized
+ELSE()
+    set(CMAKE_CXX_FLAGS "-O0 -g3") #Debug
+ENDIF()
 
 if (UNIX)
 #Hack For SDL 1.3 in local
@@ -39,8 +46,7 @@ include_directories(
 #include/GL3
 )
 
-#Set Options
-OPTION(WITH_SDL "Use SDL" ON)
+
 
 #App Shader Demo
 set(SOURCES
@@ -85,7 +91,7 @@ target_link_libraries(lub GL freeimageplus QtGui)
 IF(WITH_SDL)
 	target_link_libraries(lub ${SDL_DIR}build/.libs/libSDL.a)
 ELSE()
-	target_link_libraries(lub X11-xcb xcb-atom)
+	target_link_libraries(lub Xi X11-xcb xcb-atom xcb-event xcb-keysyms)
 ENDIF()
 
 add_executable(planets ${APP_DIR}/planets.cpp)
@@ -100,6 +106,8 @@ add_executable(waterplanet ${APP_DIR}/waterplanet.cpp)
 target_link_libraries(waterplanet lub)
 add_executable(csm ${APP_DIR}/csm.cpp)
 target_link_libraries(csm lub)
+add_executable(spiral ${APP_DIR}/spiral.cpp)
+target_link_libraries(spiral lub)
 
 #add_executable(matrixTest tests/matrixTest.cpp)
 #target_link_libraries(matrixTest lub)

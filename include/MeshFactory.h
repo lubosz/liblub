@@ -19,6 +19,7 @@ public:
 	Mesh * plane();
 	Mesh * load(string file);
 	Mesh * lamp();
+	Mesh * spiral();
 
 private:
 	friend class Singleton<MeshFactory>;

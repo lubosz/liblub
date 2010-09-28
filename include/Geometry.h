@@ -15,6 +15,7 @@ public:
 	static Mesh * makeCube();
 	static Mesh * makePlane();
 	static Mesh * makeStars(vector<float> resolution, float density, float randomness);
+	static Mesh * makeSpiral(int resolution, float density, float randomness);
 private:
 	float density, randomness;
 	int variation;

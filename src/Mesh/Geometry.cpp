@@ -7,6 +7,9 @@
 
 #include "Geometry.h"
 #include <iostream>
+#include <QVector3D>
+#include <QMatrix4x4>
+#include <math.h>
 
 using namespace std;
 
@@ -314,6 +317,101 @@ Mesh * Geometry::makeStars(vector<float> resolution, float density, float random
 		}
 
 	}
+	cout << i << " Generated Stars\n";
+
+	Mesh * mesh = new Mesh();
+    mesh->addBuffer(vertices,3,"in_Vertex");
+    mesh->addBuffer(colors,3,"in_Color");
+    //mesh->addBuffer(uvCoords,2,"in_Uv");
+    //mesh->addBuffer(normals,3,"in_Normal");
+    //mesh->addBuffer(vertices,3,"in_Normal");
+    mesh->addElementBuffer(indicies);
+	return mesh;
+
+}
+
+Mesh * Geometry::makeSpiral(int resolution, float density, float randomness){
+
+	vector<GLfloat> vertices, colors;
+	vector<GLuint> indicies;
+
+	QVector3D point = QVector3D(1,0,0);
+	QMatrix4x4 rotation = QMatrix4x4();
+	rotation.rotate(0.5, 0.0, 1.0, 0.0);
+
+	QMatrix4x4 rotation2 = QMatrix4x4();
+	rotation2.rotate(0.5, 0.0, 0.0, 1.0);
+
+
+	unsigned i = 1;
+
+	srand ( time(NULL) );
+	for(i; i < resolution; i++){
+		QVector3D tempPoint = point.normalized();
+		//point += (tempPoint * pow ( i, 1.0 / 15.0 )/10.0);
+		point += (tempPoint/20.0);
+
+		point = rotation * point;
+/*
+		cout << point.x() << " "<< point.y() << " " << point.z() << "\n";
+		vertices.push_back(point.x());
+		vertices.push_back(point.y());
+		vertices.push_back(point.z());
+
+		colors.push_back(255.0);
+		colors.push_back(255.0);
+		colors.push_back(255.0);
+
+		indicies.push_back(i);
+*/
+
+		QVector3D newPoint = point;
+		for(int j = 0; j < 100; j++){
+			newPoint = rotation2 * newPoint;
+
+			QVector3D tempPoint2 = newPoint.normalized();
+			//point += (tempPoint * pow ( i, 1.0 / 15.0 )/10.0);
+			newPoint += (tempPoint2/20.0);
+
+
+
+			//cout << point.x() << " "<< point.y() << " " << point.z() << "\n";
+			vertices.push_back(newPoint.x());
+			vertices.push_back(newPoint.y());
+			vertices.push_back(newPoint.z());
+
+			colors.push_back(1.0-(float(int(newPoint.x())%255)/256));
+			colors.push_back(1.0-(float(int(newPoint.y())%255)/256));
+			colors.push_back(1.0-(float(int(newPoint.z())%255)/256));
+
+			indicies.push_back(i);
+			i++;
+
+		}
+
+
+	}
+
+	//(density+(density/rand()%variation)*randomness)
+
+/*
+	for (float x = 0; x < resolution; x++){
+		for (float y = 0; y < resolution; y++){
+				vertices.push_back(x);
+				vertices.push_back(y);
+				vertices.push_back(0);
+
+				colors.push_back(float(int(x)%255)/256);
+				colors.push_back(float(int(y)%255)/256);
+				colors.push_back(float(int(y)%255)/256);
+
+				indicies.push_back(i);
+
+				i++;
+			}
+		}
+*/
+
 	cout << i << " Generated Stars\n";
 
 	Mesh * mesh = new Mesh();
