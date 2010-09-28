@@ -12,6 +12,7 @@
 Input::Input(xcb_connection_t *connection) {
 	this->connection = connection;
 	syms = xcb_key_symbols_alloc(connection);
+	pressedKeys = list<xcb_keysym_t>();
 }
 
 Input::~Input() {
@@ -19,10 +20,18 @@ Input::~Input() {
 }
 
 void Input::eventLoop(){
+	xcb_keysym_t pressedKey;
 
+	xcb_generic_event_t *event;
 
-
-
+	xcb_expose_event_t *expose;
+	xcb_button_press_event_t *bp;
+	xcb_button_release_event_t *br;
+	xcb_motion_notify_event_t *motion;
+	xcb_enter_notify_event_t *enter;
+	xcb_leave_notify_event_t *leave;
+	xcb_key_press_event_t *kp;
+	xcb_key_release_event_t *kr;
 
 	while (event = xcb_poll_for_event (connection)) {
 
@@ -68,48 +77,35 @@ void Input::eventLoop(){
 
         case XCB_MOTION_NOTIFY:
             motion = (xcb_motion_notify_event_t *)event;
-            Camera::Instance().setMouseLook(motion->event_x - 400, motion->event_y - 300);
-            //if (grab) XWarpPointer(display, None, window, motion->event_x, motion->event_y, 800, 600, 400, 300);
-            //printf ("Mouse moved at coordinates (%d,%d)\n",relX, relY );
+            MediaLayer::Instance().mouseLook(motion->event_x, motion->event_y);
             break;
 
+        //case XCB_KEYMAP_NOTIFY:
+
+        case XCB_KEY_RELEASE:
+
+            kr = (xcb_key_release_event_t *)event;
+            pressedKey = xcb_key_symbols_get_keysym (syms, kr->detail,0);
+            pressedKeys.remove(pressedKey);
+
+            break;
 
         case XCB_KEY_PRESS:
-        //case XCB_KEYMAP_NOTIFY:
-        case XCB_KEY_RELEASE:
             kp = (xcb_key_press_event_t *)event;
             pressedKey = xcb_key_symbols_get_keysym (syms, kp->detail,0);
 
-        	if (pressedKey == XK_Escape) MediaLayer::Instance().shutdown();
-
-        	if (pressedKey == XK_w)  Camera::Instance().forward();
-        	if (pressedKey == XK_a)  Camera::Instance().left();
-        	if (pressedKey == XK_s)  Camera::Instance().backward();
-        	if (pressedKey == XK_d)  Camera::Instance().right();
-            /*
-            if(kp->detail == 58){ //m
-				if (!grab){
-					XGrabPointer(display, window, True, ButtonPressMask,
-						GrabModeAsync, GrabModeAsync, window, None, CurrentTime);
-					grab = true;
-				}else{
-					XUngrabPointer(display, CurrentTime);
-					grab = false;
-				}
+            switch (pressedKey){
+				case XK_Escape:
+					MediaLayer::Instance().shutdown();
+					break;
+				case XK_m:
+					MediaLayer::Instance().toggleMouseGrab();
+					break;
+				default:
+					pressedKeys.push_back(pressedKey);
             }
-            */
-            /*
-            printf("Key type %d\n", kp->detail);
-            print_modifiers(kp->state);
-            */
             break;
-/*
 
-            kr = (xcb_key_release_event_t *)event;
-            print_modifiers(kr->state);
-            printf ("Key released in window %d\n", kr->event);
-            break;
-*/
         default:
             /* Unknown event type, ignore it */
             //printf ("Unknown event: %d\n", event->response_type);
@@ -119,4 +115,26 @@ void Input::eventLoop(){
     free (event);
 
 	}
+
+    BOOST_FOREACH( xcb_keysym_t key, pressedKeys )
+    {
+    	checkKey(key);
+    }
+}
+
+void Input::checkKey(xcb_keysym_t pressedKey){
+    switch (pressedKey){
+		case XK_w:
+			Camera::Instance().forward();
+			break;
+		case XK_a:
+			 Camera::Instance().left();
+			break;
+		case XK_s:
+			Camera::Instance().backward();
+			break;
+		case XK_d:
+			Camera::Instance().right();
+			break;
+    }
 }

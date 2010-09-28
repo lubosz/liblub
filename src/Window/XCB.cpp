@@ -14,7 +14,7 @@
 
 #include "Camera.h"
 
-#include <xcb/xcb_atom.h>
+//#include <xcb/xcb_atom.h>
 
 MediaLayer::MediaLayer(){
 	//FPS Stuff
@@ -249,8 +249,8 @@ void MediaLayer::setWindowTitle(string title){
     xcb_change_property (connection,
                          XCB_PROP_MODE_REPLACE,
                          window,
-                         WM_NAME,
-                         STRING,
+                         XCB_ATOM_WM_NAME,
+                         XCB_ATOM_STRING,
                          8,
                          title.length(),
                          title.c_str()
@@ -269,4 +269,32 @@ void MediaLayer::setWindowTitle(string title){
                          iconTitle);
 */
 
+}
+
+void MediaLayer::toggleMouseGrab(){
+	if (!grab){
+		/*
+		XGrabPointer(display, window, True, ButtonPressMask,
+			GrabModeAsync, GrabModeAsync, window, None, CurrentTime);
+			*/
+		grab = true;
+	}else{
+		//XUngrabPointer(display, CurrentTime);
+		grab = false;
+	}
+}
+
+void MediaLayer::mouseLook(int x, int y){
+	unsigned halfWidth = width/2;
+	unsigned halfHeight = height/2;
+
+	int xRel = x - halfWidth;
+	int yRel = y - halfHeight;
+
+	if(!(xRel == 0 && yRel == 0)){
+		Camera::Instance().setMouseLook(xRel, yRel);
+		if (grab) XWarpPointer(display, None, window, x, y, width, height, halfWidth, halfHeight);
+	}
+
+    //cout << width << " " << height << " " << halfWidth << " " << halfHeight << " " << xRel << " " << yRel << "\n";
 }

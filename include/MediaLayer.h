@@ -82,11 +82,10 @@ private:
 
 	string programTile;
 
-	void eventLoop();
-	void eventLoop2();
-
 	void toggleFullScreen();
 	void getFPS();
+	void toggleMouseGrab();
+	void mouseLook(int x, int y);
 
 	MediaLayer();
 	~MediaLayer();
