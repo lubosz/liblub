@@ -409,11 +409,15 @@ class PhongColorMat : public Material {
 public:
 	PhongColorMat(){
 		init();
-		attachVertFrag("Color/PhongColor");
+		attachVertFrag("Color/PhongColor2");
 		done();
 
   }
-	void uniforms(){}
+	void uniforms(){
+		GLuint program = shaderProgram->getReference();
+
+		glUniform4f(glGetUniformLocation(program, "lightPositionCamView"), 1.0, 1.0, 1.0,1.0);
+	}
 
 };
 

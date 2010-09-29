@@ -236,9 +236,6 @@ void MediaLayer::createWindow() {
 	free(reply);
 */
 
-
-
-
 	// NOTE: window must be mapped before glXMakeContextCurrent
 	xcb_map_window(connection, window);
 
@@ -255,7 +252,7 @@ void MediaLayer::createWindow() {
 		error("glXMakeContextCurrent failed\n");
 
 	//Set swap interval
-	//glXSwapIntervalSGI(VSync);
+	glXSwapIntervalSGI(VSync);
 
 	const static uint32_t values[] = { XCB_STACK_MODE_ABOVE };
 

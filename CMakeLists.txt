@@ -111,6 +111,8 @@ add_executable(csm ${APP_DIR}/csm.cpp)
 target_link_libraries(csm lub)
 add_executable(spiral ${APP_DIR}/spiral.cpp)
 target_link_libraries(spiral lub)
+add_executable(phong ${APP_DIR}/phong.cpp)
+target_link_libraries(phong lub)
 
 #add_executable(matrixTest tests/matrixTest.cpp)
 #target_link_libraries(matrixTest lub)

@@ -33,7 +33,7 @@ void SceneGraph::bindShaders(ShaderProgram * shaderProgram){
 	modelMatrix = Camera::Instance().getProjection() * modelMatrix;
 
 	shaderProgram->setUniform(modelMatrix,"MVPMatrix");
-    shaderProgram->setLightPosition(lightPosition);
+    shaderProgram->setLightPosition(Camera::Instance().getView() * lightPosition);
 
     glError("SceneGraph::bindShaders",53);
 }
