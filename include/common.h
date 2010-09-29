@@ -11,6 +11,7 @@
 
 #ifdef USE_GL3
 #define GL3_PROTOTYPES 1
+#define GLX_GLXEXT_PROTOTYPES 1
 #define LIBLUB_GL_MAJOR_VERION 3
 #define LIBLUB_GL_MINOR_VERION 3
 #ifndef GLfloat

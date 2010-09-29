@@ -53,7 +53,7 @@ MediaLayer::MediaLayer(string title, unsigned width, unsigned height) {
     mainContext = SDL_GL_CreateContext(mainWindow);
 
     /* This makes our buffer swap syncronized with the monitor's vertical refresh */
-    SDL_GL_SetSwapInterval(VSync? 1 : 0);
+    SDL_GL_SetSwapInterval(VSync);
 
     /* Enable Z depth testing so objects closest to the viewpoint are in front of objects further away */
     glEnable(GL_DEPTH_TEST);

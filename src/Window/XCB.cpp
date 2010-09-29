@@ -103,6 +103,8 @@ void MediaLayer::createGLContext() {
 	/* Select first framebuffer config and query visualID */
 	glXGetFBConfigAttrib(display, fb_config, GLX_VISUAL_ID, &visualID);
 
+
+
 	/* Simple OpenGL context */
 	//context = glXCreateNewContext(display, fb_config, GLX_RGBA_TYPE, 0, True);
 
@@ -191,6 +193,10 @@ void MediaLayer::createWindow() {
 	/* make OpenGL context current */
 	if (!glXMakeContextCurrent(display, drawable, drawable, context))
 		error("glXMakeContextCurrent failed\n");
+
+	//Set swap interval
+	glXSwapIntervalSGI(VSync);
+
 
 	const static uint32_t values[] = { XCB_STACK_MODE_ABOVE };
 
