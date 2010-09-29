@@ -409,7 +409,7 @@ class PhongColorMat : public Material {
 public:
 	PhongColorMat(){
 		init();
-		attachVertFrag("Color/PhongColor2");
+		attachVertFrag("Color/PhongColor");
 		done();
 
   }

@@ -10,7 +10,7 @@ public:
   }
 
 	void scene(){
-		SceneGraph::Instance().addNode(new Node("Monkey",{0,0,-10}, 10, MeshFactory::Instance().load("monkeySmooth.obj"),new PhongColorMat()));
+		SceneGraph::Instance().addNode(new Node("Monkey",{0,-5,-5}, 1, MeshFactory::Instance().load("monkeySmooth.obj"),new PhongColorMat()));
 	}
 };
 
