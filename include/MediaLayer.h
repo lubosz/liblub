@@ -71,6 +71,9 @@ private:
     void createColorMap();
     void createBlankCursor();
 
+    //Fullscreen
+    xcb_atom_t wm_state, wm_state_fullscreen;
+
 #endif
 
     friend class Singleton<MediaLayer>;

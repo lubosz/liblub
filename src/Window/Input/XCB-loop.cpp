@@ -36,6 +36,25 @@ void Input::eventLoop(){
 	while (event = xcb_poll_for_event (connection)) {
 
     switch (event->response_type & ~0x80) {
+    	case XCB_CONFIGURE_REQUEST:
+    		cout << "Reconfigure!!\n";
+    		/*
+    			uint32_t c[6],*cp=c;
+    			if(((xcb_configure_request_event_t*)p)->value_mask&XCB_CONFIG_WINDOW_X)*cp++=((xcb_configure_request_event_t*)p)->x;
+    			if(((xcb_configure_request_event_t*)p)->value_mask&XCB_CONFIG_WINDOW_Y)*cp++=((xcb_configure_request_event_t*)p)->y;
+    			if(((xcb_configure_request_event_t*)p)->value_mask&XCB_CONFIG_WINDOW_WIDTH)*cp++=((xcb_configure_request_event_t*)p)->width;
+    			if(((xcb_configure_request_event_t*)p)->value_mask&XCB_CONFIG_WINDOW_HEIGHT)*cp++=((xcb_configure_request_event_t*)p)->height;
+    			if(((xcb_configure_request_event_t*)p)->value_mask&XCB_CONFIG_WINDOW_SIBLING)*cp++=((xcb_configure_request_event_t*)p)->sibling;
+    			if(((xcb_configure_request_event_t*)p)->value_mask&XCB_CONFIG_WINDOW_STACK_MODE)*cp=((xcb_configure_request_event_t*)p)->stack_mode;
+    			xcb_configure_window(dpy,((xcb_configure_request_event_t*)p)->window,((xcb_configure_request_event_t*)p)->value_mask&~XCB_CONFIG_WINDOW_BORDER_WIDTH,c);
+    			for(;x>-1;x--)
+    				if(cs[x]==((xcb_configure_request_event_t*)p)->window&&((xcb_configure_request_event_t*)p)->value_mask&XCB_CONFIG_WINDOW_STACK_MODE)
+    					switch(((xcb_configure_request_event_t*)p)->stack_mode){
+    					case XCB_STACK_MODE_BELOW:y=0;
+    					case XCB_STACK_MODE_ABOVE:goto stack;
+    					}
+    					*/
+    	break;
 /*
         case XCB_EXPOSE:
             expose = (xcb_expose_event_t *)event;
@@ -101,6 +120,8 @@ void Input::eventLoop(){
 				case XK_m:
 					MediaLayer::Instance().toggleMouseGrab();
 					break;
+				case XK_f:
+					MediaLayer::Instance().toggleFullScreen();
 				default:
 					pressedKeys.push_back(pressedKey);
             }

@@ -18,7 +18,8 @@ public:
 				"Planet",
 				{0,0,0},
 				.01,
-				MeshFactory::Instance().load("myroom-quads.obj"),
+				//MeshFactory::Instance().load("myroom-quads.obj"),
+				MeshFactory::Instance().plane(),
 				material
 		);
 		SceneGraph::Instance().addNode(plane);

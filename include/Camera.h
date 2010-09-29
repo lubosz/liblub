@@ -18,7 +18,7 @@ class Camera: public Singleton<Camera>{
 public:
 
 	void move(GLfloat x, GLfloat y, GLfloat z);
-	void rotate(GLfloat yaw, GLfloat pitch, GLfloat roll);
+	void updateRotation();
 
 	GLfloat aspect, fov, nearz, farz, yaw, pitch, roll;
 
@@ -29,7 +29,7 @@ public:
     void update();
     QMatrix4x4 getView() const;
 	QMatrix4x4 getProjection() const;
-	QVector3D center, eye;
+	QVector3D center, eye, defaultCenter;
 
 	void forward();
 	void backward();

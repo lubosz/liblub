@@ -18,16 +18,15 @@
 #include "MeshFactory.h"
 #include "Materials.h"
 
-using namespace std;
-
 Camera::Camera() {
 	projectionMatrix = QMatrix4x4();
 	viewMatrix = QMatrix4x4();
 	eye = QVector3D();
-	center = QVector3D(0,0,-5);
+	center = QVector3D(0,0,-1);
+	defaultCenter = center;
     yaw, pitch, roll = 0;
     speed = .1;
-    mouseSensitivity = .5;
+    mouseSensitivity = .1;
     centerNode = new Node("LookAt",center, .1, MeshFactory::Instance().cube(),new WhiteMat());
     //SceneGraph::Instance().addNode(centerNode);
 }
@@ -54,7 +53,6 @@ void Camera::setAspect(GLfloat aspect){
 }
 
 void Camera::move(GLfloat x, GLfloat y, GLfloat z){
-	//eye += QVector3D(x,y,z);
 	eye += x*center;
 	update();
 }
@@ -88,49 +86,30 @@ void Camera::right(){
 }
 
 void Camera::setMouseLook(int mouseXrel, int mouseYrel){
-	/*
-	QVector3D side = QVector3D::crossProduct ( center, up );
-	side.normalize();
 
-	center += mouseSensitivity * mouseXrel * side;
-	center -= mouseSensitivity * mouseYrel * up;
-*/
+	pitch -= mouseSensitivity * mouseXrel;
+	yaw -= mouseSensitivity * mouseYrel;
+	if (yaw > 89) yaw = 89;
+	if (yaw < -89) yaw = -89;
 
-	//rotate(0, mouseXrel/2.0, 0);
-	rotate(mouseXrel, mouseYrel, 0);
-	//cout << mouseXrel/2.0 << "\n";
+	updateRotation();
+	//printf("Yaw: %f Pitch: %f\n", yaw, pitch);
 	update();
 
-	/*
-		cout
-			<< "Center\t" << center.x() << "\t" << center.y() << "\t" << center.z() << "\n"
-			<< "Eye\t" << eye.x() << "\t" << eye.y() << "\t" << eye.z() << "\n"
-			<< "Mouse\t" << mouseX << "\t" << mouseY << "\n"
-			<< "MouseRel\t" << mouseXrel << "\t" << mouseYrel << "\n";
-	*/
 }
 
 void Camera::setMouseZoom(int wheelX, int wheelY){
-	//update();
 	cout << "Wheel\t" << wheelX << "\t" << wheelY << "\n";
-
 }
 
-void Camera::rotate(GLfloat yaw, GLfloat pitch, GLfloat roll){
-	this->yaw=yaw;
-	this->pitch=pitch;
-	this->roll=roll;
+void Camera::updateRotation(){
 
 	QMatrix4x4 rotate = QMatrix4x4();
-	/*
-	rotate.rotate(pitch, mouseSensitivity, 0, 0);
-	rotate.rotate(yaw, 0, mouseSensitivity, 0);
-	rotate.rotate(roll, 0, 0, mouseSensitivity);
-	 */
-	rotate.rotate(mouseSensitivity, pitch, yaw, 0);
-	//eye = rotate * eye;
 
-	center = center*rotate;
+	rotate.rotate(pitch, 0, 1, 0);
+	rotate.rotate(yaw, 1, 0, 0);
+
+	center = rotate * defaultCenter;
 	center.normalize();
 	update();
 }

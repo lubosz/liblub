@@ -2,16 +2,24 @@
 
 precision highp float;
 
-in vec3 position;
-in vec3 normal;
-in vec3 color;
+in vec4 positionCamView;
+in vec3 normalCamView;
 
-in float LightIntensity;
+out vec4 fragColor;
 
-out vec4 gl_FragColor;
+uniform lightPositionCamView;
+
+const float ambientFactor;
 
 void main() 
 { 
-	gl_FragColor = vec4(1.0,1.0,1.0,1.0) * LightIntensity;
-	//gl_FragColor = vec4(color,1.0) * LightIntensity;
+	vec4 color = vec4(1.0,1.0,1.0,1.0);
+	vec4 lightToFragment = positionCamView-lightPositionCamView;
+	float lightIntensity = normalCamView.dot(vec3(lightToFragment.x,lightToFragment.y,lightToFragment.z));
+	
+	vec4 ambient = color * ambientFactor;
+	vec4 diffuse = color * lightIntensity;
+	vec4 specular = specular * lightIntensity;
+	
+	fragColor =  color + specular + ambient;
 } 
