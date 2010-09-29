@@ -52,6 +52,7 @@ private:
     xcb_connection_t *connection;
     xcb_window_t window;
     xcb_colormap_t colormap;
+    xcb_cursor_t cursor; /* blank cursor */
 
     GLXWindow glxwindow;
     GLXContext context;
@@ -68,6 +69,7 @@ private:
     void createWindow();
     void initFrameBuffer();
     void createColorMap();
+    void createBlankCursor();
 
 #endif
 

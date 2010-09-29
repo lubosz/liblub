@@ -134,13 +134,16 @@ void ShaderProgram::setUniform(const QMatrix3x3 & matrix, string name){
 }
 
 void ShaderProgram::setUniform(const QMatrix4x4 & matrix, string name){
+
     GLfloat mat[16];
     const qreal *data = matrix.constData();
     for (int i = 0; i < 16; ++i)
         mat[i] = data[i];
 
 	glUniformMatrix4fv(
-			glGetUniformLocation(program, name.c_str()), 1, GL_FALSE, mat
+			glGetUniformLocation(program, name.c_str()), 1, GL_FALSE,
+			//reinterpret_cast<const GLfloat *>(matrix.constData())
+			mat
 	);
 	/* DOUBLE PRECISION
 	glUniformMatrix4dv(

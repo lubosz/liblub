@@ -38,12 +38,10 @@ void MediaLayer::init(string title, unsigned width, unsigned height) {
 	createColorMap();
 
 	createWindow();
+	createBlankCursor();
 
-#ifdef XI2
-	input = new Input(display, window);
-#else
 	input = new Input(connection);
-#endif
+
 
 }
 
@@ -53,6 +51,16 @@ MediaLayer::~MediaLayer() {
     xcb_destroy_window(connection, window);
     glXDestroyContext(display, context);
     XCloseDisplay(display);
+}
+
+void MediaLayer::createBlankCursor() {
+
+	cursor = xcb_generate_id(connection);
+	xcb_pixmap_t pix = xcb_generate_id(connection);
+
+	xcb_create_pixmap(connection, 1, pix, screen->root, 1, 1);
+	xcb_create_cursor(connection, cursor, pix, pix, 0, 0, 0, 0, 0, 0, 1, 1);
+
 }
 
 void MediaLayer::initScreen(){
@@ -273,12 +281,29 @@ void MediaLayer::setWindowTitle(string title){
 
 void MediaLayer::toggleMouseGrab(){
 	if (!grab){
+		//hide cursor
+		uint32_t value_list = cursor;
+
+        xcb_change_window_attributes (
+        		connection,
+        		window,
+                XCB_CW_CURSOR,
+                &value_list
+        );
 		/*
 		XGrabPointer(display, window, True, ButtonPressMask,
 			GrabModeAsync, GrabModeAsync, window, None, CurrentTime);
 			*/
 		grab = true;
 	}else{
+	    /* show the default cursor */
+		uint32_t value_list = XCB_CURSOR_NONE;
+	    xcb_change_window_attributes (
+	    		connection,
+	    		window,
+	    		XCB_CW_CURSOR,
+	    		&value_list
+	    );
 		//XUngrabPointer(display, CurrentTime);
 		grab = false;
 	}
