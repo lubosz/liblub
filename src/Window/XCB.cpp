@@ -7,8 +7,6 @@
 #include "MediaLayer.h"
 #include "Camera.h"
 
-//#include <xcb/xcb_atom.h>
-
 MediaLayer::MediaLayer(){
 	//FPS Stuff
 	fps_lasttime = 0; //the last recorded time.
@@ -20,7 +18,6 @@ MediaLayer::MediaLayer(){
 }
 
 void MediaLayer::init(string title, unsigned width, unsigned height) {
-
 	programTile = title;
 	this->width = width;
 	this->height = height;
@@ -34,7 +31,6 @@ void MediaLayer::init(string title, unsigned width, unsigned height) {
 	createBlankCursor();
 
 	input = new Input(connection);
-
 
 }
 
@@ -180,7 +176,6 @@ void MediaLayer::createWindow() {
 	//Set swap interval
 	glXSwapIntervalSGI(VSync);
 
-
 	const static uint32_t values[] = { XCB_STACK_MODE_ABOVE };
 
 	/* Move the window on the top of the stack */
@@ -305,7 +300,7 @@ void MediaLayer::mouseLook(int x, int y){
 	int xRel = x - halfWidth;
 	int yRel = y - halfHeight;
 
-	if(!(xRel == 0 && yRel == 0)){
+	if(!(xRel == 0 && yRel == 0) && grab){
 		Camera::Instance().setMouseLook(xRel, yRel);
 		if (grab) XWarpPointer(display, None, window, x, y, width, height, halfWidth, halfHeight);
 	}
