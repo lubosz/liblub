@@ -5,13 +5,6 @@
  *      Author: bmonkey
  */
 #include "MediaLayer.h"
-
-#include <iostream>
-
-
-#include <stdio.h>
-#include <stdlib.h>
-
 #include "Camera.h"
 
 //#include <xcb/xcb_atom.h>
@@ -103,8 +96,6 @@ void MediaLayer::createGLContext() {
 	/* Select first framebuffer config and query visualID */
 	glXGetFBConfigAttrib(display, fb_config, GLX_VISUAL_ID, &visualID);
 
-
-
 	/* Simple OpenGL context */
 	//context = glXCreateNewContext(display, fb_config, GLX_RGBA_TYPE, 0, True);
 
@@ -116,15 +107,7 @@ void MediaLayer::createGLContext() {
 			0
 	};
 
-	//TODO: WHY!?!
-	//Get a pointer to the context creation function for GL 3.0
-	PFNGLXCREATECONTEXTATTRIBSARBPROC glXCreateContextAttribs = (PFNGLXCREATECONTEXTATTRIBSARBPROC) glXGetProcAddress((GLubyte *) "glXCreateContextAttribsARB");
-
-	if (!glXCreateContextAttribs)
-		error("GL 3.x is not supported");
-
-	// Create a GL 3.x context
-	context = glXCreateContextAttribs(display, fb_config, NULL, True, attribs);
+	context = glXCreateContextAttribsARB(display, fb_config, NULL, True, attribs);
 
 	if(!context) error("glXCreateNewContext failed\n");
 }
