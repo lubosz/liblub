@@ -27,7 +27,7 @@ public:
 	void bindAttrib(unsigned position, string name);
 
 	void linkAndUse();
-	void setLightPosition(const QVector3D& position);
+	void setLightPosition(const QVector4D& position);
 	GLuint getReference() const;
 
 	void setUniform(const QMatrix3x3 & matrix, string name);

@@ -13,7 +13,7 @@ MediaLayer::MediaLayer(){
 	fps_frames = 0; //frames passed since the last recorded fps.
 
 	fullscreen = false;
-	grab = false;
+	grab = true;
 	quit = false;
 }
 

@@ -10,7 +10,7 @@
 class SceneGraph: public Singleton<SceneGraph>
 {
 public:
-	QVector3D lightPosition;
+	QVector4D lightPosition;
 	QMatrix4x4 modelMatrix;
 
 	void updateLight();

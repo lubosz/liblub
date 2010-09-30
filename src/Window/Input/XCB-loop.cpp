@@ -122,6 +122,7 @@ void Input::eventLoop(){
 					break;
 				case XK_f:
 					MediaLayer::Instance().toggleFullScreen();
+					break;
 				default:
 					pressedKeys.push_back(pressedKey);
             }
@@ -133,7 +134,7 @@ void Input::eventLoop(){
             break;
     }
 
-    free (event);
+    	free (event);
 
 	}
 
@@ -157,5 +158,32 @@ void Input::checkKey(xcb_keysym_t pressedKey){
 		case XK_d:
 			Camera::Instance().right();
 			break;
+
+
+			//Light
+			case XK_Left:
+            	SceneGraph::Instance().lightPosition += QVector3D(-0.1,0,0);
+                SceneGraph::Instance().updateLight();
+                break;
+			case XK_Right:
+                SceneGraph::Instance().lightPosition += QVector3D(0.1,0,0);
+                SceneGraph::Instance().updateLight();
+				break;
+			case XK_Up:
+                SceneGraph::Instance().lightPosition += QVector3D(0,0.1,0);
+                SceneGraph::Instance().updateLight();
+                break;
+			case XK_Down:
+            	SceneGraph::Instance().lightPosition += QVector3D(0,-0.1,0);
+                SceneGraph::Instance().updateLight();
+                break;
+            case XK_1:
+                SceneGraph::Instance().lightPosition += QVector3D(0,0,0.1);
+                SceneGraph::Instance().updateLight();
+                break;
+            case XK_7:
+            	SceneGraph::Instance().lightPosition += QVector3D(0,0,-0.1);
+                SceneGraph::Instance().updateLight();
+				break;
     }
 }

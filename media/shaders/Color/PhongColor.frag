@@ -2,60 +2,65 @@
 
 //precision highp float;
 
-in vec4 positionCamView;
-in vec3 normalCamView;
+in vec4 positionView;
+in vec3 normalView;
+in vec2 uv;
 
 out vec4 finalColor;
 
-uniform vec3 LightPosition;
+uniform vec4 lightPositionView;
 
+uniform vec4 lightColor;
 
+//ambient
+uniform vec4 ambientSceneColor;
+//diffuse
+uniform vec4 diffuseMaterialColor;
+//specular
+uniform float shininess;
+uniform vec4 specularMaterialColor;
 
-void main() 
-{ 
-//Ambient
-const vec4 ambientMaterial = vec4(0.2,0.2,0.2,1);
-const vec4 ambientLightColor = vec4(.3,.5,.9,1);
-const vec4 ambientSceneColor = vec4(1,1,1,1);
+uniform sampler2D diffuseTexture;
 
-//Diffuse
-const vec4 diffuseMaterialColor = vec4(0,1,0,1);
-const vec4 diffuseLightColor = vec4(0,0,1,1);
+vec4 diffuseColor(float lambertTerm){
 
-//Specular
-const float shininess = 1;
-const vec4 specularMaterialColor = vec4(1,1,1,1);
-const vec4 specularLightColor = vec4(1,1,1,1);
+	return	diffuseMaterialColor * 
+			texture(diffuseTexture, uv) *
+			lightColor * 
+			lambertTerm;
+}
 
-vec4 lightDirection = vec4(LightPosition,1) - positionCamView;
+vec4 specularColor(float specular){
 
-//Ambient
-finalColor = 
-	(ambientSceneColor * ambientMaterial) 
-	+ 
-	(ambientLightColor * ambientMaterial);
-							
-	vec3 N = normalize(normalCamView);
+	return	specularMaterialColor * 
+			lightColor * 
+			specular;	
+}
+
+void main(){ 
+
+	vec4 lightDirection = lightPositionView - positionView;
+
+	//ambient
+	finalColor = ambientSceneColor;
+								
+	vec3 N = normalize(normalView);
 	vec3 L = normalize(lightDirection.xyz);
 	
 	float lambertTerm = dot(N,L);
-	
+
 	if(lambertTerm > 0.0)
 	{
-		//Diffuse
-		finalColor +=	diffuseMaterialColor * 
-		              	diffuseLightColor * 
-					  	lambertTerm;	
+		//diffuse
+		finalColor += diffuseColor(lambertTerm);
 		
-		//Specular
-		vec3 E = normalize(-positionCamView.xyz);
+		//specular
+		vec3 E = normalize(-positionView.xyz);
 		vec3 R = reflect(-L, N);
+
 		float specular = pow( max(dot(R, E), 0.0), shininess );
-		finalColor +=	specularLightColor * 
-		             	specularMaterialColor * 
-					 	specular;	
+		finalColor += specularColor(specular);
 	}
-	//finalColor = vec4(normalCamView,1);
 			
 } 
 

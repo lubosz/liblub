@@ -113,8 +113,8 @@ void ShaderProgram::reload(){
 
 }
 
-void ShaderProgram::setLightPosition(const QVector3D& position){
-	glUniform3f(glGetUniformLocation(program, "LightPosition"), position.x(),position.y(),position.z());
+void ShaderProgram::setLightPosition(const QVector4D& position){
+	glUniform4f(glGetUniformLocation(program, "lightPositionView"), position.x(), position.y(),position.z(),position.w());
 }
 
 GLuint ShaderProgram::getReference() const{

@@ -409,6 +409,7 @@ class PhongColorMat : public Material {
 public:
 	PhongColorMat(){
 		init();
+		addTexture("Earth/MarsMap_2500x1250.jpg","diffuseTexture");
 		attachVertFrag("Color/PhongColor");
 		done();
 
@@ -416,7 +417,18 @@ public:
 	void uniforms(){
 		GLuint program = shaderProgram->getReference();
 
-		glUniform4f(glGetUniformLocation(program, "lightPositionCamView"), 1.0, 1.0, 1.0,1.0);
+		//ambient
+		glUniform4f(glGetUniformLocation(program, "lightColor"), 0.8, 0.8, 0.8,1.0);
+		glUniform4f(glGetUniformLocation(program, "ambientSceneColor"), 0.0, 0.0, 0.0,1.0);
+
+		//diffuse
+		//glUniform4f(glGetUniformLocation(program, "diffuseMaterialColor"), 0.3, 0.9, 0.2,1.0);
+		glUniform4f(glGetUniformLocation(program, "diffuseMaterialColor"), 1.0, 1.0, 1.0,1.0);
+
+		//specular
+		glUniform4f(glGetUniformLocation(program, "specularMaterialColor"), 0.5, 0.5, 0.5,1.0);
+		glUniform1f(glGetUniformLocation(program, "shininess"), 4.3);
+
 	}
 
 };

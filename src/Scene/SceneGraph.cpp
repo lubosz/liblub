@@ -6,13 +6,13 @@
 #include <boost/foreach.hpp>
 
 SceneGraph::SceneGraph(){
-	lightPosition = {-2.0, 1.0, 2.0};
-	addNode("Light",lightPosition, MeshFactory::Instance().lamp(),new WhiteMat());
+	lightPosition = {-2.0, 1.0, 2.0, 1.0};
+	addNode("Light",lightPosition.toVector3D(), MeshFactory::Instance().lamp(),new WhiteMat());
 	modelMatrix = QMatrix4x4();
 }
 
 void SceneGraph::updateLight(){
-	setPosition("Light", lightPosition);
+	setPosition("Light", lightPosition.toVector3D());
 }
 
 void SceneGraph::animate(float frameCount){

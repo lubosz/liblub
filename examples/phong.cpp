@@ -10,7 +10,10 @@ public:
   }
 
 	void scene(){
-		SceneGraph::Instance().addNode(new Node("Monkey",{0,-5,-5}, 1, MeshFactory::Instance().load("monkeySmooth.obj"),new PhongColorMat()));
+		Material * phongMaterial = new PhongColorMat();
+		SceneGraph::Instance().addNode(new Node("Monkey",{5,0,-5}, 1, MeshFactory::Instance().load("monkeyBig.obj"),phongMaterial));
+		SceneGraph::Instance().addNode(new Node("Sphere",{0,5,-5}, 1, MeshFactory::Instance().load("earth.obj"),phongMaterial));
+		SceneGraph::Instance().addNode(new Node("Radio",{0,-5,-5}, .5, MeshFactory::Instance().load("radio.obj"),phongMaterial));
 	}
 };
 
