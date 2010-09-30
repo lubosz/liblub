@@ -38,8 +38,20 @@ vec4 specularColor(float specular){
 }
 
 void main(){ 
+	const float constantAttenuation = 0;
+	const float linearAttenuation = 0;
+	const float quadraticAttenuation = .05;
 
 	vec4 lightDirection = lightPositionView - positionView;
+
+	float d = length(lightDirection);
+		
+	float att = 1.0 / ( 
+			constantAttenuation + 
+			(linearAttenuation * d) + 
+			(quadraticAttenuation * d * d) 
+	);
+
 
 	//ambient
 	finalColor = ambientSceneColor;
@@ -52,14 +64,14 @@ void main(){
 	if(lambertTerm > 0.0)
 	{
 		//diffuse
-		finalColor += diffuseColor(lambertTerm);
+		finalColor += diffuseColor(lambertTerm) * att;
 		
 		//specular
 		vec3 E = normalize(-positionView.xyz);
 		vec3 R = reflect(-L, N);
 
 		float specular = pow( max(dot(R, E), 0.0), shininess );
-		finalColor += specularColor(specular);
+		finalColor += specularColor(specular) * att;
 	}
 			
 } 
