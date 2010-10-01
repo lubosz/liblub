@@ -20,6 +20,7 @@ public:
 	Mesh * load(string file);
 	Mesh * lamp();
 	Mesh * spiral();
+	Mesh * loadAssimp(string file);
 
 private:
 	friend class Singleton<MeshFactory>;

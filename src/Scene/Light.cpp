@@ -77,6 +77,7 @@ void Light::bindShaderInit(ShaderProgram * shaderProgram){
 	glUniform1f(glGetUniformLocation(program, "spotOuterAngle"), 0.9);
 	glUniform1f(glGetUniformLocation(program, "spotInnerAngle"), 0.6);
 	glUniform3f(glGetUniformLocation(program, "spotDirection"), 5, 0, -5);
+
 }
 
 void Light::moveLeft(){

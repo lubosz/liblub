@@ -90,7 +90,7 @@ ELSE()
 ENDIF()
 	 
 add_library(lub ${SOURCES})
-target_link_libraries(lub GL freeimageplus QtGui)
+target_link_libraries(lub GL freeimageplus QtGui assimp)
 
 IF(WITH_SDL)
 	target_link_libraries(lub ${SDL_DIR}build/.libs/libSDL.a)

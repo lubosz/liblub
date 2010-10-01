@@ -1,3 +1,4 @@
+//#define useSpotLight
 #version 330 core
 
 precision highp float;
@@ -24,10 +25,12 @@ uniform sampler2D diffuseTexture;
 uniform vec4 diffuseMaterialColor;
 #endif
 
+#ifdef useSpotLight
 //spot
 uniform float spotInnerAngle;
 uniform float spotOuterAngle;
 uniform vec3 spotDirectionView;
+#endif
 
 //attenuation
 uniform float constantAttenuation;
@@ -71,10 +74,12 @@ void main(){
 								
 	vec3 L = normalize(lightDirection.xyz);	
 
+#ifdef useSpotLight
 	//Spot	
 	float spotCurAngle = dot(-L, spotDirectionView);
 	float spotAngleDiff =  spotOuterAngle - spotInnerAngle;
 	float spot = clamp((spotCurAngle - spotOuterAngle) / spotAngleDiff, 0.0, 1.0);
+#endif
 
 	vec3 N = normalize(normalView);
 	
@@ -85,14 +90,22 @@ void main(){
 	if(lambertTerm > 0.0)
 	{
 		//diffuse
-		finalColor += diffuseColor(lambertTerm) * att * spot;
+		finalColor += diffuseColor(lambertTerm)
+#ifdef useSpotLight
+		* spot
+#endif
+		* att;
 		
 		//specular
 		vec3 E = normalize(-positionView.xyz);
 		vec3 R = reflect(-L, N);
 
 		float specular = pow( max(dot(R, E), 0.0), shininess );
-		finalColor += specularColor(specular) * att * spot;
+		finalColor += specularColor(specular)
+#ifdef useSpotLight
+		* spot
+#endif
+		* att;
 	}
 			
 } 
