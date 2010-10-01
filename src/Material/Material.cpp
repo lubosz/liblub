@@ -32,6 +32,7 @@ void Material::defaultAttribs() {
 	//TODO: Buffer order not variable
 	//shaderProgram->bindAttrib("in_Color");
 	shaderProgram->bindAttrib("in_Normal");
+	shaderProgram->bindAttrib("in_Tangent");
 	shaderProgram->bindAttrib("in_Uv");
 
 }

@@ -5,6 +5,9 @@ precision highp float;
 
 in vec4 positionView;
 in vec3 normalView;
+//in vec3 tangentView;
+//in vec3 lightVec;
+//in vec3 eyeVec;
 
 out vec4 finalColor;
 
@@ -36,6 +39,10 @@ uniform vec3 spotDirectionView;
 uniform float constantAttenuation;
 uniform float linearAttenuation;
 uniform float quadraticAttenuation;
+
+//normalmap
+//uniform sampler2D normalMap;
+//uniform float invRadius;
 
 
 vec4 diffuseColor(float lambertTerm){
@@ -107,6 +114,7 @@ void main(){
 #endif
 		* att;
 	}
+	
 			
 } 
 

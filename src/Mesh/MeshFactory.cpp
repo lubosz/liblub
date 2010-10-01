@@ -98,7 +98,7 @@ Mesh * MeshFactory::loadAssimp(string file) {
 	const aiScene* scene = importer.ReadFile(path,
 			aiProcess_CalcTangentSpace
 			| aiProcess_Triangulate
-			//| aiProcess_JoinIdenticalVertices
+			| aiProcess_JoinIdenticalVertices
 			| aiProcess_SortByPType
 			);
 
@@ -114,6 +114,7 @@ Mesh * MeshFactory::loadAssimp(string file) {
 
 	vector<GLfloat> positions;
 	vector<GLfloat> normals;
+	vector<GLfloat> tangents;
 	vector<GLfloat> uvs;
 	vector<GLuint> indices;
 
@@ -133,6 +134,11 @@ Mesh * MeshFactory::loadAssimp(string file) {
 			normals.push_back(normal.x);
 			normals.push_back(normal.y);
 			normals.push_back(normal.z);
+
+			aiVector3D tangent = myAiMesh->mTangents[vertex];
+			tangents.push_back(tangent.x);
+			tangents.push_back(tangent.y);
+			tangents.push_back(tangent.z);
 
 			aiVector3D uv = myAiMesh->mTextureCoords[0][vertex];
 			uvs.push_back(uv.x);
@@ -169,6 +175,7 @@ Mesh * MeshFactory::loadAssimp(string file) {
 
 	mesh->addBuffer(positions, 3, "in_Vertex");
 	mesh->addBuffer(normals, 3, "in_Normal");
+	mesh->addBuffer(tangents, 3, "in_Tangent");
 	mesh->addBuffer(uvs, 2, "in_Uv");
 	mesh->addElementBuffer(indices);
 	mesh->setDrawType(GL_TRIANGLES);

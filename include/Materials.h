@@ -452,6 +452,32 @@ public:
 
 };
 
+class NormalMapMaterial : public Material {
+public:
+	NormalMapMaterial(string diffuse, string normal){
+		init();
+		addTexture(diffuse,"colorMap");
+		addTexture(normal,"normalMap");
+		attachVertFrag("Bump/normalMap");
+		done();
+  }
+	void uniforms(){
+		GLuint program = shaderProgram->getReference();
+
+		//ambient
+		glUniform4f(glGetUniformLocation(program, "lightColor"), 0.8, 0.8, 0.8,1.0);
+		glUniform4f(glGetUniformLocation(program, "ambientSceneColor"), 0.0, 0.0, 0.0,1.0);
+
+		glUniform1f(glGetUniformLocation(program, "invRadius"), 0.9);
+		shaderProgram->setUniform(QVector4D(1,1,1,1), "diffuseMaterialColor");
+
+		//specular
+		glUniform4f(glGetUniformLocation(program, "specularMaterialColor"), 0.5, 0.5, 0.5,1.0);
+		glUniform1f(glGetUniformLocation(program, "shininess"), 4.3);
+
+	}
+};
+
 
 class WhiteMat : public Material {
 public:
