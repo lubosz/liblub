@@ -112,10 +112,39 @@ Mesh * MeshFactory::loadAssimp(string file) {
 
 	aiMesh * myAiMesh = scene->mMeshes[0];
 
-	vector<GLfloat> vertices;
+	vector<GLfloat> positions;
 	vector<GLfloat> normals;
+	vector<GLfloat> uvs;
 	vector<GLuint> indices;
 
+	unsigned numIndices = 0;
+
+	for (unsigned i = 0; i < myAiMesh->mNumFaces; i++) {
+		aiFace face = myAiMesh->mFaces[i];
+		for (unsigned j = 0; j < face.mNumIndices; j++) {
+			int vertex = face.mIndices[j];
+
+			aiVector3D position = myAiMesh->mVertices[vertex];
+			positions.push_back(position.x);
+			positions.push_back(position.y);
+			positions.push_back(position.z);
+
+			aiVector3D normal = myAiMesh->mNormals[vertex];
+			normals.push_back(normal.x);
+			normals.push_back(normal.y);
+			normals.push_back(normal.z);
+
+			aiVector3D uv = myAiMesh->mTextureCoords[0][vertex];
+			uvs.push_back(uv.x);
+			uvs.push_back(uv.y);
+
+			indices.push_back(numIndices);
+			numIndices++;
+
+		}
+
+	}
+		/*
 	for (unsigned i = 0; i < myAiMesh->mNumVertices; i++) {
 		aiVector3D vertex = myAiMesh->mVertices[i];
 		vertices.push_back(vertex.x);
@@ -127,13 +156,20 @@ Mesh * MeshFactory::loadAssimp(string file) {
 		normals.push_back(normal.y);
 		normals.push_back(normal.z);
 
+		aiVector3D uv = myAiMesh->mTextureCoords[0][i];
+		uvs.push_back(uv.x);
+		uvs.push_back(uv.y);
+
 		indices.push_back(i);
 	}
+		*/
+
 
 	Mesh * mesh = new Mesh();
 
-	mesh->addBuffer(vertices, 3, "in_Vertex");
+	mesh->addBuffer(positions, 3, "in_Vertex");
 	mesh->addBuffer(normals, 3, "in_Normal");
+	mesh->addBuffer(uvs, 2, "in_Uv");
 	mesh->addElementBuffer(indices);
 	mesh->setDrawType(GL_TRIANGLES);
 

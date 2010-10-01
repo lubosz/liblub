@@ -18,12 +18,12 @@ public:
 
 		Material * paper = new PhongTexMat("Paper_Texture_by_Spiteful_Pie_Stock.jpg");
 		Material * green = new PhongColorMat(QVector3D(0,1,0));
-		SceneGraph::Instance().addNode(new Node("Monkey",{5,0,-5}, 1, MeshFactory::Instance().load("monkeyBig.obj"),paper));
-		SceneGraph::Instance().addNode(new Node("Sphere",{0,3,-5}, 1, MeshFactory::Instance().load("earth.obj"),paper));
-		SceneGraph::Instance().addNode(new Node("Radio",{0,-5,-5}, .5, MeshFactory::Instance().loadAssimp("radio.obj"),green));
-		SceneGraph::Instance().addNode(new Node("Radio",{-5,-5,-5}, .5, MeshFactory::Instance().load("radio.obj"),green));
-		SceneGraph::Instance().addNode(new Node("Radio",{0,-7,0}, 3, MeshFactory::Instance().load("terrain.obj"),paper));
-		SceneGraph::Instance().addNode(MeshFactory::Instance().spiral(),{0,-15,0},new StarMat());
+		SceneGraph::Instance().addNode(new Node("Monkey",{5,0,-5}, 1, MeshFactory::Instance().loadAssimp("monkeyBig.obj"),paper));
+		SceneGraph::Instance().addNode(new Node("Sphere",{0,3,-5}, 1, MeshFactory::Instance().loadAssimp("earth.obj"),paper));
+		SceneGraph::Instance().addNode(new Node("Radio",{0,-5,-5}, .5, MeshFactory::Instance().loadAssimp("monkey.blend"),paper));
+		SceneGraph::Instance().addNode(new Node("Radio",{-5,-5,-5}, .5, MeshFactory::Instance().loadAssimp("radio.obj"),paper));
+		SceneGraph::Instance().addNode(new Node("Radio",{0,-7,0}, 3, MeshFactory::Instance().loadAssimp("terrain.obj"),green));
+		//SceneGraph::Instance().addNode(MeshFactory::Instance().spiral(),{0,-15,0},new StarMat());
 	}
 };
 
