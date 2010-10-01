@@ -76,6 +76,7 @@ set(SOURCES
 	${SRC_DIR}/Mesh/MengerSponge.cpp
 	
 	${SRC_DIR}/Scene/Node.cpp
+	${SRC_DIR}/Scene/Light.cpp
 )
 
 IF(WITH_SDL)

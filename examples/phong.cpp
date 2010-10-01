@@ -1,4 +1,5 @@
 #include "Application.h"
+#include "Light.h"
 
 class Example : public Application {
 
@@ -10,10 +11,16 @@ public:
   }
 
 	void scene(){
+		Light * light = new Light(QVector4D(0.3, 6.6, -3.3, 1.0));
+
+		light->setDirection(QVector3D(1,-5,-1));
+		SceneGraph::Instance().light = light;
+
 		Material * phongMaterial = new PhongColorMat();
 		SceneGraph::Instance().addNode(new Node("Monkey",{5,0,-5}, 1, MeshFactory::Instance().load("monkeyBig.obj"),phongMaterial));
-		SceneGraph::Instance().addNode(new Node("Sphere",{0,5,-5}, 1, MeshFactory::Instance().load("earth.obj"),phongMaterial));
+		SceneGraph::Instance().addNode(new Node("Sphere",{0,3,-5}, 1, MeshFactory::Instance().load("earth.obj"),phongMaterial));
 		SceneGraph::Instance().addNode(new Node("Radio",{0,-5,-5}, .5, MeshFactory::Instance().load("radio.obj"),phongMaterial));
+		SceneGraph::Instance().addNode(new Node("Radio",{0,-7,0}, 3, MeshFactory::Instance().load("terrain.obj"),phongMaterial));
 	}
 };
 

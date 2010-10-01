@@ -162,28 +162,22 @@ void Input::checkKey(xcb_keysym_t pressedKey){
 
 			//Light
 			case XK_Left:
-            	SceneGraph::Instance().lightPosition += QVector3D(-0.1,0,0);
-                SceneGraph::Instance().updateLight();
+                SceneGraph::Instance().light->moveLeft();
                 break;
 			case XK_Right:
-                SceneGraph::Instance().lightPosition += QVector3D(0.1,0,0);
-                SceneGraph::Instance().updateLight();
+                SceneGraph::Instance().light->moveRight();
 				break;
 			case XK_Up:
-                SceneGraph::Instance().lightPosition += QVector3D(0,0.1,0);
-                SceneGraph::Instance().updateLight();
+                SceneGraph::Instance().light->moveUp();
                 break;
 			case XK_Down:
-            	SceneGraph::Instance().lightPosition += QVector3D(0,-0.1,0);
-                SceneGraph::Instance().updateLight();
+                SceneGraph::Instance().light->moveDown();
                 break;
             case XK_1:
-                SceneGraph::Instance().lightPosition += QVector3D(0,0,0.1);
-                SceneGraph::Instance().updateLight();
+                SceneGraph::Instance().light->moveForward();
                 break;
             case XK_7:
-            	SceneGraph::Instance().lightPosition += QVector3D(0,0,-0.1);
-                SceneGraph::Instance().updateLight();
+                SceneGraph::Instance().light->moveBack();
 				break;
     }
 }

@@ -41,6 +41,14 @@ QMatrix4x4 Camera::getView() const
     return viewMatrix;
 }
 
+QMatrix4x4 Camera::getViewNoTranslation() const
+{
+	QMatrix4x4 viewMatrixNoTranslation;
+	viewMatrixNoTranslation.lookAt(QVector3D(0,0,0),center,up);
+    return viewMatrixNoTranslation;
+}
+
+
 Camera::~Camera() {
 	// TODO Auto-generated destructor stub
 }

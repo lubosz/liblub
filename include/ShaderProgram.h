@@ -27,11 +27,12 @@ public:
 	void bindAttrib(unsigned position, string name);
 
 	void linkAndUse();
-	void setLightPosition(const QVector4D& position);
 	GLuint getReference() const;
 
 	void setUniform(const QMatrix3x3 & matrix, string name);
 	void setUniform(const QMatrix4x4 & matrix, string name);
+	void setUniform(const QVector3D & matrix, string name);
+	void setUniform(const QVector4D & matrix, string name);
 private:
 	/* This is a handle to the shader program */
 	GLuint program;

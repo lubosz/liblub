@@ -28,6 +28,7 @@ public:
     void perspective();
     void update();
     QMatrix4x4 getView() const;
+    QMatrix4x4 getViewNoTranslation() const;
 	QMatrix4x4 getProjection() const;
 	QVector3D center, eye, defaultCenter;
 

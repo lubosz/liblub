@@ -13,7 +13,7 @@ MediaLayer::MediaLayer(){
 	fps_frames = 0; //frames passed since the last recorded fps.
 
 	fullscreen = false;
-	grab = true;
+	grab = false;
 	quit = false;
 }
 
@@ -31,6 +31,12 @@ void MediaLayer::init(string title, unsigned width, unsigned height) {
 	createBlankCursor();
 
 	input = new Input(connection);
+
+	//Togle mouse at init
+	unsigned halfWidth = width/2;
+	unsigned halfHeight = height/2;
+	toggleMouseGrab();
+	if (grab) XWarpPointer(display, None, window, 0, 0, width, height, halfWidth, halfHeight);
 
 }
 

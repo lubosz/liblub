@@ -6,13 +6,8 @@
 #include <boost/foreach.hpp>
 
 SceneGraph::SceneGraph(){
-	lightPosition = {-2.0, 1.0, 2.0, 1.0};
-	addNode("Light",lightPosition.toVector3D(), MeshFactory::Instance().lamp(),new WhiteMat());
-	modelMatrix = QMatrix4x4();
-}
 
-void SceneGraph::updateLight(){
-	setPosition("Light", lightPosition.toVector3D());
+	modelMatrix = QMatrix4x4();
 }
 
 void SceneGraph::animate(float frameCount){
@@ -33,7 +28,7 @@ void SceneGraph::bindShaders(ShaderProgram * shaderProgram){
 	modelMatrix = Camera::Instance().getProjection() * modelMatrix;
 
 	shaderProgram->setUniform(modelMatrix,"MVPMatrix");
-    shaderProgram->setLightPosition(Camera::Instance().getView() * lightPosition);
+	light->bindShader(shaderProgram);
 
     glError("SceneGraph::bindShaders",53);
 }
@@ -81,10 +76,6 @@ void SceneGraph::initUniforms(){
     }
     glError("SceneGraph",148);
 
-}
-
-void SceneGraph::setLightPosition(const QVector3D& lightPosition){
-	this->lightPosition = lightPosition;
 }
 
 void SceneGraph::addNode(string name, const QVector3D& position, Mesh * mesh){
