@@ -44,7 +44,7 @@ RenderEngine::RenderEngine() {
     //glDepthMask(GL_FALSE);
 
 #ifdef USE_FBO
-    fbo = new FrameBuffer(1366,768);
+    fbo = new FrameBuffer(1920,1200);
 #endif
 
 	glError("RenderEngine",52);

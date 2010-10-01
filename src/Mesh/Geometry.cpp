@@ -69,6 +69,7 @@ Mesh * Geometry::makePlane(){
     mesh->addBuffer(vertices,3,"in_Vertex");
     //mesh->addBuffer(vertices,3,"in_Color");
     mesh->addBuffer(normals,3,"in_Normal");
+    mesh->addBuffer(normals,3,"in_Tangent");
     mesh->addBuffer(uvCoords,2,"in_Uv");
     mesh->addElementBuffer(indicies);
     mesh->setDrawType(GL_TRIANGLES);

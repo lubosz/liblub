@@ -55,9 +55,9 @@ class FBOMaterial : public Material {
 public:
 	FBOMaterial(){
 		init();
-		addTexture("GLGE/skydome.png","SkydomeTexture");
+		//addTexture("GLGE/skydome.png","SkydomeTexture");
 		shaderProgram->attachShader("Texture/texture.vert", GL_VERTEX_SHADER);
-		shaderProgram->attachShader("Post/raysAndSky/2 - Skydome.frag", GL_FRAGMENT_SHADER);
+		shaderProgram->attachShader("Post/raysAndSky/3 - Blur.frag", GL_FRAGMENT_SHADER);
   }
 	void uniforms(){}
 
@@ -476,6 +476,18 @@ public:
 		glUniform1f(glGetUniformLocation(program, "shininess"), 4.3);
 
 	}
+};
+
+class SphereMap : public Material {
+public:
+	SphereMap(string diffuse, string env){
+		init();
+		addTexture(diffuse,"colorMap");
+		addTexture(env,"envMap");
+		attachVertFrag("Env/sphereMap");
+		done();
+  }
+	void uniforms(){}
 };
 
 

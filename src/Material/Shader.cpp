@@ -45,8 +45,7 @@ void Shader::loadAndCompile(){
     /* Assign our handles a "name" to new shader objects */
     shader = glCreateShader(type);
 
-    //set define
-
+    //set defines
     string defineString = "";
 
     BOOST_FOREACH( string define, defines )
@@ -57,16 +56,8 @@ void Shader::loadAndCompile(){
     const GLchar *sources[2] = { defineString.c_str(), source };
     glShaderSource(shader, 2, sources, NULL);
 
-
-
-
-    /* Associate the source code buffers with each handle */
-    //glShaderSource(shader, 1, (const GLchar**)&source, 0);
-
     /* Compile our shader objects */
     glCompileShader(shader);
-
-    //printShaderInfoLog(shader);
 }
 
 /* A simple function that will read a file into an allocated char pointer buffer */

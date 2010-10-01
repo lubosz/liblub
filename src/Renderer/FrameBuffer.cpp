@@ -30,6 +30,7 @@ FrameBuffer::FrameBuffer(GLuint width, GLuint height) {
     renderPlane = MeshFactory::Instance().plane();
 
 	//fboMaterial = new TextureMaterial("bunny.png");
+	glError("FrameBuffer",33);
 
     glGenFramebuffers(1, &fboId);
     glBindFramebuffer(GL_FRAMEBUFFER, fboId);
@@ -40,10 +41,12 @@ FrameBuffer::FrameBuffer(GLuint width, GLuint height) {
     // the rendering output will be corrupted because of missing depth test.
     // If you also need stencil test for your rendering, then you must
     // attach additional image to the stencil attachement point, too.
+
     glGenRenderbuffers(1, &rboId);
     glBindRenderbuffer(GL_RENDERBUFFER, rboId);
     glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, width, height);
     glBindRenderbuffer(GL_RENDERBUFFER, 0);
+
 /*
     GLuint stencilbuffer;                       // ID of Renderbuffer object
     glGenRenderbuffers(1, &stencilbuffer);
@@ -70,7 +73,7 @@ FrameBuffer::FrameBuffer(GLuint width, GLuint height) {
     checkFramebufferStatus();
 
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
-	glError("FrameBuffer",59);
+	glError("FrameBuffer",74);
 
 }
 
@@ -80,7 +83,7 @@ void FrameBuffer::bind() {
     glBindFramebuffer(GL_FRAMEBUFFER, fboId);
 
     // Set the render target
-    //glDrawBuffer(GL_COLOR_ATTACHMENT0);
+    glDrawBuffer(GL_COLOR_ATTACHMENT0);
 
     //GLenum buffers[] = { GL_COLOR_ATTACHMENT0_EXT, GL_COLOR_ATTACHMENT1_EXT };
 	//glDrawBuffers(2, buffers);
@@ -95,14 +98,24 @@ void FrameBuffer::draw() {
 	if (!useFBO) return;
 	unBind();
 	RenderEngine::Instance().clear();
-	glBindTexture(GL_TEXTURE_2D, 0);
-	fboMaterial->activate();
-	SceneGraph::Instance().modelMatrix.setToIdentity();
-	Camera::Instance().getProjection().setToIdentity();
-	SceneGraph::Instance().bindShaders(fboMaterial->getShaderProgram());
+	//glBindTexture(GL_TEXTURE_2D, 0);
+
 	glViewport(0,0,width, height);
+	bindShaders(fboMaterial->getShaderProgram());
+
+	fboMaterial->activate();
 	renderPlane->draw();
-	Camera::Instance().perspective();
+	//Camera::Instance().perspective();
+}
+
+void FrameBuffer::bindShaders(ShaderProgram * shaderProgram) {
+	//QMatrix4x4 identity = QMatrix4x4();
+	glError("FrameBuffer::bindShaders", 42);
+	shaderProgram->use();
+
+	shaderProgram->setUniform(QMatrix4x4(), "MVPMatrix");
+
+	glError("FrameBuffer::bindShaders", 119);
 }
 
 void FrameBuffer::toggle(){

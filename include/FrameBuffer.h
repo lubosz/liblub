@@ -31,6 +31,7 @@ private:
 	bool useFBO;
 
 	void printFramebufferInfo();
+	void bindShaders(ShaderProgram * shaderProgram);
 	string getTextureParameters(GLuint id);
 	string getRenderbufferParameters(GLuint id);
 	string convertInternalFormatToString(GLenum format);

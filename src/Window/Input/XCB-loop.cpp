@@ -8,6 +8,7 @@
 #include "Input.h"
 #include "Camera.h"
 #include "MediaLayer.h"
+#include "RenderEngine.h"
 
 Input::Input(xcb_connection_t *connection) {
 	this->connection = connection;
@@ -122,6 +123,9 @@ void Input::eventLoop(){
 					break;
 				case XK_f:
 					MediaLayer::Instance().toggleFullScreen();
+					break;
+				case XK_p:
+					RenderEngine::Instance().toggleFBO();
 					break;
 				default:
 					pressedKeys.push_back(pressedKey);
