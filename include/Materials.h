@@ -407,9 +407,9 @@ public:
 
 class PhongColorMat : public Material {
 public:
-	PhongColorMat(QVector3D color){
+	PhongColorMat(QVector3D color, string texture){
 		init();
-		addTexture("Earth/MarsMap_2500x1250.jpg","diffuseTexture");
+		addTexture(texture,"diffuseTexture");
 		attachVertFrag("Color/PhongColor");
 		diffuseColor = color.toVector4D();
 		done();

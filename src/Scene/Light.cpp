@@ -74,7 +74,8 @@ void Light::bindShaderInit(ShaderProgram * shaderProgram){
 	glUniform1f(glGetUniformLocation(program, "quadraticAttenuation"), .01);
 
 	//spot
-	glUniform1f(glGetUniformLocation(program, "spotCosCutoff"), .9);
+	glUniform1f(glGetUniformLocation(program, "spotOuterAngle"), .9);
+	glUniform1f(glGetUniformLocation(program, "spotInnerAngle"), .8);
 	glUniform3f(glGetUniformLocation(program, "spotDirection"), 5, 0, -5);
 }
 

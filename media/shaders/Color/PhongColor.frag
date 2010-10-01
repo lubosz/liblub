@@ -23,13 +23,15 @@ uniform vec4 specularMaterialColor;
 uniform sampler2D diffuseTexture;
 
 //spot
-uniform float spotCosCutoff;
+uniform float spotInnerAngle;
+uniform float spotOuterAngle;
 uniform vec3 spotDirectionView;
 
 //attenuation
 uniform float constantAttenuation;
 uniform float linearAttenuation;
 uniform float quadraticAttenuation;
+
 
 vec4 diffuseColor(float lambertTerm){
 
@@ -58,15 +60,15 @@ void main(){
 			(quadraticAttenuation * d * d) 
 	);
 
-
 	//ambient
 	finalColor = ambientSceneColor;
 								
-	vec3 L = normalize(lightDirection.xyz);
+	vec3 L = normalize(lightDirection.xyz);	
 
-	vec3 D = normalize(spotDirectionView);
-
-if (dot(-L, spotDirectionView) > spotCosCutoff){
+	//Spot	
+	float spotCurAngle = dot(-L, spotDirectionView);
+	float spotAngleDiff =  spotOuterAngle - spotInnerAngle;
+	float spot = clamp((spotCurAngle - spotOuterAngle) / spotAngleDiff, 0.0, 1.0);
 
 	vec3 N = normalize(normalView);
 	
@@ -77,16 +79,15 @@ if (dot(-L, spotDirectionView) > spotCosCutoff){
 	if(lambertTerm > 0.0)
 	{
 		//diffuse
-		finalColor += diffuseColor(lambertTerm) * att;
+		finalColor += diffuseColor(lambertTerm) * att * spot;
 		
 		//specular
 		vec3 E = normalize(-positionView.xyz);
 		vec3 R = reflect(-L, N);
 
 		float specular = pow( max(dot(R, E), 0.0), shininess );
-		finalColor += specularColor(specular) * att;
+		finalColor += specularColor(specular) * att * spot;
 	}
-}
 			
 } 
 

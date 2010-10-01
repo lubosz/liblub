@@ -16,7 +16,7 @@ public:
 		light->setDirection(QVector3D(1,-5,-1));
 		SceneGraph::Instance().light = light;
 
-		Material * phongMaterial = new PhongColorMat(QVector3D(1,1,1));
+		Material * phongMaterial = new PhongColorMat(QVector3D(1,1,1), "Paper_Texture_by_Spiteful_Pie_Stock.jpg");
 		SceneGraph::Instance().addNode(new Node("Monkey",{5,0,-5}, 1, MeshFactory::Instance().load("monkeyBig.obj"),phongMaterial));
 		SceneGraph::Instance().addNode(new Node("Sphere",{0,3,-5}, 1, MeshFactory::Instance().load("earth.obj"),phongMaterial));
 		SceneGraph::Instance().addNode(new Node("Radio",{0,-5,-5}, .5, MeshFactory::Instance().load("radio.obj"),phongMaterial));
