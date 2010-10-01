@@ -1,10 +1,9 @@
 #version 330 core
 
-//precision highp float;
+precision highp float;
 
 in vec4 positionView;
 in vec3 normalView;
-in vec2 uv;
 
 out vec4 finalColor;
 
@@ -14,13 +13,16 @@ uniform vec4 lightColor;
 
 //ambient
 uniform vec4 ambientSceneColor;
-//diffuse
-uniform vec4 diffuseMaterialColor;
 //specular
 uniform float shininess;
 uniform vec4 specularMaterialColor;
 
+#ifdef useDiffuseTexture
+in vec2 uv;
 uniform sampler2D diffuseTexture;
+#else
+uniform vec4 diffuseMaterialColor;
+#endif
 
 //spot
 uniform float spotInnerAngle;
@@ -35,8 +37,12 @@ uniform float quadraticAttenuation;
 
 vec4 diffuseColor(float lambertTerm){
 
-	return	diffuseMaterialColor * 
-			texture(diffuseTexture, uv) *
+	return	
+#ifdef useDiffuseTexture
+		texture(diffuseTexture, uv) *
+#else
+		diffuseMaterialColor *
+#endif
 			lightColor * 
 			lambertTerm;
 }

@@ -9,12 +9,24 @@
 #include <stdio.h>
 #include <iostream>
 #include "Shader.h"
+#include <boost/foreach.hpp>
 
 Shader::Shader(string fileName, GLenum type) {
 
 	cout << "Creating Shader " << fileName << "\n";
 	this->fileName = fileName;
 	this->type = type;
+
+	loadAndCompile();
+
+}
+
+Shader::Shader(string fileName, GLenum type, const vector<string> & defines) {
+
+	cout << "Creating Shader " << fileName << "\n";
+	this->fileName = fileName;
+	this->type = type;
+	this->defines = defines;
 
 	loadAndCompile();
 
@@ -33,8 +45,23 @@ void Shader::loadAndCompile(){
     /* Assign our handles a "name" to new shader objects */
     shader = glCreateShader(type);
 
+    //set define
+
+    string defineString = "";
+
+    BOOST_FOREACH( string define, defines )
+    {
+    	defineString += "#define " + define + "\n";
+    }
+    //defines += "#define useDiffuseTexture\n";
+    const GLchar *sources[2] = { defineString.c_str(), source };
+    glShaderSource(shader, 2, sources, NULL);
+
+
+
+
     /* Associate the source code buffers with each handle */
-    glShaderSource(shader, 1, (const GLchar**)&source, 0);
+    //glShaderSource(shader, 1, (const GLchar**)&source, 0);
 
     /* Compile our shader objects */
     glCompileShader(shader);

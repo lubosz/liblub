@@ -55,6 +55,13 @@ void ShaderProgram::attachShader(string fileName, GLenum type){
 	glAttachShader(program, shader->getReference());
 }
 
+void ShaderProgram::attachShader(string fileName, GLenum type, const vector<string> & defines){
+    /* Attach our shaders to our program */
+	Shader * shader = new Shader(fileName, type, defines);
+	shaders.push_back(shader);
+	glAttachShader(program, shader->getReference());
+}
+
 void ShaderProgram::detachShader(Shader *shader){
 	glDetachShader(program, shader->getReference());
 	shaders.remove(shader);

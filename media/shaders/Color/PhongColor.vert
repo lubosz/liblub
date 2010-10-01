@@ -1,6 +1,6 @@
 #version 330 core
 
-//precision highp float;
+precision highp float;
 
 in vec3 in_Vertex;
 in vec3 in_Normal;
@@ -16,10 +16,11 @@ uniform mat3 NormalMatrix;
 
 void main() 
 { 
-
+#ifdef useDiffuseTexture
+	uv = in_Uv;
+#endif
 	positionView = MVMatrix * vec4(in_Vertex,1);
 	normalView = NormalMatrix * in_Normal; 
 	gl_Position = MVPMatrix * vec4(in_Vertex,1);
-	uv = in_Uv;
 
 }

@@ -34,6 +34,7 @@ protected:
 	void addTextureCube(string file,string name);
 
 	void attachVertFrag(string file);
+	void attachVertFrag(string file, const vector<string> & defines);
 	void attachVertGeom(string file);
 	void attachVertFragGeom(string file);
 

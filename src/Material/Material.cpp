@@ -40,6 +40,10 @@ void Material::attachVertFrag(string file) {
 	shaderProgram->attachShader(file + ".vert", GL_VERTEX_SHADER);
 	shaderProgram->attachShader(file + ".frag", GL_FRAGMENT_SHADER);
 }
+void Material::attachVertFrag(string file, const vector<string> & defines){
+	shaderProgram->attachShader(file + ".vert", GL_VERTEX_SHADER, defines);
+	shaderProgram->attachShader(file + ".frag", GL_FRAGMENT_SHADER, defines);
+}
 
 void Material::attachVertGeom(string file) {
 	shaderProgram->attachShader(file + ".vert", GL_VERTEX_SHADER);

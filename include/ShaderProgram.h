@@ -21,6 +21,7 @@ class ShaderProgram {
 public:
 	ShaderProgram();
 	void attachShader(string fileName, GLenum type);
+	void attachShader(string fileName, GLenum type, const vector<string> & defines);
 	void use();
 	void bindAttribIfUnbound(string name);
 	void bindAttrib(string name);

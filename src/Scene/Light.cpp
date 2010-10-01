@@ -63,7 +63,7 @@ void Light::bindShaderUpdate(ShaderProgram * shaderProgram){
 }
 
 void Light::bindShaderInit(ShaderProgram * shaderProgram){
-	shaderProgram->setUniform(QVector4D(0.8, 0.8, 0.8,1.0), "lightColor");
+	shaderProgram->setUniform(QVector4D(0.9, 0.9, 0.9,1.0), "lightColor");
 
 	GLuint program = shaderProgram->getReference();
 	//glUniform4f(glGetUniformLocation(program, "lightColor"), 0.8, 0.8, 0.8,1.0);
@@ -71,11 +71,11 @@ void Light::bindShaderInit(ShaderProgram * shaderProgram){
 	//attenuation
 	glUniform1f(glGetUniformLocation(program, "constantAttenuation"), 0);
 	glUniform1f(glGetUniformLocation(program, "linearAttenuation"), 0);
-	glUniform1f(glGetUniformLocation(program, "quadraticAttenuation"), .01);
+	glUniform1f(glGetUniformLocation(program, "quadraticAttenuation"), .005);
 
 	//spot
-	glUniform1f(glGetUniformLocation(program, "spotOuterAngle"), .9);
-	glUniform1f(glGetUniformLocation(program, "spotInnerAngle"), .8);
+	glUniform1f(glGetUniformLocation(program, "spotOuterAngle"), 0.9);
+	glUniform1f(glGetUniformLocation(program, "spotInnerAngle"), 0.6);
 	glUniform3f(glGetUniformLocation(program, "spotDirection"), 5, 0, -5);
 }
 

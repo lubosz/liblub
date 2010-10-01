@@ -14,7 +14,7 @@ MengerSponge::MengerSponge(unsigned recursion) {
 	//material = new StarMat();
 	//material = new BrickMaterial();
 	//material = new NormalColorMat();
-	material = new PhongColorMat(QVector3D(1,1,1), "bunny.png");
+	material = new PhongColorMat(QVector3D(1,1,1));
 	//material = new TextureMaterial("Paper_Texture_by_Spiteful_Pie_Stock.jpg");
 	//makeCube();
 	makeSponge(recursion,{0,0,0}, 1.0f);

@@ -407,13 +407,11 @@ public:
 
 class PhongColorMat : public Material {
 public:
-	PhongColorMat(QVector3D color, string texture){
+	PhongColorMat(QVector3D color){
 		init();
-		addTexture(texture,"diffuseTexture");
 		attachVertFrag("Color/PhongColor");
 		diffuseColor = color.toVector4D();
 		done();
-
   }
 	void uniforms(){
 		GLuint program = shaderProgram->getReference();
@@ -423,8 +421,6 @@ public:
 		glUniform4f(glGetUniformLocation(program, "ambientSceneColor"), 0.0, 0.0, 0.0,1.0);
 
 		//diffuse
-		//glUniform4f(glGetUniformLocation(program, "diffuseMaterialColor"), 0.3, 0.9, 0.2,1.0);
-		//glUniform4f(glGetUniformLocation(program, "diffuseMaterialColor"), 1.0, 1.0, 1.0,1.0);
 		shaderProgram->setUniform(diffuseColor, "diffuseMaterialColor");
 
 		//specular
@@ -433,6 +429,29 @@ public:
 	}
 
 };
+
+class PhongTexMat : public Material {
+public:
+	PhongTexMat(string texture){
+		init();
+		addTexture(texture,"diffuseTexture");
+		attachVertFrag("Color/PhongColor", {"useDiffuseTexture"});
+		done();
+  }
+	void uniforms(){
+		GLuint program = shaderProgram->getReference();
+
+		//ambient
+		glUniform4f(glGetUniformLocation(program, "lightColor"), 0.8, 0.8, 0.8,1.0);
+		glUniform4f(glGetUniformLocation(program, "ambientSceneColor"), 0.0, 0.0, 0.0,1.0);
+
+		//specular
+		glUniform4f(glGetUniformLocation(program, "specularMaterialColor"), 0.5, 0.5, 0.5,1.0);
+		glUniform1f(glGetUniformLocation(program, "shininess"), 4.3);
+	}
+
+};
+
 
 class WhiteMat : public Material {
 public:
