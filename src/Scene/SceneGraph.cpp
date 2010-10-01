@@ -28,7 +28,7 @@ void SceneGraph::bindShaders(ShaderProgram * shaderProgram){
 	modelMatrix = Camera::Instance().getProjection() * modelMatrix;
 
 	shaderProgram->setUniform(modelMatrix,"MVPMatrix");
-	light->bindShader(shaderProgram);
+	light->bindShaderUpdate(shaderProgram);
 
     glError("SceneGraph::bindShaders",53);
 }

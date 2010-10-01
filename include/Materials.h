@@ -407,10 +407,11 @@ public:
 
 class PhongColorMat : public Material {
 public:
-	PhongColorMat(){
+	PhongColorMat(QVector3D color){
 		init();
 		addTexture("Earth/MarsMap_2500x1250.jpg","diffuseTexture");
 		attachVertFrag("Color/PhongColor");
+		diffuseColor = color.toVector4D();
 		done();
 
   }
@@ -423,21 +424,12 @@ public:
 
 		//diffuse
 		//glUniform4f(glGetUniformLocation(program, "diffuseMaterialColor"), 0.3, 0.9, 0.2,1.0);
-		glUniform4f(glGetUniformLocation(program, "diffuseMaterialColor"), 1.0, 1.0, 1.0,1.0);
+		//glUniform4f(glGetUniformLocation(program, "diffuseMaterialColor"), 1.0, 1.0, 1.0,1.0);
+		shaderProgram->setUniform(diffuseColor, "diffuseMaterialColor");
 
 		//specular
 		glUniform4f(glGetUniformLocation(program, "specularMaterialColor"), 0.5, 0.5, 0.5,1.0);
 		glUniform1f(glGetUniformLocation(program, "shininess"), 4.3);
-
-		//spot
-		glUniform1f(glGetUniformLocation(program, "spotCosCutoff"), .9);
-		glUniform3f(glGetUniformLocation(program, "spotDirection"), 5, 0, -5);
-
-		//attenuation
-		glUniform1f(glGetUniformLocation(program, "constantAttenuation"), 0);
-		glUniform1f(glGetUniformLocation(program, "linearAttenuation"), 0);
-		glUniform1f(glGetUniformLocation(program, "quadraticAttenuation"), .01);
-
 	}
 
 };

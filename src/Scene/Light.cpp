@@ -49,10 +49,10 @@ void Light::setPosition(QVector4D & position)
 
 void Light::update(){
 	SceneGraph::Instance().setPosition("Light", position.toVector3D());
-    cout << "Light: " << position.x() <<" "<< position.y()<<" " << position.z() << "\n";
+    //cout << "Light: " << position.x() <<" "<< position.y()<<" " << position.z() << "\n";
 }
 
-void Light::bindShader(ShaderProgram * shaderProgram){
+void Light::bindShaderUpdate(ShaderProgram * shaderProgram){
 	QVector4D lightPositionView = Camera::Instance().getView() * position;
 
     shaderProgram->setUniform(lightPositionView, "lightPositionView");
@@ -60,6 +60,22 @@ void Light::bindShader(ShaderProgram * shaderProgram){
     spotDirectionView.normalize();
     shaderProgram->setUniform(spotDirectionView, "spotDirectionView");
     //shaderProgram->setUniform(direction, "spotDirectionView");
+}
+
+void Light::bindShaderInit(ShaderProgram * shaderProgram){
+	shaderProgram->setUniform(QVector4D(0.8, 0.8, 0.8,1.0), "lightColor");
+
+	GLuint program = shaderProgram->getReference();
+	//glUniform4f(glGetUniformLocation(program, "lightColor"), 0.8, 0.8, 0.8,1.0);
+
+	//attenuation
+	glUniform1f(glGetUniformLocation(program, "constantAttenuation"), 0);
+	glUniform1f(glGetUniformLocation(program, "linearAttenuation"), 0);
+	glUniform1f(glGetUniformLocation(program, "quadraticAttenuation"), .01);
+
+	//spot
+	glUniform1f(glGetUniformLocation(program, "spotCosCutoff"), .9);
+	glUniform3f(glGetUniformLocation(program, "spotDirection"), 5, 0, -5);
 }
 
 void Light::moveLeft(){

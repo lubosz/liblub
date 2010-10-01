@@ -5,8 +5,10 @@
  *      Author: bmonkey
  */
 #include "Material.h"
+#include "SceneGraph.h"
 
 void Material::init() {
+	diffuseColor = QVector4D();
 	shaderProgram = new ShaderProgram();
 }
 
@@ -81,6 +83,7 @@ void Material::initUniforms() {
 				}
 
 	uniforms();
+    SceneGraph::Instance().light->bindShaderInit(shaderProgram);
 	glError("Material", 90);
 
 }

@@ -22,7 +22,9 @@ public:
     void setDirection(QVector3D direction);
     void setPosition(QVector4D& position);
     void update();
-    void bindShader(ShaderProgram * shaderProgram);
+    void bindShaderUpdate(ShaderProgram * shaderProgram);
+    void bindShaderInit(ShaderProgram * shaderProgram);
+
     void moveLeft();
     void moveRight();
     void moveUp();

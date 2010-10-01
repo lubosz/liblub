@@ -31,8 +31,8 @@ public:
 
 	void setUniform(const QMatrix3x3 & matrix, string name);
 	void setUniform(const QMatrix4x4 & matrix, string name);
-	void setUniform(const QVector3D & matrix, string name);
-	void setUniform(const QVector4D & matrix, string name);
+	void setUniform(const QVector3D & vector, string name);
+	void setUniform(const QVector4D & vector, string name);
 private:
 	/* This is a handle to the shader program */
 	GLuint program;

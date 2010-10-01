@@ -26,6 +26,7 @@ public:
 	void done();
 protected:
 	ShaderProgram * shaderProgram;
+	QVector4D diffuseColor;
 	void init();
 
 
@@ -38,6 +39,7 @@ protected:
 
 
 private:
+
 	vector<Texture*> textures;
 	virtual void uniforms() = 0;
 	void defaultAttribs();
