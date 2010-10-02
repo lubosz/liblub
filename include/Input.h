@@ -21,15 +21,17 @@
 	#include <list>
 #endif
 
-#ifdef XI2
-#include <X11/extensions/XInput2.h>
+#ifdef WITH_SDL
+	#define SDL_NO_COMPAT
+	#include "SDL.h"
 #endif
+
 
 class Input {
 	public:
 
-		#ifdef XI2
-			Input(Display *display, Window window);
+		#ifdef WITH_SDL
+			Input();
 		#else
 			Input(xcb_connection_t *connection);
 		#endif
@@ -63,8 +65,8 @@ class Input {
 			void checkKey(xcb_keysym_t pressedKey);
 		#endif
 
-		#ifdef XI2
-			Display *display;
-		    int opcode;
-		#endif
+#ifdef WITH_SDL
+		Uint8 *keystate;
+		SDL_Event event;
+#endif
 };

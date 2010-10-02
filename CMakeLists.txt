@@ -76,6 +76,7 @@ set(SOURCES
 IF(WITH_SDL)
 	ADD_DEFINITIONS(-DWITH_SDL)
 	set(SOURCES ${SOURCES} ${SRC_DIR}/Window/SDL.cpp)
+	set(SOURCES ${SOURCES} ${SRC_DIR}/Window/Input/SDL-loop.cpp)
 ELSE()
 	set(SOURCES ${SOURCES} ${SRC_DIR}/Window/XCB.cpp)
 	#set(SOURCES ${SOURCES} ${SRC_DIR}/Window/Input/XCB-events.cpp)

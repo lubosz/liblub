@@ -27,6 +27,7 @@
 class MediaLayer : public Singleton<MediaLayer>{
 
 private:
+    Input * input;
 
 #ifdef WITH_SDL
 	Uint32 fps_lasttime; //the last recorded time.
@@ -36,8 +37,8 @@ private:
 	SDL_Window *mainWindow;
 	SDL_GLContext mainContext; /* Our opengl context handle */
     SDL_DisplayMode fsmode;
-	SDL_Event event;
-	Uint8 *keystate;
+
+
 #else
 	unsigned fps_lasttime; //the last recorded time.
 	unsigned fps_current; //the current FPS.
@@ -60,7 +61,7 @@ private:
     GLXFBConfig fb_config;
 
     //Input
-    Input * input;
+
     uint32_t eventmask;
 
     void setWindowTitle(string title);
