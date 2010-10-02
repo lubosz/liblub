@@ -17,6 +17,10 @@ public:
 		SceneGraph::Instance().light = light;
 
 		MengerSponge * sponge = new MengerSponge(4);
+
+		Material * material = new PhongColorMat(QVector3D(1,1,1));
+	    SceneGraph::Instance().addNode(new Node("", QVector3D(0,0,-10), 2.0, sponge->getMesh(),material));
+
 	}
 };
 

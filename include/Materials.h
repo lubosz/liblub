@@ -38,6 +38,22 @@ public:
 	}
 };
 
+class ShadowMap : public Material {
+public:
+	ShadowMap(){
+		init();
+		attachVertFrag("Shadow/shadow");
+		done();
+  }
+	void uniforms(){
+		cout << "inititalizing brick uniforms.\n";
+		glUniform3f(glGetUniformLocation(shaderProgram->getReference(), "BrickColor"), 1.0, 0.3, 0.2);
+		glUniform3f(glGetUniformLocation(shaderProgram->getReference(), "MortarColor"), 0.85, 0.86, 0.84);
+		glUniform2f(glGetUniformLocation(shaderProgram->getReference(), "BrickSize"), 0.30, 0.15);
+		glUniform2f(glGetUniformLocation(shaderProgram->getReference(), "BrickPct"), 0.90, 0.85);
+	}
+};
+
 class TextureMaterial : public Material {
 public:
 	TextureMaterial(string texture){

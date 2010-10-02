@@ -14,7 +14,6 @@ class MengerSponge {
 
 private:
 	Mesh * mesh;
-	Material * material;
 
 	vector<GLfloat> oneMeshVertices;
 	vector<GLfloat> oneMeshUVCoords;
@@ -28,4 +27,6 @@ private:
 public:
 	MengerSponge(unsigned recursion);
 	virtual ~MengerSponge();
+
+	Mesh * getMesh();
 };

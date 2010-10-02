@@ -1,4 +1,5 @@
 #include "Application.h"
+#include "MengerSponge.h"
 
 class Example : public Application {
 
@@ -37,6 +38,11 @@ public:
 		Material * starMat = new StarMat();
 		SceneGraph::Instance().addNode(new Node("",{0,-50,-50},MeshFactory::Instance().stars(),starMat));
 		//SceneGraph::Instance().addNode(new Node("Spiral",{0,0,0}, MeshFactory::Instance().spiral(),starMat));
+
+		MengerSponge * sponge = new MengerSponge(3);
+
+		Material * material = new PhongColorMat(QVector3D(.5,1,1));
+	    SceneGraph::Instance().addNode(new Node("", QVector3D(10,0,-10), 3.0, sponge->getMesh(),material));
 	}
 };
 

@@ -14,7 +14,7 @@ MengerSponge::MengerSponge(unsigned recursion) {
 	//material = new StarMat();
 	//material = new BrickMaterial();
 	//material = new NormalColorMat();
-	material = new PhongColorMat(QVector3D(1,1,1));
+
 	//material = new TextureMaterial("Paper_Texture_by_Spiteful_Pie_Stock.jpg");
 	//makeCube();
 	makeSponge(recursion,{0,0,0}, 1.0f);
@@ -43,7 +43,8 @@ MengerSponge::MengerSponge(unsigned recursion) {
     //mesh->addBuffer(oneMeshUVCoords,2,"in_Uv");
     mesh->addElementBuffer(oneMeshIndices);
     mesh->setDrawType(GL_TRIANGLES);
-    SceneGraph::Instance().addNode(new Node("", QVector3D(0,0,-10), 10.0, mesh,material));
+
+
 
 
 }
@@ -288,4 +289,8 @@ void MengerSponge::makeCube(){
     mesh->addElementBuffer(indices);
     mesh->setDrawType(GL_TRIANGLES);
     //mesh->setDrawType(GL_LINES);
+}
+
+Mesh * MengerSponge::getMesh(){
+	return mesh;
 }

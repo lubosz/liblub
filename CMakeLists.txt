@@ -92,19 +92,19 @@ ELSE()
 	target_link_libraries(lub Xi X11-xcb xcb-atom xcb-event xcb-keysyms)
 ENDIF()
 
-add_executable(planets ${APP_DIR}/planets.cpp)
-target_link_libraries(planets lub)
-add_executable(buffer ${APP_DIR}/buffer.cpp)
-target_link_libraries(buffer lub)
-add_executable(nice ${APP_DIR}/nice.cpp)
-target_link_libraries(nice lub)
-add_executable(sponge ${APP_DIR}/sponge.cpp)
-target_link_libraries(sponge lub)
-add_executable(waterplanet ${APP_DIR}/waterplanet.cpp)
-target_link_libraries(waterplanet lub)
-add_executable(csm ${APP_DIR}/csm.cpp)
-target_link_libraries(csm lub)
-add_executable(spiral ${APP_DIR}/spiral.cpp)
-target_link_libraries(spiral lub)
-add_executable(phong ${APP_DIR}/phong.cpp)
-target_link_libraries(phong lub)
+set(EXAMPLES
+    planets
+    buffer
+    nice
+    sponge
+    waterplanet
+    csm
+    spiral
+    phong
+    shadow
+)
+
+foreach(example ${EXAMPLES})
+  add_executable(${example} ${APP_DIR}/${example}.cpp)
+  target_link_libraries(${example} lub)
+endforeach(example)
