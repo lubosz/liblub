@@ -120,8 +120,7 @@ public:
 
 		glUniform1f(glGetUniformLocation(program, "depth"), 0.1);
 
-		signed int texture_size = 512;
-		glUniform1f(glGetUniformLocation(program, "texsize"), static_cast<float>(texture_size));
+		glUniform1f(glGetUniformLocation(program, "texsize"), 512);
 		glUniform1f(glGetUniformLocation(program, "csm_gain"), 1.0);
 		glUniform1f(glGetUniformLocation(program, "csm_offset"), 0.1);
 		glUniform1f(glGetUniformLocation(program, "linearAttenuation"), 1.0);
@@ -152,7 +151,7 @@ public:
 		init();
 		addTexture("bunny.png","BaseImage");
 		shaderProgram->attachShader("Texture/texture.vert", GL_VERTEX_SHADER);
-		shaderProgram->attachShader("Post/smoothing.frag", GL_FRAGMENT_SHADER);
+		shaderProgram->attachShader("Post/old/smoothing.frag", GL_FRAGMENT_SHADER);
 		done();
   }
 	void uniforms(){
@@ -167,77 +166,13 @@ public:
 	}
 };
 
-
-class BumpMaterial : public Material {
-public:
-	BumpMaterial(string name){
-		init();
-		addTexture(name+".jpg","diffuseTexture");
-		addTexture(name+"-normal.png","normalTexture");
-		attachVertFrag("Bump/noTangentBump");
-		done();
-  }
-	void uniforms(){
-		GLuint program = shaderProgram->getReference();
-
-		glUniform1i(glGetUniformLocation(program, "Mode"), 1);
-
-	}
-};
-
-class PlanetMat : public Material {
-public:
-	PlanetMat(string name){
-		init();
-		addTexture(name+".jpg","diffuseTexture");
-		addTexture(name+"-normal.png","normalTexture");
-		attachVertFrag("Space/Planet");
-		done();
-  }
-	void uniforms(){
-		GLuint program = shaderProgram->getReference();
-
-		glUniform1i(glGetUniformLocation(program, "Mode"), 1);
-
-	}
-};
-
-class BumpMaterial2 : public Material {
-public:
-	BumpMaterial2(){
-		init();
-		addTexture("bunny.png","colorMap");
-		addTexture("bunny-bump.png","normalMap");
-		addTexture("bunny-gloss.png","glossMap");
-		attachVertFrag("Bump/noTangentBump2");
-		done();
-  }
-	void uniforms(){
-		GLuint program = shaderProgram->getReference();
-
-
-		glUniform1f(glGetUniformLocation(program, "glossMax"), 1.0);
-		glUniform1f(glGetUniformLocation(program, "glossNoise"), 1.0);
-
-
-		glUniform4f(glGetUniformLocation(program, "glossColor"), 1.0, 1.0, 1.0, 1.0);
-
-		glUniform4f(glGetUniformLocation(program, "LightAmbient"), 1.0, 1.0, 1.0, 1.0);
-		glUniform4f(glGetUniformLocation(program, "LightDiffuse"), 1.0, 1.0, 1.0, 1.0);
-		glUniform4f(glGetUniformLocation(program, "LightSpecular"), 1.0, 1.0, 1.0, 1.0);
-		glUniform4f(glGetUniformLocation(program, "MaterialDiffuse"), 0.9, 0.8, 1.0, 1.0);
-		glUniform4f(glGetUniformLocation(program, "MaterialSpecular"), 1.0, 1.0, 1.0, 1.0);
-
-	}
-};
-
 class ReliefMat : public Material {
 public:
 	ReliefMat(){
 		init();
 		addTexture("cone/collage_base.jpg","texmap");
 		addTexture("cone/collage_step.png","reliefmap");
-		shaderProgram->attachShader("Common/shared.vert", GL_VERTEX_SHADER);
+		shaderProgram->attachShader("Bump/bump.vert", GL_VERTEX_SHADER);
 		shaderProgram->attachShader("Bump/relief.frag", GL_FRAGMENT_SHADER);
 		done();
   }
@@ -363,33 +298,6 @@ public:
 	void uniforms(){}
 };
 
-class BigEarthMat : public Material {
-public:
-	BigEarthMat(){
-		init();
-		addTexture("Earth/EarthMap_2500x1250.jpg","myTexture");
-		attachVertFrag("Texture/texture");
-		done();
-
-  }
-	void uniforms(){}
-
-};
-
-
-class MarsMat : public Material {
-public:
-	MarsMat(){
-		init();
-		addTexture("Earth/MarsMap_2500x1250.jpg","myTexture");
-		attachVertFrag("Texture/texture");
-		done();
-
-  }
-	void uniforms(){}
-
-};
-
 class RemeshMat : public Material {
 public:
 	RemeshMat(){
@@ -400,19 +308,6 @@ public:
 		addTexture("remesh/multi.tga","displacement_texture");
 		//attachVertGeom("Remesh/render");
 		attachVertFragGeom("Remesh/render2");
-		done();
-
-  }
-	void uniforms(){}
-
-};
-
-class PhongTextureMat : public Material {
-public:
-	PhongTextureMat(){
-		init();
-		addTexture("Earth/MarsMap_2500x1250.jpg","myTexture");
-		attachVertFrag("Texture/PhongTexture");
 		done();
 
   }
@@ -566,23 +461,6 @@ public:
   }
 	void uniforms(){}
 
-};
-
-class PhongTextureMat2 : public Material {
-public:
-	PhongTextureMat2(){
-		init();
-		addTexture("Paper_Texture_by_Spiteful_Pie_Stock.jpg","texture");
-		attachVertFrag("Texture/PhongTexture2");
-		done();
-
-  }
-	void uniforms(){
-		GLuint program = shaderProgram->getReference();
-
-		glUniform1f(glGetUniformLocation(program, "shininess"), 0.8);
-		glUniform4f(glGetUniformLocation(program, "specular"), 0.9, 0.9, 0.9, 1.0);
-	}
 };
 
 class FogMaterial : public Material {

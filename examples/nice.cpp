@@ -16,6 +16,7 @@ public:
 		SceneGraph::Instance().light = light;
 
 		vector<Material*> textureMats = {
+
 				new TextureMaterial("bunny.png"),
 				new MultiTextureMaterial(),
 				//new EarthMaterial(),
@@ -23,10 +24,12 @@ public:
 				new NormalColorMat(),
 				new BrickMaterial(),
 				new ProcBumpMaterial(),
-				new OceanMat()
+				new OceanMat(),
+
+				new MandelMat()
 		};
 		SceneGraph::Instance().meshPlane("monkeySmooth.obj", 10, 3, textureMats);
-		SceneGraph::Instance().addNode(MeshFactory::Instance().stars(),{0,-50,-50},new StarMat());
+		SceneGraph::Instance().addNode(new Node("",{0,-50,-50},MeshFactory::Instance().stars(),new StarMat()));
 	}
 };
 

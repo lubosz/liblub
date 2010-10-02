@@ -18,7 +18,7 @@ public:
 				new TextureMaterial("bunny.png")
 		);
 		SceneGraph::Instance().addNode(plane);
-		SceneGraph::Instance().addNode(MeshFactory::Instance().spiral(),{0,0,0},new StarMat());
+		SceneGraph::Instance().addNode(new Node("Spiral",{0,0,0}, MeshFactory::Instance().spiral(),new StarMat()));
 	}
 };
 

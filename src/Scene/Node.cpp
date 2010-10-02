@@ -6,6 +6,7 @@
  */
 
 #include "Node.h"
+#include "MeshFactory.h"
 
 Node::Node(string name, const QVector3D& position, Mesh * mesh) {
     this->name = name;
@@ -28,6 +29,14 @@ Node::Node(string name, const QVector3D& position, float size, Mesh * mesh, Mate
     this->mesh = mesh;
     this->material = material;
     this->size = size;
+}
+
+Node::Node(string name, const QVector3D& position, string mesh, Material * material){
+    this->name = name;
+    this->position = position;
+    this->mesh = MeshFactory::Instance().loadAssimp(mesh);
+    this->material = material;
+    this->size = 1;
 }
 
 void Node::setMesh(Mesh *mesh)

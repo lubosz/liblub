@@ -20,7 +20,7 @@ public:
 		SceneGraph::Instance().addNode(plane,{-2,0,0}, material);
 		SceneGraph::Instance().addNode(plane,{0,0,0}, material1);
 		*/
-		SceneGraph::Instance().addNode(plane,{0,0,0}, material2);
+		SceneGraph::Instance().addNode(new Node("",{0,0,0},plane, material2));
 	}
 };
 

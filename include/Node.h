@@ -26,6 +26,7 @@ private:
 public:
 	Node(string name, const QVector3D& position, Mesh * mesh);
 	Node(string name, const QVector3D& position, Mesh * mesh, Material * material);
+	Node(string name, const QVector3D& position, string mesh, Material * material);
 	Node(string name, const QVector3D& position, float size, Mesh * mesh, Material * material);
 	virtual ~Node();
 

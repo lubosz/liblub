@@ -78,45 +78,29 @@ void SceneGraph::initUniforms(){
 
 }
 
-void SceneGraph::addNode(string name, const QVector3D& position, Mesh * mesh){
-	sceneNodes.push_back(new Node(name, position, mesh));
-}
-
 void SceneGraph::addNode(Node * node){
 	sceneNodes.push_back(node);
 }
 
-void SceneGraph::addNode(string name, string file, const QVector3D& position, Material * material){
-	addNode(name,position, MeshFactory::Instance().load(file),material);
-}
-
-void SceneGraph::addNode(string file, const QVector3D& position, Material * material){
-	addNode(file, file, position, material);
-}
-
-void SceneGraph::addNode(Mesh * mesh, const QVector3D& position, Material * material){
-	addNode("blubb",position, mesh, material);
-}
-
 void SceneGraph::meshCube(string file, float cubeSize, float step, Material * material){
-	Mesh * mesh = MeshFactory::Instance().load(file);
+	Mesh * mesh = MeshFactory::Instance().loadAssimp(file);
 
 	for (float x = -cubeSize/2.0; x<cubeSize/2.0; x+=step ){
 		for (float y = -cubeSize/2.0; y<cubeSize/2.0; y+=step ){
 			for (float z = -cubeSize/2.0; z<cubeSize/2.0; z+=step ){
-				addNode(mesh,{x,y,z}, material);
+				addNode(new Node("",{x,y,z}, mesh,material));
 			}
 		}
 	}
 }
 
 void SceneGraph::meshCube(string file, float cubeSize, float step, vector<Material*> materials){
-	Mesh * mesh = MeshFactory::Instance().load(file);
+	Mesh * mesh = MeshFactory::Instance().loadAssimp(file);
 	unsigned position = 0;
 	for (float x = -cubeSize/2.0; x<cubeSize/2.0; x+=step ){
 		for (float y = -cubeSize/2.0; y<cubeSize/2.0; y+=step ){
 			for (float z = -cubeSize/2.0; z<cubeSize/2.0; z+=step ){
-				addNode(mesh,{z,x,y}, materials.at(position%materials.size()));
+				addNode(new Node("",{z,x,y}, mesh, materials.at(position%materials.size())));
 				position++;
 			}
 		}
@@ -124,11 +108,11 @@ void SceneGraph::meshCube(string file, float cubeSize, float step, vector<Materi
 }
 
 void SceneGraph::meshPlane(string file, float cubeSize, float step, vector<Material*> materials){
-	Mesh * mesh = MeshFactory::Instance().load(file);
+	Mesh * mesh = MeshFactory::Instance().loadAssimp(file);
 	unsigned position = 0;
 	for (float x = -cubeSize/2.0; x<cubeSize/2.0; x+=step ){
 		for (float y = -cubeSize/2.0; y<cubeSize/2.0; y+=step ){
-			addNode(mesh,{x,y,-5+x}, materials.at(position%materials.size()));
+			addNode(new Node("",{x,y,-5+x}, mesh, materials.at(position%materials.size())));
 			position++;
 		}
 	}
