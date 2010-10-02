@@ -14,7 +14,7 @@
 Light::Light(QVector4D position) {
 	moveSensitivity = .1;
 	this->position = position;
-	SceneGraph::Instance().addNode("Light",position.toVector3D(), MeshFactory::Instance().lamp(),new WhiteMat());
+	SceneGraph::Instance().addNode(new Node("Light",position.toVector3D(), MeshFactory::Instance().lamp(),new WhiteMat()));
 }
 
 Light::~Light() {

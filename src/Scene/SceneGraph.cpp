@@ -42,15 +42,6 @@ void SceneGraph::setPosition(string nodeName, const QVector3D& position){
     }
 }
 
-void SceneGraph::addNode(string name, const QVector3D& position, Mesh * mesh, Material * material){
-	sceneNodes.push_back(new Node(name, position, mesh, material));
-    BOOST_FOREACH( Material* oldMaterial, materials )
-    {
-        if (oldMaterial == material) return;
-    }
-	materials.push_back(material);
-}
-
 void SceneGraph::drawNodes(){
     BOOST_FOREACH( Node * node, sceneNodes )
     {
@@ -65,16 +56,6 @@ void SceneGraph::drawNodes(){
     	node->draw();
     }
     glError("SceneGraph",139);
-
-}
-
-void SceneGraph::initUniforms(){
-	cout << "Initializing uniforms for " << materials.size() << " Materials\n\n\n";
-    BOOST_FOREACH( Material* material, materials )
-    {
-        material->initUniforms();
-    }
-    glError("SceneGraph",148);
 
 }
 
