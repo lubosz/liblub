@@ -19,7 +19,7 @@ public:
 		Material * material = new ConeMapMaterial();
 		//Material * bump = new NormalMapMaterial("bump/brickwork-texture.jpg","bump/brickwork_normal-map.jpg");
 		//SceneGraph::Instance().addNode(new Node("Room",{0,0,0}, .05, MeshFactory::Instance().loadAssimp("myroom.obj"),bump));
-		SceneGraph::Instance().addNode(new Node("Room",{0,-3,-2}, 1, MeshFactory::Instance().loadAssimp("plane.blend"),material));
+		SceneGraph::Instance().addNode(new Node("Room",{0,-3,-2}, 1, MeshFactory::Instance().load("plane.blend"),material));
 		//SceneGraph::Instance().addNode(new Node("Room",{0,-3,-2}, 1, MeshFactory::Instance().loadAssimp("myroom.obj"),material));
 	}
 };

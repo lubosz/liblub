@@ -83,7 +83,7 @@ void SceneGraph::addNode(Node * node){
 }
 
 void SceneGraph::meshCube(string file, float cubeSize, float step, Material * material){
-	Mesh * mesh = MeshFactory::Instance().loadAssimp(file);
+	Mesh * mesh = MeshFactory::Instance().load(file);
 
 	for (float x = -cubeSize/2.0; x<cubeSize/2.0; x+=step ){
 		for (float y = -cubeSize/2.0; y<cubeSize/2.0; y+=step ){
@@ -95,7 +95,7 @@ void SceneGraph::meshCube(string file, float cubeSize, float step, Material * ma
 }
 
 void SceneGraph::meshCube(string file, float cubeSize, float step, vector<Material*> materials){
-	Mesh * mesh = MeshFactory::Instance().loadAssimp(file);
+	Mesh * mesh = MeshFactory::Instance().load(file);
 	unsigned position = 0;
 	for (float x = -cubeSize/2.0; x<cubeSize/2.0; x+=step ){
 		for (float y = -cubeSize/2.0; y<cubeSize/2.0; y+=step ){
@@ -108,7 +108,7 @@ void SceneGraph::meshCube(string file, float cubeSize, float step, vector<Materi
 }
 
 void SceneGraph::meshPlane(string file, float cubeSize, float step, vector<Material*> materials){
-	Mesh * mesh = MeshFactory::Instance().loadAssimp(file);
+	Mesh * mesh = MeshFactory::Instance().load(file);
 	unsigned position = 0;
 	for (float x = -cubeSize/2.0; x<cubeSize/2.0; x+=step ){
 		for (float y = -cubeSize/2.0; y<cubeSize/2.0; y+=step ){

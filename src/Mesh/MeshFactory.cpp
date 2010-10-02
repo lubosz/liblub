@@ -7,7 +7,6 @@
 
 #include "MeshFactory.h"
 #include "Geometry.h"
-#include "ObjLoader.h"
 #include <boost/foreach.hpp>
 #include <assimp/assimp.hpp>
 #include <assimp/aiScene.h>
@@ -71,18 +70,12 @@ Mesh *  MeshFactory::spiral(){
 }
 
 Mesh *  MeshFactory::lamp(){
-	ObjLoader objLoader = ObjLoader("earth.obj");
-	objLoader.getMesh()->setDrawType(GL_LINES);
-	return objLoader.getMesh();
+	Mesh * mesh = load("earth.obj");
+	mesh->setDrawType(GL_LINES);
+	return mesh;
 }
 
-Mesh * MeshFactory::load(string file){
-	ObjLoader objLoader = ObjLoader(file);
-	objLoader.getMesh()->setDrawType(GL_TRIANGLES);
-	return objLoader.getMesh();
-}
-
-Mesh * MeshFactory::loadAssimp(string file) {
+Mesh * MeshFactory::load(string file) {
 	string path = meshDir + file;
 	/*/
 	 const struct aiScene* scene = aiImportFile(path.c_str(),aiProcessPreset_TargetRealtime_Quality);

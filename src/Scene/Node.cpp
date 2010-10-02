@@ -34,7 +34,7 @@ Node::Node(string name, const QVector3D& position, float size, Mesh * mesh, Mate
 Node::Node(string name, const QVector3D& position, string mesh, Material * material){
     this->name = name;
     this->position = position;
-    this->mesh = MeshFactory::Instance().loadAssimp(mesh);
+    this->mesh = MeshFactory::Instance().load(mesh);
     this->material = material;
     this->size = 1;
 }

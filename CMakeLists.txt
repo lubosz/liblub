@@ -66,13 +66,9 @@ set(SOURCES
 	${SRC_DIR}/Material/TextureFactory.cpp
 	${SRC_DIR}/Material/Material.cpp
 
-	${SRC_DIR}/Mesh/ObjLoader.cpp
 	${SRC_DIR}/Mesh/Geometry.cpp  
 	${SRC_DIR}/Mesh/Mesh.cpp
 	${SRC_DIR}/Mesh/MeshFactory.cpp
-	${SRC_DIR}/Mesh/Vector2D.cpp
-	${SRC_DIR}/Mesh/Vector3D.cpp
-	${SRC_DIR}/Mesh/Face.cpp
 	${SRC_DIR}/Mesh/MengerSponge.cpp
 	
 	${SRC_DIR}/Scene/Node.cpp

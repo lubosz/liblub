@@ -8,7 +8,6 @@
 #pragma once
 
 #include "Mesh.h"
-#include "ObjLoader.h"
 #include "Singleton.h"
 
 class MeshFactory : public Singleton<MeshFactory>{
@@ -20,7 +19,6 @@ public:
 	Mesh * load(string file);
 	Mesh * lamp();
 	Mesh * spiral();
-	Mesh * loadAssimp(string file);
 
 private:
 	friend class Singleton<MeshFactory>;
