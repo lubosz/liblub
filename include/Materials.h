@@ -59,6 +59,21 @@ public:
 		shaderProgram->attachShader("Texture/texture.vert", GL_VERTEX_SHADER);
 		shaderProgram->attachShader("Post/raysAndSky/3 - Blur.frag", GL_FRAGMENT_SHADER);
   }
+	void uniforms(){
+		GLuint program = shaderProgram->getReference();
+	    glBindFragDataLocation(program, 1, "fragColor");
+
+	}
+
+};
+
+class FBOPass2 : public Material {
+public:
+	FBOPass2(){
+		init();
+		shaderProgram->attachShader("Texture/texture.vert", GL_VERTEX_SHADER);
+		shaderProgram->attachShader("Post/raysAndSky/1 - BlackAndWhite.frag", GL_FRAGMENT_SHADER);
+  }
 	void uniforms(){}
 
 };
@@ -94,14 +109,14 @@ public:
 		init();
 		addTexture("cone/collage_base.jpg","texmap");
 		addTexture("cone/collage_step.png","stepmap");
-		shaderProgram->attachShader("Common/shared.vert", GL_VERTEX_SHADER);
-		shaderProgram->attachShader("CSM/csm_dist_shadow.frag", GL_FRAGMENT_SHADER);
+		shaderProgram->attachShader("Bump/bump.vert", GL_VERTEX_SHADER);
+		shaderProgram->attachShader("Bump/csm.frag", GL_FRAGMENT_SHADER);
         done();
   }
 	void uniforms(){
 		GLuint program = shaderProgram->getReference();
-		glUniform4f(glGetUniformLocation(program, "ambient"), 0.2, 0.2, 0.2, 1.0);
-		glUniform4f(glGetUniformLocation(program, "diffuse"), 0.99, 0.99, 0.99, 1.0);
+		glUniform3f(glGetUniformLocation(program, "ambient"), 0.1, 0.1, 0.1);
+		glUniform3f(glGetUniformLocation(program, "diffuse"), 0.99, 0.99, 0.99);
 
 		glUniform1f(glGetUniformLocation(program, "depth"), 0.1);
 

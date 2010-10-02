@@ -21,15 +21,21 @@ FrameBuffer::FrameBuffer(GLuint width, GLuint height) {
 	this->height = height;
 	useFBO = false;
 
-	fboTexture = TextureFactory::Instance().texture(width, height, "RenderTexture");
+	Texture * pass1 = TextureFactory::Instance().texture(width, height, "RenderTexture");
+	Texture * pass2 = TextureFactory::Instance().texture(width, height, "RenderTexture");
 
-	fboMaterial = new FBOMaterial();
-	fboMaterial->addTexture(fboTexture);
-	fboMaterial->done();
+	pass1Mat = new FBOMaterial();
+	pass1Mat->addTexture(pass1);
+	pass1Mat->done();
+
+	pass2Mat = new FBOMaterial();
+	pass2Mat->addTexture(pass2);
+	pass2Mat->done();
+
 
     renderPlane = MeshFactory::Instance().plane();
 
-	//fboMaterial = new TextureMaterial("bunny.png");
+	//pass1Mat = new TextureMaterial("bunny.png");
 	glError("FrameBuffer",33);
 
     glGenFramebuffers(1, &fboId);
@@ -56,8 +62,8 @@ FrameBuffer::FrameBuffer(GLuint width, GLuint height) {
 */
 
     // attach a texture to FBO color attachement point
-    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, fboTexture->getHandler(), 0);
-    //glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT1, GL_TEXTURE_2D, fboTexture->getHandler(), 0);
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, pass1->getHandler(), 0);
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT1, GL_TEXTURE_2D, pass2->getHandler(), 0);
     // attach a renderbuffer to depth attachment point
     glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, rboId);
     //glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_STENCIL_ATTACHMENT, GL_RENDERBUFFER, stencilbuffer);
@@ -83,7 +89,9 @@ void FrameBuffer::bind() {
     glBindFramebuffer(GL_FRAMEBUFFER, fboId);
 
     // Set the render target
-    glDrawBuffer(GL_COLOR_ATTACHMENT0);
+    glDrawBuffer(GL_COLOR_ATTACHMENT1);
+
+
 
     //GLenum buffers[] = { GL_COLOR_ATTACHMENT0_EXT, GL_COLOR_ATTACHMENT1_EXT };
 	//glDrawBuffers(2, buffers);
@@ -98,22 +106,35 @@ void FrameBuffer::draw() {
 	if (!useFBO) return;
 	unBind();
 	RenderEngine::Instance().clear();
-	//glBindTexture(GL_TEXTURE_2D, 0);
+	glBindTexture(GL_TEXTURE_2D, 0);
 
 	glViewport(0,0,width, height);
-	bindShaders(fboMaterial->getShaderProgram());
+	bindShaders(pass1Mat->getShaderProgram());
 
-	fboMaterial->activate();
+	pass1Mat->activate();
+
+	renderPlane->draw();
+	bindShaders(pass2Mat->getShaderProgram());
+
+	glBindTexture(GL_TEXTURE_2D, 0);
+	pass2Mat->activate();
+
 	renderPlane->draw();
 	//Camera::Instance().perspective();
 }
 
 void FrameBuffer::bindShaders(ShaderProgram * shaderProgram) {
-	//QMatrix4x4 identity = QMatrix4x4();
-	glError("FrameBuffer::bindShaders", 42);
+	glError("FrameBuffer::bindShaders", 128);
+
 	shaderProgram->use();
 
 	shaderProgram->setUniform(QMatrix4x4(), "MVPMatrix");
+
+	//invProjView
+	QMatrix4x4 invProjView = QMatrix4x4();
+	invProjView = Camera::Instance().getView() * invProjView;
+	invProjView = Camera::Instance().getProjection() * invProjView;
+	shaderProgram->setUniform(invProjView.inverted(), "invProjView");
 
 	glError("FrameBuffer::bindShaders", 119);
 }

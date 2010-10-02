@@ -23,8 +23,9 @@ public:
 private:
 	GLuint fboId;                       // ID of FBO
 	GLuint rboId;                       // ID of Renderbuffer object
-	Material * fboMaterial;
-	Texture * fboTexture;
+	Material * pass1Mat;
+	Material * pass2Mat;
+	//Texture * fboTexture;
 	unsigned width, height;
 
 	Mesh * renderPlane;

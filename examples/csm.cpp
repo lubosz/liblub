@@ -11,18 +11,15 @@ public:
   }
 
 	void scene(){
-		//Material * material = new ConeMapMaterial();
-		Material * material = new TextureMaterial("bunny.png");
-		//Node * sphere = new Node("Planet",{0,0,-10}, 10, MeshFactory::Instance().load("earth.obj"),material);
-		Node * plane = new Node(
-				"Planet",
-				{0,0,0},
-				.01,
-				//MeshFactory::Instance().load("myroom-quads.obj"),
-				MeshFactory::Instance().plane(),
-				material
-		);
-		SceneGraph::Instance().addNode(plane);
+		Light * light = new Light(QVector4D(0.3, 6.6, -3.3, 1.0));
+
+		light->setDirection(QVector3D(1,-5,-1));
+		SceneGraph::Instance().light = light;
+
+		Material * material = new ConeMapMaterial();
+		//Material * bump = new NormalMapMaterial("bump/brickwork-texture.jpg","bump/brickwork_normal-map.jpg");
+		//SceneGraph::Instance().addNode(new Node("Room",{0,0,0}, .05, MeshFactory::Instance().loadAssimp("myroom.obj"),bump));
+		SceneGraph::Instance().addNode(new Node("Room",{0,-3,-2}, 10, MeshFactory::Instance().loadAssimp("plane.blend"),material));
 	}
 };
 
