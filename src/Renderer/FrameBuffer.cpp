@@ -21,6 +21,11 @@ FrameBuffer::FrameBuffer(GLuint width, GLuint height) {
 	this->height = height;
 	useFBO = false;
 
+	//pass1Mat = new ShadowMap(width, height);
+	pass1Mat = new FBOMaterial(width, height);
+
+
+	/*
 	Texture * pass1 = TextureFactory::Instance().texture(width, height, "RenderTexture");
 	Texture * pass2 = TextureFactory::Instance().texture(width, height, "RenderTexture");
 
@@ -31,7 +36,7 @@ FrameBuffer::FrameBuffer(GLuint width, GLuint height) {
 	pass2Mat = new FBOMaterial();
 	pass2Mat->addTexture(pass2);
 	pass2Mat->done();
-
+*/
 
     renderPlane = MeshFactory::Instance().plane();
 
@@ -60,10 +65,11 @@ FrameBuffer::FrameBuffer(GLuint width, GLuint height) {
     glRenderbufferStorage(GL_RENDERBUFFER, GL_STENCIL_INDEX1, TEXTURE_WIDTH, TEXTURE_HEIGHT);
     glBindRenderbuffer(GL_RENDERBUFFER, 0);
 */
+    Texture * fboTexture = pass1Mat->textures[0];
 
     // attach a texture to FBO color attachement point
-    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, pass1->getHandler(), 0);
-    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT1, GL_TEXTURE_2D, pass2->getHandler(), 0);
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, fboTexture->getHandler(), 0);
+    //glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT1, GL_TEXTURE_2D, pass2->getHandler(), 0);
     // attach a renderbuffer to depth attachment point
     glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, rboId);
     //glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_STENCIL_ATTACHMENT, GL_RENDERBUFFER, stencilbuffer);
@@ -71,8 +77,8 @@ FrameBuffer::FrameBuffer(GLuint width, GLuint height) {
     //@ disable color buffer if you don't attach any color buffer image,
     //@ for example, rendering depth buffer only to a texture.
     //@ Otherwise, glCheckFramebufferStatusEXT will not be complete.
-    //glDrawBuffer(GL_NONE);
-    //glReadBuffer(GL_NONE);
+    glDrawBuffer(GL_NONE);
+    glReadBuffer(GL_NONE);
 
     // check FBO status
     printFramebufferInfo();
@@ -89,8 +95,14 @@ void FrameBuffer::bind() {
     glBindFramebuffer(GL_FRAMEBUFFER, fboId);
 
     // Set the render target
-    glDrawBuffer(GL_COLOR_ATTACHMENT1);
+    //glDrawBuffer(GL_COLOR_ATTACHMENT0);
+    //glDrawBuffer(GL_DEPTH_ATTACHMENT);
 
+
+
+
+
+    glError("FrameBuffer::bind", 105);
 
 
     //GLenum buffers[] = { GL_COLOR_ATTACHMENT0_EXT, GL_COLOR_ATTACHMENT1_EXT };
@@ -103,17 +115,64 @@ void FrameBuffer::unBind() {
 }
 
 void FrameBuffer::draw() {
-	if (!useFBO) return;
+	if (!useFBO) {
+		SceneGraph::Instance().drawNodes();
+		return;
+	}
+	glError("FrameBuffer::draw", 105);
+
+
+    //Using the fixed pipeline to render to the depthbuffer
+    //glUseProgram(0);
+
+    // In the case we render the shadowmap to a higher resolution, the viewport must be modified accordingly.
+    glViewport(0,0,width, height);
+
+    // Clear previous frame values
+    glClear( GL_DEPTH_BUFFER_BIT);
+
+    //Disable color rendering, we only want to write to the Z-Buffer
+    //glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE);
+	//make shadowmap
+	// Culling switching, rendering only backface, this is done to avoid self-shadowing
+
+
+	//glCullFace(GL_FRONT);
+	SceneGraph::Instance().drawNodesLight();
 	unBind();
+/*
+	// Now rendering from the camera POV, using the FBO to generate shadows
+	glViewport(0,0,width,height);
+
+	//Enabling color write (previously disabled for light POV z-buffer rendering)
+	glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
+
+	//Using the shadow shader
+	pass1Mat->activate();
+
+	//setupMatrices(p_camera[0],p_camera[1],p_camera[2],l_camera[0],l_camera[1],l_camera[2]);
+	//setupMatrices(p_light[0],p_light[1],p_light[2],l_light[0],l_light[1],l_light[2]);
+
+	glCullFace(GL_BACK);
+	RenderEngine::Instance().clear();
+
+	SceneGraph::Instance().drawNodes(pass1Mat->getShaderProgram());
+*/
+
+
 	RenderEngine::Instance().clear();
 	glBindTexture(GL_TEXTURE_2D, 0);
 
 	glViewport(0,0,width, height);
+
 	bindShaders(pass1Mat->getShaderProgram());
 
 	pass1Mat->activate();
 
 	renderPlane->draw();
+	glError("FrameBuffer::draw", 171);
+
+	/*
 	bindShaders(pass2Mat->getShaderProgram());
 
 	glBindTexture(GL_TEXTURE_2D, 0);
@@ -121,22 +180,42 @@ void FrameBuffer::draw() {
 
 	renderPlane->draw();
 	//Camera::Instance().perspective();
+*/
 }
 
 void FrameBuffer::bindShaders(ShaderProgram * shaderProgram) {
 	glError("FrameBuffer::bindShaders", 128);
 
 	shaderProgram->use();
+	glError("FrameBuffer::bindShaders", 188);
+	/*
+	QMatrix4x4 bias = {
+			0.5, 0.0, 0.0, 0.0,
+			0.0, 0.5, 0.0, 0.0,
+			0.0, 0.0, 0.5, 0.0,
+			0.5, 0.5, 0.5, 1.0
+	};
 
+	QMatrix4x4 camViewToShadowMapMatrix =
+			bias
+			* SceneGraph::Instance().light->getProjection()
+			* SceneGraph::Instance().light->getView()
+			* Camera::Instance().getView().inverted();
+
+	shaderProgram->setUniform(camViewToShadowMapMatrix, "camViewToShadowMapMatrix");
+*/
+	//bias*perspLight*viewLight*(viewCam⁻1)
 	shaderProgram->setUniform(QMatrix4x4(), "MVPMatrix");
+/*
+
 
 	//invProjView
 	QMatrix4x4 invProjView = QMatrix4x4();
 	invProjView = Camera::Instance().getView() * invProjView;
 	invProjView = Camera::Instance().getProjection() * invProjView;
 	shaderProgram->setUniform(invProjView.inverted(), "invProjView");
-
-	glError("FrameBuffer::bindShaders", 119);
+*/
+	glError("FrameBuffer::bindShaders", 216);
 }
 
 void FrameBuffer::toggle(){

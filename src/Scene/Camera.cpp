@@ -102,7 +102,6 @@ void Camera::setMouseLook(int mouseXrel, int mouseYrel){
 
 	updateRotation();
 	//printf("Yaw: %f Pitch: %f\n", yaw, pitch);
-	update();
 
 }
 

@@ -11,10 +11,15 @@
 #include "MeshFactory.h"
 #include "Camera.h"
 
-Light::Light(QVector4D position) {
+Light::Light(const QVector4D& position, const QVector3D & direction) {
 	moveSensitivity = .1;
 	this->position = position;
+	this->direction = direction;
 	SceneGraph::Instance().addNode(new Node("Light",position.toVector3D(), MeshFactory::Instance().lamp(),new WhiteMat()));
+	viewMatrix = QMatrix4x4();
+	projectionMatrix = QMatrix4x4();
+	projectionMatrix.perspective(45,1920/1200,10,40000);
+	update();
 }
 
 Light::~Light() {
@@ -36,30 +41,35 @@ void Light::setColor(QVector4D & color)
     this->color = color;
 }
 
-void Light::setDirection(QVector3D direction)
-{
-    this->direction = direction;
-
-}
-
 void Light::setPosition(QVector4D & position)
 {
     this->position = position;
-}
-
-void Light::update(){
-	SceneGraph::Instance().setPosition("Light", position.toVector3D());
-    //cout << "Light: " << position.x() <<" "<< position.y()<<" " << position.z() << "\n";
 }
 
 void Light::bindShaderUpdate(ShaderProgram * shaderProgram){
 	QVector4D lightPositionView = Camera::Instance().getView() * position;
 
     shaderProgram->setUniform(lightPositionView, "lightPositionView");
+
+    QVector3D directionView = Camera::Instance().getView() * direction;
+    shaderProgram->setUniform(directionView, "spotDirection");
+
     QVector3D spotDirectionView = Camera::Instance().getViewNoTranslation() * direction;
     spotDirectionView.normalize();
     shaderProgram->setUniform(spotDirectionView, "spotDirectionView");
-    //shaderProgram->setUniform(direction, "spotDirectionView");
+}
+
+void Light::bindShaderUpdateLight(ShaderProgram * shaderProgram){
+	QVector4D lightPositionView = getView() * position;
+
+    shaderProgram->setUniform(lightPositionView, "lightPositionView");
+
+    QVector3D directionView = getView() * direction;
+    shaderProgram->setUniform(directionView, "spotDirection");
+
+    QVector3D spotDirectionView = getViewNoTranslation() * direction;
+    spotDirectionView.normalize();
+    shaderProgram->setUniform(spotDirectionView, "spotDirectionView");
 }
 
 void Light::bindShaderInit(ShaderProgram * shaderProgram){
@@ -71,12 +81,14 @@ void Light::bindShaderInit(ShaderProgram * shaderProgram){
 	//attenuation
 	glUniform1f(glGetUniformLocation(program, "constantAttenuation"), 0);
 	//glUniform1f(glGetUniformLocation(program, "linearAttenuation"), .8);
-	glUniform1f(glGetUniformLocation(program, "quadraticAttenuation"), .10);
+	glUniform1f(glGetUniformLocation(program, "quadraticAttenuation"), .010);
 
 	//spot
 	glUniform1f(glGetUniformLocation(program, "spotOuterAngle"), 0.9);
-	glUniform1f(glGetUniformLocation(program, "spotInnerAngle"), 0.6);
-	glUniform3f(glGetUniformLocation(program, "spotDirection"), 5, 0, -5);
+	glUniform1f(glGetUniformLocation(program, "spotInnerAngle"), 0.8);
+	//cout << "Direction " << direction.x() << "\n";
+
+	//shaderProgram->setUniform({1,1,1}, "spotDirection");
 
 }
 
@@ -108,4 +120,32 @@ void Light::moveForward(){
 void Light::moveBack(){
 	position += QVector4D(0,0,-moveSensitivity,0);
     update();
+}
+
+void Light::update(){
+	SceneGraph::Instance().setPosition("Light", position.toVector3D());
+	//cout << "Light: " << position.x() <<" "<< position.y()<<" " << position.z() << "\n";
+	viewMatrix.setToIdentity();
+	viewMatrix.lookAt(
+			position.toVector3D(),
+			position.toVector3D()+direction,
+			{0,1,0}
+	);
+
+}
+
+QMatrix4x4 Light::getView() const{
+
+	return viewMatrix;
+}
+
+QMatrix4x4 Light::getProjection() const{
+
+	return projectionMatrix;
+}
+
+QMatrix4x4 Light::getViewNoTranslation() const{
+	QMatrix4x4 viewMatrixNoTranslation;
+	viewMatrixNoTranslation.lookAt(QVector3D(0,0,0),direction,up);
+    return viewMatrixNoTranslation;
 }

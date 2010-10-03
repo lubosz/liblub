@@ -13,13 +13,15 @@
 
 
 class Node {
+public:
+	Mesh * mesh;
 private:
 	string name;
 	//vector<float> position;
 	QVector3D position;
 	float size;
 	Node * parent;
-	Mesh * mesh;
+
 	Material * material;
 
 

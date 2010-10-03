@@ -15,12 +15,14 @@ public:
 	QMatrix4x4 modelMatrix;
 
 	void updateLight();
+	void drawNodesLight();
+	void drawNodes(ShaderProgram * shaderProgram);
 	void drawNodes();
 
 	void addNode(Node * node);
 	void meshPlane(string file, float cubeSize, float step, vector<Material*> materials);
 
-	void bindShaders(ShaderProgram * shaderProgram);
+	void bindShaders(ShaderProgram * shaderProgram, const QMatrix4x4 & viewMatrix, const QMatrix4x4 & projectionMatrix);
 	void setPosition(string nodeName, const QVector3D& position);
 
 private:

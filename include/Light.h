@@ -14,17 +14,15 @@
 
 class Light {
 public:
-	Light(QVector4D position);
+	Light(const QVector4D& position, const QVector3D & direction);
 	virtual ~Light();
     QVector3D getDirection() const;
     QVector4D getPosition() const;
     void setColor(QVector4D & color);
-    void setDirection(QVector3D direction);
     void setPosition(QVector4D& position);
-    void update();
     void bindShaderUpdate(ShaderProgram * shaderProgram);
     void bindShaderInit(ShaderProgram * shaderProgram);
-
+    void bindShaderUpdateLight(ShaderProgram * shaderProgram);
     void moveLeft();
     void moveRight();
     void moveUp();
@@ -32,9 +30,19 @@ public:
     void moveForward();
     void moveBack();
 
-private:
+    void update();
+
+    QMatrix4x4 getView() const;
+    QMatrix4x4 getProjection() const;
+    QMatrix4x4 getViewNoTranslation() const;
+
+
+    QMatrix4x4 viewMatrix, projectionMatrix;
+
 	QVector3D direction;
 	QVector4D position;
+private:
+
 	QVector4D color;
 
 	float moveSensitivity;

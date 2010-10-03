@@ -40,18 +40,14 @@ public:
 
 class ShadowMap : public Material {
 public:
-	ShadowMap(){
+	ShadowMap(unsigned width, unsigned height){
 		init();
+		Texture * shadowMap = TextureFactory::Instance().texture(width, height, "shadowMap");
+		addTexture(shadowMap);
 		attachVertFrag("Shadow/shadow");
 		done();
   }
-	void uniforms(){
-		cout << "inititalizing brick uniforms.\n";
-		glUniform3f(glGetUniformLocation(shaderProgram->getReference(), "BrickColor"), 1.0, 0.3, 0.2);
-		glUniform3f(glGetUniformLocation(shaderProgram->getReference(), "MortarColor"), 0.85, 0.86, 0.84);
-		glUniform2f(glGetUniformLocation(shaderProgram->getReference(), "BrickSize"), 0.30, 0.15);
-		glUniform2f(glGetUniformLocation(shaderProgram->getReference(), "BrickPct"), 0.90, 0.85);
-	}
+	void uniforms(){}
 };
 
 class TextureMaterial : public Material {
@@ -69,15 +65,19 @@ public:
 
 class FBOMaterial : public Material {
 public:
-	FBOMaterial(){
+	FBOMaterial(unsigned width, unsigned height){
 		init();
-		//addTexture("GLGE/skydome.png","SkydomeTexture");
-		shaderProgram->attachShader("Texture/texture.vert", GL_VERTEX_SHADER);
-		shaderProgram->attachShader("Post/raysAndSky/3 - Blur.frag", GL_FRAGMENT_SHADER);
+		Texture * renderTarget = TextureFactory::Instance().texture(width, height, "myTexture");
+		addTexture(renderTarget);
+		//shaderProgram->attachShader("Texture/texture.vert", GL_VERTEX_SHADER);
+		//shaderProgram->attachShader("Post/raysAndSky/3 - Blur.frag", GL_FRAGMENT_SHADER);
+		//shaderProgram->attachShader("Texture/texture.frag", GL_FRAGMENT_SHADER);
+		attachVertFrag("Texture/texture");
+		done();
   }
 	void uniforms(){
 		GLuint program = shaderProgram->getReference();
-	    glBindFragDataLocation(program, 1, "fragColor");
+	    //glBindFragDataLocation(program, 1, "fragColor");
 
 	}
 
@@ -335,7 +335,8 @@ class PhongColorMat : public Material {
 public:
 	PhongColorMat(QVector3D color){
 		init();
-		attachVertFrag("Color/PhongColor");
+		attachVertFrag("Color/PhongColor", {"useSpotLight"});
+		//attachVertFrag("Color/PhongColor");
 		diffuseColor = color.toVector4D();
 		done();
   }
@@ -343,14 +344,13 @@ public:
 		GLuint program = shaderProgram->getReference();
 
 		//ambient
-		glUniform4f(glGetUniformLocation(program, "lightColor"), 0.8, 0.8, 0.8,1.0);
-		glUniform4f(glGetUniformLocation(program, "ambientSceneColor"), 0.0, 0.0, 0.0,1.0);
+		glUniform4f(glGetUniformLocation(program, "ambientSceneColor"), 0.1, 0.1, 0.1,1.0);
 
 		//diffuse
 		shaderProgram->setUniform(diffuseColor, "diffuseMaterialColor");
 
 		//specular
-		glUniform4f(glGetUniformLocation(program, "specularMaterialColor"), 0.5, 0.5, 0.5,1.0);
+		glUniform4f(glGetUniformLocation(program, "specularMaterialColor"), 0.8, 0.8, 0.8,1.0);
 		glUniform1f(glGetUniformLocation(program, "shininess"), 4.3);
 	}
 

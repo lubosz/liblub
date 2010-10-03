@@ -79,12 +79,17 @@ void RenderEngine::display() {
 		cout << "Mode:\t" << mode << "\n";
 		frameCount++;
 */
-	clear();
-    SceneGraph::Instance().drawNodes();
 
+
+
+
+
+		clear();
 #ifdef USE_FBO
 	fbo->draw();
 #endif
+
+	//SceneGraph::Instance().drawNodes();
 }
 
 void RenderEngine::clear(){

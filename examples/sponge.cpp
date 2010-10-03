@@ -11,9 +11,8 @@ public:
   }
 
 	void scene(){
-		Light * light = new Light(QVector4D(0.3, 6.6, -3.3, 1.0));
+		Light * light = new Light(QVector4D(0.3, 6.6, -3.3, 1.0),QVector3D(1,-5,-1));
 
-		light->setDirection(QVector3D(1,-5,-1));
 		SceneGraph::Instance().light = light;
 
 		MengerSponge * sponge = new MengerSponge(4);

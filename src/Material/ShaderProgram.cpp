@@ -98,7 +98,9 @@ void ShaderProgram::linkAndUse(){
 }
 
 void ShaderProgram::use(){
+	glError("ShaderProgram::use",101);
 	glUseProgram(program);
+	glError("ShaderProgram::use",103);
 }
 
 void ShaderProgram::reload(){
@@ -141,7 +143,7 @@ void ShaderProgram::setUniform(const QMatrix3x3 & matrix, string name){
 	glUniformMatrix3fv(
 			glGetUniformLocation(program, name.c_str()), 1, GL_FALSE, mat
 	);
-	glError("SceneGraph::bindMatrix3x3",129);
+	//glError("ShaderProgram::bindMatrix3x3",129);
 }
 
 void ShaderProgram::setUniform(const QMatrix4x4 & matrix, string name){
@@ -161,5 +163,5 @@ void ShaderProgram::setUniform(const QMatrix4x4 & matrix, string name){
 			glGetUniformLocation(program, name.c_str()), 1, GL_FALSE, matrix.data()
 	);
 	*/
-	glError("SceneGraph::bindMatrix4x4",137);
+	//glError("ShaderProgram::bindMatrix4x4",137);
 }

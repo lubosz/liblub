@@ -18,17 +18,17 @@ void SceneGraph::animate(float frameCount){
     */
 }
 
-void SceneGraph::bindShaders(ShaderProgram * shaderProgram){
+void SceneGraph::bindShaders(ShaderProgram * shaderProgram, const QMatrix4x4 & viewMatrix, const QMatrix4x4 & projectionMatrix){
 	glError("SceneGraph::bindShaders",42);
 	shaderProgram->use();
 
-	modelMatrix = Camera::Instance().getView() * modelMatrix;
+	modelMatrix =  viewMatrix * modelMatrix;
 	shaderProgram->setUniform(modelMatrix, "MVMatrix");
 	shaderProgram->setUniform(modelMatrix.normalMatrix(), "NormalMatrix");
-	modelMatrix = Camera::Instance().getProjection() * modelMatrix;
+	modelMatrix =  projectionMatrix * modelMatrix;
 
 	shaderProgram->setUniform(modelMatrix,"MVPMatrix");
-	light->bindShaderUpdate(shaderProgram);
+
 
     glError("SceneGraph::bindShaders",53);
 }
@@ -51,8 +51,42 @@ void SceneGraph::drawNodes(){
     	modelMatrix.translate(node->getPosition());
     	modelMatrix.scale(node->getSize());
 
-        bindShaders(node->getMaterial()->getShaderProgram());
+        bindShaders(node->getMaterial()->getShaderProgram(),Camera::Instance().getView(),Camera::Instance().getProjection());
+    	light->bindShaderUpdate(node->getMaterial()->getShaderProgram());
+    	node->draw();
+    }
+    glError("SceneGraph",139);
 
+}
+
+void SceneGraph::drawNodes(ShaderProgram * shaderProgram){
+    BOOST_FOREACH( Node * node, sceneNodes )
+    {
+    	modelMatrix.setToIdentity();
+
+    	//
+    	modelMatrix.translate(node->getPosition());
+    	modelMatrix.scale(node->getSize());
+
+        bindShaders(shaderProgram,Camera::Instance().getView(),Camera::Instance().getProjection());
+    	light->bindShaderUpdate(shaderProgram);
+    	node->mesh->draw();
+    }
+    glError("SceneGraph",139);
+
+}
+
+void SceneGraph::drawNodesLight(){
+    BOOST_FOREACH( Node * node, sceneNodes )
+    {
+    	modelMatrix.setToIdentity();
+
+    	//
+    	modelMatrix.translate(node->getPosition());
+    	modelMatrix.scale(node->getSize());
+
+        bindShaders(node->getMaterial()->getShaderProgram(),light->getView(),light->getProjection());
+    	light->bindShaderUpdateLight(node->getMaterial()->getShaderProgram());
     	node->draw();
     }
     glError("SceneGraph",139);

@@ -19,7 +19,12 @@ Texture::Texture(GLuint width, GLuint height, string name, GLenum glId) {
     glGenTextures(1, &texture);
     cout << "Creating FBO texture #" << texture << " " << name << "\n";
     glBindTexture(textureType, texture);
-    glTexImage2D(textureType, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0);
+    //glTexImage2D(textureType, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0);
+
+    //shadowmap
+	// No need to force GL_DEPTH_COMPONENT24, drivers usually give you the max precision if available
+	glTexImage2D( textureType, 0, GL_DEPTH_COMPONENT, width, height, 0, GL_DEPTH_COMPONENT, GL_UNSIGNED_BYTE, 0);
+
 /*
     //glTexParameterf(textureType, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     //glTexParameterf(textureType, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
@@ -30,6 +35,9 @@ Texture::Texture(GLuint width, GLuint height, string name, GLenum glId) {
 
     //glGenerateMipmap(textureType);
 */
+
+
+    //GOOD
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S,  GL_CLAMP_TO_BORDER);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T,  GL_CLAMP_TO_BORDER);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
@@ -37,7 +45,18 @@ Texture::Texture(GLuint width, GLuint height, string name, GLenum glId) {
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 
+    //Shadowmap
+	// GL_LINEAR does not make sense for depth texture. However, next tutorial shows usage of GL_LINEAR and PCF
+	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	// Remove artefact on the edges of the shadowmap
+	//glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP );
+	//glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP );
+
     glBindTexture(textureType, 0);
+
+
+
 }
 
 Texture::Texture(string filename, GLenum glId, string name) {
