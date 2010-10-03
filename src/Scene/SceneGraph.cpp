@@ -19,7 +19,7 @@ void SceneGraph::animate(float frameCount){
 }
 
 void SceneGraph::bindShaders(ShaderProgram * shaderProgram, const QMatrix4x4 & viewMatrix, const QMatrix4x4 & projectionMatrix){
-	glError("SceneGraph::bindShaders",42);
+	glError("SceneGraph::bindShaders",22);
 	shaderProgram->use();
 
 	modelMatrix =  viewMatrix * modelMatrix;
@@ -68,7 +68,70 @@ void SceneGraph::drawNodes(ShaderProgram * shaderProgram){
     	modelMatrix.translate(node->getPosition());
     	modelMatrix.scale(node->getSize());
 
+    	QMatrix4x4 bias = {
+    			0.5, 0.0, 0.0, 0.0,
+    			0.0, 0.5, 0.0, 0.0,
+    			0.0, 0.0, 0.5, 0.0,
+    			0.5, 0.5, 0.5, 1.0
+    	};
+
+/*
+    	QMatrix4x4 bias = QMatrix4x4();
+    	bias.translate(.5,.5,.5);
+    	bias.scale(.5,.5,.5);
+*/
+
+
+/*
+    	QMatrix4x4 bias = {
+    				0.5, 0.0, 0.0, 0.5,
+    				0.0, 0.5, 0.0, 0.5,
+    				0.0, 0.0, 0.5, 0.5,
+    				0.5, 0.5, 0.5, 1.0
+    		};
+*/
+
+
+    	QMatrix4x4 camViewToShadowMapMatrix =
+    			bias
+    			* SceneGraph::Instance().light->getProjection()
+
+    			//* modelMatrix
+    			* SceneGraph::Instance().light->getView()
+    			* Camera::Instance().getView().inverted()
+    			;
+
+
+
+    			//* modelMatrix
+
+
+
+
+
         bindShaders(shaderProgram,Camera::Instance().getView(),Camera::Instance().getProjection());
+    	shaderProgram->setUniform(camViewToShadowMapMatrix, "camViewToShadowMapMatrix");
+
+
+    	light->bindShaderUpdate(shaderProgram);
+    	node->mesh->draw();
+    }
+    glError("SceneGraph",139);
+
+}
+
+void SceneGraph::drawNodesLight(ShaderProgram * shaderProgram){
+    BOOST_FOREACH( Node * node, sceneNodes )
+    {
+    	modelMatrix.setToIdentity();
+
+    	//
+    	modelMatrix.translate(node->getPosition());
+    	modelMatrix.scale(node->getSize());
+
+//        bindShaders(shaderProgram,Camera::Instance().getView(),Camera::Instance().getProjection());
+        bindShaders(shaderProgram,light->getView(),light->getProjection());
+
     	light->bindShaderUpdate(shaderProgram);
     	node->mesh->draw();
     }

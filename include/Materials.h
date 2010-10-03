@@ -44,7 +44,17 @@ public:
 		init();
 		Texture * shadowMap = TextureFactory::Instance().texture(width, height, "shadowMap");
 		addTexture(shadowMap);
-		attachVertFrag("Shadow/shadow");
+		attachVertFrag("Shadow/ComposeShadow");
+		done();
+  }
+	void uniforms(){}
+};
+
+class ShadowMapDepth : public Material {
+public:
+	ShadowMapDepth(){
+		init();
+		attachVertFrag("Shadow/GenerateDepthMap");
 		done();
   }
 	void uniforms(){}

@@ -70,7 +70,7 @@ Mesh *  MeshFactory::spiral(){
 }
 
 Mesh *  MeshFactory::lamp(){
-	Mesh * mesh = load("earth.obj");
+	Mesh * mesh = loadDirect("spotLight.blend");
 	mesh->setDrawType(GL_LINES);
 	return mesh;
 }
@@ -143,25 +143,6 @@ Mesh * MeshFactory::load(string file) {
 		}
 
 	}
-		/*
-	for (unsigned i = 0; i < myAiMesh->mNumVertices; i++) {
-		aiVector3D vertex = myAiMesh->mVertices[i];
-		vertices.push_back(vertex.x);
-		vertices.push_back(vertex.y);
-		vertices.push_back(vertex.z);
-
-		aiVector3D normal = myAiMesh->mNormals[i];
-		normals.push_back(normal.x);
-		normals.push_back(normal.y);
-		normals.push_back(normal.z);
-
-		aiVector3D uv = myAiMesh->mTextureCoords[0][i];
-		uvs.push_back(uv.x);
-		uvs.push_back(uv.y);
-
-		indices.push_back(i);
-	}
-		*/
 
 
 	Mesh * mesh = new Mesh();
@@ -173,6 +154,53 @@ Mesh * MeshFactory::load(string file) {
 	mesh->addElementBuffer(indices);
 	mesh->setDrawType(GL_TRIANGLES);
 
+	return mesh;
+
+}
+
+Mesh * MeshFactory::loadDirect(string file) {
+	string path = meshDir + file;
+	/*/
+	 const struct aiScene* scene = aiImportFile(path.c_str(),aiProcessPreset_TargetRealtime_Quality);
+	 Importer myImporter * = new Importer();
+	 */
+
+	// Create an instance of the Importer class
+	Assimp::Importer importer;
+
+	// And have it read the given file with some example postprocessing
+	// Usually - if speed is not the most important aspect for you - you'll
+	// propably to request more postprocessing than we do in this example.
+	const aiScene* scene = importer.ReadFile(path,
+			aiProcess_SortByPType
+			);
+
+	// If the import failed, report it
+	if (!scene) {
+		cout << importer.GetErrorString() << "\n";
+	}
+
+	// Now we can access the file's contents.
+	//DoTheSceneProcessing( scene);
+
+	aiMesh * myAiMesh = scene->mMeshes[0];
+
+	vector<GLfloat> positions;
+	vector<GLuint> indices;
+
+	unsigned numIndices = 0;
+
+	for (unsigned i = 0; i < myAiMesh->mNumVertices; i++) {
+		aiVector3D vertex = myAiMesh->mVertices[i];
+		positions.push_back(vertex.x);
+		positions.push_back(vertex.y);
+		positions.push_back(vertex.z);
+
+		indices.push_back(i);
+	}
+	Mesh * mesh = new Mesh();
+	mesh->addBuffer(positions, 3, "in_Vertex");
+	mesh->addElementBuffer(indices);
 	return mesh;
 
 }

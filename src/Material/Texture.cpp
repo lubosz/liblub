@@ -19,11 +19,11 @@ Texture::Texture(GLuint width, GLuint height, string name, GLenum glId) {
     glGenTextures(1, &texture);
     cout << "Creating FBO texture #" << texture << " " << name << "\n";
     glBindTexture(textureType, texture);
-    //glTexImage2D(textureType, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0);
+    glTexImage2D(textureType, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0);
 
     //shadowmap
 	// No need to force GL_DEPTH_COMPONENT24, drivers usually give you the max precision if available
-	glTexImage2D( textureType, 0, GL_DEPTH_COMPONENT, width, height, 0, GL_DEPTH_COMPONENT, GL_UNSIGNED_BYTE, 0);
+	//glTexImage2D( textureType, 0, GL_DEPTH_COMPONENT24, width, height, 0, GL_DEPTH_COMPONENT, GL_UNSIGNED_BYTE, 0);
 
 /*
     //glTexParameterf(textureType, GL_TEXTURE_MAG_FILTER, GL_LINEAR);

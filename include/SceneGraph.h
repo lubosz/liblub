@@ -16,6 +16,7 @@ public:
 
 	void updateLight();
 	void drawNodesLight();
+	void drawNodesLight(ShaderProgram * shaderProgram);
 	void drawNodes(ShaderProgram * shaderProgram);
 	void drawNodes();
 

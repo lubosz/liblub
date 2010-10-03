@@ -21,9 +21,9 @@ FrameBuffer::FrameBuffer(GLuint width, GLuint height) {
 	this->height = height;
 	useFBO = false;
 
-	//pass1Mat = new ShadowMap(width, height);
-	pass1Mat = new FBOMaterial(width, height);
-
+	pass1Mat = new ShadowMap(width, height);
+	//pass1Mat = new FBOMaterial(width, height);
+	pass2Mat = new ShadowMapDepth();
 
 	/*
 	Texture * pass1 = TextureFactory::Instance().texture(width, height, "RenderTexture");
@@ -68,7 +68,7 @@ FrameBuffer::FrameBuffer(GLuint width, GLuint height) {
     Texture * fboTexture = pass1Mat->textures[0];
 
     // attach a texture to FBO color attachement point
-    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, fboTexture->getHandler(), 0);
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, fboTexture->getHandler(), 0);
     //glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT1, GL_TEXTURE_2D, pass2->getHandler(), 0);
     // attach a renderbuffer to depth attachment point
     glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, rboId);
@@ -77,8 +77,8 @@ FrameBuffer::FrameBuffer(GLuint width, GLuint height) {
     //@ disable color buffer if you don't attach any color buffer image,
     //@ for example, rendering depth buffer only to a texture.
     //@ Otherwise, glCheckFramebufferStatusEXT will not be complete.
-    glDrawBuffer(GL_NONE);
-    glReadBuffer(GL_NONE);
+    //glDrawBuffer(GL_NONE);
+    //glReadBuffer(GL_NONE);
 
     // check FBO status
     printFramebufferInfo();
@@ -86,6 +86,8 @@ FrameBuffer::FrameBuffer(GLuint width, GLuint height) {
 
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	glError("FrameBuffer",74);
+
+	//glEnable(GL_TEXTURE_COMPARE_MODE);
 
 }
 
@@ -95,7 +97,7 @@ void FrameBuffer::bind() {
     glBindFramebuffer(GL_FRAMEBUFFER, fboId);
 
     // Set the render target
-    //glDrawBuffer(GL_COLOR_ATTACHMENT0);
+    glDrawBuffer(GL_COLOR_ATTACHMENT0);
     //glDrawBuffer(GL_DEPTH_ATTACHMENT);
 
 
@@ -138,7 +140,8 @@ void FrameBuffer::draw() {
 
 
 	//glCullFace(GL_FRONT);
-	SceneGraph::Instance().drawNodesLight();
+    pass2Mat->activate();
+	SceneGraph::Instance().drawNodesLight(pass2Mat->getShaderProgram());
 	unBind();
 /*
 	// Now rendering from the camera POV, using the FBO to generate shadows
@@ -150,26 +153,24 @@ void FrameBuffer::draw() {
 	//Using the shadow shader
 	pass1Mat->activate();
 
-	//setupMatrices(p_camera[0],p_camera[1],p_camera[2],l_camera[0],l_camera[1],l_camera[2]);
-	//setupMatrices(p_light[0],p_light[1],p_light[2],l_light[0],l_light[1],l_light[2]);
-
 	glCullFace(GL_BACK);
 	RenderEngine::Instance().clear();
 
 	SceneGraph::Instance().drawNodes(pass1Mat->getShaderProgram());
 */
 
-
 	RenderEngine::Instance().clear();
+	//SceneGraph::Instance().drawNodes();
 	glBindTexture(GL_TEXTURE_2D, 0);
 
 	glViewport(0,0,width, height);
 
-	bindShaders(pass1Mat->getShaderProgram());
+	//bindShaders(pass1Mat->getShaderProgram());
 
 	pass1Mat->activate();
 
-	renderPlane->draw();
+	SceneGraph::Instance().drawNodes(pass1Mat->getShaderProgram());
+	//renderPlane->draw();
 	glError("FrameBuffer::draw", 171);
 
 	/*
@@ -188,29 +189,17 @@ void FrameBuffer::bindShaders(ShaderProgram * shaderProgram) {
 
 	shaderProgram->use();
 	glError("FrameBuffer::bindShaders", 188);
-	/*
-	QMatrix4x4 bias = {
-			0.5, 0.0, 0.0, 0.0,
-			0.0, 0.5, 0.0, 0.0,
-			0.0, 0.0, 0.5, 0.0,
-			0.5, 0.5, 0.5, 1.0
-	};
 
-	QMatrix4x4 camViewToShadowMapMatrix =
-			bias
-			* SceneGraph::Instance().light->getProjection()
-			* SceneGraph::Instance().light->getView()
-			* Camera::Instance().getView().inverted();
 
-	shaderProgram->setUniform(camViewToShadowMapMatrix, "camViewToShadowMapMatrix");
-*/
+
 	//bias*perspLight*viewLight*(viewCam⁻1)
 	shaderProgram->setUniform(QMatrix4x4(), "MVPMatrix");
+
 /*
 
-
+QMatrix4x4 invProjView = QMatrix4x4();
 	//invProjView
-	QMatrix4x4 invProjView = QMatrix4x4();
+
 	invProjView = Camera::Instance().getView() * invProjView;
 	invProjView = Camera::Instance().getProjection() * invProjView;
 	shaderProgram->setUniform(invProjView.inverted(), "invProjView");
