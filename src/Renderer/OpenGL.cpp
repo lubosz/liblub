@@ -47,9 +47,8 @@ RenderEngine::RenderEngine() {
     //glEnable(GL_BLEND);
     //glDepthMask(GL_FALSE);
 
-
-
 	glError("RenderEngine",52);
+
 }
 
 RenderEngine::~RenderEngine() {
@@ -72,6 +71,7 @@ void RenderEngine::toggleFBO(){
 
 void RenderEngine::display() {
 
+
 /*
  * 		//Uniform Animation
         SceneGraph::Instance().transform(frameCount);
@@ -84,7 +84,7 @@ void RenderEngine::display() {
 		frameCount++;
 */
 
-		if (useFBO) {
+		if (!useFBO) {
 			clear();
 			if(lightView){
 				SceneGraph::Instance().drawNodesLight();
