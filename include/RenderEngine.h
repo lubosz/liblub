@@ -15,29 +15,25 @@
 #include "SceneGraph.h"
 #include "Singleton.h"
 #include "FrameBuffer.h"
+#include "RenderSequence.h"
+
+class RenderSequence;
 
 class RenderEngine : public Singleton<RenderEngine> {
 public:
+	bool useFBO;
 	void display();
 	void toggleFBO();
 	void clear();
 	void toggleLightView();
 	bool lightView;
+	RenderSequence * shadowSequence;
 private:
-	Material * pass1Mat, * pass2Mat;
-	void shadowMapPass();
 	friend class Singleton<RenderEngine>;
 
-	//ShaderProgram * shaderProgram;
 	unsigned frameCount;
-
-	FrameBuffer *fbo;
-
-
 	void checkVersion();
 	GLboolean QueryExtension(char *extName);
-
-
 
 	RenderEngine();
 	virtual ~RenderEngine();

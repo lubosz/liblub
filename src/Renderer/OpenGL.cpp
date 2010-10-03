@@ -13,10 +13,12 @@
 using namespace std;
 
 RenderEngine::RenderEngine() {
+	useFBO = false;
 	glError("RenderEngine",23);
 	checkVersion();
 	frameCount = 0;
 	lightView = false;
+	shadowSequence = new RenderSequence();
 
 #ifndef USE_GL3
     glEnable( GL_POINT_SMOOTH );
@@ -45,50 +47,30 @@ RenderEngine::RenderEngine() {
     //glEnable(GL_BLEND);
     //glDepthMask(GL_FALSE);
 
-#ifdef USE_FBO
-    fbo = new FrameBuffer(1920,1200);
-#endif
 
-	pass1Mat = new ShadowMap(1920, 1200);
-	//pass1Mat = new FBOMaterial(width, height);
-	pass2Mat = new ShadowMapDepth();
-
-	fbo->attachTexture(GL_COLOR_ATTACHMENT0, pass1Mat->textures[0]);
-	fbo->checkAndFinish();
-
-	/*
-	Texture * pass1 = TextureFactory::Instance().texture(width, height, "RenderTexture");
-	Texture * pass2 = TextureFactory::Instance().texture(width, height, "RenderTexture");
-
-	pass1Mat = new FBOMaterial();
-	pass1Mat->addTexture(pass1);
-	pass1Mat->done();
-
-	pass2Mat = new FBOMaterial();
-	pass2Mat->addTexture(pass2);
-	pass2Mat->done();
-*/
 
 	glError("RenderEngine",52);
 }
 
 RenderEngine::~RenderEngine() {
 	glError("RenderEngine",96);
-	delete fbo;
+
     /* Cleanup all the things we bound and allocated */
 	cout << "Shutting down Render Engine...\n";
 	glError("RenderEngine",106);
 }
 
 void RenderEngine::toggleFBO(){
-	fbo->toggle();
+		if(useFBO){
+			cout << "FBO Rendering diabled" << "\n";
+			useFBO = false;
+		}else{
+			useFBO = true;
+			cout << "FBO Rendering enabled" << "\n";
+		}
 }
 
 void RenderEngine::display() {
-
-#ifdef USE_FBO
-		fbo->bind();
-#endif
 
 /*
  * 		//Uniform Animation
@@ -101,25 +83,16 @@ void RenderEngine::display() {
 		cout << "Mode:\t" << mode << "\n";
 		frameCount++;
 */
-		clear();
 
-		if (!fbo->useFBO) {
+		if (useFBO) {
+			clear();
 			if(lightView){
 				SceneGraph::Instance().drawNodesLight();
 			}else{
 				SceneGraph::Instance().drawNodes();
 			}
 		}else{
-			shadowMapPass();
-
-
-			if(lightView){
-				SceneGraph::Instance().drawNodesLight(pass1Mat);
-			}else{
-				SceneGraph::Instance().drawNodes(pass1Mat);
-			}
-			//renderPlane->draw();
-			glError("FrameBuffer::draw", 171);
+			shadowSequence->render();
 
 			/*
 			bindShaders(pass2Mat->getShaderProgram());
@@ -131,43 +104,6 @@ void RenderEngine::display() {
 			//Camera::Instance().perspective();
 		*/
 		}
-
-		/*
-#ifdef USE_FBO
-	fbo->draw();
-#endif
-*/
-}
-
-void RenderEngine::shadowMapPass(){
-	glError("FrameBuffer::draw", 105);
-
-	//Using the fixed pipeline to render to the depthbuffer
-	//glUseProgram(0);
-
-	// In the case we render the shadowmap to a higher resolution, the viewport must be modified accordingly.
-	glViewport(0,0,fbo->width, fbo->height);
-
-	// Clear previous frame values
-	glClear( GL_DEPTH_BUFFER_BIT);
-
-	//Disable color rendering, we only want to write to the Z-Buffer
-	//glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE);
-
-	// Culling switching, rendering only backface, this is done to avoid self-shadowing
-	glCullFace(GL_FRONT);
-	pass2Mat->activate();
-	SceneGraph::Instance().drawNodesLight(pass2Mat);
-	fbo->unBind();
-
-	glCullFace(GL_BACK);
-	RenderEngine::Instance().clear();
-
-	glBindTexture(GL_TEXTURE_2D, 0);
-
-	glViewport(0,0,fbo->width, fbo->height);
-
-	pass1Mat->activate();
 }
 
 void RenderEngine::toggleLightView(){

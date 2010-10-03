@@ -20,7 +20,7 @@ public:
     void unBind();
     void draw();
 	void toggle();
-	bool useFBO;
+
 	unsigned width, height;
 
 

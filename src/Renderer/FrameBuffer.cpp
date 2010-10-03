@@ -19,7 +19,7 @@ FrameBuffer::FrameBuffer(GLuint width, GLuint height) {
     // create a texture object
 	this->width = width;
 	this->height = height;
-	useFBO = false;
+
 
     //renderPlane = MeshFactory::Instance().plane();
 
@@ -90,17 +90,12 @@ void FrameBuffer::disableColorBuffer(){
 }
 
 void FrameBuffer::bind() {
-	if (!useFBO) return;
     // set the rendering destination to FBO
     glBindFramebuffer(GL_FRAMEBUFFER, fboId);
 
     // Set the render target
     glDrawBuffer(GL_COLOR_ATTACHMENT0);
     //glDrawBuffer(GL_DEPTH_ATTACHMENT);
-
-
-
-
 
     glError("FrameBuffer::bind", 105);
 
@@ -143,15 +138,7 @@ QMatrix4x4 invProjView = QMatrix4x4();
 	glError("FrameBuffer::bindShaders", 216);
 }
 
-void FrameBuffer::toggle(){
-	if(useFBO){
-		cout << "FBO Rendering diabled" << "\n";
-		useFBO = false;
-	}else{
-		useFBO = true;
-		cout << "FBO Rendering enabled" << "\n";
-	}
-}
+
 
 FrameBuffer::~FrameBuffer() {
 	glDeleteFramebuffers(1, &fboId);
