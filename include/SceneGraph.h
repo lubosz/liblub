@@ -12,12 +12,11 @@ class SceneGraph: public Singleton<SceneGraph>
 {
 public:
 	Light * light;
-	QMatrix4x4 modelMatrix;
 
 	void updateLight();
 	void drawNodesLight();
-	void drawNodesLight(ShaderProgram * shaderProgram);
-	void drawNodes(ShaderProgram * shaderProgram);
+	void drawNodesLight(Material * material);
+	void drawNodes(Material * material);
 	void drawNodes();
 
 	void addNode(Node * node);

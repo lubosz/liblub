@@ -13,6 +13,8 @@ Node::Node(string name, const QVector3D& position, Mesh * mesh) {
     this->position = position;
     this->mesh = mesh;
     this->size = 1;
+    modelMatrix = QMatrix4x4();
+    update();
 }
 
 Node::Node(string name, const QVector3D& position, Mesh * mesh, Material * material) {
@@ -21,6 +23,8 @@ Node::Node(string name, const QVector3D& position, Mesh * mesh, Material * mater
     this->mesh = mesh;
     this->material = material;
     this->size = 1;
+    modelMatrix = QMatrix4x4();
+    update();
 }
 
 Node::Node(string name, const QVector3D& position, float size, Mesh * mesh, Material * material){
@@ -29,6 +33,8 @@ Node::Node(string name, const QVector3D& position, float size, Mesh * mesh, Mate
     this->mesh = mesh;
     this->material = material;
     this->size = size;
+    modelMatrix = QMatrix4x4();
+    update();
 }
 
 Node::Node(string name, const QVector3D& position, string mesh, Material * material){
@@ -37,6 +43,8 @@ Node::Node(string name, const QVector3D& position, string mesh, Material * mater
     this->mesh = MeshFactory::Instance().load(mesh);
     this->material = material;
     this->size = 1;
+    modelMatrix = QMatrix4x4();
+    update();
 }
 
 void Node::setMesh(Mesh *mesh)
@@ -47,6 +55,7 @@ void Node::setMesh(Mesh *mesh)
 void Node::setPosition(const QVector3D& position)
 {
     this->position = position;
+    update();
 }
 
 string Node::getName() const
@@ -86,8 +95,34 @@ void Node::draw(){
 
 void Node::setSize(float size){
 	this->size = size;
+    update();
 }
 
 Node::~Node() {
 	// TODO Auto-generated destructor stub
+}
+
+void Node::update(){
+	modelMatrix.setToIdentity();
+	modelMatrix.translate(position);
+	modelMatrix.scale(size);
+}
+
+void Node::bindShaders(ShaderProgram * shaderProgram, const QMatrix4x4 & viewMatrix, const QMatrix4x4 & projectionMatrix){
+	glError("Node::bindShaders",113);
+	shaderProgram->use();
+
+	QMatrix4x4 tempMatrix =  viewMatrix * modelMatrix;
+	shaderProgram->setUniform(tempMatrix, "MVMatrix");
+	shaderProgram->setUniform(tempMatrix.normalMatrix(), "NormalMatrix");
+	tempMatrix =  projectionMatrix * tempMatrix;
+
+	shaderProgram->setUniform(tempMatrix,"MVPMatrix");
+
+
+    glError("Node::bindShaders",124);
+}
+
+void Node::bindShaders(const QMatrix4x4 & viewMatrix, const QMatrix4x4 & projectionMatrix){
+	bindShaders(material->getShaderProgram(), viewMatrix,projectionMatrix);
 }

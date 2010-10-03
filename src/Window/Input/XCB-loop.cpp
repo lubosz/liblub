@@ -127,6 +127,9 @@ void Input::eventLoop(){
 				case XK_p:
 					RenderEngine::Instance().toggleFBO();
 					break;
+				case XK_c:
+					RenderEngine::Instance().toggleLightView();
+					break;
 				default:
 					pressedKeys.push_back(pressedKey);
             }

@@ -29,7 +29,7 @@ void main()
 	
 	// comparez1111
 	float receivedLightAmount;
-	if(fragDepth <= shadowMapDepth )
+	if(fragDepth > shadowMapDepth )
 	{
 		 //zmofg lit!
 		 receivedLightAmount = 1.0;

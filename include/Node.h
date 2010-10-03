@@ -21,7 +21,7 @@ private:
 	QVector3D position;
 	float size;
 	Node * parent;
-
+	QMatrix4x4 modelMatrix;
 	Material * material;
 
 
@@ -36,11 +36,14 @@ public:
     void setMesh(Mesh *mesh);
     void setPosition(const QVector3D& position);
 	void draw();
+	void bindShaders(ShaderProgram * shaderProgram, const QMatrix4x4 & viewMatrix, const QMatrix4x4 & projectionMatrix);
+	void bindShaders(const QMatrix4x4 & viewMatrix, const QMatrix4x4 & projectionMatrix);
     string getName() const;
     const QVector3D& getPosition();
     void setName(string name);
     Material *getMaterial() const;
     void setMaterial(Material *material);
     float getSize() const;
+    void update();
 };
 

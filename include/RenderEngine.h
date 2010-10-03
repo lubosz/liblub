@@ -21,11 +21,16 @@ public:
 	void display();
 	void toggleFBO();
 	void clear();
+	void toggleLightView();
+	bool lightView;
 private:
+	Material * pass1Mat, * pass2Mat;
+	void shadowMapPass();
 	friend class Singleton<RenderEngine>;
 
 	//ShaderProgram * shaderProgram;
 	unsigned frameCount;
+
 	FrameBuffer *fbo;
 
 

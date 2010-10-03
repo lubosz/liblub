@@ -7,7 +7,6 @@
 
 SceneGraph::SceneGraph(){
 
-	modelMatrix = QMatrix4x4();
 }
 
 void SceneGraph::animate(float frameCount){
@@ -16,21 +15,6 @@ void SceneGraph::animate(float frameCount){
     rotate(modelmatrix, (GLfloat) frameCount * 1.0, Y_AXIS);
     rotate(modelmatrix, (GLfloat) frameCount * 0.5, Z_AXIS);
     */
-}
-
-void SceneGraph::bindShaders(ShaderProgram * shaderProgram, const QMatrix4x4 & viewMatrix, const QMatrix4x4 & projectionMatrix){
-	glError("SceneGraph::bindShaders",22);
-	shaderProgram->use();
-
-	modelMatrix =  viewMatrix * modelMatrix;
-	shaderProgram->setUniform(modelMatrix, "MVMatrix");
-	shaderProgram->setUniform(modelMatrix.normalMatrix(), "NormalMatrix");
-	modelMatrix =  projectionMatrix * modelMatrix;
-
-	shaderProgram->setUniform(modelMatrix,"MVPMatrix");
-
-
-    glError("SceneGraph::bindShaders",53);
 }
 
 void SceneGraph::setPosition(string nodeName, const QVector3D& position){
@@ -45,13 +29,7 @@ void SceneGraph::setPosition(string nodeName, const QVector3D& position){
 void SceneGraph::drawNodes(){
     BOOST_FOREACH( Node * node, sceneNodes )
     {
-    	modelMatrix.setToIdentity();
-
-    	//
-    	modelMatrix.translate(node->getPosition());
-    	modelMatrix.scale(node->getSize());
-
-        bindShaders(node->getMaterial()->getShaderProgram(),Camera::Instance().getView(),Camera::Instance().getProjection());
+        node->bindShaders(Camera::Instance().getView(),Camera::Instance().getProjection());
     	light->bindShaderUpdate(node->getMaterial()->getShaderProgram());
     	node->draw();
     }
@@ -59,28 +37,21 @@ void SceneGraph::drawNodes(){
 
 }
 
-void SceneGraph::drawNodes(ShaderProgram * shaderProgram){
+void SceneGraph::drawNodes(Material * material){
     BOOST_FOREACH( Node * node, sceneNodes )
     {
-    	modelMatrix.setToIdentity();
-
-    	//
-    	modelMatrix.translate(node->getPosition());
-    	modelMatrix.scale(node->getSize());
-
+/*
     	QMatrix4x4 bias = {
     			0.5, 0.0, 0.0, 0.0,
     			0.0, 0.5, 0.0, 0.0,
     			0.0, 0.0, 0.5, 0.0,
     			0.5, 0.5, 0.5, 1.0
     	};
-
-/*
-    	QMatrix4x4 bias = QMatrix4x4();
-    	bias.translate(.5,.5,.5);
-    	bias.scale(.5,.5,.5);
 */
 
+    	QMatrix4x4 bias = QMatrix4x4();
+    	bias.scale(.5,.5,.5);
+    	bias.translate(.5,.5,.5);
 
 /*
     	QMatrix4x4 bias = {
@@ -91,48 +62,29 @@ void SceneGraph::drawNodes(ShaderProgram * shaderProgram){
     		};
 */
 
-
     	QMatrix4x4 camViewToShadowMapMatrix =
     			bias
     			* SceneGraph::Instance().light->getProjection()
-
     			//* modelMatrix
     			* SceneGraph::Instance().light->getView()
     			* Camera::Instance().getView().inverted()
     			;
 
+        node->bindShaders(material->getShaderProgram(),Camera::Instance().getView(),Camera::Instance().getProjection());
+        material->getShaderProgram()->setUniform(camViewToShadowMapMatrix, "camViewToShadowMapMatrix");
 
-
-    			//* modelMatrix
-
-
-
-
-
-        bindShaders(shaderProgram,Camera::Instance().getView(),Camera::Instance().getProjection());
-    	shaderProgram->setUniform(camViewToShadowMapMatrix, "camViewToShadowMapMatrix");
-
-
-    	light->bindShaderUpdate(shaderProgram);
+    	light->bindShaderUpdate(material->getShaderProgram());
     	node->mesh->draw();
     }
     glError("SceneGraph",139);
 
 }
 
-void SceneGraph::drawNodesLight(ShaderProgram * shaderProgram){
+void SceneGraph::drawNodesLight(Material * material){
     BOOST_FOREACH( Node * node, sceneNodes )
     {
-    	modelMatrix.setToIdentity();
-
-    	//
-    	modelMatrix.translate(node->getPosition());
-    	modelMatrix.scale(node->getSize());
-
-//        bindShaders(shaderProgram,Camera::Instance().getView(),Camera::Instance().getProjection());
-        bindShaders(shaderProgram,light->getView(),light->getProjection());
-
-    	light->bindShaderUpdate(shaderProgram);
+        node->bindShaders(material->getShaderProgram(),light->getView(),light->getProjection());
+    	light->bindShaderUpdate(material->getShaderProgram());
     	node->mesh->draw();
     }
     glError("SceneGraph",139);
@@ -142,13 +94,7 @@ void SceneGraph::drawNodesLight(ShaderProgram * shaderProgram){
 void SceneGraph::drawNodesLight(){
     BOOST_FOREACH( Node * node, sceneNodes )
     {
-    	modelMatrix.setToIdentity();
-
-    	//
-    	modelMatrix.translate(node->getPosition());
-    	modelMatrix.scale(node->getSize());
-
-        bindShaders(node->getMaterial()->getShaderProgram(),light->getView(),light->getProjection());
+        node->bindShaders(light->getView(),light->getProjection());
     	light->bindShaderUpdateLight(node->getMaterial()->getShaderProgram());
     	node->draw();
     }

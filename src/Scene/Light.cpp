@@ -18,7 +18,7 @@ Light::Light(const QVector4D& position, const QVector3D & direction) {
 	SceneGraph::Instance().addNode(new Node("Light",position.toVector3D(), MeshFactory::Instance().lamp(),new WhiteMat()));
 	viewMatrix = QMatrix4x4();
 	projectionMatrix = QMatrix4x4();
-	projectionMatrix.perspective(45,1920/1200,10,40000);
+	projectionMatrix.perspective(45,1920/1200,1,10000);
 	update();
 }
 

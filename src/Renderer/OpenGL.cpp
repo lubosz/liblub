@@ -8,6 +8,7 @@
 #include "Camera.h"
 #include "MeshFactory.h"
 #include "RenderEngine.h"
+#include "Materials.h"
 
 using namespace std;
 
@@ -15,6 +16,7 @@ RenderEngine::RenderEngine() {
 	glError("RenderEngine",23);
 	checkVersion();
 	frameCount = 0;
+	lightView = false;
 
 #ifndef USE_GL3
     glEnable( GL_POINT_SMOOTH );
@@ -22,7 +24,7 @@ RenderEngine::RenderEngine() {
 
 	/* Make our background black */
 	glClearColor(backgroundColor[0],backgroundColor[1],backgroundColor[2], 1.0);
-    //glEnable(GL_CULL_FACE);
+    glEnable(GL_CULL_FACE);
     //glEnable(GL_POINT_SPRITE_ARB);
     glEnable(GL_DEPTH_TEST);
     glDepthFunc(GL_LESS);
@@ -46,6 +48,26 @@ RenderEngine::RenderEngine() {
 #ifdef USE_FBO
     fbo = new FrameBuffer(1920,1200);
 #endif
+
+	pass1Mat = new ShadowMap(1920, 1200);
+	//pass1Mat = new FBOMaterial(width, height);
+	pass2Mat = new ShadowMapDepth();
+
+	fbo->attachTexture(GL_COLOR_ATTACHMENT0, pass1Mat->textures[0]);
+	fbo->checkAndFinish();
+
+	/*
+	Texture * pass1 = TextureFactory::Instance().texture(width, height, "RenderTexture");
+	Texture * pass2 = TextureFactory::Instance().texture(width, height, "RenderTexture");
+
+	pass1Mat = new FBOMaterial();
+	pass1Mat->addTexture(pass1);
+	pass1Mat->done();
+
+	pass2Mat = new FBOMaterial();
+	pass2Mat->addTexture(pass2);
+	pass2Mat->done();
+*/
 
 	glError("RenderEngine",52);
 }
@@ -79,17 +101,81 @@ void RenderEngine::display() {
 		cout << "Mode:\t" << mode << "\n";
 		frameCount++;
 */
-
-
-
-
-
 		clear();
+
+		if (!fbo->useFBO) {
+			if(lightView){
+				SceneGraph::Instance().drawNodesLight();
+			}else{
+				SceneGraph::Instance().drawNodes();
+			}
+		}else{
+			shadowMapPass();
+
+
+			if(lightView){
+				SceneGraph::Instance().drawNodesLight(pass1Mat);
+			}else{
+				SceneGraph::Instance().drawNodes(pass1Mat);
+			}
+			//renderPlane->draw();
+			glError("FrameBuffer::draw", 171);
+
+			/*
+			bindShaders(pass2Mat->getShaderProgram());
+
+			glBindTexture(GL_TEXTURE_2D, 0);
+			pass2Mat->activate();
+
+			renderPlane->draw();
+			//Camera::Instance().perspective();
+		*/
+		}
+
+		/*
 #ifdef USE_FBO
 	fbo->draw();
 #endif
+*/
+}
 
-	//SceneGraph::Instance().drawNodes();
+void RenderEngine::shadowMapPass(){
+	glError("FrameBuffer::draw", 105);
+
+	//Using the fixed pipeline to render to the depthbuffer
+	//glUseProgram(0);
+
+	// In the case we render the shadowmap to a higher resolution, the viewport must be modified accordingly.
+	glViewport(0,0,fbo->width, fbo->height);
+
+	// Clear previous frame values
+	glClear( GL_DEPTH_BUFFER_BIT);
+
+	//Disable color rendering, we only want to write to the Z-Buffer
+	//glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE);
+
+	// Culling switching, rendering only backface, this is done to avoid self-shadowing
+	glCullFace(GL_FRONT);
+	pass2Mat->activate();
+	SceneGraph::Instance().drawNodesLight(pass2Mat);
+	fbo->unBind();
+
+	glCullFace(GL_BACK);
+	RenderEngine::Instance().clear();
+
+	glBindTexture(GL_TEXTURE_2D, 0);
+
+	glViewport(0,0,fbo->width, fbo->height);
+
+	pass1Mat->activate();
+}
+
+void RenderEngine::toggleLightView(){
+	if (lightView){
+		lightView = false;
+	}else{
+		lightView = true;
+	}
 }
 
 void RenderEngine::clear(){
