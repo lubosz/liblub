@@ -42,7 +42,8 @@ class ShadowMap : public Material {
 public:
 	ShadowMap(unsigned width, unsigned height){
 		init();
-		Texture * shadowMap = TextureFactory::Instance().texture(width, height, "shadowMap");
+		//Texture * shadowMap = TextureFactory::Instance().depthTexture(width, height, "shadowMap");
+		Texture * shadowMap = TextureFactory::Instance().colorTexture(width, height, "shadowMap");
 		addTexture(shadowMap);
 		attachVertFrag("Shadow/ComposeShadow");
 		done();
@@ -77,7 +78,7 @@ class FBOMaterial : public Material {
 public:
 	FBOMaterial(unsigned width, unsigned height){
 		init();
-		Texture * renderTarget = TextureFactory::Instance().texture(width, height, "myTexture");
+		Texture * renderTarget = TextureFactory::Instance().colorTexture(width, height, "myTexture");
 		addTexture(renderTarget);
 		//shaderProgram->attachShader("Texture/texture.vert", GL_VERTEX_SHADER);
 		//shaderProgram->attachShader("Post/raysAndSky/3 - Blur.frag", GL_FRAGMENT_SHADER);

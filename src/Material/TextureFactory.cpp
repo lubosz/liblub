@@ -6,6 +6,7 @@
  */
 
 #include "TextureFactory.h"
+#include "Textures.h"
 #include <iostream>
 
 TextureFactory::TextureFactory() {
@@ -27,24 +28,29 @@ TextureFactory::TextureFactory() {
 TextureFactory::~TextureFactory() {
 	// TODO Auto-generated destructor stub
 }
-Texture * TextureFactory::texture(GLuint width, GLuint height, string name){
-	Texture * texture = new Texture(width, height, name, textureEnums[textureCount]);
+Texture * TextureFactory::depthTexture(GLuint width, GLuint height, string name){
+	Texture * texture = new DepthTexture(width, height, name, textureEnums[textureCount]);
+	textureCount++;
+	return texture;
+}
+Texture * TextureFactory::colorTexture(GLuint width, GLuint height, string name){
+	Texture * texture = new ColorTexture(width, height, name, textureEnums[textureCount]);
 	textureCount++;
 	return texture;
 }
 Texture * TextureFactory::load(string filename, string name){
-	Texture * texture = new Texture(filename, textureEnums[textureCount], name);
+	Texture * texture = new TextureFile(filename, textureEnums[textureCount], name);
 	textureCount++;
 	return texture;
 }
 Texture * TextureFactory::loadCubeMap(string filename, string name){
-	Texture * texture = new Texture(filename, textureEnums[textureCount], name, true);
+	Texture * texture = new CubeTextureFile(filename, textureEnums[textureCount], name, true);
 	textureCount++;
 	return texture;
 }
 
 Texture * TextureFactory::splatTexture(string name, int resolution){
-	Texture * texture = new Texture(textureEnums[textureCount], name, resolution);
+	Texture * texture = new SplatTexture(textureEnums[textureCount], name, resolution);
 	textureCount++;
 	return texture;
 }
