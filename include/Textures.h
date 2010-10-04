@@ -18,7 +18,7 @@ public:
 		textureType = GL_TEXTURE_2D;
 
 	    glGenTextures(1, &texture);
-	    cout << "Creating FBO texture #" << texture << " " << name << "\n";
+	    cout << "Creating FBO Depth texture #" << texture << " " << name << "\n";
 	    glBindTexture(textureType, texture);
 
 	    //shadowmap
@@ -47,7 +47,7 @@ public:
 		textureType = GL_TEXTURE_2D;
 
 	    glGenTextures(1, &texture);
-	    cout << "Creating FBO texture #" << texture << " " << name << "\n";
+	    cout << "Creating FBO Color texture #" << texture << " " << name << "\n";
 	    glBindTexture(textureType, texture);
 	    glTexImage2D(textureType, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0);
 
@@ -91,7 +91,7 @@ public:
 	    fipImage * image = readImage(path, glChannelOrder, texChannelOrder);
 
 		glGenTextures(1, &texture);
-		cout << "Creating texture #" << texture << " " << name << "\n";
+		cout << "Creating texture from file #" << texture << " " << name << "\n";
 
 	    glBindTexture(GL_TEXTURE_2D, texture);
 	/*

@@ -14,16 +14,15 @@
 #include <sstream>
 
 FrameBuffer::FrameBuffer(GLuint width, GLuint height) {
+	debugMat = new FBOMaterial(width,height);
 	glError("FrameBuffer",12);
 	//Gen texture for fbo
     // create a texture object
 	this->width = width;
 	this->height = height;
 
+    renderPlane = MeshFactory::Instance().plane();
 
-    //renderPlane = MeshFactory::Instance().plane();
-
-	//pass1Mat = new TextureMaterial("bunny.png");
 	glError("FrameBuffer",33);
 
     glGenFramebuffers(1, &fboId);
@@ -79,6 +78,10 @@ void FrameBuffer::attachTexture(GLenum attachmentPoint, Texture * texture){
 
 }
 
+Texture * FrameBuffer::getDebugTexture(){
+	return debugMat->textures[0];
+}
+
 void FrameBuffer::disableColorBuffer(){
 
     //@ disable color buffer if you don't attach any color buffer image,
@@ -93,15 +96,14 @@ void FrameBuffer::bind() {
     // set the rendering destination to FBO
     glBindFramebuffer(GL_FRAMEBUFFER, fboId);
 
-    // Set the render target
-    glDrawBuffer(GL_COLOR_ATTACHMENT0);
-    //glDrawBuffer(GL_DEPTH_ATTACHMENT);
-
-    glError("FrameBuffer::bind", 105);
-
-
+    //Multiple render targets
     //GLenum buffers[] = { GL_COLOR_ATTACHMENT0_EXT, GL_COLOR_ATTACHMENT1_EXT };
 	//glDrawBuffers(2, buffers);
+
+    // Set the render target
+    //glDrawBuffer(GL_COLOR_ATTACHMENT0);
+
+    glError("FrameBuffer::bind", 105);
 }
 
 void FrameBuffer::unBind() {
@@ -110,35 +112,13 @@ void FrameBuffer::unBind() {
 }
 
 void FrameBuffer::draw() {
-
+	debugMat->activate();
+	debugMat->getShaderProgram()->use();
+	debugMat->getShaderProgram()->setUniform(QMatrix4x4(), "MVPMatrix");
+	//glBindTexture(GL_TEXTURE_2D, 0);
+	renderPlane->draw();
+	glError("FrameBuffer::draw", 188);
 }
-
-
-
-void FrameBuffer::bindShaders(ShaderProgram * shaderProgram) {
-	glError("FrameBuffer::bindShaders", 128);
-
-	shaderProgram->use();
-	glError("FrameBuffer::bindShaders", 188);
-
-
-
-	//bias*perspLight*viewLight*(viewCam⁻1)
-	shaderProgram->setUniform(QMatrix4x4(), "MVPMatrix");
-
-/*
-
-QMatrix4x4 invProjView = QMatrix4x4();
-	//invProjView
-
-	invProjView = Camera::Instance().getView() * invProjView;
-	invProjView = Camera::Instance().getProjection() * invProjView;
-	shaderProgram->setUniform(invProjView.inverted(), "invProjView");
-*/
-	glError("FrameBuffer::bindShaders", 216);
-}
-
-
 
 FrameBuffer::~FrameBuffer() {
 	glDeleteFramebuffers(1, &fboId);

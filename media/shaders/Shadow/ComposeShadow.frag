@@ -10,6 +10,7 @@ out vec4 fragColor;
 
 //uniform sampler2D colorTex;
 uniform sampler2D shadowMap;
+//uniform sampler2DShadow shadowMap;
 
 uniform vec3 lightPositionView;
 
@@ -26,6 +27,7 @@ void main()
 	float fragDepth = shadowTexCoord.z;
 	
 	float shadowMapDepth = texture(shadowMap, shadowTexCoord.xy).x;
+	//float shadowMapDepth = textureProj(shadowMap, shadowTexCoord);
 	
 	// comparez1111
 	float receivedLightAmount;

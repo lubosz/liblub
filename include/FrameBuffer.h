@@ -19,27 +19,21 @@ public:
     void bind();
     void unBind();
     void draw();
-	void toggle();
 
 	unsigned width, height;
-
 
 	void checkAndFinish();
 	void attachTexture(GLenum attachmentPoint, Texture * texture);
 	void disableColorBuffer();
+	Texture * getDebugTexture();
 private:
 	GLuint fboId;                       // ID of FBO
 	GLuint rboId;                       // ID of Renderbuffer object
 
-	//Texture * fboTexture;
-
-
 	Mesh * renderPlane;
-
+	Material * debugMat;
 
 	void printFramebufferInfo();
-	void bindShaders(ShaderProgram * shaderProgram);
-
 	string getTextureParameters(GLuint id);
 	string getRenderbufferParameters(GLuint id);
 	string convertInternalFormatToString(GLenum format);
