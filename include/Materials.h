@@ -38,25 +38,28 @@ public:
 	}
 };
 
-class ShadowMap : public Material {
+class ShadowMapSimple : public Material {
 public:
-	ShadowMap(unsigned width, unsigned height){
+	ShadowMapSimple(unsigned width, unsigned height){
 		init();
-		Texture * shadowMap = TextureFactory::Instance().depthTexture(width, height, "shadowMap");
-		//Texture * shadowMap = TextureFactory::Instance().colorTexture(width, height, "shadowMap");
-		addTexture(shadowMap);
-		//addTexture("bump/masonry-wall-texture.jpg","diffuseTexture");
+		addTexture(TextureFactory::Instance().depthTexture(width, height, "shadowMap"));
+		attachVertFrag("Shadow/Simple");
+		done();
+  }
+	void uniforms(){}
+};
+
+class ShadowMapPhong : public Material {
+public:
+	ShadowMapPhong(unsigned width, unsigned height){
+		init();
+		addTexture(TextureFactory::Instance().depthTexture(width, height, "shadowMap"));
 		diffuseColor = QVector4D(0,.9,.1,1);
-		//attachVertFrag("Color/PhongColor",{"receiveShadows","useDiffuseTexture","useSpotLight"});
-		attachVertFrag("Shadow/ComposeShadow");
+		attachVertFrag("Color/PhongColor",{"receiveShadows","useDiffuseTexture","useSpotLight"});
 		done();
   }
 	void uniforms(){
-
 		GLuint program = shaderProgram->getReference();
-
-		shaderProgram->setUniform(1.0/1200*4, "yPixelOffset");
-		shaderProgram->setUniform(1.0/1920*4, "xPixelOffset");
 
 		//ambient
 		glUniform4f(glGetUniformLocation(program, "ambientSceneColor"), 0.02, 0.02, 0.02,1.0);
@@ -67,7 +70,21 @@ public:
 		//specular
 		glUniform4f(glGetUniformLocation(program, "specularMaterialColor"), 0.8, 0.8, 0.8,1.0);
 		glUniform1f(glGetUniformLocation(program, "shininess"), 4.3);
+	}
+};
 
+class ShadowMapPCF : public Material {
+public:
+	ShadowMapPCF(unsigned width, unsigned height){
+		init();
+		Texture * shadowMap = TextureFactory::Instance().depthTexture(width, height, "shadowMap");
+		addTexture(shadowMap);
+		attachVertFrag("Shadow/PCF");
+		done();
+  }
+	void uniforms(){
+		shaderProgram->setUniform(1.0/1200*4, "yPixelOffset");
+		shaderProgram->setUniform(1.0/1920*4, "xPixelOffset");
 	}
 };
 

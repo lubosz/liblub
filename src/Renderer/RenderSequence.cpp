@@ -10,7 +10,7 @@
 RenderSequence::RenderSequence() {
     fbo = new FrameBuffer(1920*4,1200*4);
 
-	pass1Mat = new ShadowMap(1920*4, 1200*4);
+	pass1Mat = new ShadowMapSimple(1920*4, 1200*4);
 	//pass1Mat = new FBOMaterial(width, height);
 	pass2Mat = new ShadowMapDepth();
 

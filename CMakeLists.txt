@@ -102,7 +102,6 @@ set(EXAMPLES
     waterplanet
     csm
     spiral
-    phong
     shadow
 )
 
