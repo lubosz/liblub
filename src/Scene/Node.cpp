@@ -14,6 +14,8 @@ Node::Node(string name, const QVector3D& position, Mesh * mesh) {
     this->mesh = mesh;
     this->size = 1;
     modelMatrix = QMatrix4x4();
+    castShadows = true;
+    receiveShadows = false;
     update();
 }
 
@@ -24,6 +26,8 @@ Node::Node(string name, const QVector3D& position, Mesh * mesh, Material * mater
     this->material = material;
     this->size = 1;
     modelMatrix = QMatrix4x4();
+    castShadows = true;
+    receiveShadows = false;
     update();
 }
 
@@ -34,6 +38,8 @@ Node::Node(string name, const QVector3D& position, float size, Mesh * mesh, Mate
     this->material = material;
     this->size = size;
     modelMatrix = QMatrix4x4();
+    castShadows = true;
+    receiveShadows = false;
     update();
 }
 
@@ -44,6 +50,8 @@ Node::Node(string name, const QVector3D& position, string mesh, Material * mater
     this->material = material;
     this->size = 1;
     modelMatrix = QMatrix4x4();
+    castShadows = true;
+    receiveShadows = false;
     update();
 }
 
@@ -100,6 +108,27 @@ void Node::setSize(float size){
 
 Node::~Node() {
 	// TODO Auto-generated destructor stub
+}
+
+
+bool Node::getReceiveShadows() const
+{
+    return receiveShadows;
+}
+
+void Node::setReceiveShadows(bool receiveShadows)
+{
+    this->receiveShadows = receiveShadows;
+}
+
+bool Node::getCastShadows() const
+{
+    return castShadows;
+}
+
+void Node::setCastShadows(bool castShadows)
+{
+    this->castShadows = castShadows;
 }
 
 void Node::update(){

@@ -21,12 +21,12 @@ void main()
 
 	vec4 shadowTexCoord = camViewToShadowMapMatrix * positionCamView; 
 	//correct coord by devision by w:
-	shadowTexCoord = shadowTexCoord/ shadowTexCoord.w;
+	shadowTexCoord = shadowTexCoord / shadowTexCoord.w;
 
 
 	float fragDepth = shadowTexCoord.z;
 	
-	float shadowMapDepth = texture(shadowMap, shadowTexCoord.xy).x;
+	float shadowMapDepth = texture(shadowMap, shadowTexCoord.xy).z;
 	//float shadowMapDepth = textureProj(shadowMap, shadowTexCoord);
 	
 	// comparez1111
@@ -49,6 +49,7 @@ void main()
  	//FragColor    = texture(colorTex, uv)* lightColor;
  	fragColor = vec4(1,1,1,1);
 	fragColor *= receivedLightAmount;
+	//fragColor *= shadowMapDepth;
 	
 
 } 

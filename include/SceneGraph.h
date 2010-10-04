@@ -18,6 +18,7 @@ public:
 	void drawNodesLight(Material * material);
 	void drawNodes(Material * material);
 	void drawNodes();
+	void printMatrix(const QMatrix4x4 & matrix, string name);
 
 	void addNode(Node * node);
 	void meshPlane(string file, float cubeSize, float step, vector<Material*> materials);

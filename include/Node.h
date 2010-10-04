@@ -15,6 +15,10 @@
 class Node {
 public:
 	Mesh * mesh;
+    bool getCastShadows() const;
+    void setCastShadows(bool castShadows);
+    bool getReceiveShadows() const;
+    void setReceiveShadows(bool receiveShadows);
 private:
 	string name;
 	//vector<float> position;
@@ -23,6 +27,7 @@ private:
 	Node * parent;
 	QMatrix4x4 modelMatrix;
 	Material * material;
+	bool castShadows, receiveShadows;
 
 
 public:

@@ -111,6 +111,10 @@ void FrameBuffer::unBind() {
     glBindFramebuffer(GL_FRAMEBUFFER, 0); // unbind
 }
 
+void FrameBuffer::updateRenderView(){
+	glViewport(0,0,width, height);
+}
+
 void FrameBuffer::draw() {
 	debugMat->activate();
 	debugMat->getShaderProgram()->use();

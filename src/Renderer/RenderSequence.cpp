@@ -14,8 +14,8 @@ RenderSequence::RenderSequence() {
 	//pass1Mat = new FBOMaterial(width, height);
 	pass2Mat = new ShadowMapDepth();
 
-	fbo->attachTexture(GL_COLOR_ATTACHMENT0, fbo->getDebugTexture());
-	//fbo->attachTexture(GL_COLOR_ATTACHMENT0, pass1Mat->textures[0]);
+	//fbo->attachTexture(GL_COLOR_ATTACHMENT0, fbo->getDebugTexture());
+	fbo->attachTexture(GL_COLOR_ATTACHMENT0, pass1Mat->textures[0]);
 	//fbo->attachTexture(GL_DEPTH_ATTACHMENT, pass1Mat->textures[0]);
 	fbo->checkAndFinish();
 }
@@ -29,35 +29,33 @@ void RenderSequence::render(){
 
 	RenderEngine::Instance().clear();
 
-
 	//Using the fixed pipeline to render to the depthbuffer
 	//glUseProgram(0);
 
 	// In the case we render the shadowmap to a higher resolution, the viewport must be modified accordingly.
-	glViewport(0,0,fbo->width, fbo->height);
+	fbo->updateRenderView();
 
 	// Clear previous frame values
-	glClear( GL_DEPTH_BUFFER_BIT);
+	//glClear( GL_DEPTH_BUFFER_BIT);
 
 	//Disable color rendering, we only want to write to the Z-Buffer
 	//glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE);
 
 	// Culling switching, rendering only backface, this is done to avoid self-shadowing
-	//glCullFace(GL_FRONT);
+	glCullFace(GL_FRONT);
 	pass2Mat->activate();
 	SceneGraph::Instance().drawNodesLight(pass2Mat);
-	//SceneGraph::Instance().drawNodes();
 	fbo->unBind();
 
-	//glCullFace(GL_BACK);
+	glCullFace(GL_BACK);
 	RenderEngine::Instance().clear();
 
-	fbo->draw();
+	//fbo->draw();
 
-	/*
+
 	glBindTexture(GL_TEXTURE_2D, 0);
 
-	glViewport(0,0,fbo->width, fbo->height);
+	fbo->updateRenderView();
 
 	pass1Mat->activate();
 
@@ -66,7 +64,7 @@ void RenderSequence::render(){
 	}else{
 		SceneGraph::Instance().drawNodes(pass1Mat);
 	}
-	*/
+
 
 	glError("RenderSequence::draw", 66);
 }

@@ -19,6 +19,7 @@ public:
     void bind();
     void unBind();
     void draw();
+    void updateRenderView();
 
 	unsigned width, height;
 

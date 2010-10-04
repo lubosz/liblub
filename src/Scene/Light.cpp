@@ -15,10 +15,13 @@ Light::Light(const QVector4D& position, const QVector3D & direction) {
 	moveSensitivity = .1;
 	this->position = position;
 	this->direction = direction;
-	SceneGraph::Instance().addNode(new Node("Light",position.toVector3D(), MeshFactory::Instance().lamp(),new WhiteMat()));
+	Node * lightNode = new Node("Light",position.toVector3D(), MeshFactory::Instance().lamp(),new WhiteMat());
+	lightNode->setCastShadows(false);
+	SceneGraph::Instance().addNode(lightNode);
 	viewMatrix = QMatrix4x4();
 	projectionMatrix = QMatrix4x4();
-	projectionMatrix.perspective(45,1920/1200,1,10000);
+	projectionMatrix.perspective(90,1920/1200,.1,10000);
+	//projectionMatrix.perspective(70.0,1920/1200,0.1,1000.0);
 	update();
 }
 
@@ -128,7 +131,7 @@ void Light::update(){
 	viewMatrix.setToIdentity();
 	viewMatrix.lookAt(
 			position.toVector3D(),
-			position.toVector3D()+direction,
+			direction,
 			{0,1,0}
 	);
 
