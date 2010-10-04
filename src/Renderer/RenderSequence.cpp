@@ -45,7 +45,7 @@ void RenderSequence::render(){
 	// Culling switching, rendering only backface, this is done to avoid self-shadowing
 	//glCullFace(GL_FRONT);
     glEnable(GL_POLYGON_OFFSET_FILL);
-    glPolygonOffset(2.0,2.0);
+    glPolygonOffset(2.0,0.0);
 	pass2Mat->activate();
 	SceneGraph::Instance().drawNodesLight(pass2Mat);
 	fbo->unBind();

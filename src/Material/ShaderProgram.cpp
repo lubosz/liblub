@@ -165,3 +165,7 @@ void ShaderProgram::setUniform(const QMatrix4x4 & matrix, string name){
 	*/
 	//glError("ShaderProgram::bindMatrix4x4",137);
 }
+
+void ShaderProgram::setUniform(float value, string name){
+	glUniform1f(glGetUniformLocation(program, name.c_str()), value);
+}

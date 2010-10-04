@@ -47,13 +47,16 @@ public:
 		addTexture(shadowMap);
 		//addTexture("bump/masonry-wall-texture.jpg","diffuseTexture");
 		diffuseColor = QVector4D(0,.9,.1,1);
-		attachVertFrag("Color/PhongColor",{"receiveShadows","useDiffuseTexture","useSpotLight"});
-		//attachVertFrag("Shadow/ComposeShadow");
+		//attachVertFrag("Color/PhongColor",{"receiveShadows","useDiffuseTexture","useSpotLight"});
+		attachVertFrag("Shadow/ComposeShadow");
 		done();
   }
 	void uniforms(){
 
 		GLuint program = shaderProgram->getReference();
+
+		shaderProgram->setUniform(1.0/1200*4, "yPixelOffset");
+		shaderProgram->setUniform(1.0/1920*4, "xPixelOffset");
 
 		//ambient
 		glUniform4f(glGetUniformLocation(program, "ambientSceneColor"), 0.02, 0.02, 0.02,1.0);
