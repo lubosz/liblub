@@ -36,7 +36,6 @@ RenderEngine::RenderEngine() {
     //glTexEnvi(GL_POINT_SPRITE_ARB, GL_COORD_REPLACE_ARB, GL_TRUE);
 	#endif
     glEnable(GL_VERTEX_PROGRAM_POINT_SIZE_NV);
-
     /*
     glEnable(GL_POLYGON_OFFSET_FILL);
     glPolygonOffset(2.0,2.0);

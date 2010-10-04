@@ -10,5 +10,6 @@ void main()
 {	
 	position = MVPMatrix * vec4(in_Vertex,1);
 	gl_Position = position;
+	//gl_Position = MVPMatrix * vec4(in_Vertex,1);
 
 }

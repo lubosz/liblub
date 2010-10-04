@@ -1,4 +1,3 @@
-//#define useSpotLight
 #version 330 core
 
 precision highp float;
@@ -33,6 +32,11 @@ uniform vec4 diffuseMaterialColor;
 uniform float spotInnerAngle;
 uniform float spotOuterAngle;
 uniform vec3 spotDirectionView;
+#endif
+
+#ifdef receiveShadows
+uniform sampler2D shadowMap;
+uniform mat4 camViewToShadowMapMatrix; //bias*perspLight*viewLight*(viewCam⁻1)
 #endif
 
 //attenuation
@@ -80,6 +84,11 @@ void main(){
 	finalColor = ambientSceneColor;
 								
 	vec3 L = normalize(lightDirection.xyz);	
+	
+#ifdef receiveShadows
+	vec4 shadowTexCoord = camViewToShadowMapMatrix * positionView;
+	vec4 shadow = textureProj(shadowMap, shadowTexCoord);
+#endif	
 
 #ifdef useSpotLight
 	//Spot	
@@ -102,18 +111,30 @@ void main(){
 		* spot
 #endif
 		* att;
-		
+
+#ifdef receiveShadows
+		if (shadow.x == 0){
+#endif	
 		//specular
 		vec3 E = normalize(-positionView.xyz);
 		vec3 R = reflect(-L, N);
 
 		float specular = pow( max(dot(R, E), 0.0), shininess );
+		
 		finalColor += specularColor(specular)
+		
 #ifdef useSpotLight
 		* spot
 #endif
 		* att;
+#ifdef receiveShadows
+		}
+#endif	
 	}
+	
+#ifdef receiveShadows
+	finalColor -= shadow * .3;
+#endif
 	
 			
 } 

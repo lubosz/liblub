@@ -17,6 +17,7 @@ RenderSequence::RenderSequence() {
 	//fbo->attachTexture(GL_COLOR_ATTACHMENT0, fbo->getDebugTexture());
 	fbo->attachTexture(GL_COLOR_ATTACHMENT0, pass1Mat->textures[0]);
 	//fbo->attachTexture(GL_DEPTH_ATTACHMENT, pass1Mat->textures[0]);
+	//fbo->disableColorBuffer();
 	fbo->checkAndFinish();
 }
 
@@ -56,7 +57,8 @@ void RenderSequence::render(){
 	glBindTexture(GL_TEXTURE_2D, 0);
 
 	fbo->updateRenderView();
-
+	//Enabling color write (previously disabled for light POV z-buffer rendering)
+	//glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
 	pass1Mat->activate();
 
 	if(RenderEngine::Instance().lightView){

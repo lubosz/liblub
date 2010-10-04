@@ -53,7 +53,7 @@ FrameBuffer::FrameBuffer(GLuint width, GLuint height) {
 
 	glError("FrameBuffer",74);
 
-	//glEnable(GL_TEXTURE_COMPARE_MODE);
+	//
 
 }
 

@@ -45,16 +45,33 @@ public:
 		//Texture * shadowMap = TextureFactory::Instance().depthTexture(width, height, "shadowMap");
 		Texture * shadowMap = TextureFactory::Instance().colorTexture(width, height, "shadowMap");
 		addTexture(shadowMap);
-		attachVertFrag("Shadow/ComposeShadow");
+		addTexture("bump/masonry-wall-texture.jpg","diffuseTexture");
+		diffuseColor = QVector4D(0,.9,.1,1);
+		attachVertFrag("Color/PhongColor",{"receiveShadows","useDiffuseTexture"});
 		done();
   }
-	void uniforms(){}
+	void uniforms(){
+
+		GLuint program = shaderProgram->getReference();
+
+		//ambient
+		glUniform4f(glGetUniformLocation(program, "ambientSceneColor"), 0.0, 0.0, 0.0,1.0);
+
+		//diffuse
+		shaderProgram->setUniform(diffuseColor, "diffuseMaterialColor");
+
+		//specular
+		glUniform4f(glGetUniformLocation(program, "specularMaterialColor"), 0.8, 0.8, 0.8,1.0);
+		glUniform1f(glGetUniformLocation(program, "shininess"), 4.3);
+
+	}
 };
 
 class ShadowMapDepth : public Material {
 public:
 	ShadowMapDepth(){
 		init();
+		//shaderProgram->attachShader("Shadow/GenerateDepthMap.vert", GL_VERTEX_SHADER);
 		attachVertFrag("Shadow/GenerateDepthMap");
 		done();
   }
@@ -346,8 +363,8 @@ class PhongColorMat : public Material {
 public:
 	PhongColorMat(QVector3D color){
 		init();
-		attachVertFrag("Color/PhongColor", {"useSpotLight"});
-		//attachVertFrag("Color/PhongColor");
+		//attachVertFrag("Color/PhongColor", {"useSpotLight"});
+		attachVertFrag("Color/PhongColor");
 		diffuseColor = color.toVector4D();
 		done();
   }
@@ -355,7 +372,7 @@ public:
 		GLuint program = shaderProgram->getReference();
 
 		//ambient
-		glUniform4f(glGetUniformLocation(program, "ambientSceneColor"), 0.1, 0.1, 0.1,1.0);
+		glUniform4f(glGetUniformLocation(program, "ambientSceneColor"), 0.0, 0.0, 0.0,1.0);
 
 		//diffuse
 		shaderProgram->setUniform(diffuseColor, "diffuseMaterialColor");

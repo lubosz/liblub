@@ -48,7 +48,8 @@ void SceneGraph::printMatrix(const QMatrix4x4 & matrix, string name){
 void SceneGraph::drawNodes(Material * material){
     BOOST_FOREACH( Node * node, sceneNodes )
     {
-    	if (node->getReceiveShadows()){
+    	//if (node->getReceiveShadows()){
+    	if(true){
 			QMatrix4x4 bias = QMatrix4x4();
 			bias.translate(.5,.5,.5);
 			bias.scale(.5,.5,.5);
