@@ -35,6 +35,7 @@ FrameBuffer::FrameBuffer(GLuint width, GLuint height) {
     // If you also need stencil test for your rendering, then you must
     // attach additional image to the stencil attachement point, too.
 
+
     glGenRenderbuffers(1, &rboId);
     glBindRenderbuffer(GL_RENDERBUFFER, rboId);
     glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, width, height);
@@ -58,7 +59,7 @@ FrameBuffer::FrameBuffer(GLuint width, GLuint height) {
 }
 
 void FrameBuffer::checkAndFinish(){
-    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, rboId);
+   // glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, rboId);
     //glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_STENCIL_ATTACHMENT, GL_RENDERBUFFER, stencilbuffer);
 
     // check FBO status

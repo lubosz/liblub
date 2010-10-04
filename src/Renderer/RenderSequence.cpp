@@ -8,16 +8,16 @@
 #include "RenderSequence.h"
 
 RenderSequence::RenderSequence() {
-    fbo = new FrameBuffer(1920,1200);
+    fbo = new FrameBuffer(1920*4,1200*4);
 
-	pass1Mat = new ShadowMap(1920, 1200);
+	pass1Mat = new ShadowMap(1920*4, 1200*4);
 	//pass1Mat = new FBOMaterial(width, height);
 	pass2Mat = new ShadowMapDepth();
 
 	//fbo->attachTexture(GL_COLOR_ATTACHMENT0, fbo->getDebugTexture());
-	fbo->attachTexture(GL_COLOR_ATTACHMENT0, pass1Mat->textures[0]);
-	//fbo->attachTexture(GL_DEPTH_ATTACHMENT, pass1Mat->textures[0]);
-	//fbo->disableColorBuffer();
+	//fbo->attachTexture(GL_COLOR_ATTACHMENT0, pass1Mat->textures[0]);
+	fbo->attachTexture(GL_DEPTH_ATTACHMENT, pass1Mat->textures[0]);
+	fbo->disableColorBuffer();
 	fbo->checkAndFinish();
 }
 
@@ -43,12 +43,15 @@ void RenderSequence::render(){
 	//glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE);
 
 	// Culling switching, rendering only backface, this is done to avoid self-shadowing
-	glCullFace(GL_FRONT);
+	//glCullFace(GL_FRONT);
+    glEnable(GL_POLYGON_OFFSET_FILL);
+    glPolygonOffset(2.0,2.0);
 	pass2Mat->activate();
 	SceneGraph::Instance().drawNodesLight(pass2Mat);
 	fbo->unBind();
 
-	glCullFace(GL_BACK);
+	glDisable(GL_POLYGON_OFFSET_FILL);
+	//glCullFace(GL_BACK);
 	RenderEngine::Instance().clear();
 
 	//fbo->draw();
@@ -56,7 +59,8 @@ void RenderSequence::render(){
 
 	glBindTexture(GL_TEXTURE_2D, 0);
 
-	fbo->updateRenderView();
+	//fbo->updateRenderView();
+	glViewport(0,0,1920, 1200);
 	//Enabling color write (previously disabled for light POV z-buffer rendering)
 	//glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
 	pass1Mat->activate();

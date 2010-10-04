@@ -42,12 +42,13 @@ class ShadowMap : public Material {
 public:
 	ShadowMap(unsigned width, unsigned height){
 		init();
-		//Texture * shadowMap = TextureFactory::Instance().depthTexture(width, height, "shadowMap");
-		Texture * shadowMap = TextureFactory::Instance().colorTexture(width, height, "shadowMap");
+		Texture * shadowMap = TextureFactory::Instance().depthTexture(width, height, "shadowMap");
+		//Texture * shadowMap = TextureFactory::Instance().colorTexture(width, height, "shadowMap");
 		addTexture(shadowMap);
-		addTexture("bump/masonry-wall-texture.jpg","diffuseTexture");
+		//addTexture("bump/masonry-wall-texture.jpg","diffuseTexture");
 		diffuseColor = QVector4D(0,.9,.1,1);
-		attachVertFrag("Color/PhongColor",{"receiveShadows","useDiffuseTexture"});
+		attachVertFrag("Color/PhongColor",{"receiveShadows","useDiffuseTexture","useSpotLight"});
+		//attachVertFrag("Shadow/ComposeShadow");
 		done();
   }
 	void uniforms(){
@@ -55,7 +56,7 @@ public:
 		GLuint program = shaderProgram->getReference();
 
 		//ambient
-		glUniform4f(glGetUniformLocation(program, "ambientSceneColor"), 0.0, 0.0, 0.0,1.0);
+		glUniform4f(glGetUniformLocation(program, "ambientSceneColor"), 0.02, 0.02, 0.02,1.0);
 
 		//diffuse
 		shaderProgram->setUniform(diffuseColor, "diffuseMaterialColor");
@@ -71,8 +72,8 @@ class ShadowMapDepth : public Material {
 public:
 	ShadowMapDepth(){
 		init();
-		//shaderProgram->attachShader("Shadow/GenerateDepthMap.vert", GL_VERTEX_SHADER);
-		attachVertFrag("Shadow/GenerateDepthMap");
+		shaderProgram->attachShader("Common/minimal.vert", GL_VERTEX_SHADER);
+		//attachVertFrag("Shadow/GenerateDepthMap");
 		done();
   }
 	void uniforms(){}

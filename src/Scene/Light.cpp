@@ -84,7 +84,7 @@ void Light::bindShaderInit(ShaderProgram * shaderProgram){
 	//attenuation
 	glUniform1f(glGetUniformLocation(program, "constantAttenuation"), 0);
 	//glUniform1f(glGetUniformLocation(program, "linearAttenuation"), .8);
-	glUniform1f(glGetUniformLocation(program, "quadraticAttenuation"), .010);
+	glUniform1f(glGetUniformLocation(program, "quadraticAttenuation"), .005);
 
 	//spot
 	glUniform1f(glGetUniformLocation(program, "spotOuterAngle"), 0.9);

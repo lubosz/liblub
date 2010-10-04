@@ -26,7 +26,7 @@ RenderEngine::RenderEngine() {
 
 	/* Make our background black */
 	glClearColor(backgroundColor[0],backgroundColor[1],backgroundColor[2], 1.0);
-    glEnable(GL_CULL_FACE);
+    //glEnable(GL_CULL_FACE);
     //glEnable(GL_POINT_SPRITE_ARB);
     glEnable(GL_DEPTH_TEST);
     glDepthFunc(GL_LESS);
@@ -37,8 +37,7 @@ RenderEngine::RenderEngine() {
 	#endif
     glEnable(GL_VERTEX_PROGRAM_POINT_SIZE_NV);
     /*
-    glEnable(GL_POLYGON_OFFSET_FILL);
-    glPolygonOffset(2.0,2.0);
+
      */
 
     glPointSize(5);

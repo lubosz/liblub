@@ -62,6 +62,7 @@ set(SOURCES
 	${SRC_DIR}/Material/ShaderProgram.cpp
 	${SRC_DIR}/Material/Shader.cpp
 	${SRC_DIR}/Material/Texture.cpp
+	${SRC_DIR}/Material/Textures.cpp
 	${SRC_DIR}/Material/TextureFactory.cpp
 	${SRC_DIR}/Material/Material.cpp
 

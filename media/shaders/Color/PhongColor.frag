@@ -35,7 +35,7 @@ uniform vec3 spotDirectionView;
 #endif
 
 #ifdef receiveShadows
-uniform sampler2D shadowMap;
+uniform sampler2DShadow shadowMap;
 uniform mat4 camViewToShadowMapMatrix; //bias*perspLight*viewLight*(viewCam⁻1)
 #endif
 
@@ -87,7 +87,7 @@ void main(){
 	
 #ifdef receiveShadows
 	vec4 shadowTexCoord = camViewToShadowMapMatrix * positionView;
-	vec4 shadow = textureProj(shadowMap, shadowTexCoord);
+	float shadow = textureProj(shadowMap, shadowTexCoord);
 #endif	
 
 #ifdef useSpotLight
@@ -113,7 +113,7 @@ void main(){
 		* att;
 
 #ifdef receiveShadows
-		if (shadow.x == 0){
+		if (shadow > 0){
 #endif	
 		//specular
 		vec3 E = normalize(-positionView.xyz);
@@ -133,7 +133,7 @@ void main(){
 	}
 	
 #ifdef receiveShadows
-	finalColor -= shadow * .3;
+	finalColor *= shadow;
 #endif
 	
 			
