@@ -11,9 +11,8 @@ public:
   }
 
 	void scene(){
-		Light * light = new Light(QVector3D(0.3, 6.6, -3.3),QVector3D(1,-5,-1));
 
-		SceneGraph::Instance().light = light;
+		SceneGraph::Instance().light = new Light(QVector3D(0.3, 6.6, -3.3),QVector3D(1,-5,-1));
 
 		Material * material = new ConeMapMaterial();
 		//Material * bump = new NormalMapMaterial("bump/brickwork-texture.jpg","bump/brickwork_normal-map.jpg");

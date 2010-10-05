@@ -130,6 +130,10 @@ void ShaderProgram::setUniform(const QVector3D& vector, string name){
 	glUniform3f(glGetUniformLocation(program, name.c_str()), vector.x(), vector.y(),vector.z());
 }
 
+void ShaderProgram::setUniform(const QVector2D& vector, string name){
+	glUniform2f(glGetUniformLocation(program, name.c_str()), vector.x(), vector.y());
+}
+
 GLuint ShaderProgram::getReference() const{
 	return program;
 }

@@ -9,6 +9,7 @@
 #include <QMatrix3x3>
 #include <QMatrix4x4>
 #include <QVector3D>
+#include <QVector2D>
 
 #include <string>
 #include <list>
@@ -32,6 +33,7 @@ public:
 	void setUniform(float value, string name);
 	void setUniform(const QMatrix3x3 & matrix, string name);
 	void setUniform(const QMatrix4x4 & matrix, string name);
+	void setUniform(const QVector2D & vector, string name);
 	void setUniform(const QVector3D & vector, string name);
 	void setUniform(const QVector4D & vector, string name);
 private:

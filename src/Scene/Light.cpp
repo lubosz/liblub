@@ -15,7 +15,7 @@ Light::Light(const QVector3D& position, const QVector3D & direction) {
 
 	this->position = position;
 	this->direction = direction;
-	Node * lightNode = new Node("Light",position, MeshFactory::Instance().lamp(),new WhiteMat());
+	Node * lightNode = new Node("Light",position, MeshFactory::Instance().lamp(),new Simple("Color/white"));
 	lightNode->setCastShadows(false);
 	SceneGraph::Instance().addNode(lightNode);
 

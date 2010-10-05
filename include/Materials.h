@@ -22,13 +22,13 @@ public:
 	void uniforms(){}
 };
 
-class VertexColorMaterial : public Material {
+class Simple : public Material {
 public:
-	VertexColorMaterial(){
+	Simple(string shaders){
 		init();
-		attachVertFragGeom("Color/vertexcolor");
+		attachVertFrag(shaders);
 		done();
-  }
+	}
 	void uniforms(){}
 };
 
@@ -40,11 +40,10 @@ public:
 		done();
   }
 	void uniforms(){
-		cout << "inititalizing brick uniforms.\n";
-		glUniform3f(glGetUniformLocation(shaderProgram->getReference(), "BrickColor"), 1.0, 0.3, 0.2);
-		glUniform3f(glGetUniformLocation(shaderProgram->getReference(), "MortarColor"), 0.85, 0.86, 0.84);
-		glUniform2f(glGetUniformLocation(shaderProgram->getReference(), "BrickSize"), 0.30, 0.15);
-		glUniform2f(glGetUniformLocation(shaderProgram->getReference(), "BrickPct"), 0.90, 0.85);
+		shaderProgram->setUniform(QVector3D(1.0, 0.3, 0.2), "brickColor");
+		shaderProgram->setUniform(QVector3D(0.85, 0.86, 0.84), "mortarColor");
+		shaderProgram->setUniform(QVector2D(0.30, 0.15), "brickSize");
+		shaderProgram->setUniform(QVector2D(0.90, 0.85), "brickPct");
 	}
 };
 
@@ -69,17 +68,10 @@ public:
 		done();
   }
 	void uniforms(){
-		GLuint program = shaderProgram->getReference();
-
-		//ambient
-		glUniform4f(glGetUniformLocation(program, "ambientSceneColor"), 0.02, 0.02, 0.02,1.0);
-
-		//diffuse
+		shaderProgram->setUniform(QVector4D(0.02, 0.02, 0.02,1.0), "ambientSceneColor");
 		shaderProgram->setUniform(diffuseColor, "diffuseMaterialColor");
-
-		//specular
-		glUniform4f(glGetUniformLocation(program, "specularMaterialColor"), 0.8, 0.8, 0.8,1.0);
-		glUniform1f(glGetUniformLocation(program, "shininess"), 4.3);
+		shaderProgram->setUniform(QVector4D(0.8, 0.8, 0.8,1.0), "specularMaterialColor");
+		shaderProgram->setUniform(4.3, "shininess");
 	}
 };
 
@@ -95,18 +87,10 @@ public:
 		done();
   }
 	void uniforms(){
-		GLuint program = shaderProgram->getReference();
-
-		//ambient
-		glUniform4f(glGetUniformLocation(program, "ambientSceneColor"), 0.1, 0.1, 0.1,1.0);
-
-		//diffuse
+		shaderProgram->setUniform(QVector4D(0.1, 0.1, 0.1, 1.0), "ambientSceneColor");
 		shaderProgram->setUniform(diffuseColor, "diffuseMaterialColor");
-
-		//specular
-		glUniform4f(glGetUniformLocation(program, "specularMaterialColor"), 0.8, 0.8, 0.8,1.0);
-		glUniform1f(glGetUniformLocation(program, "shininess"), 4.3);
-
+		shaderProgram->setUniform(QVector4D(0.8, 0.8, 0.8,1.0), "specularMaterialColor");
+		shaderProgram->setUniform(4.3, "shininess");
 		shaderProgram->setUniform(1.0/1200, "yPixelOffset");
 		shaderProgram->setUniform(1.0/1920, "xPixelOffset");
 	}
@@ -126,8 +110,6 @@ public:
 		shaderProgram->setUniform(1.0/1920, "xPixelOffset");
 	}
 };
-
-
 
 class TextureMaterial : public Material {
 public:
@@ -153,21 +135,6 @@ public:
 		//shaderProgram->attachShader("Texture/texture.frag", GL_FRAGMENT_SHADER);
 		attachVertFrag("Texture/texture");
 		done();
-  }
-	void uniforms(){
-		GLuint program = shaderProgram->getReference();
-	    //glBindFragDataLocation(program, 1, "fragColor");
-
-	}
-
-};
-
-class FBOPass2 : public Material {
-public:
-	FBOPass2(){
-		init();
-		shaderProgram->attachShader("Texture/texture.vert", GL_VERTEX_SHADER);
-		shaderProgram->attachShader("Post/raysAndSky/1 - BlackAndWhite.frag", GL_FRAGMENT_SHADER);
   }
 	void uniforms(){}
 
@@ -338,59 +305,21 @@ public:
 		attachVertFrag("Particle/particle");
 		done();
   }
-	void uniforms(){
-
-
-	}
+	void uniforms(){}
 };
 
-class EnvMat : public Material {
+class CubeMap : public Material {
 public:
-	EnvMat(){
+	CubeMap(string texture){
 		init();
-		addTextureCube("cubemaps/sky","EnvMap");
+		addTextureCube(texture,"EnvMap");
 		attachVertFrag("Texture/cubemap");
 		done();
-		glError("MatTypes",280);
   }
 	void uniforms(){
-		GLuint program = shaderProgram->getReference();
-
-		//Frag
-		glUniform3f(glGetUniformLocation(program, "BaseColor"), 0.5, 0.5, 1.0);
-		glUniform1f(glGetUniformLocation(program, "MixRatio"), 0.9);
-
+		shaderProgram->setUniform(QVector3D(0.5, 0.5, 1.0), "BaseColor");
+		shaderProgram->setUniform(0.9, "MixRatio");
 	}
-};
-
-class NormalColorMat : public Material {
-public:
-	NormalColorMat(){
-		init();
-		attachVertFrag("Color/normalcolor");
-		done();
-  }
-	void uniforms(){}
-};
-
-class UvColorMat : public Material {
-public:
-	UvColorMat(){
-		init();
-		attachVertFrag("Color/uvcolor");
-		done();
-  }
-	void uniforms(){}
-};
-
-class StarMat : public Material {
-public:
-	StarMat(){
-		init();
-		attachVertFrag("Particle/stars");
-		done();
-  }
-	void uniforms(){}
 };
 
 class RemeshMat : public Material {
@@ -493,19 +422,6 @@ public:
 		done();
   }
 	void uniforms(){}
-};
-
-
-class WhiteMat : public Material {
-public:
-	WhiteMat(){
-		init();
-		attachVertFrag("Color/white");
-		done();
-
-  }
-	void uniforms(){}
-
 };
 
 class MandelMat : public Material {

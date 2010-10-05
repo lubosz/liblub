@@ -10,17 +10,18 @@ public:
   }
 
 	void scene(){
+		SceneGraph::Instance().light = new Light(QVector3D(0.3, 6.6, -3.3),QVector3D(1,-5,-1));
 		/*
 		Material* material= new VertexColorMaterial();
 		Material* material1= new NormalColorMat();
 		*/
-		Material* material2= new TextureMaterial("bunny.png");
-		Mesh * plane = MeshFactory::Instance().plane();
+		Material* material= new ConvolutionMaterial();
+		Mesh * plane = MeshFactory::Instance().load("monkey.blend");
 		/*
 		SceneGraph::Instance().addNode(plane,{-2,0,0}, material);
 		SceneGraph::Instance().addNode(plane,{0,0,0}, material1);
 		*/
-		SceneGraph::Instance().addNode(new Node("",{0,0,0},plane, material2));
+		SceneGraph::Instance().addNode(new Node("",{0,0,-3},plane, material));
 	}
 };
 
