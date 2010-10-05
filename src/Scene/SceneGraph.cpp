@@ -42,12 +42,7 @@ void SceneGraph::setShadowCoords(Node * node, DirectionNode * viewPoint){
 			bias
 			* SceneGraph::Instance().light->getProjection()
 			* SceneGraph::Instance().light->getView()
-			* Camera::Instance().getView().inverted();
-
-	node->bindShaders(
-			node->getMaterial()->getShaderProgram(),
-			viewPoint
-	);
+			* viewPoint->getView().inverted();
 
 	node->getMaterial()->getShaderProgram()->setUniform(camViewToShadowMapMatrix, "camViewToShadowMapMatrix");
 }
@@ -56,10 +51,11 @@ void SceneGraph::drawNodes(DirectionNode * viewPoint){
     BOOST_FOREACH( Node * node, sceneNodes )
     {
     	//if (node->getReceiveShadows()){
+        node->bindShaders(viewPoint);
     	if(true){
     		setShadowCoords(node,viewPoint);
     	}
-        node->bindShaders(viewPoint);
+
     	light->bindShaderUpdate(node->getMaterial()->getShaderProgram());
     	node->draw();
     }
@@ -67,22 +63,7 @@ void SceneGraph::drawNodes(DirectionNode * viewPoint){
 
 }
 
-void SceneGraph::drawNodes(Material * material){
-    BOOST_FOREACH( Node * node, sceneNodes )
-    {
-    	//if (node->getReceiveShadows()){
-    	if(true){
-    		setShadowCoords(node,& Camera::Instance());
-    	}
-        node->bindShaders(& Camera::Instance());
-        light->bindShaderUpdate(node->getMaterial()->getShaderProgram());
-        node->draw();
-    }
-    glError("SceneGraph",139);
-
-}
-
-void SceneGraph::drawNodesLight(Material * material){
+void SceneGraph::drawCasters(Material * material){
     BOOST_FOREACH( Node * node, sceneNodes )
     {
     	if(node->getCastShadows()){

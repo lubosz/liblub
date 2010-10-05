@@ -42,7 +42,7 @@ void LightViewDepthPass::prepare() {
 }
 
 void LightViewDepthPass::draw(){
-	SceneGraph::Instance().drawNodesLight(material);
+	SceneGraph::Instance().drawCasters(material);
 }
 
 void LightViewDepthPass::cleanUp(){

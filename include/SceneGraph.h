@@ -15,8 +15,7 @@ public:
 	Light * light;
 
 	void updateLight();
-	void drawNodesLight(Material * material);
-	void drawNodes(Material * material);
+	void drawCasters(Material * material);
 	void drawNodes(DirectionNode * viewPoint);
 	void printMatrix(const QMatrix4x4 & matrix, string name);
 
