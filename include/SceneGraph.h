@@ -40,4 +40,6 @@ private:
 	void meshCube(string file, float cubeSize, float step, Material * material);
 	void meshCube(string file, float cubeSize, float step, vector<Material*> materials);
 
+	void setShadowCoords(Node * node);
+
 };

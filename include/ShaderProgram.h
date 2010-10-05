@@ -14,7 +14,6 @@
 #include <list>
 
 #include "common.h"
-#include "Matrix.h"
 #include "Shader.h"
 
 class ShaderProgram {

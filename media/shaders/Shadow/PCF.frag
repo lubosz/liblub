@@ -8,7 +8,6 @@ out vec4 fragColor;
 
 // This define the value to move one pixel left or right
 uniform float xPixelOffset ;
-	
 // This define the value to move one pixel up or down
 uniform float yPixelOffset ;
 	
@@ -32,7 +31,7 @@ float lookup( vec2 offSet,vec4 shadowTexCoord){
 }
 
 void main(){		
-	float shadow ;
+	float shadow;
 	
 	vec4 shadowTexCoord = camViewToShadowMapMatrix * positionCamView;
 		

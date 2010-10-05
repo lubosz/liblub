@@ -26,17 +26,6 @@ void SceneGraph::setPosition(string nodeName, const QVector3D& position){
     }
 }
 
-void SceneGraph::drawNodes(){
-    BOOST_FOREACH( Node * node, sceneNodes )
-    {
-        node->bindShaders(Camera::Instance().getView(),Camera::Instance().getProjection());
-    	light->bindShaderUpdate(node->getMaterial()->getShaderProgram());
-    	node->draw();
-    }
-    glError("SceneGraph",139);
-
-}
-
 void SceneGraph::printMatrix(const QMatrix4x4 & matrix, string name){
 	cout << name << "\n";
 	for (int i = 0; i < 16; i++){
@@ -45,34 +34,51 @@ void SceneGraph::printMatrix(const QMatrix4x4 & matrix, string name){
 	}
 }
 
+void SceneGraph::setShadowCoords(Node * node){
+	QMatrix4x4 bias = QMatrix4x4();
+	bias.translate(.5,.5,.5);
+	bias.scale(.5,.5,.5);
+
+	QMatrix4x4 camViewToShadowMapMatrix =
+			bias
+			* SceneGraph::Instance().light->getProjection()
+			* SceneGraph::Instance().light->getView()
+			* Camera::Instance().getView().inverted();
+
+	node->bindShaders(
+			node->getMaterial()->getShaderProgram(),
+			Camera::Instance().getView(),
+			Camera::Instance().getProjection()
+	);
+
+	node->getMaterial()->getShaderProgram()->setUniform(camViewToShadowMapMatrix, "camViewToShadowMapMatrix");
+}
+
+void SceneGraph::drawNodes(){
+    BOOST_FOREACH( Node * node, sceneNodes )
+    {
+    	//if (node->getReceiveShadows()){
+    	if(true){
+    		setShadowCoords(node);
+    	}
+        node->bindShaders(Camera::Instance().getView(),Camera::Instance().getProjection());
+    	light->bindShaderUpdate(node->getMaterial()->getShaderProgram());
+    	node->draw();
+    }
+    glError("SceneGraph",139);
+
+}
+
 void SceneGraph::drawNodes(Material * material){
     BOOST_FOREACH( Node * node, sceneNodes )
     {
     	//if (node->getReceiveShadows()){
     	if(true){
-			QMatrix4x4 bias = QMatrix4x4();
-			bias.translate(.5,.5,.5);
-			bias.scale(.5,.5,.5);
-
-			QMatrix4x4 camViewToShadowMapMatrix =
-					bias
-					* SceneGraph::Instance().light->getProjection()
-					* SceneGraph::Instance().light->getView()
-					* Camera::Instance().getView().inverted();
-
-			node->bindShaders(
-					material->getShaderProgram(),
-					Camera::Instance().getView(),
-					Camera::Instance().getProjection()
-			);
-			material->getShaderProgram()->setUniform(camViewToShadowMapMatrix, "camViewToShadowMapMatrix");
-			light->bindShaderUpdate(material->getShaderProgram());
-			node->mesh->draw();
-    	}else{
-            node->bindShaders(Camera::Instance().getView(),Camera::Instance().getProjection());
-        	light->bindShaderUpdate(node->getMaterial()->getShaderProgram());
-        	node->draw();
+    		setShadowCoords(node);
     	}
+        node->bindShaders(Camera::Instance().getView(),Camera::Instance().getProjection());
+        light->bindShaderUpdate(node->getMaterial()->getShaderProgram());
+        node->draw();
     }
     glError("SceneGraph",139);
 
@@ -94,6 +100,9 @@ void SceneGraph::drawNodesLight(Material * material){
 void SceneGraph::drawNodesLight(){
     BOOST_FOREACH( Node * node, sceneNodes )
     {
+    	if(true){
+    		setShadowCoords(node);
+    	}
         node->bindShaders(light->getView(),light->getProjection());
     	light->bindShaderUpdateLight(node->getMaterial()->getShaderProgram());
     	node->draw();

@@ -9,8 +9,10 @@ in vec2 in_Uv;
 
 out vec4 positionView;
 out vec3 normalView;
-//out vec3 lightVec;
-//out vec3 eyeVec;
+#ifdef useNormalTexture
+out vec3 lightVec;
+out vec3 eyeVec;
+#endif
 out vec2 uv;
 
 uniform mat4 MVMatrix;
@@ -28,23 +30,23 @@ void main()
 	normalView = normalize(NormalMatrix * in_Normal); 
 
 	vec4 positionProjection = MVPMatrix * vec4(in_Vertex,1);
-/*
-	//Normal Mapping
-	vec3 tangentView = NormalMatrix * in_Tangent; 
-	vec3 b = cross(normalView, tangentView);
+	
+#ifdef useNormalTexture
+	vec3 n = normalize(NormalMatrix * in_Normal); 
+	vec3 t = normalize(NormalMatrix * in_Tangent); 
+	vec3 b = cross(n, t);
 
-	vec3 tmpVec = lightPositionView.xyz - positionView.xyz;
+	vec3 lightDirection = lightPositionView.xyz - positionView.xyz;
 
 	lightVec = vec3(
-		dot(tmpVec, tangentView),
-		dot(tmpVec, b),
-		dot(tmpVec, normalView)
+		dot(lightDirection, t),
+		dot(lightDirection, b),
+		dot(lightDirection, n)
 	);
 
-	tmpVec = -positionView.xyz;
-	eyeVec.x = dot(tmpVec, tangentView);
-	eyeVec.y = dot(tmpVec, b);
-	eyeVec.z = dot(tmpVec, normalView);
-	*/
+	eyeVec.x = dot(-positionView.xyz, t);
+	eyeVec.y = dot(-positionView.xyz, b);
+	eyeVec.z = dot(-positionView.xyz, n);
+#endif
 	gl_Position = positionProjection;
 }

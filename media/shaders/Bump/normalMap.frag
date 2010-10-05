@@ -19,30 +19,36 @@ out vec4 finalColor;
 
 void main (void)
 {
-
-	float distSqr = dot(lightVec, lightVec);
-	float att = clamp(1.0 - invRadius * sqrt(distSqr), 0.0, 1.0);
-	vec3 lVec = lightVec * inversesqrt(distSqr);
-
-	vec3 vVec = normalize(eyeVec);
 	
-	vec4 base = texture(colorMap, uv);
-	
+	vec3 lVec = lightVec * inversesqrt(dot(lightVec, lightVec));
 	vec3 bump = normalize( texture(normalMap, uv).xyz * 2.0 - 1.0);
 
+	float diffuseBump = max( dot(lVec, bump), 0.0 );
+	
+	vec4 diffuseColor = texture(colorMap, uv);
+	
+	finalColor = 
+		lightColor 
+		* diffuseBump
+		* diffuseColor;	
 
-	float diffuse = max( dot(lVec, bump), 0.0 );
+	float specular = pow(
+						clamp(
+							dot(
+								reflect(-lVec, bump), 
+								normalize(eyeVec)
+							), 
+							0.0, 
+							1.0
+						), 
+						shininess 
+					);
 	
-	vec4 vDiffuse = lightColor 
-	//* diffuseMaterialColor 
-	* diffuse;	
-
-	float specular = pow(clamp(dot(reflect(-lVec, bump), vVec), 0.0, 1.0), shininess );
+	finalColor += 
+		lightColor 
+		* specularMaterialColor 
+		* specular;	
 	
-	vec4 vSpecular = lightColor * specularMaterialColor *  specular;	
-	
-	//finalColor = ( ambientSceneColor + vDiffuse*base + vSpecular) * att;
-	finalColor = (vDiffuse*base+ vSpecular);
 }
 
 

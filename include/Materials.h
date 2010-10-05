@@ -12,6 +12,16 @@
 #include "TextureFactory.h"
 #include "RenderEngine.h"
 
+class Minimal : public Material {
+public:
+	Minimal(){
+		init();
+		shaderProgram->attachShader("Common/minimal.vert", GL_VERTEX_SHADER);
+		done();
+  }
+	void uniforms(){}
+};
+
 class VertexColorMaterial : public Material {
 public:
 	VertexColorMaterial(){
@@ -54,7 +64,7 @@ public:
 	ShadowMapPhong(unsigned width, unsigned height){
 		init();
 		addTexture(TextureFactory::Instance().depthTexture(width, height, "shadowMap"));
-		diffuseColor = QVector4D(0,.9,.1,1);
+		addTexture("Paper_Texture_by_Spiteful_Pie_Stock.jpg","diffuseTexture");
 		attachVertFrag("Color/PhongColor",{"receiveShadows","useDiffuseTexture","useSpotLight"});
 		done();
   }
@@ -73,6 +83,35 @@ public:
 	}
 };
 
+class Ubershader : public Material {
+public:
+	Ubershader(Texture * shadowMap, string diffuse, string ambient, string normal){
+		init();
+		addTexture(shadowMap);
+		addTexture(diffuse,"diffuseTexture");
+		addTexture(ambient,"ambientTexture");
+		addTexture(normal,"normalTexture");
+		attachVertFrag("Color/PhongColor",{"receiveShadows","useDiffuseTexture","useSpotLight","usePCF","useAmbientTexture","useNormalTexture"});
+		done();
+  }
+	void uniforms(){
+		GLuint program = shaderProgram->getReference();
+
+		//ambient
+		glUniform4f(glGetUniformLocation(program, "ambientSceneColor"), 0.1, 0.1, 0.1,1.0);
+
+		//diffuse
+		shaderProgram->setUniform(diffuseColor, "diffuseMaterialColor");
+
+		//specular
+		glUniform4f(glGetUniformLocation(program, "specularMaterialColor"), 0.8, 0.8, 0.8,1.0);
+		glUniform1f(glGetUniformLocation(program, "shininess"), 4.3);
+
+		shaderProgram->setUniform(1.0/1200, "yPixelOffset");
+		shaderProgram->setUniform(1.0/1920, "xPixelOffset");
+	}
+};
+
 class ShadowMapPCF : public Material {
 public:
 	ShadowMapPCF(unsigned width, unsigned height){
@@ -88,16 +127,7 @@ public:
 	}
 };
 
-class ShadowMapDepth : public Material {
-public:
-	ShadowMapDepth(){
-		init();
-		shaderProgram->attachShader("Common/minimal.vert", GL_VERTEX_SHADER);
-		//attachVertFrag("Shadow/GenerateDepthMap");
-		done();
-  }
-	void uniforms(){}
-};
+
 
 class TextureMaterial : public Material {
 public:

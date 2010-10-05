@@ -26,17 +26,16 @@ void main(void)
 	vec3 t = normalize(NormalMatrix * in_Tangent); 
 	vec3 b = cross(n, t);
 
-	vec3 tmpVec = lightPositionView.xyz - positionView.xyz;
+	vec3 lightDirection = lightPositionView.xyz - positionView.xyz;
 
 	lightVec = vec3(
-		dot(tmpVec, t),
-		dot(tmpVec, b),
-		dot(tmpVec, n)
+		dot(lightDirection, t),
+		dot(lightDirection, b),
+		dot(lightDirection, n)
 	);
 
-	tmpVec = -positionView.xyz;
-	eyeVec.x = dot(tmpVec, t);
-	eyeVec.y = dot(tmpVec, b);
-	eyeVec.z = dot(tmpVec, n);
+	eyeVec.x = dot(-positionView.xyz, t);
+	eyeVec.y = dot(-positionView.xyz, b);
+	eyeVec.z = dot(-positionView.xyz, n);
 }
 

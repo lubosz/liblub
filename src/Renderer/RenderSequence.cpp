@@ -6,17 +6,23 @@
  */
 
 #include "RenderSequence.h"
+#include "MediaLayer.h"
 
 RenderSequence::RenderSequence() {
-    fbo = new FrameBuffer(1920,1200);
+	unsigned width = MediaLayer::Instance().width;
+	unsigned height = MediaLayer::Instance().height;
 
-	pass1Mat = new ShadowMapPCF(1920, 1200);
+    fbo = new FrameBuffer(width,height);
+
+    shadowMap = TextureFactory::Instance().depthTexture(width, height, "shadowMap");
+
+	//pass1Mat = new ShadowMapPhongPCFAmbient(width, height);
 	//pass1Mat = new FBOMaterial(width, height);
-	pass2Mat = new ShadowMapDepth();
+    minimal = new Minimal();
 
 	//fbo->attachTexture(GL_COLOR_ATTACHMENT0, fbo->getDebugTexture());
 	//fbo->attachTexture(GL_COLOR_ATTACHMENT0, pass1Mat->textures[0]);
-	fbo->attachTexture(GL_DEPTH_ATTACHMENT, pass1Mat->textures[0]);
+	fbo->attachTexture(GL_DEPTH_ATTACHMENT, shadowMap);
 	fbo->disableColorBuffer();
 	fbo->checkAndFinish();
 }
@@ -47,8 +53,8 @@ void RenderSequence::render(){
     glEnable(GL_POLYGON_OFFSET_FILL);
     glPolygonOffset(2.0,0.0);
     //glPolygonOffset(1.1, 4.0);
-	pass2Mat->activate();
-	SceneGraph::Instance().drawNodesLight(pass2Mat);
+    minimal->activate();
+	SceneGraph::Instance().drawNodesLight(minimal);
 	fbo->unBind();
 
 	glDisable(GL_POLYGON_OFFSET_FILL);
@@ -61,15 +67,15 @@ void RenderSequence::render(){
 	glBindTexture(GL_TEXTURE_2D, 0);
 
 	//fbo->updateRenderView();
-	glViewport(0,0,1920, 1200);
+	glViewport(0,0,MediaLayer::Instance().width, MediaLayer::Instance().height);
 	//Enabling color write (previously disabled for light POV z-buffer rendering)
 	//glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
-	pass1Mat->activate();
+	//pass1Mat->activate();
 
 	if(RenderEngine::Instance().lightView){
-		SceneGraph::Instance().drawNodesLight(pass1Mat);
+		SceneGraph::Instance().drawNodesLight();
 	}else{
-		SceneGraph::Instance().drawNodes(pass1Mat);
+		SceneGraph::Instance().drawNodes();
 	}
 
 

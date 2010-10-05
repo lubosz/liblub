@@ -84,7 +84,7 @@ private:
 	bool grab;
 	bool quit;
 
-	unsigned width, height;
+
 
 	string programTile;
 
@@ -97,6 +97,7 @@ private:
 	~MediaLayer();
 
 public:
+	unsigned width, height;
 	void init(string title, unsigned width, unsigned height);
 	void swapBuffers();
 	void renderLoop();

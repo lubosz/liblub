@@ -14,8 +14,10 @@
 class RenderSequence {
 private:
 	FrameBuffer *fbo;
-	Material * pass1Mat, * pass2Mat;
+	Material * minimal;
+
 public:
+	Texture * shadowMap;
 	RenderSequence();
 	virtual ~RenderSequence();
 	void render();
