@@ -8,9 +8,9 @@
 #include "RenderSequence.h"
 
 RenderSequence::RenderSequence() {
-    fbo = new FrameBuffer(1920*4,1200*4);
+    fbo = new FrameBuffer(1920,1200);
 
-	pass1Mat = new ShadowMapSimple(1920*4, 1200*4);
+	pass1Mat = new ShadowMapPCF(1920, 1200);
 	//pass1Mat = new FBOMaterial(width, height);
 	pass2Mat = new ShadowMapDepth();
 
@@ -46,6 +46,7 @@ void RenderSequence::render(){
 	//glCullFace(GL_FRONT);
     glEnable(GL_POLYGON_OFFSET_FILL);
     glPolygonOffset(2.0,0.0);
+    //glPolygonOffset(1.1, 4.0);
 	pass2Mat->activate();
 	SceneGraph::Instance().drawNodesLight(pass2Mat);
 	fbo->unBind();

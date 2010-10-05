@@ -83,8 +83,8 @@ public:
 		done();
   }
 	void uniforms(){
-		shaderProgram->setUniform(1.0/1200*4, "yPixelOffset");
-		shaderProgram->setUniform(1.0/1920*4, "xPixelOffset");
+		shaderProgram->setUniform(1.0/1200, "yPixelOffset");
+		shaderProgram->setUniform(1.0/1920, "xPixelOffset");
 	}
 };
 
