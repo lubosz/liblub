@@ -131,7 +131,7 @@ void Light::update(){
 	viewMatrix.setToIdentity();
 	viewMatrix.lookAt(
 			position.toVector3D(),
-			direction,
+			position.toVector3D()+direction,
 			{0,1,0}
 	);
 

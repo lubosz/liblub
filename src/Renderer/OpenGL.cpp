@@ -82,26 +82,9 @@ void RenderEngine::display() {
 		frameCount++;
 */
 
-		if (!useFBO) {
-			clear();
-			if(lightView){
-				SceneGraph::Instance().drawNodesLight();
-			}else{
-				SceneGraph::Instance().drawNodes();
-			}
-		}else{
-			shadowSequence->render();
 
-			/*
-			bindShaders(pass2Mat->getShaderProgram());
+		shadowSequence->render();
 
-
-			pass2Mat->activate();
-
-
-			//Camera::Instance().perspective();
-		*/
-		}
 }
 
 void RenderEngine::toggleLightView(){
