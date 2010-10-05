@@ -19,78 +19,41 @@
 #include "Materials.h"
 
 Camera::Camera() {
-	projectionMatrix = QMatrix4x4();
-	viewMatrix = QMatrix4x4();
-	eye = QVector3D();
-	center = QVector3D(0,0,-1);
-	defaultCenter = center;
-    yaw, pitch, roll = 0;
-    speed = .1;
-    mouseSensitivity = .1;
-    centerNode = new Node("LookAt",center, .1, MeshFactory::Instance().cube(),new WhiteMat());
-    //SceneGraph::Instance().addNode(centerNode);
+	direction = QVector3D(0,0,-1);
+	position = QVector3D();
+	defaultValues();
 }
-
-QMatrix4x4 Camera::getProjection() const
-{
-    return projectionMatrix;
-}
-
-QMatrix4x4 Camera::getView() const
-{
-    return viewMatrix;
-}
-
-QMatrix4x4 Camera::getViewNoTranslation() const
-{
-	QMatrix4x4 viewMatrixNoTranslation;
-	viewMatrixNoTranslation.lookAt(QVector3D(0,0,0),center,up);
-    return viewMatrixNoTranslation;
-}
-
 
 Camera::~Camera() {
 	// TODO Auto-generated destructor stub
 }
 
-void Camera::setAspect(GLfloat aspect){
-	this->aspect = aspect;
-    /* Create our projection matrix with a 45 degree field of view
-     * a width to height ratio of 1 and view from .1 to 100 infront of us */
-    perspective();
-}
-
-void Camera::move(GLfloat x, GLfloat y, GLfloat z){
-	eye += x*center;
-	update();
-}
-
 void Camera::forward(){
-	QVector3D front = center;
+	QVector3D front = direction;
 	front.normalize();
-	eye += speed*front;
-	update();
+	position += speed*front;
+	updateView();
 }
 
 void Camera::backward(){
-	QVector3D front = center;
+	QVector3D front = direction;
 	front.normalize();
-	eye -= speed*front;
-	update();
+	position -= speed*front;
+	updateView();
 }
 
 void Camera::left(){
-	QVector3D side = QVector3D::crossProduct ( center, up );
+	QVector3D side = QVector3D::crossProduct ( direction, up );
 	side.normalize();
-	eye -= speed * side;
-	update();
+	position -= speed * side;
+	updateView();
 }
 
 void Camera::right(){
-	QVector3D side = QVector3D::crossProduct ( center, up );
+	QVector3D side = QVector3D::crossProduct ( direction, up );
 	side.normalize();
-	eye += speed * side;
-	update();
+	position += speed * side;
+	updateView();
 }
 
 void Camera::setMouseLook(int mouseXrel, int mouseYrel){
@@ -101,8 +64,6 @@ void Camera::setMouseLook(int mouseXrel, int mouseYrel){
 	if (yaw < -89) yaw = -89;
 
 	updateRotation();
-	//printf("Yaw: %f Pitch: %f\n", yaw, pitch);
-
 }
 
 void Camera::setMouseZoom(int wheelX, int wheelY){
@@ -111,32 +72,10 @@ void Camera::setMouseZoom(int wheelX, int wheelY){
 
 void Camera::updateRotation(){
 
-	QMatrix4x4 rotate = QMatrix4x4();
-
-	rotate.rotate(pitch, 0, 1, 0);
-	rotate.rotate(yaw, 1, 0, 0);
-
-	center = rotate * defaultCenter;
-	center.normalize();
-	update();
-}
-
-void Camera::setParams(GLfloat fov, GLfloat nearz, GLfloat farz){
-	this->fov = fov;
-	this->nearz = nearz;
-	this->farz = farz;
-}
-
-void Camera::update(){
-	viewMatrix.setToIdentity();
-	viewMatrix.lookAt(eye,center+eye,up);
-	centerNode->setPosition(center+eye);
-}
-
-/* Generate a perspective view matrix using a field of view angle fov,
- * window aspect ratio, near and far clipping planes */
-void Camera::perspective()
-{
-	viewMatrix.setToIdentity();
-	projectionMatrix.perspective(fov,aspect,nearz,farz);
+	rotation.setToIdentity();
+	rotation.rotate(pitch, 0, 1, 0);
+	rotation.rotate(yaw, 1, 0, 0);
+	direction = rotation * defaultCenter;
+	direction.normalize();
+	updateView();
 }

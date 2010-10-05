@@ -11,26 +11,12 @@
 #include "common.h"
 #include "Singleton.h"
 #include "Node.h"
+#include "DirectionNode.h"
 
-const QVector3D up(0,1,0);
-
-class Camera: public Singleton<Camera>{
+class Camera: public Singleton<Camera> , public  DirectionNode{
 public:
 
-	void move(GLfloat x, GLfloat y, GLfloat z);
 	void updateRotation();
-
-	GLfloat aspect, fov, nearz, farz, yaw, pitch, roll;
-
-	void setAspect(GLfloat aspect);
-	void setParams(GLfloat fov, GLfloat nearz, GLfloat farz);
-	void identity();
-    void perspective();
-    void update();
-    QMatrix4x4 getView() const;
-    QMatrix4x4 getViewNoTranslation() const;
-	QMatrix4x4 getProjection() const;
-	QVector3D center, eye, defaultCenter;
 
 	void forward();
 	void backward();
@@ -40,14 +26,9 @@ public:
 	void setMouseLook(int mouseXrel, int mouseYrel);
 	void setMouseZoom(int wheelX, int wheelY);
 private:
-	float mouseSensitivity;
+
 
     friend class Singleton<Camera>;
-    QMatrix4x4 projectionMatrix;
-    QMatrix4x4 viewMatrix;
-	float speed;
-
-	Node * centerNode;
 
     Camera();
     ~Camera();

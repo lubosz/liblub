@@ -11,17 +11,21 @@
 #include "MeshFactory.h"
 #include "Camera.h"
 
-Light::Light(const QVector4D& position, const QVector3D & direction) {
-	moveSensitivity = .1;
+Light::Light(const QVector3D& position, const QVector3D & direction) {
+
 	this->position = position;
 	this->direction = direction;
-	Node * lightNode = new Node("Light",position.toVector3D(), MeshFactory::Instance().lamp(),new WhiteMat());
+	Node * lightNode = new Node("Light",position, MeshFactory::Instance().lamp(),new WhiteMat());
 	lightNode->setCastShadows(false);
 	SceneGraph::Instance().addNode(lightNode);
-	viewMatrix = QMatrix4x4();
-	projectionMatrix = QMatrix4x4();
-	projectionMatrix.perspective(90,1920/1200,.1,10000);
-	//projectionMatrix.perspective(70.0,1920/1200,0.1,1000.0);
+
+	fov = 90;
+	aspect = 1920/1200;
+	near = .1;
+	far = 10000;
+
+	defaultValues();
+	updatePerspective();
 	update();
 }
 
@@ -29,24 +33,9 @@ Light::~Light() {
 	// TODO Auto-generated destructor stub
 }
 
-QVector3D Light::getDirection() const
-{
-    return direction;
-}
-
-QVector4D Light::getPosition() const
-{
-    return position;
-}
-
 void Light::setColor(QVector4D & color)
 {
     this->color = color;
-}
-
-void Light::setPosition(QVector4D & position)
-{
-    this->position = position;
 }
 
 void Light::bindShaderUpdate(ShaderProgram * shaderProgram){
@@ -96,59 +85,36 @@ void Light::bindShaderInit(ShaderProgram * shaderProgram){
 }
 
 void Light::moveLeft(){
-	position += QVector4D(-moveSensitivity,0,0,0);
+	position += QVector3D(-speed,0,0);
     update();
 }
 
 void Light::moveRight(){
-	position += QVector4D(moveSensitivity,0,0,0);
+	position += QVector3D(speed,0,0);
     update();
 }
 
 void Light::moveUp(){
-	position += QVector4D(0,moveSensitivity,0,0);
+	position += QVector3D(0,speed,0);
     update();
 }
 
 void Light::moveDown(){
-	position += QVector4D(0,-moveSensitivity,0,0);
+	position += QVector3D(0,-speed,0);
     update();
 }
 
 void Light::moveForward(){
-	position += QVector4D(0,0,moveSensitivity,0);
+	position += QVector3D(0,0,speed);
     update();
 }
 
 void Light::moveBack(){
-	position += QVector4D(0,0,-moveSensitivity,0);
+	position += QVector3D(0,0,-speed);
     update();
 }
 
 void Light::update(){
-	SceneGraph::Instance().setPosition("Light", position.toVector3D());
-	//cout << "Light: " << position.x() <<" "<< position.y()<<" " << position.z() << "\n";
-	viewMatrix.setToIdentity();
-	viewMatrix.lookAt(
-			position.toVector3D(),
-			position.toVector3D()+direction,
-			{0,1,0}
-	);
-
-}
-
-QMatrix4x4 Light::getView() const{
-
-	return viewMatrix;
-}
-
-QMatrix4x4 Light::getProjection() const{
-
-	return projectionMatrix;
-}
-
-QMatrix4x4 Light::getViewNoTranslation() const{
-	QMatrix4x4 viewMatrixNoTranslation;
-	viewMatrixNoTranslation.lookAt(QVector3D(0,0,0),direction,up);
-    return viewMatrixNoTranslation;
+	SceneGraph::Instance().setPosition("Light", position);
+	updateView();
 }

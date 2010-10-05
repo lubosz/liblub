@@ -11,15 +11,16 @@
 #include "QVector3D"
 #include "QVector4D"
 #include "ShaderProgram.h"
+#include "DirectionNode.h"
 
-class Light {
+class Light : public DirectionNode {
 public:
-	Light(const QVector4D& position, const QVector3D & direction);
+	Light(const QVector3D& position, const QVector3D & direction);
 	virtual ~Light();
     QVector3D getDirection() const;
-    QVector4D getPosition() const;
+    QVector3D getPosition() const;
     void setColor(QVector4D & color);
-    void setPosition(QVector4D& position);
+
     void bindShaderUpdate(ShaderProgram * shaderProgram);
     void bindShaderInit(ShaderProgram * shaderProgram);
     void bindShaderUpdateLight(ShaderProgram * shaderProgram);
@@ -32,19 +33,7 @@ public:
 
     void update();
 
-    QMatrix4x4 getView() const;
-    QMatrix4x4 getProjection() const;
-    QMatrix4x4 getViewNoTranslation() const;
-
-
-    QMatrix4x4 viewMatrix, projectionMatrix;
-
-	QVector3D direction;
-	QVector4D position;
 private:
-
 	QVector4D color;
-
-	float moveSensitivity;
 };
 

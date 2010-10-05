@@ -53,6 +53,7 @@ set(SOURCES
 
 	${SRC_DIR}/Scene/Camera.cpp
 	${SRC_DIR}/Scene/SceneGraph.cpp
+	${SRC_DIR}/Scene/DirectionNode.cpp
 	
 	${SRC_DIR}/Renderer/OpenGL.cpp
 	${SRC_DIR}/Renderer/FrameBuffer.cpp
