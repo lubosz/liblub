@@ -137,14 +137,14 @@ void Node::update(){
 	modelMatrix.scale(size);
 }
 
-void Node::bindShaders(ShaderProgram * shaderProgram, const QMatrix4x4 & viewMatrix, const QMatrix4x4 & projectionMatrix){
+void Node::bindShaders(ShaderProgram * shaderProgram, DirectionNode * viewPoint){
 	glError("Node::bindShaders",113);
 	shaderProgram->use();
 
-	QMatrix4x4 tempMatrix =  viewMatrix * modelMatrix;
+	QMatrix4x4 tempMatrix =  viewPoint->getView() * modelMatrix;
 	shaderProgram->setUniform(tempMatrix, "MVMatrix");
 	shaderProgram->setUniform(tempMatrix.normalMatrix(), "NormalMatrix");
-	tempMatrix =  projectionMatrix * tempMatrix;
+	tempMatrix =  viewPoint->getProjection() * tempMatrix;
 
 	shaderProgram->setUniform(tempMatrix,"MVPMatrix");
 
@@ -152,6 +152,6 @@ void Node::bindShaders(ShaderProgram * shaderProgram, const QMatrix4x4 & viewMat
     glError("Node::bindShaders",124);
 }
 
-void Node::bindShaders(const QMatrix4x4 & viewMatrix, const QMatrix4x4 & projectionMatrix){
-	bindShaders(material->getShaderProgram(), viewMatrix,projectionMatrix);
+void Node::bindShaders(DirectionNode * viewPoint){
+	bindShaders(material->getShaderProgram(), viewPoint);
 }

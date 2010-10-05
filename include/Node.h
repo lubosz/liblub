@@ -10,6 +10,7 @@
 #include "QVector3D"
 #include "Mesh.h"
 #include "Material.h"
+#include "DirectionNode.h"
 
 
 class Node {
@@ -41,8 +42,8 @@ public:
     void setMesh(Mesh *mesh);
     void setPosition(const QVector3D& position);
 	void draw();
-	void bindShaders(ShaderProgram * shaderProgram, const QMatrix4x4 & viewMatrix, const QMatrix4x4 & projectionMatrix);
-	void bindShaders(const QMatrix4x4 & viewMatrix, const QMatrix4x4 & projectionMatrix);
+	void bindShaders(ShaderProgram * shaderProgram, DirectionNode * viewPoint);
+	void bindShaders(DirectionNode * viewPoint);
     string getName() const;
     const QVector3D& getPosition();
     void setName(string name);

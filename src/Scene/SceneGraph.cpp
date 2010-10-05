@@ -36,7 +36,7 @@ void SceneGraph::printMatrix(const QMatrix4x4 & matrix, string name){
 	}
 }
 
-void SceneGraph::setShadowCoords(Node * node){
+void SceneGraph::setShadowCoords(Node * node, DirectionNode * viewPoint){
 
 	QMatrix4x4 camViewToShadowMapMatrix =
 			bias
@@ -46,21 +46,20 @@ void SceneGraph::setShadowCoords(Node * node){
 
 	node->bindShaders(
 			node->getMaterial()->getShaderProgram(),
-			Camera::Instance().getView(),
-			Camera::Instance().getProjection()
+			viewPoint
 	);
 
 	node->getMaterial()->getShaderProgram()->setUniform(camViewToShadowMapMatrix, "camViewToShadowMapMatrix");
 }
 
-void SceneGraph::drawNodes(){
+void SceneGraph::drawNodes(DirectionNode * viewPoint){
     BOOST_FOREACH( Node * node, sceneNodes )
     {
     	//if (node->getReceiveShadows()){
     	if(true){
-    		setShadowCoords(node);
+    		setShadowCoords(node,viewPoint);
     	}
-        node->bindShaders(Camera::Instance().getView(),Camera::Instance().getProjection());
+        node->bindShaders(viewPoint);
     	light->bindShaderUpdate(node->getMaterial()->getShaderProgram());
     	node->draw();
     }
@@ -73,9 +72,9 @@ void SceneGraph::drawNodes(Material * material){
     {
     	//if (node->getReceiveShadows()){
     	if(true){
-    		setShadowCoords(node);
+    		setShadowCoords(node,& Camera::Instance());
     	}
-        node->bindShaders(Camera::Instance().getView(),Camera::Instance().getProjection());
+        node->bindShaders(& Camera::Instance());
         light->bindShaderUpdate(node->getMaterial()->getShaderProgram());
         node->draw();
     }
@@ -87,24 +86,10 @@ void SceneGraph::drawNodesLight(Material * material){
     BOOST_FOREACH( Node * node, sceneNodes )
     {
     	if(node->getCastShadows()){
-			node->bindShaders(material->getShaderProgram(),light->getView(),light->getProjection());
+			node->bindShaders(material->getShaderProgram(),light);
 			light->bindShaderUpdate(material->getShaderProgram());
 			node->mesh->draw();
     	}
-    }
-    glError("SceneGraph",139);
-
-}
-
-void SceneGraph::drawNodesLight(){
-    BOOST_FOREACH( Node * node, sceneNodes )
-    {
-    	if(true){
-    		setShadowCoords(node);
-    	}
-        node->bindShaders(light->getView(),light->getProjection());
-    	light->bindShaderUpdateLight(node->getMaterial()->getShaderProgram());
-    	node->draw();
     }
     glError("SceneGraph",139);
 

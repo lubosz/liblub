@@ -7,6 +7,7 @@
 #include "Node.h"
 #include "Material.h"
 #include "Light.h"
+#include "DirectionNode.h"
 
 class SceneGraph: public Singleton<SceneGraph>
 {
@@ -14,10 +15,9 @@ public:
 	Light * light;
 
 	void updateLight();
-	void drawNodesLight();
 	void drawNodesLight(Material * material);
 	void drawNodes(Material * material);
-	void drawNodes();
+	void drawNodes(DirectionNode * viewPoint);
 	void printMatrix(const QMatrix4x4 & matrix, string name);
 
 	void addNode(Node * node);
@@ -41,6 +41,6 @@ private:
 	void meshCube(string file, float cubeSize, float step, Material * material);
 	void meshCube(string file, float cubeSize, float step, vector<Material*> materials);
 
-	void setShadowCoords(Node * node);
+	void setShadowCoords(Node * node, DirectionNode * viewPoint);
 
 };

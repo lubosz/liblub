@@ -8,6 +8,7 @@
 #include "RenderPasses.h"
 #include "Materials.h"
 #include "MediaLayer.h"
+#include "Camera.h"
 
 LightViewDepthPass::LightViewDepthPass(FrameBuffer * fbo){
 	this->fbo = fbo;
@@ -62,9 +63,9 @@ void LightTogglePass::prepare() {
 void LightTogglePass::draw(){
 	glViewport(0,0,MediaLayer::Instance().width, MediaLayer::Instance().height);
 	if(RenderEngine::Instance().lightView){
-		SceneGraph::Instance().drawNodesLight();
+		SceneGraph::Instance().drawNodes(SceneGraph::Instance().light);
 	}else{
-		SceneGraph::Instance().drawNodes();
+		SceneGraph::Instance().drawNodes(&Camera::Instance());
 	}
 }
 
