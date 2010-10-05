@@ -20,5 +20,5 @@ const unsigned maxBuffers = 5; //TODO: This is a very bad solution
 #define DEBUG 0
 #define USE_GL3
 #define FPS_INTERVAL 1.0 //seconds.
-#define VSync 1
+#define VSync 0
 #define USE_FBO

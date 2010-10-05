@@ -31,7 +31,7 @@ public:
 		Material * sphereMap = new SphereMap("spectrum.png", "spheremaps/spheremap_bar.jpg");
 */
 
-		Texture * shadowMap = RenderEngine::Instance().shadowSequence->shadowMap;
+		Texture * shadowMap = RenderEngine::Instance().shadowSequence->renderPasses[0]->targetTexture;
 		Material * monkey = new Ubershader(shadowMap, "bump/masonry-wall-texture.jpg","monkey-occlusion.png", "bump/masonry-wall-normal-map.jpg");
 		Material * radio = new Ubershader(shadowMap, "bump/masonry-wall-texture.jpg","radio-occlusion.png", "bump/masonry-wall-normal-map.jpg");
 		Material * ground = new Ubershader(shadowMap, "bump/brickwork-texture.jpg","plane-occlusion.png", "bump/brickwork_normal-map.jpg");

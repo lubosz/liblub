@@ -30,6 +30,7 @@ private:
 	friend class Singleton<SceneGraph>;
 
 	vector<Node*> sceneNodes;
+	QMatrix4x4 bias;
 	//vector<Material*> materials;
 
     SceneGraph();

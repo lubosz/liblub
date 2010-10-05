@@ -133,7 +133,7 @@ void main(){
 #ifdef usePCF
 // 8x8 kernel PCF
 	vec4 shadowTexCoord = camViewToShadowMapMatrix * positionView;
-	float shadow;	
+	float shadow = 0;	
 	float x,y;
 	for (y = -3.5 ; y <=3.5 ; y+=1.0)
 		for (x = -3.5 ; x <=3.5 ; x+=1.0)

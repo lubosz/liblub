@@ -15,3 +15,9 @@ RenderPass::RenderPass() {
 RenderPass::~RenderPass() {
 	// TODO Auto-generated destructor stub
 }
+
+void RenderPass::render(){
+	prepare();
+	draw();
+	cleanUp();
+}

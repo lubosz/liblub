@@ -6,7 +6,9 @@
 #include <boost/foreach.hpp>
 
 SceneGraph::SceneGraph(){
-
+	bias = QMatrix4x4();
+	bias.translate(.5,.5,.5);
+	bias.scale(.5,.5,.5);
 }
 
 void SceneGraph::animate(float frameCount){
@@ -35,9 +37,6 @@ void SceneGraph::printMatrix(const QMatrix4x4 & matrix, string name){
 }
 
 void SceneGraph::setShadowCoords(Node * node){
-	QMatrix4x4 bias = QMatrix4x4();
-	bias.translate(.5,.5,.5);
-	bias.scale(.5,.5,.5);
 
 	QMatrix4x4 camViewToShadowMapMatrix =
 			bias

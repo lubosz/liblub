@@ -39,7 +39,7 @@ RenderEngine::RenderEngine() {
     /*
 
      */
-
+    glEnable(GL_POLYGON_OFFSET_FILL);
     glPointSize(5);
     //glBlendFunc(GL_SRC_ALPHA, GL_ONE);
     //glEnable(GL_BLEND);

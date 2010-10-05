@@ -10,6 +10,7 @@
 #include "common.h"
 #include "FrameBuffer.h"
 #include "Materials.h"
+#include "RenderPasses.h"
 
 class RenderSequence {
 private:
@@ -17,9 +18,11 @@ private:
 	Material * minimal;
 
 public:
-	Texture * shadowMap;
+	vector<RenderPass*> renderPasses;
+
 	RenderSequence();
 	virtual ~RenderSequence();
 	void render();
+
 };
 
