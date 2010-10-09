@@ -7,6 +7,7 @@ uniform float texsize;
 in vec3 in_Vertex;
 in vec3 in_Normal;
 in vec3 in_Tangent;
+in vec3 in_Bitangent;
 in vec2 in_Uv;
 
 //  interpolate these and pass 
@@ -38,7 +39,7 @@ void main(void)
    //  the matrix needed to convert to eye space
    //  (this is local, and should already be normalized, I think)
    vec3 eyeSpaceTangent  = normalize(NormalMatrix * in_Tangent);	//tangent;
-   vec3 eyeSpaceBinormal = normalize(NormalMatrix * cross(in_Tangent,in_Normal));	//binormal;
+   vec3 eyeSpaceBinormal = normalize(NormalMatrix * -in_Bitangent);	//binormal;
    vec3 eyeSpaceNormal   = normalize(NormalMatrix * in_Normal); //normal
   
    // now convert the light and position, and pass in the texture coordinate

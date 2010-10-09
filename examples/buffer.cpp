@@ -15,13 +15,16 @@ public:
 		Material* material= new VertexColorMaterial();
 		Material* material1= new NormalColorMat();
 		*/
-		Material* material= new ConvolutionMaterial();
-		Mesh * plane = MeshFactory::Instance().load("monkey.blend");
+		//Material* material= new ReliefMat();
+		Material* material= new ConeMapMaterial();
+		Mesh * objCube = MeshFactory::Instance().load("cube.obj");
+		Mesh * blendCube = MeshFactory::Instance().load("cube.blend");
 		/*
 		SceneGraph::Instance().addNode(plane,{-2,0,0}, material);
 		SceneGraph::Instance().addNode(plane,{0,0,0}, material1);
 		*/
-		SceneGraph::Instance().addNode(new Node("",{0,0,-3},plane, material));
+		SceneGraph::Instance().addNode(new Node("",{0,0,-3},1, objCube, material));
+		//SceneGraph::Instance().addNode(new Node("",{0,0,1},1, blendCube, material));
 	}
 };
 

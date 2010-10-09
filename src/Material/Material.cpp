@@ -33,6 +33,7 @@ void Material::defaultAttribs() {
 	//shaderProgram->bindAttrib("in_Color");
 	shaderProgram->bindAttrib("in_Normal");
 	shaderProgram->bindAttrib("in_Tangent");
+	shaderProgram->bindAttrib("in_Bitangent");
 	shaderProgram->bindAttrib("in_Uv");
 
 }
@@ -100,7 +101,7 @@ void Material::activateTextures() {
 					texture->bind();
 
 				}
-	glError("Material", 102);
+	glError("Material::activateTextures", 102);
 }
 
 void Material::activate() {

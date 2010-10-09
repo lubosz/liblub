@@ -77,10 +77,6 @@ Mesh *  MeshFactory::lamp(){
 
 Mesh * MeshFactory::load(string file) {
 	string path = meshDir + file;
-	/*/
-	 const struct aiScene* scene = aiImportFile(path.c_str(),aiProcessPreset_TargetRealtime_Quality);
-	 Importer myImporter * = new Importer();
-	 */
 
 	// Create an instance of the Importer class
 	Assimp::Importer importer;
@@ -91,8 +87,8 @@ Mesh * MeshFactory::load(string file) {
 	const aiScene* scene = importer.ReadFile(path,
 			aiProcess_CalcTangentSpace
 			| aiProcess_Triangulate
-			| aiProcess_JoinIdenticalVertices
-			| aiProcess_SortByPType
+			//| aiProcess_JoinIdenticalVertices
+			//| aiProcess_SortByPType
 			);
 
 	// If the import failed, report it
@@ -100,40 +96,53 @@ Mesh * MeshFactory::load(string file) {
 		cout << importer.GetErrorString() << "\n";
 	}
 
-	// Now we can access the file's contents.
-	//DoTheSceneProcessing( scene);
+	aiMesh * assMesh = scene->mMeshes[0];
 
-	aiMesh * myAiMesh = scene->mMeshes[0];
+	if(!assMesh->HasTangentsAndBitangents()){
+		cout << "NO TANGENTS!!!\n";
+		exit(0);
+	}
+
+
 
 	vector<GLfloat> positions;
 	vector<GLfloat> normals;
 	vector<GLfloat> tangents;
+	vector<GLfloat> bitangents;
 	vector<GLfloat> uvs;
 	vector<GLuint> indices;
 
 	unsigned numIndices = 0;
 
-	for (unsigned i = 0; i < myAiMesh->mNumFaces; i++) {
-		aiFace face = myAiMesh->mFaces[i];
+	for (unsigned i = 0; i < assMesh->mNumFaces; i++) {
+		aiFace face = assMesh->mFaces[i];
 		for (unsigned j = 0; j < face.mNumIndices; j++) {
 			int vertex = face.mIndices[j];
 
-			aiVector3D position = myAiMesh->mVertices[vertex];
+			aiVector3D position = assMesh->mVertices[vertex];
 			positions.push_back(position.x);
 			positions.push_back(position.y);
 			positions.push_back(position.z);
 
-			aiVector3D normal = myAiMesh->mNormals[vertex];
+			aiVector3D normal = assMesh->mNormals[vertex];
 			normals.push_back(normal.x);
 			normals.push_back(normal.y);
 			normals.push_back(normal.z);
 
-			aiVector3D tangent = myAiMesh->mTangents[vertex];
+			aiVector3D tangent = assMesh->mTangents[vertex];
 			tangents.push_back(tangent.x);
 			tangents.push_back(tangent.y);
 			tangents.push_back(tangent.z);
 
-			aiVector3D uv = myAiMesh->mTextureCoords[0][vertex];
+			//assMesh->mBitangents
+
+			aiVector3D bitangent = assMesh->mBitangents[vertex];
+
+			bitangents.push_back(bitangent.x);
+			bitangents.push_back(bitangent.y);
+			bitangents.push_back(bitangent.z);
+
+			aiVector3D uv = assMesh->mTextureCoords[0][vertex];
 			uvs.push_back(uv.x);
 			uvs.push_back(uv.y);
 
@@ -150,6 +159,7 @@ Mesh * MeshFactory::load(string file) {
 	mesh->addBuffer(positions, 3, "in_Vertex");
 	mesh->addBuffer(normals, 3, "in_Normal");
 	mesh->addBuffer(tangents, 3, "in_Tangent");
+	mesh->addBuffer(bitangents, 3, "in_Bitangent");
 	mesh->addBuffer(uvs, 2, "in_Uv");
 	mesh->addElementBuffer(indices);
 	mesh->setDrawType(GL_TRIANGLES);
@@ -183,15 +193,15 @@ Mesh * MeshFactory::loadDirect(string file) {
 	// Now we can access the file's contents.
 	//DoTheSceneProcessing( scene);
 
-	aiMesh * myAiMesh = scene->mMeshes[0];
+	aiMesh * assMesh = scene->mMeshes[0];
 
 	vector<GLfloat> positions;
 	vector<GLuint> indices;
 
 	unsigned numIndices = 0;
 
-	for (unsigned i = 0; i < myAiMesh->mNumVertices; i++) {
-		aiVector3D vertex = myAiMesh->mVertices[i];
+	for (unsigned i = 0; i < assMesh->mNumVertices; i++) {
+		aiVector3D vertex = assMesh->mVertices[i];
 		positions.push_back(vertex.x);
 		positions.push_back(vertex.y);
 		positions.push_back(vertex.z);

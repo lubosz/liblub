@@ -1,98 +1,130 @@
-#version 150 core
+#version 330 core
 
-uniform vec4 ambient;
-uniform vec4 specular;
-uniform vec4 diffuse;
+//precision highp float;
 
-uniform float depth;
-uniform float texsize;
-uniform int linear_search_steps;
-uniform int binary_search_steps;
-uniform float linearAttenuation;
+in vec4 vpos;
+in vec3 binormal;
+in vec3 normal;
+in vec3 tangent;
+in vec2 texcoord;
 
-in vec2 texCoord;
-in vec3 vertex_pos;
-in vec3 light_pos;
-in float vertex_dist;
-in float light_dist;
-in float dist_val;
+uniform sampler2D reliefMap;	// rm texture map
+uniform sampler2D colortex;		// color texture map
+uniform vec4 lightPositionView;	// light position in view space
+uniform vec4 ambient;			// ambient color
+uniform vec4 diffuse;			// diffuse color
+uniform vec4 specular;			// specular color
+uniform vec2 planes;			// near and far planes info
+uniform float tile;				// tile factor
+uniform float depth;			// scale factor for height-field depth
 
-uniform sampler2D reliefmap;
-uniform sampler2D texmap;
+//const int linearSearchSteps = 10;
+//const int binarySearchSteps = 5;
+const int linearSearchSteps = 20;
+const int binarySearchSteps = 10;
 
-out vec4 gl_FragColor;
+out vec4 fragColor;
 
-void ray_intersect_rm (inout vec3 dp, in vec3 ds);
-
-void main(void)
-{
-   vec4 t,c;
-   vec3 l,s;
-   vec3 pt_eye, pt_light;
-   float a;
-
-   // ray intersect in view direction
-   a  = -depth / vertex_pos.z;
-   s = vertex_pos * a;
-   s.z = 1.0;
-  
-   //	find the distance to the actualy heightfield
-   pt_eye = vec3 (texCoord, 0.0);
-   ray_intersect_rm (pt_eye, s);
-  
-   /*
-   gl_FragColor = vec4(pt_eye.z, 0, 0, 0);
-   return;//*/
-  
-   // get rm and color texture points
-   c=texture2D(texmap,pt_eye.xy);
-
-   // expand normal from normal map in local polygon space
-   // blue = df/dx
-   // alpha = df/dy (image coords are no longer backward!)
-   // note: I _need_ the texture size to scale the normal properly!
-   t=texture2D(reliefmap, pt_eye.xy);
-   t = vec4 ((t.ba-0.5) * (-depth * texsize), 1.0, 0.0);
-   t=normalize(t);
-
-   // adjust the hit-position
-   // (only useful if the light is near relative
-   // to the depth)
-   //p -= v*d*a;
-   
-   // compute attenuation
-   float att = min (1.0, 1.0 / (light_dist*linearAttenuation));
-   
-   // rescale the light vector
-   l = att * normalize(light_pos);
-
-   // compute the final color
-   gl_FragColor = vec4(
-   			ambient.xyz*c.xyz
-   			+diffuse.xyz*c.xyz*max(0.0,dot(l,t.xyz)), 
-   			1.0);
+float saturate(float value){
+	return clamp(value, 0.0, 1.0);
 }
 
-//  vanilla Relief Mapping
-void ray_intersect_rm (inout vec3 dp, in vec3 ds)
-{
-  float depth_step=1.0/float(linear_search_steps);
-  
-  //  linear steps
-  for (int i = 0; i < linear_search_steps; ++i)
-  {
-    vec4 t=texture2D(reliefmap,dp.xy);
-    dp += ds * depth_step * step (dp.z, t.r);
-  }
-  
-  //  binary search
-  for (int i = 0; i < binary_search_steps; ++i)
-  {
-    vec4 t=texture2D(reliefmap,dp.xy);
-    dp += ds * depth_step * (step (dp.z, t.r) - 0.5);
-    depth_step *= 0.5;
-  }  
-      
-  // all done
-  return;
+float ray_intersect_rm(vec2 dp, vec2 ds){
+
+	float depthStep=1.0/linearSearchSteps;
+	float size=depthStep; // current size of search window
+	float depth=0.0; // current depth position
+	// best match found (starts with last position 1.0)
+	float bestDepth=1.0;
+	// search from front to back for first point inside the object
+	for ( int i=0; i< linearSearchSteps-1;i++){
+		depth+=size;
+		vec4 t=texture(reliefMap,dp+ds*depth);
+		if (bestDepth>0.996) // if no depth found yet
+			if (depth >= t.w)
+				bestDepth=depth; // store bestDepth
+	}
+	depth = bestDepth;
+	// search around first point (depth) for closest match
+	for ( int i=0; i < binarySearchSteps; i++) {
+		size*=0.5;
+		vec4 t=texture(reliefMap,dp+ds*depth);
+		if (depth >= t.w) {
+			bestDepth = depth;
+			depth -= 2*size;
+		}
+		depth+=size;
+	}
+	return bestDepth;
+}
+
+void main(){
+
+	vec4 t,c; 
+	vec3 p,v,l,s; 
+	vec2 dp,ds,uv; 
+	float d;
+	
+	// ray intersect in view direction
+	p = vpos.xyz; // pixel position in eye space
+	v = normalize(p); // view vector in eye space
+	// view vector in tangent space
+	s = 
+	normalize(
+		vec3(
+			dot(v, tangent),
+			dot(v, -binormal),
+			dot(v, normal)
+		)
+	);
+	// size and start position of search in texture space
+	//ds = s.xy*depth/s.z;
+	ds = s.xy*depth;
+	dp = texcoord*tile;
+	
+	// get intersection distance
+	d = ray_intersect_rm(dp,ds);
+	// get normal and color at intersection point
+	uv=dp+ds*d;
+	//uv = ds;
+	//uv = dp*d;
+	t=texture(reliefMap,uv);
+	c=texture(colortex,uv);
+	
+	t.xyz=t.xyz*2.0-1.0; // expand normal to eye space
+	t.xyz=normalize(t.x*tangent+t.y*binormal+t.z*normal);
+	// compute light direction
+	p += v*d*s.z;
+	l=normalize(p-lightPositionView.xyz);
+	
+	#ifdef RM_DEPTHCORRECT
+		// planes.x=-far/(far-near); planes.y =-far*near/(far-near);
+		float depth=((planes.x*p.z+planes.y)/-p.z);
+	#endif
+	
+	// compute diffuse and specular terms
+	float att=saturate(dot(-l,normal));
+	float diff=saturate(dot(-l,t.xyz));
+	float spec=saturate(dot(normalize(-l-v),t.xyz));
+	
+	//fragColor = c;
+	fragColor = ambient * c;
+	
+	#ifdef RM_SHADOWS
+		// ray intersect in light direction
+		dp+= ds*d; // update position in texture space
+		// light direction in texture space
+		s = normalize(vec3(dot(l,tangent.xyz),
+		dot(l,binormal.xyz),dot(normal,-l)));
+		ds = s.xy*depth/s.z;
+		dp-= ds*d; // entry point for light ray in texture space
+		// get intresection distance from light ray
+		float dl = ray_intersect_rm(dp,ds.xy);
+		if (dl<d-0.05) // if pixel in shadow
+			{ diff*=dot(ambient.xyz,vec3(1.0,1.0,1.0))*0.3333; spec=0; }
+	#endif
+	
+	fragColor.xyz+=att*(c.xyz*diffuse.xyz*diff+specular.xyz*pow(spec,specular.w));
+	fragColor.w=1.0;
+
 }

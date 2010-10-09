@@ -169,10 +169,11 @@ class ConeMapMaterial : public Material {
 public:
 	ConeMapMaterial(){
 		init();
-		addTexture("cone/collage_base.jpg","texmap");
-		addTexture("cone/collage_step.png","stepmap");
-		shaderProgram->attachShader("Bump/bump.vert", GL_VERTEX_SHADER);
-		shaderProgram->attachShader("Bump/csm.frag", GL_FRAGMENT_SHADER);
+		addTexture("bump/tile1.jpg","texmap");
+		addTexture("bump/tile1.tga","stepmap");
+		//addTexture("cone/collage_base.jpg","texmap");
+		//addTexture("cone/collage_step.png","stepmap");
+		attachVertFrag("Bump/csm");
         done();
   }
 	void uniforms(){
@@ -227,12 +228,14 @@ public:
 		glUniform4f(glGetUniformLocation(program, "ScaleFactor"), 1.0, 1.0, 1.0, 1.0);
 	}
 };
-
+/*
 class ReliefMat : public Material {
 public:
 	ReliefMat(){
 		init();
 		addTexture("cone/collage_base.jpg","texmap");
+
+		//addTexture("cone/collage_height.jpg","reliefmap");
 		addTexture("cone/collage_step.png","reliefmap");
 		shaderProgram->attachShader("Bump/bump.vert", GL_VERTEX_SHADER);
 		shaderProgram->attachShader("Bump/relief.frag", GL_FRAGMENT_SHADER);
@@ -244,10 +247,13 @@ public:
 		glUniform1i(glGetUniformLocation(program, "linear_search_steps"), 1);
 		glUniform1i(glGetUniformLocation(program, "binary_search_steps"), 1);
 
-		glUniform1f(glGetUniformLocation(program, "shine"), 1.0);
-		glUniform1f(glGetUniformLocation(program, "depth"), 1.0);
-		glUniform1f(glGetUniformLocation(program, "tile"), 1.0);
-		glUniform1f(glGetUniformLocation(program, "texsize"), 1.0);
+		glUniform1f(glGetUniformLocation(program, "shine"), 0.5);
+		glUniform1f(glGetUniformLocation(program, "depth"), 0.1);
+
+		glUniform1f(glGetUniformLocation(program, "texsize"), 512);
+		glUniform1f(glGetUniformLocation(program, "csm_gain"), 1.0);
+		glUniform1f(glGetUniformLocation(program, "csm_offset"), 0.1);
+
 		glUniform1f(glGetUniformLocation(program, "linearAttenuation"), 1.0);
 
 
@@ -255,6 +261,45 @@ public:
 		glUniform4f(glGetUniformLocation(program, "specular"), 1.0, 1.0, 1.0, 1.0);
 		glUniform4f(glGetUniformLocation(program, "diffuse"), 0.9, 0.8, 1.0, 1.0);
 
+	}
+};
+*/
+
+
+class ReliefMat : public Material {
+public:
+	ReliefMat(){
+		init();
+		addTexture("bump/tile1.jpg","colortex");
+		addTexture("bump/tile1.tga","reliefMap");
+		attachVertFrag("Bump/relief");
+		done();
+  }
+	void uniforms(){
+		shaderProgram->setUniform(QVector4D(0.2, 0.2, 0.2, 1.0), "ambient");
+		shaderProgram->setUniform(QVector4D(1, 1, 1, 1.0), "diffuse");
+		shaderProgram->setUniform(QVector4D(0.4, 0.4, 0.4, 1.0), "specular");
+		shaderProgram->setUniform(QVector2D(0.1, 1000.0), "planes");
+		shaderProgram->setUniform(1.0, "tile");
+		shaderProgram->setUniform(.5, "depth");
+
+	}
+};
+
+class SSS : public Material {
+public:
+	SSS(){
+		init();
+		attachVertFrag("Stuff/sss");
+		done();
+  }
+	void uniforms(){
+		shaderProgram->setUniform(1.0, "SpecPower");
+		shaderProgram->setUniform(1.0, "RimScalar");
+		shaderProgram->setUniform(1.0, "MaterialThickness");
+		shaderProgram->setUniform(QVector3D(.1,.2,.3), "ExtinctionCoefficient");
+		shaderProgram->setUniform(QVector4D(.1,.2,.3,1), "BaseColor");
+		shaderProgram->setUniform(QVector4D(.1,.2,.3,1), "SpecColor");
 	}
 };
 

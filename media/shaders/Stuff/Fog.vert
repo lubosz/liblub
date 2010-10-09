@@ -1,20 +1,23 @@
 #version 330
 precision highp float;
 
+uniform mat4 MVMatrix;
 uniform mat4 MVPMatrix;
-uniform vec3 LightPosition;
+uniform vec4 lightPositionView;
 
 in vec3 in_Vertex;
+in vec3 in_Normal;
+in vec3 in_Tangent;
 in vec2 in_Uv;
 
 out vec2 uv;
 out float vEyeDist;
 
 void main() {
-  vec4 bPosition = MVPMatrix * vec4(in_Vertex,1.0);
-  gl_Position = bPosition;
+  vec4 bPosition = MVMatrix * vec4(in_Vertex,1.0);
+  gl_Position = MVPMatrix * vec4(in_Vertex,1.0);
   uv = in_Uv;
-  vEyeDist = sqrt((bPosition.x - LightPosition.x) * (bPosition.x - LightPosition.x)
-  				+ (bPosition.y - LightPosition.y) * (bPosition.y - LightPosition.y)
-  				+ (bPosition.z - LightPosition.z) * (bPosition.z - LightPosition.z));
+  vEyeDist = sqrt((bPosition.x - lightPositionView.x) * (bPosition.x - lightPositionView.x)
+  				+ (bPosition.y - lightPositionView.y) * (bPosition.y - lightPositionView.y)
+  				+ (bPosition.z - lightPositionView.z) * (bPosition.z - lightPositionView.z));
 }
