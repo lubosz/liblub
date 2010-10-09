@@ -15,8 +15,8 @@ public:
 		Material* material= new VertexColorMaterial();
 		Material* material1= new NormalColorMat();
 		*/
-		//Material* material= new ReliefMat();
-		Material* material= new ConeMapMaterial();
+		Material* material= new ReliefMat();
+		//Material* material= new ConeMapMaterial();
 		Mesh * objCube = MeshFactory::Instance().load("cube.obj");
 		Mesh * blendCube = MeshFactory::Instance().load("cube.blend");
 		/*
