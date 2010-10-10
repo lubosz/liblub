@@ -56,6 +56,7 @@ out vec3 ex_Color;
     for (i=0; i < gl_in.length(); i++){
 			gl_Position = MVPMatrix * (gl_in[i].gl_Position+vec4(geom_Normal[i],0)+vec4(4,0,0,0));
 			//gl_Position.xy = gl_Position.yx;
+			ex_Color = geom_Color[i];
 			EmitVertex();
 		}
 		EndPrimitive();	

@@ -5,6 +5,8 @@ precision highp float;
 in vec3 in_Vertex;
 //in vec3 in_Color;
 in vec3 in_Normal;
+in vec3 in_Tangent;
+in vec3 in_Bitangent;
 in vec3 in_Uv;
 
 out vec3 geom_Color;

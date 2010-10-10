@@ -16,7 +16,7 @@
 #define LIBLUB_GL_MINOR_VERION 3
 #ifndef GLfloat
 #include <GL3/gl3.h>
-//#include <GL3/glx.h>
+#include <GL3/glx.h>
 #include <GL3/glxext.h>
 #include <GL3/glext.h>
 

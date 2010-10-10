@@ -5,8 +5,8 @@ class Example : public Application {
 
 public:
 	Example(){
-		width = 1920;
-		height = 1200;
+		width = 1366;
+		height = 768;
 		programName = "Shadow Mapping";
   }
 
@@ -46,7 +46,8 @@ public:
 
 		//SceneGraph::Instance().addNode(new Node("Monkey",{5,0,-5}, 1, MeshFactory::Instance().loadAssimp("monkeyBig.obj"),paper));
 		//SceneGraph::Instance().addNode(new Node("Sphere",{0,-2,-7}, 3, MeshFactory::Instance().load("earth.obj"),bump));
-		SceneGraph::Instance().addNode(new Node("monkey",{0,-2,-5}, 3, MeshFactory::Instance().load("monkey.blend"),monkey));
+		SceneGraph::Instance().addNode(new Node("monkey",{0,-2,-5}, 1, MeshFactory::Instance().load("cube.blend"),ground));
+		SceneGraph::Instance().addNode(new Node("monkey2",{3,-2,-5}, 1, MeshFactory::Instance().load("cube.obj"),ground));
 		//SceneGraph::Instance().addNode(new Node("Radio",{0,2,-5}, 1, MeshFactory::Instance().loadAssimp("cube.obj"),phun));
 
 		SceneGraph::Instance().addNode(new Node("Radio",{-5,-5,-5}, .5, MeshFactory::Instance().load("radio.blend"),radio));

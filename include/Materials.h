@@ -64,7 +64,8 @@ public:
 		init();
 		addTexture(TextureFactory::Instance().depthTexture(width, height, "shadowMap"));
 		addTexture("Paper_Texture_by_Spiteful_Pie_Stock.jpg","diffuseTexture");
-		attachVertFrag("Color/PhongColor",{"receiveShadows","useDiffuseTexture","useSpotLight"});
+		vector<string> flags = {"receiveShadows","useDiffuseTexture","useSpotLight"};
+		attachVertFrag("Color/PhongColor",flags);
 		done();
   }
 	void uniforms(){
@@ -83,7 +84,15 @@ public:
 		addTexture(diffuse,"diffuseTexture");
 		addTexture(ambient,"ambientTexture");
 		addTexture(normal,"normalTexture");
-		attachVertFrag("Color/PhongColor",{"receiveShadows","useDiffuseTexture","useSpotLight","usePCF","useAmbientTexture","useNormalTexture"});
+		vector<string> flags = {
+				"receiveShadows",
+				"useDiffuseTexture",
+				"useSpotLight",
+				"usePCF",
+				"useAmbientTexture",
+				"useNormalTexture"
+		};
+		attachVertFrag("Color/PhongColor",flags);
 		done();
   }
 	void uniforms(){
@@ -228,43 +237,6 @@ public:
 		glUniform4f(glGetUniformLocation(program, "ScaleFactor"), 1.0, 1.0, 1.0, 1.0);
 	}
 };
-/*
-class ReliefMat : public Material {
-public:
-	ReliefMat(){
-		init();
-		addTexture("cone/collage_base.jpg","texmap");
-
-		//addTexture("cone/collage_height.jpg","reliefmap");
-		addTexture("cone/collage_step.png","reliefmap");
-		shaderProgram->attachShader("Bump/bump.vert", GL_VERTEX_SHADER);
-		shaderProgram->attachShader("Bump/relief.frag", GL_FRAGMENT_SHADER);
-		done();
-  }
-	void uniforms(){
-		GLuint program = shaderProgram->getReference();
-
-		glUniform1i(glGetUniformLocation(program, "linear_search_steps"), 1);
-		glUniform1i(glGetUniformLocation(program, "binary_search_steps"), 1);
-
-		glUniform1f(glGetUniformLocation(program, "shine"), 0.5);
-		glUniform1f(glGetUniformLocation(program, "depth"), 0.1);
-
-		glUniform1f(glGetUniformLocation(program, "texsize"), 512);
-		glUniform1f(glGetUniformLocation(program, "csm_gain"), 1.0);
-		glUniform1f(glGetUniformLocation(program, "csm_offset"), 0.1);
-
-		glUniform1f(glGetUniformLocation(program, "linearAttenuation"), 1.0);
-
-
-		glUniform4f(glGetUniformLocation(program, "ambient"), 1.0, 1.0, 1.0, 1.0);
-		glUniform4f(glGetUniformLocation(program, "specular"), 1.0, 1.0, 1.0, 1.0);
-		glUniform4f(glGetUniformLocation(program, "diffuse"), 0.9, 0.8, 1.0, 1.0);
-
-	}
-};
-*/
-
 
 class ReliefMat : public Material {
 public:
@@ -281,7 +253,7 @@ public:
 		shaderProgram->setUniform(QVector4D(0.4, 0.4, 0.4, 1.0), "specular");
 		shaderProgram->setUniform(QVector2D(0.1, 1000.0), "planes");
 		shaderProgram->setUniform(1.0, "tile");
-		shaderProgram->setUniform(.5, "depth");
+		shaderProgram->setUniform(.2, "depth");
 
 	}
 };
@@ -414,7 +386,8 @@ public:
 	PhongTexMat(string texture){
 		init();
 		addTexture(texture,"diffuseTexture");
-		attachVertFrag("Color/PhongColor", {"useDiffuseTexture"});
+		vector<string> flags = {"useDiffuseTexture"};
+		attachVertFrag("Color/PhongColor", flags);
 		done();
   }
 	void uniforms(){

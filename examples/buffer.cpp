@@ -15,7 +15,7 @@ public:
 		Material* material= new VertexColorMaterial();
 		Material* material1= new NormalColorMat();
 		*/
-		Material* material= new ReliefMat();
+		Material* material= new GeomTest();
 		//Material* material= new ConeMapMaterial();
 		Mesh * objCube = MeshFactory::Instance().load("cube.obj");
 		Mesh * blendCube = MeshFactory::Instance().load("cube.blend");
@@ -24,7 +24,7 @@ public:
 		SceneGraph::Instance().addNode(plane,{0,0,0}, material1);
 		*/
 		SceneGraph::Instance().addNode(new Node("",{0,0,-3},1, objCube, material));
-		//SceneGraph::Instance().addNode(new Node("",{0,0,1},1, blendCube, material));
+		SceneGraph::Instance().addNode(new Node("",{0,0,1},1, blendCube, material));
 	}
 };
 

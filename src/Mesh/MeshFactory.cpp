@@ -70,7 +70,7 @@ Mesh *  MeshFactory::spiral(){
 }
 
 Mesh *  MeshFactory::lamp(){
-	Mesh * mesh = loadDirect("spotLight.blend");
+	Mesh * mesh = loadDirect("earth.obj");
 	mesh->setDrawType(GL_LINES);
 	return mesh;
 }
