@@ -276,71 +276,6 @@ string FrameBuffer::convertInternalFormatToString(GLenum format)
     case GL_RGBA:
         formatName = "GL_RGBA";
         break;
-        /*
-    case GL_LUMINANCE:
-        formatName = "GL_LUMINANCE";
-        break;
-    case GL_LUMINANCE_ALPHA:
-        formatName = "GL_LUMINANCE_ALPHA";
-        break;
-         */
-    case GL_ALPHA4_EXT:
-        formatName = "GL_ALPHA4";
-        break;
-    case GL_ALPHA8_EXT:
-        formatName = "GL_ALPHA8";
-        break;
-    case GL_ALPHA12_EXT:
-        formatName = "GL_ALPHA12";
-        break;
-    case GL_ALPHA16_EXT:
-        formatName = "GL_ALPHA16";
-        break;
-    case GL_LUMINANCE4_EXT:
-        formatName = "GL_LUMINANCE4";
-        break;
-    case GL_LUMINANCE8_EXT:
-        formatName = "GL_LUMINANCE8";
-        break;
-    case GL_LUMINANCE12_EXT:
-        formatName = "GL_LUMINANCE12";
-        break;
-    case GL_LUMINANCE16_EXT:
-        formatName = "GL_LUMINANCE16";
-        break;
-    case GL_LUMINANCE4_ALPHA4_EXT:
-        formatName = "GL_LUMINANCE4_ALPHA4";
-        break;
-    case GL_LUMINANCE6_ALPHA2_EXT:
-        formatName = "GL_LUMINANCE6_ALPHA2";
-        break;
-    case GL_LUMINANCE8_ALPHA8_EXT:
-        formatName = "GL_LUMINANCE8_ALPHA8";
-        break;
-    case GL_LUMINANCE12_ALPHA4_EXT:
-        formatName = "GL_LUMINANCE12_ALPHA4";
-        break;
-    case GL_LUMINANCE12_ALPHA12_EXT:
-        formatName = "GL_LUMINANCE12_ALPHA12";
-        break;
-    case GL_LUMINANCE16_ALPHA16_EXT:
-        formatName = "GL_LUMINANCE16_ALPHA16";
-        break;
-    case GL_INTENSITY_EXT:
-        formatName = "GL_INTENSITY";
-        break;
-    case GL_INTENSITY4_EXT:
-        formatName = "GL_INTENSITY4";
-        break;
-    case GL_INTENSITY8_EXT:
-        formatName = "GL_INTENSITY8";
-        break;
-    case GL_INTENSITY12_EXT:
-        formatName = "GL_INTENSITY12";
-        break;
-    case GL_INTENSITY16_EXT:
-        formatName = "GL_INTENSITY16";
-        break;
     case GL_R3_G3_B2:
         formatName = "GL_R3_G3_B2";
         break;
@@ -409,14 +344,6 @@ bool FrameBuffer::checkFramebufferStatus()
 
     case GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT:
         std::cout << "[ERROR] Framebuffer incomplete: No image is attached to FBO." << std::endl;
-        return false;
-
-    case GL_FRAMEBUFFER_INCOMPLETE_DIMENSIONS_EXT:
-        std::cout << "[ERROR] Framebuffer incomplete: Attached images have different dimensions." << std::endl;
-        return false;
-
-    case GL_FRAMEBUFFER_INCOMPLETE_FORMATS_EXT:
-        std::cout << "[ERROR] Framebuffer incomplete: Color attached images have different internal formats." << std::endl;
         return false;
 
     case GL_FRAMEBUFFER_INCOMPLETE_DRAW_BUFFER:

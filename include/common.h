@@ -11,14 +11,14 @@
 
 #ifdef USE_GL3
 #define GL3_PROTOTYPES 1
-#define GLX_GLXEXT_PROTOTYPES 1
+//
 #define LIBLUB_GL_MAJOR_VERION 3
 #define LIBLUB_GL_MINOR_VERION 3
 #ifndef GLfloat
 #include <GL3/gl3.h>
-#include <GL3/glx.h>
-#include <GL3/glxext.h>
-#include <GL3/glext.h>
+//Hack for GL2 Extensions in GL3
+//#include <GL3/glxext.h>
+//#include <GL3/glext.h>
 
 #endif
 #else

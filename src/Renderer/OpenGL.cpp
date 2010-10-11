@@ -35,7 +35,7 @@ RenderEngine::RenderEngine() {
 	#ifndef USE_GL3
     //glTexEnvi(GL_POINT_SPRITE_ARB, GL_COORD_REPLACE_ARB, GL_TRUE);
 	#endif
-    glEnable(GL_VERTEX_PROGRAM_POINT_SIZE_NV);
+    //glEnable(GL_VERTEX_PROGRAM_POINT_SIZE_NV);
     /*
 
      */
