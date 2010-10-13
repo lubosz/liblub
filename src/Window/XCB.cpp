@@ -18,10 +18,8 @@ MediaLayer::MediaLayer(){
 	quit = false;
 }
 
-void MediaLayer::init(string title, unsigned width, unsigned height) {
+void MediaLayer::init(string title) {
 	programTile = title;
-	this->width = width;
-	this->height = height;
 
 	initScreen();
 	initFrameBuffer();
@@ -83,6 +81,9 @@ void MediaLayer::initScreen(){
         --screen_num, xcb_screen_next(&screen_iter));
     screen = screen_iter.data;
 
+	width = screen->width_in_pixels;
+	height = screen->height_in_pixels;
+/*
     printf("white_pixel: %d\n \
 			black_pixel: %d\n \
 			current_input_masks: %d\n \
@@ -112,6 +113,7 @@ void MediaLayer::initScreen(){
 			screen->allowed_depths_len
 
     );
+    */
     //xcb_window_t   root;
     //xcb_colormap_t default_colormap;
     //xcb_visualid_t root_visual;

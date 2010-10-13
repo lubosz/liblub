@@ -4,8 +4,6 @@ class BufferTest : public Application {
 
 public:
 	BufferTest(){
-		width = 1920;
-		height = 1200;
 		programName = "bufferTest";
   }
 

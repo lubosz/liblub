@@ -4,8 +4,6 @@ class Example : public Application {
 
 public:
 	Example(){
-		width = 1366;
-		height = 768;
 		programName = "Shadow Mapping";
   }
 

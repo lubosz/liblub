@@ -105,7 +105,7 @@ private:
 
 public:
 	unsigned width, height;
-	void init(string title, unsigned width, unsigned height);
+	void init(string title);
 	void swapBuffers();
 	void renderLoop();
 

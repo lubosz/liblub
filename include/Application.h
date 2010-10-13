@@ -16,13 +16,11 @@ class Application {
 	virtual void scene() = 0;
 
 public:
-	unsigned width;
-	unsigned height;
 
 	string programName;
 
 	void run(){
-		MediaLayer::Instance().init(programName, width, height);
+		MediaLayer::Instance().init(programName);
 		scene();
 		MediaLayer::Instance().renderLoop();
 
