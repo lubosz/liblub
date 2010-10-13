@@ -220,32 +220,9 @@ void MediaLayer::createWindow() {
             8,
             wm_hints
     );
-
-	string wm_state_name = "_NET_WM_STATE";
-	//string wm_state_fs_name = "_NET_WM_STATE_FULLSCREEN";
-	string wm_state_fs_name = "_NET_WM_STATE_MAXIMIZED_VERT";
-
-    //atoms[count++] = data->_NET_WM_STATE_MAXIMIZED_VERT;
-    //atoms[count++] = data->_NET_WM_STATE_MAXIMIZED_HORZ;
-
-	xcb_intern_atom_cookie_t wm_state_ck = xcb_intern_atom(connection, 0, wm_state_name.length(), wm_state_name.c_str());
-	xcb_intern_atom_cookie_t wm_state_fs_ck = xcb_intern_atom(connection, 0, wm_state_fs_name.length(), wm_state_fs_name.c_str());
-
-	xcb_generic_error_t * error1;
-	xcb_generic_error_t * error2;
-	xcb_intern_atom_reply_t *reply = xcb_intern_atom_reply(connection, wm_state_ck, &error1);
-	if (error1)
-		fprintf(stderr, "Can't set the screen. Error Code: %i\n",error1->error_code);
-	wm_state = reply->atom;
-	free(reply);
-	//cout << error << "\n";
-
-	reply = xcb_intern_atom_reply(connection, wm_state_fs_ck, &error2);
-	if (error2)
-		fprintf(stderr, "Can't set the screen. Error Code: %i\n",error2->error_code);
-	wm_state_fullscreen = reply->atom;
-	free(reply);
 */
+
+
 
 	// NOTE: window must be mapped before glXMakeContextCurrent
 	xcb_map_window(connection, window);
@@ -266,6 +243,8 @@ void MediaLayer::createWindow() {
 	glXSwapIntervalSGI(VSync);
 
 	const static uint32_t values[] = { XCB_STACK_MODE_ABOVE };
+
+
 
 	/* Move the window on the top of the stack */
 	xcb_configure_window(
@@ -297,11 +276,34 @@ void MediaLayer::toggleFullScreen() {
 		fullscreen = true;
 	}
 
+	string wm_state_name = "_NET_WM_STATE";
+	string wm_state_fs_name = "_NET_WM_STATE_FULLSCREEN";
+	//string wm_state_fs_name = "_NET_WM_STATE_MAXIMIZED_VERT";
 
-	/*
+    //atoms[count++] = data->_NET_WM_STATE_MAXIMIZED_VERT;
+    //atoms[count++] = data->_NET_WM_STATE_MAXIMIZED_HORZ;
+
+	xcb_intern_atom_cookie_t wm_state_ck = xcb_intern_atom(connection, 0, wm_state_name.length(), wm_state_name.c_str());
+	xcb_intern_atom_cookie_t wm_state_fs_ck = xcb_intern_atom(connection, 0, wm_state_fs_name.length(), wm_state_fs_name.c_str());
+
+	xcb_generic_error_t * error1;
+	xcb_generic_error_t * error2;
+	xcb_intern_atom_reply_t *reply = xcb_intern_atom_reply(connection, wm_state_ck, &error1);
+	if (error1)
+		fprintf(stderr, "Can't set the screen. Error Code: %i\n",error1->error_code);
+	wm_state = reply->atom;
+	free(reply);
+	//cout << error << "\n";
+
+	reply = xcb_intern_atom_reply(connection, wm_state_fs_ck, &error2);
+	if (error2)
+		fprintf(stderr, "Can't set the screen. Error Code: %i\n",error2->error_code);
+	wm_state_fullscreen = reply->atom;
+	free(reply);
+
 	// From EWMH "_WM_STATE"
 	xcb_client_message_event_t ev;
-
+	/*
 	ev.response_type = XCB_CLIENT_MESSAGE;
 	ev.format = 32;
 	ev.window = window;
@@ -314,7 +316,7 @@ void MediaLayer::toggleFullScreen() {
 	ev.data.data32[3] = 1;
 	ev.data.data32[4] = 0;
 */
-/*
+
 	ev.response_type = XCB_CLIENT_MESSAGE;
 	ev.type = wm_state;
 	ev.format = 32;
@@ -334,14 +336,14 @@ void MediaLayer::toggleFullScreen() {
 			(const char *) &ev
 	);
 
-
+	/*
 	uint32_t borderWidth = 150;
 	xcb_configure_window(connection, window, XCB_CONFIG_WINDOW_BORDER_WIDTH, &borderWidth);
 	uint32_t newHeight = 150;
 	xcb_configure_window(connection, window, XCB_CONFIG_WINDOW_HEIGHT, &newHeight);
 	cout << "New height "<< newHeight << "\n";
-*/
-	/*
+
+
 	xcb_configure_window(
 			connection,
 			window,
