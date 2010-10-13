@@ -6,6 +6,7 @@
  */
 #include "Material.h"
 #include "SceneGraph.h"
+#include <boost/foreach.hpp>
 
 void Material::init() {
 	diffuseColor = QVector4D();

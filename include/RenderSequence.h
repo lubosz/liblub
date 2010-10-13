@@ -7,8 +7,6 @@
 
 #pragma once
 
-#include "common.h"
-#include "FrameBuffer.h"
 #include "Materials.h"
 #include "RenderPasses.h"
 

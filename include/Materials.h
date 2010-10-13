@@ -7,10 +7,10 @@
 
 #pragma once
 
-#include "ShaderProgram.h"
 #include "Material.h"
-#include "TextureFactory.h"
-#include "RenderEngine.h"
+//#include "TextureFactory.h"
+
+//#include "RenderEngine.h"
 
 class Minimal : public Material {
 public:

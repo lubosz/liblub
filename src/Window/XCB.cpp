@@ -4,6 +4,7 @@
  *  Created on: Mar 22, 2010
  *      Author: bmonkey
  */
+#include <sstream>
 #include "MediaLayer.h"
 #include "Camera.h"
 

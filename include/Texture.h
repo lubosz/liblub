@@ -7,12 +7,9 @@
 
 #pragma once
 
-#include "common.h"
+#include "OpenGL.h"
 
-#include <string>
 #include <FreeImagePlus.h>
-
-
 
 class Texture {
 public:

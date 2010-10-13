@@ -9,6 +9,7 @@
 #include "Camera.h"
 #include "MediaLayer.h"
 #include "RenderEngine.h"
+#include <boost/foreach.hpp>
 
 Input::Input(xcb_connection_t *connection) {
 	this->connection = connection;

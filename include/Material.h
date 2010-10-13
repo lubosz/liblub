@@ -7,13 +7,8 @@
 
 #pragma once
 
-#include <iostream>
-#include <vector>
-#include "Texture.h"
 #include "ShaderProgram.h"
 #include "TextureFactory.h"
-
-#include <boost/foreach.hpp>
 
 using namespace std;
 

@@ -7,9 +7,6 @@
 
 #pragma once
 
-#include <QMatrix4x4>
-#include "common.h"
-#include "Singleton.h"
 #include "Node.h"
 #include "DirectionNode.h"
 

@@ -9,6 +9,8 @@
 
 #include "Mesh.h"
 
+#include "common.h"
+
 class Geometry {
 public:
 	static Mesh * makeTetrahedron();

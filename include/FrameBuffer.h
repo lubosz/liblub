@@ -7,7 +7,6 @@
 
 #pragma once
 
-#include "common.h"
 #include "Texture.h"
 #include "Material.h"
 #include "Mesh.h"
@@ -18,7 +17,7 @@ public:
 	virtual ~FrameBuffer();
     void bind();
     void unBind();
-    void draw();
+    void draw(Material * material);
     void updateRenderView();
 
 	unsigned width, height;
@@ -26,13 +25,11 @@ public:
 	void checkAndFinish();
 	void attachTexture(GLenum attachmentPoint, Texture * texture);
 	void disableColorBuffer();
-	Texture * getDebugTexture();
 private:
 	GLuint fboId;                       // ID of FBO
 	GLuint rboId;                       // ID of Renderbuffer object
 
 	Mesh * renderPlane;
-	Material * debugMat;
 
 	void printFramebufferInfo();
 	string getTextureParameters(GLuint id);

@@ -7,13 +7,7 @@
 
 #pragma once
 
-#include <string>
-#include <vector>
-#include "common.h"
-
-using namespace std;
-
-
+#include "OpenGL.h"
 
 class Shader {
 public:

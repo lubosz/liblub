@@ -17,10 +17,12 @@
 #include "SceneGraph.h"
 #include "MeshFactory.h"
 #include "Materials.h"
+#include "MediaLayer.h"
 
-Camera::Camera() {
-	direction = QVector3D(0,0,-1);
+Camera::Camera(){
+	direction = QVector3D(0, 0, -1);
 	position = QVector3D();
+	aspect = MediaLayer::Instance().width/MediaLayer::Instance().width;
 	defaultValues();
 }
 

@@ -7,7 +7,6 @@
 
 #pragma once
 
-#include "QVector3D"
 #include "Mesh.h"
 #include "Material.h"
 #include "DirectionNode.h"

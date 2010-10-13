@@ -7,15 +7,13 @@
 
 #pragma once
 
-#include "common.h"
-#include "QVector3D"
-#include "QMatrix4x4"
+#include "Qt3D.h"
 
 const QVector3D up(0,1,0);
 
 class DirectionNode {
 public:
-	GLfloat aspect, fov, near, far,
+	qreal aspect, fov, near, far,
 		yaw, pitch, roll;
 	QVector3D position, direction, defaultCenter;
 
@@ -31,8 +29,8 @@ public:
 	QMatrix4x4 getProjection() const;
 
     void setPosition(QVector3D& position);
-	void setAspect(GLfloat aspect);
-	void setParams(GLfloat fov, GLfloat near, GLfloat far);
+	void setAspect(qreal aspect);
+	void setParams(qreal fov, qreal near, qreal far);
 
     void updatePerspective();
     void updateView();

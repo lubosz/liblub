@@ -14,7 +14,6 @@
 #include <sstream>
 
 FrameBuffer::FrameBuffer(GLuint width, GLuint height) {
-	debugMat = new FBOMaterial(width,height);
 	glError("FrameBuffer",12);
 	//Gen texture for fbo
     // create a texture object
@@ -79,10 +78,6 @@ void FrameBuffer::attachTexture(GLenum attachmentPoint, Texture * texture){
 
 }
 
-Texture * FrameBuffer::getDebugTexture(){
-	return debugMat->textures[0];
-}
-
 void FrameBuffer::disableColorBuffer(){
 
     //@ disable color buffer if you don't attach any color buffer image,
@@ -116,10 +111,10 @@ void FrameBuffer::updateRenderView(){
 	glViewport(0,0,width, height);
 }
 
-void FrameBuffer::draw() {
-	debugMat->activate();
-	debugMat->getShaderProgram()->use();
-	debugMat->getShaderProgram()->setUniform(QMatrix4x4(), "MVPMatrix");
+void FrameBuffer::draw(Material * material) {
+	material->activate();
+	material->getShaderProgram()->use();
+	material->getShaderProgram()->setUniform(QMatrix4x4(), "MVPMatrix");
 	//glBindTexture(GL_TEXTURE_2D, 0);
 	renderPlane->draw();
 	glError("FrameBuffer::draw", 188);

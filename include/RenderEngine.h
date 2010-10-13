@@ -7,14 +7,7 @@
 
 #pragma once
 
-#include "common.h"
-#include <string>
-#include <iostream>
-#include <string.h>
-#include "ShaderProgram.h"
 #include "SceneGraph.h"
-#include "Singleton.h"
-#include "FrameBuffer.h"
 #include "RenderSequence.h"
 
 class RenderSequence;

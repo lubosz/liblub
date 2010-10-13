@@ -7,9 +7,6 @@
 
 #pragma once
 
-#include "common.h"
-#include "QVector3D"
-#include "QVector4D"
 #include "ShaderProgram.h"
 #include "DirectionNode.h"
 

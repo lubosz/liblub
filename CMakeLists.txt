@@ -40,6 +40,7 @@ SET(QT_USE_QTOPENGL TRUE)
 
 include_directories(
 	include
+	include/common
 	/usr/local/Trolltech/Qt-4.7.0/include/
 	/usr/local/Trolltech/Qt-4.7.0/include/QtGui
 	${SDL_DIR}include

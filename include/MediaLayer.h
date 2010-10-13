@@ -7,7 +7,14 @@
 
 #pragma once
 
-#include "common.h"
+
+
+//Include first OpenGL then Qt then Xlib / GLX!
+#include "RenderEngine.h"
+#include "Input.h"
+//#include <QtCore>
+//#include "Qt3D.h"
+//#include "common.h"
 
 #ifdef WITH_SDL
 	#define SDL_NO_COMPAT
@@ -15,16 +22,14 @@
 #else
 	#define GLX_GLXEXT_PROTOTYPES 1 //Needed for GL3 Context Creation
 	#include <GL3/glx.h>
+
 	#include <X11/Xlib.h>
 	#include <X11/Xlib-xcb.h>
 
 	#include <xcb/xcb.h>
 
 #endif
-#include <sstream>
 
-#include "RenderEngine.h"
-#include "Input.h"
 
 class MediaLayer : public Singleton<MediaLayer>{
 

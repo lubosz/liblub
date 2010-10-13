@@ -5,6 +5,7 @@
  *      Author: bmonkey
  */
 
+#include "config.h"
 #include "Textures.h"
 #include <math.h>
 

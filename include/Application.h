@@ -8,7 +8,6 @@
 #pragma once
 
 #include "MediaLayer.h"
-#include "Camera.h"
 #include "Materials.h"
 #include "MeshFactory.h"
 
@@ -25,8 +24,7 @@ public:
 	void run(){
 		MediaLayer::Instance().init(programName, width, height);
 
-		Camera::Instance().setParams(70.0, 0.1, 1000.0);
-		Camera::Instance().setAspect(float(width)/float(height));
+
 
 		scene();
 

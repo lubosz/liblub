@@ -1,13 +1,8 @@
 #pragma once
 
-#include <QMatrix4x4>
-#include "common.h"
 #include "ShaderProgram.h"
-#include "Singleton.h"
 #include "Node.h"
-#include "Material.h"
 #include "Light.h"
-#include "DirectionNode.h"
 
 class SceneGraph: public Singleton<SceneGraph>
 {

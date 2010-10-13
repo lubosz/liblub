@@ -7,6 +7,7 @@
 
 #include "RenderSequence.h"
 #include "MediaLayer.h"
+#include <boost/foreach.hpp>
 
 RenderSequence::RenderSequence() {
 	unsigned width = MediaLayer::Instance().width;

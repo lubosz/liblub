@@ -1,5 +1,4 @@
 #include "Application.h"
-#include "Light.h"
 
 class Example : public Application {
 

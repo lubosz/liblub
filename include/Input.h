@@ -7,7 +7,9 @@
 
 #pragma once
 
-#include "common.h"
+#include <list>
+
+using namespace std;
 
 #define XCBLOOP
 
@@ -18,7 +20,7 @@
 
 #ifdef XCBLOOP
 	#include <xcb/xcb_keysyms.h>
-	#include <list>
+
 #endif
 
 #ifdef WITH_SDL

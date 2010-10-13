@@ -6,15 +6,10 @@
  */
 
 #pragma once
-#include <QMatrix3x3>
-#include <QMatrix4x4>
-#include <QVector3D>
-#include <QVector2D>
 
-#include <string>
-#include <list>
 
-#include "common.h"
+//#include "common.h"
+#include "Qt3D.h"
 #include "Shader.h"
 
 class ShaderProgram {
