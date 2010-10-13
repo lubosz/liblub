@@ -36,7 +36,7 @@ public:
 		Material * ground = new Ubershader(shadowMap, "bump/brickwork-texture.jpg","plane-occlusion.png", "bump/brickwork_normal-map.jpg");
 		//Material * bump = new NormalMapMaterial("bump/brickwork-texture.jpg","bump/brickwork_normal-map.jpg");
 
-		Node * plane = new Node("Plane",{0,-7,0}, 20, MeshFactory::Instance().load("plane.blend"),ground);
+		Node * plane = new Node("Plane",{0,-7,0}, 20, MeshFactory::load("plane.blend"),ground);
 		plane->setReceiveShadows(true);
 		plane->setCastShadows(false);
 		SceneGraph::Instance().addNode(plane);
@@ -45,11 +45,11 @@ public:
 
 		//SceneGraph::Instance().addNode(new Node("Monkey",{5,0,-5}, 1, MeshFactory::Instance().loadAssimp("monkeyBig.obj"),paper));
 		//SceneGraph::Instance().addNode(new Node("Sphere",{0,-2,-7}, 3, MeshFactory::Instance().load("earth.obj"),bump));
-		SceneGraph::Instance().addNode(new Node("monkey",{0,-2,-5}, 1, MeshFactory::Instance().load("cube.blend"),ground));
-		SceneGraph::Instance().addNode(new Node("monkey2",{3,-2,-5}, 1, MeshFactory::Instance().load("cube.obj"),ground));
+		SceneGraph::Instance().addNode(new Node("monkey",{0,-2,-5}, 1, MeshFactory::load("cube.blend"),ground));
+		SceneGraph::Instance().addNode(new Node("monkey2",{3,-2,-5}, 1, MeshFactory::load("cube.obj"),ground));
 		//SceneGraph::Instance().addNode(new Node("Radio",{0,2,-5}, 1, MeshFactory::Instance().loadAssimp("cube.obj"),phun));
 
-		SceneGraph::Instance().addNode(new Node("Radio",{-5,-5,-5}, .5, MeshFactory::Instance().load("radio.blend"),radio));
+		SceneGraph::Instance().addNode(new Node("Radio",{-5,-5,-5}, .5, MeshFactory::load("radio.blend"),radio));
 		//
 		//SceneGraph::Instance().addNode(MeshFactory::Instance().spiral(),{0,-15,0},new StarMat());
 	}

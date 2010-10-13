@@ -14,11 +14,11 @@ public:
 				"Planet",
 				{0,0,0},
 				.2,
-				MeshFactory::Instance().load("monkey.obj"),
+				MeshFactory::load("monkey.obj"),
 				new TextureMaterial("bunny.png")
 		);
 		SceneGraph::Instance().addNode(plane);
-		SceneGraph::Instance().addNode(new Node("Spiral",{0,0,0}, MeshFactory::Instance().spiral(),new Simple("Particle/stars")));
+		SceneGraph::Instance().addNode(new Node("Spiral",{0,0,0}, MeshFactory::spiral(),new Simple("Particle/stars")));
 	}
 };
 

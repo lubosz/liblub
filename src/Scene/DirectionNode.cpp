@@ -52,13 +52,13 @@ void DirectionNode::updateView(){
 	viewMatrix.lookAt(position,direction+position,up);
 }
 
-void DirectionNode::setParams(qreal fov, qreal near, qreal far){
+void DirectionNode::setParams(GLfloat fov, GLfloat near, GLfloat far){
 	this->fov = fov;
 	this->near = near;
 	this->far = far;
 }
 
-void DirectionNode::setAspect(qreal aspect){
+void DirectionNode::setAspect(GLfloat aspect){
 	this->aspect = aspect;
     /* Create our projection matrix with a 45 degree field of view
      * a width to height ratio of 1 and view from .1 to 100 infront of us */

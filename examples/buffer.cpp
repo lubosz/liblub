@@ -17,8 +17,8 @@ public:
 		*/
 		Material* material= new GeomTest();
 		//Material* material= new ConeMapMaterial();
-		Mesh * objCube = MeshFactory::Instance().load("cube.obj");
-		Mesh * blendCube = MeshFactory::Instance().load("cube.blend");
+		Mesh * objCube = MeshFactory::load("cube.obj");
+		Mesh * blendCube = MeshFactory::load("cube.blend");
 		/*
 		SceneGraph::Instance().addNode(plane,{-2,0,0}, material);
 		SceneGraph::Instance().addNode(plane,{0,0,0}, material1);

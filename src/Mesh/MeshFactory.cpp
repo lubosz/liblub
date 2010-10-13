@@ -12,31 +12,6 @@
 #include <assimp/aiScene.h>
 #include <assimp/aiPostProcess.h>
 
-MeshFactory::MeshFactory() {
-	/* available draw types */
-	GL_POINTS,
-	GL_LINE_STRIP,
-	GL_LINE_LOOP,
-	GL_LINES,
-#ifndef USE_GL3
-	GL_POLYGON,
-	GL_QUAD_STRIP,
-	GL_QUADS,
-#endif
-	GL_TRIANGLE_STRIP,
-	GL_TRIANGLE_FAN,
-	GL_TRIANGLES,
-	GL_LINES_ADJACENCY,
-	GL_LINE_STRIP_ADJACENCY,
-	GL_TRIANGLES_ADJACENCY,
-	GL_TRIANGLE_STRIP_ADJACENCY;
-
-}
-
-MeshFactory::~MeshFactory() {
-	// TODO Auto-generated destructor stub
-}
-
 Mesh *  MeshFactory::tetrahedron(){
 	Mesh * mesh = Geometry::makeTetrahedron();
 	mesh->setDrawType(GL_TRIANGLE_STRIP);

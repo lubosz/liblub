@@ -8,23 +8,17 @@
 #pragma once
 
 #include "Mesh.h"
-#include "Singleton.h"
 
-class MeshFactory : public Singleton<MeshFactory>{
+class MeshFactory{
 public:
-	Mesh * tetrahedron();
-	Mesh * cube();
-	Mesh * stars();
-	Mesh * plane();
-	Mesh * load(string file);
-	Mesh * lamp();
-	Mesh * spiral();
-	Mesh * loadDirect(string file);
-
-private:
-	friend class Singleton<MeshFactory>;
-	MeshFactory();
-	~MeshFactory();
+	static Mesh * tetrahedron();
+	static Mesh * cube();
+	static Mesh * stars();
+	static Mesh * plane();
+	static Mesh * load(string file);
+	static Mesh * lamp();
+	static Mesh * spiral();
+	static Mesh * loadDirect(string file);
 
 };
 

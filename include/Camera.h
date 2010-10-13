@@ -7,7 +7,7 @@
 
 #pragma once
 
-#include "Node.h"
+#include "Singleton.h"
 #include "DirectionNode.h"
 
 class Camera: public Singleton<Camera> , public  DirectionNode{

@@ -11,7 +11,7 @@ public:
   }
 
 	void scene(){
-		SceneGraph::Instance().addNode(new Node("Planet",{0,0,-10}, 10, MeshFactory::Instance().load("earth.obj"),new OceanMat()));
+		SceneGraph::Instance().addNode(new Node("Planet",{0,0,-10}, 10, MeshFactory::load("earth.obj"),new OceanMat()));
 	}
 };
 

@@ -20,7 +20,7 @@ FrameBuffer::FrameBuffer(GLuint width, GLuint height) {
 	this->width = width;
 	this->height = height;
 
-    renderPlane = MeshFactory::Instance().plane();
+    renderPlane = MeshFactory::plane();
 
 	glError("FrameBuffer",33);
 
