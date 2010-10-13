@@ -5,9 +5,6 @@
  *      Author: bmonkey
  */
 
-#include <stdlib.h>
-#include <stdio.h>
-#include <iostream>
 #include "Shader.h"
 #include <boost/foreach.hpp>
 

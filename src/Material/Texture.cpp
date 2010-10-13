@@ -7,10 +7,6 @@
 
 #include "Texture.h"
 
-
-#include <iostream>
-
-
 Texture::~Texture() {
 	// TODO Auto-generated destructor stub
 }

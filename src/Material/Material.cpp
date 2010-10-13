@@ -4,7 +4,6 @@
  *  Created on: Aug 30, 2010
  *      Author: bmonkey
  */
-#include "Material.h"
 #include "SceneGraph.h"
 #include <boost/foreach.hpp>
 

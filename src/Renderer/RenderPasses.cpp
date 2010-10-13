@@ -5,8 +5,6 @@
  *      Author: bmonkey
  */
 
-#include "RenderPasses.h"
-#include "Materials.h"
 #include "MediaLayer.h"
 #include "Camera.h"
 

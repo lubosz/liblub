@@ -5,19 +5,9 @@
  *      Author: bmonkey
  */
 
-
-#include <stdio.h>
-#include <stdlib.h>
-
-#include <math.h>
-#include <string.h>
-
 #include "Camera.h"
-#include "common.h"
 #include "SceneGraph.h"
 #include "MeshFactory.h"
-#include "Materials.h"
-#include "MediaLayer.h"
 
 Camera::Camera(){
 	direction = QVector3D(0, 0, -1);

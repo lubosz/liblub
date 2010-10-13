@@ -5,9 +5,7 @@
  *      Author: bmonkey
  */
 
-#include "Mesh.h"
 #include "RenderEngine.h"
-#include <iostream>
 #include <boost/foreach.hpp>
 
 Mesh::Mesh(){

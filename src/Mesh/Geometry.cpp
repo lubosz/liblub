@@ -6,53 +6,22 @@
  */
 
 #include "Geometry.h"
-#include <iostream>
-#include <QVector3D>
-#include <QMatrix4x4>
-#include <math.h>
-
-using namespace std;
+#include "Qt3D.h"
 
 Mesh * Geometry::makePlane(){
-	/*
-	vector<GLfloat> vertices = {
-		-1.0,  -1.0,  0.0,
-		1.0, -1.0,  0.0,
-		-1.0,  1.0, 0.0,
-		1.0, 1.0, 0.0
-	};
-	*/
-	/*
-	vector<GLfloat> vertices = {
-			-1.0,  -1.0,  -2.0,
-			1.0, -1.0,  -2.0,
-			-1.0,  1.0, -2.0,
-			1.0, 1.0, -2.0
-		};
-	*/
 
 	vector<GLfloat> vertices = {
 			-1.0, -1.0, -1.0,
 			1.0, -1.0, -1.0,
 			1.0, 1.0, -1.0,
 			-1.0, 1.0, -1.0
-		};
+	};
 
 	vector<GLfloat> uvCoords = {
 			0.0,  0.0,
-
-		1.0,  0.0,
-		1.0,  1.0,
-
-		0.0,  1.0,
-
-
-			/*
+			1.0,  0.0,
 			1.0,  1.0,
-			1.0,  1.2,
-			1.2,  1.0,
-			1.2,  1.2
-	*/
+			0.0,  1.0,
 	};
 
 	vector<GLfloat> normals = {
@@ -62,7 +31,6 @@ Mesh * Geometry::makePlane(){
 		0.0, 0.0, 1.0
 	};
 
-	//vector<GLuint> indicies = { 0, 1, 3, 3, 2, 0 };
 	vector<GLuint> indicies = { 0, 1, 3, 3, 1, 2 };
 
 	Mesh * mesh = new Mesh();

@@ -5,7 +5,6 @@
  *      Author: bmonkey
  */
 
-#include "RenderSequence.h"
 #include "MediaLayer.h"
 #include <boost/foreach.hpp>
 

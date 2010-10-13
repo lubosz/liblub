@@ -8,7 +8,6 @@
 #include "Camera.h"
 #include "MeshFactory.h"
 #include "RenderEngine.h"
-#include "Materials.h"
 
 using namespace std;
 
