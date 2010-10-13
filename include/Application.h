@@ -23,11 +23,7 @@ public:
 
 	void run(){
 		MediaLayer::Instance().init(programName, width, height);
-
-
-
 		scene();
-
 		MediaLayer::Instance().renderLoop();
 
 	}

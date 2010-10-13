@@ -39,6 +39,8 @@ void MediaLayer::init(string title, unsigned width, unsigned height) {
 	toggleMouseGrab();
 	if (grab) XWarpPointer(display, None, window, 0, 0, width, height, halfWidth, halfHeight);
 
+	Camera::Instance().setAspect(float(MediaLayer::Instance().width)/float(MediaLayer::Instance().height));
+
 }
 
 MediaLayer::~MediaLayer() {

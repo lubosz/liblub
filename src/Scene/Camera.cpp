@@ -22,10 +22,7 @@
 Camera::Camera(){
 	direction = QVector3D(0, 0, -1);
 	position = QVector3D();
-	aspect = float(MediaLayer::Instance().width)/float(MediaLayer::Instance().height);
 	defaultValues();
-
-	cout << "camera11111" << near << " "<< far << "\n\n\n\n\n\n";
 }
 
 Camera::~Camera() {
