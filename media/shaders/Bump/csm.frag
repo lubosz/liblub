@@ -9,6 +9,10 @@ in float vertex_dist;
 in float light_dist;
 in float dist_val;
 
+in vec3 eyeSpaceTangent;
+in vec3 eyeSpaceBinormal;
+in vec3 eyeSpaceNormal;
+
 uniform sampler2D stepmap;
 uniform sampler2D texmap;
 
@@ -44,10 +48,16 @@ void main(void)
    // blue = df/dx
    // alpha = df/dy (image coords are no longer backward!)
    // note: I _need_ the texture size to scale the normal properly!
-   t=texture(stepmap, pt_eye.xy);
+   
+	t=texture(stepmap, pt_eye.xy);
+	/*
    t = vec4 ((t.ba-0.5) * (-depth * texsize), 1.0, 0.0);
    t=normalize(t);
-
+   */
+   	t.xyz=t.xyz*2.0-1.0; // expand normal to eye space
+	t.xyz=normalize(t.x*eyeSpaceTangent+t.y*eyeSpaceBinormal+t.z*eyeSpaceNormal);
+	
+	
    // adjust the hit-position
    // (only useful if the light is near relative
    // to the depth)

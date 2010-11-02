@@ -20,6 +20,10 @@ out float light_dist;
 //  distance to the point
 out float dist_val;
 
+out vec3 eyeSpaceTangent;
+out vec3 eyeSpaceBinormal;
+out vec3 eyeSpaceNormal;
+
 uniform mat4 MVMatrix;
 uniform mat4 MVPMatrix;
 uniform mat3 NormalMatrix;
@@ -38,9 +42,9 @@ void main(void)
    
    //  the matrix needed to convert to eye space
    //  (this is local, and should already be normalized, I think)
-   vec3 eyeSpaceTangent  = normalize(NormalMatrix * in_Tangent);	//tangent;
-   vec3 eyeSpaceBinormal = normalize(NormalMatrix * -in_Bitangent);	//binormal;
-   vec3 eyeSpaceNormal   = normalize(NormalMatrix * in_Normal); //normal
+   eyeSpaceTangent  = normalize(NormalMatrix * in_Tangent);	//tangent;
+   eyeSpaceBinormal = normalize(NormalMatrix * -in_Bitangent);	//binormal;
+   eyeSpaceNormal   = normalize(NormalMatrix * in_Normal); //normal
   
    // now convert the light and position, and pass in the texture coordinate
    vertex_pos = vec3 (

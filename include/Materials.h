@@ -179,6 +179,7 @@ public:
 	ConeMapMaterial(){
 		init();
 		addTexture("bump/tile1.jpg","texmap");
+		//addTexture("bump/relief.png","stepmap");
 		addTexture("bump/tile1.tga","stepmap");
 		//addTexture("cone/collage_base.jpg","texmap");
 		//addTexture("cone/collage_step.png","stepmap");
@@ -192,7 +193,7 @@ public:
 
 		glUniform1f(glGetUniformLocation(program, "depth"), 0.1);
 
-		glUniform1f(glGetUniformLocation(program, "texsize"), 512);
+		glUniform1f(glGetUniformLocation(program, "texsize"), 1024);
 		glUniform1f(glGetUniformLocation(program, "csm_gain"), 1.0);
 		glUniform1f(glGetUniformLocation(program, "csm_offset"), 0.1);
 		glUniform1f(glGetUniformLocation(program, "linearAttenuation"), 1.0);
