@@ -27,7 +27,7 @@ public:
 
 	    }
 
-		Node * plane = new Node("Plane",{0,-7,0}, 20, MeshFactory::load("plane.blend"),material);
+		Node * plane = new Node("Plane",{0,-7,0}, 20, MeshFactory::load("plane.obj"),material);
 		plane->setReceiveShadows(true);
 		plane->setCastShadows(false);
 		SceneGraph::Instance().addNode(plane);
