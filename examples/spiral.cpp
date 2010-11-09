@@ -8,6 +8,7 @@ public:
   }
 
 	void scene(){
+		SceneGraph::Instance().light = new Light(QVector3D(0.3, 6.6, -3.3),QVector3D(1,-5,-1));
 		Node * plane = new Node(
 				"Planet",
 				{0,0,0},

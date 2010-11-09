@@ -28,7 +28,11 @@ public:
 		Material * sphereMap = new SphereMap("spectrum.png", "spheremaps/spheremap_bar.jpg");
 */
 
+
+
 		Texture * shadowMap = RenderEngine::Instance().shadowSequence->renderPasses[0]->targetTexture;
+
+		Material * relief = new ReliefMat();
 		Material * monkey = new Ubershader(shadowMap, "bump/masonry-wall-texture.jpg","monkey-occlusion.png", "bump/masonry-wall-normal-map.jpg");
 		Material * radio = new Ubershader(shadowMap, "bump/masonry-wall-texture.jpg","radio-occlusion.png", "bump/masonry-wall-normal-map.jpg");
 		Material * ground = new Ubershader(shadowMap, "bump/brickwork-texture.jpg","plane-occlusion.png", "bump/brickwork_normal-map.jpg");
@@ -40,11 +44,10 @@ public:
 		SceneGraph::Instance().addNode(plane);
 
 
-
 		//SceneGraph::Instance().addNode(new Node("Monkey",{5,0,-5}, 1, MeshFactory::Instance().loadAssimp("monkeyBig.obj"),paper));
 		//SceneGraph::Instance().addNode(new Node("Sphere",{0,-2,-7}, 3, MeshFactory::Instance().load("earth.obj"),bump));
-		SceneGraph::Instance().addNode(new Node("monkey",{0,-2,-5}, 1, MeshFactory::load("cube.blend"),ground));
-		SceneGraph::Instance().addNode(new Node("monkey2",{3,-2,-5}, 1, MeshFactory::load("cube.obj"),ground));
+		SceneGraph::Instance().addNode(new Node("bump",{3,-2,-5}, 1, MeshFactory::load("cube.obj"),relief));
+		SceneGraph::Instance().addNode(new Node("bump",{3,-2,-9}, 1, MeshFactory::load("cube.obj"),ground));
 		//SceneGraph::Instance().addNode(new Node("Radio",{0,2,-5}, 1, MeshFactory::Instance().loadAssimp("cube.obj"),phun));
 
 		SceneGraph::Instance().addNode(new Node("Radio",{-5,-5,-5}, .5, MeshFactory::load("radio.blend"),radio));

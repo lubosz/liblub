@@ -9,14 +9,28 @@ public:
   }
 
 	void scene(){
-		Light * light = new Light(QVector3D(0.3, 6.6, -3.3),QVector3D(1,-5,-1));
+		SceneGraph::Instance().light = new Light(QVector3D(-2.5, 21.5, -5.2),QVector3D(1,-5,0));
 
-		SceneGraph::Instance().light = light;
+	    Texture * shadowMap = RenderEngine::Instance().shadowSequence->renderPasses[0]->targetTexture;
+	    Material * material = new UbershaderColor(shadowMap,QVector3D(1,1,1));
 
-		MengerSponge * sponge = new MengerSponge(4);
+	    for (int i = 0; i < 5; i++){
+	    	MengerSponge * sponge = new MengerSponge(i);
+			Node * node = new Node(
+					"sponge",
+					{float(i-2.5),float(i*3-6),-5},
+					1,
+					sponge->getMesh(),
+					material
+			);
+			SceneGraph::Instance().addNode(node);
 
-		Material * material = new PhongColorMat(QVector3D(1,1,1));
-	    SceneGraph::Instance().addNode(new Node("", QVector3D(0,0,-10), 2.0, sponge->getMesh(),material));
+	    }
+
+		Node * plane = new Node("Plane",{0,-7,0}, 20, MeshFactory::load("plane.blend"),material);
+		plane->setReceiveShadows(true);
+		plane->setCastShadows(false);
+		SceneGraph::Instance().addNode(plane);
 
 	}
 };
