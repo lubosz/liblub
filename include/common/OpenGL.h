@@ -17,7 +17,7 @@
 #include <GL3/gl3.h>
 //Hack for GL2 Extensions in GL3
 //#include <GL3/glxext.h>
-//#include <GL3/glext.h>
+#include <GL3/glext.h>
 
 //#endif
 /*

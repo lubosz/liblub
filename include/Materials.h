@@ -105,6 +105,30 @@ public:
 	}
 };
 
+class UbershaderColor : public Material {
+public:
+	UbershaderColor(Texture * shadowMap, QVector3D color){
+		init();
+		addTexture(shadowMap);
+		vector<string> flags = {
+				"receiveShadows",
+				"useSpotLight",
+				"usePCF"
+		};
+		diffuseColor = color.toVector4D();
+		attachVertFrag("Color/PhongColor",flags);
+		done();
+  }
+	void uniforms(){
+		shaderProgram->setUniform(QVector4D(0.1, 0.1, 0.1, 1.0), "ambientSceneColor");
+		shaderProgram->setUniform(diffuseColor, "diffuseMaterialColor");
+		shaderProgram->setUniform(QVector4D(0.8, 0.8, 0.8,1.0), "specularMaterialColor");
+		shaderProgram->setUniform(4.3, "shininess");
+		shaderProgram->setUniform(1.0/1200, "yPixelOffset");
+		shaderProgram->setUniform(1.0/1920, "xPixelOffset");
+	}
+};
+
 class ShadowMapPCF : public Material {
 public:
 	ShadowMapPCF(unsigned width, unsigned height){
@@ -178,11 +202,11 @@ class ConeMapMaterial : public Material {
 public:
 	ConeMapMaterial(){
 		init();
-		addTexture("bump/tile1.jpg","texmap");
+		//addTexture("bump/tile1.jpg","texmap");
 		//addTexture("bump/relief.png","stepmap");
-		addTexture("bump/tile1.tga","stepmap");
-		//addTexture("cone/collage_base.jpg","texmap");
-		//addTexture("cone/collage_step.png","stepmap");
+		//addTexture("bump/tile1.tga","stepmap");
+		addTexture("cone/collage_base.jpg","texmap");
+		addTexture("cone/collage_step.png","stepmap");
 		attachVertFrag("Bump/csm");
         done();
   }
