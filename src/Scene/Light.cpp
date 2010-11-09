@@ -116,5 +116,6 @@ void Light::moveBack(){
 
 void Light::update(){
 	SceneGraph::Instance().setPosition("Light", position);
+	cout << "LightPosition:" << position.x() << " " << position.y() << " "<< position.z() << "\n";
 	updateView();
 }
