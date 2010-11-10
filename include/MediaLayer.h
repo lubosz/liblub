@@ -7,8 +7,6 @@
 
 #pragma once
 
-#define WITH_SDL
-
 //Include first OpenGL then Qt then Xlib / GLX!
 #include "RenderEngine.h"
 #include "Input.h"

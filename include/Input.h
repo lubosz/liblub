@@ -11,16 +11,16 @@
 
 using namespace std;
 
-/*
+
 #ifdef XCBEVENTS
 	#include <xcb/xcb_event.h>
 	#include <xcb/xcb_keysyms.h>
 #endif
-*/
 
-//#ifdef XCBLOOP
+
+//XCBLOOP
 #ifdef WITH_XCB
-#include <xcb/xcb_keysyms.h>
+	#include <xcb/xcb_keysyms.h>
 #endif
 
 #ifdef WITH_SDL
@@ -59,7 +59,7 @@ class Input {
 
 		#endif
 
-		#ifdef XCBLOOP
+		#ifdef WITH_XCB
 			xcb_connection_t *connection;
 
 			xcb_key_symbols_t *syms;
