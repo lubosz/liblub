@@ -32,7 +32,7 @@ Mesh *  MeshFactory::plane(){
 
 Mesh *  MeshFactory::stars(){
 	vector<float> resolution = {100,100,100};
-	Mesh * mesh = Geometry::makeStars(resolution,1.0,0.0);
+	Mesh * mesh = Geometry::makeStars(resolution,1.0f,0.0f, 1);
 	mesh->setDrawType(GL_POINTS);
 	//meshes.push_back(Geometry::makeStars(resolution,0.4,2.9));
 	return mesh;

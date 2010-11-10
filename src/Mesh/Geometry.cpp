@@ -248,7 +248,7 @@ float Geometry::randomize(float density, float randomness){
 }
 
 
-Mesh * Geometry::makeStars(vector<float> resolution, float density, float randomness){
+Mesh * Geometry::makeStars(vector<float> & resolution, float density, float randomness,  float colorIntensity){
 
 	vector<GLfloat> vertices, colors;
 	vector<GLuint> indicies;
@@ -275,9 +275,9 @@ Mesh * Geometry::makeStars(vector<float> resolution, float density, float random
 				vertices.push_back(y);
 				vertices.push_back(z);
 
-				colors.push_back(float(int(x)%255)/256);
-				colors.push_back(float(int(y)%255)/256);
-				colors.push_back(float(int(z)%255)/256);
+				colors.push_back(float(int(x*colorIntensity)%255)/256);
+				colors.push_back(float(int(y*colorIntensity)%255)/256);
+				colors.push_back(float(int(z*colorIntensity)%255)/256);
 
 				indicies.push_back(i);
 
