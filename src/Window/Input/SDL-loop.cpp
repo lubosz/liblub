@@ -27,111 +27,35 @@ void Input::eventLoop(){
 	if ( keystate[SDL_SCANCODE_S] ) Camera::Instance().backward();
 	if ( keystate[SDL_SCANCODE_D] ) Camera::Instance().right();
 
+	if ( keystate[SDL_SCANCODE_LEFT] ) SceneGraph::Instance().light->moveLeft();
+	if ( keystate[SDL_SCANCODE_RIGHT] ) SceneGraph::Instance().light->moveRight();
+	if ( keystate[SDL_SCANCODE_UP] ) SceneGraph::Instance().light->moveUp();
+	if ( keystate[SDL_SCANCODE_DOWN] ) SceneGraph::Instance().light->moveDown();
+	if ( keystate[SDL_SCANCODE_1] ) SceneGraph::Instance().light->moveForward();
+	if ( keystate[SDL_SCANCODE_7] ) SceneGraph::Instance().light->moveBack();
+
     while( SDL_PollEvent( &event ) ) {
 
-
-
         switch( event.type ) {
-        /*
 			case SDL_KEYDOWN:
-			case SDL_KEYUP:
-			case SDL_K
-			*/
+				switch ( event.key.keysym.sym ) {
 
-			//break;
-        	/*
+						case 'f':
+							MediaLayer::Instance().toggleFullScreen();
+							break;
 
-            switch ( event.key.keysym.sym ) {
-            case SDLK_ESCAPE:
+						case 't':
+							RenderEngine::Instance().toggleFBO();
+							break;
 
-				break;
+						case 'g':
+							MediaLayer::Instance().toggleMouseGrab();
+							break;
 
-            case SDLK_RIGHT:
-                SceneGraph::Instance().lightPosition += QVector3D(0.1,0,0);
-                SceneGraph::Instance().updateLight();
-                break;
+						default:
+							 break;
+				}
 
-            case SDLK_LEFT:
-            	SceneGraph::Instance().lightPosition += QVector3D(-0.1,0,0);
-                SceneGraph::Instance().updateLight();
-                break;
-
-            case SDLK_UP:
-                SceneGraph::Instance().lightPosition += QVector3D(0,0.1,0);
-                SceneGraph::Instance().updateLight();
-                break;
-
-            case SDLK_DOWN:
-            	SceneGraph::Instance().lightPosition += QVector3D(0,-0.1,0);
-                SceneGraph::Instance().updateLight();
-                break;
-
-            case '1':
-                SceneGraph::Instance().lightPosition += QVector3D(0,0,0.1);
-                SceneGraph::Instance().updateLight();
-                break;
-
-            case '7':
-            	SceneGraph::Instance().lightPosition += QVector3D(0,0,-0.1);
-                SceneGraph::Instance().updateLight();
-                break;
-
-            case SDLK_KP_PLUS:
-                break;
-            case SDLK_KP_MINUS:
-                break;
-
-            case 'w':
-            	Camera::Instance().forward();
-            	break;
-
-            case 's':
-            	Camera::Instance().backward();
-            	break;
-
-            case 'a':
-            	Camera::Instance().left();
-            	break;
-
-            case 'd':
-            	Camera::Instance().right();
-            	break;
-
-            case 'r':
-            	cout << "Reloading Shaders\n";
-            	//RenderEngine::Instance().shaderProgram->reload();
-            	break;
-
-            case 'f':
-            	toggleFullScreen();
-            	break;
-
-            case 't':
-            	RenderEngine::Instance().toggleFBO();
-            	break;
-
-            case 'g':
-            	if (grab){
-            		SDL_SetWindowGrab(mainWindow,0);
-            		//SDL_WM_GrabInput(SDL_GRAB_OFF);
-            		SDL_ShowCursor(1);
-            		cout << "Grab Off\n";
-            		grab = false;
-            	}else{
-            		SDL_SetWindowGrab(mainWindow,1);
-            		//SDL_WM_GrabInput(SDL_GRAB_ON);
-            		SDL_ShowCursor(0);
-            		cout << "Grab On\n";
-            		grab = true;
-            	}
-            	break;
-
-            default:
-                 break;
-            }
-
-        break;
- */
         case SDL_MOUSEMOTION:
         	Camera::Instance().setMouseLook(event.motion.xrel, event.motion.yrel);
         	//Camera::Instance().setMouseLookInverseVP(event.motion.x, event.motion.y);

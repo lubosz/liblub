@@ -115,17 +115,35 @@ void MediaLayer::swapBuffers(){
 
 void MediaLayer::toggleFullScreen(){
 	if(fullscreen){
+		printf("Fullscreen Off\n");
 		if(SDL_SetWindowFullscreen(mainWindow, 0)!=0){
 			printf ("Unable to switch window to fullscreen mode:%s\n", SDL_GetError());
 		}
 		fullscreen = false;
 	}else{
+		printf("Fullscreen On\n");
 		if(SDL_SetWindowFullscreen(mainWindow, 1)!=0){
 			printf ("Unable to switch window to fullscreen mode:%s\n", SDL_GetError());
 		}
 		fullscreen = true;
 	}
 
+}
+
+void MediaLayer::toggleMouseGrab(){
+	if (grab){
+		SDL_SetWindowGrab(mainWindow,0);
+		//SDL_WM_GrabInput(SDL_GRAB_OFF);
+		SDL_ShowCursor(1);
+		cout << "Grab Off\n";
+		grab = false;
+	}else{
+		SDL_SetWindowGrab(mainWindow,1);
+		//SDL_WM_GrabInput(SDL_GRAB_ON);
+		SDL_ShowCursor(0);
+		cout << "Grab On\n";
+		grab = true;
+	}
 }
 
 void MediaLayer::renderLoop(){
