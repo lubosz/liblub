@@ -3,6 +3,7 @@ project(liblub)
 
 #Set Options
 OPTION(WITH_SDL "Use SDL" ON)
+OPTION(SDL_LOCAL "Use SDL locally" OFF)
 OPTION(RELEASE "Release" OFF)
 
 FIND_PACKAGE(Qt4 REQUIRED)
@@ -13,7 +14,9 @@ set(EXECUTABLE_OUTPUT_PATH ${CMAKE_SOURCE_DIR}/build)
 set(SRC_DIR ${CMAKE_SOURCE_DIR}/src)
 set(APP_DIR ${CMAKE_SOURCE_DIR}/examples)
 
-set(SDL_DIR /home/bmonkey/Apps/Graphics/SDL/)
+if(SDL_LOCAL)
+    set(SDL_DIR /home/bmonkey/Apps/Graphics/SDL/)
+ENDIF()
 
 #Optimization / Debug
 IF(RELEASE)
@@ -25,7 +28,7 @@ ENDIF()
 if (UNIX)
 #Hack For SDL 1.3 in local
 #set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -L/usr/local/lib -L/usr/local/Trolltech/Qt-4.7.0/lib -I/usr/local/include/SDL -D_REENTRANT -Wl,-rpath,/usr/local/lib")
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -L/home/bmonkey/Apps/Graphics/SDL/build/.libs")
+#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -L/home/bmonkey/Apps/Graphics/SDL/build/.libs")
 
 
 #Set c++0x
@@ -35,7 +38,7 @@ endif (UNIX)
 
 INCLUDE(${QT_USE_FILE})
 ADD_DEFINITIONS(${QT_DEFINITIONS})
-SET(QT_USE_QTOPENGL TRUE)
+#SET(QT_USE_QTOPENGL TRUE)
 
 
 include_directories(
@@ -43,11 +46,13 @@ include_directories(
 	include/common
 	/usr/local/Trolltech/Qt-4.7.0/include/
 	/usr/local/Trolltech/Qt-4.7.0/include/QtGui
-	${SDL_DIR}include
+	if(SDL_LOCAL)
+	    ${SDL_DIR}include
+	else()
+	   /usr/include/SDL/
+	endif()
 #include/GL3
 )
-
-
 
 #App Shader Demo
 set(SOURCES
@@ -83,6 +88,7 @@ IF(WITH_SDL)
 	set(SOURCES ${SOURCES} ${SRC_DIR}/Window/SDL.cpp)
 	set(SOURCES ${SOURCES} ${SRC_DIR}/Window/Input/SDL-loop.cpp)
 ELSE()
+    ADD_DEFINITIONS(-DWITH_XCB)
 	set(SOURCES ${SOURCES} ${SRC_DIR}/Window/XCB.cpp)
 	#set(SOURCES ${SOURCES} ${SRC_DIR}/Window/Input/XCB-events.cpp)
 	set(SOURCES ${SOURCES} ${SRC_DIR}/Window/Input/XCB-loop.cpp)
@@ -92,12 +98,17 @@ add_library(lub ${SOURCES})
 target_link_libraries(lub GL freeimageplus QtGui assimp)
 
 IF(WITH_SDL)
-	target_link_libraries(lub ${SDL_DIR}build/.libs/libSDL.a)
+    if(SDL_LOCAL)
+	    target_link_libraries(lub ${SDL_DIR}build/.libs/libSDL.a)
+	else()
+		target_link_libraries(lub SDL)
+	endif()
 ELSE()
 	target_link_libraries(lub Xi X11-xcb xcb-atom xcb-event xcb-keysyms)
 ENDIF()
 
 set(EXAMPLES
+    stars
     planets
     buffer
     nice

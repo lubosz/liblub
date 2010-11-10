@@ -11,22 +11,25 @@
 
 using namespace std;
 
-#define XCBLOOP
-
+/*
 #ifdef XCBEVENTS
 	#include <xcb/xcb_event.h>
 	#include <xcb/xcb_keysyms.h>
 #endif
+*/
 
-#ifdef XCBLOOP
-	#include <xcb/xcb_keysyms.h>
-
+//#ifdef XCBLOOP
+#ifdef WITH_XCB
+#include <xcb/xcb_keysyms.h>
 #endif
 
 #ifdef WITH_SDL
 	#define SDL_NO_COMPAT
 	#include "SDL.h"
+	#include "SDL_compat.h"
 #endif
+
+
 
 
 class Input {

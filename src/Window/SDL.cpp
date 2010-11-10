@@ -24,7 +24,7 @@ MediaLayer::MediaLayer() {
 	input = new Input();
 }
 
-void MediaLayer::init(string title, unsigned width, unsigned height) {
+void MediaLayer::init(string title) {
 	programTile = title;
 
     /* Create our window, opengl context, etc... */
@@ -48,9 +48,24 @@ void MediaLayer::init(string title, unsigned width, unsigned height) {
     SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, 1);
     SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, 4);
 
+    SDL_DisplayMode mode;
+	SDL_GetCurrentDisplayMode(&mode);
+	printf("  Mode:  %dx%d %dHz %d bpp\n", mode.w, mode.h, mode.refresh_rate, SDL_BITSPERPIXEL(mode.format));
+	width = mode.w;
+	height = mode.h;
+
+    //cout << "WIDTH/HEIGHT "<< info->current_w << " " << info->current_h << "\n";
+    cout << "WIDTH/HEIGHT "<< width << " " << height << "\n";
+    Camera::Instance().setAspect(float(MediaLayer::Instance().width)/float(MediaLayer::Instance().height));
     /* Create our window centered at 512x512 resolution */
-    mainWindow = SDL_CreateWindow(title.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
-        width, height, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE );
+    mainWindow = SDL_CreateWindow(
+				title.c_str(),
+				SDL_WINDOWPOS_CENTERED,
+				SDL_WINDOWPOS_CENTERED,
+				width, height,
+				SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN
+				//| SDL_WINDOW_RESIZABLE
+			);
     //| SDL_WINDOW_FULLSCREEN
     if (!mainWindow) /* Die if creation failed */
     	error("Unable to create window");
