@@ -7,8 +7,10 @@ OPTION(SDL_LOCAL "SDL Local" OFF)
 OPTION(RELEASE "Release" OFF)
 #SET(MYVAR "Test" CACHE STRING "This is my variable")
 
+if(SDL_LOCAL)
+    set(SDL_DIR /home/bmonkey/Apps/Graphics/SDL/)
+ENDIF()
 
-FIND_PACKAGE(Qt4 REQUIRED)
 
 set(LIBRARY_OUTPUT_PATH ${CMAKE_SOURCE_DIR}/build)
 set(EXECUTABLE_OUTPUT_PATH ${CMAKE_SOURCE_DIR}/build)
@@ -16,9 +18,7 @@ set(EXECUTABLE_OUTPUT_PATH ${CMAKE_SOURCE_DIR}/build)
 set(SRC_DIR ${CMAKE_SOURCE_DIR}/src)
 set(APP_DIR ${CMAKE_SOURCE_DIR}/examples)
 
-if(SDL_LOCAL)
-    set(SDL_DIR /home/bmonkey/Apps/Graphics/SDL/)
-ENDIF()
+
 
 #Optimization / Debug
 IF(RELEASE)
@@ -34,12 +34,15 @@ ENDIF()
 #Set c++0x
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++0x")
 
+#check for qt
+FIND_PACKAGE(Qt4 REQUIRED)
 INCLUDE(${QT_USE_FILE})
 
-function(download_gl_header URL)
+#check for opengl3 headers
+function(download_gl_header GL_HEADER)
 		execute_process(
 			WORKING_DIRECTORY include/GL3
-			COMMAND wget ${URL}
+			COMMAND wget http://www.opengl.org/registry/api/${GL_HEADER}
 		)
 endfunction(download_gl_header)
 
@@ -50,15 +53,12 @@ ELSE()
 	IF(NOT EXISTS include/GL3)
 		execute_process(COMMAND mkdir include/GL3)
 	ENDIF()
-	IF(NOT EXISTS include/GL3/gl3.h)
-		download_gl_header(http://www.opengl.org/registry/api/gl3.h)
-	ENDIF()
-	IF(NOT EXISTS include/GL3/glext.h)
-		download_gl_header(http://www.opengl.org/registry/api/glext.h)
-	ENDIF()
-	IF(NOT EXISTS include/GL3/glxext.h)
-		download_gl_header(http://www.opengl.org/registry/api/glxext.h)
-	ENDIF()
+	SET(GL_HEADERS gl3.h glext.h glxext.h)
+	foreach(GL_HEADER ${EXAMPLES})
+    	IF(NOT EXISTS include/GL3/${GL_HEADER})
+		    download_gl_header(${GL_HEADER})
+	    ENDIF()
+    endforeach(GL_HEADER)
 
 	include_directories(include/GL3)
 ENDIF()
@@ -136,6 +136,7 @@ ELSE()
 	target_link_libraries(lub X11-xcb xcb-keysyms)
 ENDIF()
 
+#build examples
 file(GLOB_RECURSE EXAMPLES ${APP_DIR}/*.cpp)
 
 foreach(EXAMPLE_PATH ${EXAMPLES})
