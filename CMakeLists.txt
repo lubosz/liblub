@@ -136,19 +136,11 @@ ELSE()
 	target_link_libraries(lub X11-xcb xcb-keysyms)
 ENDIF()
 
-set(EXAMPLES
-    stars
-    planets
-    buffer
-    nice
-    sponge
-    waterplanet
-    csm
-    spiral
-    shadow
-)
+file(GLOB_RECURSE EXAMPLES ${APP_DIR}/*.cpp)
 
-foreach(example ${EXAMPLES})
-  add_executable(${example} ${APP_DIR}/${example}.cpp)
-  target_link_libraries(${example} lub)
-endforeach(example)
+foreach(EXAMPLE_PATH ${EXAMPLES})
+    STRING(REGEX REPLACE "\\.cpp" "" EXAMPLE_NAME "${EXAMPLE_PATH}")
+    STRING(REGEX REPLACE "^.*/([^/]*)\$" "\\1" EXAMPLE_NAME "${EXAMPLE_NAME}")
+    add_executable(${EXAMPLE_NAME} "${EXAMPLE_PATH}")
+    target_link_libraries(${EXAMPLE_NAME} lub)
+endforeach(EXAMPLE_PATH)
