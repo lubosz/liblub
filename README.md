@@ -55,3 +55,30 @@ Running the scenes
 Run the scenes from the root directory.
 
 `$ ./bin/sponge`
+
+tl;dr Ubuntu
+------------
+
+To quickly build liblub on Ubuntu (assuming 4 cores)
+
+`sudo aptitude install git build-essential cmake libqt4-dev libfreeimage-dev libboost-dev libx11-xcb-dev libxcb-keysyms1-dev
+
+git clone git://github.com/assimp/assimp.git
+
+cd assimp
+
+cmake .
+
+make -j5
+
+sudo make install
+
+cd ..
+
+git clone git://github.com/lubosz/liblub.git
+
+cd liblub
+
+cmake .
+
+make -j5`
