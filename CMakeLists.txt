@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 2.6)
 project(liblub)
 
 #Set Options
-OPTION(WITH_SDL "Use SDL" ON)
+OPTION(WITH_SDL "Use SDL" OFF)
 OPTION(SDL_LOCAL "Use SDL locally" OFF)
 OPTION(RELEASE "Release" OFF)
 
@@ -103,7 +103,7 @@ IF(WITH_SDL)
 		target_link_libraries(lub SDL)
 	endif()
 ELSE()
-	target_link_libraries(lub Xi X11-xcb xcb-atom xcb-event xcb-keysyms)
+	target_link_libraries(lub X11-xcb xcb-keysyms)
 ENDIF()
 
 set(EXAMPLES
