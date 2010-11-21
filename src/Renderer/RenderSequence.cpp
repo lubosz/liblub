@@ -9,12 +9,11 @@
 #include <boost/foreach.hpp>
 
 RenderSequence::RenderSequence() {
+#ifdef USE_FBO
 	unsigned width = MediaLayer::Instance().width;
 	unsigned height = MediaLayer::Instance().height;
 
     fbo = new FrameBuffer(width,height);
-
-
 
 	//pass1Mat = new ShadowMapPhongPCFAmbient(width, height);
 	//pass1Mat = new FBOMaterial(width, height);
@@ -24,9 +23,13 @@ RenderSequence::RenderSequence() {
 	//fbo->attachTexture(GL_COLOR_ATTACHMENT0, pass1Mat->textures[0]);
 
 	renderPasses.push_back(new LightViewDepthPass(fbo));
+#endif
+
 	renderPasses.push_back(new LightTogglePass());
 
+#ifdef USE_FBO
 	fbo->checkAndFinish();
+#endif
 }
 
 RenderSequence::~RenderSequence() {

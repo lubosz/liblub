@@ -41,7 +41,7 @@ void MediaLayer::init(string title) {
     settings.AntialiasingLevel = 2;  // Request 2 levels of antialiasing
 
 
-    window = new sf::Window(sf::VideoMode(800, 600), title, sf::Style::Default, settings);
+    window = new sf::RenderWindow(sf::VideoMode(800, 600), title, sf::Style::Default, settings);
 
 }
 

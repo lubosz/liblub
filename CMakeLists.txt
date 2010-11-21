@@ -6,6 +6,16 @@ OPTION(WITH_SFML "Use SFML 2" OFF)
 OPTION(WITH_SDL "Use SDL 1.3" OFF)
 OPTION(SDL_LOCAL "SDL Local" OFF)
 OPTION(RELEASE "Release" OFF)
+OPTION(USE_FBO "Use Framebuffer Objects" ON)
+OPTION(VSYNC "VSync" ON)
+
+if(VSYNC)
+    ADD_DEFINITIONS(-DVSync)
+endif()
+if(USE_FBO)
+    ADD_DEFINITIONS(-DUSE_FBO)
+endif()
+
 #SET(MYVAR "Test" CACHE STRING "This is my variable")
 
 if(SDL_LOCAL)
