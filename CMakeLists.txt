@@ -41,6 +41,15 @@ ADD_DEFINITIONS(${QT_DEFINITIONS})
 #SET(QT_USE_QTOPENGL TRUE)
 SET(QT_USE_QTMAIN TRUE)
 
+#Check for nvidia libGL in ubuntu
+IF(EXISTS "/usr/lib/nvidia-current/libGL.so")
+message("Taking Ubuntu Nvidia libGL")
+SET(OPENGL_LIB /usr/lib/nvidia-current/libGL.so)
+ELSE()
+message("Taking system libGL")
+SET(OPENGL_LIB GL)
+ENDIF() 
+
 include_directories(
 	include
 	include/common
@@ -94,7 +103,7 @@ ELSE()
 ENDIF()
 	 
 add_library(lub ${SOURCES})
-target_link_libraries(lub GL freeimageplus ${QT_LIBRARIES} assimp)
+target_link_libraries(lub ${OPENGL_LIB} freeimageplus ${QT_LIBRARIES} assimp)
 
 IF(WITH_SDL)
     if(SDL_LOCAL)
