@@ -33,10 +33,12 @@ INCLUDE(${QT_USE_FILE})
 
 #check for opengl3 headers
 function(download_gl_header GL_HEADER)
+    IF(NOT EXISTS include/GL3/${GL_HEADER})
 		execute_process(
 			WORKING_DIRECTORY include/GL3
 			COMMAND wget http://www.opengl.org/registry/api/${GL_HEADER}
 		)
+	ENDIF()
 endfunction(download_gl_header)
 
 IF(EXISTS /usr/include/GL3)
@@ -48,9 +50,7 @@ ELSE()
 	ENDIF()
 	SET(GL_HEADERS gl3.h glext.h glxext.h)
 	foreach(GL_HEADER ${GL_HEADERS})
-    	IF(NOT EXISTS include/GL3/${GL_HEADER})
 		    download_gl_header(${GL_HEADER})
-	    ENDIF()
     endforeach(GL_HEADER)
 
 	include_directories(include/GL3)
