@@ -29,7 +29,7 @@ You also need assimp (i.e. form git).
 Headers
 -------
 
-The CMake script will download following headers from the [OpenGL Registry](http://www.opengl.org/registry/), if you dont have them in `/usr/include`
+The CMake script will download following headers from the [OpenGL Registry](http://www.opengl.org/registry/), if you dont have them in `/usr/include/GL3`
 
 * gl3.h
 * glext.h
