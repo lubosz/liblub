@@ -11,13 +11,6 @@
 
 using namespace std;
 
-
-#ifdef XCBEVENTS
-	#include <xcb/xcb_event.h>
-	#include <xcb/xcb_keysyms.h>
-#endif
-
-
 //XCBLOOP
 #ifdef WITH_XCB
 	#include <xcb/xcb_keysyms.h>

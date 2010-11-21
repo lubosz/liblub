@@ -25,11 +25,11 @@ void Input::eventLoop(){
     {
         // Close window : exit
         if (event.Type == sf::Event::Closed)
-        	MediaLayer::Instance().window->Close();
+        	MediaLayer::Instance().quit = true;
 
         // Escape key : exit
         if ((event.Type == sf::Event::KeyPressed) && (event.Key.Code == sf::Key::Escape))
-        	MediaLayer::Instance().window->Close();
+        	MediaLayer::Instance().quit = true;
 /*
         // Adjust the viewport when the window is resized
         if (event.Type == sf::Event::Resized)

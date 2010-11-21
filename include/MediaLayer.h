@@ -19,7 +19,7 @@
 	#include "SDL.h"
 #elif WITH_SFML
 	#include <SFML/Graphics.hpp>
-	#include <SFML/OpenGL.hpp>
+	//#include <SFML/OpenGL.hpp>
 #else
 	#define GLX_GLXEXT_PROTOTYPES 1 //Needed for GL3 Context Creation
 	#include <GL/glx.h>
