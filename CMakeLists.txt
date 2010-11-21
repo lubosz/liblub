@@ -8,7 +8,7 @@ OPTION(RELEASE "Release" OFF)
 #SET(MYVAR "Test" CACHE STRING "This is my variable")
 
 if(SDL_LOCAL)
-    set(SDL_DIR /home/bmonkey/Apps/Graphics/SDL/)
+    set(SDL_DIR /home/bmonkey/Apps/Graphics/SDL)
 ENDIF()
 
 set(LIBRARY_OUTPUT_PATH ${CMAKE_SOURCE_DIR}/build)
@@ -23,9 +23,6 @@ IF(RELEASE)
 ELSE()
     set(CMAKE_CXX_FLAGS "-O0 -g3") #Debug
 ENDIF()
-
-#Hack For SDL 1.3 in local
-#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -L/home/bmonkey/Apps/Graphics/SDL/build/.libs")
 
 #Set c++0x
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++0x")
@@ -74,7 +71,7 @@ include_directories(
 	include/common
 	${QT_INCLUDES}	
 	if(SDL_LOCAL)
-	    ${SDL_DIR}include
+	    ${SDL_DIR}/include
 	else()
 	   /usr/include/SDL/
 	endif()
@@ -91,14 +88,14 @@ endforeach(SOURCE_DIR)
 
 #choose media layer
 IF(WITH_SDL)
-	ADD_DEFINITIONS(-DWITH_SDL)
-	set(SOURCES ${SOURCES} ${SRC_DIR}/Window/SDL.cpp)
-	set(SOURCES ${SOURCES} ${SRC_DIR}/Window/Input/SDL-loop.cpp)
-ELSE()
-    ADD_DEFINITIONS(-DWITH_XCB)
-	set(SOURCES ${SOURCES} ${SRC_DIR}/Window/XCB.cpp)
-	set(SOURCES ${SOURCES} ${SRC_DIR}/Window/Input/XCB-loop.cpp)
-ENDIF()
+    SET(WINDOW_TYPE SDL)
+else()
+  SET(WINDOW_TYPE XCB)
+endif()
+
+ADD_DEFINITIONS(-DWITH_${WINDOW_TYPE})
+file(GLOB_RECURSE GLOB_RESULT ${SRC_DIR}/${SOURCE_DIR}/Window/${WINDOW_TYPE}/*.cpp)
+set(SOURCES ${SOURCES} ${GLOB_RESULT})
 
 add_library(lub ${SOURCES})
 
@@ -107,8 +104,9 @@ target_link_libraries(lub ${OPENGL_LIB} freeimageplus ${QT_LIBRARIES} assimp)
 
 IF(WITH_SDL)
     if(SDL_LOCAL)
-	    target_link_libraries(lub ${SDL_DIR}build/.libs/libSDL.a)
-	else()
+        #set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -L${SDL_DIR}/build/.libs")
+	    target_link_libraries(lub ${SDL_DIR}/build/.libs/libSDL.a)
+    else()
 		target_link_libraries(lub SDL)
 	endif()
 ELSE()
