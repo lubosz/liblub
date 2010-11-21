@@ -35,13 +35,13 @@ void MediaLayer::init(string title) {
     sf::ContextSettings settings;
     settings.MajorVersion = LIBLUB_GL_MAJOR_VERION;
     settings.MinorVersion = LIBLUB_GL_MINOR_VERION;
-
+/*
     settings.DepthBits         = 24; // Request a 24 bits depth buffer
     settings.StencilBits       = 8;  // Request a 8 bits stencil buffer
     settings.AntialiasingLevel = 2;  // Request 2 levels of antialiasing
+*/
 
-
-    window = new sf::RenderWindow(sf::VideoMode(800, 600), title, sf::Style::Default, settings);
+    window = new sf::RenderWindow(sf::VideoMode::GetFullscreenModes().at(0), title, sf::Style::Fullscreen, settings);
 
 }
 
