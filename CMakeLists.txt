@@ -11,11 +11,11 @@ if(SDL_LOCAL)
     set(SDL_DIR /home/bmonkey/Apps/Graphics/SDL)
 ENDIF()
 
-set(LIBRARY_OUTPUT_PATH ${CMAKE_SOURCE_DIR}/build)
-set(EXECUTABLE_OUTPUT_PATH ${CMAKE_SOURCE_DIR}/build)
+set(LIBRARY_OUTPUT_PATH ${CMAKE_SOURCE_DIR}/lib)
+set(EXECUTABLE_OUTPUT_PATH ${CMAKE_SOURCE_DIR}/bin)
 
 set(SRC_DIR ${CMAKE_SOURCE_DIR}/src)
-set(APP_DIR ${CMAKE_SOURCE_DIR}/examples)
+set(APP_DIR ${CMAKE_SOURCE_DIR}/scenes)
 
 #Optimization / Debug
 IF(RELEASE)
@@ -86,7 +86,7 @@ foreach(SOURCE_DIR ${SOURCE_DIRS})
     set(SOURCES ${SOURCES} ${GLOB_RESULT})
 endforeach(SOURCE_DIR)
 
-#choose media layer
+#choose window lib
 IF(WITH_SDL)
     SET(WINDOW_TYPE SDL)
 else()
