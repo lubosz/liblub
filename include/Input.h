@@ -35,7 +35,7 @@ using namespace std;
 class Input {
 	public:
 
-		#ifdef WITH_SDL
+		#if defined WITH_SDL || defined WITH_SFML
 			Input();
 		#else
 			Input(xcb_connection_t *connection);

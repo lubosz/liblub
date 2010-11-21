@@ -17,6 +17,9 @@
 #ifdef WITH_SDL
 	#define SDL_NO_COMPAT
 	#include "SDL.h"
+#elif WITH_SFML
+	#include <SFML/Graphics.hpp>
+	#include <SFML/OpenGL.hpp>
 #else
 	#define GLX_GLXEXT_PROTOTYPES 1 //Needed for GL3 Context Creation
 	#include <GL/glx.h>
@@ -44,6 +47,8 @@ private:
     SDL_DisplayMode fsmode;
 
 
+#elif WITH_SFML
+    sf::Window * window;
 #else
 	unsigned fps_lasttime; //the last recorded time.
 	unsigned fps_current; //the current FPS.
