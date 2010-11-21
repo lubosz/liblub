@@ -16,11 +16,7 @@ if(USE_FBO)
     ADD_DEFINITIONS(-DUSE_FBO)
 endif()
 
-#SET(MYVAR "Test" CACHE STRING "This is my variable")
-
-if(SDL_LOCAL)
-    set(SDL_DIR /home/bmonkey/Apps/Graphics/SDL)
-ENDIF()
+SET(SDL_DIR "" CACHE PATH "SDL Local DIR")
 
 set(LIBRARY_OUTPUT_PATH ${CMAKE_SOURCE_DIR}/lib)
 set(EXECUTABLE_OUTPUT_PATH ${CMAKE_SOURCE_DIR}/bin)
