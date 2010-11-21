@@ -39,13 +39,12 @@ endif (UNIX)
 INCLUDE(${QT_USE_FILE})
 ADD_DEFINITIONS(${QT_DEFINITIONS})
 #SET(QT_USE_QTOPENGL TRUE)
-
+SET(QT_USE_QTMAIN TRUE)
 
 include_directories(
 	include
 	include/common
-	/usr/local/Trolltech/Qt-4.7.0/include/
-	/usr/local/Trolltech/Qt-4.7.0/include/QtGui
+	${QT_INCLUDES}	
 	if(SDL_LOCAL)
 	    ${SDL_DIR}include
 	else()
@@ -95,7 +94,7 @@ ELSE()
 ENDIF()
 	 
 add_library(lub ${SOURCES})
-target_link_libraries(lub GL freeimageplus QtGui assimp)
+target_link_libraries(lub GL freeimageplus ${QT_LIBRARIES} assimp)
 
 IF(WITH_SDL)
     if(SDL_LOCAL)
