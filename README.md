@@ -1,13 +1,10 @@
-liblub
-======
+# liblub
 
 An OpenGL 3.3 Core Framework.
 
-Dependencies
-------------
+## Dependencies
 
 You need the following packages on Ubuntu. (other distros similar)
-
 
 `$ sudo aptitude install build-essential cmake libqt4-dev libfreeimage-dev libboost-dev`
 
@@ -15,24 +12,22 @@ You also need assimp (i.e. from git).
 
 `$ git clone git://github.com/assimp/assimp.git`
 
-Window and Context Creation
----------------------------
+### Window and Context Creation
 
 You can choose between SDL and XCB window creation. XCB will only work with X11 :)
 SDL is optional, found in the CMake options.
 
-For XCB:
+#### For XCB:
 
 `$ sudo aptitude install libx11-xcb-dev libxcb-keysyms1-dev`
 
-For SDL:
+#### For SDL:
 
 SDL 1.3 from mercurial
 
 `$ hg clone http://hg.libsdl.org/SDL`
 
-Headers
--------
+### Headers
 
 The CMake script will download following headers from the [OpenGL Registry](http://www.opengl.org/registry/), if you dont have them in `/usr/include/GL3`,
 and put them into the local liblub include directory.
@@ -41,23 +36,30 @@ and put them into the local liblub include directory.
 * glext.h
 * glxext.h
 
-Compile
--------
+## Compile
 
 `$ cmake .`
 
 `$ make`
 
-
-Running the scenes
---------------------
+## Running
+ 
+### Scenes
 
 Run the scenes from the root directory.
 
 `$ ./bin/sponge`
 
-tl;dr Ubuntu
-------------
+
+### Fullscreen Mode with XCB in GNOME
+
+`$ gnome-keybinding-properties`
+
+Set `Window Management` > `Toggle fullscreen Mode` to a hotkey. I chose Super + F12.
+
+SDL Fullscreen works at init (toggle does not).
+
+## tl;dr Ubuntu
 
 To quickly build liblub on Ubuntu (assuming 4 cores)
 
