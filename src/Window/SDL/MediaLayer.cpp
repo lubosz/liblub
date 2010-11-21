@@ -64,9 +64,10 @@ void MediaLayer::init(string title) {
 				SDL_WINDOWPOS_CENTERED,
 				width, height,
 				SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN
+				| SDL_WINDOW_FULLSCREEN
 				//| SDL_WINDOW_RESIZABLE
 			);
-    //| SDL_WINDOW_FULLSCREEN
+
     if (!mainWindow) /* Die if creation failed */
     	error("Unable to create window");
 
