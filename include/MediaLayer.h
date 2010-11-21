@@ -19,7 +19,7 @@
 	#include "SDL.h"
 #else
 	#define GLX_GLXEXT_PROTOTYPES 1 //Needed for GL3 Context Creation
-	#include <GL3/glx.h>
+	#include <GL/glx.h>
 
 	#include <X11/Xlib.h>
 	#include <X11/Xlib-xcb.h>

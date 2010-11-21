@@ -3,8 +3,10 @@ project(liblub)
 
 #Set Options
 OPTION(WITH_SDL "Use SDL" OFF)
-OPTION(SDL_LOCAL "Use SDL locally" OFF)
+OPTION(SDL_LOCAL "SDL Local" OFF)
 OPTION(RELEASE "Release" OFF)
+#SET(MYVAR "Test" CACHE STRING "This is my variable")
+
 
 FIND_PACKAGE(Qt4 REQUIRED)
 
@@ -25,29 +27,50 @@ ELSE()
     set(CMAKE_CXX_FLAGS "-O0 -g3") #Debug
 ENDIF()
 
-if (UNIX)
 #Hack For SDL 1.3 in local
-#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -L/usr/local/lib -L/usr/local/Trolltech/Qt-4.7.0/lib -I/usr/local/include/SDL -D_REENTRANT -Wl,-rpath,/usr/local/lib")
 #set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -L/home/bmonkey/Apps/Graphics/SDL/build/.libs")
 
 
 #Set c++0x
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++0x")
-endif (UNIX)
-#MESSAGE("Flags: ${CMAKE_CXX_FLAGS}")
 
 INCLUDE(${QT_USE_FILE})
-ADD_DEFINITIONS(${QT_DEFINITIONS})
-#SET(QT_USE_QTOPENGL TRUE)
-SET(QT_USE_QTMAIN TRUE)
+
+function(download_gl_header URL)
+		execute_process(
+			WORKING_DIRECTORY include/GL3
+			COMMAND wget ${URL}
+		)
+endfunction(download_gl_header)
+
+IF(EXISTS /usr/include/GL3)
+	message("OpenGL 3 Headers in /usr/include")
+ELSE()
+	message("No OpenGL 3 Headers found in /usr! Using local ones")
+	IF(NOT EXISTS include/GL3)
+		execute_process(COMMAND mkdir include/GL3)
+	ENDIF()
+	IF(NOT EXISTS include/GL3/gl3.h)
+		download_gl_header(http://www.opengl.org/registry/api/gl3.h)
+	ENDIF()
+	IF(NOT EXISTS include/GL3/glext.h)
+		download_gl_header(http://www.opengl.org/registry/api/glext.h)
+	ENDIF()
+	IF(NOT EXISTS include/GL3/glxext.h)
+		download_gl_header(http://www.opengl.org/registry/api/glxext.h)
+	ENDIF()
+
+	include_directories(include/GL3)
+ENDIF()
+
 
 #Check for nvidia libGL in ubuntu
 IF(EXISTS "/usr/lib/nvidia-current/libGL.so")
-message("Taking Ubuntu Nvidia libGL")
-SET(OPENGL_LIB /usr/lib/nvidia-current/libGL.so)
+	message("Taking Ubuntu Nvidia libGL")
+	SET(OPENGL_LIB /usr/lib/nvidia-current/libGL.so)
 ELSE()
-message("Taking system libGL")
-SET(OPENGL_LIB GL)
+	message("Taking system libGL")
+	SET(OPENGL_LIB GL)
 ENDIF() 
 
 include_directories(
@@ -59,7 +82,6 @@ include_directories(
 	else()
 	   /usr/include/SDL/
 	endif()
-#include/GL3
 )
 
 #App Shader Demo
@@ -98,7 +120,6 @@ IF(WITH_SDL)
 ELSE()
     ADD_DEFINITIONS(-DWITH_XCB)
 	set(SOURCES ${SOURCES} ${SRC_DIR}/Window/XCB.cpp)
-	#set(SOURCES ${SOURCES} ${SRC_DIR}/Window/Input/XCB-events.cpp)
 	set(SOURCES ${SOURCES} ${SRC_DIR}/Window/Input/XCB-loop.cpp)
 ENDIF()
 	 
