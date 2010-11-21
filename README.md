@@ -6,10 +6,20 @@ An OpenGL 3.3 Core Framework.
 Dependencies
 ------------
 
-You need the following packages on Ubuntu. (other distros simmilar)
+You need the following packages on Ubuntu. (other distros similar)
 
 
 `$ sudo aptitude install build-essential cmake libqt4-dev libfreeimage-dev libboost-dev`
+
+You also need assimp (i.e. from git).
+
+`$ git clone git://github.com/assimp/assimp.git`
+
+Window and Context Creation
+---------------------------
+
+You can choose between SDL and XCB window creation. XCB will only work with X11 :)
+SDL is optional, found in the CMake options.
 
 For XCB:
 
@@ -20,11 +30,6 @@ For SDL:
 SDL 1.3 from mercurial
 
 `$ hg clone http://hg.libsdl.org/SDL`
-
-
-You also need assimp (i.e. form git).
-
-`$ git clone git://github.com/assimp/assimp.git`
 
 Headers
 -------
@@ -44,9 +49,9 @@ Compile
 `$ make`
 
 
-Running the examples
+Running the scenes
 --------------------
 
-Run the examples from the root directory.
+Run the scenes from the root directory.
 
-`$ ./build/sponge`
+`$ ./bin/sponge`
