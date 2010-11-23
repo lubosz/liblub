@@ -42,7 +42,7 @@ and put them into the local liblub include directory.
 
 `$ make`
 
-## Running
+## Run
  
 ### Scenes
 
