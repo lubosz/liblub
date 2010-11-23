@@ -110,7 +110,17 @@ void MediaLayer::createGLContext() {
 			0
 	};
 
-	context = glXCreateContextAttribsARB(display, fb_config, NULL, True, attribs);
+	 /* Get a pointer to the context creation function for GL 3.0 */
+	PFNGLXCREATECONTEXTATTRIBSARBPROC
+			glXCreateContextAttribs =
+					(PFNGLXCREATECONTEXTATTRIBSARBPROC) glXGetProcAddress(
+							(GLubyte *) "glXCreateContextAttribsARB");
+	if (!glXCreateContextAttribs) {
+		printf("GL 3.x is not supported");
+	}
+
+	context = glXCreateContextAttribs(display, fb_config, NULL, True,
+			attribs);
 
 	if(!context) error("glXCreateNewContext failed\n");
 }
@@ -171,7 +181,17 @@ void MediaLayer::createWindow() {
 		error("glXMakeContextCurrent failed\n");
 
 	//Set swap interval
-	glXSwapIntervalSGI(VSync);
+	PFNGLXSWAPINTERVALSGIPROC
+		glXSwapInterval =
+					(PFNGLXSWAPINTERVALSGIPROC) glXGetProcAddress(
+							(GLubyte *) "glXSwapIntervalSGI");
+	if (!glXSwapInterval) {
+		printf("VSync is not supported");
+	}
+
+
+
+	glXSwapInterval(VSync);
 }
 
 /* A simple function that prints a message, the error code returned by SDL, and quits the application */
@@ -184,49 +204,43 @@ void MediaLayer::error(string msg)
 void MediaLayer::swapBuffers(){
 	glXSwapBuffers(display, drawable);
 }
-
-void MediaLayer::toggleFullScreen() {
-	if (fullscreen) {
-		cout << "Fullscreen off\n";
-		fullscreen = false;
-	} else {
-		cout << "Fullscreen on\n";
-		fullscreen = true;
-	}
 /*
-	string wm_state_name = "_NET_WM_STATE";
-	string wm_state_fs_name = "_NET_WM_STATE_FULLSCREEN";
+static void
+	wmspec_change_state (bool   add,
+			xcb_intern_atom_cookie_t state1,
+			xcb_intern_atom_cookie_t state2)
+{
+  GdkDisplay *display = GDK_WINDOW_DISPLAY (window);
+  XClientMessageEvent xclient;
 
-	xcb_intern_atom_cookie_t wm_state_ck = xcb_intern_atom(connection, 0, wm_state_name.length(), wm_state_name.c_str());
-	xcb_intern_atom_cookie_t wm_state_fs_ck = xcb_intern_atom(connection, 0, wm_state_fs_name.length(), wm_state_fs_name.c_str());
+#define _NET_WM_STATE_REMOVE        0    // remove/unset property
+#define _NET_WM_STATE_ADD           1    // add/set property
+#define _NET_WM_STATE_TOGGLE        2    // toggle property
 
-	xcb_generic_error_t * error1;
-	xcb_generic_error_t * error2;
-	xcb_intern_atom_reply_t *reply = xcb_intern_atom_reply(connection, wm_state_ck, &error1);
-	if (error1)
-		fprintf(stderr, "Can't set the screen. Error Code: %i\n",error1->error_code);
-	wm_state = reply->atom;
-	free(reply);
 
-	reply = xcb_intern_atom_reply(connection, wm_state_fs_ck, &error2);
-	if (error2)
-		fprintf(stderr, "Can't set the screen. Error Code: %i\n",error2->error_code);
-	wm_state_fullscreen = reply->atom;
-	free(reply);
-
-	// From EWMH "_WM_STATE"
 	xcb_client_message_event_t ev;
+	  memset (&ev, 0, sizeof (ev));
 	ev.response_type = XCB_CLIENT_MESSAGE;
+	ev.window = window;
 	ev.type = wm_state;
 	ev.format = 32;
-	ev.window = window;
-    ev.data.data32[0] = 3;
-    ev.data.data32[1] = wm_state_fullscreen;
-    ev.data.data32[2] = wm_state_fullscreen;
-    ev.data.data32[3] = 0l;
+	ev.data.data32[0] = 2; //toggle
+	ev.data.data32[1] = wm_state_fullscreen;
+	ev.data.data32[2] = wm_state_fullscreen;
+	ev.data.data32[3] = 0;
+	ev.data.data32[4] = 0;
 
+  memset (&xclient, 0, sizeof (xclient));
+  xclient.type = ClientMessage;
+  xclient.window = GDK_WINDOW_XID (window);
+  xclient.message_type = gdk_x11_get_xatom_by_name_for_display (display, "_NET_WM_STATE");
+  xclient.format = 32;
+  xclient.data.l[0] = add ? _NET_WM_STATE_ADD : _NET_WM_STATE_REMOVE;
+  xclient.data.l[1] = gdk_x11_atom_to_xatom_for_display (display, state1);
+  xclient.data.l[2] = gdk_x11_atom_to_xatom_for_display (display, state2);
+  xclient.data.l[3] = 0;
+  xclient.data.l[4] = 0;
 
-	// From ICCCM "Changing Window State"
 	xcb_send_event(
 			connection,
 			0,
@@ -234,7 +248,60 @@ void MediaLayer::toggleFullScreen() {
 			XCB_EVENT_MASK_SUBSTRUCTURE_NOTIFY | XCB_EVENT_MASK_SUBSTRUCTURE_REDIRECT,
 			(const char *) &ev
 	);
+
+}
 */
+xcb_intern_atom_cookie_t MediaLayer::getCookieForAtom(string state_name){
+	return xcb_intern_atom(connection, 0, state_name.length(), state_name.c_str());
+}
+
+xcb_atom_t MediaLayer::getReplyAtomFromCookie(xcb_intern_atom_cookie_t cookie){
+	xcb_generic_error_t * error;
+	xcb_intern_atom_reply_t *reply = xcb_intern_atom_reply(connection, cookie, &error);
+	if (error)
+		fprintf(stderr, "Can't set the screen. Error Code: %i\n",error->error_code);
+	return reply->atom;
+	//free(reply);
+}
+
+//void MediaLayer::changeState(state1, state2)
+
+void MediaLayer::toggleFullScreen() {
+	if (fullscreen) {
+		cout << "Fullscreen off\n";
+	} else {
+		cout << "Fullscreen on\n";
+	}
+	fullscreen = !fullscreen;
+
+	xcb_intern_atom_cookie_t wm_state_ck = getCookieForAtom("_NET_WM_STATE");
+	xcb_intern_atom_cookie_t wm_state_fs_ck = getCookieForAtom("_NET_WM_STATE_FULLSCREEN");
+
+#define _NET_WM_STATE_REMOVE        0    // remove/unset property
+#define _NET_WM_STATE_ADD           1    // add/set property
+#define _NET_WM_STATE_TOGGLE        2    // toggle property
+
+	xcb_client_message_event_t ev;
+//	memset (&ev, 0, sizeof (ev));
+	ev.response_type = XCB_CLIENT_MESSAGE;
+	ev.type = getReplyAtomFromCookie(wm_state_ck);
+	ev.format = 32;
+	ev.window = window;
+//    ev.data.data32[0] = fullscreen ? _NET_WM_STATE_ADD : _NET_WM_STATE_REMOVE;
+	ev.data.data32[0] = _NET_WM_STATE_TOGGLE;
+    ev.data.data32[1] = getReplyAtomFromCookie(wm_state_fs_ck);
+    ev.data.data32[2] = XCB_ATOM_NONE;
+    ev.data.data32[3] = 0;
+    ev.data.data32[4] = 0;
+
+	xcb_send_event(
+			connection,
+			1,
+			window,
+			XCB_EVENT_MASK_SUBSTRUCTURE_REDIRECT | XCB_EVENT_MASK_SUBSTRUCTURE_NOTIFY,
+			(const char *) &ev
+	);
+
 }
 
 void MediaLayer::renderLoop(){
