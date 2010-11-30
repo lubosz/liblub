@@ -157,6 +157,20 @@ public:
 
 };
 
+class HeightMapMat : public Material {
+public:
+	HeightMapMat(string texture, string heightmap){
+		init();
+		addTexture(texture,"colorMap");
+		addTexture(texture,"heightMap");
+		attachVertFrag("Geometry/heightmap");
+		done();
+
+  }
+	void uniforms(){}
+
+};
+
 class FBOMaterial : public Material {
 public:
 	FBOMaterial(unsigned width, unsigned height){
