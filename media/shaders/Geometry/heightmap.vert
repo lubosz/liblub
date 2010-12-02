@@ -1,6 +1,4 @@
-#version 330 core
-
-precision highp float;
+#version 130
 
 uniform sampler2D heightMap;
 
