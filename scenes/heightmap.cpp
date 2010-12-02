@@ -15,10 +15,10 @@ public:
 						"mars",
 						{0,-10,0},
 						10.0f,
-						//MeshFactory::load("hugeEarth.obj"),
-						MeshFactory::load("hugePlane.obj"),
-						//new HeightMapMat("Planets/Mars.jpg", "Planets/MarsElevation.jpg")
-						new HeightMapMat("bunny.png", "bunny.png")
+						MeshFactory::load("hugeEarth.obj"),
+						//MeshFactory::load("hugePlane.obj"),
+						new HeightMapMat("Planets/Mars.jpg", "Planets/MarsElevation.jpg")
+						//new HeightMapMat("bunny.png", "bunny.png")
 				)
 		);
 
