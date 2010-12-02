@@ -1,5 +1,6 @@
 //#version 400 core
-#version 330 core
+//#version 330 core
+#version 130
 
 //#define GL_ARB_gpu_shader_fp64    1
 //#extension GL_NV_gpu_shader_fp64 : enable

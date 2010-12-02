@@ -55,6 +55,7 @@ void Shader::loadAndCompile(){
 
     /* Compile our shader objects */
     glCompileShader(shader);
+    printShaderInfoLog(shader);
 }
 
 /* A simple function that will read a file into an allocated char pointer buffer */
