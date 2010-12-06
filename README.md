@@ -6,7 +6,7 @@ An OpenGL 3.3 Core Framework.
 
 You need the following packages on Ubuntu. (other distros similar)
 
-`$ sudo aptitude install build-essential cmake libqt4-dev libfreeimage-dev libboost-dev`
+`$ sudo aptitude install build-essential cmake libqt4-dev libfreeimage-dev`
 
 You also need assimp (i.e. from git).
 
@@ -63,7 +63,7 @@ SDL Fullscreen works at init (toggle does not).
 
 To quickly build liblub on Ubuntu (assuming 4 cores)
 
-`sudo aptitude install git build-essential cmake libqt4-dev libfreeimage-dev libboost-dev libx11-xcb-dev libxcb-keysyms1-dev`
+`sudo aptitude install git build-essential cmake libqt4-dev libfreeimage-dev libx11-xcb-dev libxcb-keysyms1-dev`
 
 `git clone git://github.com/assimp/assimp.git`
 
