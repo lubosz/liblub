@@ -6,7 +6,6 @@
  */
 
 #include "MediaLayer.h"
-#include <boost/foreach.hpp>
 
 RenderSequence::RenderSequence() {
 #ifdef USE_FBO
@@ -38,7 +37,7 @@ RenderSequence::~RenderSequence() {
 
 void RenderSequence::render() {
 
-	BOOST_FOREACH(RenderPass * renderPass, renderPasses){
+	foreach(RenderPass * renderPass, renderPasses){
 		renderPass->render();
 	}
 	glError("RenderSequence::draw", 66);

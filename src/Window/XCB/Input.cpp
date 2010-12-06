@@ -7,7 +7,6 @@
 
 #include "Camera.h"
 #include "MediaLayer.h"
-#include <boost/foreach.hpp>
 
 Input::Input(xcb_connection_t *connection) {
 	this->connection = connection;
@@ -144,7 +143,7 @@ void Input::eventLoop(){
 
 	}
 
-    BOOST_FOREACH( xcb_keysym_t key, pressedKeys )
+	foreach( xcb_keysym_t key, pressedKeys )
     {
     	checkKey(key);
     }

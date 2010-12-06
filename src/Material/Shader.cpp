@@ -6,7 +6,7 @@
  */
 
 #include "Shader.h"
-#include <boost/foreach.hpp>
+#include <QtCore>
 
 Shader::Shader(string fileName, GLenum type) {
 
@@ -45,7 +45,7 @@ void Shader::loadAndCompile(){
     //set defines
     string defineString = "";
 
-    BOOST_FOREACH( string define, defines )
+    foreach( string define, defines )
     {
     	defineString += "#define " + define + "\n";
     }

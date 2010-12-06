@@ -6,7 +6,6 @@
  */
 
 #include "RenderEngine.h"
-#include <boost/foreach.hpp>
 
 Mesh::Mesh(){
 	drawType = GL_POINTS;

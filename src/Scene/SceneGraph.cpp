@@ -3,7 +3,6 @@
 #include "RenderEngine.h"
 #include "Materials.h"
 #include "MeshFactory.h"
-#include <boost/foreach.hpp>
 
 SceneGraph::SceneGraph(){
 	bias = QMatrix4x4();
@@ -20,7 +19,7 @@ void SceneGraph::animate(float frameCount){
 }
 
 void SceneGraph::setPosition(string nodeName, const QVector3D& position){
-    BOOST_FOREACH( Node *node, sceneNodes )
+	foreach( Node *node, sceneNodes )
     {
         if (node->getName() == nodeName) {
         	node->setPosition(position);
@@ -48,7 +47,7 @@ void SceneGraph::setShadowCoords(Node * node, DirectionNode * viewPoint){
 }
 
 void SceneGraph::drawNodes(DirectionNode * viewPoint){
-    BOOST_FOREACH( Node * node, sceneNodes )
+	foreach( Node * node, sceneNodes )
     {
     	//if (node->getReceiveShadows()){
         node->bindShaders(viewPoint);
@@ -64,7 +63,7 @@ void SceneGraph::drawNodes(DirectionNode * viewPoint){
 }
 
 void SceneGraph::drawCasters(Material * material){
-    BOOST_FOREACH( Node * node, sceneNodes )
+	foreach( Node * node, sceneNodes )
     {
     	if(node->getCastShadows()){
 			node->bindShaders(material->getShaderProgram(),light);

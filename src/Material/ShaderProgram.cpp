@@ -6,7 +6,6 @@
  */
 
 #include "ShaderProgram.h"
-#include <boost/foreach.hpp>
 
 
 ShaderProgram::ShaderProgram() {
@@ -74,7 +73,7 @@ void ShaderProgram::bindAttrib(unsigned position, string name){
 
 void ShaderProgram::bindAttribIfUnbound(string name){
 	//glBindAttribLocation(program, position, name.c_str());
-	BOOST_FOREACH( string attrib, boundAttribs )
+	foreach( string attrib, boundAttribs )
 	    {
 	    	if (attrib == name) return;
 	    }
@@ -107,7 +106,7 @@ void ShaderProgram::reload(){
     glUseProgram(0);
     program = glCreateProgram();
 
-    BOOST_FOREACH( Shader* shader, shaders )
+    foreach( Shader* shader, shaders )
     {
     	/*
 

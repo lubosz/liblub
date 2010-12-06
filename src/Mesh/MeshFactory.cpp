@@ -7,7 +7,6 @@
 
 #include "MeshFactory.h"
 #include "Geometry.h"
-#include <boost/foreach.hpp>
 #include <assimp/assimp.hpp>
 #include <assimp/aiScene.h>
 #include <assimp/aiPostProcess.h>

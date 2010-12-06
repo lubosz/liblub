@@ -5,7 +5,6 @@
  *      Author: bmonkey
  */
 #include "SceneGraph.h"
-#include <boost/foreach.hpp>
 
 void Material::init() {
 	diffuseColor = QVector4D();
@@ -80,7 +79,7 @@ void Material::initUniforms() {
 	 }
 	 */
 	glError("Material", 84);
-	BOOST_FOREACH( Texture* texture, textures )
+	foreach( Texture* texture, textures )
 				{
 					//TODO: Why is this not needed?
 					//texture->activate();
@@ -95,7 +94,7 @@ void Material::initUniforms() {
 }
 
 void Material::activateTextures() {
-	BOOST_FOREACH( Texture* texture, textures )
+	foreach( Texture* texture, textures )
 				{
 					texture->activate();
 					texture->bind();
