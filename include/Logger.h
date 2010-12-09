@@ -22,6 +22,7 @@ public:
 
 	void log(string type);
 	void log(string type, string name);
+	void log(string type, string name, string say);
 	string bashColor(string message, string color);
 	string composeColor(int background, int foreground);
 };

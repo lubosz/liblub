@@ -23,6 +23,11 @@ void Logger::log(string type){
 	log(type, "");
 }
 
+void Logger::log(string type, string name, string say){
+	message << say;
+	log(type, name);
+}
+
 void Logger::log(string type, string name){
 	string messageColor;
 

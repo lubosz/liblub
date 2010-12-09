@@ -66,8 +66,7 @@ void FrameBuffer::checkAndFinish(){
 
     printFramebufferInfo();
 
-	Logger::Instance().message << checkFramebufferStatus();
-	Logger::Instance().log("DEBUG", "FBO");
+	Logger::Instance().log("DEBUG", "FBO", checkFramebufferStatus());
 	unBind();
 }
 
