@@ -86,7 +86,7 @@ include_directories(
 
 #Add liblub sources
 set(SOURCE_DIRS
-        Renderer Material Mesh Scene
+        Renderer Material Mesh Scene System
 )
 foreach(SOURCE_DIR ${SOURCE_DIRS})
     file(GLOB_RECURSE GLOB_RESULT ${SRC_DIR}/${SOURCE_DIR}/*.cpp)
