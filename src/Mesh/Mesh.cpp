@@ -6,6 +6,7 @@
  */
 
 #include "RenderEngine.h"
+#include "Logger.h"
 
 Mesh::Mesh(){
 	drawType = GL_POINTS;
@@ -14,14 +15,16 @@ Mesh::Mesh(){
 
     /* Allocate and assign a Vertex Array Object to our handle */
     glGenVertexArrays(1, &vao);
-    cout << "Generating Vertex Array Object #" << vao << "\n";
+    Logger::Instance().message << "Generating Vertex Array Object #"<< vao;
+    Logger::Instance().log(LOG_DEBUG);
 
     /* Bind our Vertex Array Object as the current used object */
     glBindVertexArray(vao);
 
     /* Allocate and assign three Vertex Buffer Objects to our handle */
     glGenBuffers(maxBuffers, vbo);
-    cout << "Generating " << maxBuffers<< " Vertex Buffers #" << vbo << "\n";
+    Logger::Instance().message << "Vertex Buffers #" << vbo;
+    Logger::Instance().log(LOG_DEBUG);
 }
 
 Mesh::~Mesh() {
@@ -51,7 +54,8 @@ void Mesh::addBuffer(vector<GLfloat> content, unsigned size, string name){
 	/* Enable attribute index 0 as being used */
 	glEnableVertexAttribArray(bufferCount);
 	//glVertexAttribDivisor(1,2);
-	cout << "Adding Vertex Buffer #" << bufferCount << " "<< name<< " Size:"<< content.size() << "\n";
+    Logger::Instance().message << "Adding Vertex Buffer #" << bufferCount << " "<< name<< " Size:"<< content.size();
+    Logger::Instance().log(LOG_DEBUG);
 	/*
 	BOOST_FOREACH(float value, content){
 		cout << value << "\n";
@@ -69,7 +73,8 @@ void Mesh::addElementBuffer(vector<GLuint> content){
 	/* Copy the index data from tetraindicies to our buffer
 	 * 6 * sizeof(GLubyte) is the size of the index array, since it contains 6 GLbyte values */
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, content.size() * sizeof(GLuint), content.data(),GL_STATIC_DRAW);
-	cout << "Adding Vertex Element Buffer #" << bufferCount << " Size:"<< content.size() << "\n";
+    Logger::Instance().message << "Adding Vertex Element Buffer #" << bufferCount << " Size:"<< content.size();
+    Logger::Instance().log(LOG_DEBUG);
 	bufferCount++;
     glError("Mesh::addElementBuffer",76);
 }

@@ -8,11 +8,12 @@
 #pragma once
 
 #include <string>
+#include <sstream>
 #include "Singleton.h"
 
 using namespace std;
 
-enum LogType { ERROR, WARNING, MESSAGE, DEBUG};
+enum LogType { LOG_ERROR, LOG_WARNING, LOG_MESSAGE, LOG_DEBUG};
 
 
 class Logger : public Singleton<Logger>{
@@ -20,7 +21,10 @@ public:
 	Logger();
 	virtual ~Logger();
 
-	void log(string name, string message ,LogType type);
+	stringstream message;
+
+	void log(LogType type);
+	void log(LogType type, string name);
 	string bashColor(string message, string color);
 	string composeColor(int background, int foreground);
 };
