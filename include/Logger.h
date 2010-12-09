@@ -13,9 +13,6 @@
 
 using namespace std;
 
-enum LogType { LOG_ERROR, LOG_WARNING, LOG_MESSAGE, LOG_DEBUG};
-
-
 class Logger : public Singleton<Logger>{
 public:
 	Logger();
@@ -23,8 +20,8 @@ public:
 
 	stringstream message;
 
-	void log(LogType type);
-	void log(LogType type, string name);
+	void log(string type);
+	void log(string type, string name);
 	string bashColor(string message, string color);
 	string composeColor(int background, int foreground);
 };

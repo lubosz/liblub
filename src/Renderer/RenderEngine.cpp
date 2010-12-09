@@ -8,6 +8,7 @@
 #include "Camera.h"
 #include "MeshFactory.h"
 #include "RenderEngine.h"
+#include "Logger.h"
 
 using namespace std;
 
@@ -50,17 +51,20 @@ RenderEngine::~RenderEngine() {
 	glError("RenderEngine",96);
 
     /* Cleanup all the things we bound and allocated */
-	cout << "Shutting down Render Engine...\n";
+    Logger::Instance().message << "Shutting down Render Engine...";
+    Logger::Instance().log("MESSAGE");
 	glError("RenderEngine",106);
 }
 
 void RenderEngine::toggleFBO(){
 		if(useFBO){
-			cout << "FBO Rendering diabled" << "\n";
+		    Logger::Instance().message  << "FBO Rendering diabled";
+		    Logger::Instance().log("MESSAGE");
 			useFBO = false;
 		}else{
 			useFBO = true;
-			cout << "FBO Rendering enabled" << "\n";
+		    Logger::Instance().message << "FBO Rendering enabled";
+		    Logger::Instance().log("MESSAGE");
 		}
 }
 
@@ -99,32 +103,38 @@ void RenderEngine::clear(){
 void RenderEngine::checkVersion(){
 
 	GLint maxTex1, maxTex2,MajorVersion,MinorVersion,numext,pointSize;
-	glGetIntegerv(GL_MAX_VERTEX_TEXTURE_IMAGE_UNITS,&maxTex1);
-	glGetIntegerv(GL_MAX_TEXTURE_IMAGE_UNITS,&maxTex2);
+
+    Logger::Instance().message << glGetString(GL_VERSION);
+    Logger::Instance().log("MESSAGE","OpenGL");
 
 	glGetIntegerv(GL_MAJOR_VERSION, &MajorVersion);
 	glGetIntegerv(GL_MINOR_VERSION, &MinorVersion);
+    Logger::Instance().message << MajorVersion<<"."<<MinorVersion;
+    Logger::Instance().log("MESSAGE","Version");
+
+    Logger::Instance().message << glGetString(GL_SHADING_LANGUAGE_VERSION);
+    Logger::Instance().log("MESSAGE","GLSL");
 
 	glGetIntegerv(GL_POINT_SIZE, &pointSize);
+    Logger::Instance().message << pointSize;
+    Logger::Instance().log("MESSAGE","Point Size");
 
-	cout 	<< "OpenGL:\t" << glGetString(GL_VERSION) << "\n"
-			<< "GLSL:\t" << glGetString(GL_SHADING_LANGUAGE_VERSION) << "\n"
-			<< "Point Size:\t" << pointSize << "\n"
-			//<< "GLU:\t" << gluGetString(GLU_VERSION) << "\n"
-			<< "Hardware:\t" << glGetString(GL_VENDOR) << " - " << glGetString(GL_RENDERER) << "\n"
-			//<< "GL_EXTENSIONS:\t" << glGetStringi(GL_EXTENSIONS,0) << "\n"
-			<< "MaxTex:\t" << maxTex1 << " " << maxTex2 << "\n"
-			<<"Version:\t"<<MajorVersion<<"."<<MinorVersion
-			<< "\n";
+    Logger::Instance().message << glGetString(GL_VENDOR) << " - " << glGetString(GL_RENDERER);
+    Logger::Instance().log("MESSAGE","Hardware");
 
-#ifdef USE_GL3
+	glGetIntegerv(GL_MAX_VERTEX_TEXTURE_IMAGE_UNITS,&maxTex1);
+	glGetIntegerv(GL_MAX_TEXTURE_IMAGE_UNITS,&maxTex2);
+    Logger::Instance().message << maxTex1 << " " << maxTex2;
+    Logger::Instance().log("MESSAGE","MaxTex");
+
 	glGetIntegerv(GL_NUM_EXTENSIONS, &numext);
-	cout << "Found " << numext << " GL_EXTENSIONS:\n";
-	for (int i = 0; i < numext && DEBUG; i++){
-		cout << glGetStringi(GL_EXTENSIONS,i) << " ";
-	}
-	cout << "\n";
-#endif
+    Logger::Instance().message << "Found " << numext << " GL_EXTENSIONS";
+    Logger::Instance().log("MESSAGE","GL_EXTENSIONS");
+
+//	for (int i = 0; i < numext; i++) {
+//		Logger::Instance().message << glGetStringi(GL_EXTENSIONS,i);
+//		Logger::Instance().log("DEBUG","GL_EXTENSIONS");
+//	}
 }
 
 GLboolean RenderEngine::QueryExtension(char *extName) {

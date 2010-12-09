@@ -19,38 +19,34 @@ Logger::~Logger() {
 	// TODO Auto-generated destructor stub
 }
 
-void Logger::log(LogType type){
+void Logger::log(string type){
 	log(type, "");
 }
 
-void Logger::log(LogType type, string name){
-	string messageColor, typeString;
+void Logger::log(string type, string name){
+	string messageColor;
 
-	switch(type){
-		case LOG_ERROR:
-			typeString = "ERROR";
-			cerr 	<< bashColor(typeString, composeColor(bold, red))
+	if (type == "ERROR"){
+			cerr 	<< bashColor(type, composeColor(bold, red))
 					<< bashColor(name, composeColor(underline, white))
 					<< " - " << message.str() << "\n";
 			exit(0);
-			break;
-		case LOG_WARNING:
-			typeString = "WARNING";
-			messageColor = composeColor(bold, yellow);
-		case LOG_MESSAGE:
-			typeString = "MESSAGE";
-			messageColor = composeColor(regular, green);
-		case LOG_DEBUG:
-			typeString = "DEBUG";
-			messageColor = composeColor(regular, purple);
-		default:
-			messageColor = composeColor(regular, purple);
-			break;
+	}else if(type == "WARNING"){
+		messageColor = composeColor(bold, yellow);
+	}else if(type == "MESSAGE"){
+		messageColor = composeColor(regular, green);
+	}else if(type == "DEBUG"){
+		messageColor = composeColor(regular, purple);
+	}else{
+		type = "UNKNOWN";
+		messageColor = composeColor(regular, cyan);
 	}
 
-	cout 	<< bashColor("["+typeString+"]", messageColor)
-			<< bashColor(name, composeColor(underline, white))
-			<< " - " << message.str() << "\n";
+	cout 	<< bashColor("["+type+"]", messageColor)
+			<< " - ";
+	if (name != "")
+		cout	<< bashColor(name, composeColor(underline, white)) << ":\t";
+	cout	<< message.str() << "\n";
 	message.str("");
 }
 
