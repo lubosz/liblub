@@ -35,5 +35,5 @@ private:
 	string getTextureParameters(GLuint id);
 	string getRenderbufferParameters(GLuint id);
 	string convertInternalFormatToString(GLenum format);
-	bool checkFramebufferStatus();
+	string checkFramebufferStatus();
 };

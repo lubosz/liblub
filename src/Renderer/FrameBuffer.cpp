@@ -10,6 +10,7 @@
 #include "SceneGraph.h"
 #include "Camera.h"
 #include "MeshFactory.h"
+#include "Logger.h"
 
 #include <sstream>
 
@@ -64,8 +65,10 @@ void FrameBuffer::checkAndFinish(){
     // check FBO status
 
     printFramebufferInfo();
-    checkFramebufferStatus();
-    unBind();
+
+	Logger::Instance().message << checkFramebufferStatus();
+	Logger::Instance().log("DEBUG", "FBO");
+	unBind();
 }
 
 void FrameBuffer::attachTexture(GLenum attachmentPoint, Texture * texture){
@@ -127,12 +130,11 @@ FrameBuffer::~FrameBuffer() {
 
 void FrameBuffer::printFramebufferInfo()
 {
-    cout << "\n***** FBO STATUS *****\n";
-
     // print max # of colorbuffers supported by FBO
     int colorBufferCount = 0;
     glGetIntegerv(GL_MAX_COLOR_ATTACHMENTS, &colorBufferCount);
-    cout << "Max Number of Color Buffer Attachment Points: " << colorBufferCount << endl;
+    Logger::Instance().message << "Max Number of Color Buffer Attachment Points: " << colorBufferCount;
+    Logger::Instance().log("DEBUG","FBO");
 
     int objectType;
     int objectId;
@@ -144,6 +146,7 @@ void FrameBuffer::printFramebufferInfo()
                                               GL_FRAMEBUFFER_ATTACHMENT_OBJECT_TYPE,
                                               &objectType);
         if(objectType != GL_NONE){
+
             glGetFramebufferAttachmentParameteriv(GL_FRAMEBUFFER,
                                                   GL_COLOR_ATTACHMENT0+i,
                                                   GL_FRAMEBUFFER_ATTACHMENT_OBJECT_NAME,
@@ -151,11 +154,13 @@ void FrameBuffer::printFramebufferInfo()
 
             string formatName;
 
-            cout << "Color Attachment " << i << ": ";
+
+            Logger::Instance().message << "Color Attachment " << i << ": ";
             if(objectType == GL_TEXTURE)
-                cout << "GL_TEXTURE, " << getTextureParameters(objectId) << endl;
+            	Logger::Instance().message << "GL_TEXTURE, " << getTextureParameters(objectId);
             else if(objectType == GL_RENDERBUFFER)
-                cout << "GL_RENDERBUFFER, " << getRenderbufferParameters(objectId) << endl;
+            	Logger::Instance().message << "GL_RENDERBUFFER, " << getRenderbufferParameters(objectId);
+            Logger::Instance().log("DEBUG","FBO");
         }
     }
 
@@ -171,16 +176,17 @@ void FrameBuffer::printFramebufferInfo()
                                                  GL_FRAMEBUFFER_ATTACHMENT_OBJECT_NAME,
                                                  &objectId);
 
-        cout << "Depth Attachment: ";
+        Logger::Instance().message << "Depth Attachment: ";
         switch(objectType)
         {
         case GL_TEXTURE:
-            cout << "GL_TEXTURE, " << getTextureParameters(objectId) << endl;
+        	Logger::Instance().message << "GL_TEXTURE, " << getTextureParameters(objectId);
             break;
         case GL_RENDERBUFFER:
-            cout << "GL_RENDERBUFFER, " << getRenderbufferParameters(objectId) << endl;
+        	Logger::Instance().message  << "GL_RENDERBUFFER, " << getRenderbufferParameters(objectId);
             break;
         }
+        Logger::Instance().log("DEBUG","FBO");
     }
 
     // print info of the stencilbuffer attachable image
@@ -195,19 +201,18 @@ void FrameBuffer::printFramebufferInfo()
                                                  GL_FRAMEBUFFER_ATTACHMENT_OBJECT_NAME,
                                                  &objectId);
 
-        cout << "Stencil Attachment: ";
+        Logger::Instance().message << "Stencil Attachment: ";
         switch(objectType)
         {
         case GL_TEXTURE:
-            cout << "GL_TEXTURE, " << getTextureParameters(objectId) << endl;
+        	Logger::Instance().message << "GL_TEXTURE, " << getTextureParameters(objectId);
             break;
         case GL_RENDERBUFFER:
-            cout << "GL_RENDERBUFFER, " << getRenderbufferParameters(objectId) << endl;
+        	Logger::Instance().message << "GL_RENDERBUFFER, " << getRenderbufferParameters(objectId);
             break;
         }
+        Logger::Instance().log("DEBUG","FBO");
     }
-
-    cout << endl;
 }
 
 string FrameBuffer::getTextureParameters(GLuint id)
@@ -320,41 +325,31 @@ string FrameBuffer::convertInternalFormatToString(GLenum format)
     return formatName;
 }
 
-///////////////////////////////////////////////////////////////////////////////
-// check FBO completeness
-///////////////////////////////////////////////////////////////////////////////
-bool FrameBuffer::checkFramebufferStatus()
+string FrameBuffer::checkFramebufferStatus()
 {
-    // check FBO status
     GLenum status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
     switch(status)
     {
     case GL_FRAMEBUFFER_COMPLETE:
-        std::cout << "Framebuffer complete." << std::endl;
-        return true;
+    	return "Framebuffer complete.";
 
     case GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT:
-        std::cout << "[ERROR] Framebuffer incomplete: Attachment is NOT complete." << std::endl;
-        return false;
+        return "[ERROR] Framebuffer incomplete: Attachment is NOT complete.";
 
     case GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT:
-        std::cout << "[ERROR] Framebuffer incomplete: No image is attached to FBO." << std::endl;
-        return false;
+        return "[ERROR] Framebuffer incomplete: No image is attached to FBO.";
 
     case GL_FRAMEBUFFER_INCOMPLETE_DRAW_BUFFER:
-        std::cout << "[ERROR] Framebuffer incomplete: Draw buffer." << std::endl;
-        return false;
+        return "[ERROR] Framebuffer incomplete: Draw buffer.";
 
     case GL_FRAMEBUFFER_INCOMPLETE_READ_BUFFER:
-        std::cout << "[ERROR] Framebuffer incomplete: Read buffer." << std::endl;
-        return false;
+        return "[ERROR] Framebuffer incomplete: Read buffer.";
 
     case GL_FRAMEBUFFER_UNSUPPORTED:
-        std::cout << "[ERROR] Unsupported by FBO implementation." << std::endl;
-        return false;
+        return "[ERROR] Unsupported by FBO implementation.";
 
     default:
-        std::cout << "[ERROR] Unknow error." << std::endl;
-        return false;
+        return "[ERROR] Unknow error.";
+
     }
 }

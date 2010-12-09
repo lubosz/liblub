@@ -16,7 +16,7 @@ Mesh::Mesh(){
     /* Allocate and assign a Vertex Array Object to our handle */
     glGenVertexArrays(1, &vao);
     Logger::Instance().message << "Generating Vertex Array Object #"<< vao;
-    Logger::Instance().log("DEBUG");
+    Logger::Instance().log("DEBUG","Mesh");
 
     /* Bind our Vertex Array Object as the current used object */
     glBindVertexArray(vao);
@@ -24,7 +24,7 @@ Mesh::Mesh(){
     /* Allocate and assign three Vertex Buffer Objects to our handle */
     glGenBuffers(maxBuffers, vbo);
     Logger::Instance().message << "Vertex Buffers #" << vbo;
-    Logger::Instance().log("DEBUG");
+    Logger::Instance().log("DEBUG","Mesh");
 }
 
 Mesh::~Mesh() {
@@ -55,7 +55,7 @@ void Mesh::addBuffer(vector<GLfloat> content, unsigned size, string name){
 	glEnableVertexAttribArray(bufferCount);
 	//glVertexAttribDivisor(1,2);
     Logger::Instance().message << "Adding Vertex Buffer #" << bufferCount << " "<< name<< " Size:"<< content.size();
-    Logger::Instance().log("DEBUG");
+    Logger::Instance().log("DEBUG","Mesh");
 	/*
 	BOOST_FOREACH(float value, content){
 		cout << value << "\n";
@@ -74,7 +74,7 @@ void Mesh::addElementBuffer(vector<GLuint> content){
 	 * 6 * sizeof(GLubyte) is the size of the index array, since it contains 6 GLbyte values */
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, content.size() * sizeof(GLuint), content.data(),GL_STATIC_DRAW);
     Logger::Instance().message << "Adding Vertex Element Buffer #" << bufferCount << " Size:"<< content.size();
-    Logger::Instance().log("DEBUG");
+    Logger::Instance().log("DEBUG","Mesh");
 	bufferCount++;
     glError("Mesh::addElementBuffer",76);
 }
