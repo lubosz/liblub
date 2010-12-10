@@ -1,11 +1,11 @@
-#version 130
+#version 330 core
 
 uniform sampler2D colorMap;
 
 in vec2 uv;
 
-//out vec4 fragColor;
+out vec4 fragColor;
 
 void main(void) {
-    gl_FragColor = texture(colorMap, uv);
+    fragColor = texture(colorMap, uv);
 }
