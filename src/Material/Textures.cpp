@@ -16,8 +16,9 @@
 		textureType = GL_TEXTURE_2D;
 
 	    glGenTextures(1, &texture);
-	    cout << "Creating FBO Depth texture #" << texture << " " << name << "\n";
 	    glBindTexture(textureType, texture);
+		Logger::Instance().message << "Creating FBO Depth texture #" << texture << " " << name;
+	    Logger::Instance().log("DEBUG","DepthTexture");
 
 	    //Shadowmap
 		// GL_LINEAR does not make sense for depth texture. However, next tutorial shows usage of GL_LINEAR and PCF
@@ -56,7 +57,8 @@
 		textureType = GL_TEXTURE_2D;
 
 	    glGenTextures(1, &texture);
-	    cout << "Creating FBO Color texture #" << texture << " " << name << "\n";
+		Logger::Instance().message << "Creating FBO Color texture #" << texture << " " << name;
+	    Logger::Instance().log("DEBUG","ColorTexture");
 	    glBindTexture(textureType, texture);
 
 
@@ -111,7 +113,8 @@
 	    fipImage * image = readImage(path, glChannelOrder, texChannelOrder);
 
 		glGenTextures(1, &texture);
-		cout << "Creating texture from file #" << texture << " " << name << "\n";
+		Logger::Instance().message << "Creating texture from file #" << texture << " " << name;
+	    Logger::Instance().log("DEBUG","TextureFile");
 
 	    glBindTexture(GL_TEXTURE_2D, texture);
 	/*
@@ -192,7 +195,7 @@
 
 
 
-	CubeTextureFile::CubeTextureFile(string filename, GLenum glId, string name, bool cube) {
+CubeTextureFile::CubeTextureFile(string filename, GLenum glId, string name, bool cube) {
 		this->glId = glId;
 		this->name = name;
 
@@ -216,10 +219,4 @@
 			glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + face, 0, *glChannelOrder, image->getWidth(), image->getHeight(), 0, *texChannelOrder, GL_UNSIGNED_BYTE, image->accessPixels());
 		}
 
-	}
-
-
-
-
-
-
+}

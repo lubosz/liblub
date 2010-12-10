@@ -32,6 +32,8 @@
 #endif
 */
 
+#include "Logger.h"
+
 static void glError(string file, int line) {
 	GLenum err(glGetError());
 
@@ -59,8 +61,8 @@ static void glError(string file, int line) {
 			break;
 		}
 
-		cerr << "\x1b[1;31m" << "GL_" << error << "\e[m" << " - " << file << ':' << line	 << "\n";
-		err = glGetError();
+		Logger::Instance().message << "GL_" << error << " - " << file << ':' << line;
+	    Logger::Instance().log("ERROR","glError");
 		exit(0);
 	}
 }

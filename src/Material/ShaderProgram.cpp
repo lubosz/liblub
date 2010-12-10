@@ -12,18 +12,17 @@ ShaderProgram::ShaderProgram() {
 	attribCount = 0;
     /* Assign our program handle a "name" */
     program = glCreateProgram();
-    cout << "Creating Program #" << program <<"\n";
+    Logger::Instance().message << "Creating Program #" << program;
+    Logger::Instance().log("DEBUG","ShaderProgram");
 }
 
 ShaderProgram::~ShaderProgram() {
-	cout << "Shutting down Shader System...";
+    Logger::Instance().log("MESSAGE","ShaderProgram","Shutting down Shader System...");
     glUseProgram(0);
 
     while(shaders.size() > 0){
     	detachShader(shaders.back());
     }
-
-	cout << "done.\n";
 }
 
 void ShaderProgram::printProgramInfoLog() {
@@ -35,8 +34,7 @@ void ShaderProgram::printProgramInfoLog() {
 	if (infologLen > 0) {
 		infoLog = (GLchar*) malloc(infologLen);
 		if (infoLog == NULL) {
-			printf("ERROR: Could not allocate InfoLog buffer\n");
-			exit(1);
+			Logger::Instance().log("ERROR","ShaderProgram","Could not allocate InfoLog buffer");
 		}
 		glGetProgramInfoLog(program, infologLen, &charsWritten, infoLog);
 		printf("Program Log:\n%s\n\n", infoLog);
@@ -77,7 +75,7 @@ void ShaderProgram::bindAttribIfUnbound(string name){
 	    {
 	    	if (attrib == name) return;
 	    }
-	cout << "Binding " <<name <<"\n";
+	Logger::Instance().log("DEBUG","ShaderProgram", "Binding " + name);
 	boundAttribs.push_back(name);
 	bindAttrib(name);
 }

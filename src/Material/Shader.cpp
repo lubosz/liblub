@@ -6,11 +6,12 @@
  */
 
 #include "Shader.h"
+#include "Logger.h"
 #include <QtCore>
 
 Shader::Shader(string fileName, GLenum type) {
 
-	cout << "Creating Shader " << fileName << "\n";
+	Logger::Instance().log("DEBUG", "Shader", "Creating Shader " + fileName);
 	this->fileName = fileName;
 	this->type = type;
 
@@ -20,7 +21,7 @@ Shader::Shader(string fileName, GLenum type) {
 
 Shader::Shader(string fileName, GLenum type, const vector<string> & defines) {
 
-	cout << "Creating Shader " << fileName << "\n";
+	Logger::Instance().log("DEBUG", "Shader", "Creating Shader " + fileName);
 	this->fileName = fileName;
 	this->type = type;
 	this->defines = defines;
@@ -67,13 +68,8 @@ char* Shader::readFile(string filePath)
     long fileSize;
 
     file = fopen(filePath.c_str(), "r"); /* Open file for reading */
-    if (!file){
-    	cout << "\x1b[1;31m"
-		<< "File error: "
-		<< "\e[m"
-		<< filePath << "\n";
-		exit (1);
-    }
+    if (!file)
+    	Logger::Instance().log("ERROR", "Shader", "File error: " + filePath);
 
     // obtain file size:
     fseek (file , 0 , SEEK_END); /* Seek to the end of the file */

@@ -66,8 +66,9 @@ void Material::done() {
 }
 
 void Material::initUniforms() {
-	cout << "\nInitializing Material Uniforms for Shader #"
-			<< shaderProgram->getReference() << "\n";
+	Logger::Instance().message << "Initializing Material Uniforms for Shader #" << shaderProgram->getReference();
+    Logger::Instance().log("DEBUG","Material");
+
 	/*
 	 GLint texLoc;
 	 for (int i = 0; i < textures.size(); i++){

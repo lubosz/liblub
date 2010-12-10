@@ -28,7 +28,9 @@ void Texture::bind(){
 
 void Texture::uniform(GLuint program){
 	//cout << "Assigning Texture "<< "#"<< textureID << " " << name << " to program #"<< program << "\n";
-	cout << "Assigning Texture "<< "#"<< " " << name << " to program #"<< program << "\n";
+	Logger::Instance().message << "Assigning Texture "<< "#"<< " " << name << " to program #"<< program;
+    Logger::Instance().log("DEBUG","Texture");
+
     GLint texLoc   = glGetUniformLocation(program, name.c_str());
     //TODO: -1?
     glUniform1i(texLoc, texture-1);
@@ -39,7 +41,8 @@ fipImage * Texture::readImage(string path, GLint * glChannelOrder, GLint * texCh
 
 	fipImage * image = new fipImage();
 	image->load( path.c_str());
-    cout << "\n" << path << " Bits Per Pixel:\t" << image->getBitsPerPixel() << "\t" << image->getWidth() << "x" << image->getHeight() <<"\n";
+	Logger::Instance().message << path << " Bits Per Pixel:\t" << image->getBitsPerPixel() << "\t" << image->getWidth() << "x" << image->getHeight();
+    Logger::Instance().log("DEBUG","Texture");
 
     if (image->getBitsPerPixel() == 32) {
     	*glChannelOrder = GL_RGBA;
@@ -50,11 +53,11 @@ fipImage * Texture::readImage(string path, GLint * glChannelOrder, GLint * texCh
     }else{
     	*glChannelOrder = GL_RGB;
     	*texChannelOrder = GL_BGR;
-    	cout << "WARNING: Converting "<< path<< " to 24bits.\n";
+    	Logger::Instance().log("WARNING","Texture","Converting "+ path+ " to 24bits.");
     	if(image->convertTo24Bits()){
-    		cout << "SUCESS!\n.";
+    		Logger::Instance().log("WARNING","Texture","SUCESS!");
     	}else{
-    		cout << "ERROR: Converting "<< path<< " to 24bit failed.\n";
+    		Logger::Instance().log("ERROR","Texture","Converting "+ path+ " to 24bit failed.");
     	}
     }
 
