@@ -62,13 +62,13 @@ void MediaLayer::createBlankCursor() {
 void MediaLayer::initScreen(){
     /* Open Xlib Display */
     display = XOpenDisplay(0);
-    if(!display) error("Can't open display\n");
+    if(!display) Logger::Instance().log("ERROR","initScreen","Can't open display");
 
     default_screen = DefaultScreen(display);
 
     /* Get the XCB connection from the display */
     connection = XGetXCBConnection(display);
-    if(!connection) error("Can't get xcb connection from display\n");
+    if(!connection) Logger::Instance().log("ERROR","initScreen","Can't get xcb connection from display");
 
     /* Acquire event queue ownership */
     XSetEventQueueOwner(display, XCBOwnsEventQueue);
@@ -91,7 +91,7 @@ void MediaLayer::initFrameBuffer(){
     GLXFBConfig *fb_configs = 0;
     int num_fb_configs = 0;
     fb_configs = glXGetFBConfigs(display, default_screen, &num_fb_configs);
-    if(!fb_configs || num_fb_configs == 0) error("glXGetFBConfigs failed\n");
+    if(!fb_configs || num_fb_configs == 0) Logger::Instance().log("ERROR","initFrameBuffer","glXGetFBConfigs failed");
     fb_config = fb_configs[0];
 }
 
@@ -122,7 +122,7 @@ void MediaLayer::createGLContext() {
 	context = glXCreateContextAttribs(display, fb_config, NULL, True,
 			attribs);
 
-	if(!context) error("glXCreateNewContext failed\n");
+	if(!context) Logger::Instance().log("ERROR","createGLContext","glXCreateNewContext failed");
 }
 
 void MediaLayer::createColorMap() {
@@ -172,13 +172,13 @@ void MediaLayer::createWindow() {
 	glxwindow = glXCreateWindow(display, fb_config, window, 0);
 
 	if (!glxwindow)
-		error("glXCreateWindow failed\n");
+		Logger::Instance().log("ERROR","createWindow","glXCreateWindow failed");
 
 	drawable = glxwindow;
 
 	/* make OpenGL context current */
 	if (!glXMakeContextCurrent(display, drawable, drawable, context))
-		error("glXMakeContextCurrent failed\n");
+		Logger::Instance().log("ERROR","createWindow","glXMakeContextCurrent failed");
 
 	//Set swap interval
 	PFNGLXSWAPINTERVALSGIPROC
@@ -192,13 +192,6 @@ void MediaLayer::createWindow() {
 
 
 	glXSwapInterval(VSync);
-}
-
-/* A simple function that prints a message, the error code returned by SDL, and quits the application */
-void MediaLayer::error(string msg)
-{
-	cerr << msg << "\n";
-	exit(0);
 }
 
 void MediaLayer::swapBuffers(){
@@ -268,9 +261,9 @@ xcb_atom_t MediaLayer::getReplyAtomFromCookie(xcb_intern_atom_cookie_t cookie){
 
 void MediaLayer::toggleFullScreen() {
 	if (fullscreen) {
-		cout << "Fullscreen off\n";
+		Logger::Instance().log("MESSAGE","Fullscreen", "off");
 	} else {
-		cout << "Fullscreen on\n";
+		Logger::Instance().log("MESSAGE","Fullscreen", "on");
 	}
 	fullscreen = !fullscreen;
 

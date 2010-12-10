@@ -113,7 +113,6 @@ public:
 	void renderLoop();
 
 protected:
-	void error(string msg);
 	void shutdown(){
 		quit = true;
 	}

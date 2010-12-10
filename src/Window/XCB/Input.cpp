@@ -35,70 +35,11 @@ void Input::eventLoop(){
 	while (event = xcb_poll_for_event (connection)) {
 
     switch (event->response_type & ~0x80) {
-    	case XCB_CONFIGURE_REQUEST:
-    		cout << "Reconfigure!!\n";
-    		/*
-    			uint32_t c[6],*cp=c;
-    			if(((xcb_configure_request_event_t*)p)->value_mask&XCB_CONFIG_WINDOW_X)*cp++=((xcb_configure_request_event_t*)p)->x;
-    			if(((xcb_configure_request_event_t*)p)->value_mask&XCB_CONFIG_WINDOW_Y)*cp++=((xcb_configure_request_event_t*)p)->y;
-    			if(((xcb_configure_request_event_t*)p)->value_mask&XCB_CONFIG_WINDOW_WIDTH)*cp++=((xcb_configure_request_event_t*)p)->width;
-    			if(((xcb_configure_request_event_t*)p)->value_mask&XCB_CONFIG_WINDOW_HEIGHT)*cp++=((xcb_configure_request_event_t*)p)->height;
-    			if(((xcb_configure_request_event_t*)p)->value_mask&XCB_CONFIG_WINDOW_SIBLING)*cp++=((xcb_configure_request_event_t*)p)->sibling;
-    			if(((xcb_configure_request_event_t*)p)->value_mask&XCB_CONFIG_WINDOW_STACK_MODE)*cp=((xcb_configure_request_event_t*)p)->stack_mode;
-    			xcb_configure_window(dpy,((xcb_configure_request_event_t*)p)->window,((xcb_configure_request_event_t*)p)->value_mask&~XCB_CONFIG_WINDOW_BORDER_WIDTH,c);
-    			for(;x>-1;x--)
-    				if(cs[x]==((xcb_configure_request_event_t*)p)->window&&((xcb_configure_request_event_t*)p)->value_mask&XCB_CONFIG_WINDOW_STACK_MODE)
-    					switch(((xcb_configure_request_event_t*)p)->stack_mode){
-    					case XCB_STACK_MODE_BELOW:y=0;
-    					case XCB_STACK_MODE_ABOVE:goto stack;
-    					}
-    					*/
-    	break;
-/*
-        case XCB_EXPOSE:
-            expose = (xcb_expose_event_t *)event;
-
-            printf ("Window %d exposed. Region to be redrawn at location (%d,%d), with dimension (%d,%d)\n",
-                    expose->window, expose->x, expose->y, expose->width, expose->height );
-            break;
-*/
-/*
-        case XCB_BUTTON_PRESS:
-
-            bp = (xcb_button_press_event_t *)event;
-            print_modifiers (bp->state);
-
-
-            switch (bp->detail) {
-            case 4:
-                printf ("Wheel Button up in window %d, at coordinates (%d,%d)\n",
-                        bp->event, bp->event_x, bp->event_y );
-                break;
-            case 5:
-                printf ("Wheel Button down in window %d, at coordinates (%d,%d)\n",
-                        bp->event, bp->event_x, bp->event_y );
-                break;
-            default:
-                printf ("Button %d pressed in window %d, at coordinates (%d,%d)\n",
-                        bp->detail, bp->event, bp->event_x, bp->event_y );
-                break;
-            }
-            break;
-        case XCB_BUTTON_RELEASE:
-            br = (xcb_button_release_event_t *)event;
-            print_modifiers(br->state);
-
-            printf ("Button %d released in window %d, at coordinates (%d,%d)\n",
-                    br->detail, br->event, br->event_x, br->event_y );
-            break;
-*/
 
         case XCB_MOTION_NOTIFY:
             motion = (xcb_motion_notify_event_t *)event;
             MediaLayer::Instance().mouseLook(motion->event_x, motion->event_y);
             break;
-
-        //case XCB_KEYMAP_NOTIFY:
 
         case XCB_KEY_RELEASE:
 

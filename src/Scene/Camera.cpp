@@ -58,7 +58,8 @@ void Camera::setMouseLook(int mouseXrel, int mouseYrel){
 }
 
 void Camera::setMouseZoom(int wheelX, int wheelY){
-	cout << "Wheel\t" << wheelX << "\t" << wheelY << "\n";
+	Logger::Instance().message << "\t" << wheelX << "\t" << wheelY;
+    Logger::Instance().log("DEBUG","Camera Wheel");
 }
 
 void Camera::updateRotation(){

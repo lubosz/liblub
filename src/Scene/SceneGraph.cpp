@@ -27,13 +27,13 @@ void SceneGraph::setPosition(string nodeName, const QVector3D& position){
     }
 }
 
-void SceneGraph::printMatrix(const QMatrix4x4 & matrix, string name){
-	cout << name << "\n";
-	for (int i = 0; i < 16; i++){
-			cout << matrix.data()[i] << "\t";
-		if(i%4 == 3) cout << "\n";
-	}
-}
+//void SceneGraph::printMatrix(const QMatrix4x4 & matrix, string name){
+//	cout << name << "\n";
+//	for (int i = 0; i < 16; i++){
+//			cout << matrix.data()[i] << "\t";
+//		if(i%4 == 3) cout << "\n";
+//	}
+//}
 
 void SceneGraph::setShadowCoords(Node * node, DirectionNode * viewPoint){
 
