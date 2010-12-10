@@ -32,9 +32,10 @@ void Logger::log(string type, string name){
 	string messageColor;
 
 	if (type == "ERROR"){
-			cerr 	<< bashColor(type, composeColor(bold, red))
-					<< bashColor(name, composeColor(underline, white))
-					<< " - " << message.str() << "\n";
+			cerr 	<< bashColor("["+type+"]", composeColor(bold, red))
+					<< " - "
+					<< bashColor(name, composeColor(underline, white)) << " - "
+					<< message.str() << "\n";
 			exit(0);
 	}else if(type == "WARNING"){
 		messageColor = composeColor(bold, yellow);
@@ -50,7 +51,7 @@ void Logger::log(string type, string name){
 	cout 	<< bashColor("["+type+"]", messageColor)
 			<< " - ";
 	if (name != "")
-		cout	<< bashColor(name, composeColor(underline, white)) << ":\t";
+		cout	<< bashColor(name, composeColor(underline, white)) << " - ";
 	cout	<< message.str() << "\n";
 	message.str("");
 }

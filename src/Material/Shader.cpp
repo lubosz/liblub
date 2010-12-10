@@ -98,23 +98,20 @@ char* Shader::readFile(string filePath)
 
 void Shader::printShaderInfoLog(GLuint shader) {
 	int infologLen = 0;
-	int charsWritten = 0;
-	GLchar *infoLog;
 	glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &infologLen);
-	//printOpenGLError();  // Check for OpenGL errors
-	if (infologLen > 0) {
-		infoLog = (GLchar*) malloc(infologLen);
+	if (infologLen > 1) {
+		GLchar * infoLog = (GLchar*) malloc(infologLen);
 		if (infoLog == NULL) {
-			printf("ERROR: Could not allocate InfoLog buffer\n");
-			exit(1);
+			Logger::Instance().log("ERROR","Shader Log","Could not allocate InfoLog buffer");
 		}
+		int charsWritten = 0;
 		glGetShaderInfoLog(shader, infologLen, &charsWritten, infoLog);
-		printf("Shader Log:\n%s\n\n", infoLog);
+		string shaderlog = infoLog;
 		free(infoLog);
+		Logger::Instance().log("ERROR","Shader Log",shaderlog);
 	} else {
-		printf("Shader Info Log: OK\n");
+		Logger::Instance().log("DEBUG","Shader","Done");
 	}
-	//printOpenGLError();  // Check for OpenGL errors
 }
 
 void Shader::reload(){

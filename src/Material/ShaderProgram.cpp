@@ -27,22 +27,20 @@ ShaderProgram::~ShaderProgram() {
 
 void ShaderProgram::printProgramInfoLog() {
 	int infologLen = 0;
-	int charsWritten = 0;
-	GLchar *infoLog;
 	glGetProgramiv(program, GL_INFO_LOG_LENGTH, &infologLen);
-	//printOpenGLError();  // Check for OpenGL errors
-	if (infologLen > 0) {
-		infoLog = (GLchar*) malloc(infologLen);
+	if (infologLen > 1) {
+		GLchar * infoLog = (GLchar*) malloc(infologLen);
 		if (infoLog == NULL) {
-			Logger::Instance().log("ERROR","ShaderProgram","Could not allocate InfoLog buffer");
+			Logger::Instance().log("ERROR","Program Log","Could not allocate InfoLog buffer");
 		}
+		int charsWritten = 0;
 		glGetProgramInfoLog(program, infologLen, &charsWritten, infoLog);
-		printf("Program Log:\n%s\n\n", infoLog);
+		string shaderlog = infoLog;
 		free(infoLog);
+		Logger::Instance().log("ERROR","Program Log",shaderlog);
 	} else {
-		printf("Program Info Log: OK\n");
+		Logger::Instance().log("DEBUG","Program","Done");
 	}
-	//printOpenGLError();  // Check for OpenGL errors
 }
 
 void ShaderProgram::attachShader(string fileName, GLenum type){
