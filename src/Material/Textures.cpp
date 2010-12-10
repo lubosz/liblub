@@ -134,8 +134,6 @@
 
   }
 
-
-
 	SplatTexture::SplatTexture(GLenum glId, string name, int resolution){
 	    unsigned char* data = createGaussianMap(resolution);
 	    glGenTextures(1, &texture);
@@ -191,8 +189,6 @@
 	    delete [] M;
 	    return(B);
 	}
-
-
 
 
 CubeTextureFile::CubeTextureFile(string filename, GLenum glId, string name, bool cube) {

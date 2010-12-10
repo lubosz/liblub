@@ -67,14 +67,13 @@ Mesh * MeshFactory::load(string file) {
 
 	// If the import failed, report it
 	if (!scene) {
-		cout << importer.GetErrorString() << "\n";
+	    Logger::Instance().log("ERROR","Assimp Scene Load",importer.GetErrorString());
 	}
 
 	aiMesh * assMesh = scene->mMeshes[0];
 
 	if(!assMesh->HasTangentsAndBitangents()){
-		cout << "NO TANGENTS!!!\n";
-		exit(0);
+		Logger::Instance().log("ERROR","Assimp Scene Load","NO TANGENTS!!!");
 	}
 
 
@@ -161,7 +160,7 @@ Mesh * MeshFactory::loadDirect(string file) {
 
 	// If the import failed, report it
 	if (!scene) {
-		cout << importer.GetErrorString() << "\n";
+		Logger::Instance().log("ERROR","Assimp Scene Load",importer.GetErrorString());
 	}
 
 	// Now we can access the file's contents.

@@ -76,8 +76,6 @@ Mesh * Geometry::makeTetrahedron(){
 
 	vector<GLuint> indicies = { 0, 1, 2, 3, 0, 1 };
 
-	cout << "Making Tetrahedron!!";
-
 	Mesh * mesh = new Mesh();
     mesh->addBuffer(vertices,3,"in_Vertex");
     mesh->addBuffer(vertexColors,3,"in_Color");
@@ -286,7 +284,8 @@ Mesh * Geometry::makeStars(vector<float> & resolution, float density, float rand
 		}
 
 	}
-	cout << i << " Generated Stars\n";
+	Logger::Instance().message << i << " Generated Stars";
+    Logger::Instance().log("MESSAGE","makeStars");
 
 	Mesh * mesh = new Mesh();
     mesh->addBuffer(vertices,3,"in_Vertex");
@@ -381,7 +380,8 @@ Mesh * Geometry::makeSpiral(int resolution, float density, float randomness){
 		}
 */
 
-	cout << i << " Generated Stars\n";
+	Logger::Instance().message << i << " Generated Points";
+    Logger::Instance().log("MESSAGE","makeSpiral");
 
 	Mesh * mesh = new Mesh();
     mesh->addBuffer(vertices,3,"in_Vertex");
