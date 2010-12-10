@@ -44,7 +44,6 @@ void Logger::log(string type, string name){
 	}else if(type == "DEBUG"){
 		messageColor = composeColor(regular, purple);
 	}else{
-		type = "UNKNOWN";
 		messageColor = composeColor(regular, cyan);
 	}
 

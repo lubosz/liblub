@@ -23,8 +23,6 @@ Mesh::Mesh(){
 
     /* Allocate and assign three Vertex Buffer Objects to our handle */
     glGenBuffers(maxBuffers, vbo);
-    Logger::Instance().message << "Vertex Buffers #" << vbo;
-    Logger::Instance().log("DEBUG","Mesh");
 }
 
 Mesh::~Mesh() {
