@@ -17,6 +17,14 @@ public:
 	void cleanUp();
 };
 
+class FilterPass : public RenderPass {
+public:
+	FilterPass(FrameBuffer * fbo);
+	void prepare();
+	void draw(Material * material);
+	void cleanUp();
+};
+
 class LightTogglePass : public RenderPass {
 public:
 	LightTogglePass();
