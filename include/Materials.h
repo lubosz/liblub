@@ -162,8 +162,22 @@ public:
 	HeightMapMat(string texture, string heightmap){
 		init();
 		addTexture(texture,"colorMap");
-		addTexture(texture,"heightMap");
+		addTexture(heightmap,"heightMap");
 		attachVertFrag("Geometry/heightmap");
+		done();
+
+  }
+	void uniforms(){}
+
+};
+
+class ClipMapMat : public Material {
+public:
+	ClipMapMat(string texture, string heightmap){
+		init();
+		addTexture(texture,"colorMap");
+		addTexture(heightmap,"heightMap");
+		attachVertFrag("Geometry/clipmap");
 		done();
 
   }
