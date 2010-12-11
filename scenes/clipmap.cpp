@@ -17,7 +17,7 @@ public:
 						10.0f,
 						MeshFactory::load("clipmap.obj"),
 						//MeshFactory::load("hugePlane.obj"),
-						new ClipMapMat("Planets/Mars.jpg", "noise.png")
+						new ClipMapMat("Planets/Mars.jpg", "noise.png","noise-normal.png")
 						//new HeightMapMat("bunny.png", "bunny.png")
 				)
 		);
