@@ -69,6 +69,9 @@ void Input::eventLoop(){
 				case XK_c:
 					RenderEngine::Instance().toggleLightView();
 					break;
+				case XK_Tab:
+					RenderEngine::Instance().toggleWire();
+					break;
 				default:
 					pressedKeys.push_back(pressedKey);
             }

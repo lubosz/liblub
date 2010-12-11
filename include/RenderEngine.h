@@ -15,8 +15,10 @@ class RenderSequence;
 class RenderEngine : public Singleton<RenderEngine> {
 public:
 	bool useFBO;
+	bool wire;
 	void display();
 	void toggleFBO();
+	void toggleWire();
 	void clear();
 	void toggleLightView();
 	bool lightView;

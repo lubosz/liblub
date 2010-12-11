@@ -19,7 +19,7 @@ RenderEngine::RenderEngine() {
 	frameCount = 0;
 	lightView = false;
 	shadowSequence = new RenderSequence();
-
+	wire = false;
 #ifndef USE_GL3
     glEnable( GL_POINT_SMOOTH );
 #endif
@@ -37,8 +37,10 @@ RenderEngine::RenderEngine() {
     /*
 
      */
-    glEnable(GL_POLYGON_OFFSET_FILL);
+//    glEnable(GL_POLYGON_OFFSET_FILL);
     glPointSize(5);
+
+//    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
     //glBlendFunc(GL_SRC_ALPHA, GL_ONE);
     //glEnable(GL_BLEND);
     //glDepthMask(GL_FALSE);
@@ -54,6 +56,17 @@ RenderEngine::~RenderEngine() {
     Logger::Instance().message << "Shutting down Render Engine...";
     Logger::Instance().log("MESSAGE");
 	glError("RenderEngine",106);
+}
+
+void RenderEngine::toggleWire(){
+	wire = !wire;
+	if (wire) {
+		Logger::Instance().log("MESSAGE", "Wireframe", "on");
+		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	}else{
+		Logger::Instance().log("MESSAGE", "Wireframe", "off");
+		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+	}
 }
 
 void RenderEngine::toggleFBO(){
