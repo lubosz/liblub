@@ -182,7 +182,7 @@ public:
 		shaderProgram->attachShader("Geometry/clipmap.vert", GL_VERTEX_SHADER);
 		vector<string> flags = {
 //				"receiveShadows",
-				"useDiffuseTexture",
+//				"useDiffuseTexture",
 //				"useSpotLight",
 //				"usePCF",
 //				"useAmbientTexture",
