@@ -11,8 +11,7 @@ public:
 	void scene(){
 		SceneGraph::Instance().light = new Light(QVector3D(-2.5, 21.5, -5.2),QVector3D(1,-5,0));
 
-	    Texture * shadowMap = RenderEngine::Instance().shadowSequence->renderPasses[0]->targetTexture;
-	    Material * material = new UbershaderColor(shadowMap,QVector3D(1,1,1));
+	    Material * material = new UbershaderColor(QVector3D(1,1,1));
 
 	    for (int i = 0; i < 5; i++){
 	    	MengerSponge * sponge = new MengerSponge(i);

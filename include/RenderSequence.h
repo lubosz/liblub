@@ -7,7 +7,7 @@
 
 #pragma once
 
-#include "Materials.h"
+//#include "Materials.h"
 #include "RenderPasses.h"
 
 class RenderSequence {

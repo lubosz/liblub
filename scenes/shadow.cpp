@@ -30,12 +30,12 @@ public:
 
 
 
-		Texture * shadowMap = RenderEngine::Instance().shadowSequence->renderPasses[0]->targetTexture;
+		//Texture * shadowMap = RenderEngine::Instance().shadowSequence->renderPasses[0]->targetTexture;
 
 		Material * relief = new ReliefMat();
-		Material * monkey = new Ubershader(shadowMap, "bump/masonry-wall-texture.jpg","monkey-occlusion.png", "bump/masonry-wall-normal-map.jpg");
-		Material * radio = new Ubershader(shadowMap, "bump/masonry-wall-texture.jpg","radio-occlusion.png", "bump/masonry-wall-normal-map.jpg");
-		Material * ground = new Ubershader(shadowMap, "bump/brickwork-texture.jpg","plane-occlusion.png", "bump/brickwork_normal-map.jpg");
+		Material * monkey = new Ubershader("bump/masonry-wall-texture.jpg","monkey-occlusion.png", "bump/masonry-wall-normal-map.jpg");
+		Material * radio = new Ubershader("bump/masonry-wall-texture.jpg","radio-occlusion.png", "bump/masonry-wall-normal-map.jpg");
+		Material * ground = new Ubershader("bump/brickwork-texture.jpg","plane-occlusion.png", "bump/brickwork_normal-map.jpg");
 		//Material * bump = new NormalMapMaterial("bump/brickwork-texture.jpg","bump/brickwork_normal-map.jpg");
 
 		Node * plane = new Node("Plane",{0,-7,0}, 20, MeshFactory::load("plane.blend"),ground);

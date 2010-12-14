@@ -7,9 +7,10 @@
 
 #pragma once
 
+#include "RenderEngine.h"
 #include "Material.h"
 //#include "TextureFactory.h"
-
+class RenderEngine;
 //#include "RenderEngine.h"
 
 class Minimal : public Material {
@@ -78,19 +79,19 @@ public:
 
 class Ubershader : public Material {
 public:
-	Ubershader(Texture * shadowMap, string diffuse, string ambient, string normal){
+	Ubershader(string diffuse, string ambient, string normal){
 		init();
-		addTexture(shadowMap);
+		addTexture(RenderEngine::Instance().shadowSequence->renderPasses[0]->targetTexture);
 		addTexture(diffuse,"diffuseTexture");
 		addTexture(ambient,"ambientTexture");
 		addTexture(normal,"normalTexture");
 		vector<string> flags = {
-//				"receiveShadows",
-//				"useDiffuseTexture",
-//				"useSpotLight",
-//				"usePCF",
-//				"useAmbientTexture",
-//				"useNormalTexture"
+				"receiveShadows",
+				"useDiffuseTexture",
+				"useSpotLight",
+				"usePCF",
+				"useAmbientTexture",
+				"useNormalTexture"
 		};
 		attachVertFrag("Color/PhongColor",flags);
 		done();
@@ -107,9 +108,9 @@ public:
 
 class UbershaderColor : public Material {
 public:
-	UbershaderColor(Texture * shadowMap, QVector3D color){
+	UbershaderColor(QVector3D color){
 		init();
-		addTexture(shadowMap);
+		addTexture(RenderEngine::Instance().shadowSequence->renderPasses[0]->targetTexture);
 		vector<string> flags = {
 				"receiveShadows",
 				"useSpotLight",

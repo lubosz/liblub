@@ -7,6 +7,7 @@
 
 #include "MediaLayer.h"
 #include "Camera.h"
+#include "Materials.h"
 
 LightViewDepthPass::LightViewDepthPass(FrameBuffer * fbo){
 	this->fbo = fbo;

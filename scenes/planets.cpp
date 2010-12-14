@@ -9,9 +9,8 @@ public:
 
 	void scene(){
 		SceneGraph::Instance().light = new Light(QVector3D(-15.2, 19.4, 6.5),QVector3D(1,-5,-1));
-		Texture * shadowMap = RenderEngine::Instance().shadowSequence->renderPasses[0]->targetTexture;
 
-		Material * ground = new Ubershader(shadowMap, "bump/brickwork-texture.jpg","plane-occlusion.png", "bump/brickwork_normal-map.jpg");
+		Material * ground = new Ubershader("bump/brickwork-texture.jpg","plane-occlusion.png", "bump/brickwork_normal-map.jpg");
 
 		Mesh * sphere = MeshFactory::load("earth.obj");
 
@@ -21,7 +20,7 @@ public:
 						{-10,-10,-10},
 						10.0f,
 						sphere,
-						new Ubershader(shadowMap, "Planets/Mars.jpg","plane-occlusion.png", "Planets/Mars-normal.png")
+						new Ubershader("Planets/Mars.jpg","plane-occlusion.png", "Planets/Mars-normal.png")
 				)
 		);
 
