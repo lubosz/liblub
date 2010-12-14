@@ -20,16 +20,17 @@ uniform vec4 lightPositionView;
 
 void main(void) {
     uv = in_Uv;
-	normalView = normalize(NormalMatrix * texture(vertexNormalMap, uv).xyz); 
+	//normalView = normalize(NormalMatrix * texture(heightMap, uv).rgb);
+	normalView = normalize(NormalMatrix * vec3(0,1,0));
     
-    vec4 height = texture(heightMap, uv);
-    vec3 position = in_Vertex;
-    position.y += mix(height.x,height.y,height.z);
+    float height = texture(heightMap, uv).x;
+    vec4 position = vec4(in_Vertex,1);
+    position.y += height;
     //float heightScale = mix(height.x,height.y,height.z);
     //position += in_Normal * heightScale * 0.2;
     //position -= in_Normal * 0.2;
     //position += normalize(in_Normal * heightScale) * 0.2;
 
-    positionView = MVMatrix * vec4(position,1);
-    gl_Position = MVPMatrix * vec4(position,1);
+    positionView = MVMatrix * position;
+    gl_Position = MVPMatrix * position;
 }

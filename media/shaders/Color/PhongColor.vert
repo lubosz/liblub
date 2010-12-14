@@ -21,16 +21,29 @@ uniform mat3 NormalMatrix;
 
 uniform vec4 lightPositionView;
 
+#ifdef useHeightMap
+uniform sampler2D heightMap;
+uniform sampler2D vertexNormalMap;
+#endif
+
 void main() 
 { 
 #ifdef useDiffuseTexture
 	uv = in_Uv;
 #endif
-	positionView = MVMatrix * vec4(in_Vertex,1);
-	normalView = normalize(NormalMatrix * in_Normal); 
 
-	vec4 positionProjection = MVPMatrix * vec4(in_Vertex,1);
-	
+    vec4 position = vec4(in_Vertex,1);
+    
+#ifdef useHeightMap
+	normalView = normalize(NormalMatrix * (texture(vertexNormalMap, in_Uv).rgb));
+    //position.y += texture(heightMap, in_Uv).x;
+    position += vec4(in_Normal,1) * (texture(heightMap, in_Uv).x);
+#else
+	normalView = normalize(NormalMatrix * in_Normal);
+#endif
+	positionView = MVMatrix * position;
+	vec4 positionProjection = MVPMatrix * position;
+
 #ifdef useNormalTexture
 	vec3 n = normalize(NormalMatrix * in_Normal); 
 	vec3 t = normalize(NormalMatrix * in_Tangent); 
