@@ -29,7 +29,7 @@ public:
 		};
 		SceneGraph::Instance().meshPlane("monkey.blend", 10, 3, textureMats);
 		Material * starMat = new Simple("Particle/stars");
-		SceneGraph::Instance().addNode(new Node("",{0,-50,-50},MeshFactory::stars(),starMat));
+		SceneGraph::Instance().addNode(new Node("",{0,-50,-50},MeshFactory::stars(100,1.0f,0.0f, 1),starMat));
 		//SceneGraph::Instance().addNode(new Node("Spiral",{0,0,0}, MeshFactory::Instance().spiral(),starMat));
 
 		MengerSponge * sponge = new MengerSponge(3);
