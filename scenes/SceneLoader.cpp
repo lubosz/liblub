@@ -80,6 +80,15 @@ public:
 									scene.attribute("colorIntensity").toFloat()
 							);
 						}
+					}else if (scene.tagName() == "MeshPlane") {
+						SceneGraph::Instance().meshPlane(
+								scene.attribute("mesh").toStdString(),
+								scene.attribute("size").toFloat(),
+								scene.attribute("step").toFloat(),
+								{
+										new PhongTexMat(scene.attribute("texture").toStdString())
+								}
+						);
 					}
 
 					if (scene.tagName() == "Object" || scene.tagName() == "Procedural")
