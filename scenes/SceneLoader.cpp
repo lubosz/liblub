@@ -1,11 +1,9 @@
-#include "Application.h"
 #include <QFile>
-#include <QDomDocument>
-#include <QXmlStreamReader>
-#include <QXmlStreamWriter>
-#include <iostream>
 #include <QStringList>
+
+#include "Application.h"
 #include "MengerSponge.h"
+
 class SceneLoader: public Application {
 
 public:
@@ -21,8 +19,10 @@ public:
 		domDocument.setContent(&file, true, &errorStr, &errorLine, &errorColumn);
 
 		sceneXML = domDocument.documentElement();
+//		if(sceneXML.tagName() == "Scene")
+//			programName = sceneXML.attribute("name").toStdString();
 
-		programName = sceneXML.attribute("name").toStdString();
+		programName ="XML Loader";
 
 	}
 
@@ -37,64 +37,65 @@ public:
 	}
 
 	void scene() {
-		QDomElement child = sceneXML.firstChildElement();
-		while (!child.isNull()) {
-			if (child.tagName() == "Light") {
+		QDomElement document = sceneXML.firstChildElement();
+		while (!document.isNull()) {
 
-				SceneGraph::Instance().light =
-						new Light(
-								stringToVector3D(child.attribute("position")),
-								stringToVector3D(child.attribute("direction"))
-						);
+			if (document.tagName() == "Scene"){
+				QDomElement scene = document.firstChildElement();
+				while (!scene.isNull()) {
+					QVector3D position, direction;
+					string name;
+					float scale;
+					Material * material;
+					Mesh * mesh;
 
-			} else if (child.tagName() == "Object") {
+					if (scene.hasAttribute("position"))
+						position = stringToVector3D(scene.attribute("position"));
+					if (scene.hasAttribute("direction"))
+						direction = stringToVector3D(scene.attribute("direction"));
+					if (scene.hasAttribute("name"))
+						name = scene.attribute("name").toStdString();
+					if (scene.hasAttribute("scale"))
+						scale = scene.attribute("scale").toFloat();
+					if (scene.hasAttribute("material"))
+						material = new Simple(scene.attribute("material").toStdString());
 
-				SceneGraph::Instance().addNode(
-						new Node(
-							child.attribute("name").toStdString(),
-							stringToVector3D(child.attribute("position")),
-							child.attribute("scale").toFloat(),
-							MeshFactory::load(child.attribute("mesh").toStdString()),
-							new Simple(child.attribute("material").toStdString())
-						)
-				);
+					if (scene.tagName() == "Light") {
+						SceneGraph::Instance().light =
+								new Light(
+										position,
+										direction
+								);
+					} else if (scene.tagName() == "Object") {
+						mesh = MeshFactory::load(scene.attribute("mesh").toStdString());
+					}else if (scene.tagName() == "Procedural") {
+						if(scene.attribute("type") == "Sponge"){
+							MengerSponge * sponge = new MengerSponge(scene.attribute("recursion").toInt());
+							mesh = sponge->getMesh();
+						}else if(scene.attribute("type") == "Stars"){
+							mesh = MeshFactory::stars(
+									scene.attribute("resolution").toFloat(),
+									scene.attribute("density").toFloat(),
+									scene.attribute("randomness").toFloat(),
+									scene.attribute("colorIntensity").toFloat()
+							);
+						}
+					}
 
-			}else if (child.tagName() == "Procedural") {
-
-				if(child.attribute("type") == "Sponge"){
-					MengerSponge * sponge = new MengerSponge(child.attribute("recursion").toInt());
-				    SceneGraph::Instance().addNode(
-				    		new Node(
-				    				child.attribute("name").toStdString(),
-				    				stringToVector3D(child.attribute("position")),
-				    				child.attribute("scale").toFloat(),
-				    				sponge->getMesh(),
-				    				new Simple(child.attribute("material").toStdString())
-				    		)
-				    );
-
-				}else if(child.attribute("type") == "Stars"){
+					if (scene.tagName() == "Object" || scene.tagName() == "Procedural")
 					SceneGraph::Instance().addNode(
 							new Node(
-									child.attribute("name").toStdString(),
-									stringToVector3D(child.attribute("position")),
-									child.attribute("scale").toFloat(),
-									MeshFactory::stars(
-											child.attribute("resolution").toFloat(),
-											child.attribute("density").toFloat(),
-											child.attribute("randomness").toFloat(),
-											child.attribute("colorIntensity").toFloat()
-									),
-									new Simple(child.attribute("material").toStdString())
+									name,
+									position,
+									scale,
+									mesh,
+									material
 							)
 					);
+					scene = scene.nextSiblingElement();
 				}
-
-			}else if (child.tagName() == "MeshPlane") {
-				SceneGraph::Instance().meshPlane("monkey.blend", child.attribute("size").toFloat(), child.attribute("step").toFloat(), {new PhongTexMat(child.attribute("texture").toStdString())});
 			}
-
-			child = child.nextSiblingElement();
+			document = document.nextSiblingElement();
 		}
 
 	}
