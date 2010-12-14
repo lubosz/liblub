@@ -85,12 +85,12 @@ public:
 		addTexture(ambient,"ambientTexture");
 		addTexture(normal,"normalTexture");
 		vector<string> flags = {
-				"receiveShadows",
-				"useDiffuseTexture",
-				"useSpotLight",
-				"usePCF",
-				"useAmbientTexture",
-				"useNormalTexture"
+//				"receiveShadows",
+//				"useDiffuseTexture",
+//				"useSpotLight",
+//				"usePCF",
+//				"useAmbientTexture",
+//				"useNormalTexture"
 		};
 		attachVertFrag("Color/PhongColor",flags);
 		done();
@@ -159,15 +159,33 @@ public:
 
 class HeightMapMat : public Material {
 public:
-	HeightMapMat(string texture, string heightmap){
+	HeightMapMat(string texture, string heightmap, string normal){
 		init();
-		addTexture(texture,"colorMap");
+		addTexture(texture,"diffuseTexture");
 		addTexture(heightmap,"heightMap");
-		attachVertFrag("Geometry/heightmap");
+		addTexture(normal,"vertexNormalMap");
+		vector<string> flags = {
+				"useHeightMap",
+//				"receiveShadows",
+				"useDiffuseTexture"
+//				"useSpotLight",
+//				"usePCF",
+//				"useAmbientTexture",
+//				"useNormalTexture"
+		};
+		attachVertFrag("Color/PhongColor",flags);
+		diffuseColor = QVector4D(1,0,0,0);
 		done();
 
   }
-	void uniforms(){}
+	void uniforms(){
+		shaderProgram->setUniform(QVector4D(0.1, 0.1, 0.1, 1.0), "ambientSceneColor");
+		shaderProgram->setUniform(diffuseColor, "diffuseMaterialColor");
+		shaderProgram->setUniform(QVector4D(0.8, 0.8, 0.8,1.0), "specularMaterialColor");
+		shaderProgram->setUniform(4.3, "shininess");
+		shaderProgram->setUniform(1.0/1200, "yPixelOffset");
+		shaderProgram->setUniform(1.0/1920, "xPixelOffset");
+	}
 
 };
 
@@ -179,8 +197,9 @@ public:
 		addTexture(heightmap,"heightMap");
 		addTexture(normal,"vertexNormalMap");
 //		attachVertFrag("Geometry/clipmap");
-		shaderProgram->attachShader("Geometry/clipmap.vert", GL_VERTEX_SHADER);
+//		shaderProgram->attachShader("Geometry/clipmap.vert", GL_VERTEX_SHADER);
 		vector<string> flags = {
+				"useHeightMap"
 //				"receiveShadows",
 //				"useDiffuseTexture",
 //				"useSpotLight",
@@ -188,6 +207,7 @@ public:
 //				"useAmbientTexture",
 //				"useNormalTexture"
 		};
+		shaderProgram->attachShader("Color/PhongColor.vert", GL_VERTEX_SHADER,flags);
 		shaderProgram->attachShader("Color/PhongColor.frag", GL_FRAGMENT_SHADER,flags);
 //		attachVertFrag("Color/PhongColor",flags);
 		done();

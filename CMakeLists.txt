@@ -36,6 +36,7 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++0x")
 
 #check for qt
 FIND_PACKAGE(Qt4 REQUIRED)
+set(QT_USE_QTXML true)
 INCLUDE(${QT_USE_FILE})
 
 #check for opengl3 headers
