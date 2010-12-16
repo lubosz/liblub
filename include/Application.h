@@ -10,7 +10,7 @@
 #include "MediaLayer.h"
 #include "Materials.h"
 #include "MeshFactory.h"
-#include <QDomElement>
+#include "SceneLoader.h"
 
 class Application {
 
@@ -19,7 +19,7 @@ class Application {
 public:
 
 	string programName;
-	QDomElement sceneXML;
+	SceneLoader * sceneLoader;
 
 	void run(){
 		MediaLayer::Instance().init(programName);

@@ -9,6 +9,7 @@
 
 #include <string>
 #include <sstream>
+#include <vector>
 #include "Singleton.h"
 
 using namespace std;
@@ -20,8 +21,11 @@ public:
 
 	stringstream message;
 
+	vector<string> blacklist;
+
 	void log(string type);
 	void log(string type, string name);
+	void clear();
 	void log(string type, string name, string say);
 	string bashColor(string message, string color);
 	string composeColor(int background, int foreground);

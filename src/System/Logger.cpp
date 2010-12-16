@@ -6,12 +6,12 @@
  */
 
 #include <iostream>
-
+#include <QtCore>
 #include "Logger.h"
 #include "BashColor.h"
 
 Logger::Logger() {
-	// TODO Auto-generated constructor stub
+	blacklist = {"Light Position", "Mesh", "FBO"};
 
 }
 
@@ -29,6 +29,13 @@ void Logger::log(string type, string name, string say){
 }
 
 void Logger::log(string type, string name){
+	foreach(string blackname, blacklist){
+		if (blackname == name){
+			clear();
+			return;
+		}
+	}
+
 	string messageColor;
 
 	if (type == "ERROR"){
@@ -47,11 +54,16 @@ void Logger::log(string type, string name){
 		messageColor = composeColor(regular, cyan);
 	}
 
+
 	cout 	<< bashColor("["+type+"]", messageColor)
 			<< " - ";
 	if (name != "")
 		cout	<< bashColor(name, composeColor(underline, white)) << " - ";
 	cout	<< message.str() << "\n";
+	clear();
+}
+
+void Logger::clear(){
 	message.str("");
 }
 
