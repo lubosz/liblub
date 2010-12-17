@@ -15,7 +15,7 @@ using namespace std;
 
 class Material {
 public:
-    ShaderProgram *getShaderProgram() const;
+    ShaderProgram *getShaderProgram();
 	void activate();
 	void initUniforms();
 	void bindTextures();
@@ -23,8 +23,8 @@ public:
 	void done();
 	vector<Texture*> textures;
 
-protected:
 	ShaderProgram * shaderProgram;
+protected:
 	QVector4D diffuseColor;
 	void init();
 

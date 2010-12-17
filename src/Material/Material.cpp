@@ -61,12 +61,15 @@ void Material::initUniforms() {
 	 glUniform1i(texLoc, i);
 	 }
 	 */
-	glError("Material", 84);
+	glError("Material", 64);
 	bindTextures();
-
+	glError("Material", 66);
+	shaderProgram->initUniforms();
+	glError("Material", 68);
 	uniforms();
+	glError("Material", 70);
     SceneGraph::Instance().light->bindShaderInit(shaderProgram);
-	glError("Material", 90);
+	glError("Material", 72);
 
 }
 
@@ -98,6 +101,6 @@ void Material::activate() {
 
 }
 
-ShaderProgram *Material::getShaderProgram() const {
+ShaderProgram *Material::getShaderProgram() {
 	return shaderProgram;
 }

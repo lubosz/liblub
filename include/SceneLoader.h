@@ -10,6 +10,8 @@
 #include <QVector3D>
 #include <QDomElement>
 #include "ShaderProgram.h"
+#include "Texture.h"
+#include "Material.h"
 
 
 class SceneLoader {
@@ -22,12 +24,14 @@ public:
 	QDomElement sceneXML;
 
 	QVector3D stringToVector3D(const QString& values);
-	void appendNode(const QDomElement & node);
-	void appendMaterial(const QDomElement & material);
-	void appendProgram(const QDomElement & program);
-	void appendTexture(const QDomElement & texture);
+	void appendObject(const QDomElement & objectNode);
+	void appendMaterial(const QDomElement & materialNode);
+	void appendProgram(const QDomElement & programNode);
+	void appendTexture(const QDomElement & textureNode);
 	vector<string> splitFlags(QString values);
 	vector<float> splitUniform(QString values);
 
 	QMap<string,ShaderProgram*> shaderPrograms;
+	QMap<string,Texture*> textures;
+	QMap<string,Material*> materials;
 };

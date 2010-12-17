@@ -16,6 +16,12 @@
 			<Uniform value="0.8, 0.8, 0.8,1.0" name="specularMaterialColor" />
 			<Uniform value="4.3" name="shininess" />
 		</Program>
+		<Program name="white">
+			<Shader url="Color/white" />
+		</Program>
+		<Program name="stars">
+			<Shader url="Particle/stars" />
+		</Program>
 	</Programs>
 	<Textures>
 		<Texture name="diffuseTexture" url="bump/masonry-wall-texture.jpg" />
@@ -28,13 +34,15 @@
 			<Layer texture="ambientTexture" />
 			<Layer texture="normalTexture" />
 		</Material>
+		<Material name="white" program="white" />
+		<Material name="stars" program="stars" />
 	</Materials>
 	<Scene name="XML Loader">
 		<Light position ="0.3, 6.6, -3.3" direction="1,-5,-1" />
-		<Object name="monkey" mesh="monkey.blend" material="Color/white" scale="2.0" position="10, 0, -10" />
-		<Object name="radio" mesh="radio.blend" material="Color/white" scale="0.5" position="-5, -5, -5" />
-		<Procedural name="menger sponge" type="Sponge" recursion="3" material="Particle/stars" scale="3.0" position="10, 0, -10" />
-		<Procedural name="stars" type="Stars" recursion="3" material="Particle/stars" scale="3.0" position="10, 0, -10" resolution="100" density="1" randomness="0" colorIntensity="1" />
+		<Object name="monkey" mesh="monkey.blend" material="white" scale="2.0" position="10, 0, -10" />
+		<Object name="radio" mesh="radio.blend" material="Monkey" scale="0.5" position="-5, -5, -5" />
+		<Procedural name="menger sponge" type="Sponge" recursion="3" material="stars" scale="3.0" position="10, 0, -10" />
+		<Procedural name="stars" type="Stars" recursion="3" material="stars" scale="3.0" position="10, 0, -10" resolution="100" density="1" randomness="0" colorIntensity="1" />
 		<MeshPlane size="10" step="3" mesh="monkey.blend" texture="Paper_Texture_by_Spiteful_Pie_Stock.jpg" />
 	</Scene>
 </liblub>

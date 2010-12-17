@@ -40,6 +40,8 @@ public:
 	void setUniform(const QVector3D & vector, string name);
 	void setUniform(const QVector4D & vector, string name);
 
+	void initUniforms();
+
 
 private:
 	/* This is a handle to the shader program */

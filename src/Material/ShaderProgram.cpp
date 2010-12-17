@@ -105,6 +105,38 @@ void ShaderProgram::bindAttrib(string name){
 	attribCount++;
 }
 
+void ShaderProgram::initUniforms(){
+	foreach(Uniform uniform, uniforms){
+
+		Logger::Instance().message << "Uniform: " + uniform.name + ": ";
+		foreach(float value, uniform.values){
+			Logger::Instance().message << value << ", ";
+		}
+		Logger::Instance().log("UNIFORMS", "ShaderProgram");
+
+		switch(uniform.values.size()){
+		case 1:
+			glUniform1fv(glGetUniformLocation(program, uniform.name.c_str()), 1, uniform.values.data());
+			break;
+		case 2:
+			glUniform2fv(glGetUniformLocation(program, uniform.name.c_str()), 2, uniform.values.data());
+			break;
+		case 3:
+			glUniform3fv(glGetUniformLocation(program, uniform.name.c_str()), 3, uniform.values.data());
+			break;
+		case 4:
+//			glUniform4fv(glGetUniformLocation(program, uniform.name.c_str()), 4, uniform.values.data());
+			glUniform4f(glGetUniformLocation(program, uniform.name.c_str()), uniform.values[0],uniform.values[1],uniform.values[2],uniform.values[3]);
+			break;
+		}
+
+		Logger::Instance().message << uniform.values.size() << " bound.";
+
+		Logger::Instance().log("UNIFORMS", "ShaderProgram");
+		glError("ShaderProgram", 135);
+	}
+}
+
 void ShaderProgram::linkAndUse(){
     /* Link our program, and set it as being actively used */
     glLinkProgram(program);

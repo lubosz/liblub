@@ -33,6 +33,12 @@ public:
 	void uniforms(){}
 };
 
+class EmptyMat : public Material {
+public:
+	EmptyMat(){}
+	void uniforms(){}
+};
+
 class BrickMaterial : public Material {
 public:
 	BrickMaterial(){
