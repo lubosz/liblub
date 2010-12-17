@@ -27,7 +27,7 @@ class Simple : public Material {
 public:
 	Simple(string shaders){
 		init();
-		attachVertFrag(shaders);
+		shaderProgram->attachVertFrag(shaders);
 		done();
 	}
 	void uniforms(){}
@@ -37,7 +37,7 @@ class BrickMaterial : public Material {
 public:
 	BrickMaterial(){
 		init();
-		attachVertFrag("Procedural/brick");
+		shaderProgram->attachVertFrag("Procedural/brick");
 		done();
   }
 	void uniforms(){
@@ -53,7 +53,7 @@ public:
 	ShadowMapSimple(unsigned width, unsigned height){
 		init();
 		addTexture(TextureFactory::Instance().depthTexture(width, height, "shadowMap"));
-		attachVertFrag("Shadow/Simple");
+		shaderProgram->attachVertFrag("Shadow/Simple");
 		done();
   }
 	void uniforms(){}
@@ -66,7 +66,7 @@ public:
 		addTexture(TextureFactory::Instance().depthTexture(width, height, "shadowMap"));
 		addTexture("Paper_Texture_by_Spiteful_Pie_Stock.jpg","diffuseTexture");
 		vector<string> flags = {"receiveShadows","useDiffuseTexture","useSpotLight"};
-		attachVertFrag("Color/PhongColor",flags);
+		shaderProgram->attachVertFrag("Color/PhongColor",flags);
 		done();
   }
 	void uniforms(){
@@ -93,7 +93,7 @@ public:
 				"useAmbientTexture",
 				"useNormalTexture"
 		};
-		attachVertFrag("Color/PhongColor",flags);
+		shaderProgram->attachVertFrag("Color/PhongColor",flags);
 		done();
   }
 	void uniforms(){
@@ -117,7 +117,7 @@ public:
 				"usePCF"
 		};
 		diffuseColor = color.toVector4D();
-		attachVertFrag("Color/PhongColor",flags);
+		shaderProgram->attachVertFrag("Color/PhongColor",flags);
 		done();
   }
 	void uniforms(){
@@ -136,7 +136,7 @@ public:
 		init();
 		Texture * shadowMap = TextureFactory::Instance().depthTexture(width, height, "shadowMap");
 		addTexture(shadowMap);
-		attachVertFrag("Shadow/PCF");
+		shaderProgram->attachVertFrag("Shadow/PCF");
 		done();
   }
 	void uniforms(){
@@ -150,7 +150,7 @@ public:
 	TextureMaterial(string texture){
 		init();
 		addTexture(texture,"myTexture");
-		attachVertFrag("Texture/texture");
+		shaderProgram->attachVertFrag("Texture/texture");
 		done();
 
   }
@@ -174,7 +174,7 @@ public:
 //				"useAmbientTexture",
 //				"useNormalTexture"
 		};
-		attachVertFrag("Color/PhongColor",flags);
+		shaderProgram->attachVertFrag("Color/PhongColor",flags);
 		diffuseColor = QVector4D(1,0,0,0);
 		done();
 
@@ -197,7 +197,7 @@ public:
 		addTexture(texture,"diffuseTexture");
 		addTexture(heightmap,"heightMap");
 		addTexture(normal,"vertexNormalMap");
-//		attachVertFrag("Geometry/clipmap");
+//		shaderProgram->attachVertFrag("Geometry/clipmap");
 //		shaderProgram->attachShader("Geometry/clipmap.vert", GL_VERTEX_SHADER);
 		vector<string> flags = {
 				"useHeightMap"
@@ -210,7 +210,7 @@ public:
 		};
 		shaderProgram->attachShader("Color/PhongColor.vert", GL_VERTEX_SHADER,flags);
 		shaderProgram->attachShader("Color/PhongColor.frag", GL_FRAGMENT_SHADER,flags);
-//		attachVertFrag("Color/PhongColor",flags);
+//		shaderProgram->attachVertFrag("Color/PhongColor",flags);
 		done();
 
   }
@@ -234,7 +234,7 @@ public:
 		//shaderProgram->attachShader("Texture/texture.vert", GL_VERTEX_SHADER);
 		//shaderProgram->attachShader("Post/raysAndSky/3 - Blur.frag", GL_FRAGMENT_SHADER);
 		//shaderProgram->attachShader("Texture/texture.frag", GL_FRAGMENT_SHADER);
-		attachVertFrag("Texture/texture");
+		shaderProgram->attachVertFrag("Texture/texture");
 		done();
   }
 	void uniforms(){}
@@ -247,7 +247,7 @@ public:
 		init();
 		addTexture("bunny.png","myTexture");
 		addTexture("jet1.jpg","myOtherTexture");
-		attachVertFrag("Texture/multitexture");
+		shaderProgram->attachVertFrag("Texture/multitexture");
 		done();
   }
 	void uniforms(){}
@@ -260,7 +260,7 @@ public:
 		addTexture("earth/day.jpg","EarthDay");
 		addTexture("earth/night.jpg","EarthNight");
 		addTexture("earth/clouds.jpg","EarthCloudGloss");
-		attachVertFrag("Space/earth");
+		shaderProgram->attachVertFrag("Space/earth");
 		done();
   }
 	void uniforms(){}
@@ -275,7 +275,7 @@ public:
 		//addTexture("bump/tile1.tga","stepmap");
 		addTexture("cone/collage_base.jpg","texmap");
 		addTexture("cone/collage_step.png","stepmap");
-		attachVertFrag("Bump/csm");
+		shaderProgram->attachVertFrag("Bump/csm");
         done();
   }
 	void uniforms(){
@@ -298,7 +298,7 @@ class ProcBumpMaterial : public Material {
 public:
 	ProcBumpMaterial(){
 		init();
-		attachVertFrag("Procedural/procBump");
+		shaderProgram->attachVertFrag("Procedural/procBump");
 		done();
   }
 	void uniforms(){
@@ -337,7 +337,7 @@ public:
 		init();
 		addTexture("bump/tile1.jpg","colortex");
 		addTexture("bump/tile1.tga","reliefMap");
-		attachVertFrag("Bump/relief");
+		shaderProgram->attachVertFrag("Bump/relief");
 		done();
   }
 	void uniforms(){
@@ -355,7 +355,7 @@ class SSS : public Material {
 public:
 	SSS(){
 		init();
-		attachVertFrag("Stuff/sss");
+		shaderProgram->attachVertFrag("Stuff/sss");
 		done();
   }
 	void uniforms(){
@@ -374,7 +374,7 @@ public:
 		init();
 		addTextureCube("cubemaps/morning","EnvironmentMap");
 		addTexture("ocean/waves2.dds","NormalMap");
-		attachVertFrag("Water/Ocean");
+		shaderProgram->attachVertFrag("Water/Ocean");
 		done();
   }
 	void uniforms(){
@@ -412,7 +412,7 @@ public:
 	ParticleMat(){
 		init();
 		addTexture(TextureFactory::Instance().splatTexture("splatTexture", 32));
-		attachVertFrag("Particle/particle");
+		shaderProgram->attachVertFrag("Particle/particle");
 		done();
   }
 	void uniforms(){}
@@ -423,7 +423,7 @@ public:
 	CubeMap(string texture){
 		init();
 		addTextureCube(texture,"EnvMap");
-		attachVertFrag("Texture/cubemap");
+		shaderProgram->attachVertFrag("Texture/cubemap");
 		done();
   }
 	void uniforms(){
@@ -441,7 +441,7 @@ public:
 		addTexture("remesh/multi.tga","terrain_texture");
 		addTexture("remesh/multi.tga","displacement_texture");
 		//attachVertGeom("Remesh/render");
-		attachVertFragGeom("Remesh/render2");
+		shaderProgram->attachVertFragGeom("Remesh/render2");
 		done();
 
   }
@@ -453,8 +453,8 @@ class PhongColorMat : public Material {
 public:
 	PhongColorMat(QVector3D color){
 		init();
-		//attachVertFrag("Color/PhongColor", {"useSpotLight"});
-		attachVertFrag("Color/PhongColor");
+		//shaderProgram->attachVertFrag("Color/PhongColor", {"useSpotLight"});
+		shaderProgram->attachVertFrag("Color/PhongColor");
 		diffuseColor = color.toVector4D();
 		done();
   }
@@ -480,7 +480,7 @@ public:
 		init();
 		addTexture(texture,"diffuseTexture");
 		vector<string> flags = {"useDiffuseTexture"};
-		attachVertFrag("Color/PhongColor", flags);
+		shaderProgram->attachVertFrag("Color/PhongColor", flags);
 		done();
   }
 	void uniforms(){
@@ -503,7 +503,7 @@ public:
 		init();
 		addTexture(diffuse,"colorMap");
 		addTexture(normal,"normalMap");
-		attachVertFrag("Bump/normalMap");
+		shaderProgram->attachVertFrag("Bump/normalMap");
 		done();
   }
 	void uniforms(){
@@ -529,7 +529,7 @@ public:
 		init();
 		addTexture(diffuse,"colorMap");
 		addTexture(env,"envMap");
-		attachVertFrag("Env/sphereMap");
+		shaderProgram->attachVertFrag("Env/sphereMap");
 		done();
   }
 	void uniforms(){}
@@ -539,7 +539,7 @@ class MandelMat : public Material {
 public:
 	MandelMat(){
 		init();
-		attachVertFrag("Procedural/mandelbrot");
+		shaderProgram->attachVertFrag("Procedural/mandelbrot");
 		done();
   }
 	void uniforms(){
@@ -564,7 +564,7 @@ class HatchingMat : public Material {
 public:
 	HatchingMat(){
 		init();
-		attachVertFrag("Procedural/hatching");
+		shaderProgram->attachVertFrag("Procedural/hatching");
 		done();
   }
 	void uniforms(){
@@ -577,7 +577,7 @@ class GeomTest : public Material {
 public:
 	GeomTest(){
 		init();
-		attachVertFragGeom("Geometry/test");
+		shaderProgram->attachVertFragGeom("Geometry/test");
 		done();
 
   }
@@ -589,7 +589,7 @@ class FogMaterial : public Material {
 public:
 	FogMaterial(){
 		init();
-		attachVertFrag("Stuff/Fog");
+		shaderProgram->attachVertFrag("Stuff/Fog");
 		done();
 
   }

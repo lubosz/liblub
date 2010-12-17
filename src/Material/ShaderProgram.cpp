@@ -63,6 +63,26 @@ void ShaderProgram::detachShader(Shader *shader){
 	delete shader;
 }
 
+void ShaderProgram::attachVertFrag(string file) {
+	attachShader(file + ".vert", GL_VERTEX_SHADER);
+	attachShader(file + ".frag", GL_FRAGMENT_SHADER);
+}
+void ShaderProgram::attachVertFrag(string file, const vector<string> & defines){
+	attachShader(file + ".vert", GL_VERTEX_SHADER, defines);
+	attachShader(file + ".frag", GL_FRAGMENT_SHADER, defines);
+}
+
+void ShaderProgram::attachVertGeom(string file) {
+	attachShader(file + ".vert", GL_VERTEX_SHADER);
+	attachShader(file + ".geom", GL_GEOMETRY_SHADER);
+}
+
+void ShaderProgram::attachVertFragGeom(string file) {
+	attachShader(file + ".vert", GL_VERTEX_SHADER);
+	attachShader(file + ".geom", GL_GEOMETRY_SHADER);
+	attachShader(file + ".frag", GL_FRAGMENT_SHADER);
+}
+
 void ShaderProgram::bindAttrib(unsigned position, string name){
 	glBindAttribLocation(program, position, name.c_str());
 }

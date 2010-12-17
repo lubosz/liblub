@@ -22,4 +22,9 @@ public:
 
 	QVector3D stringToVector3D(const QString& values);
 	void appendNode(const QDomElement & node);
+	void appendMaterial(const QDomElement & material);
+	void appendProgram(const QDomElement & program);
+	void appendTexture(const QDomElement & texture);
+	vector<string> splitFlags(QString values);
+	vector<float> splitUniform(QString values);
 };

@@ -2,26 +2,31 @@
 <liblub>
 	<Programs>
 		<Program name="Ubershader">
-			<Shader url="Color/PhongColor" />
-			<flags>
-					receiveShadows,
-					useDiffuseTexture,
-					useSpotLight,
-					usePCF,
-					useAmbientTexture,
-					useNormalTexture
-			</flags>
-			<uniform value="0.1, 0.1, 0.1, 1.0" name="ambientSceneColor" />
-			<uniform value="0.1, 0.1, 0.1, 1.0" name="diffuseMaterialColor" />
-			<uniform value="0.8, 0.8, 0.8,1.0" name="specularMaterialColor" />
-			<uniform value="4.3" name="shininess" />
+			<Shader 
+				url="Color/PhongColor" 
+				flags="receiveShadows,
+						useDiffuseTexture,
+						useSpotLight,
+						usePCF,
+						useAmbientTexture,
+						useNormalTexture"
+			/>
+			<Uniform value="0.1, 0.1, 0.1, 1.0" name="ambientSceneColor" />
+			<Uniform value="0.1, 0.1, 0.1, 1.0" name="diffuseMaterialColor" />
+			<Uniform value="0.8, 0.8, 0.8,1.0" name="specularMaterialColor" />
+			<Uniform value="4.3" name="shininess" />
 		</Program>
 	</Programs>
+	<Textures>
+		<Texture name="diffuseTexture" url="bump/masonry-wall-texture.jpg" />
+		<Texture name="ambientTexture" url="monkey-occlusion.png" />
+		<Texture name="normalTexture" url="bump/masonry-wall-normal-map.jpg" />
+	</Textures>
 	<Materials>
-		<Material name="Monkey" shader="Ubershader">
-			<Texture name="diffuseTexture" url="bump/masonry-wall-texture.jpg" />
-			<Texture name="ambientTexture" url="monkey-occlusion.png" />
-			<Texture name="normalTexture" url="bump/masonry-wall-normal-map.jpg" />
+		<Material name="Monkey" program="Ubershader">
+			<Layer texture="diffuseTexture" />
+			<Layer texture="ambientTexture" />
+			<Layer texture="normalTexture" />
 		</Material>
 	</Materials>
 	<Scene name="XML Loader">

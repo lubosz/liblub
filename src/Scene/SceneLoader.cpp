@@ -28,6 +28,23 @@ SceneLoader::~SceneLoader() {
 	// TODO Auto-generated destructor stub
 }
 
+vector<string> SceneLoader::splitFlags(QString values){
+	vector<string> flags;
+	foreach (QString value, values.split(","))
+		{
+			flags.push_back(value.trimmed().toStdString());
+		}
+	return flags;
+}
+
+vector<float> SceneLoader::splitUniform(QString values){
+	vector<float> flags;
+	foreach (QString value, values.split(","))
+		{
+			flags.push_back(value.toFloat());
+		}
+	return flags;
+}
 
 QVector3D SceneLoader::stringToVector3D(const QString& values) {
 
@@ -37,6 +54,69 @@ QVector3D SceneLoader::stringToVector3D(const QString& values) {
 			floats.push_back(value.toFloat());
 		}
 	return QVector3D(floats[0], floats[1], floats[2]);
+}
+
+
+void SceneLoader::appendProgram(const QDomElement & program){
+	string name, shaderUrl;
+	vector<string> flags;
+	ShaderProgram shaderProgram;
+
+	if (program.hasAttribute("name"))
+		shaderProgram.name = program.attribute("name").toStdString();
+
+	QDomElement programInfo = program.firstChildElement();
+	while (!programInfo.isNull()) {
+		if (programInfo.tagName() == "Shader"){
+				shaderUrl = programInfo.attribute("url").toStdString();
+				Logger::Instance().message << shaderUrl;
+				Logger::Instance().log("DEBUG", "SceneLoader");
+				flags = splitFlags(programInfo.attribute("flags"));
+				foreach(string flag, flags){
+					Logger::Instance().log("DEBUG", "SceneLoader", flag);
+				}
+				shaderProgram.attachVertFrag(shaderUrl,flags);
+
+//		}else if (programInfo.tagName() == "Flags"){
+//			flags = splitFlags(programInfo.text());
+		}else if (programInfo.tagName() == "Uniform"){
+//			shaderUrl = program.attribute("name").toStdString();
+//			shaderUrl = program.attribute("value").toStdString();
+			shaderProgram.uniforms.push_back(
+					Uniform(
+							programInfo.attribute("name").toStdString(),
+							splitUniform(programInfo.attribute("value"))
+					)
+			);
+		}
+		programInfo = programInfo.nextSiblingElement();
+	}
+}
+
+void SceneLoader::appendMaterial(const QDomElement & material){
+	string name, program;
+	vector<string> layerStrings;
+
+	if (material.hasAttribute("name"))
+		name = material.attribute("name").toStdString();
+	if (material.hasAttribute("program"))
+		name = material.attribute("program").toStdString();
+
+	QDomElement layers = material.firstChildElement();
+	while (!layers.isNull()) {
+		if (layers.hasAttribute("texture"))
+			layerStrings.push_back(layers.attribute("program").toStdString());
+		layers = layers.nextSiblingElement();
+	}
+}
+
+void SceneLoader::appendTexture(const QDomElement & texture){
+	string name, url;
+
+	if (texture.hasAttribute("name"))
+		name = texture.attribute("name").toStdString();
+	if (texture.hasAttribute("url"))
+		name = texture.attribute("url").toStdString();
 }
 
 void SceneLoader::appendNode(const QDomElement & node){
@@ -106,17 +186,14 @@ void SceneLoader::load(){
 
 		if (document.tagName() == "Programs"){
 			QDomElement programs = document.firstChildElement();
-			Logger::Instance().log("Programs");
-			printf("foooooooo");
 			while (!programs.isNull()) {
-//				appendNode(scene);
+				appendProgram(programs);
 				programs = programs.nextSiblingElement();
 			}
 		}else if (document.tagName() == "Materials"){
 			QDomElement materials = document.firstChildElement();
-			Logger::Instance().log("Materials");
 			while (!materials.isNull()) {
-//				appendNode(scene);
+				appendMaterial(materials);
 				materials = materials.nextSiblingElement();
 			}
 		}else if (document.tagName() == "Scene"){
@@ -124,6 +201,12 @@ void SceneLoader::load(){
 			while (!scene.isNull()) {
 				appendNode(scene);
 				scene = scene.nextSiblingElement();
+			}
+		}else if (document.tagName() == "Textures"){
+			QDomElement textures = document.firstChildElement();
+			while (!textures.isNull()) {
+				appendNode(textures);
+				textures = textures.nextSiblingElement();
 			}
 		}
 		document = document.nextSiblingElement();

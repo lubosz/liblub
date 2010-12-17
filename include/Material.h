@@ -10,6 +10,7 @@
 #include "ShaderProgram.h"
 #include "TextureFactory.h"
 
+
 using namespace std;
 
 class Material {
@@ -20,6 +21,7 @@ public:
 	void addTexture(Texture * texture);
 	void done();
 	vector<Texture*> textures;
+
 protected:
 	ShaderProgram * shaderProgram;
 	QVector4D diffuseColor;
@@ -29,10 +31,7 @@ protected:
 	void addTexture(string file,string name);
 	void addTextureCube(string file,string name);
 
-	void attachVertFrag(string file);
-	void attachVertFrag(string file, const vector<string> & defines);
-	void attachVertGeom(string file);
-	void attachVertFragGeom(string file);
+
 
 
 private:
