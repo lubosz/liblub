@@ -9,6 +9,7 @@
 
 #include <QVector3D>
 #include <QDomElement>
+#include "ShaderProgram.h"
 
 
 class SceneLoader {
@@ -27,4 +28,6 @@ public:
 	void appendTexture(const QDomElement & texture);
 	vector<string> splitFlags(QString values);
 	vector<float> splitUniform(QString values);
+
+	QMap<string,ShaderProgram*> shaderPrograms;
 };

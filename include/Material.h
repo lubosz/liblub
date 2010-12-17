@@ -18,6 +18,7 @@ public:
     ShaderProgram *getShaderProgram() const;
 	void activate();
 	void initUniforms();
+	void bindTextures();
 	void addTexture(Texture * texture);
 	void done();
 	vector<Texture*> textures;

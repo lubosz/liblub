@@ -62,13 +62,7 @@ void Material::initUniforms() {
 	 }
 	 */
 	glError("Material", 84);
-	foreach( Texture* texture, textures )
-				{
-					//TODO: Why is this not needed?
-					//texture->activate();
-					texture->bind();
-					texture->uniform(shaderProgram->getReference());
-				}
+	bindTextures();
 
 	uniforms();
     SceneGraph::Instance().light->bindShaderInit(shaderProgram);
@@ -84,6 +78,16 @@ void Material::activateTextures() {
 
 				}
 	glError("Material::activateTextures", 102);
+}
+
+void Material::bindTextures(){
+	foreach( Texture* texture, textures )
+				{
+					//TODO: Why is this not needed?
+					//texture->activate();
+					texture->bind();
+					texture->uniform(shaderProgram->getReference());
+				}
 }
 
 void Material::activate() {
