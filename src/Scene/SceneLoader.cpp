@@ -69,19 +69,9 @@ void SceneLoader::appendProgram(const QDomElement & program){
 	while (!programInfo.isNull()) {
 		if (programInfo.tagName() == "Shader"){
 				shaderUrl = programInfo.attribute("url").toStdString();
-				Logger::Instance().message << shaderUrl;
-				Logger::Instance().log("DEBUG", "SceneLoader");
 				flags = splitFlags(programInfo.attribute("flags"));
-				foreach(string flag, flags){
-					Logger::Instance().log("DEBUG", "SceneLoader", flag);
-				}
 				shaderProgram.attachVertFrag(shaderUrl,flags);
-
-//		}else if (programInfo.tagName() == "Flags"){
-//			flags = splitFlags(programInfo.text());
 		}else if (programInfo.tagName() == "Uniform"){
-//			shaderUrl = program.attribute("name").toStdString();
-//			shaderUrl = program.attribute("value").toStdString();
 			shaderProgram.uniforms.push_back(
 					Uniform(
 							programInfo.attribute("name").toStdString(),
