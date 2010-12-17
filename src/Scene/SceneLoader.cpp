@@ -60,19 +60,19 @@ QVector3D SceneLoader::stringToVector3D(const QString& values) {
 void SceneLoader::appendProgram(const QDomElement & program){
 	string name, shaderUrl;
 	vector<string> flags;
-	ShaderProgram shaderProgram;
+	ShaderProgram * shaderProgram = new ShaderProgram();
 
 	if (program.hasAttribute("name"))
-		shaderProgram.name = program.attribute("name").toStdString();
+		name = program.attribute("name").toStdString();
 
 	QDomElement programInfo = program.firstChildElement();
 	while (!programInfo.isNull()) {
 		if (programInfo.tagName() == "Shader"){
 				shaderUrl = programInfo.attribute("url").toStdString();
 				flags = splitFlags(programInfo.attribute("flags"));
-				shaderProgram.attachVertFrag(shaderUrl,flags);
+				shaderProgram->attachVertFrag(shaderUrl,flags);
 		}else if (programInfo.tagName() == "Uniform"){
-			shaderProgram.uniforms.push_back(
+			shaderProgram->uniforms.push_back(
 					Uniform(
 							programInfo.attribute("name").toStdString(),
 							splitUniform(programInfo.attribute("value"))
@@ -81,6 +81,7 @@ void SceneLoader::appendProgram(const QDomElement & program){
 		}
 		programInfo = programInfo.nextSiblingElement();
 	}
+	shaderPrograms.insert(name, shaderProgram);
 }
 
 void SceneLoader::appendMaterial(const QDomElement & material){
