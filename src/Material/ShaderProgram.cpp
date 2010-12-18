@@ -114,15 +114,16 @@ void ShaderProgram::initUniforms(){
 		}
 		Logger::Instance().log("UNIFORMS", "ShaderProgram");
 
+		//TODO: vector methods, uniform boilerplate
 		switch(uniform.values.size()){
 		case 1:
-			glUniform1fv(glGetUniformLocation(program, uniform.name.c_str()), 1, uniform.values.data());
+			glUniform1f(glGetUniformLocation(program, uniform.name.c_str()), uniform.values[0]);
 			break;
 		case 2:
-			glUniform2fv(glGetUniformLocation(program, uniform.name.c_str()), 2, uniform.values.data());
+			glUniform2f(glGetUniformLocation(program, uniform.name.c_str()), uniform.values[0],uniform.values[1]);
 			break;
 		case 3:
-			glUniform3fv(glGetUniformLocation(program, uniform.name.c_str()), 3, uniform.values.data());
+			glUniform3f(glGetUniformLocation(program, uniform.name.c_str()), uniform.values[0],uniform.values[1],uniform.values[2]);
 			break;
 		case 4:
 //			glUniform4fv(glGetUniformLocation(program, uniform.name.c_str()), 4, uniform.values.data());
@@ -133,7 +134,7 @@ void ShaderProgram::initUniforms(){
 		Logger::Instance().message << uniform.values.size() << " bound.";
 
 		Logger::Instance().log("UNIFORMS", "ShaderProgram");
-		glError("ShaderProgram", 135);
+		glError("ShaderProgram", 136);
 	}
 	foreach(Uniformi uniformi, uniformsi){
 
@@ -161,8 +162,8 @@ void ShaderProgram::initUniforms(){
 
 		Logger::Instance().message << uniformi.values.size() << " bound.";
 
-		Logger::Instance().log("UNIFORMS", "ShaderProgram");
-		glError("ShaderProgram", 135);
+		Logger::Instance().log("UNIFORMSi", "ShaderProgram");
+		glError("ShaderProgram", 165);
 	}
 }
 
