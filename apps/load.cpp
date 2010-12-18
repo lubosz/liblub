@@ -12,7 +12,8 @@ public:
 //			programName = sceneXML.attribute("name").toStdString();
 
 		programName ="XML Loader";
-		sceneLoader = new SceneLoader("media/scenes/"+ sceneName + ".xml");
+		QString sceneFile = QString::fromStdString("media/scenes/"+ sceneName + ".xml");
+		sceneLoader = new SceneLoader(sceneFile);
 	}
 
 
@@ -24,5 +25,10 @@ public:
 };
 
 int main(int argc, char *argv[]) {
-	LoadApp(argv[0]).run();
+	if (argc == 2){
+		LoadApp(argv[1]).run();
+	}else{
+		Logger::Instance().log("NO SCENE SPECIFIED", "Try;", "./load test");
+	}
 }
+
