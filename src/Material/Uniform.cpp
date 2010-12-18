@@ -13,3 +13,10 @@ Uniform::Uniform(string name, const vector<float> & values) : name(name) ,values
 Uniform::~Uniform() {
 	// TODO Auto-generated destructor stub
 }
+
+Uniformi::Uniformi(string name, const vector<int> & values) : name(name) ,values(values){
+}
+
+Uniformi::~Uniformi() {
+	// TODO Auto-generated destructor stub
+}

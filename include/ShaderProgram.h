@@ -33,6 +33,7 @@ public:
 
 	string name;
 	vector<Uniform> uniforms;
+	vector<Uniformi> uniformsi;
 	void setUniform(float value, string name);
 	void setUniform(const QMatrix3x3 & matrix, string name);
 	void setUniform(const QMatrix4x4 & matrix, string name);

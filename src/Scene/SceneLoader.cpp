@@ -46,6 +46,15 @@ vector<float> SceneLoader::splitUniform(QString values){
 	return flags;
 }
 
+vector<int> SceneLoader::splitUniformi(QString values){
+	vector<int> flags;
+	foreach (QString value, values.split(","))
+		{
+			flags.push_back(value.toInt());
+		}
+	return flags;
+}
+
 QVector3D SceneLoader::stringToVector3D(const QString& values) {
 
 	vector<float> floats;
@@ -80,6 +89,13 @@ void SceneLoader::appendProgram(const QDomElement & programNode){
 					Uniform(
 							programInfo.attribute("name").toStdString(),
 							splitUniform(programInfo.attribute("value"))
+					)
+			);
+		}else if (programInfo.tagName() == "Uniformi"){
+			program->uniformsi.push_back(
+					Uniformi(
+							programInfo.attribute("name").toStdString(),
+							splitUniformi(programInfo.attribute("value"))
 					)
 			);
 		}

@@ -30,6 +30,7 @@ public:
 	void appendTexture(const QDomElement & textureNode);
 	vector<string> splitFlags(QString values);
 	vector<float> splitUniform(QString values);
+	vector<int> splitUniformi(QString values);
 
 	QMap<string,ShaderProgram*> shaderPrograms;
 	QMap<string,Texture*> textures;

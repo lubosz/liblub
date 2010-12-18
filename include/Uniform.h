@@ -21,3 +21,11 @@ public:
 	vector<float> values;
 };
 
+class Uniformi {
+public:
+	Uniformi(string name, const vector<int> & values);
+	virtual ~Uniformi();
+
+	string name;
+	vector<int> values;
+};
