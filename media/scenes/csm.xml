@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<liblub>
+	<Programs>
+		<Program name="ConeStepMap">
+			<Shader url="Bump/csm" />
+			<Uniform value="0.1, 0.1, 0.1" name="ambient" />
+			<Uniform value="0.99, 0.99, 0.99" name="diffuse" />
+			<Uniform value="0.1" name="depth" />
+			<Uniform value="1024" name="texsize" />
+			<Uniform value="1.0" name="csm_gain" />
+			<Uniform value="0.1" name="csm_offset" />
+			<Uniform value="1.0" name="linearAttenuation" />
+			<Uniformi value="10" name="conesteps" />
+		</Program>
+	</Programs>
+	<Textures>
+		<Texture name="texmap" url="cone/collage_base.jpg" />
+		<Texture name="stepmap" url="cone/collage_step.png" />
+	</Textures>
+	<Materials>
+		<Material name="ConeStepMap" program="ConeStepMap">
+			<Layer texture="texmap" />
+			<Layer texture="stepmap" />
+		</Material>
+		<Material name="white" program="white" />
+		<Material name="stars" program="stars" />
+	</Materials>
+	<Scene name="Cone Step Mapping">
+		<Light position ="0.3, 6.6, -3.3" direction="1,-5,-1" />
+		<Object name="cube" mesh="cube.blend" material="ConeStepMap" scale="1.0" position="0, -3, -2" />
+	</Scene>
+</liblub>
