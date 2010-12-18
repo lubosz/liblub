@@ -17,9 +17,9 @@ public:
 	void bind();
 	void uniform(GLuint program);
     GLuint getHandler() const;
+	string name;
 protected:
 	GLenum glId;
-	string name;
 	GLuint texture;
 	GLuint textureType;
 
