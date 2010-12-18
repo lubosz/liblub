@@ -118,8 +118,15 @@ void SceneLoader::appendMaterial(const QDomElement & materialNode){
 
 	QDomElement layers = materialNode.firstChildElement();
 	while (!layers.isNull()) {
-		if (layers.hasAttribute("texture"))
-			material->addTexture(textures.value(layers.attribute("texture").toStdString()));
+		if (layers.hasAttribute("texture")){
+			Texture * texture = textures.value(layers.attribute("texture").toStdString());
+			if(textures.count(layers.attribute("texture").toStdString()) == 0)
+				Logger::Instance().log("ERROR", "Scene Loader", "Texture " + layers.attribute("texture").toStdString()+" not found.");
+			//todo: uniform name reset
+			Logger::Instance().log("DEBUG", "SceneLoader",layers.attribute("sampler").toStdString());
+			texture->name = layers.attribute("sampler").toStdString();
+			material->addTexture(texture);
+		}
 		layers = layers.nextSiblingElement();
 	}
 
@@ -187,16 +194,26 @@ void SceneLoader::appendObject(const QDomElement & objectNode){
 		);
 	}
 
-	if (objectNode.tagName() == "Object" || objectNode.tagName() == "Procedural")
-	SceneGraph::Instance().addNode(
-			new Node(
-					name,
-					position,
-					scale,
-					mesh,
-					material
-			)
-	);
+	if (objectNode.tagName() == "Object" || objectNode.tagName() == "Procedural"){
+		Node * node = new Node(
+				name,
+				position,
+				scale,
+				mesh,
+				material
+		);
+		if(objectNode.attribute("receive_shadows").contains("true", Qt::CaseInsensitive))
+			node->setReceiveShadows(true);
+		else if(objectNode.attribute("receive_shadows").contains("false", Qt::CaseInsensitive))
+			node->setReceiveShadows(false);
+
+		if(objectNode.attribute("cast_shadows").contains("true", Qt::CaseInsensitive))
+			node->setCastShadows(true);
+		else if(objectNode.attribute("cast_shadows").contains("false", Qt::CaseInsensitive))
+			node->setCastShadows(false);
+
+	SceneGraph::Instance().addNode(node);
+	}
 }
 
 void SceneLoader::load(){

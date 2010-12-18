@@ -26,7 +26,8 @@ void Material::addTextureCube(string file, string name) {
 }
 
 void Material::defaultAttribs() {
-
+	Logger::Instance().message << "Initializing Vertex Attributes for Program #" << shaderProgram->getReference();
+    Logger::Instance().log("DEBUG","Material");
 	shaderProgram->bindAttrib("in_Vertex");
 	//TODO: Buffer order not variable
 	//shaderProgram->bindAttrib("in_Color");
@@ -36,8 +37,6 @@ void Material::defaultAttribs() {
 	shaderProgram->bindAttrib("in_Uv");
 
 }
-
-
 
 void Material::done() {
 	defaultAttribs();

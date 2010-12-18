@@ -101,6 +101,8 @@ void ShaderProgram::bindAttribIfUnbound(string name){
 
 
 void ShaderProgram::bindAttrib(string name){
+	Logger::Instance().message << name << " #"<< attribCount;
+	Logger::Instance().log("ShaderProgram", "Binding Shader Attribute");
 	bindAttrib(attribCount, name);
 	attribCount++;
 }
