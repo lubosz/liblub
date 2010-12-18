@@ -27,6 +27,7 @@ public:
 	void bindAttribIfUnbound(string name);
 	void bindAttrib(string name);
 	void bindAttrib(unsigned position, string name);
+	void defaultAttribs();
 
 	void linkAndUse();
 	GLuint getReference() const;

@@ -1,32 +1,64 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <liblub>
 	<Programs>
-		<Program name="ConeStepMap">
-			<Shader url="Bump/csm" />
-			<Uniform value="0.1, 0.1, 0.1" name="ambient" />
-			<Uniform value="0.99, 0.99, 0.99" name="diffuse" />
-			<Uniform value="0.1" name="depth" />
-			<Uniform value="1024" name="texsize" />
-			<Uniform value="1.0" name="csm_gain" />
-			<Uniform value="0.1" name="csm_offset" />
-			<Uniform value="1.0" name="linearAttenuation" />
-			<Uniformi value="10" name="conesteps" />
+		<Program name="Ubershader">
+			<Shader 
+				url="Color/PhongColor" 
+				flags="receiveShadows,
+						useDiffuseTexture,
+						useSpotLight,
+						usePCF,
+						useAmbientTexture,
+						useNormalTexture"
+			/>
+			<Uniform value="0.1, 0.1, 0.1, 1.0" name="ambientSceneColor" />
+			<Uniform value="0.1, 0.1, 0.1, 1.0" name="diffuseMaterialColor" />
+			<Uniform value="0.8, 0.8, 0.8,1.0" name="specularMaterialColor" />
+			<Uniform value="4.3" name="shininess" />
+		</Program>
+		<Program name="Relief">
+			<Shader url="Bump/relief" />
+			<Uniform value="0.2, 0.2, 0.2, 1.0" name="ambient" />
+			<Uniform value="1, 1, 1, 1.0" name="diffuse" />
+			<Uniform value="0.4, 0.4, 0.4, 1.0" name="specular" />
+			<Uniform value="0.1, 1000.0" name="planes" />
+			<Uniform value="1.0" name="tile" />
+			<Uniform value="0.2" name="depth" />
 		</Program>
 	</Programs>
 	<Textures>
-		<Texture name="collage-base" url="cone/collage_base.jpg" />
-		<Texture name="collage-step" url="cone/collage_step.png" />
+		<Texture name="masonry-wall-texture" url="bump/masonry-wall-texture.jpg" />
+		<Texture name="masonry-wall-normal-map" url="bump/masonry-wall-normal-map.jpg" />
+		
+		<Texture name="brickwork-texture" url="bump/brickwork-texture.jpg" />
+		<Texture name="brickwork_normal-map" url="bump/brickwork_normal-map.jpg" />
+		
+		<Texture name="monkey-occlusion" url="monkey-occlusion.png" />
+		<Texture name="radio-occlusion" url="radio-occlusion.png" />
+		<Texture name="plane-occlusion" url="plane-occlusion.png" />
+		
+		<Texture name="reliefColor" url="bump/tile1.jpg" />
+		<Texture name="reliefMap" url="bump/tile1.tga" />
 	</Textures>
 	<Materials>
-		<Material name="ConeStepMap" program="ConeStepMap">
-			<Layer sampler="texmap" texture="collage-base" />
-			<Layer sampler="stepmap" texture="collage-step" />
+		<Material name="monkey" program="Ubershader">
+			<Layer sampler="diffuseTexture" texture="masonry-wall-texture" />
+			<Layer sampler="ambientTexture" texture="monkey-occlusion" />
+			<Layer sampler="normalTexture" texture="masonry-wall-normal-map" />
 		</Material>
+
+		<Material name="relief" program="Relief">
+			<Layer sampler="colortex" texture="reliefColor" />
+			<Layer sampler="reliefMap" texture="reliefMap" />
+		</Material>
+		
+
 	</Materials>
-	<Scene name="Cone Step Mapping">
+	<Scene name="PCF Shadow Mapping">
 		<Light position ="0.3, 6.6, -3.3" direction="1,-5,-1" />
+		<Object name="bump" mesh="cube.obj" material="monkey" scale="1.0" position="3,-2,-9" />
 		<Object name="bump" mesh="cube.obj" material="relief" scale="1.0" position="3,-2,-5" />
-		<Object name="bump" mesh="cube.obj" material="ground" scale="1.0" position="3,-2,-9" />
-		<Object name="radio" mesh="radio.blend" material="radio" scale="0.5" position="-5,-5,-5" />
+		<Object name="radio" mesh="radio.blend" material="monkey" scale="0.5" position="-5,-5,-5" />
+		<Object name="Plane" mesh="plane.blend" material="monkey" scale="20" position="0,-7,0" receive_shadows="true" cast_shadows="false" />
 	</Scene>
 </liblub>

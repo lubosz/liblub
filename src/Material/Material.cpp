@@ -25,21 +25,9 @@ void Material::addTextureCube(string file, string name) {
 
 }
 
-void Material::defaultAttribs() {
-	Logger::Instance().message << "Initializing Vertex Attributes for Program #" << shaderProgram->getReference();
-    Logger::Instance().log("DEBUG","Material");
-	shaderProgram->bindAttrib("in_Vertex");
-	//TODO: Buffer order not variable
-	//shaderProgram->bindAttrib("in_Color");
-	shaderProgram->bindAttrib("in_Normal");
-	shaderProgram->bindAttrib("in_Tangent");
-	shaderProgram->bindAttrib("in_Bitangent");
-	shaderProgram->bindAttrib("in_Uv");
-
-}
-
 void Material::done() {
-	defaultAttribs();
+	//todo: deprecated
+	shaderProgram->defaultAttribs();
 	shaderProgram->linkAndUse();
 
 	initUniforms();
@@ -60,15 +48,10 @@ void Material::initUniforms() {
 	 glUniform1i(texLoc, i);
 	 }
 	 */
-	glError("Material", 64);
 	bindTextures();
-	glError("Material", 66);
 	shaderProgram->initUniforms();
-	glError("Material", 68);
 	uniforms();
-	glError("Material", 70);
-    SceneGraph::Instance().light->bindShaderInit(shaderProgram);
-	glError("Material", 72);
+	glError("Material", 54);
 
 }
 

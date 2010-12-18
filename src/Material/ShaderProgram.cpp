@@ -6,7 +6,7 @@
  */
 
 #include "ShaderProgram.h"
-
+#include "SceneGraph.h"
 
 ShaderProgram::ShaderProgram() {
 	attribCount = 0;
@@ -107,6 +107,19 @@ void ShaderProgram::bindAttrib(string name){
 	attribCount++;
 }
 
+void ShaderProgram::defaultAttribs(){
+	//todo: make attribs configurable
+	//TODO: Buffer order not variable
+	Logger::Instance().message << "Initializing Vertex Attributes for Program #" << program;
+    Logger::Instance().log("DEBUG","Material");
+	bindAttrib("in_Vertex");
+	//bindAttrib("in_Color");
+	bindAttrib("in_Normal");
+	bindAttrib("in_Tangent");
+	bindAttrib("in_Bitangent");
+	bindAttrib("in_Uv");
+}
+
 void ShaderProgram::initUniforms(){
 	foreach(Uniform uniform, uniforms){
 
@@ -167,6 +180,7 @@ void ShaderProgram::initUniforms(){
 		Logger::Instance().log("UNIFORMSi", "ShaderProgram");
 		glError("ShaderProgram", 165);
 	}
+    SceneGraph::Instance().light->bindShaderInit(this);
 }
 
 void ShaderProgram::linkAndUse(){

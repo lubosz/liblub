@@ -21,6 +21,7 @@ public:
 	void bindTextures();
 	void addTexture(Texture * texture);
 	void done();
+
 	vector<Texture*> textures;
 
 	ShaderProgram * shaderProgram;
