@@ -24,15 +24,15 @@
 		</Program>
 	</Programs>
 	<Textures>
-		<Texture name="diffuseTexture" url="bump/masonry-wall-texture.jpg" />
-		<Texture name="ambientTexture" url="monkey-occlusion.png" />
-		<Texture name="normalTexture" url="bump/masonry-wall-normal-map.jpg" />
+		<Texture name="masonry-wall-texture" url="bump/masonry-wall-texture.jpg" />
+		<Texture name="monkey-occlusion" url="monkey-occlusion.png" />
+		<Texture name="masonry-wall-normal-map" url="bump/masonry-wall-normal-map.jpg" />
 	</Textures>
 	<Materials>
 		<Material name="Monkey" program="Ubershader">
-			<Layer texture="diffuseTexture" />
-			<Layer texture="ambientTexture" />
-			<Layer texture="normalTexture" />
+			<Layer sampler="diffuseTexture" texture="masonry-wall-texture" />
+			<Layer sampler="ambientTexture" texture="monkey-occlusion" />
+			<Layer sampler="normalTexture" texture="masonry-wall-normal-map" />
 		</Material>
 		<Material name="white" program="white" />
 		<Material name="stars" program="stars" />
