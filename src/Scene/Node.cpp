@@ -99,6 +99,7 @@ void Node::setMaterial(Material *material)
 void Node::draw(){
 	material->activate();
 	mesh->draw();
+
 }
 
 void Node::setSize(float size){
@@ -149,6 +150,8 @@ void Node::bindShaders(ShaderProgram * shaderProgram, DirectionNode * viewPoint)
 
 	shaderProgram->setUniform(tempMatrix,"MVPMatrix");
 
+	//todo: performance (passing pmatrix)
+	shaderProgram->setUniform(viewPoint->getProjection(),"PMatrix");
 
     glError("Node::bindShaders",124);
 }

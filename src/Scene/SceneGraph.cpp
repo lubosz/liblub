@@ -51,14 +51,14 @@ void SceneGraph::drawNodes(DirectionNode * viewPoint){
     {
     	//if (node->getReceiveShadows()){
         node->bindShaders(viewPoint);
+    //todo: wtf
     	if(true){
     		setShadowCoords(node,viewPoint);
     	}
-
     	light->bindShaderUpdate(node->getMaterial()->getShaderProgram());
     	node->draw();
     }
-    glError("SceneGraph",139);
+    glError("SceneGraph",61);
 
 }
 
@@ -71,7 +71,7 @@ void SceneGraph::drawCasters(Material * material){
 			node->mesh->draw();
     	}
     }
-    glError("SceneGraph",139);
+    glError("SceneGraph",74);
 
 }
 

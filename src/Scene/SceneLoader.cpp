@@ -78,11 +78,26 @@ void SceneLoader::appendProgram(const QDomElement & programNode){
 	while (!programInfo.isNull()) {
 		if (programInfo.tagName() == "Shader"){
 				shaderUrl = programInfo.attribute("url").toStdString();
-				if (programInfo.hasAttribute("flags")){
-					flags = splitFlags(programInfo.attribute("flags"));
-					program->attachVertFrag(shaderUrl,flags);
+				if(programInfo.hasAttribute("type")){
+					QString shaderType = programInfo.attribute("type");
+					if(shaderType =="VERTEX_SHADER")
+						program->attachShader(shaderUrl, GL_VERTEX_SHADER);
+					else if(shaderType =="GEOMETRY_SHADER")
+						program->attachShader(shaderUrl, GL_GEOMETRY_SHADER);
+					else if(shaderType =="FRAGMENT_SHADER")
+						program->attachShader(shaderUrl, GL_FRAGMENT_SHADER);
+					else if(shaderType =="CONTROL_SHADER")
+						program->attachShader(shaderUrl, GL_TESS_CONTROL_SHADER);
+					else if(shaderType =="EVALUATION_SHADER")
+						program->attachShader(shaderUrl, GL_TESS_EVALUATION_SHADER);
 				}else{
-					program->attachVertFrag(shaderUrl);
+
+					if (programInfo.hasAttribute("flags")){
+						flags = splitFlags(programInfo.attribute("flags"));
+						program->attachVertFrag(shaderUrl,flags);
+					}else{
+						program->attachVertFrag(shaderUrl);
+					}
 				}
 		}else if (programInfo.tagName() == "Uniform"){
 			program->uniforms.push_back(
