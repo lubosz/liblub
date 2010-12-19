@@ -16,7 +16,7 @@
         vec4 p2 = gl_TessCoord.z * gl_in[2].gl_Position;
         vec4 position = p0 + p1 + p2;
 
-        position.z = texture(terrain, position.xy).a;
+        position.z = texture(terrain, position.xy).r;
         gl_Position = MVPMatrix * position;
         texcoord = position.xy;
         depth = gl_Position.z;
