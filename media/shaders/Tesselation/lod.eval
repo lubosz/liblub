@@ -1,0 +1,17 @@
+#version 410
+
+layout(quads, equal_spacing, ccw) in;
+//layout(quads, fractional_even_spacing, ccw) in;
+//layout(quads, fractional_odd_spacing, ccw) in;
+
+uniform mat4 MVPMatrix;
+
+void main(){
+	float u = gl_TessCoord.x;
+	float v = gl_TessCoord.y;
+
+	vec4 a = mix(gl_in[1].gl_Position, gl_in[0].gl_Position, u);
+	vec4 b = mix(gl_in[2].gl_Position, gl_in[3].gl_Position, u);
+	
+	gl_Position = MVPMatrix * mix(a, b, v);
+}
