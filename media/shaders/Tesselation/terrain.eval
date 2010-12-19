@@ -1,0 +1,23 @@
+#version 410
+  layout(triangles, fractional_even_spacing, cw) in;
+    //layout(triangles, equal_spacing, cw) in;
+
+    uniform sampler2D terrain;
+    uniform mat4 MVPMatrix;
+    out vec2 texcoord;
+    out float depth;
+
+    void main(){
+        float u = gl_TessCoord.x;
+        float v = gl_TessCoord.y;
+
+        vec4 p0 = gl_TessCoord.x * gl_in[0].gl_Position;
+        vec4 p1 = gl_TessCoord.y * gl_in[1].gl_Position;
+        vec4 p2 = gl_TessCoord.z * gl_in[2].gl_Position;
+        vec4 position = p0 + p1 + p2;
+
+        position.z = texture(terrain, position.xy).a;
+        gl_Position = MVPMatrix * position;
+        texcoord = position.xy;
+        depth = gl_Position.z;
+    }

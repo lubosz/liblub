@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<liblub>
+	<Programs>
+		<Program name="Ubershader">
+			<Shader 
+				url="Color/PhongColor" 
+				flags="receiveShadows,
+						useDiffuseTexture,
+						useSpotLight,
+						usePCF,
+						useAmbientTexture,
+						useNormalTexture"
+			/>
+			<Uniform value="0.1, 0.1, 0.1, 1.0" name="ambientSceneColor" />
+			<Uniform value="0.1, 0.1, 0.1, 1.0" name="diffuseMaterialColor" />
+			<Uniform value="0.8, 0.8, 0.8,1.0" name="specularMaterialColor" />
+			<Uniform value="4.3" name="shininess" />
+		</Program>
+		<Program name="Ubershader">
+			<Uniform value="0.1, 0.1, 0.1, 1.0" name="ambientSceneColor" />
+			<Uniform value="0.1, 0.1, 0.1, 1.0" name="diffuseMaterialColor" />
+			<Uniform value="0.8, 0.8, 0.8,1.0" name="specularMaterialColor" />
+			<Uniform value="4.3" name="shininess" />
+		</Program>
+	</Programs>
+	<Textures>
+		<Texture name="brickwork-texture" url="bump/brickwork-texture.jpg" />
+		<Texture name="plane-occlusion" url="plane-occlusion.png" />
+		<Texture name="brickwork_normal-map" url="bump/brickwork_normal-map.jpg" />
+	</Textures>
+	<Materials>"Planets/Mars.jpg","plane-occlusion.png", "Planets/Mars-normal.png"
+		<Material name="ground" program="Ubershader">
+			<Layer sampler="diffuseTexture" texture="brickwork-texture" />
+			<Layer sampler="ambientTexture" texture="plane-occlusion" />
+			<Layer sampler="normalTexture" texture="brickwork_normal-map" />
+		</Material>
+	</Materials>
+	<Scene name="XML Loader">
+		<Light position ="-15.2, 19.4, 6.5" direction="1,-5,-1" />
+		<Object name="earth" mesh="earth.obj" material="white" scale="10" position="-10,-10,-10" />
+		<Object name="radio" mesh="radio.blend" material="Monkey" scale="0.5" position="-5, -5, -5" />
+	</Scene>
+</liblub>
