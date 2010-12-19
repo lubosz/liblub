@@ -158,10 +158,15 @@ void SceneLoader::appendMaterial(const QDomElement & materialNode){
 void SceneLoader::appendTexture(const QDomElement & textureNode){
 	string name = textureNode.attribute("name").toStdString();
 	Logger::Instance().log("DEBUG", "SceneLoader", "Texture name:"+name);
+	Texture * texture;
+	if (textureNode.tagName() == "Texture"){
+		texture = TextureFactory::Instance().load(textureNode.attribute("url").toStdString(), name);
+	}else if (textureNode.tagName() == "TextureCube"){
+		texture = TextureFactory::Instance().loadCubeMap(textureNode.attribute("url").toStdString(), name);
+	}
 	textures.insert(
 			name,
-			TextureFactory::Instance().load(textureNode.attribute("url").toStdString(), name)
-
+			texture
 	);
 }
 
