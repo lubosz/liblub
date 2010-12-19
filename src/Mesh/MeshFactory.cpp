@@ -73,7 +73,7 @@ Mesh * MeshFactory::load(string file) {
 	aiMesh * assMesh = scene->mMeshes[0];
 
 	if(!assMesh->HasTangentsAndBitangents()){
-		Logger::Instance().log("ERROR","Assimp Scene Load","NO TANGENTS!!!");
+		Logger::Instance().log("WARNING","Assimp Scene Load","NO TANGENTS!!!");
 	}
 
 
@@ -102,18 +102,20 @@ Mesh * MeshFactory::load(string file) {
 			normals.push_back(normal.y);
 			normals.push_back(normal.z);
 
-			aiVector3D tangent = assMesh->mTangents[vertex];
-			tangents.push_back(tangent.x);
-			tangents.push_back(tangent.y);
-			tangents.push_back(tangent.z);
+			if(assMesh->HasTangentsAndBitangents()){
+				aiVector3D tangent = assMesh->mTangents[vertex];
+				tangents.push_back(tangent.x);
+				tangents.push_back(tangent.y);
+				tangents.push_back(tangent.z);
 
-			//assMesh->mBitangents
+				//assMesh->mBitangents
 
-			aiVector3D bitangent = assMesh->mBitangents[vertex];
+				aiVector3D bitangent = assMesh->mBitangents[vertex];
 
-			bitangents.push_back(bitangent.x);
-			bitangents.push_back(bitangent.y);
-			bitangents.push_back(bitangent.z);
+				bitangents.push_back(bitangent.x);
+				bitangents.push_back(bitangent.y);
+				bitangents.push_back(bitangent.z);
+			}
 
 			aiVector3D uv = assMesh->mTextureCoords[0][vertex];
 			uvs.push_back(uv.x);
@@ -130,12 +132,13 @@ Mesh * MeshFactory::load(string file) {
 	Mesh * mesh = new Mesh();
 
 	mesh->addBuffer(positions, 3, "in_Vertex");
-	mesh->addBuffer(normals, 3, "in_Normal");
-	mesh->addBuffer(tangents, 3, "in_Tangent");
-	mesh->addBuffer(bitangents, 3, "in_Bitangent");
-	mesh->addBuffer(uvs, 2, "in_Uv");
+//	mesh->addBuffer(normals, 3, "in_Normal");
+//	mesh->addBuffer(tangents, 3, "in_Tangent");
+//	mesh->addBuffer(bitangents, 3, "in_Bitangent");
+//	mesh->addBuffer(uvs, 2, "in_Uv");
 	mesh->addElementBuffer(indices);
-	mesh->setDrawType(GL_TRIANGLES);
+//	mesh->setDrawType(GL_TRIANGLES);
+	mesh->setDrawType(GL_PATCHES);
 
 	return mesh;
 

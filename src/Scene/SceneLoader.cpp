@@ -10,6 +10,7 @@
 #include "MeshFactory.h"
 #include "SceneLoader.h"
 #include "MengerSponge.h"
+#include "Geometry.h"
 
 SceneLoader::SceneLoader(QString fileName) {
 	QFile file(fileName);
@@ -205,6 +206,8 @@ void SceneLoader::appendObject(const QDomElement & objectNode){
 					objectNode.attribute("randomness").toFloat(),
 					objectNode.attribute("colorIntensity").toFloat()
 			);
+		}else if(objectNode.attribute("type") == "Tess"){
+			mesh = Geometry::makePlaneTess();
 		}
 	}else if (objectNode.tagName() == "MeshPlane") {
 		SceneGraph::Instance().meshPlane(

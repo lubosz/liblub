@@ -87,7 +87,9 @@ class Ubershader : public Material {
 public:
 	Ubershader(string diffuse, string ambient, string normal){
 		init();
+#ifdef USE_FBO
 		addTexture(RenderEngine::Instance().shadowSequence->renderPasses[0]->targetTexture);
+#endif
 		addTexture(diffuse,"diffuseTexture");
 		addTexture(ambient,"ambientTexture");
 		addTexture(normal,"normalTexture");
@@ -116,7 +118,9 @@ class UbershaderColor : public Material {
 public:
 	UbershaderColor(QVector3D color){
 		init();
+#ifdef USE_FBO
 		addTexture(RenderEngine::Instance().shadowSequence->renderPasses[0]->targetTexture);
+#endif
 		vector<string> flags = {
 				"receiveShadows",
 				"useSpotLight",

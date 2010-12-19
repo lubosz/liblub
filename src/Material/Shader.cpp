@@ -43,19 +43,27 @@ void Shader::loadAndCompile(){
     /* Assign our handles a "name" to new shader objects */
     shader = glCreateShader(type);
 
-    //set defines
-    string defineString = "";
+    if (defines.size() > 0){
+		//set defines
+		string defineString = "";
 
-    foreach( string define, defines )
-    {
-    	defineString += "#define " + define + "\n";
+		foreach( string define, defines )
+		{
+			defineString += "#define " + define + "\n";
+		}
+		//defines += "#define useDiffuseTexture\n";
+		const GLchar *sources[2] = { defineString.c_str(), source };
+		glShaderSource(shader, 2, sources, NULL);
+    }else{
+    	glShaderSource(shader, 1,  (const GLchar**)&source, NULL);
     }
-    //defines += "#define useDiffuseTexture\n";
-    const GLchar *sources[2] = { defineString.c_str(), source };
-    glShaderSource(shader, 2, sources, NULL);
+    glError("Shader::loadAndCompile() glShaderSource",65);
 
+    Logger::Instance().message << "Compiling Shader#" << shader <<"...";
     /* Compile our shader objects */
+    //TODO: driver crashes :/
     glCompileShader(shader);
+    glError("Shader::loadAndCompile() glCompileShader",65);
     printShaderInfoLog(shader);
 }
 
@@ -110,7 +118,7 @@ void Shader::printShaderInfoLog(GLuint shader) {
 		free(infoLog);
 		Logger::Instance().log("ERROR","Shader Log",shaderlog);
 	} else {
-		Logger::Instance().log("DEBUG","Shader","Done");
+		Logger::Instance().log("DEBUG","Shader","Success");
 	}
 }
 

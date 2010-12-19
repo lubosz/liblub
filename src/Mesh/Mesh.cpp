@@ -97,6 +97,8 @@ void Mesh::draw(){
 	//glDrawElementsInstanced(drawType, indexSize, GL_UNSIGNED_INT, 0,6);
 
 	glBindVertexArray(vao);
+	glError("Mesh::draw() glBindVertexArray",101);
 	//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vbo[bufferCount]);
 	glDrawElements(drawType, indexSize, GL_UNSIGNED_INT, 0);
+	glError("Mesh::draw() glDrawElements",104);
 }

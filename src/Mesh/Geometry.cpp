@@ -45,6 +45,24 @@ Mesh * Geometry::makePlane(){
 
 }
 
+Mesh * Geometry::makePlaneTess(){
+
+	vector<GLfloat> vertices = {
+	        1, 1, 0,
+	        1, -1, 0,
+	        -1, -1, 0,
+	        -1, 1, 0
+	};
+
+	vector<GLuint> indicies = { 0, 1, 2, 0, 2, 3 };
+	Mesh * mesh = new Mesh();
+    mesh->addBuffer(vertices,3,"in_Vertex");
+    mesh->addElementBuffer(indicies);
+    mesh->setDrawType(GL_PATCHES);
+	return mesh;
+
+}
+
 Mesh * Geometry::makeTetrahedron(){
 	vector<GLfloat> vertices = {
 		1.0,  1.0,  1.0,

@@ -2,25 +2,39 @@
 <liblub>
 	<Programs>
 		<Program name="Tesselator">
-			<Shader url="Tesselation/terrain.vert" type="VERTEX_SHADER" />
-			<!--<Shader url="Tesselation/terrain.cont" type="CONTROL_SHADER" />
-			<Shader url="Tesselation/terrain.eval" type="EVALUATION_SHADER" /> !-->
-			<Shader url="Tesselation/terrain.frag" type="FRAGMENT_SHADER" /> 
+			<Shader url="Tesselation/triangle.vert" type="VERTEX_SHADER" />
+			<!--<Shader url="Tesselation/triangle.cont" type="CONTROL_SHADER" />
+			<Shader url="Tesselation/triangle.eval" type="EVALUATION_SHADER" />-->
+			<Shader url="Tesselation/lod.cont" type="CONTROL_SHADER" />
+			<Shader url="Tesselation/lod.eval" type="EVALUATION_SHADER" />
+			<Shader url="Tesselation/triangle.frag" type="FRAGMENT_SHADER" /> 
 			<Uniform value="1920, 1200" name="screen_size" />
+			<Uniform name="float pixels_per_division" value="15" />
+			<Uniform name="inner_level" value="1" />
+			<Uniform name="outer_level" value="8" />
+		</Program>
+		<Program name="white">
+				<Shader url="Color/white" />
 		</Program>
 	</Programs>
+	<!--
 	<Textures>
 		<Texture name="mars" url="Planets/Mars.jpg" />
 		<Texture name="noise" url="terrain-noise.png" />
 	</Textures>
+	-->
 	<Materials>
 		<Material name="Terrain" program="Tesselator">
+		<!--
 			<Layer sampler="terrain" texture="noise" />
 			<Layer sampler="diffuse" texture="mars" />
+		-->
 		</Material>
+		<Material name="white" program="white" />
 	</Materials>
 	<Scene name="Tesselator (YAY)">
-		<Light position ="0.3, 6.6, -3.3" direction="1,-5,-1" />
-		<Object name="monkey" mesh="tess.obj" material="Terrain" scale="10.0" position="10, 0, -10" />
+		<Light position ="0, 10, 0" direction="1,-5,-1" />
+		<Procedural type="Tess" name="monkey" material="Terrain" scale="1.0" position="0, 0, -3" />
+		<Object mesh="cube.obj" name="monkey" material="Terrain" scale="1.0" position="0, 0, 4" />
 	</Scene>
 </liblub>

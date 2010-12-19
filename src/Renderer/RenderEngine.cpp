@@ -44,6 +44,7 @@ RenderEngine::RenderEngine() {
     //glBlendFunc(GL_SRC_ALPHA, GL_ONE);
     //glEnable(GL_BLEND);
     //glDepthMask(GL_FALSE);
+//    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
 	glError("RenderEngine",52);
 
