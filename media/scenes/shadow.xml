@@ -40,6 +40,11 @@
 		<Texture name="reliefColor" url="bump/tile1.jpg" />
 		<Texture name="reliefMap" url="bump/tile1.tga" />
 	</Textures>
+	<Meshes>
+		<File name="cube" url="cube.obj" />
+		<File name="radio" url="radio.obj" />
+		<File name="plane" url="plane.obj" />
+	</Meshes>
 	<Materials>
 		<Material name="monkey" program="Ubershader">
 			<Layer sampler="diffuseTexture" texture="masonry-wall-texture" />
@@ -65,9 +70,9 @@
 	</Materials>
 	<Scene name="PCF Shadow Mapping">
 		<Light position ="0.3, 6.6, -3.3" direction="1,-5,-1" />
-		<Object name="bump" mesh="cube.obj" material="ground" scale="1.0" position="3,-2,-9" />
-		<Object name="bump" mesh="cube.obj" material="relief" scale="1.0" position="3,-2,-5" />
-		<Object name="radio" mesh="radio.blend" material="radio" scale="0.5" position="-5,-5,-5" />
-		<Object name="Plane" mesh="plane.blend" material="ground" scale="20" position="0,-7,0" receive_shadows="true" cast_shadows="false" />
+		<Object name="bump" mesh="cube" material="ground" scale="1.0" position="3,-2,-9" />
+		<Object name="bump" mesh="cube" material="relief" scale="1.0" position="3,-2,-5" />
+		<Object name="radio" mesh="radio" material="radio" scale="0.5" position="-5,-5,-5" />
+		<Object name="Plane" mesh="plane" material="ground" scale="20" position="0,-7,0" receive_shadows="true" cast_shadows="false" />
 	</Scene>
 </liblub>

@@ -50,6 +50,10 @@ Mesh *  MeshFactory::lamp(){
 }
 
 Mesh * MeshFactory::load(string file) {
+	return load(file, GL_TRIANGLES);
+}
+
+Mesh * MeshFactory::load(string file, GLint drawType) {
 	string path = meshDir + file;
 
 	// Create an instance of the Importer class
@@ -132,13 +136,14 @@ Mesh * MeshFactory::load(string file) {
 	Mesh * mesh = new Mesh();
 
 	mesh->addBuffer(positions, 3, "in_Vertex");
-//	mesh->addBuffer(normals, 3, "in_Normal");
-//	mesh->addBuffer(tangents, 3, "in_Tangent");
-//	mesh->addBuffer(bitangents, 3, "in_Bitangent");
-//	mesh->addBuffer(uvs, 2, "in_Uv");
+	mesh->addBuffer(normals, 3, "in_Normal");
+	mesh->addBuffer(tangents, 3, "in_Tangent");
+	mesh->addBuffer(bitangents, 3, "in_Bitangent");
+	mesh->addBuffer(uvs, 2, "in_Uv");
 	mesh->addElementBuffer(indices);
 //	mesh->setDrawType(GL_TRIANGLES);
-	mesh->setDrawType(GL_PATCHES);
+//	mesh->setDrawType(GL_PATCHES);
+	mesh->setDrawType(drawType);
 
 	return mesh;
 

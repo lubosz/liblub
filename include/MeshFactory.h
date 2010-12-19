@@ -16,6 +16,7 @@ public:
 	static Mesh * stars(float resolution, float density, float randomness,  float colorIntensity);
 	static Mesh * plane();
 	static Mesh * load(string file);
+	static Mesh * load(string file, GLint drawType);
 	static Mesh * lamp();
 	static Mesh * spiral();
 	static Mesh * loadDirect(string file);

@@ -32,9 +32,13 @@
 		</Material>
 		<Material name="white" program="white" />
 	</Materials>
+	<Meshes>
+		<File name="cube" url="cube.obj" drawType="PATCHES" />
+		<Procedural name="Tess" type="Tess" drawType="PATCHES" />
+	</Meshes>
 	<Scene name="Tesselator (YAY)">
 		<Light position ="0, 10, 0" direction="1,-5,-1" />
-		<Procedural type="Tess" name="monkey" material="Terrain" scale="1.0" position="0, 0, -3" />
-		<Object mesh="cube.obj" name="monkey" material="Terrain" scale="1.0" position="0, 0, 4" />
+		<Object mesh="Tess" name="monkey" material="Terrain" scale="1.0" position="0, 0, -3" />
+		<Object mesh="cube" name="monkey" material="Terrain" scale="1.0" position="0, 0, 4" />
 	</Scene>
 </liblub>

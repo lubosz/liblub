@@ -115,9 +115,9 @@ void ShaderProgram::defaultAttribs(){
 	bindAttrib("in_Vertex");
 	//bindAttrib("in_Color");
 	bindAttrib("in_Normal");
-//	bindAttrib("in_Tangent");
-//	bindAttrib("in_Bitangent");
-//	bindAttrib("in_Uv");
+	bindAttrib("in_Tangent");
+	bindAttrib("in_Bitangent");
+	bindAttrib("in_Uv");
 }
 
 void ShaderProgram::initUniforms(){

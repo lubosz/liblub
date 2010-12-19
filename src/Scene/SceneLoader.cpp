@@ -171,7 +171,26 @@ void SceneLoader::appendMesh(const QDomElement & meshNode){
 	Mesh *mesh;
 
 	if (meshNode.tagName() == "File") {
-			mesh = MeshFactory::load(meshNode.attribute("url").toStdString());
+		string meshUrl = meshNode.attribute("url").toStdString();
+		if(meshNode.hasAttribute("drawType")){
+			GLint drawType;
+			string drawTypeString = meshNode.attribute("drawType").toStdString();
+
+			if(drawTypeString == "PATCHES")
+				drawType = GL_PATCHES;
+			else if(drawTypeString == "POINTS")
+				drawType = GL_POINTS;
+			else if(drawTypeString == "TRIANGLE_STRIP")
+				drawType = GL_TRIANGLE_STRIP;
+			else if(drawTypeString == "TRIANGLES")
+				drawType = GL_TRIANGLES;
+			else if(drawTypeString == "LINES")
+				drawType = GL_LINES;
+
+			mesh = MeshFactory::load(meshUrl,drawType);
+		}else{
+			mesh = MeshFactory::load(meshUrl);
+		}
 	}else if (meshNode.tagName() == "Procedural") {
 
 			if(meshNode.attribute("type") == "Sponge"){
