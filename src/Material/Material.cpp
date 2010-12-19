@@ -27,32 +27,12 @@ void Material::addTextureCube(string file, string name) {
 
 void Material::done() {
 	//todo: deprecated
-	shaderProgram->defaultAttribs();
-	shaderProgram->linkAndUse();
 
-	initUniforms();
-	glError("Material", 68);
-}
-
-void Material::initUniforms() {
-	Logger::Instance().message << "Initializing Material Uniforms for Shader #" << shaderProgram->getReference();
-    Logger::Instance().log("DEBUG","Material");
-
-	/*
-	 GLint texLoc;
-	 for (int i = 0; i < textures.size(); i++){
-	 cout << "Assigning Texture " << i << " " << textures[i]->name << "\n";
-	 textures[i]->activate();
-	 textures[i]->bind();
-	 texLoc   = glGetUniformLocation(shaderProgram->program, textures[i]->name.c_str());
-	 glUniform1i(texLoc, i);
-	 }
-	 */
+	shaderProgram->init();
+    uniforms();
 	bindTextures();
-	shaderProgram->initUniforms();
-	uniforms();
-	glError("Material", 54);
 
+	glError("Material", 68);
 }
 
 void Material::activateTextures() {
@@ -68,16 +48,15 @@ void Material::activateTextures() {
 void Material::bindTextures(){
 	foreach( Texture* texture, textures )
 				{
-					//TODO: Why is this not needed?
-					//texture->activate();
 					texture->bind();
 					texture->uniform(shaderProgram->getReference());
 				}
 }
 
 void Material::activate() {
-
-	//shaderProgram->use();
+	//todo: check performance
+	//rebinding textures for shared programs
+	bindTextures();
 	activateTextures();
 	glError("Material::activate", 109);
 

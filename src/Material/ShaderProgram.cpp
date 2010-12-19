@@ -190,6 +190,15 @@ void ShaderProgram::linkAndUse(){
     use();
 }
 
+void ShaderProgram::init(){
+	defaultAttribs();
+	linkAndUse();
+	Logger::Instance().message << "Initializing Uniforms for Program #" << program;
+    Logger::Instance().log("DEBUG","Material");
+    initUniforms();
+}
+
+
 void ShaderProgram::use(){
 	glError("ShaderProgram::use",101);
 	glUseProgram(program);

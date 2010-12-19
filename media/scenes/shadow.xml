@@ -46,7 +46,16 @@
 			<Layer sampler="ambientTexture" texture="monkey-occlusion" />
 			<Layer sampler="normalTexture" texture="masonry-wall-normal-map" />
 		</Material>
-
+		<Material name="radio" program="Ubershader">
+			<Layer sampler="diffuseTexture" texture="masonry-wall-texture" />
+			<Layer sampler="ambientTexture" texture="radio-occlusion" />
+			<Layer sampler="normalTexture" texture="masonry-wall-normal-map" />
+		</Material>
+		<Material name="ground" program="Ubershader">
+			<Layer sampler="diffuseTexture" texture="brickwork-texture" />
+			<Layer sampler="ambientTexture" texture="plane-occlusion" />
+			<Layer sampler="normalTexture" texture="brickwork_normal-map" />
+		</Material>
 		<Material name="relief" program="Relief">
 			<Layer sampler="colortex" texture="reliefColor" />
 			<Layer sampler="reliefMap" texture="reliefMap" />
@@ -56,9 +65,9 @@
 	</Materials>
 	<Scene name="PCF Shadow Mapping">
 		<Light position ="0.3, 6.6, -3.3" direction="1,-5,-1" />
-		<Object name="bump" mesh="cube.obj" material="monkey" scale="1.0" position="3,-2,-9" />
+		<Object name="bump" mesh="cube.obj" material="ground" scale="1.0" position="3,-2,-9" />
 		<Object name="bump" mesh="cube.obj" material="relief" scale="1.0" position="3,-2,-5" />
-		<Object name="radio" mesh="radio.blend" material="monkey" scale="0.5" position="-5,-5,-5" />
-		<Object name="Plane" mesh="plane.blend" material="monkey" scale="20" position="0,-7,0" receive_shadows="true" cast_shadows="false" />
+		<Object name="radio" mesh="radio.blend" material="radio" scale="0.5" position="-5,-5,-5" />
+		<Object name="Plane" mesh="plane.blend" material="ground" scale="20" position="0,-7,0" receive_shadows="true" cast_shadows="false" />
 	</Scene>
 </liblub>

@@ -101,6 +101,7 @@ void SceneLoader::appendProgram(const QDomElement & programNode){
 		}
 		programInfo = programInfo.nextSiblingElement();
 	}
+	program->init();
 	shaderPrograms.insert(name, program);
 }
 
@@ -129,8 +130,8 @@ void SceneLoader::appendMaterial(const QDomElement & materialNode){
 		}
 		layers = layers.nextSiblingElement();
 	}
-
-	material->done();
+	material->shaderProgram->use();
+	material->bindTextures();
 	materials.insert(name,material);
 }
 

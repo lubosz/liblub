@@ -27,9 +27,8 @@ void Texture::bind(){
 }
 
 void Texture::uniform(GLuint program){
-	//cout << "Assigning Texture "<< "#"<< textureID << " " << name << " to program #"<< program << "\n";
-	Logger::Instance().message << "Assigning Texture "<< "#"<< " " << name << " to program #"<< program;
-    Logger::Instance().log("DEBUG","Texture");
+//	Logger::Instance().message << "Assigning Texture "<< "#"<< " " << name << " to program #"<< program;
+//    Logger::Instance().log("DEBUG","Texture");
 
     GLint texLoc   = glGetUniformLocation(program, name.c_str());
     //TODO: -1?
