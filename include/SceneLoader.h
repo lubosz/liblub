@@ -28,6 +28,7 @@ public:
 	void appendMaterial(const QDomElement & materialNode);
 	void appendProgram(const QDomElement & programNode);
 	void appendTexture(const QDomElement & textureNode);
+	void appendMesh(const QDomElement & meshNode);
 	vector<string> splitFlags(QString values);
 	vector<float> splitUniform(QString values);
 	vector<int> splitUniformi(QString values);
@@ -35,4 +36,5 @@ public:
 	QMap<string,ShaderProgram*> shaderPrograms;
 	QMap<string,Texture*> textures;
 	QMap<string,Material*> materials;
+	QMap<string,Mesh*> meshes;
 };

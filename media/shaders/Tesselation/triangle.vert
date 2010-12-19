@@ -1,7 +1,7 @@
 #version 410
 
 in vec3 in_Vertex;
-out vec3 v_position;
+//out vec3 v_position;
 
 //uniform mat4 MVPMatrix;
 

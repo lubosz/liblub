@@ -1,6 +1,6 @@
 #version 410
 
-layout(vertices = 4) out;
+layout(vertices = 3) out;
 uniform float pixels_per_division;
 uniform vec2 screen_size;
 uniform mat4 MVMatrix;

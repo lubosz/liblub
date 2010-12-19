@@ -9,7 +9,7 @@
 			<Shader url="Tesselation/lod.eval" type="EVALUATION_SHADER" />
 			<Shader url="Tesselation/triangle.frag" type="FRAGMENT_SHADER" /> 
 			<Uniform value="1920, 1200" name="screen_size" />
-			<Uniform name="float pixels_per_division" value="15" />
+			<Uniform name="pixels_per_division" value="15" />
 			<Uniform name="inner_level" value="1" />
 			<Uniform name="outer_level" value="8" />
 		</Program>

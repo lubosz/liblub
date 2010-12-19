@@ -165,6 +165,38 @@ void SceneLoader::appendTexture(const QDomElement & textureNode){
 	);
 }
 
+void SceneLoader::appendMesh(const QDomElement & meshNode){
+	string name = meshNode.attribute("name").toStdString();
+	Logger::Instance().log("DEBUG", "SceneLoader", "Mesh name:"+name);
+	Mesh *mesh;
+
+	if (meshNode.tagName() == "File") {
+			mesh = MeshFactory::load(meshNode.attribute("url").toStdString());
+	}else if (meshNode.tagName() == "Procedural") {
+
+			if(meshNode.attribute("type") == "Sponge"){
+				MengerSponge * sponge = new MengerSponge(meshNode.attribute("recursion").toInt());
+				mesh = sponge->getMesh();
+			}else if(meshNode.attribute("type") == "Stars"){
+				mesh = MeshFactory::stars(
+						meshNode.attribute("resolution").toFloat(),
+						meshNode.attribute("density").toFloat(),
+						meshNode.attribute("randomness").toFloat(),
+						meshNode.attribute("colorIntensity").toFloat()
+				);
+			}else if(meshNode.attribute("type") == "Tess"){
+				mesh = Geometry::makePlaneTess();
+			}
+	}
+
+
+	meshes.insert(
+			name,
+			mesh
+
+	);
+}
+
 void SceneLoader::appendObject(const QDomElement & objectNode){
 	QVector3D position, direction;
 	string name;
@@ -194,33 +226,14 @@ void SceneLoader::appendObject(const QDomElement & objectNode){
 						direction
 				);
 	} else if (objectNode.tagName() == "Object") {
-		mesh = MeshFactory::load(objectNode.attribute("mesh").toStdString());
-	}else if (objectNode.tagName() == "Procedural") {
-		if(objectNode.attribute("type") == "Sponge"){
-			MengerSponge * sponge = new MengerSponge(objectNode.attribute("recursion").toInt());
-			mesh = sponge->getMesh();
-		}else if(objectNode.attribute("type") == "Stars"){
-			mesh = MeshFactory::stars(
-					objectNode.attribute("resolution").toFloat(),
-					objectNode.attribute("density").toFloat(),
-					objectNode.attribute("randomness").toFloat(),
-					objectNode.attribute("colorIntensity").toFloat()
-			);
-		}else if(objectNode.attribute("type") == "Tess"){
-			mesh = Geometry::makePlaneTess();
-		}
-	}else if (objectNode.tagName() == "MeshPlane") {
-		SceneGraph::Instance().meshPlane(
-				objectNode.attribute("mesh").toStdString(),
-				objectNode.attribute("size").toFloat(),
-				objectNode.attribute("step").toFloat(),
-				{
-						new PhongTexMat(objectNode.attribute("texture").toStdString())
-				}
-		);
-	}
 
-	if (objectNode.tagName() == "Object" || objectNode.tagName() == "Procedural"){
+		string meshName = objectNode.attribute("mesh").toStdString();
+		if(meshes.count(meshName) > 0)
+			mesh = meshes.value(meshName);
+		else
+			Logger::Instance().log("ERROR", "Mesh Not Found", meshName);
+
+
 		Node * node = new Node(
 				name,
 				position,
@@ -238,7 +251,16 @@ void SceneLoader::appendObject(const QDomElement & objectNode){
 		else if(objectNode.attribute("cast_shadows").contains("false", Qt::CaseInsensitive))
 			node->setCastShadows(false);
 
-	SceneGraph::Instance().addNode(node);
+		SceneGraph::Instance().addNode(node);
+	}else if (objectNode.tagName() == "ObjectPlane") {
+		SceneGraph::Instance().meshPlane(
+				objectNode.attribute("mesh").toStdString(),
+				objectNode.attribute("size").toFloat(),
+				objectNode.attribute("step").toFloat(),
+				{
+						new PhongTexMat(objectNode.attribute("texture").toStdString())
+				}
+		);
 	}
 }
 
@@ -257,6 +279,12 @@ void SceneLoader::load(){
 			while (!textures.isNull()) {
 				appendTexture(textures);
 				textures = textures.nextSiblingElement();
+			}
+		}else if (document.tagName() == "Meshes"){
+			QDomElement meshes = document.firstChildElement();
+			while (!meshes.isNull()) {
+				appendMesh(meshes);
+				meshes = meshes.nextSiblingElement();
 			}
 		}
 		else if (document.tagName() == "Materials"){

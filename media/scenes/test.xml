@@ -28,6 +28,12 @@
 		<Texture name="monkey-occlusion" url="monkey-occlusion.png" />
 		<Texture name="masonry-wall-normal-map" url="bump/masonry-wall-normal-map.jpg" />
 	</Textures>
+	<Meshes>
+		<File name="monkey" url="monkey.blend" />
+		<File name="radio" url="radio.blend" />
+		<Procedural name="sponge" type="Sponge" recursion="3" />
+		<Procedural name="stars" type="Stars" resolution="100" density="1" randomness="0" colorIntensity="1" />
+	</Meshes>
 	<Materials>
 		<Material name="Monkey" program="Ubershader">
 			<Layer sampler="diffuseTexture" texture="masonry-wall-texture" />
@@ -39,10 +45,10 @@
 	</Materials>
 	<Scene name="XML Loader">
 		<Light position ="0.3, 6.6, -3.3" direction="1,-5,-1" />
-		<Object name="monkey" mesh="monkey.blend" material="white" scale="2.0" position="10, 0, -10" />
-		<Object name="radio" mesh="radio.blend" material="Monkey" scale="0.5" position="-5, -5, -5" />
-		<Procedural name="menger sponge" type="Sponge" recursion="3" material="stars" scale="3.0" position="10, 0, -10" />
-		<Procedural name="stars" type="Stars" recursion="3" material="stars" scale="3.0" position="10, 0, -10" resolution="100" density="1" randomness="0" colorIntensity="1" />
-		<MeshPlane size="10" step="3" mesh="monkey.blend" texture="spectrum.png" />
+		<Object name="monkey" mesh="monkey" material="white" scale="2.0" position="10, -5, -10" />
+		<Object name="radio" mesh="radio" material="Monkey" scale="0.5" position="-5, -5, -5" />
+		<Object name="menger sponge" mesh="sponge" material="stars" scale="3.0" position="10, 0, -10" />
+		<Object name="stars" mesh="stars" material="stars" scale="3.0" position="10, 0, -10"  />
+		<ObjectPlane size="10" step="3" mesh="monkey.blend" texture="spectrum.png" />
 	</Scene>
 </liblub>
