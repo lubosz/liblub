@@ -127,9 +127,13 @@ void SceneLoader::appendMaterial(const QDomElement & materialNode){
 
 	if (materialNode.hasAttribute("name"))
 		name = materialNode.attribute("name").toStdString();
-	if (materialNode.hasAttribute("program"))
-		material->shaderProgram = shaderPrograms.value(materialNode.attribute("program").toStdString());
-	else
+	if (materialNode.hasAttribute("program")){
+		program = materialNode.attribute("program").toStdString();
+		if(shaderPrograms.count(program) > 0)
+			material->shaderProgram = shaderPrograms.value(program);
+		else
+			Logger::Instance().log("ERROR", "Program Not Found", program);
+	}else
 		Logger::Instance().log("Error","NO SHADER PROGRAM");
 
 	QDomElement layers = materialNode.firstChildElement();
@@ -175,10 +179,13 @@ void SceneLoader::appendObject(const QDomElement & objectNode){
 		name = objectNode.attribute("name").toStdString();
 	if (objectNode.hasAttribute("scale"))
 		scale = objectNode.attribute("scale").toFloat();
-	if (objectNode.hasAttribute("material"))
-//		material = new Simple(objectNode.attribute("material").toStdString());
-		material = materials.value(objectNode.attribute("material").toStdString());
-
+	if (objectNode.hasAttribute("material")){
+		string materialName = objectNode.attribute("material").toStdString();
+		if(materials.count(materialName) > 0)
+			material = materials.value(materialName);
+		else
+			Logger::Instance().log("ERROR", "Material Not Found", materialName);
+	}
 	if (objectNode.tagName() == "Light") {
 		SceneGraph::Instance().light =
 				new Light(
