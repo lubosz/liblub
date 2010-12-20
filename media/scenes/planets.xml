@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <liblub>
-	<include url="materials.xml" />
+	<include url="programs.xml" />
 	<Textures>
 		<Texture name="Mars" url="Planets/Mars.jpg" />
 		<Texture name="plane-occlusion" url="plane-occlusion.png" />
