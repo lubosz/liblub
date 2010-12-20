@@ -11,7 +11,11 @@
 #include "BashColor.h"
 
 Logger::Logger() {
-	blacklist = {"Light Position", "Mesh", "FBO"};
+	blacklist = {
+			"Light Position",
+			"Mesh",
+			"FBO"
+	};
 
 }
 

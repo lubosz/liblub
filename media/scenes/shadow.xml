@@ -44,7 +44,7 @@
 	</Textures>
 	<Meshes>
 		<File name="cube" url="cube.obj" />
-		<File name="radio" url="radio.obj" />
+		<File name="radio" url="radio.blend" />
 		<File name="plane" url="plane.obj" />
 	</Meshes>
 	<Materials>
@@ -71,7 +71,7 @@
 
 	</Materials>
 	<Scene name="PCF Shadow Mapping">
-		<Light position ="0.3, 6.6, -3.3" direction="1,-5,-1" />
+		<Light position ="-9.1, 20.5, 3.5" direction="1,-5,-1" />
 		<Object name="bump" mesh="cube" material="ground" scale="1.0" position="3,-2,-9" />
 		<Object name="bump" mesh="cube" material="relief" scale="1.0" position="3,-2,-5" />
 		<Object name="radio" mesh="radio" material="radio" scale="0.5" position="-5,-5,-5" />
