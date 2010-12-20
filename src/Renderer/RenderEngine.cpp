@@ -12,14 +12,10 @@
 
 using namespace std;
 
-RenderEngine::RenderEngine() {
-	useFBO = false;
+RenderEngine::RenderEngine() : useFBO(false), frameCount(0), lightView(false), wire(false){
 	glError("RenderEngine",23);
 	checkVersion();
-	frameCount = 0;
-	lightView = false;
 	shadowSequence = new RenderSequence();
-	wire = false;
 #ifndef USE_GL3
     glEnable( GL_POINT_SMOOTH );
 #endif

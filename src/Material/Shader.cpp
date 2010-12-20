@@ -50,6 +50,7 @@ void Shader::loadAndCompile(){
 		foreach( string define, defines )
 		{
 			defineString += "#define " + define + "\n";
+			Logger::Instance().log("DEBUG", "Shader Flags", define);
 		}
 		//defines += "#define useDiffuseTexture\n";
 		const GLchar *sources[2] = { defineString.c_str(), source };

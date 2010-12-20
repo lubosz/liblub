@@ -150,6 +150,8 @@ void SceneLoader::appendMaterial(const QDomElement & materialNode){
 		}
 		layers = layers.nextSiblingElement();
 	}
+	//todo: init shadow map texutre only when needed
+	material->addTexture(RenderEngine::Instance().shadowSequence->renderPasses[0]->targetTexture);
 	material->shaderProgram->use();
 	material->bindTextures();
 	materials.insert(name,material);
