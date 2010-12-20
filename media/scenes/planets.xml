@@ -1,53 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <liblub>
-	<Programs>
-		<Program name="Ubershader">
-			<Shader url="Color/PhongColor" 
-				flags="receiveShadows,
-						useDiffuseTexture,
-						useSpotLight,
-						usePCF,
-						useAmbientTexture,
-						useNormalTexture"
-			/>
-			<Uniform value="0.1, 0.1, 0.1, 1.0" name="ambientSceneColor" />
-			<Uniform value="0.1, 0.1, 0.1, 1.0" name="diffuseMaterialColor" />
-			<Uniform value="0.8, 0.8, 0.8,1.0" name="specularMaterialColor" />
-			<Uniform value="4.3" name="shininess" />
-			<Uniform value="0.000833333" name="yPixelOffset" />
-			<Uniform value="0.000520833" name="xPixelOffset" />
-		</Program>
-		
-		<Program name="Ocean">
-			<Shader url="Water/Ocean" />
-			
-			<Uniform name="deepColor" value="0, 0.3, 0.5, 1.0" />
-			<Uniform name="shallowColor" value="0, 1, 1, 1.0" />
-			<Uniform name="reflectionColor" value="0.95, 1, 1, 1.0" />
-			
-			<Uniform name="reflectionAmount" value="1.0" />
-			<Uniform name="reflectionBlur" value="0.0" />
-			<Uniform name="waterAmount" value="0.3" />
-			<Uniform name="fresnelPower" value="5.0" />
-			<Uniform name="fresnelBias" value="0.328" />
-			<Uniform name="hdrMultiplier" value="0.471" />
-			
-			<Uniform name="textureScale" value="25, 26" />
-			<Uniform name="bumpSpeed" value="0.015, 0.005" />
-			
-			<Uniform name="eyePosition" value="0.5, 0.5, 0.5" />
-			
-			<Uniform name="BumpScale" value="0.2" />
-			<Uniform name="time" value="0.7" />
-			<Uniform name="waveFreq" value="0.028" />
-			<Uniform name="waveAmp" value="1.8" />
-		</Program>
-		
-		<Program name="Texture">
-			<Shader url="Texture/texture" />
-		</Program>
-		
-	</Programs>
+	<include url="materials.xml" />
 	<Textures>
 		<Texture name="Mars" url="Planets/Mars.jpg" />
 		<Texture name="plane-occlusion" url="plane-occlusion.png" />

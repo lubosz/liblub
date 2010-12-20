@@ -12,16 +12,8 @@
 #include "MengerSponge.h"
 #include "Geometry.h"
 
-SceneLoader::SceneLoader(QString fileName) {
-	QFile file(fileName);
+SceneLoader::SceneLoader(const QString & fileName) :fileName(fileName) {
 
-	QString errorStr;
-	int errorLine;
-	int errorColumn;
-	QDomDocument domDocument;
-	domDocument.setContent(&file, true, &errorStr, &errorLine, &errorColumn);
-
-	sceneXML = domDocument.documentElement();
 
 }
 
@@ -291,6 +283,20 @@ void SceneLoader::appendObject(const QDomElement & objectNode){
 }
 
 void SceneLoader::load(){
+	load(fileName);
+}
+
+void SceneLoader::load(const QString & fileName){
+	QFile file(QString(sceneDir.c_str()) + fileName);
+
+	QString errorStr;
+	int errorLine;
+	int errorColumn;
+	QDomDocument domDocument;
+	domDocument.setContent(&file, true, &errorStr, &errorLine, &errorColumn);
+
+	sceneXML = domDocument.documentElement();
+
 	QDomElement document = sceneXML.firstChildElement();
 	while (!document.isNull()) {
 
@@ -325,6 +331,8 @@ void SceneLoader::load(){
 				appendObject(scene);
 				scene = scene.nextSiblingElement();
 			}
+		}else if (document.tagName() == "include"){
+			load(document.attribute("url"));
 		}
 		document = document.nextSiblingElement();
 	}

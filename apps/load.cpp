@@ -12,7 +12,7 @@ public:
 //			programName = sceneXML.attribute("name").toStdString();
 
 		programName ="XML Loader";
-		QString sceneFile = QString::fromStdString("media/scenes/"+ sceneName + ".xml");
+		QString sceneFile = QString::fromStdString(sceneName + ".xml");
 		sceneLoader = new SceneLoader(sceneFile);
 	}
 

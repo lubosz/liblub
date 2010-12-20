@@ -16,12 +16,14 @@
 
 class SceneLoader {
 public:
-	SceneLoader(QString fileName);
+	SceneLoader(const QString & fileName);
 	virtual ~SceneLoader();
 
+	void load(const QString & fileName);
 	void load();
 
 	QDomElement sceneXML;
+	QString fileName;
 
 	QVector3D stringToVector3D(const QString& values);
 	void appendObject(const QDomElement & objectNode);

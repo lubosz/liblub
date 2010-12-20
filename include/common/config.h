@@ -12,6 +12,7 @@ using namespace std;
 
 const string shaderDir = "media/shaders/";
 const string textureDir = "media/textures/";
+const string sceneDir = "media/scenes/";
 const string meshDir = "media/meshes/";
 static const string suffixes[6] = {"_RT", "_LF", "_DN","_UP", "_FR", "_BK"};
 //static const float backgroundColor[3] = {1.0,1.0,1.0};
