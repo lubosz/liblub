@@ -9,9 +9,7 @@
 
 #include "RenderEngine.h"
 #include "Material.h"
-//#include "TextureFactory.h"
 class RenderEngine;
-//#include "RenderEngine.h"
 
 class Minimal : public Material {
 public:
@@ -168,89 +166,6 @@ public:
 
 };
 
-class HeightMapMat : public Material {
-public:
-	HeightMapMat(string texture, string heightmap, string normal){
-		init();
-		addTexture(texture,"diffuseTexture");
-		addTexture(heightmap,"heightMap");
-		addTexture(normal,"vertexNormalMap");
-		vector<string> flags = {
-				"useHeightMap",
-//				"receiveShadows",
-				"useDiffuseTexture"
-//				"useSpotLight",
-//				"usePCF",
-//				"useAmbientTexture",
-//				"useNormalTexture"
-		};
-		shaderProgram->attachVertFrag("Color/PhongColor",flags);
-		diffuseColor = QVector4D(1,0,0,0);
-		done();
-
-  }
-	void uniforms(){
-		shaderProgram->setUniform(QVector4D(0.1, 0.1, 0.1, 1.0), "ambientSceneColor");
-		shaderProgram->setUniform(diffuseColor, "diffuseMaterialColor");
-		shaderProgram->setUniform(QVector4D(0.8, 0.8, 0.8,1.0), "specularMaterialColor");
-		shaderProgram->setUniform(4.3, "shininess");
-		shaderProgram->setUniform(1.0/1200, "yPixelOffset");
-		shaderProgram->setUniform(1.0/1920, "xPixelOffset");
-	}
-
-};
-
-class ClipMapMat : public Material {
-public:
-	ClipMapMat(string texture, string heightmap, string normal){
-		init();
-		addTexture(texture,"diffuseTexture");
-		addTexture(heightmap,"heightMap");
-		addTexture(normal,"vertexNormalMap");
-//		shaderProgram->attachVertFrag("Geometry/clipmap");
-//		shaderProgram->attachShader("Geometry/clipmap.vert", GL_VERTEX_SHADER);
-		vector<string> flags = {
-				"useHeightMap"
-//				"receiveShadows",
-//				"useDiffuseTexture",
-//				"useSpotLight",
-//				"usePCF",
-//				"useAmbientTexture",
-//				"useNormalTexture"
-		};
-		shaderProgram->attachShader("Color/PhongColor.vert", GL_VERTEX_SHADER,flags);
-		shaderProgram->attachShader("Color/PhongColor.frag", GL_FRAGMENT_SHADER,flags);
-//		shaderProgram->attachVertFrag("Color/PhongColor",flags);
-		done();
-
-  }
-	void uniforms(){
-		shaderProgram->setUniform(QVector4D(0.1, 0.1, 0.1, 1.0), "ambientSceneColor");
-		shaderProgram->setUniform(diffuseColor, "diffuseMaterialColor");
-		shaderProgram->setUniform(QVector4D(0.8, 0.8, 0.8,1.0), "specularMaterialColor");
-		shaderProgram->setUniform(4.3, "shininess");
-		shaderProgram->setUniform(1.0/1200, "yPixelOffset");
-		shaderProgram->setUniform(1.0/1920, "xPixelOffset");
-	}
-
-};
-
-class FBOMaterial : public Material {
-public:
-	FBOMaterial(unsigned width, unsigned height){
-		init();
-		Texture * renderTarget = TextureFactory::Instance().colorTexture(width, height, "myTexture");
-		addTexture(renderTarget);
-		//shaderProgram->attachShader("Texture/texture.vert", GL_VERTEX_SHADER);
-		//shaderProgram->attachShader("Post/raysAndSky/3 - Blur.frag", GL_FRAGMENT_SHADER);
-		//shaderProgram->attachShader("Texture/texture.frag", GL_FRAGMENT_SHADER);
-		shaderProgram->attachVertFrag("Texture/texture");
-		done();
-  }
-	void uniforms(){}
-
-};
-
 class MultiTextureMaterial : public Material {
 public:
 	MultiTextureMaterial(){
@@ -274,34 +189,6 @@ public:
 		done();
   }
 	void uniforms(){}
-};
-
-class ConeMapMaterial : public Material {
-public:
-	ConeMapMaterial(){
-		init();
-		//addTexture("bump/tile1.jpg","texmap");
-		//addTexture("bump/relief.png","stepmap");
-		//addTexture("bump/tile1.tga","stepmap");
-		addTexture("cone/collage_base.jpg","texmap");
-		addTexture("cone/collage_step.png","stepmap");
-		shaderProgram->attachVertFrag("Bump/csm");
-        done();
-  }
-	void uniforms(){
-		GLuint program = shaderProgram->getReference();
-		glUniform3f(glGetUniformLocation(program, "ambient"), 0.1, 0.1, 0.1);
-		glUniform3f(glGetUniformLocation(program, "diffuse"), 0.99, 0.99, 0.99);
-
-		glUniform1f(glGetUniformLocation(program, "depth"), 0.1);
-
-		glUniform1f(glGetUniformLocation(program, "texsize"), 1024);
-		glUniform1f(glGetUniformLocation(program, "csm_gain"), 1.0);
-		glUniform1f(glGetUniformLocation(program, "csm_offset"), 0.1);
-		glUniform1f(glGetUniformLocation(program, "linearAttenuation"), 1.0);
-
-		glUniform1i(glGetUniformLocation(program, "conesteps"), 10);
-	}
 };
 
 class ProcBumpMaterial : public Material {
@@ -338,26 +225,6 @@ public:
 		// value for each location in the convolution kernel
 		//glUniform4f(glGetUniformLocation(program, "KernelValue"),0,1,0,1,-4,1,0,1,0);
 		glUniform4f(glGetUniformLocation(program, "ScaleFactor"), 1.0, 1.0, 1.0, 1.0);
-	}
-};
-
-class ReliefMat : public Material {
-public:
-	ReliefMat(){
-		init();
-		addTexture("bump/tile1.jpg","colortex");
-		addTexture("bump/tile1.tga","reliefMap");
-		shaderProgram->attachVertFrag("Bump/relief");
-		done();
-  }
-	void uniforms(){
-		shaderProgram->setUniform(QVector4D(0.2, 0.2, 0.2, 1.0), "ambient");
-		shaderProgram->setUniform(QVector4D(1, 1, 1, 1.0), "diffuse");
-		shaderProgram->setUniform(QVector4D(0.4, 0.4, 0.4, 1.0), "specular");
-		shaderProgram->setUniform(QVector2D(0.1, 1000.0), "planes");
-		shaderProgram->setUniform(1.0, "tile");
-		shaderProgram->setUniform(.2, "depth");
-
 	}
 };
 
