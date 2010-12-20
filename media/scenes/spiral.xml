@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<liblub>
+	<Programs>
+		<Program name="stars">
+			<Shader url="Particle/stars" />
+		</Program>
+	</Programs>
+	<Meshes>
+		<Procedural name="Spiral" type="Spiral" resolution="500000" density="1" randomness="0" />
+	</Meshes>
+	<Materials>
+		<Material name="stars" program="stars" />
+	</Materials>
+	<Scene name="spiral">
+		<Light position ="0.3, 6.6, -3.3" direction="1,-5,-1" />
+		<Object name="Spiral" mesh="Spiral" material="stars" scale="1.0" position="0, 0, 0" />
+	</Scene>
+</liblub>

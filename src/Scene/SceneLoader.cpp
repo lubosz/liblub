@@ -204,6 +204,12 @@ void SceneLoader::appendMesh(const QDomElement & meshNode){
 				);
 			}else if(meshNode.attribute("type") == "Tess"){
 				mesh = Geometry::makePlaneTess();
+			}else if(meshNode.attribute("type") == "Spiral"){
+				mesh = Geometry::makeSpiral(
+						meshNode.attribute("resolution").toFloat(),
+						meshNode.attribute("density").toFloat(),
+						meshNode.attribute("randomness").toFloat()
+				);
 			}
 	}
 

@@ -408,6 +408,7 @@ Mesh * Geometry::makeSpiral(int resolution, float density, float randomness){
     //mesh->addBuffer(normals,3,"in_Normal");
     //mesh->addBuffer(vertices,3,"in_Normal");
     mesh->addElementBuffer(indicies);
+    mesh->setDrawType(GL_POINTS);
 	return mesh;
 
 }
