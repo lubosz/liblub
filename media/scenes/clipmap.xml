@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<liblub>
+	<Programs>
+		<Program name="HeightMapPhongColor">
+			<Shader url="Color/PhongColor" flags="useHeightMap" />
+			<Uniform value="0.1, 0.1, 0.1, 1.0" name="ambientSceneColor" />
+			<Uniform value="0.1, 0.1, 0.1, 1.0" name="diffuseMaterialColor" />
+			<Uniform value="0.8, 0.8, 0.8,1.0" name="specularMaterialColor" />
+			<Uniform value="4.3" name="shininess" />
+		</Program>
+	</Programs>
+	<Textures>
+		<Texture name="Mars" url="Planets/Mars.jpg" />
+		<Texture name="terrain-noise" url="terrain-noise.jpg" />
+		<Texture name="terrain-noise-normal" url="terrain-noise-normal.jpg" />
+	</Textures>
+	<Meshes>
+		<File name="clipmap" url="clipmap.obj" />
+	</Meshes>
+	<Materials>
+		<Material name="HeightMapPhongColor" program="HeightMapPhongColor">
+			<Layer sampler="diffuseTexture" texture="Mars" />
+			<Layer sampler="heightMap" texture="terrain-noise" />
+			<Layer sampler="vertexNormalMap" texture="terrain-noise-normal" />
+		</Material>
+	</Materials>
+	<Scene name="Geomerty Clipmap">
+		<Light position ="-15.2, 19.4, 6.5" direction="1,-5,-1" />
+		<Object name="hugeEarth" mesh="clipmap" material="HeightMapPhongColor" scale="10.0" position="0, -10, 0" />
+	</Scene>
+</liblub>
