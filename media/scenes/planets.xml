@@ -14,6 +14,8 @@
 			<Uniform value="0.1, 0.1, 0.1, 1.0" name="diffuseMaterialColor" />
 			<Uniform value="0.8, 0.8, 0.8,1.0" name="specularMaterialColor" />
 			<Uniform value="4.3" name="shininess" />
+			<Uniform value="0.000833333" name="yPixelOffset" />
+			<Uniform value="0.000520833" name="xPixelOffset" />
 		</Program>
 		
 		<Program name="Ocean">
