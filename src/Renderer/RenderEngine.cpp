@@ -16,9 +16,6 @@ RenderEngine::RenderEngine() : useFBO(false), frameCount(0), lightView(false), w
 	glError("RenderEngine",23);
 	checkVersion();
 	shadowSequence = new RenderSequence();
-#ifndef USE_GL3
-    glEnable( GL_POINT_SMOOTH );
-#endif
 
 	/* Make our background black */
 	glClearColor(backgroundColor[0],backgroundColor[1],backgroundColor[2], 1.0);

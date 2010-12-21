@@ -11,6 +11,7 @@
 #include "Materials.h"
 #include "MeshFactory.h"
 #include "SceneLoader.h"
+#include "Config.h"
 
 class Application {
 
@@ -22,6 +23,7 @@ public:
 	SceneLoader * sceneLoader;
 
 	void run(){
+		Config::Instance().configPath = "foo";
 		MediaLayer::Instance().init(programName);
 		scene();
 		MediaLayer::Instance().renderLoop();

@@ -190,8 +190,9 @@ void MediaLayer::createWindow() {
 	}
 
 
-
+#ifdef VSync
 	glXSwapInterval(VSync);
+#endif
 }
 
 void MediaLayer::swapBuffers(){

@@ -18,5 +18,5 @@ static const string suffixes[6] = {"_RT", "_LF", "_DN","_UP", "_FR", "_BK"};
 //static const float backgroundColor[3] = {1.0,1.0,1.0};
 static const float backgroundColor[3] = {0.0,0.0,0.0};
 const unsigned maxBuffers = 6; //TODO: This is a very bad solution
-#define USE_GL3 1
+//#define USE_GL3 1
 #define FPS_INTERVAL 1.0 //seconds.
