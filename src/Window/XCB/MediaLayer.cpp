@@ -176,9 +176,11 @@ void MediaLayer::createWindow() {
 
 	drawable = glxwindow;
 
+	Logger::Instance().log("MESSAGE", "XCB", "Making Context Current");
 	/* make OpenGL context current */
 	if (!glXMakeContextCurrent(display, drawable, drawable, context))
 		Logger::Instance().log("ERROR","createWindow","glXMakeContextCurrent failed");
+	Logger::Instance().log("MESSAGE", "XCB", "Context activated");
 
 	//Set swap interval
 	PFNGLXSWAPINTERVALSGIPROC
