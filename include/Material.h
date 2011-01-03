@@ -17,7 +17,7 @@ class Material {
 public:
     ShaderProgram *getShaderProgram();
 	void activate();
-	void bindTextures();
+	void samplerUniforms();
 	void addTexture(Texture * texture);
 	void done();
 

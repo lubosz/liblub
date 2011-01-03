@@ -32,6 +32,7 @@ void Texture::uniform(GLuint program){
 
     GLint texLoc   = glGetUniformLocation(program, name.c_str());
     //TODO: -1?
+//    activate();
     glUniform1i(texLoc, texture-1);
     glError("Texture::uniform",144);
 }
