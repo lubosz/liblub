@@ -13,6 +13,17 @@
 #include "Texture.h"
 #include "Material.h"
 
+	//	template<class T> void f( int, T, double ); // (c)
+	//	template<class T> void f( T* );             // (d)
+	//
+	//	// A full specialization of (b) for int
+
+
+//		template<class T> static T pushValue(QString& value);
+//
+//		template<> static int pushValue(QString& value){
+//			return value.toInt();
+//		}
 
 class SceneLoader {
 public:
@@ -25,18 +36,18 @@ public:
 	QDomElement sceneXML;
 	QString fileName;
 
+	template<typename T> T pushValue( QString& value );
+	template<typename T> vector<T> splitValues(QString values);
+
 	QVector3D stringToVector3D(const QString& values);
 	void appendObject(const QDomElement & objectNode);
 	void appendMaterial(const QDomElement & materialNode);
 	void appendProgram(const QDomElement & programNode);
 	void appendTexture(const QDomElement & textureNode);
 	void appendMesh(const QDomElement & meshNode);
-	vector<string> splitFlags(QString values);
-	vector<float> splitUniform(QString values);
-	vector<int> splitUniformi(QString values);
 
-	QMap<string,ShaderProgram*> shaderPrograms;
-	QMap<string,Texture*> textures;
-	QMap<string,Material*> materials;
-	QMap<string,Mesh*> meshes;
+	QMap<string, ShaderProgram*> shaderPrograms;
+	QMap<string, Texture*> textures;
+	QMap<string, Material*> materials;
+	QMap<string, Mesh*> meshes;
 };

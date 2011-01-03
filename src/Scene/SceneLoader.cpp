@@ -11,50 +11,38 @@
 #include "SceneLoader.h"
 #include "MengerSponge.h"
 #include "Geometry.h"
+#include <typeinfo>
 
-SceneLoader::SceneLoader(const QString & fileName) :fileName(fileName) {
-
-
-}
+SceneLoader::SceneLoader(const QString & fileName) :fileName(fileName) {}
 
 SceneLoader::~SceneLoader() {
 	// TODO Auto-generated destructor stub
 }
 
-vector<string> SceneLoader::splitFlags(QString values){
-	vector<string> flags;
-	foreach (QString value, values.split(","))
-		{
-			flags.push_back(value.trimmed().toStdString());
-		}
-	return flags;
+template<> int SceneLoader::pushValue<int>( QString& value ){
+	return value.toInt();
 }
 
-vector<float> SceneLoader::splitUniform(QString values){
-	vector<float> flags;
-	foreach (QString value, values.split(","))
-		{
-			flags.push_back(value.toFloat());
-		}
-	return flags;
+template<> string SceneLoader::pushValue<string>( QString& value ){
+	return value.trimmed().toStdString();
 }
 
-vector<int> SceneLoader::splitUniformi(QString values){
-	vector<int> flags;
+template<> float SceneLoader::pushValue<float>( QString& value ){
+	return value.toFloat();
+}
+
+template <typename T>
+vector<T> SceneLoader::splitValues(QString values){
+	vector<T> flags;
+	T * foo;
 	foreach (QString value, values.split(","))
-		{
-			flags.push_back(value.toInt());
-		}
+		flags.push_back(pushValue<T>(value));
 	return flags;
 }
 
 QVector3D SceneLoader::stringToVector3D(const QString& values) {
 
-	vector<float> floats;
-	foreach (QString value, values.split(","))
-		{
-			floats.push_back(value.toFloat());
-		}
+	vector<float> floats = splitValues<float>(values);
 	return QVector3D(floats[0], floats[1], floats[2]);
 }
 
@@ -86,7 +74,7 @@ void SceneLoader::appendProgram(const QDomElement & programNode){
 				}else{
 
 					if (programInfo.hasAttribute("flags")){
-						flags = splitFlags(programInfo.attribute("flags"));
+						flags = splitValues<string>(programInfo.attribute("flags"));
 						program->attachVertFrag(shaderUrl,flags);
 					}else{
 						program->attachVertFrag(shaderUrl);
@@ -96,14 +84,14 @@ void SceneLoader::appendProgram(const QDomElement & programNode){
 			program->uniforms.push_back(
 					Uniform(
 							programInfo.attribute("name").toStdString(),
-							splitUniform(programInfo.attribute("value"))
+							splitValues<float>(programInfo.attribute("value"))
 					)
 			);
 		}else if (programInfo.tagName() == "Uniformi"){
 			program->uniformsi.push_back(
 					Uniformi(
 							programInfo.attribute("name").toStdString(),
-							splitUniformi(programInfo.attribute("value"))
+							splitValues<int>(programInfo.attribute("value"))
 					)
 			);
 		}
