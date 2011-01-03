@@ -3,7 +3,7 @@
 	<include url="common/programs.xml" />
 	<Textures>
 		<Texture name="Mars" url="Planets/Mars.jpg" />
-		<Texture name="plane-occlusion" url="plane-occlusion.png" />
+		<Texture name="plane-occlusion" url="sphere_ao.png" />
 		<Texture name="Mars-normal" url="Planets/Mars-normal.png" />
 		<Texture name="TychoSkymap" url="Planets/TychoSkymap.jpg" />
 		<Texture name="waves" url="ocean/waves2.dds" />
@@ -24,7 +24,7 @@
 		</Material>
 	</Materials>
 	<Meshes>
-		<File name="sphere" url="earth.obj" />
+		<File name="sphere" url="sphere.obj" />
 	</Meshes>
 	<Scene name="XML Loader">
 		<Light position ="-15.2, 19.4, 6.5" direction="1,-5,-1" />
