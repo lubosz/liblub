@@ -146,7 +146,7 @@ if(CHECKSTYLE)
     set(INCLUDES ${INCLUDES} ${GLOB_RESULT})
 
     add_custom_target(CHECK_STYLE ALL
-        COMMAND ${PYTHON_VER} scripts/cpplint.py --filter=-whitespace/tab,-build/header_guard,-build/include,-legal/copyright,-build/namespaces,-runtime/threadsafe_fn,-readability/streams ${SOURCES} ${INCLUDES}
+        COMMAND ${PYTHON_VER} scripts/cpplint.py --filter=-whitespace/tab,-build/header_guard,-build/include,-legal/copyright,-build/namespaces,-readability/streams ${SOURCES} ${INCLUDES}
     )
 endif()
 

@@ -150,7 +150,8 @@ Mesh * Geometry::makeCube() {
 }
 
 float Geometry::randomize(float density, float randomness) {
-    float randomValue = 1 / static_cast<float>((rand() % 20) + 1);
+    unsigned seed;
+    float randomValue = 1 / static_cast<float>((rand_r(&seed) % 20) + 1);
 
     return density + (density * randomValue * randomness);
 }
