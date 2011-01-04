@@ -121,7 +121,7 @@ void ShaderProgram::defaultAttribs(){
 }
 
 void ShaderProgram::initUniforms(){
-	foreach(Uniform uniform, uniforms){
+	foreach(Uniform<float> uniform, uniforms){
 
 		Logger::Instance().message << "Uniform: " + uniform.name + ": ";
 		foreach(float value, uniform.values){
@@ -151,7 +151,7 @@ void ShaderProgram::initUniforms(){
 		Logger::Instance().log("UNIFORMS", "ShaderProgram");
 		glError("ShaderProgram", 136);
 	}
-	foreach(Uniformi uniformi, uniformsi){
+	foreach(Uniform<int> uniformi, uniformsi){
 
 		Logger::Instance().message << "Uniform: " + uniformi.name + ": ";
 		foreach(int value, uniformi.values){

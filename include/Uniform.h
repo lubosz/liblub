@@ -12,20 +12,12 @@
 
 using namespace std;
 
+template<class T>
 class Uniform {
 public:
-	Uniform(string name, const vector<float> & values);
-	virtual ~Uniform();
+	Uniform(string name, const vector<T> & values): name(name) ,values(values){}
+	virtual ~Uniform() {};
 
 	string name;
-	vector<float> values;
-};
-
-class Uniformi {
-public:
-	Uniformi(string name, const vector<int> & values);
-	virtual ~Uniformi();
-
-	string name;
-	vector<int> values;
+	vector<T> values;
 };

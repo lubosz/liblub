@@ -26,7 +26,7 @@ void Material::addTextureCube(string file, string name) {
 }
 
 void Material::done() {
-	//todo: deprecated
+	//todo: deprecated, materials defined in xml
 
 	shaderProgram->init();
     uniforms();

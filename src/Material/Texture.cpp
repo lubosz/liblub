@@ -27,13 +27,11 @@ void Texture::bind(){
 }
 
 void Texture::uniform(GLuint program){
-//	Logger::Instance().message << "Assigning Texture "<< "#"<< " " << name << " to program #"<< program;
-//    Logger::Instance().log("DEBUG","Texture");
-
-    GLint texLoc   = glGetUniformLocation(program, name.c_str());
-    //TODO: -1?
-//    activate();
+    GLint texLoc = glGetUniformLocation(program, name.c_str());
+    //TODO: -1 vs glId - GL_TEXTURE0
+//    glUniform1i(texLoc, glId - GL_TEXTURE0);
     glUniform1i(texLoc, texture-1);
+
     glError("Texture::uniform",144);
 }
 

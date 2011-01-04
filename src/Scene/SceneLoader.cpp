@@ -82,14 +82,14 @@ void SceneLoader::appendProgram(const QDomElement & programNode){
 				}
 		}else if (programInfo.tagName() == "Uniform"){
 			program->uniforms.push_back(
-					Uniform(
+					Uniform<float>(
 							programInfo.attribute("name").toStdString(),
 							splitValues<float>(programInfo.attribute("value"))
 					)
 			);
 		}else if (programInfo.tagName() == "Uniformi"){
 			program->uniformsi.push_back(
-					Uniformi(
+					Uniform<int>(
 							programInfo.attribute("name").toStdString(),
 							splitValues<int>(programInfo.attribute("value"))
 					)

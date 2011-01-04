@@ -33,8 +33,8 @@ public:
 	GLuint getReference() const;
 
 	string name;
-	vector<Uniform> uniforms;
-	vector<Uniformi> uniformsi;
+	vector<Uniform<float> > uniforms;
+	vector<Uniform<int> > uniformsi;
 	void setUniform(float value, string name);
 	void setUniform(const QMatrix3x3 & matrix, string name);
 	void setUniform(const QMatrix4x4 & matrix, string name);

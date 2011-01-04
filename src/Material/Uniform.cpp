@@ -7,16 +7,11 @@
 
 #include "Uniform.h"
 
-Uniform::Uniform(string name, const vector<float> & values) : name(name) ,values(values){
-}
+//template<class T>
+//Uniform<T>::Uniform(string name, const vector<T> & values) : name(name) ,values(values){
+//}
+//template<class T>
+//Uniform<T>::~Uniform() {
+//	// TODO Auto-generated destructor stub
+//}
 
-Uniform::~Uniform() {
-	// TODO Auto-generated destructor stub
-}
-
-Uniformi::Uniformi(string name, const vector<int> & values) : name(name) ,values(values){
-}
-
-Uniformi::~Uniformi() {
-	// TODO Auto-generated destructor stub
-}
