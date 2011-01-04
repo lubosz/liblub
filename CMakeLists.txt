@@ -7,11 +7,8 @@ OPTION(WITH_SDL "Use SDL 1.3" OFF)
 OPTION(SDL_LOCAL "SDL Local" OFF)
 OPTION(RELEASE "Release" OFF)
 OPTION(USE_FBO "Use Framebuffer Objects" ON)
-OPTION(VSYNC "VSync" ON)
+OPTION(CHECKSTYLE "Check Style" OFF)
 
-if(VSYNC)
-    ADD_DEFINITIONS(-DVSync)
-endif()
 if(USE_FBO)
     ADD_DEFINITIONS(-DUSE_FBO)
 endif()
@@ -134,3 +131,22 @@ foreach(EXAMPLE_PATH ${EXAMPLES})
     add_executable(${EXAMPLE_NAME} "${EXAMPLE_PATH}")
     target_link_libraries(${EXAMPLE_NAME} lub)
 endforeach(EXAMPLE_PATH)
+
+#check code stlye
+IF(EXISTS "/usr/bin/python2")
+    SET(PYTHON_VER "python2")
+ELSE()
+    SET(PYTHON_VER "python")
+ENDIF()
+
+if(CHECKSTYLE)
+    file(GLOB GLOB_RESULT include/*.h)
+    set(INCLUDES ${INCLUDES} ${GLOB_RESULT})
+    file(GLOB GLOB_RESULT include/common/*.h)
+    set(INCLUDES ${INCLUDES} ${GLOB_RESULT})
+
+    add_custom_target(CHECK_STYLE ALL
+        COMMAND ${PYTHON_VER} scripts/cpplint.py --filter=-whitespace/tab,-build/header_guard,-build/include ${SOURCES} ${INCLUDES}
+    )
+endif()
+
