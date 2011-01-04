@@ -70,7 +70,7 @@ char* Shader::readFile(string filePath) {
     FILE *file;
     char *buffer;
     size_t result;
-    long fileSize;
+    int64_t fileSize;
 
     file = fopen(filePath.c_str(), "r"); /* Open file for reading */
     if (!file)
