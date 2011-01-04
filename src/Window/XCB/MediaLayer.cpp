@@ -7,6 +7,7 @@
 #include <sstream>
 #include "MediaLayer.h"
 #include "Camera.h"
+#include "Config.h"
 
 MediaLayer::MediaLayer(){
 	//FPS Stuff
@@ -102,11 +103,13 @@ void MediaLayer::createGLContext() {
 	/* Select first framebuffer config and query visualID */
 	glXGetFBConfigAttrib(display, fb_config, GLX_VISUAL_ID, &visualID);
 
+	vector<int> glContext = Config::Instance().values<int>("GLcontext");
+
 	int attribs[] = {
 			GLX_CONTEXT_MAJOR_VERSION_ARB,
-			LIBLUB_GL_MAJOR_VERION,
+			glContext[0],
 			GLX_CONTEXT_MINOR_VERSION_ARB,
-			LIBLUB_GL_MINOR_VERION,
+			glContext[1],
 			0
 	};
 
