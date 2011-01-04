@@ -7,29 +7,49 @@
 
 #include "Config.h"
 #include "Logger.h"
-#include <QSettings>
 #include <QSize>
 #include <QStringList>
+#include <QFile>
 
 Config::Config() {
-	// TODO Auto-generated constructor stub
-	Logger::Instance().log("Init Settings");
-
-	 QSettings settings("Lubosz", "liblub");
-	 settings.setValue("fridge/color", Qt::white);
-	 settings.setValue("fridge/size", QSize(32, 96));
-	 settings.setValue("sofa", true);
-	 settings.setValue("tv", false);
-	 QStringList foo;
-	 foo.append("foo");
-	 foo.append("bar");
-	 settings.setValue("myASS", foo);
-	 QStringList bar = settings.property("myASS").toStringList();
-
-
 
 }
+
 
 Config::~Config() {
 	// TODO Auto-generated destructor stub
 }
+
+void Config::load(const QString & fileName){
+	QFile file(fileName);
+
+	QString errorStr;
+	int errorLine;
+	int errorColumn;
+	QDomDocument domDocument;
+	domDocument.setContent(&file, true, &errorStr, &errorLine, &errorColumn);
+
+	QDomElement document = domDocument.documentElement().firstChildElement();
+	while (!document.isNull()) {
+		if (document.tagName() == "Config"){
+			QDomElement option = document.firstChildElement();
+			while (!option.isNull()) {
+				appendOption(option);
+				option = option.nextSiblingElement();
+			}
+		}
+		document = document.nextSiblingElement();
+	}
+}
+
+void Config::appendOption(const QDomElement & optionNode){
+		string name = optionNode.attribute("name").toStdString();
+		Logger::Instance().log("DEBUG", "Config", "Option name:"+name);
+
+		if (optionNode.tagName() == "Int"){
+		}else if (optionNode.tagName() == "String"){
+		}else if (optionNode.tagName() == "Float"){
+		}else if (optionNode.tagName() == "Bool"){
+		}
+
+	}

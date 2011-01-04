@@ -23,7 +23,7 @@ public:
 	SceneLoader * sceneLoader;
 
 	void run(){
-		Config::Instance().configPath = "foo";
+		Config::Instance().load("config.xml");
 		MediaLayer::Instance().init(programName);
 		scene();
 		MediaLayer::Instance().renderLoop();
