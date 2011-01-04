@@ -40,8 +40,7 @@ Shader::~Shader() {
 
 void Shader::loadAndCompile(){
 	/* Read our shaders into the appropriate buffers */
-	vector <string> shaderDir = Config::Instance().getValue<string>("shaderDir");
-	source = readFile(shaderDir[0] + fileName);
+	source = readFile(Config::Instance().value<string>("shaderDir") + fileName);
 
     /* Assign our handles a "name" to new shader objects */
     shader = glCreateShader(type);

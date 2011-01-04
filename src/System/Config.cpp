@@ -39,31 +39,59 @@ template<> bool Config::pushValue<bool>( QString& value ){
 		return false;
 }
 
-template<> vector<bool> Config::getValue<bool>( string name ){
+template<> vector<bool> Config::values<bool>( string name ){
 	foreach (ConfigOption<bool> configOption,bools){
 		if (configOption.name == name)
 			return configOption.optionVec;
 	}
 }
 
-template<> vector<int> Config::getValue<int>( string name ){
+template<> vector<int> Config::values<int>( string name ){
 	foreach (ConfigOption<int> configOption,ints){
 		if (configOption.name == name)
 			return configOption.optionVec;
 	}
 }
 
-template<> vector<string> Config::getValue<string>( string name ){
+template<> vector<string> Config::values<string>( string name ){
 	foreach (ConfigOption<string> configOption,strings){
 		if (configOption.name == name)
 			return configOption.optionVec;
 	}
 }
 
-template<> vector<float> Config::getValue<float>( string name ){
+template<> vector<float> Config::values<float>( string name ){
 	foreach (ConfigOption<float> configOption,floats){
 		if (configOption.name == name)
 			return configOption.optionVec;
+	}
+}
+
+template<> bool Config::value<bool>( string name ){
+	foreach (ConfigOption<bool> configOption,bools){
+		if (configOption.name == name)
+			return configOption.optionVec[0];
+	}
+}
+
+template<> int Config::value<int>( string name ){
+	foreach (ConfigOption<int> configOption,ints){
+		if (configOption.name == name)
+			return configOption.optionVec[0];
+	}
+}
+
+template<> string Config::value<string>( string name ){
+	foreach (ConfigOption<string> configOption,strings){
+		if (configOption.name == name)
+			return configOption.optionVec[0];
+	}
+}
+
+template<> float Config::value<float>( string name ){
+	foreach (ConfigOption<float> configOption,floats){
+		if (configOption.name == name)
+			return configOption.optionVec[0];
 	}
 }
 

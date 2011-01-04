@@ -9,6 +9,7 @@
 #include "MeshFactory.h"
 #include "RenderEngine.h"
 #include "Logger.h"
+#include "Config.h"
 
 using namespace std;
 
@@ -18,11 +19,13 @@ RenderEngine::RenderEngine() : useFBO(false), frameCount(0), lightView(false), w
 	shadowSequence = new RenderSequence();
 
 	/* Make our background black */
+	vector<float> backgroundColor = Config::Instance().values<float>("backgroundColor");
 	glClearColor(backgroundColor[0],backgroundColor[1],backgroundColor[2], 1.0);
     //glEnable(GL_CULL_FACE);
     //glEnable(GL_POINT_SPRITE_ARB);
     glEnable(GL_DEPTH_TEST);
     glDepthFunc(GL_LESS);
+//    glBindSampler();
 
 	/** TODO: Deprecated*/
     //glTexEnvi(GL_POINT_SPRITE_ARB, GL_COORD_REPLACE_ARB, GL_TRUE);

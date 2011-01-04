@@ -13,6 +13,7 @@
 #include "Texture.h"
 #include "Material.h"
 
+
 class SceneLoader {
 public:
 	SceneLoader(const QString & fileName);
@@ -23,9 +24,9 @@ public:
 
 	QDomElement sceneXML;
 	QString fileName;
-
 	template<typename T> T pushValue( QString& value );
-	template<typename T> vector<T> splitValues(QString values);
+	template<typename T>  vector<T> splitValues(QString values);
+
 
 	QVector3D stringToVector3D(const QString& values);
 	void appendObject(const QDomElement & objectNode);

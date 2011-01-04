@@ -13,6 +13,8 @@
 
 using namespace std;
 
+
+
 template <typename T>
 class ConfigOption{
 public:
@@ -38,8 +40,8 @@ public:
 	vector<ConfigOption<string>> strings;
 	vector<ConfigOption<float>> floats;
 
-	template<typename T> vector<T> getValue(string name);
-
+	template<typename T> T value(string name);
+	template<typename T> vector<T> values(string name);
 
 	bool isEnabled(string value);
 };

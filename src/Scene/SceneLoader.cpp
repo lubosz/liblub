@@ -281,9 +281,8 @@ void SceneLoader::load(){
 }
 
 void SceneLoader::load(const QString & fileName){
-	vector<string> sceneDir = Config::Instance().getValue<string>("sceneDir");
 
-	QFile file(QString(sceneDir[0].c_str()) + fileName);
+	QFile file(QString(Config::Instance().value<string>("sceneDir").c_str()) + fileName);
 
 	QString errorStr;
 	int errorLine;

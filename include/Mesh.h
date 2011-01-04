@@ -9,6 +9,9 @@
 
 #include "OpenGL.h"
 
+//TODO: This is a very bad solution (and also hardcoded)
+const unsigned maxBuffers = 6;
+
 class Mesh {
 public:
 	Mesh();

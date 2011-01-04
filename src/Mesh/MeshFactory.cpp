@@ -55,8 +55,7 @@ Mesh * MeshFactory::load(string file) {
 }
 
 Mesh * MeshFactory::load(string file, GLint drawType) {
-	vector<string> meshDir = Config::Instance().getValue<string>("meshDir");
-	string path = meshDir[0] + file;
+	string path = Config::Instance().value<string>("meshDir") + file;
 
 	// Create an instance of the Importer class
 	Assimp::Importer importer;
@@ -152,8 +151,7 @@ Mesh * MeshFactory::load(string file, GLint drawType) {
 }
 
 Mesh * MeshFactory::loadDirect(string file) {
-	vector<string> meshDir = Config::Instance().getValue<string>("meshDir");
-	string path = meshDir[0] + file;
+	string path = Config::Instance().value<string>("meshDir") + file;
 	/*/
 	 const struct aiScene* scene = aiImportFile(path.c_str(),aiProcessPreset_TargetRealtime_Quality);
 	 Importer myImporter * = new Importer();
