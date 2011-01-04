@@ -144,9 +144,12 @@ if(CHECKSTYLE)
     set(INCLUDES ${INCLUDES} ${GLOB_RESULT})
     file(GLOB GLOB_RESULT include/common/*.h)
     set(INCLUDES ${INCLUDES} ${GLOB_RESULT})
+    
+    set(TODO ",-whitespace/tab,-build/include,-legal/copyright,-build/namespaces")
+    set(IGNORE "-build/header_guard,-readability/streams${TODO}")
 
     add_custom_target(CHECK_STYLE ALL
-        COMMAND ${PYTHON_VER} scripts/cpplint.py --filter=-whitespace/tab,-build/header_guard,-build/include,-legal/copyright,-build/namespaces,-readability/streams ${SOURCES} ${INCLUDES}
+        COMMAND ${PYTHON_VER} scripts/cpplint.py --filter=${IGNORE} ${SOURCES} ${INCLUDES}
     )
 endif()
 
