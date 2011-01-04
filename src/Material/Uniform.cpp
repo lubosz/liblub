@@ -7,20 +7,6 @@
 
 #include "Uniform.h"
 
-
-//template<class T>
-//Uniform<T>::Uniform(string name, const vector<T> & values) : name(name) ,values(values){
-//}
-//template<class T>
-//Uniform<T>::~Uniform() {
-//	// TODO Auto-generated destructor stub
-//}
-
-template<class T>
-void Uniform<T>::init(GLuint program){
-
-}
-
 template <>
 void Uniform<float>::init(GLuint program){
 	switch(values.size()){

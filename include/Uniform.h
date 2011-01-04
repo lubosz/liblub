@@ -13,11 +13,11 @@
 
 using namespace std;
 
-template<class T>
+template<typename T>
 class Uniform {
 public:
 	Uniform(string name, const vector<T> & values): name(name) ,values(values){}
-	virtual ~Uniform() {};
+	virtual ~Uniform(){}
 
 	void init(GLuint program);
 	string name;
