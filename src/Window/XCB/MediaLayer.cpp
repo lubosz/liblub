@@ -191,13 +191,10 @@ void MediaLayer::createWindow() {
 					(PFNGLXSWAPINTERVALSGIPROC) glXGetProcAddress(
 							(GLubyte *) "glXSwapIntervalSGI");
 	if (!glXSwapInterval) {
-		printf("VSync is not supported");
+		Logger::Instance().log("MediaLayer", "WARNING", "VSync is not supported");
+	} else {
+		glXSwapInterval(Config::Instance().value<int>("Vsync"));
 	}
-
-
-#ifdef VSync
-	glXSwapInterval(VSync);
-#endif
 }
 
 void MediaLayer::swapBuffers(){
