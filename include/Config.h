@@ -9,6 +9,7 @@
 #include <string>
 #include <vector>
 #include <QDomElement>
+#include "XmlReader.h"
 
 using namespace std;
 
@@ -29,10 +30,15 @@ public:
 	void appendOption(const QDomElement & optionNode);
 	string fileName;
 
+	template<typename T> T pushValue( QString& value );
+	template<typename T>  vector<T> splitValues(QString values);
+
 	vector<ConfigOption<bool>> bools;
 	vector<ConfigOption<int>> ints;
 	vector<ConfigOption<string>> strings;
 	vector<ConfigOption<float>> floats;
+
+	template<typename T> vector<T> getValue(string name);
 
 
 	bool isEnabled(string value);

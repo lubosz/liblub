@@ -8,6 +8,7 @@
 #include "config.h"
 #include "Textures.h"
 #include <math.h>
+#include "Config.h"
 
 
 	DepthTexture::DepthTexture(GLuint width, GLuint height, string name, GLenum glId){
@@ -107,7 +108,8 @@
 
 		this->name = name;
 
-		string path = textureDir + filename;
+		vector<string> textureDir = Config::Instance().getValue<string>("textureDir");
+		string path = textureDir[0] + filename;
 		GLint * glChannelOrder = new GLint();
 		GLint * texChannelOrder = new GLint();
 	    fipImage * image = readImage(path, glChannelOrder, texChannelOrder);
@@ -203,9 +205,13 @@ CubeTextureFile::CubeTextureFile(string filename, GLenum glId, string name, bool
 		glTexParameteri(textureType, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 		glTexParameteri(textureType, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 
+		vector<string> textureDir = Config::Instance().getValue<string>("textureDir");
+		vector<string> suffixes = Config::Instance().getValue<string>("suffixes");
 
 		for(int face=0; face<6; face++) {
-			string path = textureDir + filename + suffixes[face] + ".jpg";
+
+
+			string path = textureDir[0] + filename + suffixes[face] + ".jpg";
 
 			GLint * glChannelOrder = new GLint();
 			GLint * texChannelOrder = new GLint();

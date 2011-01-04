@@ -10,6 +10,7 @@
 #include <assimp/assimp.hpp>
 #include <assimp/aiScene.h>
 #include <assimp/aiPostProcess.h>
+#include "Config.h"
 
 Mesh *  MeshFactory::tetrahedron(){
 	Mesh * mesh = Geometry::makeTetrahedron();
@@ -54,7 +55,8 @@ Mesh * MeshFactory::load(string file) {
 }
 
 Mesh * MeshFactory::load(string file, GLint drawType) {
-	string path = meshDir + file;
+	vector<string> meshDir = Config::Instance().getValue<string>("meshDir");
+	string path = meshDir[0] + file;
 
 	// Create an instance of the Importer class
 	Assimp::Importer importer;
@@ -150,7 +152,8 @@ Mesh * MeshFactory::load(string file, GLint drawType) {
 }
 
 Mesh * MeshFactory::loadDirect(string file) {
-	string path = meshDir + file;
+	vector<string> meshDir = Config::Instance().getValue<string>("meshDir");
+	string path = meshDir[0] + file;
 	/*/
 	 const struct aiScene* scene = aiImportFile(path.c_str(),aiProcessPreset_TargetRealtime_Quality);
 	 Importer myImporter * = new Importer();

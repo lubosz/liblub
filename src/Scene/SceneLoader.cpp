@@ -12,6 +12,7 @@
 #include "MengerSponge.h"
 #include "Geometry.h"
 #include <typeinfo>
+#include "Config.h"
 
 SceneLoader::SceneLoader(const QString & fileName) :fileName(fileName) {}
 
@@ -34,7 +35,6 @@ template<> float SceneLoader::pushValue<float>( QString& value ){
 template <typename T>
 vector<T> SceneLoader::splitValues(QString values){
 	vector<T> flags;
-	T * foo;
 	foreach (QString value, values.split(","))
 		flags.push_back(pushValue<T>(value));
 	return flags;
@@ -281,7 +281,9 @@ void SceneLoader::load(){
 }
 
 void SceneLoader::load(const QString & fileName){
-	QFile file(QString(sceneDir.c_str()) + fileName);
+	vector<string> sceneDir = Config::Instance().getValue<string>("sceneDir");
+
+	QFile file(QString(sceneDir[0].c_str()) + fileName);
 
 	QString errorStr;
 	int errorLine;

@@ -8,6 +8,8 @@
 #include "Shader.h"
 #include "Logger.h"
 #include <QtCore>
+#include <string>
+#include "Config.h"
 
 Shader::Shader(string fileName, GLenum type) {
 
@@ -38,7 +40,8 @@ Shader::~Shader() {
 
 void Shader::loadAndCompile(){
 	/* Read our shaders into the appropriate buffers */
-	source = readFile(shaderDir + fileName);
+	vector <string> shaderDir = Config::Instance().getValue<string>("shaderDir");
+	source = readFile(shaderDir[0] + fileName);
 
     /* Assign our handles a "name" to new shader objects */
     shader = glCreateShader(type);

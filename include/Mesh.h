@@ -18,6 +18,7 @@ public:
 	void draw();
 private:
 	/* Create handles for our Vertex Array Object and three Vertex Buffer Objects */
+
 	GLuint vao, vbo[maxBuffers];
 	GLint drawType;
 
