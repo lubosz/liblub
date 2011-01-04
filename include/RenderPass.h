@@ -11,7 +11,7 @@
 #include "FrameBuffer.h"
 
 class RenderPass {
-public:
+ public:
 	Material * material;
 	FrameBuffer * fbo;
 	Texture * targetTexture;
@@ -21,6 +21,4 @@ public:
 	virtual void cleanUp() = 0;
 	virtual void prepare() = 0;
 	void render();
-
-
 };

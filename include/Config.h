@@ -16,24 +16,25 @@ using namespace std;
 
 
 template <typename T>
-class ConfigOption{
-public:
-	ConfigOption(string name, vector <T> &optionVec):name(name),optionVec(optionVec) {}
+class ConfigOption {
+ public:
+	ConfigOption(string name, vector <T> &optionVec)
+	:name(name), optionVec(optionVec) {}
 	virtual ~ConfigOption() {}
 	string name;
 	vector <T> optionVec;
 };
 
 class Config : public Singleton<Config> {
-public:
+ public:
 	Config();
 	virtual ~Config();
 	void load(const QString & fileName);
 	void appendOption(const QDomElement & optionNode);
 	string fileName;
 
-	template<typename T> T pushValue( QString& value );
-	template<typename T>  vector<T> splitValues(QString values);
+	template<typename T> T pushValue(const QString& value);
+	template<typename T> vector<T> splitValues(QString values);
 
 	vector<ConfigOption<bool>> bools;
 	vector<ConfigOption<int>> ints;

@@ -3,9 +3,8 @@
 #include "Node.h"
 #include "Light.h"
 
-class SceneGraph: public Singleton<SceneGraph>
-{
-public:
+class SceneGraph: public Singleton<SceneGraph> {
+ public:
 	Light * light;
 
 	void updateLight();
@@ -14,17 +13,21 @@ public:
 	void printMatrix(const QMatrix4x4 & matrix, string name);
 
 	void addNode(Node * node);
-	void meshPlane(string file, float cubeSize, float step, vector<Material*> materials);
+	void meshPlane(
+	        string file, float cubeSize, float step, vector<Material*> materials
+	);
 
-	void bindShaders(ShaderProgram * shaderProgram, const QMatrix4x4 & viewMatrix, const QMatrix4x4 & projectionMatrix);
+	void bindShaders(
+	        ShaderProgram * shaderProgram, const QMatrix4x4 & viewMatrix,
+	        const QMatrix4x4 & projectionMatrix
+	);
 	void setPosition(string nodeName, const QVector3D& position);
 
-private:
+ private:
 	friend class Singleton<SceneGraph>;
 
 	vector<Node*> sceneNodes;
 	QMatrix4x4 bias;
-	//vector<Material*> materials;
 
     SceneGraph();
 
@@ -32,8 +35,9 @@ private:
 	void transform(float frameCount);
 
 	void meshCube(string file, float cubeSize, float step, Material * material);
-	void meshCube(string file, float cubeSize, float step, vector<Material*> materials);
+	void meshCube(
+	        string file, float cubeSize, float step, vector<Material*> materials
+	);
 
 	void setShadowCoords(Node * node, DirectionNode * viewPoint);
-
 };

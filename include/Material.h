@@ -14,7 +14,7 @@
 using namespace std;
 
 class Material {
-public:
+ public:
     ShaderProgram *getShaderProgram();
 	void activate();
 	void samplerUniforms();
@@ -24,18 +24,18 @@ public:
 	vector<Texture*> textures;
 
 	ShaderProgram * shaderProgram;
-protected:
+ protected:
 	QVector4D diffuseColor;
 	void init();
 
 
-	void addTexture(string file,string name);
-	void addTextureCube(string file,string name);
+	void addTexture(string file, string name);
+	void addTextureCube(string file, string name);
 
 
 
 
-private:
+ private:
 	virtual void uniforms() = 0;
 	void defaultAttribs();
 	void activateTextures();

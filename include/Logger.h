@@ -14,8 +14,8 @@
 
 using namespace std;
 
-class Logger : public Singleton<Logger>{
-public:
+class Logger : public Singleton<Logger> {
+ public:
 	Logger();
 	virtual ~Logger();
 

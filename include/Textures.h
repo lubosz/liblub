@@ -10,22 +10,22 @@
 #include "Texture.h"
 
 class DepthTexture : public Texture {
-public:
+ public:
 	DepthTexture(GLuint width, GLuint height, string name, GLenum glId);
 };
 
 class ColorTexture : public Texture {
-public:
+ public:
 	ColorTexture(GLuint width, GLuint height, string name, GLenum glId);
 };
 
 class TextureFile : public Texture {
-public:
+ public:
 	TextureFile(string filename, GLenum glId, string name);
 };
 
 class SplatTexture : public Texture {
-public:
+ public:
 	SplatTexture(GLenum glId, string name, int resolution);
 	/**
 	* EvalHermite(float pA, float pB, float vA, float vB, float u)
@@ -33,11 +33,10 @@ public:
 	*/
 	inline float evalHermite(float pA, float pB, float vA, float vB, float u);
 	unsigned char* createGaussianMap(int N);
-
 };
 
 class CubeTextureFile : public Texture {
-public:
+ public:
 	CubeTextureFile(string filename, GLenum glId, string name, bool cube);
 };
 

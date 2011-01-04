@@ -15,8 +15,8 @@
 
 
 class SceneLoader {
-public:
-	SceneLoader(const QString & fileName);
+ public:
+	explicit SceneLoader(const QString & fileName);
 	virtual ~SceneLoader();
 
 	void load(const QString & fileName);
@@ -24,7 +24,7 @@ public:
 
 	QDomElement sceneXML;
 	QString fileName;
-	template<typename T> T pushValue( QString& value );
+	template<typename T> T pushValue(const QString& value);
 	template<typename T>  vector<T> splitValues(QString values);
 
 

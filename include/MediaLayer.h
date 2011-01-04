@@ -7,21 +7,18 @@
 
 #pragma once
 
-//Include first OpenGL then Qt then Xlib / GLX!
+// Include first OpenGL then Qt then Xlib / GLX!
 #include "RenderEngine.h"
 #include "Input.h"
-//#include <QtCore>
-//#include "Qt3D.h"
-//#include "common.h"
 
 #ifdef WITH_SDL
 	#define SDL_NO_COMPAT
 	#include "SDL.h"
 #elif WITH_SFML
 	#include <SFML/Graphics.hpp>
-	//#include <SFML/OpenGL.hpp>
 #else
-	#define GLX_GLXEXT_PROTOTYPES 1 //Needed for GL3 Context Creation
+    // Needed for GL3 Context Creation
+	#define GLX_GLXEXT_PROTOTYPES 1
 	#include <GL/glx.h>
 
 	#include <X11/Xlib.h>
@@ -32,15 +29,14 @@
 #endif
 
 
-class MediaLayer : public Singleton<MediaLayer>{
-
-private:
+class MediaLayer : public Singleton<MediaLayer> {
+ private:
     Input * input;
 
 #ifdef WITH_SDL
-	Uint32 fps_lasttime; //the last recorded time.
-	Uint32 fps_current; //the current FPS.
-	Uint32 fps_frames; //frames passed since the last recorded fps.
+	Uint32 fps_lasttime;  // the last recorded time.
+	Uint32 fps_current;  // the current FPS.
+	Uint32 fps_frames;  // frames passed since the last recorded fps.
 
 	SDL_Window *mainWindow;
 	SDL_GLContext mainContext; /* Our opengl context handle */
@@ -50,9 +46,9 @@ private:
 #elif WITH_SFML
     sf::Window * window;
 #else
-	unsigned fps_lasttime; //the last recorded time.
-	unsigned fps_current; //the current FPS.
-	unsigned fps_frames; //frames passed since the last recorded fps.
+	unsigned fps_lasttime;  // the last recorded time.
+	unsigned fps_current;  // the current FPS.
+	unsigned fps_frames;  // frames passed since the last recorded fps.
 
     int visualID;
     int default_screen;
@@ -70,7 +66,7 @@ private:
     GLXDrawable drawable;
     GLXFBConfig fb_config;
 
-    //Input
+    // Input
 
     uint32_t eventmask;
 
@@ -106,14 +102,14 @@ private:
 	MediaLayer();
 	~MediaLayer();
 
-public:
+ public:
 	unsigned width, height;
 	void init(string title);
 	void swapBuffers();
 	void renderLoop();
 
-protected:
-	void shutdown(){
+ protected:
+	void shutdown() {
 		quit = true;
 	}
 };

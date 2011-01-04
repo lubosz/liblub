@@ -10,7 +10,7 @@
 #include "Singleton.h"
 
 class RecourceManager : public Singleton<RecourceManager> {
-public:
+ public:
 	RecourceManager();
 	virtual ~RecourceManager();
 };

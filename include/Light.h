@@ -11,7 +11,7 @@
 #include "DirectionNode.h"
 
 class Light : public DirectionNode {
-public:
+ public:
 	Light(const QVector3D& position, const QVector3D & direction);
 	virtual ~Light();
     QVector3D getDirection() const;
@@ -30,7 +30,7 @@ public:
 
     void update();
 
-private:
+ private:
 	QVector4D color;
 };
 

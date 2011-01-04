@@ -11,7 +11,6 @@
 
 using namespace std;
 
-//XCBLOOP
 #ifdef WITH_XCB
 	#include <xcb/xcb_keysyms.h>
 #endif
@@ -26,28 +25,28 @@ using namespace std;
 
 
 class Input {
-	public:
+ public:
 
 		#if defined WITH_SDL || defined WITH_SFML
 			Input();
 		#else
-			Input(xcb_connection_t *connection);
+			explicit Input(xcb_connection_t *connection);
 		#endif
 
 			virtual ~Input();
 			void eventLoop();
-	private:
+ private:
 
 		#ifdef XCBEVENTS
 
 			xcb_event_handlers_t *evenths;
 
-			#define HANDLER_DECLARE( event, name )\
-			  static int Handle##name( void*, xcb_connection_t*, xcb_##event##_event_t* )
+			#define HANDLER_DECLARE(event, name)\
+			  static int Handle##name(void*, xcb_connection_t*, xcb_##event##_event_t*)
 
-			  HANDLER_DECLARE( motion_notify, MotionNotify );
-			  HANDLER_DECLARE( key_press, KeyPress );
-			  HANDLER_DECLARE( key_release, KeyRelease );
+			  HANDLER_DECLARE(motion_notify, MotionNotify);
+			  HANDLER_DECLARE(key_press, KeyPress);
+			  HANDLER_DECLARE(key_release, KeyRelease);
 			#undef HANDLER_DECLARE
 
 		#endif

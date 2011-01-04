@@ -11,8 +11,7 @@
 #include "Materials.h"
 
 class MengerSponge {
-
-private:
+ private:
 	Mesh * mesh;
 
 	vector<GLfloat> oneMeshVertices;
@@ -20,12 +19,16 @@ private:
 	vector<GLuint> oneMeshIndices;
 	vector<GLfloat> oneMeshNormals;
 
-	void makeSponge(unsigned recursion,const vector<float> & position, float size);
+	void makeSponge(
+	        unsigned recursion,
+	        const vector<float> & position,
+	        float size
+	);
 	void makeCube();
 	void addCube(const vector<float> & position, float size);
 
-public:
-	MengerSponge(unsigned recursion);
+ public:
+	explicit MengerSponge(unsigned recursion);
 	virtual ~MengerSponge();
 
 	Mesh * getMesh();

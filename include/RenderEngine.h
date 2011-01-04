@@ -13,7 +13,7 @@
 class RenderSequence;
 
 class RenderEngine : public Singleton<RenderEngine> {
-public:
+ public:
 	bool useFBO;
 	bool wire;
 	void display();
@@ -23,7 +23,7 @@ public:
 	void toggleLightView();
 	bool lightView;
 	RenderSequence * shadowSequence;
-private:
+ private:
 	friend class Singleton<RenderEngine>;
 
 	unsigned frameCount;
@@ -32,5 +32,4 @@ private:
 
 	RenderEngine();
 	virtual ~RenderEngine();
-
 };

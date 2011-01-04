@@ -12,7 +12,7 @@
 #include "Mesh.h"
 
 class FrameBuffer {
-public:
+ public:
 	FrameBuffer(GLuint width, GLuint height);
 	virtual ~FrameBuffer();
     void bind();
@@ -25,7 +25,7 @@ public:
 	void checkAndFinish();
 	void attachTexture(GLenum attachmentPoint, Texture * texture);
 	void disableColorBuffer();
-private:
+ private:
 	GLuint fboId;                       // ID of FBO
 	GLuint rboId;                       // ID of Renderbuffer object
 

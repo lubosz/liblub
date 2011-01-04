@@ -7,18 +7,16 @@
 
 #pragma once
 
-template <typename T>
+template<typename T>
 class Singleton {
-public:
+ public:
 
     typedef T object_type;
 
-	static object_type& Instance()
-	 {
-	    static object_type singleton;
-	    return singleton;
-	  }
-
+    static object_type& Instance() {
+        static object_type singleton;
+        return singleton;
+    }
 };
 
 

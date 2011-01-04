@@ -10,23 +10,23 @@
 #include "RenderPass.h"
 
 class LightViewDepthPass : public RenderPass {
-public:
-	LightViewDepthPass(FrameBuffer * fbo);
+ public:
+	explicit LightViewDepthPass(FrameBuffer * fbo);
 	void prepare();
 	void draw();
 	void cleanUp();
 };
 
 class FilterPass : public RenderPass {
-public:
-	FilterPass(FrameBuffer * fbo);
+ public:
+    explicit FilterPass(FrameBuffer * fbo);
 	void prepare();
 	void draw(Material * material);
 	void cleanUp();
 };
 
 class LightTogglePass : public RenderPass {
-public:
+ public:
 	LightTogglePass();
 	void prepare();
 	void draw();

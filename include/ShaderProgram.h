@@ -12,11 +12,13 @@
 #include "Uniform.h"
 
 class ShaderProgram {
-public:
+ public:
 	ShaderProgram();
 	virtual ~ShaderProgram();
 	void attachShader(string fileName, GLenum type);
-	void attachShader(string fileName, GLenum type, const vector<string> & defines);
+	void attachShader(
+	        string fileName, GLenum type, const vector<string> & defines
+	);
 
 	void attachVertFrag(string file);
 	void attachVertFrag(string file, const vector<string> & defines);
@@ -45,7 +47,7 @@ public:
 	void initUniforms();
 
 
-private:
+ private:
 	/* This is a handle to the shader program */
 	GLuint program;
 	template<typename T> void initUniformsByType(vector<Uniform<T> > & uniforms);

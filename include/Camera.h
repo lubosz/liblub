@@ -10,8 +10,8 @@
 #include "Singleton.h"
 #include "DirectionNode.h"
 
-class Camera: public Singleton<Camera> , public  DirectionNode{
-public:
+class Camera: public Singleton<Camera>, public DirectionNode {
+ public:
 
 	void updateRotation();
 
@@ -22,12 +22,10 @@ public:
 
 	void setMouseLook(int mouseXrel, int mouseYrel);
 	void setMouseZoom(int wheelX, int wheelY);
-private:
-
+ private:
 
     friend class Singleton<Camera>;
 
     Camera();
     ~Camera();
-
 };

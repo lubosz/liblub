@@ -9,10 +9,10 @@
 
 #include "Qt3D.h"
 
-const QVector3D up(0,1,0);
+const QVector3D up(0, 1, 0);
 
 class DirectionNode {
-public:
+ public:
 	qreal aspect, fov, near, far,
 		yaw, pitch, roll;
 	QVector3D position, direction, defaultCenter;
@@ -28,7 +28,7 @@ public:
     QMatrix4x4 getViewNoTranslation() const;
 	QMatrix4x4 getProjection() const;
 
-    void setPosition(QVector3D& position);
+    void setPosition(const QVector3D& position);
 	void setAspect(qreal aspect);
 	void setParams(qreal fov, qreal near, qreal far);
 
@@ -36,5 +36,4 @@ public:
     void updateView();
 
     void defaultValues();
-
 };

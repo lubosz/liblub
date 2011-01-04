@@ -12,18 +12,20 @@
 #include <FreeImagePlus.h>
 
 class Texture {
-public:
+ public:
 	void activate();
 	void bind();
 	void uniform(GLuint program);
     GLuint getHandler() const;
 	string name;
-protected:
+ protected:
 	GLenum glId;
 	GLuint texture;
 	GLuint textureType;
 
 	virtual ~Texture();
 
-	fipImage * readImage(string path, GLint * glChannelOrder, GLint * texChannelOrder);
+	fipImage * readImage(
+	        string path, GLint * glChannelOrder, GLint * texChannelOrder
+	);
 };

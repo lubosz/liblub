@@ -15,9 +15,9 @@ using namespace std;
 
 template<typename T>
 class Uniform {
-public:
-	Uniform(string name, const vector<T> & values): name(name) ,values(values){}
-	virtual ~Uniform(){}
+ public:
+	Uniform(string name, const vector<T> & values): name(name) , values(values) {}
+	virtual ~Uniform() {}
 
 	void init(GLuint program);
 	string name;

@@ -20,19 +20,19 @@ Config::~Config() {
 	// TODO Auto-generated destructor stub
 }
 
-template<> int Config::pushValue<int>( QString& value ){
+template<> int Config::pushValue<int>(const QString& value){
 	return value.toInt();
 }
 
-template<> string Config::pushValue<string>( QString& value ){
+template<> string Config::pushValue<string>(const QString& value){
 	return value.trimmed().toStdString();
 }
 
-template<> float Config::pushValue<float>( QString& value ){
+template<> float Config::pushValue<float>(const QString& value){
 	return value.toFloat();
 }
 
-template<> bool Config::pushValue<bool>( QString& value ){
+template<> bool Config::pushValue<bool>(const QString& value){
 	if (value == "true")
 		return true;
 	else

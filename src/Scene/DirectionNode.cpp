@@ -34,7 +34,7 @@ QMatrix4x4 DirectionNode::getViewNoTranslation() const
     return viewMatrixNoTranslation;
 }
 
-void DirectionNode::setPosition(QVector3D & position)
+void DirectionNode::setPosition(const QVector3D & position)
 {
     this->position = position;
 }

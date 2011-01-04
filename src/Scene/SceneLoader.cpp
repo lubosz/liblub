@@ -20,15 +20,15 @@ SceneLoader::~SceneLoader() {
 	// TODO Auto-generated destructor stub
 }
 
-template<> int SceneLoader::pushValue<int>( QString& value ){
+template<> int SceneLoader::pushValue<int>(const QString& value){
 	return value.toInt();
 }
 
-template<> string SceneLoader::pushValue<string>( QString& value ){
+template<> string SceneLoader::pushValue<string>(const QString& value){
 	return value.trimmed().toStdString();
 }
 
-template<> float SceneLoader::pushValue<float>( QString& value ){
+template<> float SceneLoader::pushValue<float>(const QString& value){
 	return value.toFloat();
 }
 

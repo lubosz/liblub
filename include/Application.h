@@ -14,21 +14,18 @@
 #include "Config.h"
 
 class Application {
-
 	virtual void scene() = 0;
 
-public:
+ public:
 
 	string programName;
 	SceneLoader * sceneLoader;
 
-	void run(){
+	void run() {
 		Config::Instance().load("config.xml");
 		MediaLayer::Instance().init(programName);
 		scene();
 		MediaLayer::Instance().renderLoop();
-
 	}
-
 };
 

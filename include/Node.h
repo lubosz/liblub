@@ -13,15 +13,14 @@
 
 
 class Node {
-public:
+ public:
 	Mesh * mesh;
     bool getCastShadows() const;
     void setCastShadows(bool castShadows);
     bool getReceiveShadows() const;
     void setReceiveShadows(bool receiveShadows);
-private:
+ private:
 	string name;
-	//vector<float> position;
 	QVector3D position;
 	float size;
 	Node * parent;
@@ -30,11 +29,14 @@ private:
 	bool castShadows, receiveShadows;
 
 
-public:
+ public:
 	Node(string name, const QVector3D& position, Mesh * mesh);
 	Node(string name, const QVector3D& position, Mesh * mesh, Material * material);
 	Node(string name, const QVector3D& position, string mesh, Material * material);
-	Node(string name, const QVector3D& position, float size, Mesh * mesh, Material * material);
+	Node(
+	        string name, const QVector3D& position,
+	        float size, Mesh * mesh, Material * material
+	);
 	virtual ~Node();
 
 	void setSize(float size);

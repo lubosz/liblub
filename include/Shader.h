@@ -10,13 +10,13 @@
 #include "OpenGL.h"
 
 class Shader {
-public:
+ public:
 	Shader(string fileName, GLenum type);
 	Shader(string fileName, GLenum type, const vector<string> & defines);
 	GLuint getReference() const;
 	virtual ~Shader();
 	void reload();
-private:
+ private:
 	/* These pointers will receive the contents of our shader source code files */
 	GLchar *source;
 

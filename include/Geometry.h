@@ -11,14 +11,19 @@
 #include "common.h"
 
 class Geometry {
-public:
+ public:
 	static Mesh * makeTetrahedron();
 	static Mesh * makeCube();
 	static Mesh * makePlane();
 	static Mesh * makePlaneTess();
-	static Mesh * makeStars(vector<float> & resolution, float density, float randomness, float colorIntensity);
+	static Mesh * makeStars(
+	        vector<float> & resolution,
+	        float density,
+	        float randomness,
+	        float colorIntensity
+	);
 	static Mesh * makeSpiral(int resolution, float density, float randomness);
-private:
+ private:
 	float density, randomness;
 	int variation;
 	static float randomize(float density, float randomness);

@@ -7,20 +7,18 @@
 
 #pragma once
 
-//#include "Materials.h"
 #include "RenderPasses.h"
 
 class RenderSequence {
-private:
+ private:
 	FrameBuffer *fbo;
 	Material * minimal;
 
-public:
+ public:
 	vector<RenderPass*> renderPasses;
 
 	RenderSequence();
 	virtual ~RenderSequence();
 	void render();
-
 };
 
