@@ -35,20 +35,20 @@ void Input::eventLoop() {
 	while(event = xcb_poll_for_event(connection)) {
     switch (event->response_type & ~0x80) {
         case XCB_MOTION_NOTIFY:
-            motion = (xcb_motion_notify_event_t *)event;
+            motion = reinterpret_cast<xcb_motion_notify_event_t *>(event);
             MediaLayer::Instance().mouseLook(motion->event_x, motion->event_y);
             break;
 
         case XCB_KEY_RELEASE:
 
-            kr = (xcb_key_release_event_t *)event;
+            kr = reinterpret_cast<xcb_key_release_event_t *>(event);
             pressedKey = xcb_key_symbols_get_keysym(syms, kr->detail, 0);
             pressedKeys.remove(pressedKey);
 
             break;
 
         case XCB_KEY_PRESS:
-            kp = (xcb_key_press_event_t *)event;
+            kp = reinterpret_cast<xcb_key_press_event_t *>(event);
             pressedKey = xcb_key_symbols_get_keysym(syms, kp->detail, 0);
 
             switch (pressedKey) {

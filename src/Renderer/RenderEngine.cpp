@@ -144,19 +144,3 @@ void RenderEngine::checkVersion() {
     //  Logger::Instance().log("DEBUG","GL_EXTENSIONS");
     // }
 }
-
-GLboolean RenderEngine::QueryExtension(char *extName) {
-    char *p = (char *) glGetString(GL_EXTENSIONS);
-    char *end;
-    if (p == NULL)
-        return GL_FALSE;
-    end = p + strlen(p);
-    while (p < end) {
-        int n = strcspn(p, " ");
-        if ((strlen(extName) == n) && (strncmp(extName, p, n) == 0)) {
-            return GL_TRUE;
-        }
-        p += (n + 1);
-    }
-    return GL_FALSE;
-}

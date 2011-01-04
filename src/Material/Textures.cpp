@@ -163,7 +163,7 @@ unsigned char* SplatTexture::createGaussianMap(int N) {
         Y2 = Y * Y;
         X = -1.0f;
         for (int x = 0; x < N; x++, X += Incr, i += 2, j += 4) {
-            Dist = (float) sqrtf(X * X + Y2);
+            Dist = static_cast<float>(sqrtf(X * X + Y2));
             if (Dist > 1)
                 Dist = 1;
             M[i + 1] = M[i] = evalHermite(1.0f, 0, 0, 0, Dist);

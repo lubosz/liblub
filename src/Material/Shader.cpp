@@ -83,7 +83,7 @@ char* Shader::readFile(string filePath) {
 
     /* Allocate a buffer for the entire
      * length of the file plus a null terminator */
-    buffer = (char*) malloc(sizeof(buffer) * fileSize);
+    buffer = reinterpret_cast<char*>(malloc(sizeof(buffer) * fileSize));
     if (!buffer) {
         fputs("Memory error", stderr);
         exit(2);
@@ -110,7 +110,7 @@ void Shader::printShaderInfoLog(GLuint shader) {
 	int infologLen = 0;
 	glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &infologLen);
 	if (infologLen > 1) {
-		GLchar * infoLog = (GLchar*) malloc(infologLen);
+		GLchar * infoLog = reinterpret_cast<GLchar*>(malloc(infologLen));
 		if (infoLog == NULL) {
 			Logger::Instance().log("ERROR",
 			        "Shader Log", "Could not allocate InfoLog buffer");

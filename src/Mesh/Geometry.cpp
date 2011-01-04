@@ -150,7 +150,7 @@ Mesh * Geometry::makeCube() {
 }
 
 float Geometry::randomize(float density, float randomness) {
-    float randomValue = 1 / float((rand() % 20) + 1);
+    float randomValue = 1 / static_cast<float>((rand() % 20) + 1);
 
     return density + (density * randomValue * randomness);
 }
@@ -174,9 +174,12 @@ Mesh * Geometry::makeStars(vector<float> & resolution, float density,
                 vertices.push_back(y);
                 vertices.push_back(z);
 
-                colors.push_back(float(int(x * colorIntensity) % 255) / 256);
-                colors.push_back(float(int(y * colorIntensity) % 255) / 256);
-                colors.push_back(float(int(z * colorIntensity) % 255) / 256);
+                colors.push_back(static_cast<float>(
+                        static_cast<int>(x * colorIntensity) % 255) / 256);
+                colors.push_back(static_cast<float>(
+                        static_cast<int>(y * colorIntensity) % 255) / 256);
+                colors.push_back(static_cast<float>(
+                        static_cast<int>(z * colorIntensity) % 255) / 256);
 
                 indicies.push_back(i);
 
@@ -225,9 +228,12 @@ Mesh * Geometry::makeSpiral(int resolution, float density, float randomness) {
             vertices.push_back(newPoint.y());
             vertices.push_back(newPoint.z());
 
-            colors.push_back(1.0 - (float(int(newPoint.x()) % 255) / 256));
-            colors.push_back(1.0 - (float(int(newPoint.y()) % 255) / 256));
-            colors.push_back(1.0 - (float(int(newPoint.z()) % 255) / 256));
+            colors.push_back(1.0 - (static_cast<float>(
+                    static_cast<int>(newPoint.x()) % 255) / 256));
+            colors.push_back(1.0 - (static_cast<float>(
+                    static_cast<int>(newPoint.y()) % 255) / 256));
+            colors.push_back(1.0 - (static_cast<float>(
+                    static_cast<int>(newPoint.z()) % 255) / 256));
 
             indicies.push_back(i);
             i++;

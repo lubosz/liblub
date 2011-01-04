@@ -41,8 +41,8 @@ void MediaLayer::init(string title) {
 	            display, None, window, 0, 0, width, height, halfWidth, halfHeight);
 
 	Camera::Instance().setAspect(
-	        float(MediaLayer::Instance().width)/
-	        float(MediaLayer::Instance().height)
+	        static_cast<float>(MediaLayer::Instance().width)/
+	        static_cast<float>(MediaLayer::Instance().height)
 	);
 }
 
@@ -123,7 +123,7 @@ void MediaLayer::createGLContext() {
 	PFNGLXCREATECONTEXTATTRIBSARBPROC
 			glXCreateContextAttribs =
 					(PFNGLXCREATECONTEXTATTRIBSARBPROC) glXGetProcAddress(
-							(GLubyte *) "glXCreateContextAttribsARB");
+							reinterpret_cast<GLubyte const *>("glXCreateContextAttribsARB"));
 	if (!glXCreateContextAttribs) {
 		printf("GL 3.x is not supported");
 	}
@@ -198,7 +198,7 @@ void MediaLayer::createWindow() {
 	PFNGLXSWAPINTERVALSGIPROC
 		glXSwapInterval =
 					(PFNGLXSWAPINTERVALSGIPROC) glXGetProcAddress(
-							(GLubyte *) "glXSwapIntervalSGI");
+					        reinterpret_cast<GLubyte const *>("glXSwapIntervalSGI"));
 	if (!glXSwapInterval) {
 		Logger::Instance().log("MediaLayer", "WARNING", "VSync is not supported");
 	} else {
