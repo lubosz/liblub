@@ -15,6 +15,7 @@ using namespace std;
 
 class Material {
  public:
+    virtual ~Material() {}
     ShaderProgram *getShaderProgram();
 	void activate();
 	void samplerUniforms();

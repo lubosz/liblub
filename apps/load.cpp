@@ -16,7 +16,7 @@ public:
 		sceneLoader = new SceneLoader(sceneFile);
 	}
 
-
+	~LoadApp(){}
 
 	void scene() {
 		sceneLoader->load();

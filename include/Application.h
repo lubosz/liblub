@@ -14,9 +14,9 @@
 #include "Config.h"
 
 class Application {
-	virtual void scene() = 0;
-
  public:
+	virtual ~Application() {}
+	virtual void scene() = 0;
 
 	string programName;
 	SceneLoader * sceneLoader;
