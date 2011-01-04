@@ -48,6 +48,7 @@ public:
 private:
 	/* This is a handle to the shader program */
 	GLuint program;
+	template<typename T> void initUniformsByType(vector<Uniform<T> > & uniforms);
 	list<Shader*> shaders;
 	list<string> boundAttribs;
 	unsigned attribCount;

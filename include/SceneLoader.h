@@ -13,18 +13,6 @@
 #include "Texture.h"
 #include "Material.h"
 
-	//	template<class T> void f( int, T, double ); // (c)
-	//	template<class T> void f( T* );             // (d)
-	//
-	//	// A full specialization of (b) for int
-
-
-//		template<class T> static T pushValue(QString& value);
-//
-//		template<> static int pushValue(QString& value){
-//			return value.toInt();
-//		}
-
 class SceneLoader {
 public:
 	SceneLoader(const QString & fileName);

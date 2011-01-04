@@ -120,37 +120,28 @@ void ShaderProgram::defaultAttribs(){
 	bindAttrib("in_Uv");
 }
 
+template<typename T> void ShaderProgram::initUniformsByType(vector<Uniform<T> > & uniforms){
+	foreach(Uniform<T> uniform, uniforms){
+
+			Logger::Instance().message << "Uniform: " + uniform.name + ": ";
+			foreach(T value, uniform.values){
+				Logger::Instance().message << value << ", ";
+			}
+			Logger::Instance().log("UNIFORMS", "ShaderProgram");
+
+
+			uniform.init(program);
+
+			Logger::Instance().message << uniform.values.size() << " bound.";
+			Logger::Instance().log("UNIFORMS", "ShaderProgram");
+
+			glError("ShaderProgram", 136);
+		}
+}
+
 void ShaderProgram::initUniforms(){
-	foreach(Uniform<float> uniform, uniforms){
-
-		Logger::Instance().message << "Uniform: " + uniform.name + ": ";
-		foreach(float value, uniform.values){
-			Logger::Instance().message << value << ", ";
-		}
-		Logger::Instance().log("UNIFORMS", "ShaderProgram");
-
-
-		uniform.init(program);
-
-		Logger::Instance().message << uniform.values.size() << " bound.";
-
-		Logger::Instance().log("UNIFORMS", "ShaderProgram");
-		glError("ShaderProgram", 136);
-	}
-	foreach(Uniform<int> uniformi, uniformsi){
-
-		Logger::Instance().message << "Uniform: " + uniformi.name + ": ";
-		foreach(int value, uniformi.values){
-			Logger::Instance().message << value << ", ";
-		}
-		Logger::Instance().log("UNIFORMSi", "ShaderProgram");
-		uniformi.init(program);
-
-		Logger::Instance().message << uniformi.values.size() << " bound.";
-
-		Logger::Instance().log("UNIFORMSi", "ShaderProgram");
-		glError("ShaderProgram", 165);
-	}
+	initUniformsByType<float>(uniforms);
+	initUniformsByType<int>(uniformsi);
     SceneGraph::Instance().light->bindShaderInit(this);
 }
 
