@@ -9,10 +9,10 @@
 #include "Camera.h"
 #include "Config.h"
 
-MediaLayer::MediaLayer(){
-	//FPS Stuff
-	fps_lasttime = 0; //the last recorded time.
-	fps_frames = 0; //frames passed since the last recorded fps.
+MediaLayer::MediaLayer() {
+	// FPS Stuff
+	fps_lasttime = 0;  // the last recorded time.
+	fps_frames = 0;  // frames passed since the last recorded fps.
 
 	fullscreen = false;
 	grab = false;
@@ -32,14 +32,18 @@ void MediaLayer::init(string title) {
 
 	input = new Input(connection);
 
-	//Togle mouse at init
+	// Toggle mouse at init
 	unsigned halfWidth = width/2;
 	unsigned halfHeight = height/2;
 	toggleMouseGrab();
-	if (grab) XWarpPointer(display, None, window, 0, 0, width, height, halfWidth, halfHeight);
+	if (grab)
+	    XWarpPointer(
+	            display, None, window, 0, 0, width, height, halfWidth, halfHeight);
 
-	Camera::Instance().setAspect(float(MediaLayer::Instance().width)/float(MediaLayer::Instance().height));
-
+	Camera::Instance().setAspect(
+	        float(MediaLayer::Instance().width)/
+	        float(MediaLayer::Instance().height)
+	);
 }
 
 MediaLayer::~MediaLayer() {
@@ -51,48 +55,50 @@ MediaLayer::~MediaLayer() {
 }
 
 void MediaLayer::createBlankCursor() {
-
 	cursor = xcb_generate_id(connection);
 	xcb_pixmap_t pix = xcb_generate_id(connection);
 
 	xcb_create_pixmap(connection, 1, pix, screen->root, 1, 1);
 	xcb_create_cursor(connection, cursor, pix, pix, 0, 0, 0, 0, 0, 0, 1, 1);
-
 }
 
-void MediaLayer::initScreen(){
+void MediaLayer::initScreen() {
     /* Open Xlib Display */
     display = XOpenDisplay(0);
-    if(!display) Logger::Instance().log("ERROR","initScreen","Can't open display");
+    if (!display) Logger::Instance().log("ERROR",
+            "initScreen", "Can't open display");
 
     default_screen = DefaultScreen(display);
 
     /* Get the XCB connection from the display */
     connection = XGetXCBConnection(display);
-    if(!connection) Logger::Instance().log("ERROR","initScreen","Can't get xcb connection from display");
+    if (!connection) Logger::Instance().log("ERROR",
+            "initScreen", "Can't get xcb connection from display");
 
     /* Acquire event queue ownership */
     XSetEventQueueOwner(display, XCBOwnsEventQueue);
 
     /* Find XCB screen */
-   screen = 0;
-    xcb_screen_iterator_t screen_iter = xcb_setup_roots_iterator(xcb_get_setup(connection));
-    for(int screen_num = default_screen;
+    screen = 0;
+    xcb_screen_iterator_t screen_iter =
+            xcb_setup_roots_iterator(xcb_get_setup(connection));
+    for (int screen_num = default_screen;
         screen_iter.rem && screen_num > 0;
         --screen_num, xcb_screen_next(&screen_iter));
     screen = screen_iter.data;
 
 	width = screen->width_in_pixels;
 	height = screen->height_in_pixels;
-
 }
 
-void MediaLayer::initFrameBuffer(){
+void MediaLayer::initFrameBuffer() {
     /* Query framebuffer configurations */
     GLXFBConfig *fb_configs = 0;
     int num_fb_configs = 0;
     fb_configs = glXGetFBConfigs(display, default_screen, &num_fb_configs);
-    if(!fb_configs || num_fb_configs == 0) Logger::Instance().log("ERROR","initFrameBuffer","glXGetFBConfigs failed");
+    if (!fb_configs || num_fb_configs == 0)
+        Logger::Instance().log("ERROR",
+                "initFrameBuffer", "glXGetFBConfigs failed");
     fb_config = fb_configs[0];
 }
 
@@ -125,7 +131,9 @@ void MediaLayer::createGLContext() {
 	context = glXCreateContextAttribs(display, fb_config, NULL, True,
 			attribs);
 
-	if(!context) Logger::Instance().log("ERROR","createGLContext","glXCreateNewContext failed");
+	if(!context)
+	    Logger::Instance().log("ERROR",
+	            "createGLContext", "glXCreateNewContext failed");
 }
 
 void MediaLayer::createColorMap() {
@@ -147,8 +155,7 @@ void MediaLayer::createWindow() {
 	eventmask =
 			XCB_EVENT_MASK_KEY_PRESS |
 			XCB_EVENT_MASK_POINTER_MOTION |
-			XCB_EVENT_MASK_KEY_RELEASE
-			;
+			XCB_EVENT_MASK_KEY_RELEASE;
 	uint32_t valuelist[] = { eventmask, colormap };
 	uint32_t valuemask = XCB_CW_EVENT_MASK | XCB_CW_COLORMAP;
 
@@ -175,17 +182,19 @@ void MediaLayer::createWindow() {
 	glxwindow = glXCreateWindow(display, fb_config, window, 0);
 
 	if (!glxwindow)
-		Logger::Instance().log("ERROR","createWindow","glXCreateWindow failed");
+		Logger::Instance().log("ERROR",
+		        "createWindow", "glXCreateWindow failed");
 
 	drawable = glxwindow;
 
 	Logger::Instance().log("MESSAGE", "XCB", "Making Context Current");
 	/* make OpenGL context current */
 	if (!glXMakeContextCurrent(display, drawable, drawable, context))
-		Logger::Instance().log("ERROR","createWindow","glXMakeContextCurrent failed");
+		Logger::Instance().log("ERROR",
+		        "createWindow", "glXMakeContextCurrent failed");
 	Logger::Instance().log("MESSAGE", "XCB", "Context activated");
 
-	//Set swap interval
+	// Set swap interval
 	PFNGLXSWAPINTERVALSGIPROC
 		glXSwapInterval =
 					(PFNGLXSWAPINTERVALSGIPROC) glXGetProcAddress(
@@ -197,7 +206,7 @@ void MediaLayer::createWindow() {
 	}
 }
 
-void MediaLayer::swapBuffers(){
+void MediaLayer::swapBuffers() {
 	glXSwapBuffers(display, drawable);
 }
 /*
@@ -247,43 +256,46 @@ static void
 
 }
 */
-xcb_intern_atom_cookie_t MediaLayer::getCookieForAtom(string state_name){
+xcb_intern_atom_cookie_t MediaLayer::getCookieForAtom(string state_name) {
 	return xcb_intern_atom(connection, 0, state_name.length(), state_name.c_str());
 }
 
-xcb_atom_t MediaLayer::getReplyAtomFromCookie(xcb_intern_atom_cookie_t cookie){
+xcb_atom_t MediaLayer::getReplyAtomFromCookie(xcb_intern_atom_cookie_t cookie) {
 	xcb_generic_error_t * error;
-	xcb_intern_atom_reply_t *reply = xcb_intern_atom_reply(connection, cookie, &error);
-	if (error)
-		fprintf(stderr, "Can't set the screen. Error Code: %i\n",error->error_code);
+	xcb_intern_atom_reply_t *reply =
+	        xcb_intern_atom_reply(connection, cookie, &error);
+	if (error) {
+	    Logger::Instance().message
+	            << "Can't set the screen. Error Code: "<< error->error_code;
+	    Logger::Instance().log("XCB", "ERROR", "");
+	}
 	return reply->atom;
-	//free(reply);
 }
-
-//void MediaLayer::changeState(state1, state2)
 
 void MediaLayer::toggleFullScreen() {
 	if (fullscreen) {
-		Logger::Instance().log("MESSAGE","Fullscreen", "off");
+		Logger::Instance().log("MESSAGE", "Fullscreen", "off");
 	} else {
-		Logger::Instance().log("MESSAGE","Fullscreen", "on");
+		Logger::Instance().log("MESSAGE", "Fullscreen", "on");
 	}
 	fullscreen = !fullscreen;
 
-	xcb_intern_atom_cookie_t wm_state_ck = getCookieForAtom("_NET_WM_STATE");
-	xcb_intern_atom_cookie_t wm_state_fs_ck = getCookieForAtom("_NET_WM_STATE_FULLSCREEN");
+	xcb_intern_atom_cookie_t wm_state_ck =
+	        getCookieForAtom("_NET_WM_STATE");
+	xcb_intern_atom_cookie_t wm_state_fs_ck =
+	        getCookieForAtom("_NET_WM_STATE_FULLSCREEN");
 
 #define _NET_WM_STATE_REMOVE        0    // remove/unset property
 #define _NET_WM_STATE_ADD           1    // add/set property
 #define _NET_WM_STATE_TOGGLE        2    // toggle property
 
 	xcb_client_message_event_t ev;
-//	memset (&ev, 0, sizeof (ev));
+	// memset (&ev, 0, sizeof (ev));
 	ev.response_type = XCB_CLIENT_MESSAGE;
 	ev.type = getReplyAtomFromCookie(wm_state_ck);
 	ev.format = 32;
 	ev.window = window;
-//    ev.data.data32[0] = fullscreen ? _NET_WM_STATE_ADD : _NET_WM_STATE_REMOVE;
+	// ev.data.data32[0] = fullscreen ? _NET_WM_STATE_ADD : _NET_WM_STATE_REMOVE;
 	ev.data.data32[0] = _NET_WM_STATE_TOGGLE;
     ev.data.data32[1] = getReplyAtomFromCookie(wm_state_fs_ck);
     ev.data.data32[2] = XCB_ATOM_NONE;
@@ -297,10 +309,9 @@ void MediaLayer::toggleFullScreen() {
 			XCB_EVENT_MASK_SUBSTRUCTURE_REDIRECT | XCB_EVENT_MASK_SUBSTRUCTURE_NOTIFY,
 			(const char *) &ev
 	);
-
 }
 
-void MediaLayer::renderLoop(){
+void MediaLayer::renderLoop() {
     while (!quit) {
     	input->eventLoop();
     	RenderEngine::Instance().display();
@@ -309,15 +320,17 @@ void MediaLayer::renderLoop(){
      }
 }
 
-void MediaLayer::getFPS(){
+void MediaLayer::getFPS() {
     struct timespec now;
     static struct timespec start;
     clock_gettime(CLOCK_MONOTONIC, &now);
-    unsigned ticks = (now.tv_sec - start.tv_sec) * 1000 + (now.tv_nsec - start.tv_nsec) / 1000000;
+    unsigned ticks =
+            (now.tv_sec - start.tv_sec) * 1000
+            + (now.tv_nsec - start.tv_nsec) / 1000000;
 
-    //FPS Stuff
+    // FPS Stuff
     fps_frames++;
-    if (fps_lasttime < ticks - 1000){
+    if (fps_lasttime < ticks - 1000) {
            fps_lasttime = ticks;
            fps_current = fps_frames;
            fps_frames = 0;
@@ -328,7 +341,7 @@ void MediaLayer::getFPS(){
 	setWindowTitle(windowTitle.str());
 }
 
-void MediaLayer::setWindowTitle(string title){
+void MediaLayer::setWindowTitle(string title) {
     xcb_change_property(
     	connection,
     	XCB_PROP_MODE_REPLACE,
@@ -341,40 +354,41 @@ void MediaLayer::setWindowTitle(string title){
 	);
 }
 
-void MediaLayer::toggleMouseGrab(){
-	if (!grab){
-		//hide cursor
+void MediaLayer::toggleMouseGrab() {
+	if (!grab) {
+		// hide cursor
 		uint32_t value_list = cursor;
 
-        xcb_change_window_attributes (
+        xcb_change_window_attributes(
         		connection,
         		window,
                 XCB_CW_CURSOR,
-                &value_list
-        );
+                &value_list);
 		grab = true;
-	}else{
+	} else {
 	    /* show the default cursor */
 		uint32_t value_list = XCB_CURSOR_NONE;
-	    xcb_change_window_attributes (
+	    xcb_change_window_attributes(
 	    		connection,
 	    		window,
 	    		XCB_CW_CURSOR,
-	    		&value_list
-	    );
+	    		&value_list);
 		grab = false;
 	}
 }
 
-void MediaLayer::mouseLook(int x, int y){
+void MediaLayer::mouseLook(int x, int y) {
 	unsigned halfWidth = width/2;
 	unsigned halfHeight = height/2;
 
 	int xRel = x - halfWidth;
 	int yRel = y - halfHeight;
 
-	if(!(xRel == 0 && yRel == 0) && grab){
+	if(!(xRel == 0 && yRel == 0) && grab) {
 		Camera::Instance().setMouseLook(xRel, yRel);
-		if (grab) XWarpPointer(display, None, window, x, y, width, height, halfWidth, halfHeight);
+		if (grab)
+		    XWarpPointer(
+		            display, None, window, x, y,
+		            width, height, halfWidth, halfHeight);
 	}
 }

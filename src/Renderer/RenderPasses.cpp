@@ -9,110 +9,87 @@
 #include "Camera.h"
 #include "Materials.h"
 
-LightViewDepthPass::LightViewDepthPass(FrameBuffer * fbo){
-	this->fbo = fbo;
-	targetTexture = TextureFactory::Instance().depthTexture(fbo->width, fbo->height, "shadowMap");
-	fbo->attachTexture(GL_DEPTH_ATTACHMENT, targetTexture);
-	fbo->disableColorBuffer();
+LightViewDepthPass::LightViewDepthPass(FrameBuffer * fbo) {
+    this->fbo = fbo;
+    targetTexture = TextureFactory::Instance().depthTexture(fbo->width,
+            fbo->height, "shadowMap");
+    fbo->attachTexture(GL_DEPTH_ATTACHMENT, targetTexture);
+    fbo->disableColorBuffer();
 
-	material = new Minimal();
+    material = new Minimal();
 }
 
 void LightViewDepthPass::prepare() {
-	fbo->bind();
+    fbo->bind();
 
-	RenderEngine::Instance().clear();
+    RenderEngine::Instance().clear();
 
-	// In the case we render the shadowmap to a higher resolution, the viewport must be modified accordingly.
-	fbo->updateRenderView();
-
-	// Clear previous frame values
-	//glClear( GL_DEPTH_BUFFER_BIT);
-
-	//Disable color rendering, we only want to write to the Z-Buffer
-	//glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE);
-
-	// Culling switching, rendering only backface, this is done to avoid self-shadowing
-	//glCullFace(GL_FRONT);
-
-	glPolygonOffset(2.0, 0.0);
-	//glPolygonOffset(1.1, 4.0);
-	material->activate();
+    // In the case we render the shadowmap to a higher resolution,
+    // the viewport must be modified accordingly.
+    fbo->updateRenderView();
+    glPolygonOffset(2.0, 0.0);
+    material->activate();
 }
 
-void LightViewDepthPass::draw(){
-	SceneGraph::Instance().drawCasters(material);
+void LightViewDepthPass::draw() {
+    SceneGraph::Instance().drawCasters(material);
 }
 
-void LightViewDepthPass::cleanUp(){
-	fbo->unBind();
-	glPolygonOffset(0.0,0.0);
-	//glCullFace(GL_BACK);
-	//Enabling color write (previously disabled for light POV z-buffer rendering)
-	//glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
+void LightViewDepthPass::cleanUp() {
+    fbo->unBind();
+    glPolygonOffset(0.0, 0.0);
 }
 
+FilterPass::FilterPass(FrameBuffer * fbo) {
+    this->fbo = fbo;
+    targetTexture = TextureFactory::Instance().depthTexture(fbo->width,
+            fbo->height, "shadowMap");
+    fbo->attachTexture(GL_DEPTH_ATTACHMENT, targetTexture);
+    fbo->disableColorBuffer();
 
-
-FilterPass::FilterPass(FrameBuffer * fbo){
-	this->fbo = fbo;
-	targetTexture = TextureFactory::Instance().depthTexture(fbo->width, fbo->height, "shadowMap");
-	fbo->attachTexture(GL_DEPTH_ATTACHMENT, targetTexture);
-	fbo->disableColorBuffer();
-
-	material = new Minimal();
+    material = new Minimal();
 }
 
 void FilterPass::prepare() {
-	fbo->bind();
+    fbo->bind();
 
-	RenderEngine::Instance().clear();
+    RenderEngine::Instance().clear();
 
-	// In the case we render the shadowmap to a higher resolution, the viewport must be modified accordingly.
-	fbo->updateRenderView();
-	SceneGraph::Instance().drawNodes(&Camera::Instance());
-	fbo->unBind();
-	// Clear previous frame values
-	//glClear( GL_DEPTH_BUFFER_BIT);
+    // In the case we render the shadowmap to a higher resolution,
+    // the viewport must be modified accordingly.
+    fbo->updateRenderView();
+    SceneGraph::Instance().drawNodes(&Camera::Instance());
+    fbo->unBind();
 
-	//Disable color rendering, we only want to write to the Z-Buffer
-	//glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE);
-
-	// Culling switching, rendering only backface, this is done to avoid self-shadowing
-	//glCullFace(GL_FRONT);
-
-	glPolygonOffset(2.0, 0.0);
-	//glPolygonOffset(1.1, 4.0);
-	material->activate();
+    glPolygonOffset(2.0, 0.0);
+    material->activate();
 }
 
-void FilterPass::draw(Material * material){
-	fbo->draw(material);
+void FilterPass::draw(Material * material) {
+    fbo->draw(material);
 }
 
-void FilterPass::cleanUp(){
-	fbo->unBind();
-	glPolygonOffset(0.0,0.0);
-	//glCullFace(GL_BACK);
-	//Enabling color write (previously disabled for light POV z-buffer rendering)
-	//glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
+void FilterPass::cleanUp() {
+    fbo->unBind();
+    glPolygonOffset(0.0, 0.0);
 }
 
-
-LightTogglePass::LightTogglePass(){
+LightTogglePass::LightTogglePass() {
 }
 
 void LightTogglePass::prepare() {
-	RenderEngine::Instance().clear();
+    RenderEngine::Instance().clear();
 }
 
-void LightTogglePass::draw(){
-	glViewport(0,0,MediaLayer::Instance().width, MediaLayer::Instance().height);
-	if(RenderEngine::Instance().lightView){
-		SceneGraph::Instance().drawNodes(SceneGraph::Instance().light);
-	}else{
-		SceneGraph::Instance().drawNodes(&Camera::Instance());
-	}
+void LightTogglePass::draw() {
+    glViewport(0, 0, MediaLayer::Instance().width,
+            MediaLayer::Instance().height);
+    if (RenderEngine::Instance().lightView) {
+        SceneGraph::Instance().drawNodes(SceneGraph::Instance().light);
+    } else {
+        SceneGraph::Instance().drawNodes(&Camera::Instance());
+    }
 }
 
-void LightTogglePass::cleanUp(){}
+void LightTogglePass::cleanUp() {
+}

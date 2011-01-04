@@ -15,10 +15,10 @@ Input::Input(xcb_connection_t *connection) {
 }
 
 Input::~Input() {
-	// TODO Auto-generated destructor stub
+	// TODO(bmonkey): Auto-generated destructor stub
 }
 
-void Input::eventLoop(){
+void Input::eventLoop() {
 	xcb_keysym_t pressedKey;
 
 	xcb_generic_event_t *event;
@@ -32,10 +32,8 @@ void Input::eventLoop(){
 	xcb_key_press_event_t *kp;
 	xcb_key_release_event_t *kr;
 
-	while (event = xcb_poll_for_event (connection)) {
-
+	while(event = xcb_poll_for_event(connection)) {
     switch (event->response_type & ~0x80) {
-
         case XCB_MOTION_NOTIFY:
             motion = (xcb_motion_notify_event_t *)event;
             MediaLayer::Instance().mouseLook(motion->event_x, motion->event_y);
@@ -44,89 +42,85 @@ void Input::eventLoop(){
         case XCB_KEY_RELEASE:
 
             kr = (xcb_key_release_event_t *)event;
-            pressedKey = xcb_key_symbols_get_keysym (syms, kr->detail,0);
+            pressedKey = xcb_key_symbols_get_keysym(syms, kr->detail, 0);
             pressedKeys.remove(pressedKey);
 
             break;
 
         case XCB_KEY_PRESS:
             kp = (xcb_key_press_event_t *)event;
-            pressedKey = xcb_key_symbols_get_keysym (syms, kp->detail,0);
+            pressedKey = xcb_key_symbols_get_keysym(syms, kp->detail, 0);
 
-            switch (pressedKey){
-				case XK_Escape:
-					MediaLayer::Instance().shutdown();
-					break;
-				case XK_m:
-					MediaLayer::Instance().toggleMouseGrab();
-					break;
-				case XK_f:
-					MediaLayer::Instance().toggleFullScreen();
-					break;
-				case XK_p:
-					RenderEngine::Instance().toggleFBO();
-					break;
-				case XK_c:
-					RenderEngine::Instance().toggleLightView();
-					break;
-				case XK_Tab:
-					RenderEngine::Instance().toggleWire();
-					break;
-				default:
-					pressedKeys.push_back(pressedKey);
+            switch (pressedKey) {
+                case XK_Escape:
+                    MediaLayer::Instance().shutdown();
+                    break;
+                case XK_m:
+                    MediaLayer::Instance().toggleMouseGrab();
+                    break;
+                case XK_f:
+                    MediaLayer::Instance().toggleFullScreen();
+                    break;
+                case XK_p:
+                    RenderEngine::Instance().toggleFBO();
+                    break;
+                case XK_c:
+                    RenderEngine::Instance().toggleLightView();
+                    break;
+                case XK_Tab:
+                    RenderEngine::Instance().toggleWire();
+                    break;
+                default:
+                    pressedKeys.push_back(pressedKey);
             }
             break;
 
         default:
             /* Unknown event type, ignore it */
-            //printf ("Unknown event: %d\n", event->response_type);
+            // printf ("Unknown event: %d\n", event->response_type);
             break;
     }
 
-    	free (event);
-
+    	free(event);
 	}
 
-	foreach( xcb_keysym_t key, pressedKeys )
-    {
+	foreach(xcb_keysym_t key, pressedKeys) {
     	checkKey(key);
     }
 }
 
-void Input::checkKey(xcb_keysym_t pressedKey){
-    switch (pressedKey){
-		case XK_w:
-			Camera::Instance().forward();
-			break;
-		case XK_a:
-			 Camera::Instance().left();
-			break;
-		case XK_s:
-			Camera::Instance().backward();
-			break;
-		case XK_d:
-			Camera::Instance().right();
-			break;
-
-
-			//Light
-			case XK_Left:
-                SceneGraph::Instance().light->moveLeft();
-                break;
-			case XK_Right:
-                SceneGraph::Instance().light->moveRight();
-				break;
-			case XK_Up:
-                SceneGraph::Instance().light->moveUp();
-                break;
-			case XK_Down:
-                SceneGraph::Instance().light->moveDown();
-                break;
-            case XK_1:
-                SceneGraph::Instance().light->moveForward();
-                break;
-            case XK_7:
-                SceneGraph::Instance().light->moveBack();
-				break;
+void Input::checkKey(xcb_keysym_t pressedKey) {
+    switch (pressedKey) {
+        case XK_w:
+            Camera::Instance().forward();
+            break;
+        case XK_a:
+            Camera::Instance().left();
+            break;
+        case XK_s:
+            Camera::Instance().backward();
+            break;
+        case XK_d:
+            Camera::Instance().right();
+            break;
+            // Light
+        case XK_Left:
+            SceneGraph::Instance().light->moveLeft();
+            break;
+        case XK_Right:
+            SceneGraph::Instance().light->moveRight();
+            break;
+        case XK_Up:
+            SceneGraph::Instance().light->moveUp();
+            break;
+        case XK_Down:
+            SceneGraph::Instance().light->moveDown();
+            break;
+        case XK_1:
+            SceneGraph::Instance().light->moveForward();
+            break;
+        case XK_7:
+            SceneGraph::Instance().light->moveBack();
+            break;
     }
 }

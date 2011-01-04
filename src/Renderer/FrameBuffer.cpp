@@ -15,15 +15,15 @@
 #include <sstream>
 
 FrameBuffer::FrameBuffer(GLuint width, GLuint height) {
-	glError("FrameBuffer",12);
-	//Gen texture for fbo
+    glError("FrameBuffer", 12);
+    // Gen texture for fbo
     // create a texture object
-	this->width = width;
-	this->height = height;
+    this->width = width;
+    this->height = height;
 
     renderPlane = MeshFactory::plane();
 
-	glError("FrameBuffer",33);
+    glError("FrameBuffer", 33);
 
     glGenFramebuffers(1, &fboId);
     glBindFramebuffer(GL_FRAMEBUFFER, fboId);
@@ -41,190 +41,168 @@ FrameBuffer::FrameBuffer(GLuint width, GLuint height) {
     glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, width, height);
     glBindRenderbuffer(GL_RENDERBUFFER, 0);
 
-/*
-    GLuint stencilbuffer;                       // ID of Renderbuffer object
-    glGenRenderbuffers(1, &stencilbuffer);
-    glBindRenderbuffer(GL_RENDERBUFFER, stencilbuffer);
-    glRenderbufferStorage(GL_RENDERBUFFER, GL_STENCIL_INDEX1, TEXTURE_WIDTH, TEXTURE_HEIGHT);
-    glBindRenderbuffer(GL_RENDERBUFFER, 0);
-*/
+    /*
+     GLuint stencilbuffer;                       // ID of Renderbuffer object
+     glGenRenderbuffers(1, &stencilbuffer);
+     glBindRenderbuffer(GL_RENDERBUFFER, stencilbuffer);
+     glRenderbufferStorage(GL_RENDERBUFFER, GL_STENCIL_INDEX1, TEXTURE_WIDTH, TEXTURE_HEIGHT);
+     glBindRenderbuffer(GL_RENDERBUFFER, 0);
+     */
 
-    // attach a renderbuffer to depth attachment point
-
-
-	glError("FrameBuffer",74);
-
-	//
-
+    glError("FrameBuffer", 74);
 }
 
-void FrameBuffer::checkAndFinish(){
-   // glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, rboId);
-    //glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_STENCIL_ATTACHMENT, GL_RENDERBUFFER, stencilbuffer);
-
+void FrameBuffer::checkAndFinish() {
     // check FBO status
-
     printFramebufferInfo();
 
-	Logger::Instance().log("DEBUG", "FBO", checkFramebufferStatus());
-	unBind();
+    Logger::Instance().log("DEBUG", "FBO", checkFramebufferStatus());
+    unBind();
 }
 
-void FrameBuffer::attachTexture(GLenum attachmentPoint, Texture * texture){
-
+void FrameBuffer::attachTexture(GLenum attachmentPoint, Texture * texture) {
     // attach a texture to FBO color attachement point
-    glFramebufferTexture2D(GL_FRAMEBUFFER, attachmentPoint, GL_TEXTURE_2D, texture->getHandler(), 0);
-    //glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT1, GL_TEXTURE_2D, pass2->getHandler(), 0);
-
-
-
+    glFramebufferTexture2D(GL_FRAMEBUFFER, attachmentPoint, GL_TEXTURE_2D,
+            texture->getHandler(), 0);
 }
 
-void FrameBuffer::disableColorBuffer(){
-
-    //@ disable color buffer if you don't attach any color buffer image,
-    //@ for example, rendering depth buffer only to a texture.
-    //@ Otherwise, glCheckFramebufferStatusEXT will not be complete.
+void FrameBuffer::disableColorBuffer() {
+    // disable color buffer if you don't attach any color buffer image,
+    // for example, rendering depth buffer only to a texture.
+    // Otherwise, glCheckFramebufferStatusEXT will not be complete.
     glDrawBuffer(GL_NONE);
     glReadBuffer(GL_NONE);
-
 }
 
 void FrameBuffer::bind() {
     // set the rendering destination to FBO
     glBindFramebuffer(GL_FRAMEBUFFER, fboId);
 
-    //Multiple render targets
-    //GLenum buffers[] = { GL_COLOR_ATTACHMENT0_EXT, GL_COLOR_ATTACHMENT1_EXT };
-	//glDrawBuffers(2, buffers);
+    // Multiple render targets
+    // GLenum buffers[] =
+    // { GL_COLOR_ATTACHMENT0_EXT, GL_COLOR_ATTACHMENT1_EXT };
+    // glDrawBuffers(2, buffers);
 
     // Set the render target
-    //glDrawBuffer(GL_COLOR_ATTACHMENT0);
+    // glDrawBuffer(GL_COLOR_ATTACHMENT0);
 
     glError("FrameBuffer::bind", 105);
 }
 
 void FrameBuffer::unBind() {
     // back to normal window-system-provided framebuffer
-    glBindFramebuffer(GL_FRAMEBUFFER, 0); // unbind
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
-void FrameBuffer::updateRenderView(){
-	glViewport(0,0,width, height);
+void FrameBuffer::updateRenderView() {
+    glViewport(0, 0, width, height);
 }
 
 void FrameBuffer::draw(Material * material) {
-	material->activate();
-	material->getShaderProgram()->use();
-	material->getShaderProgram()->setUniform(QMatrix4x4(), "MVPMatrix");
-	//glBindTexture(GL_TEXTURE_2D, 0);
-	renderPlane->draw();
-	glError("FrameBuffer::draw", 188);
+    material->activate();
+    material->getShaderProgram()->use();
+    material->getShaderProgram()->setUniform(QMatrix4x4(), "MVPMatrix");
+    renderPlane->draw();
+    glError("FrameBuffer::draw", 188);
 }
 
 FrameBuffer::~FrameBuffer() {
-	glDeleteFramebuffers(1, &fboId);
-	glDeleteRenderbuffers(1, &rboId);
+    glDeleteFramebuffers(1, &fboId);
+    glDeleteRenderbuffers(1, &rboId);
 }
 
-void FrameBuffer::printFramebufferInfo()
-{
+void FrameBuffer::printFramebufferInfo() {
     // print max # of colorbuffers supported by FBO
     int colorBufferCount = 0;
     glGetIntegerv(GL_MAX_COLOR_ATTACHMENTS, &colorBufferCount);
-    Logger::Instance().message << "Max Number of Color Buffer Attachment Points: " << colorBufferCount;
-    Logger::Instance().log("DEBUG","FBO");
+    Logger::Instance().message
+            << "Max Number of Color Buffer Attachment Points: "
+            << colorBufferCount;
+    Logger::Instance().log("DEBUG", "FBO");
 
     int objectType;
     int objectId;
 
     // print info of the colorbuffer attachable image
-    for(int i = 0; i < colorBufferCount; ++i){
+    for (int i = 0; i < colorBufferCount; ++i) {
         glGetFramebufferAttachmentParameteriv(GL_FRAMEBUFFER,
-                                              GL_COLOR_ATTACHMENT0+i,
-                                              GL_FRAMEBUFFER_ATTACHMENT_OBJECT_TYPE,
-                                              &objectType);
-        if(objectType != GL_NONE){
-
+                GL_COLOR_ATTACHMENT0 + i,
+                GL_FRAMEBUFFER_ATTACHMENT_OBJECT_TYPE, &objectType);
+        if (objectType != GL_NONE) {
             glGetFramebufferAttachmentParameteriv(GL_FRAMEBUFFER,
-                                                  GL_COLOR_ATTACHMENT0+i,
-                                                  GL_FRAMEBUFFER_ATTACHMENT_OBJECT_NAME,
-                                                  &objectId);
+                    GL_COLOR_ATTACHMENT0 + i,
+                    GL_FRAMEBUFFER_ATTACHMENT_OBJECT_NAME, &objectId);
 
             string formatName;
 
-
             Logger::Instance().message << "Color Attachment " << i << ": ";
-            if(objectType == GL_TEXTURE)
-            	Logger::Instance().message << "GL_TEXTURE, " << getTextureParameters(objectId);
-            else if(objectType == GL_RENDERBUFFER)
-            	Logger::Instance().message << "GL_RENDERBUFFER, " << getRenderbufferParameters(objectId);
-            Logger::Instance().log("DEBUG","FBO");
+            if (objectType == GL_TEXTURE)
+                Logger::Instance().message << "GL_TEXTURE, "
+                        << getTextureParameters(objectId);
+            else if (objectType == GL_RENDERBUFFER)
+                Logger::Instance().message << "GL_RENDERBUFFER, "
+                        << getRenderbufferParameters(objectId);
+            Logger::Instance().log("DEBUG", "FBO");
         }
     }
 
     // print info of the depthbuffer attachable image
-    glGetFramebufferAttachmentParameteriv(GL_FRAMEBUFFER,
-                                             GL_DEPTH_ATTACHMENT,
-                                             GL_FRAMEBUFFER_ATTACHMENT_OBJECT_TYPE,
-                                             &objectType);
-    if(objectType != GL_NONE)
-    {
+    glGetFramebufferAttachmentParameteriv(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT,
+            GL_FRAMEBUFFER_ATTACHMENT_OBJECT_TYPE, &objectType);
+    if (objectType != GL_NONE) {
         glGetFramebufferAttachmentParameteriv(GL_FRAMEBUFFER,
-                                                 GL_DEPTH_ATTACHMENT,
-                                                 GL_FRAMEBUFFER_ATTACHMENT_OBJECT_NAME,
-                                                 &objectId);
+                GL_DEPTH_ATTACHMENT, GL_FRAMEBUFFER_ATTACHMENT_OBJECT_NAME,
+                &objectId);
 
         Logger::Instance().message << "Depth Attachment: ";
-        switch(objectType)
-        {
+        switch (objectType) {
         case GL_TEXTURE:
-        	Logger::Instance().message << "GL_TEXTURE, " << getTextureParameters(objectId);
+            Logger::Instance().message << "GL_TEXTURE, "
+                    << getTextureParameters(objectId);
             break;
         case GL_RENDERBUFFER:
-        	Logger::Instance().message  << "GL_RENDERBUFFER, " << getRenderbufferParameters(objectId);
+            Logger::Instance().message << "GL_RENDERBUFFER, "
+                    << getRenderbufferParameters(objectId);
             break;
         }
-        Logger::Instance().log("DEBUG","FBO");
+        Logger::Instance().log("DEBUG", "FBO");
     }
 
     // print info of the stencilbuffer attachable image
     glGetFramebufferAttachmentParameteriv(GL_FRAMEBUFFER,
-                                             GL_STENCIL_ATTACHMENT,
-                                             GL_FRAMEBUFFER_ATTACHMENT_OBJECT_TYPE,
-                                             &objectType);
-    if(objectType != GL_NONE)
-    {
+            GL_STENCIL_ATTACHMENT, GL_FRAMEBUFFER_ATTACHMENT_OBJECT_TYPE,
+            &objectType);
+    if (objectType != GL_NONE) {
         glGetFramebufferAttachmentParameteriv(GL_FRAMEBUFFER,
-                                                 GL_STENCIL_ATTACHMENT,
-                                                 GL_FRAMEBUFFER_ATTACHMENT_OBJECT_NAME,
-                                                 &objectId);
+                GL_STENCIL_ATTACHMENT, GL_FRAMEBUFFER_ATTACHMENT_OBJECT_NAME,
+                &objectId);
 
         Logger::Instance().message << "Stencil Attachment: ";
-        switch(objectType)
-        {
+        switch (objectType) {
         case GL_TEXTURE:
-        	Logger::Instance().message << "GL_TEXTURE, " << getTextureParameters(objectId);
+            Logger::Instance().message << "GL_TEXTURE, "
+                    << getTextureParameters(objectId);
             break;
         case GL_RENDERBUFFER:
-        	Logger::Instance().message << "GL_RENDERBUFFER, " << getRenderbufferParameters(objectId);
+            Logger::Instance().message << "GL_RENDERBUFFER, "
+                    << getRenderbufferParameters(objectId);
             break;
         }
-        Logger::Instance().log("DEBUG","FBO");
+        Logger::Instance().log("DEBUG", "FBO");
     }
 }
 
-string FrameBuffer::getTextureParameters(GLuint id)
-{
-    if(glIsTexture(id) == GL_FALSE)
+string FrameBuffer::getTextureParameters(GLuint id) {
+    if (glIsTexture(id) == GL_FALSE)
         return "Not texture object";
 
     int width, height, format;
     string formatName;
     glBindTexture(GL_TEXTURE_2D, id);
-    glGetTexLevelParameteriv(GL_TEXTURE_2D, 0, GL_TEXTURE_WIDTH, &width);            // get texture width
-    glGetTexLevelParameteriv(GL_TEXTURE_2D, 0, GL_TEXTURE_HEIGHT, &height);          // get texture height
-    glGetTexLevelParameteriv(GL_TEXTURE_2D, 0, GL_TEXTURE_INTERNAL_FORMAT, &format); // get texture internal format
+    glGetTexLevelParameteriv(GL_TEXTURE_2D, 0, GL_TEXTURE_WIDTH, &width);
+    glGetTexLevelParameteriv(GL_TEXTURE_2D, 0, GL_TEXTURE_HEIGHT, &height);
+    glGetTexLevelParameteriv(
+            GL_TEXTURE_2D, 0, GL_TEXTURE_INTERNAL_FORMAT, &format);
     glBindTexture(GL_TEXTURE_2D, 0);
 
     formatName = convertInternalFormatToString(format);
@@ -234,17 +212,19 @@ string FrameBuffer::getTextureParameters(GLuint id)
     return ss.str();
 }
 
-string FrameBuffer::getRenderbufferParameters(GLuint id)
-{
-    if(glIsRenderbuffer(id) == GL_FALSE)
+string FrameBuffer::getRenderbufferParameters(GLuint id) {
+    if (glIsRenderbuffer(id) == GL_FALSE)
         return "Not Renderbuffer object";
 
     int width, height, format;
     string formatName;
     glBindRenderbuffer(GL_RENDERBUFFER, id);
-    glGetRenderbufferParameteriv(GL_RENDERBUFFER, GL_RENDERBUFFER_WIDTH, &width);    // get renderbuffer width
-    glGetRenderbufferParameteriv(GL_RENDERBUFFER, GL_RENDERBUFFER_HEIGHT, &height);  // get renderbuffer height
-    glGetRenderbufferParameteriv(GL_RENDERBUFFER, GL_RENDERBUFFER_INTERNAL_FORMAT, &format); // get renderbuffer internal format
+    glGetRenderbufferParameteriv(
+            GL_RENDERBUFFER, GL_RENDERBUFFER_WIDTH, &width);
+    glGetRenderbufferParameteriv(
+            GL_RENDERBUFFER, GL_RENDERBUFFER_HEIGHT, &height);
+    glGetRenderbufferParameteriv(
+            GL_RENDERBUFFER, GL_RENDERBUFFER_INTERNAL_FORMAT, &format);
     glBindRenderbuffer(GL_RENDERBUFFER, 0);
 
     formatName = convertInternalFormatToString(format);
@@ -254,12 +234,10 @@ string FrameBuffer::getRenderbufferParameters(GLuint id)
     return ss.str();
 }
 
-string FrameBuffer::convertInternalFormatToString(GLenum format)
-{
+string FrameBuffer::convertInternalFormatToString(GLenum format) {
     std::string formatName;
 
-    switch(format)
-    {
+    switch (format) {
     case GL_STENCIL_INDEX:
         formatName = "GL_STENCIL_INDEX";
         break;
@@ -324,13 +302,11 @@ string FrameBuffer::convertInternalFormatToString(GLenum format)
     return formatName;
 }
 
-string FrameBuffer::checkFramebufferStatus()
-{
+string FrameBuffer::checkFramebufferStatus() {
     GLenum status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
-    switch(status)
-    {
+    switch (status) {
     case GL_FRAMEBUFFER_COMPLETE:
-    	return "Framebuffer complete.";
+        return "Framebuffer complete.";
 
     case GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT:
         return "[ERROR] Framebuffer incomplete: Attachment is NOT complete.";
@@ -349,6 +325,5 @@ string FrameBuffer::checkFramebufferStatus()
 
     default:
         return "[ERROR] Unknow error.";
-
     }
 }

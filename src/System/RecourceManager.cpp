@@ -8,10 +8,9 @@
 #include "RecourceManager.h"
 
 RecourceManager::RecourceManager() {
-	// TODO Auto-generated constructor stub
-
+	// TODO(bmonkey): Auto-generated constructor stub
 }
 
 RecourceManager::~RecourceManager() {
-	// TODO Auto-generated destructor stub
+	// TODO(bmonkey): Auto-generated destructor stub
 }

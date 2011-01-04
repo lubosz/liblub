@@ -7,10 +7,8 @@
 
 #include "TextureFactory.h"
 #include "Textures.h"
-#include <iostream>
 
 TextureFactory::TextureFactory() {
-
 	textureCount = 0;
 
 	textureEnums = {
@@ -22,48 +20,41 @@ TextureFactory::TextureFactory() {
 			GL_TEXTURE25, GL_TEXTURE26, GL_TEXTURE27, GL_TEXTURE28, GL_TEXTURE29,
 			GL_TEXTURE30, GL_TEXTURE31
 	};
-
 }
 
 TextureFactory::~TextureFactory() {
-	// TODO Auto-generated destructor stub
+	// TODO(bmonkey): Auto-generated destructor stub
 }
-Texture * TextureFactory::depthTexture(GLuint width, GLuint height, string name){
-	Texture * texture = new DepthTexture(width, height, name, textureEnums[textureCount]);
+Texture * TextureFactory::depthTexture(
+        GLuint width, GLuint height, string name) {
+	Texture * texture =
+	        new DepthTexture(width, height, name, textureEnums[textureCount]);
 	textureCount++;
 	return texture;
 }
-Texture * TextureFactory::colorTexture(GLuint width, GLuint height, string name){
-	Texture * texture = new ColorTexture(width, height, name, textureEnums[textureCount]);
+Texture * TextureFactory::colorTexture(
+        GLuint width, GLuint height, string name) {
+	Texture * texture =
+	        new ColorTexture(width, height, name, textureEnums[textureCount]);
 	textureCount++;
 	return texture;
 }
-Texture * TextureFactory::load(string filename, string name){
-	Texture * texture = new TextureFile(filename, textureEnums[textureCount], name);
+Texture * TextureFactory::load(string filename, string name) {
+	Texture * texture =
+	        new TextureFile(filename, textureEnums[textureCount], name);
 	textureCount++;
 	return texture;
 }
-Texture * TextureFactory::loadCubeMap(string filename, string name){
-	Texture * texture = new CubeTextureFile(filename, textureEnums[textureCount], name, true);
+Texture * TextureFactory::loadCubeMap(string filename, string name) {
+	Texture * texture =
+	        new CubeTextureFile(filename, textureEnums[textureCount], name, true);
 	textureCount++;
 	return texture;
 }
 
-Texture * TextureFactory::splatTexture(string name, int resolution){
-	Texture * texture = new SplatTexture(textureEnums[textureCount], name, resolution);
+Texture * TextureFactory::splatTexture(string name, int resolution) {
+	Texture * texture =
+	        new SplatTexture(textureEnums[textureCount], name, resolution);
 	textureCount++;
 	return texture;
 }
-/*
-void TextureFactory::uniforms(GLint program){
-
-	GLint texLoc;
-
-	for (int i = 0; i < textures.size(); i++){
-		cout << "Assigning Texture " << i << " " << textures[i]->name << "\n";
-		textures[i]->activate();
-		texLoc   = glGetUniformLocation(program, textures[i]->name.c_str());
-		glUniform1i(texLoc, i);
-	}
-}
-*/

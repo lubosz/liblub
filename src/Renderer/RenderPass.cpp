@@ -8,16 +8,15 @@
 #include "RenderPass.h"
 
 RenderPass::RenderPass() {
-	// TODO Auto-generated constructor stub
-
+    // TODO(bmonkey): Auto-generated constructor stub
 }
 
 RenderPass::~RenderPass() {
-	// TODO Auto-generated destructor stub
+    // TODO(bmonkey): Auto-generated destructor stub
 }
 
-void RenderPass::render(){
-	prepare();
-	draw();
-	cleanUp();
+void RenderPass::render() {
+    prepare();
+    draw();
+    cleanUp();
 }
