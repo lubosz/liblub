@@ -129,22 +129,8 @@ void ShaderProgram::initUniforms(){
 		}
 		Logger::Instance().log("UNIFORMS", "ShaderProgram");
 
-		//TODO: vector methods, uniform boilerplate
-		switch(uniform.values.size()){
-		case 1:
-			glUniform1f(glGetUniformLocation(program, uniform.name.c_str()), uniform.values[0]);
-			break;
-		case 2:
-			glUniform2f(glGetUniformLocation(program, uniform.name.c_str()), uniform.values[0],uniform.values[1]);
-			break;
-		case 3:
-			glUniform3f(glGetUniformLocation(program, uniform.name.c_str()), uniform.values[0],uniform.values[1],uniform.values[2]);
-			break;
-		case 4:
-//			glUniform4fv(glGetUniformLocation(program, uniform.name.c_str()), 4, uniform.values.data());
-			glUniform4f(glGetUniformLocation(program, uniform.name.c_str()), uniform.values[0],uniform.values[1],uniform.values[2],uniform.values[3]);
-			break;
-		}
+
+		uniform.init(program);
 
 		Logger::Instance().message << uniform.values.size() << " bound.";
 
@@ -158,22 +144,7 @@ void ShaderProgram::initUniforms(){
 			Logger::Instance().message << value << ", ";
 		}
 		Logger::Instance().log("UNIFORMSi", "ShaderProgram");
-
-		switch(uniformi.values.size()){
-		case 1:
-			glUniform1iv(glGetUniformLocation(program, uniformi.name.c_str()), 1, uniformi.values.data());
-			break;
-		case 2:
-			glUniform2iv(glGetUniformLocation(program, uniformi.name.c_str()), 2, uniformi.values.data());
-			break;
-		case 3:
-			glUniform3iv(glGetUniformLocation(program, uniformi.name.c_str()), 3, uniformi.values.data());
-			break;
-		case 4:
-//			glUniform4fv(glGetUniformLocation(program, uniform.name.c_str()), 4, uniform.values.data());
-			glUniform4i(glGetUniformLocation(program, uniformi.name.c_str()), uniformi.values[0],uniformi.values[1],uniformi.values[2],uniformi.values[3]);
-			break;
-		}
+		uniformi.init(program);
 
 		Logger::Instance().message << uniformi.values.size() << " bound.";
 
