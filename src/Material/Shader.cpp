@@ -83,7 +83,7 @@ char* Shader::readFile(string filePath) {
 
     /* Allocate a buffer for the entire
      * length of the file plus a null terminator */
-    buffer = (char*) malloc(sizeof(char) * fileSize);
+    buffer = (char*) malloc(sizeof(buffer) * fileSize);
     if (!buffer) {
         fputs("Memory error", stderr);
         exit(2);
