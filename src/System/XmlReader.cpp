@@ -4,8 +4,9 @@
  *
  *  Created on: Jan 4, 2011
  */
-#include <string>
 #include <QStringList>
+#include <string>
+#include <vector>
 #include "System/XmlReader.h"
 
 using std::string;

@@ -1,6 +1,8 @@
 /*
  * Copyright © 2010 Lubosz Sarnecki
  */
+#include <vector>
+#include <string>
 #include "Scene/SceneGraph.h"
 #include "Scene/Camera.h"
 #include "Renderer/RenderEngine.h"

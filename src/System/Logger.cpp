@@ -5,8 +5,9 @@
  *  Created on: Dec 9, 2010
  */
 
-#include <iostream>
 #include <QtCore>
+#include <string>
+#include <iostream>
 #include "System/Logger.h"
 #include "common/BashColor.h"
 

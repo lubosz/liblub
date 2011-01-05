@@ -4,12 +4,13 @@
  *
  *  Created on: Dec 20, 2010
  */
-
-#include "System/Config.h"
-#include "System/Logger.h"
 #include <QSize>
 #include <QStringList>
 #include <QFile>
+#include <vector>
+#include <string>
+#include "System/Config.h"
+#include "System/Logger.h"
 
 Config::Config() {}
 

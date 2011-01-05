@@ -4,14 +4,14 @@
  *
  *  Created on: Dec 16, 2010
  */
-#include <vector>
 #include <QStringList>
 #include <QFile>
+#include <vector>
+#include <string>
 #include "Scene/SceneLoader.h"
 #include "Mesh/MeshFactory.h"
 #include "Mesh/MengerSponge.h"
 #include "Mesh/Geometry.h"
-#include <typeinfo>
 #include "System/Config.h"
 
 SceneLoader::SceneLoader(const QString & fileName)

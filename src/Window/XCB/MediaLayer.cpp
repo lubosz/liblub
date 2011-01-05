@@ -5,6 +5,8 @@
  *  Created on: Mar 22, 2010
  */
 #include <sstream>
+#include <string>
+#include <vector>
 #include "Window/MediaLayer.h"
 #include "Scene/Camera.h"
 #include "System/Config.h"

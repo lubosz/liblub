@@ -4,7 +4,7 @@
  *
  *  Created on: Sep 28, 2010
  */
-
+#include <list>
 #include "Scene/Camera.h"
 #include "Window/MediaLayer.h"
 
