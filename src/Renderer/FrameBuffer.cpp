@@ -4,7 +4,8 @@
  *
  *  Created on: Aug 31, 2010
  */
-
+#include <sstream>
+#include <string>
 #include "Renderer/FrameBuffer.h"
 #include "Material/Materials.h"
 #include "Scene/SceneGraph.h"
@@ -12,7 +13,6 @@
 #include "Mesh/MeshFactory.h"
 #include "System/Logger.h"
 
-#include <sstream>
 
 FrameBuffer::FrameBuffer(GLuint width, GLuint height) {
     glError("FrameBuffer", 12);

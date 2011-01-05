@@ -4,9 +4,10 @@
  *
  *  Created on: Oct 4, 2010
  */
-
-#include "Material/Textures.h"
 #include <math.h>
+#include <vector>
+#include <string>
+#include "Material/Textures.h"
 #include "System/Config.h"
 
 DepthTexture::DepthTexture(GLuint width, GLuint height, string name,

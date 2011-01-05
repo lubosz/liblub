@@ -4,7 +4,7 @@
  *
  *  Created on: Mar 22, 2010
  */
-
+#include <vector>
 #include "Scene/Camera.h"
 #include "Mesh/MeshFactory.h"
 #include "Renderer/RenderEngine.h"

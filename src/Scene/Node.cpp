@@ -4,7 +4,7 @@
  *
  *  Created on: Jun 28, 2010
  */
-
+#include <string>
 #include "Scene/Node.h"
 #include "Mesh/MeshFactory.h"
 

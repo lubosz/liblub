@@ -7,19 +7,17 @@
 
 #pragma once
 
-#include "common.h"
-
 #define GL3_PROTOTYPES 1
 #include <GL3/gl3.h>
 #include <GL3/glext.h>
-
+#include <string>
 #include "System/Logger.h"
 
 static void glError(string file, int line) {
 	GLenum err(glGetError());
 
 	while (err != GL_NO_ERROR) {
-		std::string error;
+		string error;
 
 		switch (err) {
             case GL_INVALID_OPERATION:

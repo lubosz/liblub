@@ -4,7 +4,8 @@
  *
  *  Created on: Mar 22, 2010
  */
-
+#include <vector>
+#include <string>
 #include "Material/ShaderProgram.h"
 #include "Scene/SceneGraph.h"
 

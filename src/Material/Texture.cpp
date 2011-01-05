@@ -4,7 +4,7 @@
  *
  *  Created on: Mar 24, 2010
  */
-
+#include <string>
 #include "Material/Texture.h"
 
 Texture::~Texture() {

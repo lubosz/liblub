@@ -3,9 +3,8 @@
  * Geomerty.cpp
  *
  *  Created on: Mar 24, 2010
- *      Author: bmonkey
  */
-
+#include <vector>
 #include "Mesh/Geometry.h"
 #include "common/Qt3D.h"
 

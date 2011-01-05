@@ -4,7 +4,8 @@
  *
  *  Created on: Mar 22, 2010
  */
-
+#include <string>
+#include <vector>
 #include "Renderer/RenderEngine.h"
 #include "System/Logger.h"
 

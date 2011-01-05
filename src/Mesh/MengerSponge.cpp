@@ -6,7 +6,7 @@
  */
 
 #include "Mesh/MengerSponge.h"
-
+#include <vector>
 #include <algorithm>
 
 MengerSponge::MengerSponge(unsigned recursion) {
