@@ -1,8 +1,8 @@
 /*
+ * Copyright © 2010 Lubosz Sarnecki
  * Textures.h
  *
  *  Created on: Oct 4, 2010
- *      Author: bmonkey
  */
 
 #pragma once

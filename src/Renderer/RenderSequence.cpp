@@ -1,8 +1,8 @@
 /*
+ * Copyright © 2010 Lubosz Sarnecki
  * RenderSequence.cpp
  *
  *  Created on: Oct 4, 2010
- *      Author: bmonkey
  */
 
 #include "MediaLayer.h"

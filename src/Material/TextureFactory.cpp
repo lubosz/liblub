@@ -1,8 +1,8 @@
 /*
+ * Copyright © 2010 Lubosz Sarnecki
  * TextureFactory.cpp
  *
  *  Created on: Mar 25, 2010
- *      Author: bmonkey
  */
 
 #include "TextureFactory.h"

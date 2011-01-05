@@ -1,8 +1,8 @@
 /*
+ * Copyright © 2010 Lubosz Sarnecki
  * Qt3D.h
  *
  *  Created on: Oct 13, 2010
- *      Author: bmonkey
  */
 
 #pragma once

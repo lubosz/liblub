@@ -1,8 +1,8 @@
 /*
+ * Copyright © 2010 Lubosz Sarnecki
  * MeshFactory.cpp
  *
  *  Created on: Jun 8, 2010
- *      Author: bmonkey
  */
 
 #include "MeshFactory.h"

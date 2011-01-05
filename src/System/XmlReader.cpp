@@ -1,8 +1,8 @@
 /*
+ * Copyright © 2010 Lubosz Sarnecki
  * XmlReader.cpp
  *
  *  Created on: Jan 4, 2011
- *      Author: bmonkey
  */
 #include <string>
 #include <QStringList>

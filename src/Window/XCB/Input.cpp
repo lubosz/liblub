@@ -1,8 +1,8 @@
 /*
+ * Copyright © 2010 Lubosz Sarnecki
  * Input.cpp
  *
  *  Created on: Sep 28, 2010
- *      Author: bmonkey
  */
 
 #include "Camera.h"

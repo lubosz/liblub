@@ -1,3 +1,6 @@
+/*
+ * Copyright © 2010 Lubosz Sarnecki
+ */
 #include "SceneGraph.h"
 #include "Camera.h"
 #include "RenderEngine.h"

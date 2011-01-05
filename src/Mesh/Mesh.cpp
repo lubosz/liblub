@@ -1,8 +1,8 @@
 /*
+ * Copyright © 2010 Lubosz Sarnecki
  * Mesh.cpp
  *
  *  Created on: Mar 22, 2010
- *      Author: bmonkey
  */
 
 #include "RenderEngine.h"

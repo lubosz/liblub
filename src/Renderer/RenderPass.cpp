@@ -1,8 +1,8 @@
 /*
+ * Copyright © 2010 Lubosz Sarnecki
  * RenderPass.cpp
  *
  *  Created on: Sep 10, 2010
- *      Author: bmonkey
  */
 
 #include "RenderPass.h"

@@ -1,8 +1,8 @@
 /*
+ * Copyright © 2010 Lubosz Sarnecki
  * MengerSponge.h
  *
  *  Created on: Jul 11, 2010
- *      Author: bmonkey
  */
 
 #pragma once

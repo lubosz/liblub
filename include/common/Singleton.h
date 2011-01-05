@@ -1,8 +1,8 @@
 /*
+ * Copyright © 2010 Lubosz Sarnecki
  * Singleton.h
  *
  *  Created on: Jun 28, 2010
- *      Author: bmonkey
  */
 
 #pragma once

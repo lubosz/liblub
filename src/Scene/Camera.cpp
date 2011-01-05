@@ -1,8 +1,8 @@
 /*
+ * Copyright © 2010 Lubosz Sarnecki
  * Camera.cpp
  *
  *  Created on: Apr 1, 2010
- *      Author: bmonkey
  */
 
 #include "Camera.h"

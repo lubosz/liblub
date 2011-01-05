@@ -1,4 +1,5 @@
 /*
+ * Copyright © 2010 Lubosz Sarnecki
  * Geomerty.cpp
  *
  *  Created on: Mar 24, 2010

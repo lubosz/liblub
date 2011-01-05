@@ -1,8 +1,8 @@
 /*
+ * Copyright © 2010 Lubosz Sarnecki
  * RecourceManager.cpp
  *
  *  Created on: Dec 20, 2010
- *      Author: bmonkey
  */
 
 #include "RecourceManager.h"

@@ -1,8 +1,8 @@
 /*
+ * Copyright © 2010 Lubosz Sarnecki
  * Light.h
  *
  *  Created on: Oct 1, 2010
- *      Author: bmonkey
  */
 
 #pragma once

@@ -1,8 +1,8 @@
 /*
+ * Copyright © 2010 Lubosz Sarnecki
  * MeshFactory.h
  *
  *  Created on: Jun 8, 2010
- *      Author: bmonkey
  */
 
 #pragma once

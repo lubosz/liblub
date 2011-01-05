@@ -1,8 +1,8 @@
 /*
+ * Copyright © 2010 Lubosz Sarnecki
  * MengerSponge.cpp
  *
  *  Created on: Jul 11, 2010
- *      Author: bmonkey
  */
 
 #include "MengerSponge.h"

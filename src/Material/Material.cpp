@@ -1,8 +1,8 @@
 /*
+ * Copyright © 2010 Lubosz Sarnecki
  * Material.cpp
  *
  *  Created on: Aug 30, 2010
- *      Author: bmonkey
  */
 #include "SceneGraph.h"
 

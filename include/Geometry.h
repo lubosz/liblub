@@ -1,8 +1,8 @@
 /*
+ * Copyright © 2010 Lubosz Sarnecki
  * Geometry.h
  *
  *  Created on: Mar 24, 2010
- *      Author: bmonkey
  */
 
 #pragma once

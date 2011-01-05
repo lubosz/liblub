@@ -1,8 +1,8 @@
 /*
+ * Copyright © 2010 Lubosz Sarnecki
  * Camera.h
  *
  *  Created on: Apr 1, 2010
- *      Author: bmonkey
  */
 
 #pragma once

@@ -1,8 +1,8 @@
 /*
+ * Copyright © 2010 Lubosz Sarnecki
  * Logger.h
  *
  *  Created on: Dec 9, 2010
- *      Author: bmonkey
  */
 
 #pragma once

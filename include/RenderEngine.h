@@ -1,8 +1,8 @@
 /*
+ * Copyright © 2010 Lubosz Sarnecki
  * RenderEngine.h
  *
  *  Created on: Mar 22, 2010
- *      Author: bmonkey
  */
 
 #pragma once

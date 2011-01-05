@@ -1,8 +1,8 @@
 /*
+ * Copyright © 2010 Lubosz Sarnecki
  * FrameBuffer.h
  *
  *  Created on: Aug 31, 2010
- *      Author: bmonkey
  */
 
 #pragma once

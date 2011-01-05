@@ -1,3 +1,6 @@
+/*
+ * Copyright © 2010 Lubosz Sarnecki
+ */
 #pragma once
 
 #include "Node.h"

@@ -1,8 +1,8 @@
 /*
+ * Copyright © 2010 Lubosz Sarnecki
  * DirectionNode.h
  *
  *  Created on: Oct 5, 2010
- *      Author: bmonkey
  */
 
 #pragma once

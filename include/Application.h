@@ -1,8 +1,8 @@
 /*
+ * Copyright © 2010 Lubosz Sarnecki
  * Application.h
  *
  *  Created on: Jul 20, 2010
- *      Author: bmonkey
  */
 
 #pragma once

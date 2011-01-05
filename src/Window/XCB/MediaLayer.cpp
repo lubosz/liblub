@@ -1,8 +1,8 @@
 /*
+ * Copyright © 2010 Lubosz Sarnecki
  * MediaLayer.cpp
  *
  *  Created on: Mar 22, 2010
- *      Author: bmonkey
  */
 #include <sstream>
 #include "MediaLayer.h"

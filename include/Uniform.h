@@ -1,8 +1,8 @@
 /*
+ * Copyright © 2010 Lubosz Sarnecki
  * Uniform.h
  *
  *  Created on: Dec 16, 2010
- *      Author: bmonkey
  */
 
 #pragma once

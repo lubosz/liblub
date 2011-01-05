@@ -1,8 +1,8 @@
 /*
+ * Copyright © 2010 Lubosz Sarnecki
  * MaterialTypes.h
  *
  *  Created on: Mar 25, 2010
- *      Author: bmonkey
  */
 
 #pragma once

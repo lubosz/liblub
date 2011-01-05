@@ -1,8 +1,8 @@
 /*
+ * Copyright © 2010 Lubosz Sarnecki
  * SceneLoader.cpp
  *
  *  Created on: Dec 16, 2010
- *      Author: bmonkey
  */
 #include <vector>
 #include <QStringList>

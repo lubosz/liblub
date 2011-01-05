@@ -1,8 +1,8 @@
 /*
+ * Copyright © 2010 Lubosz Sarnecki
  * Texture.cpp
  *
  *  Created on: Mar 24, 2010
- *      Author: bmonkey
  */
 
 #include "Texture.h"

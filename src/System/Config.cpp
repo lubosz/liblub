@@ -1,8 +1,8 @@
 /*
+ * Copyright © 2010 Lubosz Sarnecki
  * Config.cpp
  *
  *  Created on: Dec 20, 2010
- *      Author: bmonkey
  */
 
 #include "Config.h"

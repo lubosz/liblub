@@ -1,8 +1,8 @@
 /*
+ * Copyright © 2010 Lubosz Sarnecki
  * Node.cpp
  *
  *  Created on: Jun 28, 2010
- *      Author: bmonkey
  */
 
 #include "Node.h"
