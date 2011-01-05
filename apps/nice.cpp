@@ -1,5 +1,5 @@
-#include "Application.h"
-#include "MengerSponge.h"
+#include "System/Application.h"
+#include "Mesh/MengerSponge.h"
 
 class Example : public Application {
 

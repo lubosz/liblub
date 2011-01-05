@@ -5,11 +5,11 @@
  *  Created on: Oct 1, 2010
  */
 
-#include "Light.h"
-#include "SceneGraph.h"
-#include "Materials.h"
-#include "MeshFactory.h"
-#include "Camera.h"
+#include "Scene/Light.h"
+#include "Scene/SceneGraph.h"
+#include "Scene/Camera.h"
+#include "Material/Materials.h"
+#include "Mesh/MeshFactory.h"
 
 Light::Light(const QVector3D& position, const QVector3D & direction) {
     this->position = position;

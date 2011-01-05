@@ -6,8 +6,8 @@
  */
 
 #pragma once
-#include "Texture.h"
-#include "Singleton.h"
+#include "Material/Texture.h"
+#include "common/Singleton.h"
 
 class TextureFactory : public Singleton<TextureFactory> {
  public:

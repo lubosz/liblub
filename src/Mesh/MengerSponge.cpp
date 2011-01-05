@@ -5,7 +5,7 @@
  *  Created on: Jul 11, 2010
  */
 
-#include "MengerSponge.h"
+#include "Mesh/MengerSponge.h"
 
 #include <algorithm>
 

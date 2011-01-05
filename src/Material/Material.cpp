@@ -4,7 +4,7 @@
  *
  *  Created on: Aug 30, 2010
  */
-#include "SceneGraph.h"
+#include "Scene/SceneGraph.h"
 
 void Material::init() {
     diffuseColor = QVector4D();

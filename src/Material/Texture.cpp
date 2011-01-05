@@ -5,7 +5,7 @@
  *  Created on: Mar 24, 2010
  */
 
-#include "Texture.h"
+#include "Material/Texture.h"
 
 Texture::~Texture() {
 	// TODO(bmonkey): Auto-generated destructor stub

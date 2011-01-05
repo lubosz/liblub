@@ -5,7 +5,7 @@
  *  Created on: Oct 5, 2010
  */
 
-#include "DirectionNode.h"
+#include "Scene/DirectionNode.h"
 
 QVector3D DirectionNode::getDirection() const {
     return direction;

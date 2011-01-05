@@ -10,7 +10,7 @@
 #include <string>
 #include <sstream>
 #include <vector>
-#include "Singleton.h"
+#include "common/Singleton.h"
 
 using std::stringstream;
 using std::string;

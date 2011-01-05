@@ -9,7 +9,7 @@
 
 #include <QString>
 #include <vector>
-#include "Singleton.h"
+#include "common/Singleton.h"
 
 using std::vector;
 

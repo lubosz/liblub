@@ -5,8 +5,8 @@
  *  Created on: Jun 28, 2010
  */
 
-#include "Node.h"
-#include "MeshFactory.h"
+#include "Scene/Node.h"
+#include "Mesh/MeshFactory.h"
 
 Node::Node(string name, const QVector3D& position, Mesh * mesh) {
     this->name = name;

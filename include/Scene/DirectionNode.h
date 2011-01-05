@@ -7,7 +7,7 @@
 
 #pragma once
 
-#include "Qt3D.h"
+#include "common/Qt3D.h"
 
 const QVector3D up(0, 1, 0);
 

@@ -8,8 +8,8 @@
 #pragma once
 
 // Include first OpenGL then Qt then Xlib / GLX!
-#include "RenderEngine.h"
-#include "Input.h"
+#include "Renderer/RenderEngine.h"
+#include "Window/Input.h"
 
 #ifdef WITH_SDL
 	#define SDL_NO_COMPAT

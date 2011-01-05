@@ -5,8 +5,8 @@
  *  Created on: Sep 28, 2010
  */
 
-#include "Camera.h"
-#include "MediaLayer.h"
+#include "Scene/Camera.h"
+#include "Window/MediaLayer.h"
 
 Input::Input(xcb_connection_t *connection) {
 	this->connection = connection;

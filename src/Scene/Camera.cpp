@@ -5,9 +5,9 @@
  *  Created on: Apr 1, 2010
  */
 
-#include "Camera.h"
-#include "SceneGraph.h"
-#include "MeshFactory.h"
+#include "Scene/Camera.h"
+#include "Scene/SceneGraph.h"
+#include "Mesh/MeshFactory.h"
 
 Camera::Camera() {
 	direction = QVector3D(0, 0, -1);

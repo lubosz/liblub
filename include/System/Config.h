@@ -5,11 +5,10 @@
  *  Created on: Dec 20, 2010
  */
 
-#include "Singleton.h"
+#include "common/Singleton.h"
 #include <string>
 #include <vector>
 #include <QDomElement>
-#include "XmlReader.h"
 
 using std::string;
 using std::vector;

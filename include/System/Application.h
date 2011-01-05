@@ -7,11 +7,11 @@
 
 #pragma once
 
-#include "MediaLayer.h"
-#include "Materials.h"
-#include "MeshFactory.h"
-#include "SceneLoader.h"
-#include "Config.h"
+#include "Window/MediaLayer.h"
+#include "Material/Materials.h"
+#include "Mesh/MeshFactory.h"
+#include "Scene/SceneLoader.h"
+#include "System/Config.h"
 
 class Application {
  public:

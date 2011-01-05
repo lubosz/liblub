@@ -9,9 +9,10 @@
 
 #include <QVector3D>
 #include <QDomElement>
-#include "ShaderProgram.h"
-#include "Texture.h"
-#include "Material.h"
+#include "Material/ShaderProgram.h"
+#include "Material/Texture.h"
+#include "Material/Material.h"
+#include "Mesh/Mesh.h"
 
 
 class SceneLoader {

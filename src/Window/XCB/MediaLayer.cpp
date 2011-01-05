@@ -5,9 +5,9 @@
  *  Created on: Mar 22, 2010
  */
 #include <sstream>
-#include "MediaLayer.h"
-#include "Camera.h"
-#include "Config.h"
+#include "Window/MediaLayer.h"
+#include "Scene/Camera.h"
+#include "System/Config.h"
 
 MediaLayer::MediaLayer() {
 	// FPS Stuff

@@ -7,8 +7,8 @@
 
 #pragma once
 
-#include "Mesh.h"
-#include "Materials.h"
+#include "Mesh/Mesh.h"
+#include "Material/Materials.h"
 
 class MengerSponge {
  private:

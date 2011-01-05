@@ -5,11 +5,11 @@
  *  Created on: Mar 22, 2010
  */
 
-#include "Camera.h"
-#include "MeshFactory.h"
-#include "RenderEngine.h"
-#include "Logger.h"
-#include "Config.h"
+#include "Scene/Camera.h"
+#include "Mesh/MeshFactory.h"
+#include "Renderer/RenderEngine.h"
+#include "System/Logger.h"
+#include "System/Config.h"
 
 RenderEngine::RenderEngine()
 :

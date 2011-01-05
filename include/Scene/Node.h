@@ -7,9 +7,9 @@
 
 #pragma once
 
-#include "Mesh.h"
-#include "Material.h"
-#include "DirectionNode.h"
+#include "Mesh/Mesh.h"
+#include "Material/Material.h"
+#include "Scene/DirectionNode.h"
 
 
 class Node {

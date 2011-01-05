@@ -7,7 +7,7 @@
 
 #pragma once
 
-#include "OpenGL.h"
+#include "common/OpenGL.h"
 
 #include <FreeImagePlus.h>
 

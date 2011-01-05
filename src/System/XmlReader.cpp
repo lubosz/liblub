@@ -6,7 +6,7 @@
  */
 #include <string>
 #include <QStringList>
-#include "XmlReader.h"
+#include "System/XmlReader.h"
 
 using std::string;
 

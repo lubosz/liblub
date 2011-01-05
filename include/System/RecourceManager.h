@@ -7,7 +7,7 @@
 
 #pragma once
 
-#include "Singleton.h"
+#include "common/Singleton.h"
 
 class RecourceManager : public Singleton<RecourceManager> {
  public:

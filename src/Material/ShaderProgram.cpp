@@ -5,8 +5,8 @@
  *  Created on: Mar 22, 2010
  */
 
-#include "ShaderProgram.h"
-#include "SceneGraph.h"
+#include "Material/ShaderProgram.h"
+#include "Scene/SceneGraph.h"
 
 ShaderProgram::ShaderProgram() {
 	attribCount = 0;

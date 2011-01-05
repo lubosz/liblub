@@ -5,7 +5,7 @@
  *  Created on: Dec 16, 2010
  */
 
-#include "Uniform.h"
+#include "Material/Uniform.h"
 
 template <>
 void Uniform<float>::init(GLuint program) {

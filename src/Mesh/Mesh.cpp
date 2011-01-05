@@ -5,8 +5,8 @@
  *  Created on: Mar 22, 2010
  */
 
-#include "RenderEngine.h"
-#include "Logger.h"
+#include "Renderer/RenderEngine.h"
+#include "System/Logger.h"
 
 Mesh::Mesh() {
 	drawType = GL_POINTS;

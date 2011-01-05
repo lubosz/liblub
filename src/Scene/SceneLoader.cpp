@@ -7,12 +7,12 @@
 #include <vector>
 #include <QStringList>
 #include <QFile>
-#include "MeshFactory.h"
-#include "SceneLoader.h"
-#include "MengerSponge.h"
-#include "Geometry.h"
+#include "Scene/SceneLoader.h"
+#include "Mesh/MeshFactory.h"
+#include "Mesh/MengerSponge.h"
+#include "Mesh/Geometry.h"
 #include <typeinfo>
-#include "Config.h"
+#include "System/Config.h"
 
 SceneLoader::SceneLoader(const QString & fileName)
 :

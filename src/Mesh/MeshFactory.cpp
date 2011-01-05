@@ -5,12 +5,12 @@
  *  Created on: Jun 8, 2010
  */
 
-#include "MeshFactory.h"
-#include "Geometry.h"
+#include "Mesh/MeshFactory.h"
+#include "Mesh/Geometry.h"
 #include <assimp/assimp.hpp>
 #include <assimp/aiScene.h>
 #include <assimp/aiPostProcess.h>
-#include "Config.h"
+#include "System/Config.h"
 
 Mesh * MeshFactory::tetrahedron() {
     Mesh * mesh = Geometry::makeTetrahedron();

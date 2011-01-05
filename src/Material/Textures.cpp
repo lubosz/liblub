@@ -5,9 +5,9 @@
  *  Created on: Oct 4, 2010
  */
 
-#include "Textures.h"
+#include "Material/Textures.h"
 #include <math.h>
-#include "Config.h"
+#include "System/Config.h"
 
 DepthTexture::DepthTexture(GLuint width, GLuint height, string name,
         GLenum glId) {

@@ -13,7 +13,7 @@
 #include <GL3/gl3.h>
 #include <GL3/glext.h>
 
-#include "Logger.h"
+#include "System/Logger.h"
 
 static void glError(string file, int line) {
 	GLenum err(glGetError());

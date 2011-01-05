@@ -7,8 +7,8 @@
 
 #pragma once
 
-#include "ShaderProgram.h"
-#include "DirectionNode.h"
+#include "Material/ShaderProgram.h"
+#include "Scene/DirectionNode.h"
 
 class Light : public DirectionNode {
  public:

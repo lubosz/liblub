@@ -1,5 +1,5 @@
-#include "Application.h"
-#include "SceneLoader.h"
+#include "System/Application.h"
+#include "Scene/SceneLoader.h"
 
 class LoadApp: public Application {
 

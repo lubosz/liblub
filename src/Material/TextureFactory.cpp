@@ -5,8 +5,8 @@
  *  Created on: Mar 25, 2010
  */
 
-#include "TextureFactory.h"
-#include "Textures.h"
+#include "Material/TextureFactory.h"
+#include "Material/Textures.h"
 
 TextureFactory::TextureFactory() {
 	textureCount = 0;

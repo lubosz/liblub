@@ -7,9 +7,9 @@
 
 #pragma once
 
-#include "Texture.h"
-#include "Material.h"
-#include "Mesh.h"
+#include "Material/Texture.h"
+#include "Material/Material.h"
+#include "Mesh/Mesh.h"
 
 class FrameBuffer {
  public:

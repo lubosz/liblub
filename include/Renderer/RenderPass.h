@@ -7,8 +7,8 @@
 
 #pragma once
 
-#include "Material.h"
-#include "FrameBuffer.h"
+#include "Material/Material.h"
+#include "Renderer/FrameBuffer.h"
 
 class RenderPass {
  public:

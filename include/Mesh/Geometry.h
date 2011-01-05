@@ -8,7 +8,6 @@
 #pragma once
 
 #include "Mesh.h"
-#include "common.h"
 
 class Geometry {
  public:

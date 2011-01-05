@@ -5,9 +5,9 @@
  *  Created on: Oct 5, 2010
  */
 
-#include "MediaLayer.h"
-#include "Camera.h"
-#include "Materials.h"
+#include "Window/MediaLayer.h"
+#include "Scene/Camera.h"
+#include "Material/Materials.h"
 
 LightViewDepthPass::LightViewDepthPass(FrameBuffer * fbo) {
     this->fbo = fbo;

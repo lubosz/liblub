@@ -7,9 +7,9 @@
 
 #pragma once
 
-#include "Qt3D.h"
-#include "Shader.h"
-#include "Uniform.h"
+#include "common/Qt3D.h"
+#include "Material/Shader.h"
+#include "Material/Uniform.h"
 
 using std::list;
 

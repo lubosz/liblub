@@ -5,7 +5,7 @@
  *  Created on: Oct 4, 2010
  */
 
-#include "MediaLayer.h"
+#include "Window/MediaLayer.h"
 
 RenderSequence::RenderSequence() {
 #ifdef USE_FBO

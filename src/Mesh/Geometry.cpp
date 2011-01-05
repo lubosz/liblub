@@ -6,8 +6,8 @@
  *      Author: bmonkey
  */
 
-#include "Geometry.h"
-#include "Qt3D.h"
+#include "Mesh/Geometry.h"
+#include "common/Qt3D.h"
 
 Mesh * Geometry::makePlane() {
     vector<GLfloat> vertices = {

@@ -1,11 +1,11 @@
 /*
  * Copyright © 2010 Lubosz Sarnecki
  */
-#include "SceneGraph.h"
-#include "Camera.h"
-#include "RenderEngine.h"
-#include "Materials.h"
-#include "MeshFactory.h"
+#include "Scene/SceneGraph.h"
+#include "Scene/Camera.h"
+#include "Renderer/RenderEngine.h"
+#include "Material/Materials.h"
+#include "Mesh/MeshFactory.h"
 
 SceneGraph::SceneGraph() {
     bias = QMatrix4x4();

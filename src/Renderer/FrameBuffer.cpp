@@ -5,12 +5,12 @@
  *  Created on: Aug 31, 2010
  */
 
-#include "FrameBuffer.h"
-#include "Materials.h"
-#include "SceneGraph.h"
-#include "Camera.h"
-#include "MeshFactory.h"
-#include "Logger.h"
+#include "Renderer/FrameBuffer.h"
+#include "Material/Materials.h"
+#include "Scene/SceneGraph.h"
+#include "Scene/Camera.h"
+#include "Mesh/MeshFactory.h"
+#include "System/Logger.h"
 
 #include <sstream>
 

@@ -5,7 +5,7 @@
  *  Created on: Dec 20, 2010
  */
 
-#include "RecourceManager.h"
+#include "System/RecourceManager.h"
 
 RecourceManager::RecourceManager() {
 	// TODO(bmonkey): Auto-generated constructor stub

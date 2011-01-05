@@ -5,7 +5,7 @@
  *  Created on: Sep 10, 2010
  */
 
-#include "RenderPass.h"
+#include "Renderer/RenderPass.h"
 
 RenderPass::RenderPass() {
     // TODO(bmonkey): Auto-generated constructor stub

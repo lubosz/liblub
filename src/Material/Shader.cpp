@@ -5,11 +5,11 @@
  *  Created on: Mar 22, 2010
  */
 
-#include "Shader.h"
-#include "Logger.h"
+#include "Material/Shader.h"
+#include "System/Logger.h"
 #include <QtCore>
 #include <string>
-#include "Config.h"
+#include "System/Config.h"
 
 Shader::Shader(string fileName, GLenum type) {
 	Logger::Instance().log("DEBUG", "Shader", "Creating Shader " + fileName);

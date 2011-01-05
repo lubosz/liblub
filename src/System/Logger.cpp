@@ -7,8 +7,8 @@
 
 #include <iostream>
 #include <QtCore>
-#include "Logger.h"
-#include "BashColor.h"
+#include "System/Logger.h"
+#include "common/BashColor.h"
 
 using std::cerr;
 using std::cout;

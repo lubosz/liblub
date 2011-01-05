@@ -7,7 +7,7 @@
 
 #pragma once
 
-#include "OpenGL.h"
+#include "common/OpenGL.h"
 
 // TODO(bmonkey): This is a very bad solution (and also hardcoded)
 const unsigned maxBuffers = 6;

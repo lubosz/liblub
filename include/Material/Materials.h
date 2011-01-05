@@ -7,8 +7,8 @@
 
 #pragma once
 
-#include "RenderEngine.h"
-#include "Material.h"
+#include "Renderer/RenderEngine.h"
+#include "Material/Material.h"
 class RenderEngine;
 
 class Minimal : public Material {

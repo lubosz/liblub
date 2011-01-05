@@ -73,7 +73,6 @@ ENDIF()
 
 include_directories(
 	include
-	include/common
 	${QT_INCLUDES}	
 	if(SDL_LOCAL)
 	    ${SDL_DIR}/include

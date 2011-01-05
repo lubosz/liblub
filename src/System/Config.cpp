@@ -5,8 +5,8 @@
  *  Created on: Dec 20, 2010
  */
 
-#include "Config.h"
-#include "Logger.h"
+#include "System/Config.h"
+#include "System/Logger.h"
 #include <QSize>
 #include <QStringList>
 #include <QFile>

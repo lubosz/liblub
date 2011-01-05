@@ -7,7 +7,7 @@
 
 #pragma once
 
-#include "OpenGL.h"
+#include "common/OpenGL.h"
 
 class Shader {
  public:
