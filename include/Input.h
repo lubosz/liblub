@@ -9,7 +9,7 @@
 
 #include <list>
 
-using namespace std;
+// using namespace std;
 
 #ifdef WITH_XCB
 	#include <xcb/xcb_keysyms.h>

@@ -11,9 +11,8 @@
 #include <QDomElement>
 #include "XmlReader.h"
 
-using namespace std;
-
-
+using std::string;
+using std::vector;
 
 template <typename T>
 class ConfigOption {

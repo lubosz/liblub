@@ -11,8 +11,6 @@
 #include "Logger.h"
 #include "Config.h"
 
-using namespace std;
-
 RenderEngine::RenderEngine()
 :
     useFBO(false), frameCount(0), lightView(false), wire(false) {

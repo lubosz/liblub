@@ -12,7 +12,9 @@
 #include <vector>
 #include "Singleton.h"
 
-using namespace std;
+using std::stringstream;
+using std::string;
+using std::vector;
 
 class Logger : public Singleton<Logger> {
  public:

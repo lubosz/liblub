@@ -10,6 +10,9 @@
 #include "Logger.h"
 #include "BashColor.h"
 
+using std::cerr;
+using std::cout;
+
 Logger::Logger() {
 	blacklist = {
 			"Light Position",

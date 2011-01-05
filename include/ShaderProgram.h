@@ -11,6 +11,8 @@
 #include "Shader.h"
 #include "Uniform.h"
 
+using std::list;
+
 class ShaderProgram {
  public:
 	ShaderProgram();

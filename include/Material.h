@@ -11,7 +11,7 @@
 #include "TextureFactory.h"
 
 
-using namespace std;
+// using namespace std;
 
 class Material {
  public:

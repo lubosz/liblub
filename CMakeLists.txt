@@ -145,7 +145,7 @@ if(CHECKSTYLE)
     file(GLOB GLOB_RESULT include/common/*.h)
     set(INCLUDES ${INCLUDES} ${GLOB_RESULT})
     
-    set(TODO ",-whitespace/tab,-build/include,-build/namespaces")
+    set(TODO ",-whitespace/tab,-build/include")
     set(IGNORE "-build/header_guard,-readability/streams${TODO}")
 
     add_custom_target(CHECK_STYLE ALL

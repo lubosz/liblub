@@ -11,7 +11,8 @@
 #include <vector>
 #include "common/OpenGL.h"
 
-using namespace std;
+using std::string;
+using std::vector;
 
 template<typename T>
 class Uniform {
