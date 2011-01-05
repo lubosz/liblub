@@ -26,25 +26,20 @@ class Sponge : public Application {
   }
 
   void scene() {
-    SceneGraph::Instance().light =
-        new Light(QVector3D(-2.5, 21.5, -5.2), QVector3D(1, -5, 0));
+    SceneGraph::Instance().light = new Light(QVector3D(-2.5, 21.5, -5.2),
+        QVector3D(1, -5, 0));
 
-      Material * material = new UbershaderColor(QVector3D(1, 1, 1));
+    Material * material = new UbershaderColor(QVector3D(1, 1, 1));
 
-      for (int i = 0; i < 5; i++) {
-        MengerSponge * sponge = new MengerSponge(i);
-      Node * node = new Node(
-          "sponge",
-          {static_cast<float>(i-2.5), static_cast<float>(i*3-6), -5},
-          1,
-          sponge->getMesh(),
-          material);
+    for (int i = 0; i < 5; i++) {
+      MengerSponge * sponge = new MengerSponge(i);
+      Node * node = new Node("sponge", { static_cast<float> (i - 2.5),
+          static_cast<float> (i * 3 - 6), -5 }, 1, sponge->getMesh(), material);
       SceneGraph::Instance().addNode(node);
-      }
+    }
 
-    Node * plane =
-        new Node("Plane", {0, -7, 0}, 20,
-            MeshFactory::load("plane.obj"), material);
+    Node * plane = new Node("Plane", { 0, -7, 0 }, 20, MeshFactory::load(
+        "plane.obj"), material);
     plane->setReceiveShadows(true);
     plane->setCastShadows(false);
     SceneGraph::Instance().addNode(plane);
