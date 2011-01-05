@@ -9,7 +9,7 @@
 
 template <>
 void Uniform<float>::init(GLuint program) {
-	switch(values.size()) {
+  switch (values.size()) {
         case 1:
             glUniform1f(glGetUniformLocation(program, name.c_str()), values[0]);
             break;
@@ -28,13 +28,13 @@ void Uniform<float>::init(GLuint program) {
             glUniform4f(glGetUniformLocation(
                     program, name.c_str()),
                     values[0], values[1], values[2], values[3]);
-		break;
-	}
+    break;
+  }
 }
 
 template <>
 void Uniform<int>::init(GLuint program) {
-	switch(values.size()) {
+  switch (values.size()) {
         case 1:
             glUniform1iv(glGetUniformLocation(
                     program, name.c_str()), 1, values.data());
@@ -51,7 +51,7 @@ void Uniform<int>::init(GLuint program) {
             // glUniform4fv(glGetUniformLocation(
             // program, uniform.name.c_str()), 4, uniform.values.data());
             glUniform4i(glGetUniformLocation(
-		        program, name.c_str()), values[0], values[1], values[2], values[3]);
-		break;
-	}
+            program, name.c_str()), values[0], values[1], values[2], values[3]);
+    break;
+  }
 }

@@ -9,30 +9,30 @@
 #include "Window/MediaLayer.h"
 
 Input::Input(xcb_connection_t *connection) {
-	this->connection = connection;
-	syms = xcb_key_symbols_alloc(connection);
-	pressedKeys = list<xcb_keysym_t>();
+  this->connection = connection;
+  syms = xcb_key_symbols_alloc(connection);
+  pressedKeys = list<xcb_keysym_t>();
 }
 
 Input::~Input() {
-	// TODO(bmonkey): Auto-generated destructor stub
+  // TODO(bmonkey): Auto-generated destructor stub
 }
 
 void Input::eventLoop() {
-	xcb_keysym_t pressedKey;
+  xcb_keysym_t pressedKey;
 
-	xcb_generic_event_t *event;
+  xcb_generic_event_t *event;
 
-	xcb_expose_event_t *expose;
-	xcb_button_press_event_t *bp;
-	xcb_button_release_event_t *br;
-	xcb_motion_notify_event_t *motion;
-	xcb_enter_notify_event_t *enter;
-	xcb_leave_notify_event_t *leave;
-	xcb_key_press_event_t *kp;
-	xcb_key_release_event_t *kr;
+  xcb_expose_event_t *expose;
+  xcb_button_press_event_t *bp;
+  xcb_button_release_event_t *br;
+  xcb_motion_notify_event_t *motion;
+  xcb_enter_notify_event_t *enter;
+  xcb_leave_notify_event_t *leave;
+  xcb_key_press_event_t *kp;
+  xcb_key_release_event_t *kr;
 
-	while(event = xcb_poll_for_event(connection)) {
+  while (event = xcb_poll_for_event(connection)) {
     switch (event->response_type & ~0x80) {
         case XCB_MOTION_NOTIFY:
             motion = reinterpret_cast<xcb_motion_notify_event_t *>(event);
@@ -81,11 +81,11 @@ void Input::eventLoop() {
             break;
     }
 
-    	free(event);
-	}
+      free(event);
+  }
 
-	foreach(xcb_keysym_t key, pressedKeys) {
-    	checkKey(key);
+  foreach(xcb_keysym_t key, pressedKeys) {
+      checkKey(key);
     }
 }
 

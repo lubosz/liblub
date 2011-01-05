@@ -14,12 +14,12 @@
 #include "System/Logger.h"
 
 static void glError(string file, int line) {
-	GLenum err(glGetError());
+  GLenum err(glGetError());
 
-	while (err != GL_NO_ERROR) {
-		string error;
+  while (err != GL_NO_ERROR) {
+    string error;
 
-		switch (err) {
+    switch (err) {
             case GL_INVALID_OPERATION:
                 error = "INVALID_OPERATION";
                 break;
@@ -38,10 +38,11 @@ static void glError(string file, int line) {
             default:
                 error = "Unknown error";
                 break;
-		}
+    }
 
-		Logger::Instance().message << "GL_" << error << " - " << file << ':' << line;
-	    Logger::Instance().log("ERROR", "glError");
-		exit(0);
-	}
+    Logger::Instance().message <<
+        "GL_" << error << " - " << file << ':' << line;
+      Logger::Instance().log("ERROR", "glError");
+    exit(0);
+  }
 }

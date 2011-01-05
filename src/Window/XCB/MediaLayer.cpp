@@ -12,40 +12,40 @@
 #include "System/Config.h"
 
 MediaLayer::MediaLayer() {
-	// FPS Stuff
-	fps_lasttime = 0;  // the last recorded time.
-	fps_frames = 0;  // frames passed since the last recorded fps.
+  // FPS Stuff
+  fps_lasttime = 0;  // the last recorded time.
+  fps_frames = 0;  // frames passed since the last recorded fps.
 
-	fullscreen = false;
-	grab = false;
-	quit = false;
+  fullscreen = false;
+  grab = false;
+  quit = false;
 }
 
 void MediaLayer::init(string title) {
-	programTile = title;
+  programTile = title;
 
-	initScreen();
-	initFrameBuffer();
-	createGLContext();
-	createColorMap();
+  initScreen();
+  initFrameBuffer();
+  createGLContext();
+  createColorMap();
 
-	createWindow();
-	createBlankCursor();
+  createWindow();
+  createBlankCursor();
 
-	input = new Input(connection);
+  input = new Input(connection);
 
-	// Toggle mouse at init
-	unsigned halfWidth = width/2;
-	unsigned halfHeight = height/2;
-	toggleMouseGrab();
-	if (grab)
-	    XWarpPointer(
-	            display, None, window, 0, 0, width, height, halfWidth, halfHeight);
+  // Toggle mouse at init
+  unsigned halfWidth = width/2;
+  unsigned halfHeight = height/2;
+  toggleMouseGrab();
+  if (grab)
+      XWarpPointer(
+              display, None, window, 0, 0,
+              width, height, halfWidth, halfHeight);
 
-	Camera::Instance().setAspect(
-	        static_cast<float>(MediaLayer::Instance().width)/
-	        static_cast<float>(MediaLayer::Instance().height)
-	);
+  Camera::Instance().setAspect(
+          static_cast<float>(MediaLayer::Instance().width)/
+          static_cast<float>(MediaLayer::Instance().height));
 }
 
 MediaLayer::~MediaLayer() {
@@ -57,11 +57,11 @@ MediaLayer::~MediaLayer() {
 }
 
 void MediaLayer::createBlankCursor() {
-	cursor = xcb_generate_id(connection);
-	xcb_pixmap_t pix = xcb_generate_id(connection);
+  cursor = xcb_generate_id(connection);
+  xcb_pixmap_t pix = xcb_generate_id(connection);
 
-	xcb_create_pixmap(connection, 1, pix, screen->root, 1, 1);
-	xcb_create_cursor(connection, cursor, pix, pix, 0, 0, 0, 0, 0, 0, 1, 1);
+  xcb_create_pixmap(connection, 1, pix, screen->root, 1, 1);
+  xcb_create_cursor(connection, cursor, pix, pix, 0, 0, 0, 0, 0, 0, 1, 1);
 }
 
 void MediaLayer::initScreen() {
@@ -89,8 +89,8 @@ void MediaLayer::initScreen() {
         --screen_num, xcb_screen_next(&screen_iter));
     screen = screen_iter.data;
 
-	width = screen->width_in_pixels;
-	height = screen->height_in_pixels;
+  width = screen->width_in_pixels;
+  height = screen->height_in_pixels;
 }
 
 void MediaLayer::initFrameBuffer() {
@@ -105,117 +105,115 @@ void MediaLayer::initFrameBuffer() {
 }
 
 void MediaLayer::createGLContext() {
-	/* Initialize window and OpenGL context */
-	visualID = 0;
+  /* Initialize window and OpenGL context */
+  visualID = 0;
 
-	/* Select first framebuffer config and query visualID */
-	glXGetFBConfigAttrib(display, fb_config, GLX_VISUAL_ID, &visualID);
+  /* Select first framebuffer config and query visualID */
+  glXGetFBConfigAttrib(display, fb_config, GLX_VISUAL_ID, &visualID);
 
-	vector<int> glContext = Config::Instance().values<int>("GLcontext");
+  vector<int> glContext = Config::Instance().values<int>("GLcontext");
 
-	int attribs[] = {
-			GLX_CONTEXT_MAJOR_VERSION_ARB,
-			glContext[0],
-			GLX_CONTEXT_MINOR_VERSION_ARB,
-			glContext[1],
-			0
-	};
+  int attribs[] = {
+      GLX_CONTEXT_MAJOR_VERSION_ARB,
+      glContext[0],
+      GLX_CONTEXT_MINOR_VERSION_ARB,
+      glContext[1],
+      0
+  };
 
-	 /* Get a pointer to the context creation function for GL 3.0 */
-	PFNGLXCREATECONTEXTATTRIBSARBPROC
-			glXCreateContextAttribs =
-					(PFNGLXCREATECONTEXTATTRIBSARBPROC) glXGetProcAddress(
-							reinterpret_cast<GLubyte const *>("glXCreateContextAttribsARB"));
-	if (!glXCreateContextAttribs) {
-		printf("GL 3.x is not supported");
-	}
+  /* Get a pointer to the context creation function for GL 3.0 */
+  PFNGLXCREATECONTEXTATTRIBSARBPROC
+      glXCreateContextAttribs =
+          (PFNGLXCREATECONTEXTATTRIBSARBPROC) glXGetProcAddress(
+              reinterpret_cast<GLubyte const *>("glXCreateContextAttribsARB"));
+  if (!glXCreateContextAttribs) {
+    printf("GL 3.x is not supported");
+  }
 
-	context = glXCreateContextAttribs(display, fb_config, NULL, True,
-			attribs);
+  context = glXCreateContextAttribs(display, fb_config, NULL, True,
+      attribs);
 
-	if(!context)
-	    Logger::Instance().log("ERROR",
-	            "createGLContext", "glXCreateNewContext failed");
+  if (!context)
+      Logger::Instance().log("ERROR",
+              "createGLContext", "glXCreateNewContext failed");
 }
 
 void MediaLayer::createColorMap() {
-	/* Create XID's for colormap and window */
-	colormap = xcb_generate_id(connection);
-	window = xcb_generate_id(connection);
+  /* Create XID's for colormap and window */
+  colormap = xcb_generate_id(connection);
+  window = xcb_generate_id(connection);
 
-	/* Create colormap */
-	xcb_create_colormap(
-			connection,
-			XCB_COLORMAP_ALLOC_NONE,
-			colormap,
-			screen->root,
-			visualID
-	);
+  /* Create colormap */
+  xcb_create_colormap(
+      connection,
+      XCB_COLORMAP_ALLOC_NONE,
+      colormap,
+      screen->root,
+      visualID);
 }
 
 void MediaLayer::createWindow() {
-	eventmask =
-			XCB_EVENT_MASK_KEY_PRESS |
-			XCB_EVENT_MASK_POINTER_MOTION |
-			XCB_EVENT_MASK_KEY_RELEASE;
-	uint32_t valuelist[] = { eventmask, colormap };
-	uint32_t valuemask = XCB_CW_EVENT_MASK | XCB_CW_COLORMAP;
+  eventmask =
+      XCB_EVENT_MASK_KEY_PRESS |
+      XCB_EVENT_MASK_POINTER_MOTION |
+      XCB_EVENT_MASK_KEY_RELEASE;
+  uint32_t valuelist[] = { eventmask, colormap };
+  uint32_t valuemask = XCB_CW_EVENT_MASK | XCB_CW_COLORMAP;
 
-	xcb_create_window(
-			connection,
-			XCB_COPY_FROM_PARENT,
-			window,
-			screen->root,
-			0, 0,
-			width, height,
-			0,
-			XCB_WINDOW_CLASS_INPUT_OUTPUT,
-			visualID,
-			valuemask,
-			valuelist
-	);
+  xcb_create_window(
+      connection,
+      XCB_COPY_FROM_PARENT,
+      window,
+      screen->root,
+      0, 0,
+      width, height,
+      0,
+      XCB_WINDOW_CLASS_INPUT_OUTPUT,
+      visualID,
+      valuemask,
+      valuelist);
 
-	setWindowTitle(programTile);
+  setWindowTitle(programTile);
 
-	// NOTE: window must be mapped before glXMakeContextCurrent
-	xcb_map_window(connection, window);
+  // NOTE: window must be mapped before glXMakeContextCurrent
+  xcb_map_window(connection, window);
 
-	/* Create GLX Window */
-	glxwindow = glXCreateWindow(display, fb_config, window, 0);
+  /* Create GLX Window */
+  glxwindow = glXCreateWindow(display, fb_config, window, 0);
 
-	if (!glxwindow)
-		Logger::Instance().log("ERROR",
-		        "createWindow", "glXCreateWindow failed");
+  if (!glxwindow)
+    Logger::Instance().log("ERROR",
+            "createWindow", "glXCreateWindow failed");
 
-	drawable = glxwindow;
+  drawable = glxwindow;
 
-	Logger::Instance().log("MESSAGE", "XCB", "Making Context Current");
-	/* make OpenGL context current */
-	if (!glXMakeContextCurrent(display, drawable, drawable, context))
-		Logger::Instance().log("ERROR",
-		        "createWindow", "glXMakeContextCurrent failed");
-	Logger::Instance().log("MESSAGE", "XCB", "Context activated");
+  Logger::Instance().log("MESSAGE", "XCB", "Making Context Current");
+  /* make OpenGL context current */
+  if (!glXMakeContextCurrent(display, drawable, drawable, context))
+    Logger::Instance().log("ERROR",
+            "createWindow", "glXMakeContextCurrent failed");
+  Logger::Instance().log("MESSAGE", "XCB", "Context activated");
 
-	// Set swap interval
-	PFNGLXSWAPINTERVALSGIPROC
-		glXSwapInterval =
-					(PFNGLXSWAPINTERVALSGIPROC) glXGetProcAddress(
-					        reinterpret_cast<GLubyte const *>("glXSwapIntervalSGI"));
-	if (!glXSwapInterval) {
-		Logger::Instance().log("MediaLayer", "WARNING", "VSync is not supported");
-	} else {
-		glXSwapInterval(Config::Instance().value<int>("Vsync"));
-	}
+  // Set swap interval
+  PFNGLXSWAPINTERVALSGIPROC
+    glXSwapInterval =
+          (PFNGLXSWAPINTERVALSGIPROC) glXGetProcAddress(
+                  reinterpret_cast<GLubyte const *>("glXSwapIntervalSGI"));
+  if (!glXSwapInterval) {
+    Logger::Instance().log("MediaLayer", "WARNING", "VSync is not supported");
+  } else {
+    glXSwapInterval(Config::Instance().value<int>("Vsync"));
+  }
 }
 
 void MediaLayer::swapBuffers() {
-	glXSwapBuffers(display, drawable);
+  glXSwapBuffers(display, drawable);
 }
 /*
 static void
-	wmspec_change_state (bool   add,
-			xcb_intern_atom_cookie_t state1,
-			xcb_intern_atom_cookie_t state2)
+  wmspec_change_state (bool   add,
+      xcb_intern_atom_cookie_t state1,
+      xcb_intern_atom_cookie_t state2)
 {
   GdkDisplay *display = GDK_WINDOW_DISPLAY (window);
   XClientMessageEvent xclient;
@@ -225,17 +223,17 @@ static void
 #define _NET_WM_STATE_TOGGLE        2    // toggle property
 
 
-	xcb_client_message_event_t ev;
-	  memset (&ev, 0, sizeof (ev));
-	ev.response_type = XCB_CLIENT_MESSAGE;
-	ev.window = window;
-	ev.type = wm_state;
-	ev.format = 32;
-	ev.data.data32[0] = 2; //toggle
-	ev.data.data32[1] = wm_state_fullscreen;
-	ev.data.data32[2] = wm_state_fullscreen;
-	ev.data.data32[3] = 0;
-	ev.data.data32[4] = 0;
+  xcb_client_message_event_t ev;
+    memset (&ev, 0, sizeof (ev));
+  ev.response_type = XCB_CLIENT_MESSAGE;
+  ev.window = window;
+  ev.type = wm_state;
+  ev.format = 32;
+  ev.data.data32[0] = 2; //toggle
+  ev.data.data32[1] = wm_state_fullscreen;
+  ev.data.data32[2] = wm_state_fullscreen;
+  ev.data.data32[3] = 0;
+  ev.data.data32[4] = 0;
 
   memset (&xclient, 0, sizeof (xclient));
   xclient.type = ClientMessage;
@@ -248,77 +246,77 @@ static void
   xclient.data.l[3] = 0;
   xclient.data.l[4] = 0;
 
-	xcb_send_event(
-			connection,
-			0,
-			window,
-			XCB_EVENT_MASK_SUBSTRUCTURE_NOTIFY | XCB_EVENT_MASK_SUBSTRUCTURE_REDIRECT,
-			(const char *) &ev
-	);
+  xcb_send_event(
+      connection,
+      0,
+      window,
+      XCB_EVENT_MASK_SUBSTRUCTURE_NOTIFY | XCB_EVENT_MASK_SUBSTRUCTURE_REDIRECT,
+      (const char *) &ev
+  );
 
 }
 */
 xcb_intern_atom_cookie_t MediaLayer::getCookieForAtom(string state_name) {
-	return xcb_intern_atom(connection, 0, state_name.length(), state_name.c_str());
+  return xcb_intern_atom(
+    connection, 0, state_name.length(), state_name.c_str());
 }
 
 xcb_atom_t MediaLayer::getReplyAtomFromCookie(xcb_intern_atom_cookie_t cookie) {
-	xcb_generic_error_t * error;
-	xcb_intern_atom_reply_t *reply =
-	        xcb_intern_atom_reply(connection, cookie, &error);
-	if (error) {
-	    Logger::Instance().message
-	            << "Can't set the screen. Error Code: "<< error->error_code;
-	    Logger::Instance().log("XCB", "ERROR", "");
-	}
-	return reply->atom;
+  xcb_generic_error_t * error;
+  xcb_intern_atom_reply_t *reply =
+          xcb_intern_atom_reply(connection, cookie, &error);
+  if (error) {
+      Logger::Instance().message
+              << "Can't set the screen. Error Code: "<< error->error_code;
+      Logger::Instance().log("XCB", "ERROR", "");
+  }
+  return reply->atom;
 }
 
 void MediaLayer::toggleFullScreen() {
-	if (fullscreen) {
-		Logger::Instance().log("MESSAGE", "Fullscreen", "off");
-	} else {
-		Logger::Instance().log("MESSAGE", "Fullscreen", "on");
-	}
-	fullscreen = !fullscreen;
+  if (fullscreen) {
+    Logger::Instance().log("MESSAGE", "Fullscreen", "off");
+  } else {
+    Logger::Instance().log("MESSAGE", "Fullscreen", "on");
+  }
+  fullscreen = !fullscreen;
 
-	xcb_intern_atom_cookie_t wm_state_ck =
-	        getCookieForAtom("_NET_WM_STATE");
-	xcb_intern_atom_cookie_t wm_state_fs_ck =
-	        getCookieForAtom("_NET_WM_STATE_FULLSCREEN");
+  xcb_intern_atom_cookie_t wm_state_ck =
+          getCookieForAtom("_NET_WM_STATE");
+  xcb_intern_atom_cookie_t wm_state_fs_ck =
+          getCookieForAtom("_NET_WM_STATE_FULLSCREEN");
 
 #define _NET_WM_STATE_REMOVE        0    // remove/unset property
 #define _NET_WM_STATE_ADD           1    // add/set property
 #define _NET_WM_STATE_TOGGLE        2    // toggle property
 
-	xcb_client_message_event_t ev;
-	// memset (&ev, 0, sizeof (ev));
-	ev.response_type = XCB_CLIENT_MESSAGE;
-	ev.type = getReplyAtomFromCookie(wm_state_ck);
-	ev.format = 32;
-	ev.window = window;
-	// ev.data.data32[0] = fullscreen ? _NET_WM_STATE_ADD : _NET_WM_STATE_REMOVE;
-	ev.data.data32[0] = _NET_WM_STATE_TOGGLE;
+  xcb_client_message_event_t ev;
+  // memset (&ev, 0, sizeof (ev));
+  ev.response_type = XCB_CLIENT_MESSAGE;
+  ev.type = getReplyAtomFromCookie(wm_state_ck);
+  ev.format = 32;
+  ev.window = window;
+  // ev.data.data32[0] = fullscreen ? _NET_WM_STATE_ADD : _NET_WM_STATE_REMOVE;
+  ev.data.data32[0] = _NET_WM_STATE_TOGGLE;
     ev.data.data32[1] = getReplyAtomFromCookie(wm_state_fs_ck);
     ev.data.data32[2] = XCB_ATOM_NONE;
     ev.data.data32[3] = 0;
     ev.data.data32[4] = 0;
 
-	xcb_send_event(
-			connection,
-			1,
-			window,
-			XCB_EVENT_MASK_SUBSTRUCTURE_REDIRECT | XCB_EVENT_MASK_SUBSTRUCTURE_NOTIFY,
-			(const char *) &ev
-	);
+  xcb_send_event(
+      connection,
+      1,
+      window,
+      XCB_EVENT_MASK_SUBSTRUCTURE_REDIRECT | XCB_EVENT_MASK_SUBSTRUCTURE_NOTIFY,
+      (const char *) &ev);
 }
 
 void MediaLayer::renderLoop() {
     while (!quit) {
-    	input->eventLoop();
-    	RenderEngine::Instance().display();
-    	swapBuffers();
-    	getFPS();
+      input->eventLoop();
+      RenderEngine::Instance().display();
+      swapBuffers();
+      getFPS();
      }
 }
 
@@ -340,57 +338,56 @@ void MediaLayer::getFPS() {
 
     stringstream windowTitle;
     windowTitle << programTile << " - FPS: " << fps_current;
-	setWindowTitle(windowTitle.str());
+  setWindowTitle(windowTitle.str());
 }
 
 void MediaLayer::setWindowTitle(string title) {
     xcb_change_property(
-    	connection,
-    	XCB_PROP_MODE_REPLACE,
-    	window,
-		XCB_ATOM_WM_NAME,
-		XCB_ATOM_STRING,
-		8,
-		title.length(),
-		title.c_str()
-	);
+      connection,
+      XCB_PROP_MODE_REPLACE,
+      window,
+    XCB_ATOM_WM_NAME,
+    XCB_ATOM_STRING,
+    8,
+    title.length(),
+    title.c_str());
 }
 
 void MediaLayer::toggleMouseGrab() {
-	if (!grab) {
-		// hide cursor
-		uint32_t value_list = cursor;
+  if (!grab) {
+    // hide cursor
+    uint32_t value_list = cursor;
 
         xcb_change_window_attributes(
-        		connection,
-        		window,
+            connection,
+            window,
                 XCB_CW_CURSOR,
                 &value_list);
-		grab = true;
-	} else {
-	    /* show the default cursor */
-		uint32_t value_list = XCB_CURSOR_NONE;
-	    xcb_change_window_attributes(
-	    		connection,
-	    		window,
-	    		XCB_CW_CURSOR,
-	    		&value_list);
-		grab = false;
-	}
+    grab = true;
+  } else {
+      /* show the default cursor */
+    uint32_t value_list = XCB_CURSOR_NONE;
+      xcb_change_window_attributes(
+          connection,
+          window,
+          XCB_CW_CURSOR,
+          &value_list);
+    grab = false;
+  }
 }
 
 void MediaLayer::mouseLook(int x, int y) {
-	unsigned halfWidth = width/2;
-	unsigned halfHeight = height/2;
+  unsigned halfWidth = width/2;
+  unsigned halfHeight = height/2;
 
-	int xRel = x - halfWidth;
-	int yRel = y - halfHeight;
+  int xRel = x - halfWidth;
+  int yRel = y - halfHeight;
 
-	if(!(xRel == 0 && yRel == 0) && grab) {
-		Camera::Instance().setMouseLook(xRel, yRel);
-		if (grab)
-		    XWarpPointer(
-		            display, None, window, x, y,
-		            width, height, halfWidth, halfHeight);
-	}
+  if (!(xRel == 0 && yRel == 0) && grab) {
+    Camera::Instance().setMouseLook(xRel, yRel);
+    if (grab)
+        XWarpPointer(
+                display, None, window, x, y,
+                width, height, halfWidth, halfHeight);
+  }
 }

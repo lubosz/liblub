@@ -16,7 +16,7 @@ class Texture {
 	void activate();
 	void bind();
 	void uniform(GLuint program);
-    GLuint getHandler() const;
+  GLuint getHandler() const;
 	string name;
  protected:
 	GLenum glId;

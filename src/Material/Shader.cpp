@@ -13,47 +13,47 @@
 #include "System/Config.h"
 
 Shader::Shader(string fileName, GLenum type) {
-	Logger::Instance().log("DEBUG", "Shader", "Creating Shader " + fileName);
-	this->fileName = fileName;
-	this->type = type;
+  Logger::Instance().log("DEBUG", "Shader", "Creating Shader " + fileName);
+  this->fileName = fileName;
+  this->type = type;
 
-	loadAndCompile();
+  loadAndCompile();
 }
 
 Shader::Shader(string fileName, GLenum type, const vector<string> & defines) {
-	Logger::Instance().log("DEBUG", "Shader", "Creating Shader " + fileName);
-	this->fileName = fileName;
-	this->type = type;
-	this->defines = defines;
+  Logger::Instance().log("DEBUG", "Shader", "Creating Shader " + fileName);
+  this->fileName = fileName;
+  this->type = type;
+  this->defines = defines;
 
-	loadAndCompile();
+  loadAndCompile();
 }
 
 Shader::~Shader() {
-	glDeleteShader(shader);
-	free(source);
+  glDeleteShader(shader);
+  free(source);
 }
 
 
 void Shader::loadAndCompile() {
-	/* Read our shaders into the appropriate buffers */
-	source = readFile(Config::Instance().value<string>("shaderDir") + fileName);
+  /* Read our shaders into the appropriate buffers */
+  source = readFile(Config::Instance().value<string>("shaderDir") + fileName);
 
     /* Assign our handles a "name" to new shader objects */
     shader = glCreateShader(type);
 
     if (defines.size() > 0) {
-		// set defines
-		string defineString = "";
+    // set defines
+    string defineString = "";
 
-		foreach(string define, defines) {
-			defineString += "#define " + define + "\n";
-			Logger::Instance().log("DEBUG", "Shader Flags", define);
-		}
-		const GLchar *sources[2] = { defineString.c_str(), source };
-		glShaderSource(shader, 2, sources, NULL);
+    foreach(string define, defines) {
+      defineString += "#define " + define + "\n";
+      Logger::Instance().log("DEBUG", "Shader Flags", define);
+    }
+    const GLchar *sources[2] = { defineString.c_str(), source };
+    glShaderSource(shader, 2, sources, NULL);
     } else {
-    	glShaderSource(shader, 1,  (const GLchar**)&source, NULL);
+      glShaderSource(shader, 1,  (const GLchar**)&source, NULL);
     }
     glError("Shader::loadAndCompile() glShaderSource", 65);
 
@@ -108,30 +108,30 @@ char* Shader::readFile(string filePath) {
 }
 
 void Shader::printShaderInfoLog(GLuint shader) {
-	int infologLen = 0;
-	glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &infologLen);
-	if (infologLen > 1) {
-		GLchar * infoLog = reinterpret_cast<GLchar*>(malloc(infologLen));
-		if (infoLog == NULL) {
-			Logger::Instance().log("ERROR",
-			        "Shader Log", "Could not allocate InfoLog buffer");
-		}
-		int charsWritten = 0;
-		glGetShaderInfoLog(shader, infologLen, &charsWritten, infoLog);
-		string shaderlog = infoLog;
-		free(infoLog);
-		Logger::Instance().log("ERROR", "Shader Log", shaderlog);
-	} else {
-		Logger::Instance().log("DEBUG", "Shader", "Success");
-	}
+  int infologLen = 0;
+  glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &infologLen);
+  if (infologLen > 1) {
+    GLchar * infoLog = reinterpret_cast<GLchar*>(malloc(infologLen));
+    if (infoLog == NULL) {
+      Logger::Instance().log("ERROR",
+              "Shader Log", "Could not allocate InfoLog buffer");
+    }
+    int charsWritten = 0;
+    glGetShaderInfoLog(shader, infologLen, &charsWritten, infoLog);
+    string shaderlog = infoLog;
+    free(infoLog);
+    Logger::Instance().log("ERROR", "Shader Log", shaderlog);
+  } else {
+    Logger::Instance().log("DEBUG", "Shader", "Success");
+  }
 }
 
 void Shader::reload() {
-	glDeleteShader(shader);
-	free(source);
-	loadAndCompile();
+  glDeleteShader(shader);
+  free(source);
+  loadAndCompile();
 }
 
 GLuint Shader::getReference() const {
-	return shader;
+  return shader;
 }

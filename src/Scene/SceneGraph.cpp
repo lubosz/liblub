@@ -32,12 +32,12 @@ void SceneGraph::setPosition(string nodeName, const QVector3D& position) {
 }
 
 void SceneGraph::printMatrix(const QMatrix4x4 & matrix, string name) {
-	Logger::Instance().message << name;
-	for (int i = 0; i < 16; i++) {
-	    Logger::Instance().message << matrix.data()[i] << "\t";
-		if(i%4 == 3) Logger::Instance().message << "\n";
-	}
-	Logger::Instance().log("Print Matrix");
+  Logger::Instance().message << name;
+  for (int i = 0; i < 16; i++) {
+    Logger::Instance().message << matrix.data()[i] << "\t";
+    if (i%4 == 3) Logger::Instance().message << "\n";
+  }
+  Logger::Instance().log("Print Matrix");
 }
 
 void SceneGraph::setShadowCoords(Node * node, DirectionNode * viewPoint) {

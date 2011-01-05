@@ -8,7 +8,7 @@
 #include "Material/Texture.h"
 
 Texture::~Texture() {
-	// TODO(bmonkey): Auto-generated destructor stub
+  // TODO(bmonkey): Auto-generated destructor stub
 }
 
 GLuint Texture::getHandler() const {
@@ -21,7 +21,7 @@ void Texture::activate() {
 }
 
 void Texture::bind() {
-	glBindTexture(textureType, texture);
+  glBindTexture(textureType, texture);
     glError("Texture::bind", 136);
 }
 
@@ -36,33 +36,33 @@ void Texture::uniform(GLuint program) {
 
 fipImage * Texture::readImage(
         string path, GLint * glChannelOrder, GLint * texChannelOrder) {
-	fipImage * image = new fipImage();
-	image->load(path.c_str());
-	Logger::Instance().message
-	        << path
-	        << " Bits Per Pixel:\t"
-	        << image->getBitsPerPixel() << "\t"
-	        << image->getWidth()
-	        << "x" << image->getHeight();
+  fipImage * image = new fipImage();
+  image->load(path.c_str());
+  Logger::Instance().message
+          << path
+          << " Bits Per Pixel:\t"
+          << image->getBitsPerPixel() << "\t"
+          << image->getWidth()
+          << "x" << image->getHeight();
     Logger::Instance().log("DEBUG", "Texture");
 
     if (image->getBitsPerPixel() == 32) {
-    	*glChannelOrder = GL_RGBA;
-    	*texChannelOrder = GL_BGRA;
+      *glChannelOrder = GL_RGBA;
+      *texChannelOrder = GL_BGRA;
     } else if (image->getBitsPerPixel() == 24) {
-    	*glChannelOrder = GL_RGB;
-    	*texChannelOrder = GL_BGR;
+      *glChannelOrder = GL_RGB;
+      *texChannelOrder = GL_BGR;
     } else {
-    	*glChannelOrder = GL_RGB;
-    	*texChannelOrder = GL_BGR;
-    	Logger::Instance().log("WARNING",
-    	        "Texture", "Converting "+ path+ " to 24bits.");
-    	if (image->convertTo24Bits()) {
-    		Logger::Instance().log("WARNING", "Texture", "SUCESS!");
-    	} else {
-    		Logger::Instance().log("ERROR",
-    		        "Texture", "Converting "+ path+ " to 24bit failed.");
-    	}
+      *glChannelOrder = GL_RGB;
+      *texChannelOrder = GL_BGR;
+      Logger::Instance().log("WARNING",
+              "Texture", "Converting "+ path+ " to 24bits.");
+      if (image->convertTo24Bits()) {
+        Logger::Instance().log("WARNING", "Texture", "SUCESS!");
+      } else {
+        Logger::Instance().log("ERROR",
+                "Texture", "Converting "+ path+ " to 24bit failed.");
+      }
     }
 
     return image;
