@@ -6,7 +6,7 @@ An OpenGL 3.3 Core Framework.
 
 You need the following packages on Ubuntu. (other distros similar)
 
-`$ sudo aptitude install build-essential cmake libqt4-dev libfreeimage-dev`
+`$ sudo aptitude install build-essential cmake libqt4-dev libfreeimage-dev libboost-dev`
 
 You also need assimp (i.e. from git).
 
