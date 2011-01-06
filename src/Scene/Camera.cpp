@@ -12,7 +12,7 @@
 Camera::Camera() {
   direction = QVector3D(0, 0, -1);
   position = QVector3D();
-  defaultValues();
+  defaultCenter = direction;
 }
 
 Camera::~Camera() {
@@ -58,7 +58,7 @@ void Camera::setMouseLook(int mouseXrel, int mouseYrel) {
 
 void Camera::setMouseZoom(int wheelX, int wheelY) {
   Logger::Instance().message << "\t" << wheelX << "\t" << wheelY;
-    Logger::Instance().log("DEBUG", "Camera Wheel");
+  Logger::Instance().log("DEBUG", "Camera Wheel");
 }
 
 void Camera::updateRotation() {

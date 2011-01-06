@@ -7,6 +7,23 @@
 
 #include "Scene/DirectionNode.h"
 
+DirectionNode::DirectionNode(){
+  projectionMatrix = QMatrix4x4();
+  rotation = QMatrix4x4();
+  viewMatrix = QMatrix4x4();
+  yaw, pitch, roll = 0;
+  speed = .1;
+  mouseSensitivity = .1;
+
+  fov = 70.0;
+  near = 0.1;
+  far = 1000.0;
+}
+
+DirectionNode::~DirectionNode(){
+
+}
+
 QVector3D DirectionNode::getDirection() const {
     return direction;
 }
@@ -23,6 +40,7 @@ QMatrix4x4 DirectionNode::getView() const {
     return viewMatrix;
 }
 
+// TODO(bmonkey): This shouldn't be needed.
 QMatrix4x4 DirectionNode::getViewNoTranslation() const {
     QMatrix4x4 viewMatrixNoTranslation;
     viewMatrixNoTranslation.lookAt(QVector3D(0, 0, 0), direction, up);
@@ -56,18 +74,4 @@ void DirectionNode::setAspect(qreal aspect) {
     /* Create our projection matrix with a 45 degree field of view
      * a width to height ratio of 1 and view from .1 to 100 infront of us */
     updatePerspective();
-}
-
-void DirectionNode::defaultValues() {
-    projectionMatrix = QMatrix4x4();
-    rotation = QMatrix4x4();
-    viewMatrix = QMatrix4x4();
-    defaultCenter = direction;
-    yaw, pitch, roll = 0;
-    speed = .1;
-    mouseSensitivity = .1;
-
-    fov = 70.0;
-    near = 0.1;
-    far = 1000.0;
 }

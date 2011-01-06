@@ -8,16 +8,12 @@
 #include "Scene/Node.h"
 #include "Mesh/MeshFactory.h"
 
-Node::Node(string name, const QVector3D& position, float size, Mesh * mesh,
-        Material * material) {
-    this->name = name;
-    this->position = position;
-    this->mesh = mesh;
-    this->material = material;
-    this->size = size;
-    modelMatrix = QMatrix4x4();
-    castShadows = true;
-    receiveShadows = false;
+Node::Node(string name, const QVector3D& position, float size,
+    Mesh * mesh, Material * material)
+:
+        name(name), position(position), mesh(mesh), material(material),
+        size(size), modelMatrix(QMatrix4x4()), castShadows(true),
+        receiveShadows(false){
     update();
 }
 

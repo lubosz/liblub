@@ -13,7 +13,12 @@ const QVector3D up(0, 1, 0);
 
 class DirectionNode {
 public:
-  qreal aspect, fov, near, far, yaw, pitch, roll;
+  DirectionNode();
+  virtual ~DirectionNode();
+
+  // View Params
+  qreal aspect, fov, near, far;
+  qreal yaw, pitch, roll;
   QVector3D position, direction, defaultCenter;
 
   QMatrix4x4 viewMatrix, projectionMatrix, rotation;
@@ -21,6 +26,7 @@ public:
   float mouseSensitivity, speed;
 
   QVector3D getDirection() const;
+
   QVector3D getPosition() const;
 
   QMatrix4x4 getView() const;
@@ -33,6 +39,4 @@ public:
 
   void updatePerspective();
   void updateView();
-
-  void defaultValues();
 };

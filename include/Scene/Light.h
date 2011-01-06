@@ -28,6 +28,8 @@ class Light : public DirectionNode {
     void moveForward();
     void moveBack();
 
+    void addLightNode();
+
     void update();
 
  private:

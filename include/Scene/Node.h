@@ -11,7 +11,6 @@
 #include "Material/Material.h"
 #include "Scene/DirectionNode.h"
 
-
 class Node {
  private:
 	string name;

@@ -12,6 +12,10 @@
 
 class Camera: public Singleton<Camera>, public DirectionNode {
  public:
+    friend class Singleton<Camera>;
+
+    Camera();
+    ~Camera();
 
 	void updateRotation();
 
@@ -22,10 +26,4 @@ class Camera: public Singleton<Camera>, public DirectionNode {
 
 	void setMouseLook(int mouseXrel, int mouseYrel);
 	void setMouseZoom(int wheelX, int wheelY);
- private:
-
-    friend class Singleton<Camera>;
-
-    Camera();
-    ~Camera();
 };
