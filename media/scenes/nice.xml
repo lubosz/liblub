@@ -37,9 +37,9 @@
 		</Program>
 		<Program name="PhongColorMat">
 			<Shader url="Color/PhongColor" />
-			<Uniform value="0.0, 1.0, 0.0" name="diffuseMaterialColor" />
+			<Uniform value="0.0, 1.0, 0.0, 1.0" name="diffuseMaterialColor" />
 			<Uniform value="0.0, 0.0, 0.0, 1.0" name="ambientSceneColor" />
-			<Uniform value="0.8, 0.8, 0.8,1.0" name="specularMaterialColor" />
+			<Uniform value="0.8, 0.8, 0.8, 1.0" name="specularMaterialColor" />
 			<Uniform value="4.3" name="shininess" />
 		</Program>
 		<Program name="SphereMap">

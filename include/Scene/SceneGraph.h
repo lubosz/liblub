@@ -17,7 +17,7 @@ class SceneGraph: public Singleton<SceneGraph> {
 
 	void addNode(Node * node);
 	void meshPlane(
-	        string file, float cubeSize, float step, vector<Material*> materials
+	        Mesh * mesh, float cubeSize, float step, vector<Material*> materials
 	);
 
 	void bindShaders(

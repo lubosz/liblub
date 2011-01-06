@@ -449,6 +449,7 @@ class MandelMat : public Material {
 };
 
 
+/*
 class HatchingMat : public Material {
  public:
 	HatchingMat() {
@@ -471,7 +472,6 @@ class GeomTest : public Material {
   }
 	void uniforms() {}
 };
-
 class FogMaterial : public Material {
  public:
 	FogMaterial() {
@@ -486,3 +486,4 @@ class FogMaterial : public Material {
 		glUniform3f(glGetUniformLocation(program, "uEyePos"), 0.0, 0.0, 1.0);
 	}
 };
+*/

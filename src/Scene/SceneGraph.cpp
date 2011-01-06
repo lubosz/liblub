@@ -91,8 +91,8 @@ void SceneGraph::meshCube(string file, float cubeSize, float step,
     }
 }
 
-void SceneGraph::meshCube(string file, float cubeSize, float step, vector<
-        Material*> materials) {
+void SceneGraph::meshCube(string file, float cubeSize, float step,
+    vector<Material*> materials) {
     Mesh * mesh = MeshFactory::load(file);
     unsigned position = 0;
     for (float x = -cubeSize / 2.0; x < cubeSize / 2.0; x += step) {
@@ -106,9 +106,8 @@ void SceneGraph::meshCube(string file, float cubeSize, float step, vector<
     }
 }
 
-void SceneGraph::meshPlane(string file, float cubeSize, float step, vector<
-        Material*> materials) {
-    Mesh * mesh = MeshFactory::load(file);
+void SceneGraph::meshPlane(Mesh * mesh, float cubeSize, float step,
+    vector<Material*> materials) {
     unsigned position = 0;
     for (float x = -cubeSize / 2.0; x < cubeSize / 2.0; x += step) {
         for (float y = -cubeSize / 2.0; y < cubeSize / 2.0; y += step) {

@@ -49,7 +49,8 @@ class Example : public Application {
 
         new MandelMat()
     };
-    SceneGraph::Instance().meshPlane("monkey.blend", 10, 3, textureMats);
+    Mesh * mesh = MeshFactory::load("monkey.blend");
+    SceneGraph::Instance().meshPlane(mesh, 10, 3, textureMats);
     Material * starMat = new Simple("Particle/stars");
     SceneGraph::Instance().addNode(
         new Node("", {0, -50, -50},

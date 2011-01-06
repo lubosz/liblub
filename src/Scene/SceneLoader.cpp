@@ -253,11 +253,18 @@ void SceneLoader::appendObject(const QDomElement & objectNode) {
 
         SceneGraph::Instance().addNode(node);
     } else if (objectNode.tagName() == "ObjectPlane") {
+        string meshName = objectNode.attribute("mesh").toStdString();
+        if (meshes.count(meshName) > 0)
+            mesh = meshes.value(meshName);
+        else
+            Logger::Instance().log("ERROR", "Mesh Not Found", meshName);
+
         SceneGraph::Instance().meshPlane(
-                objectNode.attribute("mesh").toStdString(),
-                objectNode.attribute("size").toFloat(), objectNode.attribute(
-                        "step").toFloat(), { new PhongTexMat(
-                        objectNode.attribute("texture").toStdString()) });
+                mesh,
+                objectNode.attribute("size").toFloat(),
+                objectNode.attribute("step").toFloat(),
+                { new PhongTexMat(
+                    objectNode.attribute("texture").toStdString()) });
     }
 }
 
