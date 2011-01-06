@@ -1023,7 +1023,7 @@ ENUM_VALUES_PER_LINE = 4
 # JavaScript, DHTML, CSS and frames is required (i.e. any modern browser).
 # Windows users are probably better off using the HTML help feature.
 
-GENERATE_TREEVIEW = YES
+GENERATE_TREEVIEW = NO
 
 # By enabling USE_INLINE_TREES, doxygen will generate the Groups, Directories,
 # and Class Hierarchy pages using a tree view instead of an ordered list.
@@ -1065,7 +1065,7 @@ FORMULA_TRANSPARENT = YES
 # typically be disabled. For large projects the javascript based search engine
 # can be slow, then enabling SERVER_BASED_SEARCH may provide a better solution.
 
-SEARCHENGINE = YES
+SEARCHENGINE = NO
 
 # When the SERVER_BASED_SEARCH tag is enabled the search engine will be
 # implemented using a PHP enabled web server instead of at the web client
@@ -1437,7 +1437,7 @@ PERL_PATH = /usr/bin/perl
 # fallback. It is recommended to install and use dot, since it yields more
 # powerful graphs.
 
-CLASS_DIAGRAMS = YES
+CLASS_DIAGRAMS = NO
 
 # You can define message sequence charts within doxygen comments using the \msc
 # command. Doxygen will then run the mscgen tool (see
