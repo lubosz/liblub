@@ -32,8 +32,8 @@ class Config : public Singleton<Config>, public XmlReader {
 	void appendOption(const QDomElement & optionNode);
 	string fileName;
 	template<typename T> vector<T> getValues(string name, const vector<ConfigOption<T>> & config);
-	template<typename T> T value(string name);
-	template<typename T> vector<T> values(string name);
+	template<typename T> T value(const string & name);
+	template<typename T> vector<T> values(const string & name);
 	template<typename T> vector<T> splitValues(QString values);
 
 	vector<ConfigOption<bool>> bools;

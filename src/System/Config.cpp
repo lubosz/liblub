@@ -27,30 +27,30 @@ vector<T> Config::getValues(string name, const vector<ConfigOption<T>> & config)
                 return configOption.optionVec;
     }
 }
-template<> vector<bool> Config::values<bool>(string name) {
+
+template<> vector<bool> Config::values<bool>(const string & name) {
   return getValues<bool>(name, bools);
 }
-
-template<> vector<int> Config::values<int>(string name) {
+template<> vector<int> Config::values<int>(const string & name) {
   return getValues<int>(name, ints);
 }
-template<> vector<string> Config::values<string>(string name) {
+template<> vector<string> Config::values<string>(const string & name) {
   return getValues<string>(name, strings);
 }
-template<> vector<float> Config::values<float>(string name) {
+template<> vector<float> Config::values<float>(const string & name) {
   return getValues<float>(name, floats);
 }
-template<> bool Config::value<bool>(string name) {
-    return getValues<bool>(name, bools)[0];
+template<> bool Config::value<bool>(const string & name) {
+    return values<bool>(name)[0];
 }
-template<> string Config::value<string>(string name) {
-    return getValues<string>(name, strings)[0];
+template<> string Config::value<string>(const string & name) {
+    return values<string>(name)[0];
 }
-template<> int Config::value<int>(string name) {
-    return getValues<int>(name, ints)[0];
+template<> int Config::value<int>(const string & name) {
+    return values<int>(name)[0];
 }
-template<> float Config::value<float>(string name) {
-    return getValues<float>(name, floats)[0];
+template<> float Config::value<float>(const string & name) {
+    return values<float>(name)[0];
 }
 
 template<typename T>
