@@ -26,7 +26,6 @@ class SceneLoader : public XmlReader {
 
 	QDomElement sceneXML;
 	QString fileName;
-	template<typename T> vector<T> splitValues(QString values);
 
 	QVector3D stringToVector3D(const QString& values);
 	void appendObject(const QDomElement & objectNode);

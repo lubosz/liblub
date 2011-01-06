@@ -53,14 +53,6 @@ template<> float Config::value<float>(const string & name) {
     return values<float>(name)[0];
 }
 
-template<typename T>
-vector<T> Config::splitValues(QString values) {
-    vector<T> flags;
-    foreach(QString value, values.split(","))
-            flags.push_back(pushValue<T> (value));
-    return flags;
-}
-
 void Config::load(const QString & fileName) {
     QFile file(fileName);
 

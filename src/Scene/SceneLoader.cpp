@@ -23,14 +23,6 @@ SceneLoader::~SceneLoader() {
     // TODO(bmonkey) Auto-generated destructor stub
 }
 
-template<typename T>
-vector<T> SceneLoader::splitValues(QString values) {
-    vector<T> flags;
-    foreach(QString value, values.split(","))
-            flags.push_back(pushValue<T> (value));
-    return flags;
-}
-
 QVector3D SceneLoader::stringToVector3D(const QString& values) {
     vector<float> floats = splitValues<float> (values);
     return QVector3D(floats[0], floats[1], floats[2]);

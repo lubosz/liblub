@@ -34,7 +34,7 @@ class Config : public Singleton<Config>, public XmlReader {
 	template<typename T> vector<T> getValues(string name, const vector<ConfigOption<T>> & config);
 	template<typename T> T value(const string & name);
 	template<typename T> vector<T> values(const string & name);
-	template<typename T> vector<T> splitValues(QString values);
+//	template<typename T> vector<T> splitValues(QString values);
 
 	vector<ConfigOption<bool>> bools;
 	vector<ConfigOption<int>> ints;

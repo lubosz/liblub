@@ -11,6 +11,15 @@
 
 using std::string;
 
+XmlReader::XmlReader(){
+  //TODO: TEMPLATE HACK
+  QString foo = "";
+  splitValues<string>(foo);
+  splitValues<int>(foo);
+  splitValues<float>(foo);
+  splitValues<bool>(foo);
+}
+
 template<> int XmlReader::pushValue<int>(const QString& value) {
     return value.toInt();
 }
