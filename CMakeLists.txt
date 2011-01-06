@@ -8,6 +8,7 @@ OPTION(SDL_LOCAL "SDL Local" OFF)
 OPTION(RELEASE "Release" OFF)
 OPTION(USE_FBO "Use Framebuffer Objects" ON)
 OPTION(CHECKSTYLE "Check Style" OFF)
+OPTION(BUILD_TESTS "Build Tests" OFF)
 
 if(USE_FBO)
     ADD_DEFINITIONS(-DUSE_FBO)
@@ -20,7 +21,7 @@ set(EXECUTABLE_OUTPUT_PATH ${CMAKE_SOURCE_DIR}/bin)
 
 set(SRC_DIR ${CMAKE_SOURCE_DIR}/src)
 set(APP_DIR ${CMAKE_SOURCE_DIR}/apps)
-
+set(TEST_DIR ${CMAKE_SOURCE_DIR}/tests)
 #Optimization / Debug
 IF(RELEASE)
     set(CMAKE_CXX_FLAGS "-O3 -msse4 -mssse3") #Optimized
@@ -130,6 +131,16 @@ foreach(EXAMPLE_PATH ${EXAMPLES})
     add_executable(${EXAMPLE_NAME} "${EXAMPLE_PATH}")
     target_link_libraries(${EXAMPLE_NAME} lub)
 endforeach(EXAMPLE_PATH)
+
+
+#build tests
+file(GLOB_RECURSE TESTS ${TEST_DIR}/*.cpp)
+foreach(TEST_PATH ${TESTS})
+    STRING(REGEX REPLACE "\\.cpp" "" TEST_NAME "${TEST_PATH}")
+    STRING(REGEX REPLACE "^.*/([^/]*)\$" "\\1" TEST_NAME "${TEST_NAME}")
+    add_executable(${TEST_NAME} "${TEST_PATH}")
+    target_link_libraries(${TEST_NAME} lub cppunit)
+endforeach(TEST_PATH)
 
 #check code stlye
 IF(EXISTS "/usr/bin/python2")
