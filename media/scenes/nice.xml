@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<liblub>
+
+	<include url="common/programs.xml" />
+	
+	<Programs>
+		<Program name="white">
+			<Shader url="Color/white" />
+		</Program>
+		<Program name="stars">
+			<Shader url="Particle/stars" />
+		</Program>
+		<Program name="Earth">
+			<Shader url="Space/earth" />
+		</Program>
+		<Program name="CubeMap">
+			<Shader url="Texture/cubemap" />
+			<Uniform value="0.5, 0.5, 1.0" name="BaseColor" />
+			<Uniform value="0.5" name="MixRatio" />
+		</Program>
+		<Program name="normalcolor">
+			<Shader url="Color/normalcolor" />
+		</Program>
+		<Program name="BrickMaterial">
+			<Shader url="Procedural/brick" />
+			<Uniform value="1.0, 0.3, 0.2" name="brickColor" />
+			<Uniform value="0.85, 0.86, 0.84" name="mortarColor" />
+			<Uniform value="0.30, 0.15" name="brickSize" />
+			<Uniform value="0.90, 0.85" name="brickPct" />
+		</Program>
+		<Program name="ProcBumpMaterial">
+			<Shader url="Procedural/procBump" />
+			<Uniform value="0.7, 0.6, 0.18, 1.0" name="SurfaceColor" />
+			<Uniform value="16.0" name="BumpDensity" />
+			<Uniform value="0.15" name="BumpSize" />
+			<Uniform value="0.5" name="SpecularFactor" />
+		</Program>
+		<Program name="PhongColorMat">
+			<Shader url="Color/PhongColor" />
+			<Uniform value="0.0, 1.0, 0.0" name="diffuseMaterialColor" />
+			<Uniform value="0.0, 0.0, 0.0, 1.0" name="ambientSceneColor" />
+			<Uniform value="0.8, 0.8, 0.8,1.0" name="specularMaterialColor" />
+			<Uniform value="4.3" name="shininess" />
+		</Program>
+		<Program name="SphereMap">
+			<Shader url="Env/sphereMap" />
+		</Program>
+		<Program name="MandelMat">
+			<Shader url="Procedural/mandelbrot" />
+			<Uniform value="1.0" name="SpecularContribution" />
+			<Uniform value="1.0" name="DiffuseContribution" />
+			<Uniform value="1.0" name="Shininess" />
+			<Uniform value="100.0" name="MaxIterations" />
+			<Uniform value="1.0" name="Zoom" />
+			<Uniform value="1.0" name="Xcenter" />
+			<Uniform value="1.0" name="Ycenter" />
+			<Uniform value="1.0, 0.0, 0.0" name="InnerColor" />
+			<Uniform value="0.0, 1.0, 0.0" name="OuterColor1" />
+			<Uniform value="0.0, 0.0, 1.0" name="OuterColor2" />
+		</Program>
+		
+		<Program name="PhongTexMat">
+			<Shader url="Color/PhongColor" flags="useDiffuseTexture" />
+			<Uniform value="0.1, 0.1, 0.1, 1.0" name="ambientSceneColor" />
+			<Uniform value="0.1, 0.1, 0.1, 1.0" name="diffuseMaterialColor" />
+			<Uniform value="0.8, 0.8, 0.8,1.0" name="specularMaterialColor" />
+			<Uniform value="4.3" name="shininess" />
+		</Program>
+		
+		<Program name="NormalMapMaterial">
+			<Shader url="Bump/normalMap" />
+			<Uniform value="0.0, 0.0, 0.0, 1.0" name="ambientSceneColor" />
+			<Uniform value="1, 1, 1, 1" name="diffuseMaterialColor" />
+			<Uniform value="0.5, 0.5, 0.5, 1.0" name="specularMaterialColor" />
+			<Uniform value="4.3" name="shininess" />
+			<Uniform value="0.9" name="invRadius" />
+		</Program>
+	</Programs>
+	
+	<Textures>
+		<Texture name="masonry-wall-texture" url="bump/masonry-wall-texture.jpg" />
+		<Texture name="monkey-occlusion" url="monkey-occlusion.png" />
+		<Texture name="masonry-wall-normal-map" url="bump/masonry-wall-normal-map.jpg" />
+		<Texture name="earth/day" url="earth/day.jpg" />
+		<Texture name="earth/night" url="earth/night.jpg" />
+		<Texture name="earth/clouds" url="earth/clouds.jpg" />
+		<Texture name="bump/brickwork-texture" url="bump/brickwork-texture.jpg" />
+		<Texture name="bump/brickwork_normal-map" url="bump/brickwork_normal-map.jpg" />
+		<Texture name="spectrum" url="spectrum.png" />
+		<Texture name="spheremap_bar" url="spheremaps/spheremap_bar.jpg" />
+		<Texture name="paper" url="Paper_Texture_by_Spiteful_Pie_Stock.jpg" />
+		<Texture name="waves" url="ocean/waves2.dds" />
+		<TextureCube name="sky" url="cubemaps/sky" />
+		<TextureCube name="morning" url="cubemaps/morning" />
+	</Textures>
+	
+	<Meshes>
+		<File name="monkey" url="monkey.blend" />
+		<Procedural name="sponge" type="Sponge" recursion="3" />
+		<Procedural name="stars" type="Stars" resolution="100" density="1" randomness="0" colorIntensity="1" />
+	</Meshes>
+	
+	<Materials>
+		<Material name="normalcolor" program="normalcolor" />
+		<Material name="BrickMaterial" program="BrickMaterial" />
+        <Material name="ProcBumpMaterial" program="ProcBumpMaterial" />
+        <Material name="PhongColorMat" program="PhongColorMat" />
+        <Material name="MandelMat" program="MandelMat" />
+        <Material name="stars" program="stars" />
+
+        <Material name="OceanMat" program="Ocean" >
+        	<Layer sampler="EnvironmentMap" texture="morning" />
+			<Layer sampler="NormalMap" texture="waves" />
+		</Material>
+
+		<Material name="CubeMap" program="CubeMap">
+			<Layer sampler="EnvMap" texture="sky" />
+		</Material>
+
+		<Material name="EarthMaterial" program="Earth" >
+			<Layer sampler="EarthNight" texture="earth/day" />
+			<Layer sampler="ambientTexture" texture="earth/night" />
+			<Layer sampler="EarthCloudGloss" texture="earth/clouds" />
+		</Material>
+
+        <Material name="NormalMapMaterial" program="NormalMapMaterial">
+        	<Layer sampler="EarthNight" texture="bump/brickwork-texture" />
+			<Layer sampler="ambientTexture" texture="bump/brickwork_normal-map" /> 
+        </Material>
+
+		<Material name="SphereMap" program="SphereMap">
+			<Layer sampler="colorMap" texture="spectrum" />
+			<Layer sampler="envMap" texture="spheremap_bar" /> 
+		</Material> 
+
+		<Material name="PhongTexMat" program="PhongTexMat">
+			<Layer sampler="diffuseTexture" texture="paper" />
+		</Material> 
+
+	</Materials>
+	
+	<Scene name="Nice">
+		<Light position ="0.3, 6.6, -3.3" direction="1,-5,-1" />
+		<Object name="menger sponge" mesh="sponge" material="PhongColorMat" scale="3.0" position="10, 0, -10" />
+		<Object name="stars" mesh="stars" material="stars" scale="1.0" position="0, -50, -50"  />
+		<ObjectPlane size="10" step="3" mesh="monkey.blend" texture="spectrum.png" />
+	</Scene>
+	
+</liblub>
