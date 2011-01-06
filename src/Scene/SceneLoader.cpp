@@ -264,7 +264,7 @@ void SceneLoader::appendObject(const QDomElement & objectNode) {
 
         vector<Material*> planeMaterials;
 
-        foreach(string materialName, materialNames){
+        foreach(string materialName, materialNames) {
           if (materials.count(materialName) > 0)
             planeMaterials.push_back(materials.value(materialName));
           else
