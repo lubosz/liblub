@@ -23,6 +23,13 @@ template<> float XmlReader::pushValue<float>(const QString& value) {
     return value.toFloat();
 }
 
+template<> bool XmlReader::pushValue<bool>(const QString& value) {
+    if (value == "true")
+        return true;
+    else
+        return false;
+}
+
 template<typename T>
 vector<T> XmlReader::splitValues(QString values) {
     vector<T> flags;

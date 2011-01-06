@@ -12,28 +12,9 @@
 #include "System/Config.h"
 #include "System/Logger.h"
 
-Config::Config() {}
+Config::Config():XmlReader() {}
 
 Config::~Config() {}
-
-template<> int Config::pushValue<int>(const QString& value) {
-    return value.toInt();
-}
-
-template<> string Config::pushValue<string>(const QString& value) {
-    return value.trimmed().toStdString();
-}
-
-template<> float Config::pushValue<float>(const QString& value) {
-    return value.toFloat();
-}
-
-template<> bool Config::pushValue<bool>(const QString& value) {
-    if (value == "true")
-        return true;
-    else
-        return false;
-}
 
 template<> vector<bool> Config::values<bool>(string name) {
     foreach(ConfigOption<bool> configOption, bools) {

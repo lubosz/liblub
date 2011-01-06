@@ -13,10 +13,10 @@
 
 using std::vector;
 
-class XmlReader: public Singleton<XmlReader> {
+class XmlReader {
  public:
-	XmlReader();
-	virtual ~XmlReader();
+	XmlReader() {};
+	virtual ~XmlReader() {};
 	template<typename T> T pushValue(const QString& value);
 	template<typename T> vector<T> splitValues(QString values);
 };

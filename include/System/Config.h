@@ -6,6 +6,7 @@
  */
 
 #include "common/Singleton.h"
+#include "XmlReader.h"
 #include <string>
 #include <vector>
 #include <QDomElement>
@@ -23,15 +24,13 @@ class ConfigOption {
 	vector <T> optionVec;
 };
 
-class Config : public Singleton<Config> {
+class Config : public Singleton<Config>, public XmlReader {
  public:
 	Config();
 	virtual ~Config();
 	void load(const QString & fileName);
 	void appendOption(const QDomElement & optionNode);
 	string fileName;
-
-	template<typename T> T pushValue(const QString& value);
 	template<typename T> vector<T> splitValues(QString values);
 
 	vector<ConfigOption<bool>> bools;
