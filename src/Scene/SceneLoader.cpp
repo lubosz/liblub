@@ -23,18 +23,6 @@ SceneLoader::~SceneLoader() {
     // TODO(bmonkey) Auto-generated destructor stub
 }
 
-template<> int SceneLoader::pushValue<int>(const QString& value) {
-    return value.toInt();
-}
-
-template<> string SceneLoader::pushValue<string>(const QString& value) {
-    return value.trimmed().toStdString();
-}
-
-template<> float SceneLoader::pushValue<float>(const QString& value) {
-    return value.toFloat();
-}
-
 template<typename T>
 vector<T> SceneLoader::splitValues(QString values) {
     vector<T> flags;
