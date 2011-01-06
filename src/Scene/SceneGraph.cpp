@@ -85,7 +85,7 @@ void SceneGraph::meshCube(string file, float cubeSize, float step,
     for (float x = -cubeSize / 2.0; x < cubeSize / 2.0; x += step) {
         for (float y = -cubeSize / 2.0; y < cubeSize / 2.0; y += step) {
             for (float z = -cubeSize / 2.0; z < cubeSize / 2.0; z += step) {
-                addNode(new Node("", { x, y, z }, mesh, material));
+                addNode(new Node("", { x, y, z }, 1, mesh, material));
             }
         }
     }
@@ -98,8 +98,8 @@ void SceneGraph::meshCube(string file, float cubeSize, float step,
     for (float x = -cubeSize / 2.0; x < cubeSize / 2.0; x += step) {
         for (float y = -cubeSize / 2.0; y < cubeSize / 2.0; y += step) {
             for (float z = -cubeSize / 2.0; z < cubeSize / 2.0; z += step) {
-                addNode(new Node("", { z, x, y }, mesh, materials.at(position
-                        % materials.size())));
+                addNode(new Node("", { z, x, y }, 1, mesh,
+                    materials.at(position % materials.size())));
                 position++;
             }
         }
@@ -111,8 +111,8 @@ void SceneGraph::meshPlane(Mesh * mesh, float cubeSize, float step,
     unsigned position = 0;
     for (float x = -cubeSize / 2.0; x < cubeSize / 2.0; x += step) {
         for (float y = -cubeSize / 2.0; y < cubeSize / 2.0; y += step) {
-            addNode(new Node("", { x, y, -5 + x }, mesh, materials.at(position
-                    % materials.size())));
+            addNode(new Node("", { x, y, -5 + x }, 1, mesh,
+                materials.at(position % materials.size())));
             position++;
         }
     }

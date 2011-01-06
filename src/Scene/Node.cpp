@@ -8,32 +8,6 @@
 #include "Scene/Node.h"
 #include "Mesh/MeshFactory.h"
 
-Node::Node(string name, const QVector3D& position, Mesh * mesh) {
-    this->name = name;
-    this->position = position;
-    this->mesh = mesh;
-    this->size = 1;
-    modelMatrix = QMatrix4x4();
-    castShadows = true;
-    receiveShadows = false;
-    update();
-}
-
-Node::Node(string name, const QVector3D& position, Mesh * mesh,
-        Material * material)
-: name(name), position(position), mesh(mesh), material(material),
-  size(1), castShadows(true), receiveShadows(false), modelMatrix(QMatrix4x4()) {
-//    this->name = name;
-//    this->position = position;
-//    this->mesh = mesh;
-//    this->material = material;
-//    this->size = 1;
-//    modelMatrix = QMatrix4x4();
-//    castShadows = true;
-//    receiveShadows = false;
-    update();
-}
-
 Node::Node(string name, const QVector3D& position, float size, Mesh * mesh,
         Material * material) {
     this->name = name;
@@ -41,19 +15,6 @@ Node::Node(string name, const QVector3D& position, float size, Mesh * mesh,
     this->mesh = mesh;
     this->material = material;
     this->size = size;
-    modelMatrix = QMatrix4x4();
-    castShadows = true;
-    receiveShadows = false;
-    update();
-}
-
-Node::Node(string name, const QVector3D& position, string mesh,
-        Material * material) {
-    this->name = name;
-    this->position = position;
-    this->mesh = MeshFactory::load(mesh);
-    this->material = material;
-    this->size = 1;
     modelMatrix = QMatrix4x4();
     castShadows = true;
     receiveShadows = false;
