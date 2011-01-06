@@ -26,6 +26,7 @@ vector<T> Config::getValues(string name, const vector<ConfigOption<T>> & config)
             if (configOption.name == name)
                 return configOption.optionVec;
     }
+    Logger::Instance().log("ERROR", "Config not found", name);
 }
 
 template<> vector<bool> Config::values<bool>(const string & name) {
