@@ -9,67 +9,48 @@
 #include <QFile>
 #include <vector>
 #include <string>
+#include <typeinfo>
 #include "System/Config.h"
 #include "System/Logger.h"
 
-Config::Config():XmlReader() {}
+Config::Config():XmlReader() {
+  // Template fix
+
+}
 
 Config::~Config() {}
 
-template<> vector<bool> Config::values<bool>(string name) {
-    foreach(ConfigOption<bool> configOption, bools) {
+template<typename T>
+vector<T> Config::getValues(string name, const vector<ConfigOption<T>> & config) {
+    foreach(ConfigOption<T> configOption, config) {
             if (configOption.name == name)
                 return configOption.optionVec;
     }
+}
+template<> vector<bool> Config::values<bool>(string name) {
+  return getValues<bool>(name, bools);
 }
 
 template<> vector<int> Config::values<int>(string name) {
-    foreach(ConfigOption<int> configOption, ints) {
-            if (configOption.name == name)
-                return configOption.optionVec;
-    }
+  return getValues<int>(name, ints);
 }
-
 template<> vector<string> Config::values<string>(string name) {
-    foreach(ConfigOption<string> configOption, strings) {
-            if (configOption.name == name)
-                return configOption.optionVec;
-        }
+  return getValues<string>(name, strings);
 }
-
 template<> vector<float> Config::values<float>(string name) {
-    foreach(ConfigOption<float> configOption, floats) {
-            if (configOption.name == name)
-                return configOption.optionVec;
-        }
+  return getValues<float>(name, floats);
 }
-
 template<> bool Config::value<bool>(string name) {
-    foreach(ConfigOption<bool> configOption, bools) {
-            if (configOption.name == name)
-                return configOption.optionVec[0];
-        }
+    return getValues<bool>(name, bools)[0];
 }
-
-template<> int Config::value<int>(string name) {
-    foreach(ConfigOption<int> configOption, ints) {
-            if (configOption.name == name)
-                return configOption.optionVec[0];
-        }
-}
-
 template<> string Config::value<string>(string name) {
-    foreach(ConfigOption<string> configOption, strings) {
-            if (configOption.name == name)
-                return configOption.optionVec[0];
-        }
+    return getValues<string>(name, strings)[0];
 }
-
+template<> int Config::value<int>(string name) {
+    return getValues<int>(name, ints)[0];
+}
 template<> float Config::value<float>(string name) {
-    foreach(ConfigOption<float> configOption, floats) {
-            if (configOption.name == name)
-                return configOption.optionVec[0];
-        }
+    return getValues<float>(name, floats)[0];
 }
 
 template<typename T>
