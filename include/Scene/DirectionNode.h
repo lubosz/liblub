@@ -19,7 +19,7 @@ public:
   // View Params
   qreal aspect, fov, near, far;
   qreal yaw, pitch, roll;
-  QVector3D position, direction, defaultCenter;
+  QVector3D position, direction, defaultDirection;
 
   QMatrix4x4 viewMatrix, projectionMatrix, rotation;
 

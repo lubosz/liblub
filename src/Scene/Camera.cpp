@@ -12,7 +12,7 @@
 Camera::Camera() {
   direction = QVector3D(0, 0, -1);
   position = QVector3D();
-  defaultCenter = direction;
+  defaultDirection = direction;
 }
 
 Camera::~Camera() {
@@ -65,7 +65,7 @@ void Camera::updateRotation() {
   rotation.setToIdentity();
   rotation.rotate(pitch, 0, 1, 0);
   rotation.rotate(yaw, 1, 0, 0);
-  direction = rotation * defaultCenter;
+  direction = rotation * defaultDirection;
   direction.normalize();
   updateView();
 }

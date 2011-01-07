@@ -14,22 +14,9 @@
 Light::Light(const QVector3D& position, const QVector3D & direction) {
   this->position = position;
   this->direction = direction;
-  addLightNode();
-  fov = 90;
-  aspect = 1920 / 1200;
-  near = .1;
-  far = 10000;
-
-  defaultCenter = direction;
+  defaultDirection = direction;
   updatePerspective();
   update();
-}
-
-void Light::addLightNode(){
-  Node * lightNode = new Node("Light", position, 1, MeshFactory::lamp(),
-      new Simple("Color/white"));
-  lightNode->setCastShadows(false);
-  SceneGraph::Instance().addNode(lightNode);
 }
 
 Light::~Light() {

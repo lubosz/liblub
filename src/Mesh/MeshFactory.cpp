@@ -46,12 +46,6 @@ Mesh * MeshFactory::spiral() {
     return mesh;
 }
 
-Mesh * MeshFactory::lamp() {
-    Mesh * mesh = loadDirect("earth.obj");
-    mesh->setDrawType(GL_LINES);
-    return mesh;
-}
-
 Mesh * MeshFactory::load(string file) {
     return load(file, GL_TRIANGLES);
 }

@@ -209,6 +209,23 @@ void SceneLoader::appendObject(const QDomElement & objectNode) {
     }
     if (objectNode.tagName() == "Light") {
         SceneGraph::Instance().light = new Light(position, direction);
+        if (objectNode.hasAttribute("mesh")) {
+          string meshName = objectNode.attribute("mesh").toStdString();
+          if (meshes.count(meshName) > 0)
+            mesh = meshes.value(meshName);
+          else
+            Logger::Instance().log("ERROR", "Mesh Not Found", meshName);
+
+          Material * lightMat;
+          if (objectNode.hasAttribute("material")) {
+            lightMat = material;
+          } else {
+            lightMat = new Simple("Color/white");
+          }
+          Node * lightNode = new Node("Light", position, 1, mesh, lightMat);
+          lightNode->setCastShadows(false);
+          SceneGraph::Instance().addNode(lightNode);
+        }
     } else if (objectNode.tagName() == "Object") {
         string meshName = objectNode.attribute("mesh").toStdString();
         if (meshes.count(meshName) > 0)

@@ -12,8 +12,12 @@ DirectionNode::DirectionNode(){
   rotation = QMatrix4x4();
   viewMatrix = QMatrix4x4();
   yaw, pitch, roll = 0;
+
+  // TODO(bmonkey): Hardcoded values => xml
   speed = .1;
   mouseSensitivity = .1;
+
+  aspect = 1920.0 / 1200.0;
 
   fov = 70.0;
   near = 0.1;
