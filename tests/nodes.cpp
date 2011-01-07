@@ -17,7 +17,7 @@ public:
 
     Camera * camera = new Camera();
 
-//    Light * light = new Light(QVector3D(0, 0, 0),QVector3D(0, -5, 0));
+    Light * light = new Light(QVector3D(0, 0, 0),QVector3D(0, -5, 0));
 
     Material * material = new EmptyMat();
     Mesh * mesh = new Mesh();
