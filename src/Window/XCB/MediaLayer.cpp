@@ -321,24 +321,23 @@ void MediaLayer::renderLoop() {
 }
 
 void MediaLayer::getFPS() {
-    struct timespec now;
-    static struct timespec start;
-    clock_gettime(CLOCK_MONOTONIC, &now);
-    unsigned ticks =
-            (now.tv_sec - start.tv_sec) * 1000
-            + (now.tv_nsec - start.tv_nsec) / 1000000;
+  struct timespec now;
+  static struct timespec start;
+  clock_gettime(CLOCK_MONOTONIC, &now);
+  unsigned ticks = (now.tv_sec - start.tv_sec) * 1000 + (now.tv_nsec
+      - start.tv_nsec) / 1000000;
 
-    // FPS Stuff
-    fps_frames++;
-    if (fps_lasttime < ticks - 1000) {
-           fps_lasttime = ticks;
-           fps_current = fps_frames;
-           fps_frames = 0;
-    }
-
+  fps_frames++;
+  if (fps_lasttime < ticks - 1000) {
+    fps_lasttime = ticks;
+    fps_current = fps_frames;
+    fps_frames = 0;
+  }
+    // TODO(bmonkey): should be per secound, and not per frame (breaks cam)
     stringstream windowTitle;
     windowTitle << programTile << " - FPS: " << fps_current;
-  setWindowTitle(windowTitle.str());
+    setWindowTitle(windowTitle.str());
+
 }
 
 void MediaLayer::setWindowTitle(string title) {
