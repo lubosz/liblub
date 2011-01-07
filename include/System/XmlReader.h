@@ -17,8 +17,6 @@ using std::string;
 
 class XmlReader {
  public:
-	XmlReader() {};
-	virtual ~XmlReader() {};
 	template<typename T> T pushValue(const QString& value);
 	template<typename T>
 	vector<T> splitValues(QString values) {
