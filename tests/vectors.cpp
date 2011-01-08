@@ -12,6 +12,8 @@
 #include "Mesh/Mesh.h"
 #include "Mesh/MengerSponge.h"
 
+#include <iostream>
+
 class Clock {
   clock_t starttime;
 public:
@@ -73,10 +75,39 @@ public:
   }
 };
 
+class SpongeTest: public CppUnit::TestCase {
+  Clock _chronometer;
+public:
+  SpongeTest(std::string name) :
+    CppUnit::TestCase(name) {
+  }
+
+  void runTest() {
+    _chronometer.start();
+//    int ar1[5] = {1,2,3,4,5}, ar2[5] = {6,7,8,9,10};
+//    int ar3[10];
+//    std::copy(ar1, ar1+5, ar3);
+//    std::copy(ar2, ar2+5, ar3+5);
+//    std::cout << ar1<< ar2<< ar3<< "\n";
+    MengerSponge * sponge = new MengerSponge(5);
+//    GLfloat verts[3] = {1,2,3};
+//    GLuint index[5] = {1,2,1,0,2};
+//    Mesh * mesh = new Mesh();
+//    mesh->addBuffer(verts, 3, "in_Vertex");
+//    mesh->addElementBuffer(index);
+//    mesh->setDrawType(GL_TRIANGLES);
+//
+//       int arr[0];
+//       int size = sizeof( arr ) / sizeof( arr[0] );
+//      printf("size: %d\n", size );
+    _chronometer.end();
+  }
+};
+
 int main(int argc, char *argv[]) {
-  VectorTest foo("bar");
-  foo.runTest();
-  ArrayTest foo2("bar");
+//  VectorTest foo("bar");
+//  foo.runTest();
+  SpongeTest foo2("bar");
   foo2.runTest();
 }
 

@@ -22,6 +22,7 @@ class Node {
 	bool castShadows, receiveShadows;
 
  public:
+	Node() {};
 	Node(
 	        string name, const QVector3D& position,
 	        float size, Mesh * mesh, Material * material

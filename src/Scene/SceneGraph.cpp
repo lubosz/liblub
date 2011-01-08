@@ -23,12 +23,18 @@ void SceneGraph::animate(float frameCount) {
      */
 }
 
+Node * SceneGraph::getNode(const string & name){
+  foreach(Node *node, sceneNodes) {
+      if (node->getName() == name) {
+          return node;
+      }
+  }
+  Logger::Instance().log("WARNING", "Node not found", name);
+  return new Node();
+}
+
 void SceneGraph::setPosition(string nodeName, const QVector3D& position) {
-    foreach(Node *node, sceneNodes) {
-        if (node->getName() == nodeName) {
-            node->setPosition(position);
-        }
-    }
+  getNode(nodeName)->setPosition(position);
 }
 
 void SceneGraph::printMatrix(const QMatrix4x4 & matrix, string name) {

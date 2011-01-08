@@ -17,6 +17,7 @@ using std::vector;
 template<typename T>
 class Uniform {
  public:
+  Uniform() {}
 	Uniform(string name, const vector<T> & values): name(name) , values(values) {}
 	virtual ~Uniform() {}
 

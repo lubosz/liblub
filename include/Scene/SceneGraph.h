@@ -20,6 +20,8 @@ class SceneGraph: public Singleton<SceneGraph> {
 	        Mesh * mesh, float cubeSize, float step, vector<Material*> materials
 	);
 
+	Node * getNode(const string & name);
+
 	void bindShaders(
 	        ShaderProgram * shaderProgram, const QMatrix4x4 & viewMatrix,
 	        const QMatrix4x4 & projectionMatrix

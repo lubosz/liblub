@@ -7,6 +7,7 @@
 #include <list>
 #include "Scene/Camera.h"
 #include "Window/MediaLayer.h"
+#include "Material/Uniform.h"
 
 Input::Input(xcb_connection_t *connection) {
   this->connection = connection;
@@ -90,7 +91,20 @@ void Input::eventLoop() {
 }
 
 void Input::checkKey(xcb_keysym_t pressedKey) {
+  ShaderProgram * uvmoveprog = SceneGraph::Instance().getNode("uvmovenode")->getMaterial()->shaderProgram;
     switch (pressedKey) {
+      case XK_i:
+        uvmoveprog->translateUniformf(0,{0,.001});
+        break;
+      case XK_j:
+        uvmoveprog->translateUniformf(0,{-.001,0});
+        break;
+      case XK_k:
+        uvmoveprog->translateUniformf(0,{0,-.001});
+        break;
+      case XK_l:
+        uvmoveprog->translateUniformf(0,{.001,0});
+        break;
         case XK_w:
             Camera::Instance().forward();
             break;

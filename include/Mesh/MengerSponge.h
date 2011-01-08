@@ -14,18 +14,28 @@ class MengerSponge {
  private:
 	Mesh * mesh;
 
-	vector<GLfloat> oneMeshVertices;
-	vector<GLfloat> oneMeshUVCoords;
-	vector<GLuint> oneMeshIndices;
-	vector<GLfloat> oneMeshNormals;
+	GLfloat globalVertices[];
+  GLfloat globalNormals[];
+	GLuint globalIndices[];
 
-	void makeSponge(
-	        unsigned recursion,
-	        const vector<float> & position,
-	        float size
-	);
-	void makeCube();
-	void addCube(const vector<float> & position, float size);
+	vector<GLfloat> oneMeshVertices;
+//	vector<GLfloat> oneMeshUVCoords;
+	vector<GLuint> oneMeshIndices;
+//	vector<GLfloat> oneMeshNormals;
+
+//	void makeSponge(
+//	        unsigned recursion,
+//	        const vector<float> & position,
+//	        float size
+//	);
+  void makeSponge(
+          unsigned recursion,
+          GLfloat position[],
+          GLfloat size
+  );
+//	void makeCube();
+//	void addCube(const vector<float> & position, float size);
+	void addCube(GLfloat position[], GLfloat size);
 
  public:
 	explicit MengerSponge(unsigned recursion);
