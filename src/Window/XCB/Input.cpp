@@ -105,6 +105,12 @@ void Input::checkKey(xcb_keysym_t pressedKey) {
       case XK_l:
         uvmoveprog->translateUniformf(0,{.001,0});
         break;
+      case XK_u:
+        uvmoveprog->translateUniformf(1,{.01,0});
+        break;
+      case XK_o:
+        uvmoveprog->translateUniformf(1,{-.01,0});
+        break;
         case XK_w:
             Camera::Instance().forward();
             break;

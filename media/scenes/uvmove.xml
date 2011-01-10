@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<liblub>
+	<Programs>
+		<Program name="uvmove">
+			<Shader url="Geometry/uvmove" />
+			<Uniform name="uvoffset" value="0.5,1.2" />
+			<Uniform name="tiling" value="1" />
+		</Program>
+	</Programs>
+	<Textures>
+		<Texture name="bunny" url="grass_1_2048x2048.JPG" />
+		<Texture name="noise" url="terrain-noise-blur.jpg" />
+		<Texture name="terrain-noise-normal" url="terrain-noise-normal.jpg" />
+	</Textures>
+	<Materials>
+		<Material name="uvmove" program="uvmove">
+			<Layer sampler="color" texture="bunny" />
+			<Layer sampler="height" texture="noise" />
+			<Layer sampler="normal" texture="terrain-noise-normal" />
+		</Material>
+	</Materials>
+	<Meshes>
+		<File name="cube" url="clipmapb.blend" />
+	</Meshes>
+	<Scene name="Cone Step Mapping">
+		<Light position ="0.3, 6.6, -3.3" direction="1,-5,-1" />
+		<Object name="uvmovenode" mesh="cube" material="uvmove" scale="10.0" position="0, -20, 0" />
+	</Scene>
+</liblub>

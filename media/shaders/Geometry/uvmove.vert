@@ -15,11 +15,12 @@ uniform vec2 uvoffset;
 uniform float tiling;
 
 void main(void) {
-//    uv = (in_Uv + uvoffset)*tiling;
-      uv = (in_Uv + uvoffset);  
+    //uv = (in_Uv + uvoffset)*tiling+vec2(tiling,tiling);
+    uv = (in_Uv + uvoffset) * tiling - vec2(.5, .5)*tiling;
+    //uv = (in_Uv + uvoffset);  
     float h = texture(height, uv).x;
     vec4 p = vec4(in_Vertex,1);
-    p.y += h/4.0;
+    p.y += h/tiling;
 
     gl_Position = MVPMatrix * p;
 }
