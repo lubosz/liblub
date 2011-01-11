@@ -2,31 +2,30 @@
 <liblub>
 	<Programs>
 		<Program name="uvmove">
-			<Shader url="Geometry/uvmove" />
-			<Uniform name="uvoffset" value="0.5,1.2" />
-			<Uniform name="tiling" value="1" />
+			<Shader url="Geometry/c2s" />
+		<!--
+			<Shader url="Geometry/c2s.vert" type="VERTEX_SHADER" />
+			<Shader url="Geometry/uvmove.frag" type="FRAGMENT_SHADER" />
+		-->
+			<Uniform name="Radius" value="1" />
 			<Uniform value="0.8, 0.8, 0.8, 1.0" name="specularMaterialColor" />
 			<Uniform value="4.3" name="shininess" />
 		</Program>
 	</Programs>
 	<Textures>
 		<Texture name="bunny" url="ground.jpg" />
-		<Texture name="noise" url="terrain-noise-blur.jpg" />
-		<Texture name="terrain-noise-normal" url="terrain-noise-blur-normal.jpg" />
 	</Textures>
 	<Materials>
 		<Material name="uvmove" program="uvmove">
 			<Layer sampler="color" texture="bunny" />
-			<Layer sampler="height" texture="noise" />
-			<Layer sampler="normal" texture="terrain-noise-normal" />
 		</Material>
 	</Materials>
 	<Meshes>
-		<File name="cube" url="clipmapb.blend" />
+		<File name="cube" url="clipmapc.blend" />
 		<File name="sphere" url="earth.obj" drawType="LINES" />
 	</Meshes>
 	<Scene name="Cone Step Mapping">
 		<Light position ="0.3, 6.6, -3.3" direction="1,-5,-1" mesh="sphere" />
-		<Object name="uvmovenode" mesh="cube" material="uvmove" scale="10.0" position="0, -20, 0" />
+		<Object name="uvmovenode" mesh="cube" material="uvmove" scale="1.0" position="0, 0, 0" />
 	</Scene>
 </liblub>

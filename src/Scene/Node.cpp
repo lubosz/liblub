@@ -7,6 +7,7 @@
 #include <string>
 #include "Scene/Node.h"
 #include "Mesh/MeshFactory.h"
+#include "Scene/Camera.h"
 
 Node::Node(string name, const QVector3D& position, float size,
     Mesh * mesh, Material * material)
@@ -96,6 +97,8 @@ void Node::bindShaders(
     shaderProgram->setUniform(tempMatrix, "MVMatrix");
     shaderProgram->setUniform(tempMatrix.normalMatrix(), "NormalMatrix");
     tempMatrix = viewPoint->getProjection() * tempMatrix;
+    shaderProgram->setUniform(Camera::Instance().position, "camPos");
+
 
     shaderProgram->setUniform(tempMatrix, "MVPMatrix");
 
