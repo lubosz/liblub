@@ -37,69 +37,70 @@ void MengerSponge::makeSponge(
     addCube(position, size);
   } else {
     recursion-=1;
-    float trans = size*2/3.0f;
+    size/=3.0f;
+    float trans = size*2;
 
     // TOP
     makeSponge(recursion,
-            {position[0], position[1]+trans, position[2]+trans}, size/3.0);
+            {position[0], position[1]+trans, position[2]+trans}, size);
 
     makeSponge(recursion,
-            {position[0]-trans, position[1]+trans, position[2]}, size/3.0);
+            {position[0]-trans, position[1]+trans, position[2]}, size);
     makeSponge(recursion,
-            {position[0], position[1]+trans, position[2]-trans}, size/3.0);
+            {position[0], position[1]+trans, position[2]-trans}, size);
     makeSponge(recursion,
-            {position[0]+trans, position[1]+trans, position[2]}, size/3.0);
+            {position[0]+trans, position[1]+trans, position[2]}, size);
 
 
     makeSponge(recursion,
             {position[0]+trans, position[1]+trans, position[2]+trans},
-            size/3.0);
+            size);
     makeSponge(recursion,
             {position[0]+trans, position[1]+trans, position[2]-trans},
-            size/3.0);
+            size);
 
     makeSponge(recursion,
             {position[0]-trans, position[1]+trans, position[2]+trans},
-            size/3.0);
+            size);
     makeSponge(recursion,
             {position[0]-trans, position[1]+trans, position[2]-trans},
-            size/3.0);
+            size);
 
     // MIDDLE
     makeSponge(recursion,
-            {position[0]+trans, position[1], position[2]+trans}, size/3.0);
+            {position[0]+trans, position[1], position[2]+trans}, size);
     makeSponge(recursion,
-            {position[0]+trans, position[1], position[2]-trans}, size/3.0);
+            {position[0]+trans, position[1], position[2]-trans}, size);
 
     makeSponge(recursion,
-            {position[0]-trans, position[1], position[2]+trans}, size/3.0);
+            {position[0]-trans, position[1], position[2]+trans}, size);
     makeSponge(recursion,
-            {position[0]-trans, position[1], position[2]-trans}, size/3.0);
+            {position[0]-trans, position[1], position[2]-trans}, size);
 
     // BOTTOM
     makeSponge(recursion,
-            {position[0], position[1]-trans, position[2]+trans}, size/3.0);
+            {position[0], position[1]-trans, position[2]+trans}, size);
     makeSponge(recursion,
-            {position[0], position[1]-trans, position[2]-trans}, size/3.0);
+            {position[0], position[1]-trans, position[2]-trans}, size);
 
     makeSponge(recursion,
-            {position[0]+trans, position[1]-trans, position[2]}, size/3.0);
+            {position[0]+trans, position[1]-trans, position[2]}, size);
     makeSponge(recursion,
-            {position[0]-trans, position[1]-trans, position[2]}, size/3.0);
+            {position[0]-trans, position[1]-trans, position[2]}, size);
 
     makeSponge(recursion,
             {position[0]+trans, position[1]-trans, position[2]+trans},
-            size/3.0);
+            size);
     makeSponge(recursion,
             {position[0]+trans, position[1]-trans, position[2]-trans},
-            size/3.0);
+            size);
 
     makeSponge(recursion,
             {position[0]-trans, position[1]-trans, position[2]+trans},
-            size/3.0);
+            size);
     makeSponge(recursion,
             {position[0]-trans, position[1]-trans, position[2]-trans},
-            size/3.0);
+            size);
   }
 }
 
