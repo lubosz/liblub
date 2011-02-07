@@ -8,6 +8,7 @@
 #include "Mesh/MengerSponge.h"
 #include <vector>
 #include <algorithm>
+#include "System/Logger.h"
 
 MengerSponge::MengerSponge(unsigned recursion) {
   oneMeshIndices = {};
@@ -25,6 +26,7 @@ MengerSponge::MengerSponge(unsigned recursion) {
 //        mesh->addElementBuffer(globalIndices);
 
     mesh->setDrawType(GL_TRIANGLES);
+    glError;
 }
 
 MengerSponge::~MengerSponge() {

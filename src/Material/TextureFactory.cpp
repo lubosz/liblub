@@ -7,8 +7,10 @@
 #include <string>
 #include "Material/TextureFactory.h"
 #include "Material/Textures.h"
+#include "System/Logger.h"
 
 TextureFactory::TextureFactory() {
+	glError;
   textureCount = 0;
 
   textureEnums = {

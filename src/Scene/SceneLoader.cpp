@@ -13,6 +13,7 @@
 #include "Mesh/MengerSponge.h"
 #include "Mesh/Geometry.h"
 #include "System/Config.h"
+#include "System/Logger.h"
 
 SceneLoader::SceneLoader(const QString & fileName)
 :

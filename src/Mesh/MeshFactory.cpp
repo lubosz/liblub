@@ -12,6 +12,7 @@
 #include "Mesh/MeshFactory.h"
 #include "Mesh/Geometry.h"
 #include "System/Config.h"
+#include "System/Logger.h"
 
 Mesh * MeshFactory::tetrahedron() {
     Mesh * mesh = Geometry::makeTetrahedron();
@@ -133,7 +134,7 @@ Mesh * MeshFactory::load(string file, GLint drawType) {
     mesh->addBuffer(uvs, 2, "in_Uv");
     mesh->addElementBuffer(indices);
     mesh->setDrawType(drawType);
-
+    glError;
     return mesh;
 }
 

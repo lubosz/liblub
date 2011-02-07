@@ -8,6 +8,11 @@
 #pragma once
 
 #include "common/OpenGL.h"
+#include <string>
+#include <vector>
+
+using std::string;
+using std::vector;
 
 // TODO(bmonkey): This is a very bad solution (and also hardcoded)
 const unsigned maxBuffers = 6;

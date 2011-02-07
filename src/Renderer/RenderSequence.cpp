@@ -6,6 +6,7 @@
  */
 
 #include "Window/MediaLayer.h"
+#include "System/Logger.h"
 
 RenderSequence::RenderSequence() {
 #ifdef USE_FBO

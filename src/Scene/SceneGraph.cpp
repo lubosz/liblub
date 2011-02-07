@@ -8,6 +8,7 @@
 #include "Renderer/RenderEngine.h"
 #include "Material/Materials.h"
 #include "Mesh/MeshFactory.h"
+#include "System/Logger.h"
 
 SceneGraph::SceneGraph() {
     bias = QMatrix4x4();
@@ -15,13 +16,13 @@ SceneGraph::SceneGraph() {
     bias.scale(.5, .5, .5);
 }
 
-void SceneGraph::animate(float frameCount) {
-    /*
-     rotate(modelmatrix, (GLfloat) frameCount * -1.0, X_AXIS);
-     rotate(modelmatrix, (GLfloat) frameCount * 1.0, Y_AXIS);
-     rotate(modelmatrix, (GLfloat) frameCount * 0.5, Z_AXIS);
-     */
-}
+//void SceneGraph::animate(float frameCount) {
+//    /*
+//     rotate(modelmatrix, (GLfloat) frameCount * -1.0, X_AXIS);
+//     rotate(modelmatrix, (GLfloat) frameCount * 1.0, Y_AXIS);
+//     rotate(modelmatrix, (GLfloat) frameCount * 0.5, Z_AXIS);
+//     */
+//}
 
 bool SceneGraph::hasNode(const string & name){
 	  foreach(Node *node, sceneNodes) {
@@ -75,7 +76,7 @@ void SceneGraph::drawNodes(DirectionNode * viewPoint) {
         light->bindShaderUpdate(node->getMaterial()->getShaderProgram());
         node->draw();
     }
-    glError("SceneGraph", 61);
+    glError;
 }
 
 void SceneGraph::drawCasters(Material * material) {
@@ -86,7 +87,7 @@ void SceneGraph::drawCasters(Material * material) {
             node->mesh->draw();
         }
     }
-    glError("SceneGraph", 74);
+    glError;
 }
 
 void SceneGraph::addNode(Node * node) {

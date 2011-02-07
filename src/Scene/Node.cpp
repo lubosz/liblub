@@ -8,6 +8,7 @@
 #include "Scene/Node.h"
 #include "Mesh/MeshFactory.h"
 #include "Scene/Camera.h"
+#include "System/Logger.h"
 
 Node::Node(string name, const QVector3D& position, float size,
     Mesh * mesh, Material * material)
@@ -89,7 +90,7 @@ void Node::update() {
 
 void Node::bindShaders(
         ShaderProgram * shaderProgram, DirectionNode * viewPoint) {
-    glError("Node::bindShaders", 113);
+    glError;
     shaderProgram->use();
 
     QMatrix4x4 tempMatrix = viewPoint->getView() * modelMatrix;
@@ -102,7 +103,7 @@ void Node::bindShaders(
 
     shaderProgram->setUniform(tempMatrix, "MVPMatrix");
 
-    glError("Node::bindShaders", 124);
+    glError;
 }
 
 void Node::bindShaders(DirectionNode * viewPoint) {

@@ -19,6 +19,7 @@
 #include <string>
 #include "System/Application.h"
 #include "Scene/SceneLoader.h"
+#include "System/Logger.h"
 
 class LoadApp: public Application {
  public:

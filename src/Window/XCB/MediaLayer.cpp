@@ -10,6 +10,7 @@
 #include "Window/MediaLayer.h"
 #include "Scene/Camera.h"
 #include "System/Config.h"
+#include "System/Logger.h"
 
 MediaLayer::MediaLayer() {
   // FPS Stuff

@@ -10,6 +10,7 @@
 #include <iostream>
 #include "System/Logger.h"
 #include "common/BashColor.h"
+#include "common/OpenGL.h"
 
 using std::cerr;
 using std::cout;
@@ -83,4 +84,40 @@ string Logger::composeColor(int background, int foreground) {
   if (background > 29) background+=10;
   color << background << ";" << foreground;
   return color.str();
+}
+
+
+
+void Logger::checkGlError(const char* file, int line) {
+  GLenum err(glGetError());
+
+  while (err != GL_NO_ERROR) {
+    string error;
+
+    switch (err) {
+            case GL_INVALID_OPERATION:
+                error = "INVALID_OPERATION";
+                break;
+            case GL_INVALID_ENUM:
+                error = "INVALID_ENUM";
+                break;
+            case GL_INVALID_VALUE:
+                error = "INVALID_VALUE";
+                break;
+            case GL_OUT_OF_MEMORY:
+                error = "OUT_OF_MEMORY";
+                break;
+            case GL_INVALID_FRAMEBUFFER_OPERATION:
+                error = "INVALID_FRAMEBUFFER_OPERATION";
+                break;
+            default:
+                error = "Unknown error";
+                break;
+    }
+
+    message <<
+        "GL_" << error << " - " << file << ':' << line;
+      log("ERROR", "glError");
+    exit(0);
+  }
 }

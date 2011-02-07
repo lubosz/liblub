@@ -21,7 +21,7 @@ class FilterPass : public RenderPass {
  public:
     explicit FilterPass(FrameBuffer * fbo);
 	void prepare();
-	void draw();
+	void draw() {};
 	void draw(Material * material);
 	void cleanUp();
 };

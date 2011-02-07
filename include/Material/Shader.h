@@ -8,6 +8,11 @@
 #pragma once
 
 #include "common/OpenGL.h"
+#include <vector>
+#include <string>
+
+using std::vector;
+using std::string;
 
 class Shader {
  public:

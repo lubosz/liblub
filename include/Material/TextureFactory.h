@@ -6,8 +6,11 @@
  */
 
 #pragma once
+#include <vector>
 #include "Material/Texture.h"
 #include "common/Singleton.h"
+
+using std::vector;
 
 class TextureFactory : public Singleton<TextureFactory> {
  public:

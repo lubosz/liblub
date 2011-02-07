@@ -11,7 +11,7 @@ DirectionNode::DirectionNode(){
   projectionMatrix = QMatrix4x4();
   rotation = QMatrix4x4();
   viewMatrix = QMatrix4x4();
-  yaw, pitch, roll = 0;
+  yaw = 0, pitch = 0, roll = 0;
 
   // TODO(bmonkey): Hardcoded values => xml
   speed = .1;

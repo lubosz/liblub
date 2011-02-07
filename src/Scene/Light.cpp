@@ -10,6 +10,7 @@
 #include "Scene/Camera.h"
 #include "Material/Materials.h"
 #include "Mesh/MeshFactory.h"
+#include "System/Logger.h"
 
 Light::Light(const QVector3D& position, const QVector3D & direction) {
   this->position = position;

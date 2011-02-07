@@ -9,9 +9,11 @@
 #include <string>
 #include "Material/Textures.h"
 #include "System/Config.h"
+#include "System/Logger.h"
 
 DepthTexture::DepthTexture(GLuint width, GLuint height, string name,
         GLenum glId) {
+	glError;
     this->name = name;
     this->glId = glId;
     textureType = GL_TEXTURE_2D;

@@ -8,6 +8,7 @@
 #include <string>
 #include "Material/ShaderProgram.h"
 #include "Scene/SceneGraph.h"
+#include "System/Logger.h"
 
 ShaderProgram::ShaderProgram() {
   attribCount = 0;

@@ -6,6 +6,7 @@
  */
 #include <string>
 #include "Material/Texture.h"
+#include "System/Logger.h"
 
 Texture::~Texture() {
   // TODO(bmonkey): Auto-generated destructor stub
@@ -17,12 +18,12 @@ GLuint Texture::getHandler() const {
 
 void Texture::activate() {
     glActiveTexture(glId);
-    glError("Texture::activate", 131);
+    glError;
 }
 
 void Texture::bind() {
   glBindTexture(textureType, texture);
-    glError("Texture::bind", 136);
+    glError;
 }
 
 void Texture::uniform(GLuint program) {
@@ -31,7 +32,7 @@ void Texture::uniform(GLuint program) {
 //    glUniform1i(texLoc, glId - GL_TEXTURE0);
     glUniform1i(texLoc, texture-1);
 
-    glError("Texture::uniform", 144);
+    glError;
 }
 
 fipImage * Texture::readImage(

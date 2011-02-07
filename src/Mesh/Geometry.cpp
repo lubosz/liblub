@@ -7,6 +7,7 @@
 #include <vector>
 #include "Mesh/Geometry.h"
 #include "common/Qt3D.h"
+#include "System/Logger.h"
 
 Mesh * Geometry::makePlane() {
     vector<GLfloat> vertices = {
@@ -38,6 +39,7 @@ Mesh * Geometry::makePlane() {
     mesh->addBuffer(uvCoords, 2, "in_Uv");
     mesh->addElementBuffer(indicies);
     mesh->setDrawType(GL_TRIANGLES);
+    glError;
     return mesh;
 }
 

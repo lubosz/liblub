@@ -8,6 +8,7 @@
 #include "Scene/Camera.h"
 #include "Scene/SceneGraph.h"
 #include "Mesh/MeshFactory.h"
+#include "System/Logger.h"
 
 Camera::Camera() {
   direction = QVector3D(0, 0, -1);

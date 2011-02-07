@@ -8,8 +8,10 @@
 #pragma once
 
 #include "common/OpenGL.h"
-
 #include <FreeImagePlus.h>
+#include <string>
+
+using std::string;
 
 class Texture {
  public:

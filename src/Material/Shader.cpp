@@ -5,10 +5,11 @@
  *  Created on: Mar 22, 2010
  */
 
+#include "Material/Shader.h"
+
 #include <QtCore>
 #include <string>
 #include <vector>
-#include "Material/Shader.h"
 #include "System/Logger.h"
 #include "System/Config.h"
 

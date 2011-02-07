@@ -37,7 +37,7 @@ class SceneGraph: public Singleton<SceneGraph> {
 
     SceneGraph();
 
-	void animate(float frameCount);
+//	void animate(float frameCount);
 	void transform(float frameCount);
 
 	void meshCube(string file, float cubeSize, float step, Material * material);
