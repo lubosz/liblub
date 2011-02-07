@@ -21,6 +21,7 @@ class SceneGraph: public Singleton<SceneGraph> {
 	);
 
 	Node * getNode(const string & name);
+	bool hasNode(const string & name);
 
 	void bindShaders(
 	        ShaderProgram * shaderProgram, const QMatrix4x4 & viewMatrix,

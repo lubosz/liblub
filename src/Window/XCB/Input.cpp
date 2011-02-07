@@ -13,6 +13,14 @@ Input::Input(xcb_connection_t *connection) {
   this->connection = connection;
   syms = xcb_key_symbols_alloc(connection);
   pressedKeys = list<xcb_keysym_t>();
+
+	if(SceneGraph::Instance().hasNode("uvmovenode")){
+		uvmoveprog =
+				SceneGraph::Instance().getNode("uvmovenode")
+				->getMaterial()->shaderProgram;
+	}else{
+		uvmoveprog = new ShaderProgram();
+	}
 }
 
 Input::~Input() {
@@ -91,7 +99,7 @@ void Input::eventLoop() {
 }
 
 void Input::checkKey(xcb_keysym_t pressedKey) {
-  ShaderProgram * uvmoveprog = SceneGraph::Instance().getNode("uvmovenode")->getMaterial()->shaderProgram;
+
     switch (pressedKey) {
       case XK_i:
         uvmoveprog->translateUniformf(0,{0,.001});

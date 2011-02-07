@@ -23,6 +23,15 @@ void SceneGraph::animate(float frameCount) {
      */
 }
 
+bool SceneGraph::hasNode(const string & name){
+	  foreach(Node *node, sceneNodes) {
+	      if (node->getName() == name) {
+	          return true;
+	      }
+	  }
+	  return false;
+}
+
 Node * SceneGraph::getNode(const string & name){
   foreach(Node *node, sceneNodes) {
       if (node->getName() == name) {
