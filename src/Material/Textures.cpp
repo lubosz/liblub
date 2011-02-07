@@ -88,7 +88,6 @@ TextureFile::TextureFile(string filename, GLenum glId, string name) {
     textureType = GL_TEXTURE_2D;
 
     this->glId = glId;
-
     this->name = name;
 
     string path = Config::Instance().value<string> ("textureDir") + filename;
@@ -121,6 +120,9 @@ TextureFile::TextureFile(string filename, GLenum glId, string name) {
 }
 
 SplatTexture::SplatTexture(GLenum glId, string name, int resolution) {
+    this->glId = glId;
+    this->name = name;
+
     unsigned char* data = createGaussianMap(resolution);
     glGenTextures(1, &texture);
     glBindTexture(GL_TEXTURE_2D, texture);
@@ -176,8 +178,7 @@ unsigned char* SplatTexture::createGaussianMap(int N) {
     return (B);
 }
 
-CubeTextureFile::CubeTextureFile(string filename, GLenum glId, string name,
-        bool cube) {
+CubeTextureFile::CubeTextureFile(string filename, GLenum glId, string name) {
     this->glId = glId;
     this->name = name;
 

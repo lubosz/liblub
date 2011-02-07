@@ -13,7 +13,7 @@
 
 RenderEngine::RenderEngine()
 :
-    useFBO(false), frameCount(0), lightView(false), wire(false) {
+    useFBO(false), lightView(false), wire(false), frameCount(0) {
     glError("RenderEngine", 23);
     checkVersion();
     shadowSequence = new RenderSequence();

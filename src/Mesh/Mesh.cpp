@@ -27,22 +27,11 @@ Mesh::Mesh() {
 }
 
 Mesh::~Mesh() {
-  for (int i = 0; i < bufferCount; i++) {
+  for (unsigned i = 0; i < bufferCount; i++) {
     glDisableVertexAttribArray(i);
   }
     glDeleteBuffers(maxBuffers, vbo);
     glDeleteVertexArrays(1, &vao);
-}
-
-void Mesh::addBuffer(GLfloat content[], GLuint size, string name) {
-  int arraysize = sizeof( content ) / sizeof( content[0] );
-  glBindBuffer(GL_ARRAY_BUFFER, vbo[bufferCount]);
-  glBufferData(GL_ARRAY_BUFFER, arraysize * sizeof(GLfloat),
-             content, GL_STATIC_DRAW);
-  glVertexAttribPointer((GLuint) bufferCount, size, GL_FLOAT, GL_FALSE, 0, 0);
-  glEnableVertexAttribArray(bufferCount);
-  bufferCount++;
-  glError("Mesh::addBuffer", 45);
 }
 
 void Mesh::addBuffer(vector<GLfloat> content, unsigned size, string name) {
@@ -69,15 +58,6 @@ void Mesh::addBuffer(vector<GLfloat> content, unsigned size, string name) {
     Logger::Instance().log("DEBUG", "Mesh");
   bufferCount++;
     glError("Mesh::addBuffer", 64);
-}
-
-void Mesh::addElementBuffer(GLuint content[]) {
-  indexSize = sizeof( content ) / sizeof( content[0] );
-  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vbo[bufferCount]);
-  glBufferData(GL_ELEMENT_ARRAY_BUFFER, indexSize * sizeof(GLuint),
-            content, GL_STATIC_DRAW);
-    bufferCount++;
-    glError("Mesh::addBuffer", 79);
 }
 
 void Mesh::addElementBuffer(vector<GLuint> content) {

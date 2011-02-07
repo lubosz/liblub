@@ -198,7 +198,7 @@ Mesh * Geometry::makeStars(vector<float> & resolution, float density,
     return mesh;
 }
 
-Mesh * Geometry::makeSpiral(int resolution, float density, float randomness) {
+Mesh * Geometry::makeSpiral(int resolution) {
     vector<GLfloat> vertices, colors;
     vector<GLuint> indicies;
 
@@ -209,10 +209,10 @@ Mesh * Geometry::makeSpiral(int resolution, float density, float randomness) {
     QMatrix4x4 rotation2 = QMatrix4x4();
     rotation2.rotate(0.5, 0.0, 0.0, 1.0);
 
-    unsigned i = 1;
+    int i = 1;
 
     srand(time(NULL));
-    for (i; i < resolution; i++) {
+    for (; i < resolution; i++) {
         QVector3D tempPoint = point.normalized();
         point += (tempPoint / 20.0);
 

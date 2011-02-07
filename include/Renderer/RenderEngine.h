@@ -15,13 +15,13 @@ class RenderSequence;
 class RenderEngine : public Singleton<RenderEngine> {
  public:
 	bool useFBO;
+	bool lightView;
 	bool wire;
 	void display();
 	void toggleFBO();
 	void toggleWire();
 	void clear();
 	void toggleLightView();
-	bool lightView;
 	RenderSequence * shadowSequence;
  private:
 	friend class Singleton<RenderEngine>;

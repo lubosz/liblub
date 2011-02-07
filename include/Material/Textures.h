@@ -37,7 +37,7 @@ class SplatTexture : public Texture {
 
 class CubeTextureFile : public Texture {
  public:
-	CubeTextureFile(string filename, GLenum glId, string name, bool cube);
+	CubeTextureFile(string filename, GLenum glId, string name);
 };
 
 

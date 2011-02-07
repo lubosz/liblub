@@ -21,7 +21,7 @@ class Geometry {
 	        float randomness,
 	        float colorIntensity
 	);
-	static Mesh * makeSpiral(int resolution, float density, float randomness);
+	static Mesh * makeSpiral(int resolution);
  private:
 	float density, randomness;
 	int variation;

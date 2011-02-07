@@ -47,7 +47,7 @@ Texture * TextureFactory::load(string filename, string name) {
 }
 Texture * TextureFactory::loadCubeMap(string filename, string name) {
   Texture * texture =
-          new CubeTextureFile(filename, textureEnums[textureCount], name, true);
+          new CubeTextureFile(filename, textureEnums[textureCount], name);
   textureCount++;
   return texture;
 }

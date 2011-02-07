@@ -17,8 +17,6 @@ class Mesh {
 	Mesh();
 	void addBuffer(vector<GLfloat> content, unsigned size, string name);
 	void addElementBuffer(vector<GLuint> content);
-  void addBuffer(GLfloat content[], GLuint size, string name);
-  void addElementBuffer(GLuint content[]);
 	void setDrawType(GLint drawType);
 	void draw();
  private:

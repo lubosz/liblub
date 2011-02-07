@@ -41,7 +41,7 @@ Mesh * MeshFactory::stars(float resolution, float density, float randomness,
 }
 
 Mesh * MeshFactory::spiral() {
-    Mesh * mesh = Geometry::makeSpiral(500000, 1.0, 0.0);
+    Mesh * mesh = Geometry::makeSpiral(500000);
     mesh->setDrawType(GL_POINTS);
     return mesh;
 }
@@ -158,8 +158,6 @@ Mesh * MeshFactory::loadDirect(string file) {
 
     vector<GLfloat> positions;
     vector<GLuint> indices;
-
-    unsigned numIndices = 0;
 
     for (unsigned i = 0; i < assMesh->mNumVertices; i++) {
         aiVector3D vertex = assMesh->mVertices[i];
