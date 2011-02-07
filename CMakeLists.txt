@@ -162,3 +162,7 @@ if(CHECKSTYLE)
     )
 endif()
 
+add_custom_target(remake
+	#clean and compile with 1 thread per core
+	COMMAND make clean && rm CMakeCache.txt && cmake ${CMAKE_SOURCE_DIR} -G\"Unix Makefiles\" && make -j`getconf _NPROCESSORS_ONLN`
+)
