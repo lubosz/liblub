@@ -48,7 +48,7 @@ class ShaderProgram {
 
 	void translateUniformf(unsigned id, const vector<float> & values){
 	  unsigned smaller = (uniforms[id].values.size() < values.size()) ? uniforms[id].values.size() : values.size();
-	  for (int i = 0; i < smaller; i++)
+	  for (unsigned i = 0; i < smaller; i++)
 	    uniforms[id].values[i] += values[i];
     uniforms[id].init(program);
 	}

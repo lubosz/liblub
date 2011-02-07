@@ -32,6 +32,9 @@ ENDIF()
 #Set c++0x
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++0x")
 
+#Warnings
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Werror -Wextra -Woverloaded-virtual")
+
 #check for qt
 FIND_PACKAGE(Qt4 REQUIRED)
 set(QT_USE_QTXML true)
