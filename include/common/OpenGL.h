@@ -13,7 +13,12 @@
 #include <string>
 #include "System/Logger.h"
 
-static void glError(string file, int line) {
+#include <cstring>
+
+#define ShortFile std::strrchr(__FILE__, '/')+1
+#define glError checkGlError(ShortFile,__LINE__)
+
+static void checkGlError(const char* file, int line) {
   GLenum err(glGetError());
 
   while (err != GL_NO_ERROR) {

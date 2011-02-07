@@ -138,7 +138,7 @@ void ShaderProgram::initUniformsByType(vector<Uniform<T> > & uniforms) {
       Logger::Instance().message << uniform.values.size() << " bound.";
       Logger::Instance().log("UNIFORMS", "ShaderProgram");
 
-      glError("ShaderProgram", 136);
+      glError;
     }
 }
 
@@ -166,9 +166,9 @@ void ShaderProgram::init() {
 
 
 void ShaderProgram::use() {
-  glError("ShaderProgram::use", 101);
+  glError;
   glUseProgram(program);
-  glError("ShaderProgram::use", 103);
+  glError;
 }
 
 void ShaderProgram::reload() {

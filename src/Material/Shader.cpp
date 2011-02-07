@@ -55,13 +55,13 @@ void Shader::loadAndCompile() {
     } else {
       glShaderSource(shader, 1,  (const GLchar**)&source, NULL);
     }
-    glError("Shader::loadAndCompile() glShaderSource", 65);
+    glError;
 
     Logger::Instance().message << "Compiling Shader#" << shader <<"...";
     /* Compile our shader objects */
     // TODO(bmonkey): driver crashes :/
     glCompileShader(shader);
-    glError("Shader::loadAndCompile() glCompileShader", 65);
+    glError;
     printShaderInfoLog(shader);
 }
 

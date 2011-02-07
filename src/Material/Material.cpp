@@ -30,7 +30,7 @@ void Material::done() {
     uniforms();
     samplerUniforms();
 
-    glError("Material", 68);
+    glError;
 }
 
 void Material::activateTextures() {
@@ -38,7 +38,7 @@ void Material::activateTextures() {
             texture->activate();
             texture->bind();
         }
-    glError("Material::activateTextures", 102);
+    glError;
 }
 
 void Material::samplerUniforms() {
@@ -51,7 +51,7 @@ void Material::activate() {
     // TODO(bmonkey): check performance (rebinding textures for shared programs)
     samplerUniforms();
     activateTextures();
-    glError("Material::activate", 109);
+    glError;
 }
 
 ShaderProgram *Material::getShaderProgram() {

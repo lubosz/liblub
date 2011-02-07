@@ -15,7 +15,7 @@
 
 
 FrameBuffer::FrameBuffer(GLuint width, GLuint height) {
-    glError("FrameBuffer", 12);
+    glError;
     // Gen texture for fbo
     // create a texture object
     this->width = width;
@@ -23,7 +23,7 @@ FrameBuffer::FrameBuffer(GLuint width, GLuint height) {
 
     renderPlane = MeshFactory::plane();
 
-    glError("FrameBuffer", 33);
+    glError;
 
     glGenFramebuffers(1, &fboId);
     glBindFramebuffer(GL_FRAMEBUFFER, fboId);
@@ -49,7 +49,7 @@ FrameBuffer::FrameBuffer(GLuint width, GLuint height) {
      glBindRenderbuffer(GL_RENDERBUFFER, 0);
      */
 
-    glError("FrameBuffer", 74);
+    glError;
 }
 
 void FrameBuffer::checkAndFinish() {
@@ -86,7 +86,7 @@ void FrameBuffer::bind() {
     // Set the render target
     // glDrawBuffer(GL_COLOR_ATTACHMENT0);
 
-    glError("FrameBuffer::bind", 105);
+    glError;
 }
 
 void FrameBuffer::unBind() {
@@ -103,7 +103,7 @@ void FrameBuffer::draw(Material * material) {
     material->getShaderProgram()->use();
     material->getShaderProgram()->setUniform(QMatrix4x4(), "MVPMatrix");
     renderPlane->draw();
-    glError("FrameBuffer::draw", 188);
+    glError;
 }
 
 FrameBuffer::~FrameBuffer() {

@@ -35,7 +35,7 @@ Mesh::~Mesh() {
 }
 
 void Mesh::addBuffer(vector<GLfloat> content, unsigned size, string name) {
-    glError("Mesh::addBuffer", 39);
+    glError;
 
     /* Bind the first VBO as being the active buffer
      * and storing vertex attributes (coordinates) */
@@ -57,13 +57,13 @@ void Mesh::addBuffer(vector<GLfloat> content, unsigned size, string name) {
             << " " << name << " Size:" << content.size();
     Logger::Instance().log("DEBUG", "Mesh");
   bufferCount++;
-    glError("Mesh::addBuffer", 64);
+    glError;
 }
 
 void Mesh::addElementBuffer(vector<GLuint> content) {
   indexSize = content.size();
   glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vbo[bufferCount]);
-  glError("Mesh::addBuffer", 71);
+  glError;
   /* Copy the index data from tetraindicies to our buffer
    * 6 * sizeof(GLubyte) is the size of the index array, since it contains 6 GLbyte values */
   glBufferData(GL_ELEMENT_ARRAY_BUFFER, content.size() * sizeof(GLuint),
@@ -72,7 +72,7 @@ void Mesh::addElementBuffer(vector<GLuint> content) {
             << bufferCount << " Size:" << content.size();
     Logger::Instance().log("DEBUG", "Mesh");
     bufferCount++;
-    glError("Mesh::addElementBuffer", 76);
+    glError;
 }
 
 void Mesh::setDrawType(GLint drawType) {
@@ -82,7 +82,7 @@ void Mesh::setDrawType(GLint drawType) {
 void Mesh::draw() {
   // glDrawElementsInstanced(drawType, indexSize, GL_UNSIGNED_INT, 0,6);
   glBindVertexArray(vao);
-  glError("Mesh::draw() glBindVertexArray", 101);
+  glError;
   glDrawElements(drawType, indexSize, GL_UNSIGNED_INT, 0);
-  glError("Mesh::draw() glDrawElements", 104);
+  glError;
 }

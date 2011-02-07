@@ -14,7 +14,7 @@
 RenderEngine::RenderEngine()
 :
     useFBO(false), lightView(false), wire(false), frameCount(0) {
-    glError("RenderEngine", 23);
+    glError;
     checkVersion();
     shadowSequence = new RenderSequence();
 
@@ -42,16 +42,16 @@ RenderEngine::RenderEngine()
     // glDepthMask(GL_FALSE);
     // glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
-    glError("RenderEngine", 52);
+    glError;
 }
 
 RenderEngine::~RenderEngine() {
-    glError("RenderEngine", 96);
+    glError;
 
     /* Cleanup all the things we bound and allocated */
     Logger::Instance().message << "Shutting down Render Engine...";
     Logger::Instance().log("MESSAGE");
-    glError("RenderEngine", 106);
+    glError;
 }
 
 void RenderEngine::toggleWire() {

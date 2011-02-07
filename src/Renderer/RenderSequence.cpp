@@ -39,5 +39,5 @@ void RenderSequence::render() {
     foreach(RenderPass * renderPass, renderPasses) {
             renderPass->render();
     }
-    glError("RenderSequence::draw", 66);
+    glError;
 }
