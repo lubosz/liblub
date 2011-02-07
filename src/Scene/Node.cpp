@@ -13,9 +13,9 @@
 Node::Node(string name, const QVector3D& position, float size,
     Mesh * mesh, Material * material)
 :
-        name(name), position(position), mesh(mesh), material(material),
-        size(size), modelMatrix(QMatrix4x4()), castShadows(true),
-        receiveShadows(false){
+        name(name), position(position), size(size), material(material),
+         modelMatrix(QMatrix4x4()), castShadows(true),
+        receiveShadows(false), mesh(mesh) {
     update();
 }
 

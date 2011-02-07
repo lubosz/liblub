@@ -68,8 +68,8 @@ public:
   void runTest() {
     _chronometer.start();
     for(int i = 0; i < 1000000; i++){
-      string c[] = { "foo", "bar" };
-      string b[2] = c;
+//      string c[] = { "foo", "bar" };
+//      string b[2] = c;
     }
     _chronometer.end();
   }
@@ -89,7 +89,7 @@ public:
 //    std::copy(ar1, ar1+5, ar3);
 //    std::copy(ar2, ar2+5, ar3+5);
 //    std::cout << ar1<< ar2<< ar3<< "\n";
-    MengerSponge * sponge = new MengerSponge(5);
+//    MengerSponge * sponge = new MengerSponge(5);
 //    GLfloat verts[3] = {1,2,3};
 //    GLuint index[5] = {1,2,1,0,2};
 //    Mesh * mesh = new Mesh();
@@ -104,7 +104,7 @@ public:
   }
 };
 
-int main(int argc, char *argv[]) {
+int main() {
 //  VectorTest foo("bar");
 //  foo.runTest();
   SpongeTest foo2("bar");

@@ -17,8 +17,8 @@ class Node {
 	QVector3D position;
 	float size;
 	Node * parent;
-	QMatrix4x4 modelMatrix;
 	Material * material;
+	QMatrix4x4 modelMatrix;
 	bool castShadows, receiveShadows;
 
  public:

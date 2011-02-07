@@ -29,19 +29,12 @@ Input::~Input() {
 
 void Input::eventLoop() {
   xcb_keysym_t pressedKey;
-
   xcb_generic_event_t *event;
-
-  xcb_expose_event_t *expose;
-  xcb_button_press_event_t *bp;
-  xcb_button_release_event_t *br;
   xcb_motion_notify_event_t *motion;
-  xcb_enter_notify_event_t *enter;
-  xcb_leave_notify_event_t *leave;
   xcb_key_press_event_t *kp;
   xcb_key_release_event_t *kr;
 
-  while (event = xcb_poll_for_event(connection)) {
+  while ((event = xcb_poll_for_event(connection))) {
     switch (event->response_type & ~0x80) {
         case XCB_MOTION_NOTIFY:
             motion = reinterpret_cast<xcb_motion_notify_event_t *>(event);
