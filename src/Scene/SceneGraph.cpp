@@ -70,9 +70,9 @@ void SceneGraph::drawNodes(DirectionNode * viewPoint) {
     foreach(Node * node, sceneNodes) {
         node->bindShaders(viewPoint);
         // TODO(bmonkey): wtf
-        if (true) {
+//        if (true) {
             setShadowCoords(node, viewPoint);
-        }
+//        }
         light->bindShaderUpdate(node->getMaterial()->getShaderProgram());
         node->draw();
     }

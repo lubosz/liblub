@@ -98,8 +98,8 @@ void Node::bindShaders(
     shaderProgram->setUniform(tempMatrix, "MVMatrix");
     shaderProgram->setUniform(tempMatrix.normalMatrix(), "NormalMatrix");
     tempMatrix = viewPoint->getProjection() * tempMatrix;
-    shaderProgram->setUniform(Camera::Instance().position, "camPos");
-
+    shaderProgram->setUniform(Camera::Instance().position, "cameraPosition");
+    shaderProgram->setUniform(Camera::Instance().position.length(), "cameraHeight");
 
     shaderProgram->setUniform(tempMatrix, "MVPMatrix");
 
