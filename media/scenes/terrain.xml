@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<liblub>
+	<include url="common/programs.xml" />
+	<Programs>
+		<Program name="uvmove">
+			<Shader url="Geometry/uvmove" />
+			<Uniform name="uvoffset" value="0.5,1.2" />
+			<Uniform name="tiling" value="1" />
+			<Uniform value="0.6, 0.6, 0.6, 1.0" name="specularMaterialColor" />
+			<Uniform value="4.3" name="shininess" />
+			<Uniform value="0.000833333" name="yPixelOffset" />
+			<Uniform value="0.000520833" name="xPixelOffset" />
+		</Program>
+		<Program name="CubeMap">
+			<Shader url="Texture/cubemapSky" />
+			<Uniform value="0.5, 0.5, 1.0" name="BaseColor" />
+			<Uniform value="0.5" name="MixRatio" />
+		</Program>
+		<Program name="PhongColorMat">
+			<Shader url="Color/PhongColor" />
+			<Uniform value="0.0, 1.0, 0.0, 1.0" name="diffuseMaterialColor" />
+			<Uniform value="0.0, 0.0, 0.0, 1.0" name="ambientSceneColor" />
+			<Uniform value="0.8, 0.8, 0.8, 1.0" name="specularMaterialColor" />
+			<Uniform value="4.3" name="shininess" />
+			<Uniform value="0.00001" name="constantAttenuation" />
+			<Uniform value="0.0001" name="linearAttenuation" />
+			<Uniform value="0.01" name="quadraticAttenuation" />
+		</Program>
+	</Programs>
+	<Textures>
+		<Texture name="bunny" url="terrain/mud.jpg" />
+		<Texture name="mud-normal" url="terrain/mud-normal.png" />
+		<Texture name="noise" url="terrain-noise-blur.jpg" />
+		<Texture name="terrain-noise-normal" url="terrain-noise-blur-normal.jpg" />
+		<TextureCube name="sky" url="cubemaps/sky" />
+	</Textures>
+	<Materials>
+		<Material name="uvmove" program="uvmove">
+			<Layer sampler="color" texture="bunny" />
+			<Layer sampler="height" texture="noise" />
+			<Layer sampler="normal" texture="terrain-noise-normal" />
+			<Layer sampler="normalTexture" texture="mud-normal" />
+			
+		</Material>
+		<Material name="CubeMap" program="CubeMap">
+			<Layer sampler="EnvMap" texture="sky" />
+		</Material>
+		<Material name="PhongColorMat" program="PhongColorMat" />
+	</Materials>
+	<Meshes>
+		<File name="cube" url="clipmapb.blend" />
+		<File name="sphere" url="earth.obj" drawType="LINES" />
+		<File name="skymesh" url="earth.obj" />
+		<Procedural name="sponge" type="Sponge" recursion="3" />
+	</Meshes>
+	<Scene name="terrain">
+		<Object name="menger sponge" mesh="sponge" material="PhongColorMat" scale="5.0" position="10, 30, -10" />
+		<Light position ="0.3, 100.6, -3.3" direction="1,-5,-1" mesh="sphere" />
+		<Object name="sky" mesh="skymesh" material="CubeMap" scale="800" position="0, 0, 0" /> 
+		<Object name="uvmovenode" mesh="cube" material="uvmove" scale="100" position="0, -230, 0" />
+	</Scene>
+</liblub>

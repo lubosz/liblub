@@ -27,6 +27,6 @@
 	</Meshes>
 	<Scene name="Cone Step Mapping">
 		<Light position ="0.3, 6.6, -3.3" direction="1,-5,-1" mesh="sphere" />
-		<Object name="uvmovenode" mesh="cube" material="uvmove" scale="10.0" position="0, -20, 0" />
+		<Object name="uvmovenode" mesh="cube" material="uvmove" scale="200.0" position="0, -100, 0" />
 	</Scene>
 </liblub>

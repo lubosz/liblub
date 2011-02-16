@@ -50,7 +50,7 @@ class ShaderProgram {
 	  unsigned smaller = (uniforms[id].values.size() < values.size()) ? uniforms[id].values.size() : values.size();
 	  for (unsigned i = 0; i < smaller; i++)
 	    uniforms[id].values[i] += values[i];
-    uniforms[id].init(program);
+      uniforms[id].init(program);
 	}
 
 	void initUniforms();
