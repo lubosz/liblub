@@ -6,9 +6,11 @@
  */
 
 #include "Material/Uniform.h"
+#include "System/Logger.h"
 
 template <>
 void Uniform<float>::init(GLuint program) {
+  glError;
   switch (values.size()) {
         case 1:
             glUniform1f(glGetUniformLocation(program, name.c_str()), values[0]);
@@ -30,6 +32,7 @@ void Uniform<float>::init(GLuint program) {
                     values[0], values[1], values[2], values[3]);
     break;
   }
+  glError;
 }
 
 template <>
@@ -54,4 +57,5 @@ void Uniform<int>::init(GLuint program) {
             program, name.c_str()), values[0], values[1], values[2], values[3]);
     break;
   }
+  glError;
 }

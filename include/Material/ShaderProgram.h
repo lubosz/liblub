@@ -46,12 +46,7 @@ class ShaderProgram {
 	void setUniform(const QVector3D & vector, string name);
 	void setUniform(const QVector4D & vector, string name);
 
-	void translateUniformf(unsigned id, const vector<float> & values){
-	  unsigned smaller = (uniforms[id].values.size() < values.size()) ? uniforms[id].values.size() : values.size();
-	  for (unsigned i = 0; i < smaller; i++)
-	    uniforms[id].values[i] += values[i];
-      uniforms[id].init(program);
-	}
+	void translateUniformf(unsigned id, const vector<float> & values);
 
 	void initUniforms();
 

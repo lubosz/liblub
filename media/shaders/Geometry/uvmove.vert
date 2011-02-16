@@ -1,7 +1,6 @@
 #version 330 core
 
 uniform sampler2D height;
-uniform sampler2D normal;
 
 in vec3 in_Vertex;
 in vec3 in_Normal;
