@@ -12,7 +12,7 @@ uniform mat3 NormalMatrix;
 uniform vec3 cameraPosition;	// The camera's current position
 uniform vec3 lightPosition;		// The direction vector to the light source
 
-//uniform float cameraHeight;		// The camera's current height
+uniform float cameraHeight;		// The camera's current height
 uniform float outerRadius;		// The outer (atmosphere) radius
 uniform float innerRadius;		// The inner (planetary) radius
 uniform vec3 invWavelength;		// 1 / pow(wavelength, 4) for the red, green, and blue channels
@@ -31,9 +31,9 @@ uniform float scaleDepth;		// The scale depth (i.e. the altitude at which the at
 const float pi = 3.14159f;
 const int nSamples = 20;
 const float fSamples = 20.0;
-const float cameraHeight = 10.0;
 
 /*
+const float cameraHeight = 10.0;
 vec3 invWavelength = vec3(1.0 / pow(wavelength.x,4.0),1.0 / pow(wavelength.y,4.0),1.0 / pow(wavelength.z,4.0));
 float krESun = kr * ESun;
 float kmESun = km * ESun;
@@ -60,6 +60,7 @@ float scaleMe(float cosinus) {
 void main(void)
 {
 	// Get the ray from the camera to the vertex and its length (which is the far point of the ray passing through the atmosphere)
+	//vec3 position = (MVMatrix * vec4(in_Vertex,1.0)).xyz;
 	vec3 position = in_Vertex;
 	vec3 ray = position - cameraPosition;
 	float far = length(ray);

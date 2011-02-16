@@ -16,5 +16,5 @@ void main (void)
 	float miePhase = 1.5 * ((1.0 - g2) / (2.0 + g2)) * (1.0 + cosinus*cosinus) / pow(1.0 + g2 - 2.0*g*cosinus, 1.5);
     FragColor = vec4(color1,1) + miePhase * vec4(color2,1);
 	FragColor.a = FragColor.b;
-	//FragColor = vec4(color1,1);
+	//FragColor = vec4(color2,1);
 }
