@@ -24,12 +24,12 @@
 		</Material>
 	</Materials>
 	<Meshes>
-		<File name="sphere" url="sphere.obj" />
+		<File name="sphere" url="earth.obj" />
 	</Meshes>
 	<Scene name="XML Loader">
 		<Light position ="-15.2, 19.4, 6.5" direction="1,-5,-1" />
 		<Object name="mars" mesh="sphere" material="Mars" scale="10" position="-10,-10,-10" />
 		<Object name="waterplanet" mesh="sphere" material="Ocean" scale="1" position="-10,5,.05" />
-		<Object name="skydome" mesh="sphere" material="universedome" scale="800" position="0, 0,0" />
+		<Object name="uvmovenode" mesh="sphere" material="universedome" scale="800" position="0, 0,0" />
 	</Scene>
 </liblub>

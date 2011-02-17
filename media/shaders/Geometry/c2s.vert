@@ -9,7 +9,7 @@ out vec4 positionView;
 uniform mat4 MVPMatrix;
 uniform mat4 MVMatrix;
 uniform mat3 NormalMatrix;
-uniform vec3 camPos;
+uniform vec3 cameraPosition;
 out float dist;
 out vec3 normalView;
 
@@ -17,7 +17,7 @@ uniform float Radius;
 
 void main(void) {
 	uv = in_Uv;
-    dist = distance(camPos,in_Vertex.xyz);
+    dist = distance(cameraPosition,in_Vertex.xyz);
     float Blend = max(0, min((dist -5) / 5.0, 1));
 
 	vec3 sphereVert = normalize(in_Vertex);
