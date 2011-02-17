@@ -129,7 +129,7 @@ void MediaLayer::toggleFullScreen(){
 void MediaLayer::toggleMouseGrab(){
 	if (grab){
 		SDL_SetWindowGrab(mainWindow,0);
-		//SDL_WM_GrabInput(SDL_GRAB_OFF);
+//		SDL_WM_GrabInput(SDL_GRAB_OFF);
 		SDL_ShowCursor(1);
 		Logger::Instance().log("DEBUG","Grab Off");
 		grab = false;
@@ -151,7 +151,7 @@ void MediaLayer::renderLoop(){
         swapBuffers();
 
         if(grab){
-        	SDL_WarpMouseInWindow(mainWindow, 200, 200);
+        	SDL_WarpMouseInWindow(mainWindow, width/2, height/2);
         }
 
         //FPS Stuff

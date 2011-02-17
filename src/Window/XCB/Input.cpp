@@ -39,6 +39,12 @@ void Input::eventLoop() {
             pressedKey = xcb_key_symbols_get_keysym(syms, kr->detail, 0);
             pressedKeys.remove(pressedKey);
 
+            switch (pressedKey) {
+            case XK_Shift_L:
+                          Camera::Instance().speed = .1;
+                          break;
+
+            }
             break;
 
         case XCB_KEY_PRESS:
@@ -64,6 +70,10 @@ void Input::eventLoop() {
                 case XK_Tab:
                     RenderEngine::Instance().toggleWire();
                     break;
+                case XK_Shift_L:
+                	Camera::Instance().speed = 1;
+                	break;
+                	
                 default:
                     pressedKeys.push_back(pressedKey);
             }
@@ -89,22 +99,22 @@ void Input::checkKey(xcb_keysym_t pressedKey) {
 						->getMaterial()->shaderProgram;
     switch (pressedKey) {
       case XK_i:
-        uvmoveprog->translateUniformf(0,{0,.001});
+        uvmoveprog->translateUniformf(0,{0,Camera::Instance().speed/10.0f});
         break;
       case XK_j:
-        uvmoveprog->translateUniformf(0,{-.001,0});
+        uvmoveprog->translateUniformf(0,{-Camera::Instance().speed/10.0f,0});
         break;
       case XK_k:
-        uvmoveprog->translateUniformf(0,{0,-.001});
+        uvmoveprog->translateUniformf(0,{0,-Camera::Instance().speed/10.0f});
         break;
       case XK_l:
-        uvmoveprog->translateUniformf(0,{.001,0});
+        uvmoveprog->translateUniformf(0,{Camera::Instance().speed/10.0f,0});
         break;
       case XK_u:
-        uvmoveprog->translateUniformf(1,{.01,0});
+        uvmoveprog->translateUniformf(1,{Camera::Instance().speed/10.0f,0});
         break;
       case XK_o:
-        uvmoveprog->translateUniformf(1,{-.01,0});
+        uvmoveprog->translateUniformf(1,{-Camera::Instance().speed/10.0f,0});
         break;
         case XK_w:
             Camera::Instance().forward();
