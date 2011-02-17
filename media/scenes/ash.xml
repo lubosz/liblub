@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<liblub>
+	<Programs>
+		<Program name="ash">
+			<Shader url="Color/Ashikhmin" />
+			<Uniform value="0.1, 0.1, 0.1, 1.0" name="ambientSceneColor" />
+			<Uniform value="0.8, 0.8, 0.8,1.0" name="specularMaterialColor" />
+			<Uniform value="4.3" name="shininess" />
+			<Uniform value="0.000833333" name="yPixelOffset" />
+			<Uniform value="0.000520833" name="xPixelOffset" />
+		</Program>
+		<Program name="Ubershader">
+			<Shader 
+				url="Color/PhongColor" 
+				flags="receiveShadows,
+						useDiffuseTexture,
+						useSpotLight,
+						usePCF,
+						useAmbientTexture,
+						useNormalTexture"
+			/>
+			<Uniform value="0.1, 0.1, 0.1, 1.0" name="ambientSceneColor" />
+			<Uniform value="0.1, 0.1, 0.1, 1.0" name="diffuseMaterialColor" />
+			<Uniform value="0.8, 0.8, 0.8,1.0" name="specularMaterialColor" />
+			<Uniform value="4.3" name="shininess" />
+			<Uniform value="0.000833333" name="yPixelOffset" />
+			<Uniform value="0.000520833" name="xPixelOffset" />
+		</Program>
+	</Programs>
+	<Textures>
+		<Texture name="masonry-wall-texture" url="bump/masonry-wall-texture.jpg" />
+		
+		<Texture name="brickwork-texture" url="bump/brickwork-texture.jpg" />
+		<Texture name="brickwork_normal-map" url="bump/brickwork_normal-map.jpg" />
+		<!--
+		<Texture name="radio-occlusion" url="radio-occlusion.png" />
+		-->
+		<Texture name="plane-occlusion" url="plane-occlusion.png" />
+	</Textures>
+	<Meshes>
+		<File name="radio" url="radio.blend" />
+		<File name="sphere" url="earth.obj" drawType="LINES" />
+		<File name="plane" url="plane.obj" />
+	</Meshes>
+	<Materials>
+		<Material name="radio" program="ash">
+			<Layer sampler="diffuseTexture" texture="masonry-wall-texture" />
+			<!--
+			<Layer sampler="ambientTexture" texture="radio-occlusion" />
+			<Layer sampler="normalTexture" texture="masonry-wall-normal-map" />
+			-->
+		</Material>
+		<Material name="ground" program="Ubershader">
+			<Layer sampler="diffuseTexture" texture="brickwork-texture" />
+			<Layer sampler="ambientTexture" texture="plane-occlusion" />
+			<Layer sampler="normalTexture" texture="brickwork_normal-map" />
+		</Material>
+	</Materials>
+	<Scene name="Ashikhmin">
+		<Light position ="-9.1, 20.5, 3.5" direction="1,-5,-1" mesh="sphere" />
+		<Object name="radio" mesh="radio" material="radio" scale="0.5" position="-5,-5,-5" />
+		<Object name="uvmovenode" mesh="plane" material="ground" scale="20" position="0,-7,0" receive_shadows="true" cast_shadows="false" />
+	</Scene>
+</liblub>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<liblub>
+	<include url="common/programs.xml" />
+	<Textures>
+		<Texture name="waves" url="ocean/waves2.dds" />
+		<TextureCube name="morning" url="cubemaps/sky" />
+	</Textures>
+	<Materials>
+		<Material name="Ocean" program="Ocean">
+			<Layer sampler="EnvironmentMap" texture="morning" />
+			<Layer sampler="NormalMap" texture="waves" />
+		</Material>
+	</Materials>
+	<Meshes>
+		<File name="plane" url="plane.blend" />
+	</Meshes>
+	<Scene name="XML Loader">
+		<Light position ="-15.2, 19.4, 6.5" direction="1,-5,-1" />
+		<Object name="ocean" mesh="plane" material="Ocean" scale="1" position="-10,5,.05" />
+	</Scene>
+</liblub>
