@@ -5,10 +5,11 @@
  *      Author: bmonkey
  */
 
-#include "Input.h"
-#include "Camera.h"
-#include "MediaLayer.h"
-#include "RenderEngine.h"
+#include "Window/Input.h"
+#include "Scene/Camera.h"
+#include "Window/MediaLayer.h"
+#include "Renderer/RenderEngine.h"
+#include "System/Logger.h"
 
 Input::Input() {
 
@@ -66,7 +67,7 @@ void Input::eventLoop(){
             break;
 
          case SDL_MOUSEWHEEL:
-        	 cout << "Wheel\n";
+        	 Logger::Instance().log("DEBUG","Wheel");
         	 Camera::Instance().setMouseZoom(event.wheel.x,event.wheel.y);
         	 break;
 
@@ -93,7 +94,7 @@ void Input::eventLoop(){
         	 break; //Event handled, fetch next :)
 
          default:
-        	 if (DEBUG) cout << "Event:" << event.type << "\n";
+//        	 if (DEBUG) cout << "Event:" << event.type << "\n";
         	 break;
         }
     }

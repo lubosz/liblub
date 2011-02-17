@@ -7,8 +7,10 @@
 
 #include <iostream>
 #include <sstream>
-#include "MediaLayer.h"
-#include "Camera.h"
+#include "Window/MediaLayer.h"
+#include "Scene/Camera.h"
+#include "System/Logger.h"
+#include "System/Config.h"
 
 
 MediaLayer::MediaLayer() {
@@ -30,14 +32,14 @@ void MediaLayer::init(string title) {
     /* Create our window, opengl context, etc... */
 
     if (SDL_Init(SDL_INIT_VIDEO) < 0) /* Initialize SDL's Video subsystem */
-        error("Unable to initialize SDL"); /* Or die on error */
+        Logger::Instance().log("ERROR","Unable to initialize SDL"); /* Or die on error */
 
     /* Request an opengl 3.2 context.
      * SDL doesn't have the ability to choose which profile at this time of writing,
      * but it should default to the core profile */
-
-    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, LIBLUB_GL_MAJOR_VERION);
-    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, LIBLUB_GL_MINOR_VERION);
+    vector<int> glContext = Config::Instance().values<int>("GLcontext");
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, glContext[0]);
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, glContext[1]);
 
     /* Enable double buffering with a 24bit Z buffer.
      * You may need to change this to 16 or 32 for your system */
@@ -49,13 +51,14 @@ void MediaLayer::init(string title) {
     //SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, 4);
 
     SDL_DisplayMode mode;
-	SDL_GetCurrentDisplayMode(&mode);
+	SDL_GetCurrentDisplayMode(0,&mode);
 	printf("  Mode:  %dx%d %dHz %d bpp\n", mode.w, mode.h, mode.refresh_rate, SDL_BITSPERPIXEL(mode.format));
 	width = mode.w;
 	height = mode.h;
 
     //cout << "WIDTH/HEIGHT "<< info->current_w << " " << info->current_h << "\n";
-    cout << "WIDTH/HEIGHT "<< width << " " << height << "\n";
+	Logger::Instance().message << "WIDTH/HEIGHT "<< width << " " << height << "\n";
+	Logger::Instance().log("Debug","SDL");
     Camera::Instance().setAspect(float(MediaLayer::Instance().width)/float(MediaLayer::Instance().height));
     /* Create our window centered at 512x512 resolution */
     mainWindow = SDL_CreateWindow(
@@ -69,13 +72,13 @@ void MediaLayer::init(string title) {
 			);
 
     if (!mainWindow) /* Die if creation failed */
-    	error("Unable to create window");
+    	Logger::Instance().log("ERROR","Unable to create window");
 
     /* Create our opengl context and attach it to our window */
     mainContext = SDL_GL_CreateContext(mainWindow);
 
     /* This makes our buffer swap syncronized with the monitor's vertical refresh */
-    SDL_GL_SetSwapInterval(VSync);
+    SDL_GL_SetSwapInterval(Config::Instance().value<int>("Vsync"));
 
     /* Enable Z depth testing so objects closest to the viewpoint are in front of objects further away */
     glEnable(GL_DEPTH_TEST);
@@ -98,14 +101,6 @@ MediaLayer::~MediaLayer() {
     SDL_Quit();
 }
 
-/* A simple function that prints a message, the error code returned by SDL, and quits the application */
-void MediaLayer::error(string msg)
-{
-    printf("%s: %s\n", msg.c_str(), SDL_GetError());
-    SDL_Quit();
-    exit(1);
-}
-
 void MediaLayer::swapBuffers(){
     /* Swap our buffers to make our changes visible */
     SDL_GL_SwapWindow(mainWindow);
@@ -117,13 +112,13 @@ void MediaLayer::swapBuffers(){
 void MediaLayer::toggleFullScreen(){
 	if(fullscreen){
 		printf("Fullscreen Off\n");
-		if(SDL_SetWindowFullscreen(mainWindow, 0)!=0){
+		if(SDL_SetWindowFullscreen(mainWindow, SDL_FALSE)!=0){
 			printf ("Unable to switch window to fullscreen mode:%s\n", SDL_GetError());
 		}
 		fullscreen = false;
 	}else{
 		printf("Fullscreen On\n");
-		if(SDL_SetWindowFullscreen(mainWindow, 1)!=0){
+		if(SDL_SetWindowFullscreen(mainWindow, SDL_TRUE)!=0){
 			printf ("Unable to switch window to fullscreen mode:%s\n", SDL_GetError());
 		}
 		fullscreen = true;
@@ -136,13 +131,13 @@ void MediaLayer::toggleMouseGrab(){
 		SDL_SetWindowGrab(mainWindow,0);
 		//SDL_WM_GrabInput(SDL_GRAB_OFF);
 		SDL_ShowCursor(1);
-		cout << "Grab Off\n";
+		Logger::Instance().log("DEBUG","Grab Off");
 		grab = false;
 	}else{
 		SDL_SetWindowGrab(mainWindow,1);
 		//SDL_WM_GrabInput(SDL_GRAB_ON);
 		SDL_ShowCursor(0);
-		cout << "Grab On\n";
+		Logger::Instance().log("DEBUG","Grab On");
 		grab = true;
 	}
 }

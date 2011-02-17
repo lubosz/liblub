@@ -8,7 +8,7 @@
 #pragma once
 
 #include <list>
-
+#include "Material/ShaderProgram.h"
 // using namespace std;
 
 #ifdef WITH_XCB
