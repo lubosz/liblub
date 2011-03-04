@@ -8,11 +8,13 @@
 #include "Scene/Camera.h"
 #include "Window/MediaLayer.h"
 #include "Material/Uniform.h"
+#include "Scene/SceneData.h"
 
 Input::Input(xcb_connection_t *connection) {
   this->connection = connection;
   syms = xcb_key_symbols_alloc(connection);
   pressedKeys = list<xcb_keysym_t>();
+  uvmoveprog = SceneData::Instance().getProgram("uvmove");
 }
 
 Input::~Input() {
@@ -94,9 +96,10 @@ void Input::eventLoop() {
 }
 
 void Input::checkKey(xcb_keysym_t pressedKey) {
-		uvmoveprog =
-						SceneGraph::Instance().getNode("uvmovenode")
-						->getMaterial()->shaderProgram;
+
+//		uvmoveprog =
+//						SceneGraph::Instance().getNode("uvmovenode")
+//						->getMaterial()->shaderProgram;
     switch (pressedKey) {
       case XK_i:
         uvmoveprog->translateUniformf(0,{0,Camera::Instance().speed/10.0f});

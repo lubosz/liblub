@@ -20,11 +20,6 @@ MediaLayer::MediaLayer() {
   fullscreen = false;
   grab = false;
   quit = false;
-}
-
-void MediaLayer::init(string title) {
-  programTile = title;
-
   initScreen();
   initFrameBuffer();
   createGLContext();
@@ -32,6 +27,11 @@ void MediaLayer::init(string title) {
 
   createWindow();
   createBlankCursor();
+}
+
+void MediaLayer::init(string title) {
+  programTile = title;
+
 
   input = new Input(connection);
 
