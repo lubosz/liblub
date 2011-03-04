@@ -133,22 +133,22 @@ void Input::checkKey(xcb_keysym_t pressedKey) {
             break;
             // Light
         case XK_Left:
-            SceneData::Instance().getMoveLight()->moveLeft();
+            SceneData::Instance().getShadowLight()->moveLeft();
             break;
         case XK_Right:
-            SceneData::Instance().getMoveLight()->moveRight();
+            SceneData::Instance().getShadowLight()->moveRight();
             break;
         case XK_Up:
-            SceneData::Instance().getMoveLight()->moveUp();
+            SceneData::Instance().getShadowLight()->moveUp();
             break;
         case XK_Down:
-            SceneData::Instance().getMoveLight()->moveDown();
+            SceneData::Instance().getShadowLight()->moveDown();
             break;
         case XK_1:
-            SceneData::Instance().getMoveLight()->moveForward();
+            SceneData::Instance().getShadowLight()->moveForward();
             break;
         case XK_7:
-            SceneData::Instance().getMoveLight()->moveBack();
+            SceneData::Instance().getShadowLight()->moveBack();
             break;
     }
 }

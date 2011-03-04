@@ -58,6 +58,7 @@ void Light::bindShaderUpdateLight(ShaderProgram * shaderProgram) {
 }
 
 void Light::bindShaderInit(ShaderProgram * shaderProgram) {
+  //TODO: Hardcoded light stuff
     shaderProgram->setUniform(QVector4D(1.9, 1.9, 1.9, 1.0), "lightColor");
 
     GLuint program = shaderProgram->getReference();
@@ -103,6 +104,7 @@ void Light::moveBack() {
 }
 
 void Light::update() {
+  //TODO: Multiple lights
     SceneGraph::Instance().setPosition("Light", position);
     Logger::Instance().message << position.x() << " " << position.y() << " "
             << position.z();

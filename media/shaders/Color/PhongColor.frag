@@ -209,6 +209,8 @@ void main(){
 #ifdef receiveShadows
 	finalColor *= shadow;
 #endif
-			
+
+//set opaque
+	finalColor.w = 1.0;
 } 
 
