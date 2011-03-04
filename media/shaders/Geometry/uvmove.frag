@@ -84,7 +84,7 @@ void main(void) {
 
 	float lambertTerm = max( dot(N,L), 0.0);
 
-	finalColor = vec4(0);
+	finalColor = vec4(0,0,0,1);
 	if(lambertTerm > 0.0)
 	{
 		//diffuse
