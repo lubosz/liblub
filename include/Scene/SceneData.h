@@ -21,6 +21,7 @@ using std::string;
 class SceneData : public Singleton<SceneData> {
 public:
   string name;
+  QColor backgroundColor;
 
   QMap<string, ShaderProgram*> shaderPrograms;
   QMap<string, Texture*> textures;
