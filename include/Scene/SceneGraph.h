@@ -32,7 +32,8 @@ class SceneGraph: public Singleton<SceneGraph> {
  private:
 	friend class Singleton<SceneGraph>;
 
-	vector<Node*> sceneNodes;
+//	vector<Node*> sceneNodes;
+	QMap<string, Node*> sceneNodes;
 	QMatrix4x4 bias;
 
     SceneGraph();
