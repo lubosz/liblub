@@ -21,7 +21,7 @@ using std::string;
 class SceneData : public Singleton<SceneData> {
 public:
   string name;
-  QColor backgroundColor;
+  QVector3D backgroundColor;
 
   QMap<string, ShaderProgram*> shaderPrograms;
   QMap<string, Texture*> textures;
@@ -30,6 +30,7 @@ public:
 
   SceneData();
   virtual ~SceneData();
+  void setBackgroundColor(const QVector3D backgroundColor);
 
   void addProgram(string & name, ShaderProgram * program);
   ShaderProgram* getProgram(const string & name);

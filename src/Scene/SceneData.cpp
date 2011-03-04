@@ -7,6 +7,7 @@
 
 #include "Scene/SceneData.h"
 #include "System/Logger.h"
+#include "Renderer/RenderEngine.h"
 
 SceneData::SceneData() {
   // TODO Auto-generated constructor stub
@@ -33,4 +34,9 @@ ShaderProgram* SceneData::getProgram(const string & name) {
   Logger::Instance().log("WARNING", "Program not found", name);
     return new ShaderProgram();
   }
+}
+
+void SceneData::setBackgroundColor(const QVector3D backgroundColor) {
+  this->backgroundColor = backgroundColor;
+  RenderEngine::Instance().setClearColor(backgroundColor);
 }

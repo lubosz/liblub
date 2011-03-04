@@ -6,6 +6,7 @@
  */
 #include <vector>
 #include "Scene/Camera.h"
+#include "Scene/SceneData.h"
 #include "Mesh/MeshFactory.h"
 #include "Renderer/RenderEngine.h"
 #include "System/Logger.h"
@@ -18,12 +19,6 @@ RenderEngine::RenderEngine()
     checkVersion();
     shadowSequence = new RenderSequence();
 
-    /* Make our background black */
-    vector<float> backgroundColor =
-            Config::Instance().values<float> ("backgroundColor");
-    glClearColor(
-            backgroundColor[0], backgroundColor[1], backgroundColor[2],
-            1.0);
     glEnable(GL_DEPTH_TEST);
     glDepthFunc(GL_LESS);
 
@@ -55,6 +50,12 @@ RenderEngine::~RenderEngine() {
     Logger::Instance().message << "Shutting down Render Engine...";
     Logger::Instance().log("MESSAGE");
     glError;
+}
+
+void RenderEngine::setClearColor(const QVector3D & backgroundColor){
+  glClearColor(
+          backgroundColor.x(), backgroundColor.y(), backgroundColor.z(),
+          1.0);
 }
 
 void RenderEngine::toggleWire() {

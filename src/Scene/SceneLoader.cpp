@@ -324,6 +324,14 @@ void SceneLoader::load(const QString & fileName) {
               SceneData::Instance().name = document.attribute("name").toStdString();
               Logger::Instance().log("MESSAGE", "Loading Scene", SceneData::Instance().name);
           }
+          if (document.hasAttribute("backgroundColor")){
+              SceneData::Instance().setBackgroundColor(stringToVector3D(document.attribute("backgroundColor")));
+          } else {
+            vector<float> backgroundColor =
+                        Config::Instance().values<float> ("backgroundColor");
+            SceneData::Instance().setBackgroundColor(
+                QVector3D(backgroundColor[0],backgroundColor[1],backgroundColor[2]));
+          }
             QDomElement scene = document.firstChildElement();
             while (!scene.isNull()) {
                 appendObject(scene);

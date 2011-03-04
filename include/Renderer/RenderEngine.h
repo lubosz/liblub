@@ -23,6 +23,7 @@ class RenderEngine : public Singleton<RenderEngine> {
 	void clear();
 	void toggleLightView();
 	RenderSequence * shadowSequence;
+	void setClearColor(const QVector3D & backgroundColor);
 
  private:
 	friend class Singleton<RenderEngine>;

@@ -13,10 +13,7 @@
 #include "System/Config.h"
 #include "System/Logger.h"
 
-Config::Config():XmlReader() {
-  // Template fix
-
-}
+Config::Config():XmlReader() {}
 
 Config::~Config() {}
 
