@@ -26,8 +26,8 @@ class Sponge : public Application {
   }
 
   void scene() {
-    SceneGraph::Instance().light = new Light(QVector3D(-2.5, 21.5, -5.2),
-        QVector3D(1, -5, 0));
+    SceneData::Instance().getShadowLight()->setPosition(QVector3D(-2.5, 21.5, -5.2));
+    SceneData::Instance().getShadowLight()->setDirection(QVector3D(1, -5, 0));
 
     Material * material = new PhongColor(QVector3D(1, 1, 1));
 

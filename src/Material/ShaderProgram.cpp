@@ -9,6 +9,7 @@
 #include "Material/ShaderProgram.h"
 #include "Scene/SceneGraph.h"
 #include "System/Logger.h"
+#include "Scene/SceneData.h"
 
 ShaderProgram::ShaderProgram() {
   attribCount = 0;
@@ -146,7 +147,8 @@ void ShaderProgram::initUniformsByType(vector<Uniform<T> > & uniforms) {
 void ShaderProgram::initUniforms() {
   initUniformsByType<float>(uniforms);
   initUniformsByType<int>(uniformsi);
-    SceneGraph::Instance().light->bindShaderInit(this);
+  // TODO: Multiple Light sources
+  SceneData::Instance().getShadowLight()->bindShaderInit(this);
 }
 
 void ShaderProgram::linkAndUse() {

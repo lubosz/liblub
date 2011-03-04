@@ -139,7 +139,7 @@
 
 	</Materials>
 	
-	<Scene name="Nice" backgroundColor="0.1,1,0.5">
+	<Scene name="Nice">
 		<Light position ="0.3, 6.6, -3.3" direction="1,-5,-1" />
 		<Object name="menger sponge" mesh="sponge" material="PhongColorMat" scale="3.0" position="10, 0, -10" />
 		<Object name="stars" mesh="stars" material="stars" scale="1.0" position="0, -50, -50"  />

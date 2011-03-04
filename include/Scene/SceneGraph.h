@@ -8,7 +8,7 @@
 
 class SceneGraph: public Singleton<SceneGraph> {
  public:
-	Light * light;
+//	Light * light;
 
 	void updateLight();
 	void drawCasters(Material * material);

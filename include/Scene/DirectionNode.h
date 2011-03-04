@@ -34,6 +34,7 @@ public:
   QMatrix4x4 getProjection() const;
 
   void setPosition(const QVector3D& position);
+  void setDirection(const QVector3D & direction);
   void setAspect(qreal aspect);
   void setParams(qreal fov, qreal near, qreal far);
 

@@ -55,6 +55,10 @@ void DirectionNode::setPosition(const QVector3D & position) {
     this->position = position;
 }
 
+void DirectionNode::setDirection(const QVector3D & direction) {
+    this->direction = direction;
+}
+
 /* Generate a perspective view matrix using a field of view angle fov,
  * window aspect ratio, near and far clipping planes */
 void DirectionNode::updatePerspective() {

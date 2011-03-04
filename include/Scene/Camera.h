@@ -10,10 +10,8 @@
 #include "common/Singleton.h"
 #include "Scene/DirectionNode.h"
 
-class Camera: public Singleton<Camera>, public DirectionNode {
+class Camera: public DirectionNode {
  public:
-    friend class Singleton<Camera>;
-
     Camera();
     ~Camera();
 

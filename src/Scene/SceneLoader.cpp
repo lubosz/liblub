@@ -208,7 +208,14 @@ void SceneLoader::appendObject(const QDomElement & objectNode) {
             Logger::Instance().log("ERROR", "Material Not Found", materialName);
     }
     if (objectNode.tagName() == "Light") {
-        SceneGraph::Instance().light = new Light(position, direction);
+      string lightName;
+      if (objectNode.hasAttribute("name")) {
+        lightName = objectNode.attribute("name").toStdString();
+
+      } else {
+        lightName = "light";
+      }
+        SceneData::Instance().lights.insert(lightName,new Light(position, direction));
         if (objectNode.hasAttribute("mesh")) {
           string meshName = objectNode.attribute("mesh").toStdString();
           if (SceneData::Instance().meshes.count(meshName) > 0)

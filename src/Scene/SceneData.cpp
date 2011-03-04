@@ -11,6 +11,7 @@
 
 SceneData::SceneData() {
   // TODO Auto-generated constructor stub
+  lights = QMap<string, Light*>();
 
 }
 
@@ -39,4 +40,52 @@ ShaderProgram* SceneData::getProgram(const string & name) {
 void SceneData::setBackgroundColor(const QVector3D backgroundColor) {
   this->backgroundColor = backgroundColor;
   RenderEngine::Instance().setClearColor(backgroundColor);
+}
+
+Camera * SceneData::getCurrentCamera() {
+  if(!currentCamera) {
+    if(cameras.size() > 0) {
+      currentCamera = cameras[0];
+    } else {
+      Camera * camera = new Camera();
+      currentCamera = camera;
+      cameras.insert("camera",camera);
+    }
+  }
+
+  return currentCamera;
+}
+
+Light * SceneData::getShadowLight() {
+  if(!shadowLight) {
+    if(lights.size() > 0) {
+      shadowLight = lights[0];
+    } else {
+      Light * light = new Light(QVector3D(), QVector3D(0,-1,0));
+      shadowLight = light;
+      lights.insert("light",light);
+    }
+  }
+
+  return shadowLight;
+}
+
+Light * SceneData::getMoveLight() {
+  if(!moveLight) {
+    if(lights.size() > 0) {
+      Logger::Instance().message << lights.size();
+      Logger::Instance().log("DEBUG", "Light Size");
+      foreach(Light* light, lights) {
+        Logger::Instance().log("DEBUG", "Light Name", lights.key(light));
+        moveLight = light;
+      }
+//      moveLight = lights[0];
+    } else {
+      Light * light = new Light(QVector3D(), QVector3D(0,-1,0));
+      moveLight = light;
+      lights.insert("light",light);
+    }
+  }
+
+  return moveLight;
 }

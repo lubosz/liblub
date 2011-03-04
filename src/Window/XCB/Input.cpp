@@ -43,7 +43,7 @@ void Input::eventLoop() {
 
             switch (pressedKey) {
             case XK_Shift_L:
-                          Camera::Instance().speed = .1;
+                          SceneData::Instance().getCurrentCamera()->speed = .1;
                           break;
 
             }
@@ -73,7 +73,7 @@ void Input::eventLoop() {
                     RenderEngine::Instance().toggleWire();
                     break;
                 case XK_Shift_L:
-                	Camera::Instance().speed = 1;
+                  SceneData::Instance().getCurrentCamera()->speed = 1;
                 	break;
                 	
                 default:
@@ -102,53 +102,53 @@ void Input::checkKey(xcb_keysym_t pressedKey) {
 //						->getMaterial()->shaderProgram;
     switch (pressedKey) {
       case XK_i:
-        uvmoveprog->translateUniformf(0,{0,Camera::Instance().speed/10.0f});
+        uvmoveprog->translateUniformf(0,{0,SceneData::Instance().getCurrentCamera()->speed/10.0f});
         break;
       case XK_j:
-        uvmoveprog->translateUniformf(0,{-Camera::Instance().speed/10.0f,0});
+        uvmoveprog->translateUniformf(0,{-SceneData::Instance().getCurrentCamera()->speed/10.0f,0});
         break;
       case XK_k:
-        uvmoveprog->translateUniformf(0,{0,-Camera::Instance().speed/10.0f});
+        uvmoveprog->translateUniformf(0,{0,-SceneData::Instance().getCurrentCamera()->speed/10.0f});
         break;
       case XK_l:
-        uvmoveprog->translateUniformf(0,{Camera::Instance().speed/10.0f,0});
+        uvmoveprog->translateUniformf(0,{SceneData::Instance().getCurrentCamera()->speed/10.0f,0});
         break;
       case XK_u:
-        uvmoveprog->translateUniformf(1,{Camera::Instance().speed/10.0f,0});
+        uvmoveprog->translateUniformf(1,{SceneData::Instance().getCurrentCamera()->speed/10.0f,0});
         break;
       case XK_o:
-        uvmoveprog->translateUniformf(1,{-Camera::Instance().speed/10.0f,0});
+        uvmoveprog->translateUniformf(1,{-SceneData::Instance().getCurrentCamera()->speed/10.0f,0});
         break;
         case XK_w:
-            Camera::Instance().forward();
+            SceneData::Instance().getCurrentCamera()->forward();
             break;
         case XK_a:
-            Camera::Instance().left();
+            SceneData::Instance().getCurrentCamera()->left();
             break;
         case XK_s:
-            Camera::Instance().backward();
+            SceneData::Instance().getCurrentCamera()->backward();
             break;
         case XK_d:
-            Camera::Instance().right();
+            SceneData::Instance().getCurrentCamera()->right();
             break;
             // Light
         case XK_Left:
-            SceneGraph::Instance().light->moveLeft();
+            SceneData::Instance().getMoveLight()->moveLeft();
             break;
         case XK_Right:
-            SceneGraph::Instance().light->moveRight();
+            SceneData::Instance().getMoveLight()->moveRight();
             break;
         case XK_Up:
-            SceneGraph::Instance().light->moveUp();
+            SceneData::Instance().getMoveLight()->moveUp();
             break;
         case XK_Down:
-            SceneGraph::Instance().light->moveDown();
+            SceneData::Instance().getMoveLight()->moveDown();
             break;
         case XK_1:
-            SceneGraph::Instance().light->moveForward();
+            SceneData::Instance().getMoveLight()->moveForward();
             break;
         case XK_7:
-            SceneGraph::Instance().light->moveBack();
+            SceneData::Instance().getMoveLight()->moveBack();
             break;
     }
 }

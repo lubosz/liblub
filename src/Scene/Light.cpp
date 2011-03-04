@@ -7,6 +7,7 @@
 
 #include "Scene/Light.h"
 #include "Scene/SceneGraph.h"
+#include "Scene/SceneData.h"
 #include "Scene/Camera.h"
 #include "Material/Materials.h"
 #include "Mesh/MeshFactory.h"
@@ -29,15 +30,15 @@ void Light::setColor(QVector4D & color) {
 }
 
 void Light::bindShaderUpdate(ShaderProgram * shaderProgram) {
-    QVector4D lightPositionView = Camera::Instance().getView() * position;
+    QVector4D lightPositionView = SceneData::Instance().getCurrentCamera()->getView() * position;
 
     shaderProgram->setUniform(lightPositionView, "lightPositionView");
     shaderProgram->setUniform(position, "lightPosition");
 
-    QVector3D directionView = Camera::Instance().getView() * direction;
+    QVector3D directionView = SceneData::Instance().getCurrentCamera()->getView() * direction;
     shaderProgram->setUniform(directionView, "spotDirection");
 
-    QVector3D spotDirectionView = Camera::Instance().getViewNoTranslation()
+    QVector3D spotDirectionView = SceneData::Instance().getCurrentCamera()->getViewNoTranslation()
             * direction;
     spotDirectionView.normalize();
     shaderProgram->setUniform(spotDirectionView, "spotDirectionView");

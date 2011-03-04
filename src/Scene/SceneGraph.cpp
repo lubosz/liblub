@@ -9,6 +9,7 @@
 #include "Material/Materials.h"
 #include "Mesh/MeshFactory.h"
 #include "System/Logger.h"
+#include "Scene/SceneData.h"
 
 SceneGraph::SceneGraph() {
     bias = QMatrix4x4();
@@ -68,9 +69,10 @@ void SceneGraph::printMatrix(const QMatrix4x4 & matrix, string name) {
 }
 
 void SceneGraph::setShadowCoords(Node * node, DirectionNode * viewPoint) {
+  //TODO: Multiple lights
     QMatrix4x4 camViewToShadowMapMatrix = bias
-            * SceneGraph::Instance().light->getProjection()
-            * SceneGraph::Instance().light->getView()
+            * SceneData::Instance().getShadowLight()->getProjection()
+            * SceneData::Instance().getShadowLight()->getView()
             * viewPoint->getView().inverted();
 
     node->getMaterial()->getShaderProgram()->setUniform(
@@ -78,20 +80,22 @@ void SceneGraph::setShadowCoords(Node * node, DirectionNode * viewPoint) {
 }
 
 void SceneGraph::drawNodes(DirectionNode * viewPoint) {
+  //TODO: Multiple lights
     foreach(Node * node, sceneNodes) {
         node->bindShaders(viewPoint);
         setShadowCoords(node, viewPoint);
-        light->bindShaderUpdate(node->getMaterial()->getShaderProgram());
+        SceneData::Instance().getShadowLight()->bindShaderUpdate(node->getMaterial()->getShaderProgram());
         node->draw();
     }
     glError;
 }
 
 void SceneGraph::drawCasters(Material * material) {
+  //TODO: Multiple lights
     foreach(Node * node, sceneNodes) {
         if (node->getCastShadows()) {
-            node->bindShaders(material->getShaderProgram(), light);
-            light->bindShaderUpdate(material->getShaderProgram());
+            node->bindShaders(material->getShaderProgram(), SceneData::Instance().getShadowLight());
+            SceneData::Instance().getShadowLight()->bindShaderUpdate(material->getShaderProgram());
             node->mesh->draw();
         }
     }

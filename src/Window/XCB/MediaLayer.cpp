@@ -9,6 +9,7 @@
 #include <vector>
 #include "Window/MediaLayer.h"
 #include "Scene/Camera.h"
+#include "Scene/SceneData.h"
 #include "System/Config.h"
 #include "System/Logger.h"
 
@@ -44,7 +45,7 @@ void MediaLayer::init(string title) {
               display, None, window, 0, 0,
               width, height, halfWidth, halfHeight);
 
-  Camera::Instance().setAspect(
+  SceneData::Instance().getCurrentCamera()->setAspect(
           static_cast<float>(MediaLayer::Instance().width)/
           static_cast<float>(MediaLayer::Instance().height));
 }
@@ -384,7 +385,7 @@ void MediaLayer::mouseLook(int x, int y) {
   int yRel = y - halfHeight;
 
   if (!(xRel == 0 && yRel == 0) && grab) {
-    Camera::Instance().setMouseLook(xRel, yRel);
+    SceneData::Instance().getCurrentCamera()->setMouseLook(xRel, yRel);
     if (grab)
         XWarpPointer(
                 display, None, window, x, y,

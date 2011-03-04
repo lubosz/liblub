@@ -7,6 +7,7 @@
 
 #include "Window/MediaLayer.h"
 #include "Scene/Camera.h"
+#include "Scene/SceneData.h"
 #include "Material/Materials.h"
 
 LightViewDepthPass::LightViewDepthPass(FrameBuffer * fbo) {
@@ -58,7 +59,7 @@ void FilterPass::prepare() {
     // In the case we render the shadowmap to a higher resolution,
     // the viewport must be modified accordingly.
     fbo->updateRenderView();
-    SceneGraph::Instance().drawNodes(&Camera::Instance());
+    SceneGraph::Instance().drawNodes(SceneData::Instance().getCurrentCamera());
     fbo->unBind();
 
     glPolygonOffset(2.0, 0.0);
@@ -85,9 +86,9 @@ void LightTogglePass::draw() {
     glViewport(0, 0, MediaLayer::Instance().width,
             MediaLayer::Instance().height);
     if (RenderEngine::Instance().lightView) {
-        SceneGraph::Instance().drawNodes(SceneGraph::Instance().light);
+        SceneGraph::Instance().drawNodes(SceneData::Instance().getShadowLight());
     } else {
-        SceneGraph::Instance().drawNodes(&Camera::Instance());
+        SceneGraph::Instance().drawNodes(SceneData::Instance().getCurrentCamera());
     }
 }
 
