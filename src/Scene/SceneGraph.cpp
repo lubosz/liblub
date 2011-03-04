@@ -24,13 +24,12 @@ SceneGraph::SceneGraph() {
 //     */
 //}
 
-bool SceneGraph::hasNode(const string & name){
-	  foreach(Node *node, sceneNodes) {
-	      if (node->getName() == name) {
-	          return true;
-	      }
-	  }
-	  return false;
+bool SceneGraph::hasNode(const string & name) {
+  if (sceneNodes.count(name) > 0) {
+    return true;
+  } else {
+    return false;
+  }
 }
 
 Node * SceneGraph::getNode(const string & name){
@@ -47,7 +46,11 @@ void SceneGraph::addNode(Node * node) {
   if (node->getName() == "") {
     QString idString = QString::number(sceneNodes.size() + 1);
     node->setName("Node" + idString.toStdString());
+  } else if (sceneNodes.count(node->getName()) > 0) {
+    QString idString = QString::number(sceneNodes.size() + 1);
+    node->setName(node->getName() + idString.toStdString());
   }
+  Logger::Instance().log("MESSAGE", "Loading Node", node->getName());
   sceneNodes.insert(node->getName(), node);
 }
 
@@ -94,7 +97,6 @@ void SceneGraph::drawCasters(Material * material) {
     }
     glError;
 }
-
 
 void SceneGraph::meshCube(string file, float cubeSize, float step,
         Material * material) {
