@@ -22,7 +22,7 @@
 class Sponge : public Application {
  public:
   Sponge() {
-    programName = "Sponge";
+    SceneData::Instance().name = "Sponge";
   }
 
   void scene() {

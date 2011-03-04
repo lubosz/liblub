@@ -319,6 +319,11 @@ void SceneLoader::load(const QString & fileName) {
                 materials = materials.nextSiblingElement();
             }
         } else if (document.tagName() == "Scene") {
+
+          if (document.hasAttribute("name")){
+              SceneData::Instance().name = document.attribute("name").toStdString();
+              Logger::Instance().log("MESSAGE", "Loading Scene", SceneData::Instance().name);
+          }
             QDomElement scene = document.firstChildElement();
             while (!scene.isNull()) {
                 appendObject(scene);

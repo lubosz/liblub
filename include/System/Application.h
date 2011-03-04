@@ -11,6 +11,7 @@
 #include "Material/Materials.h"
 #include "Mesh/MeshFactory.h"
 #include "Scene/SceneLoader.h"
+#include "Scene/SceneData.h"
 #include "System/Config.h"
 
 class Application {
@@ -18,14 +19,13 @@ class Application {
 	virtual ~Application() {}
 	virtual void scene() = 0;
 
-	string programName;
 	SceneLoader * sceneLoader;
 
 	void run() {
 		Config::Instance().load("config.xml");
 		MediaLayer::Instance();
 		scene();
-		MediaLayer::Instance().init(programName);
+		MediaLayer::Instance().init(SceneData::Instance().name);
 		MediaLayer::Instance().renderLoop();
 	}
 };

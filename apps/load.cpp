@@ -26,7 +26,6 @@ class LoadApp: public Application {
 
 
   explicit LoadApp(string sceneName) {
-    programName ="XML Loader";
     QString sceneFile = QString::fromStdString(sceneName + ".xml");
     sceneLoader = new SceneLoader(sceneFile);
   }
