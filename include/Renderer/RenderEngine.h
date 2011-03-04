@@ -23,6 +23,7 @@ class RenderEngine : public Singleton<RenderEngine> {
 	void clear();
 	void toggleLightView();
 	RenderSequence * shadowSequence;
+
  private:
 	friend class Singleton<RenderEngine>;
 

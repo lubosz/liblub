@@ -41,14 +41,14 @@ Node * SceneGraph::getNode(const string & name){
   Logger::Instance().log("WARNING", "Node not found", name);
     return new Node();
   }
-  /*
-  foreach(Node *node, sceneNodes) {
-      if (node->getName() == name) {
-          return node;
-      }
+}
+
+void SceneGraph::addNode(Node * node) {
+  if (node->getName() == "") {
+    QString idString = QString::number(sceneNodes.size() + 1);
+    node->setName("Node" + idString.toStdString());
   }
-  return new Node();
-  */
+  sceneNodes.insert(node->getName(), node);
 }
 
 void SceneGraph::setPosition(string nodeName, const QVector3D& position) {
@@ -95,18 +95,6 @@ void SceneGraph::drawCasters(Material * material) {
     glError;
 }
 
-void SceneGraph::addNode(Node * node) {
-//    sceneNodes.push_back(node);
-  if (node->getName() == "") {
-    QString idString = QString::number(sceneNodes.size() + 1);
-    node->setName("Node" + idString.toStdString());
-//    Logger::Instance().log("WARNING", "No name set, generating ", nodename);
-  }
-  sceneNodes.insert(node->getName(), node);
-//  Logger::Instance().message << node->getName()
-//    << " " << sceneNodes[node->getName()]->getName();
-//  Logger::Instance().log("add node");
-}
 
 void SceneGraph::meshCube(string file, float cubeSize, float step,
         Material * material) {

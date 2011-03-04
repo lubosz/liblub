@@ -34,8 +34,5 @@ class SceneLoader : public XmlReader {
 	void appendTexture(const QDomElement & textureNode);
 	void appendMesh(const QDomElement & meshNode);
 
-	QMap<string, ShaderProgram*> shaderPrograms;
-	QMap<string, Texture*> textures;
-	QMap<string, Material*> materials;
-	QMap<string, Mesh*> meshes;
+
 };
