@@ -83,8 +83,8 @@
 		<Object name="menger sponge" mesh="sponge" material="PhongColorMat" scale="5.0" position="10, 30, -10" />
 		<Light position ="0.3, 100.6, -3.3" direction="1,-5,-1" mesh="sphere" />
 		<Object name="sky" mesh="skymesh" material="CubeMap" scale="800" position="0, 0, 0" />
-		<!-- 
 		<Object name="ocean" mesh="plane" material="Ocean" scale="1000" position="0,-50,0" />
+		<!-- 
 		-->
 		<Object name="uvmovenode" mesh="cube" material="uvmove" scale="100" position="0, -230, 0" />
 	</Scene>

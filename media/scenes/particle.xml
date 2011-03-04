@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<liblub>
+	<Programs>
+		<Program name="CubeMap">
+			<Shader url="Texture/cubemapSky" />
+			<Uniform value="0.5, 0.5, 1.0" name="BaseColor" />
+			<Uniform value="0.5" name="MixRatio" />
+		</Program>
+		<Program name="Texture">
+			<Shader url="Texture/texture" />
+		</Program>
+	</Programs>
+	<Textures>
+		<TextureCube name="sky" url="cubemaps/sky" />
+		<Texture name="cloudTex" url="particle/cloudsprite.png" />
+		<!--
+		<Texture name="cloudTexOp" url="particle/cloud.jpg" />
+		-->
+	</Textures>
+	<Materials>
+		<Material name="CubeMap" program="CubeMap">
+			<Layer sampler="EnvMap" texture="sky" />
+		</Material>
+		<Material name="cloudMat" program="Texture">
+			<Layer sampler="myTexture" texture="cloudTex" />
+		</Material>
+		<!--
+		<Material name="cloudMatOp" program="Texture">
+			<Layer sampler="myTexture" texture="cloudTexOp" />
+		</Material>
+		-->
+	</Materials>
+	<Meshes>
+		<File name="sphere" url="earth.obj" drawType="LINES" />
+		<File name="skymesh" url="earth.obj" />
+		<File name="cloud" url="plane.blend" />
+	</Meshes>
+	<Scene name="terrain">
+		<Light position ="0.3, 100.6, -3.3" direction="1,-5,-1" mesh="sphere" />
+		<Object name="uvmovenode" mesh="skymesh" material="CubeMap" scale="800" position="0, 0, 0" />
+		<Object name="Cloud" mesh="cloud" material="cloudMat" scale="20" position="-20, -20, 0" />
+		<Object name="Cloud" mesh="cloud" material="cloudMat" scale="11" position="-21, -10, 0" />
+		<!--
+		<Object name="Cloud2" mesh="cloud" material="cloudMatOp" scale="20" position="20, -20, 0" />
+		-->
+	</Scene>
+</liblub>
