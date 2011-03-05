@@ -44,6 +44,10 @@ const QVector3D& Node::getPosition() {
     return position;
 }
 
+const QVector3D& Node::getRotation(){
+  return rotation;
+}
+
 void Node::setName(string name) {
     this->name = name;
 }

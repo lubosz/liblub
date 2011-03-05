@@ -82,6 +82,14 @@ void RenderEngine::toggleFBO() {
 }
 
 void RenderEngine::display() {
+//  Node *foo = SceneGraph::Instance().getNode("Node12");
+//  foreach(Node * node, SceneGraph::Instance().sceneNodes){
+//    QVector3D oldRot = node->getRotation();
+////    oldRot.setX(oldRot.x() +1);
+//    oldRot.setY(oldRot.y() +1);
+////    oldRot.setZ(oldRot.z() +1);
+//    node->setRotation(oldRot);
+//  }
     /*
      * Uniform Animation
      *

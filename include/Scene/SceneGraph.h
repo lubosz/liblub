@@ -29,11 +29,11 @@ class SceneGraph: public Singleton<SceneGraph> {
 	);
 	void setPosition(string nodeName, const QVector3D& position);
 
+	QMap<string, Node*> sceneNodes;
  private:
 	friend class Singleton<SceneGraph>;
 
 //	vector<Node*> sceneNodes;
-	QMap<string, Node*> sceneNodes;
 	QMatrix4x4 bias;
 
     SceneGraph();

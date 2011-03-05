@@ -44,5 +44,7 @@
 		<!--
 		<Object name="Cloud2" mesh="cloud" material="cloudMatOp" scale="20" position="20, -20, 0" />
 		-->
+		
+		<ObjectPlane size="10" step="3" mesh="cloud" materials="cloudMat" />
 	</Scene>
 </liblub>
