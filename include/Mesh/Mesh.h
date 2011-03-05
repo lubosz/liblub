@@ -11,6 +11,7 @@
 #include <string>
 #include <vector>
 #include <QVector3D>
+#include "Mesh/AABB.h"
 
 using std::string;
 using std::vector;
@@ -26,8 +27,9 @@ class Mesh {
 	void setDrawType(GLint drawType);
 	void draw();
 
-  QVector3D boundingBoxMin;
-  QVector3D boundingBoxMax;
+	AABB * boundingBox;
+
+
  private:
 	/* Create handles for a Vertex Array Object
 	 * and 6 Vertex Buffer Objects */

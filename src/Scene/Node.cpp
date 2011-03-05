@@ -120,3 +120,7 @@ void Node::bindShaders(
 void Node::bindShaders(DirectionNode * viewPoint) {
     bindShaders(material->getShaderProgram(), viewPoint);
 }
+
+QVector3D Node::getCenter() {
+  return position + mesh->boundingBox->getCenter() * size;
+}

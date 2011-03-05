@@ -155,8 +155,7 @@ Mesh * MeshFactory::load(string file, GLint drawType) {
     mesh->addBuffer(uvs, 2, "in_Uv");
     mesh->addElementBuffer(indices);
     mesh->setDrawType(drawType);
-    mesh->boundingBoxMax = boundingBoxMax;
-    mesh->boundingBoxMin = boundingBoxMin;
+    mesh->boundingBox = new AABB(boundingBoxMin,boundingBoxMax);
     glError;
     return mesh;
 }

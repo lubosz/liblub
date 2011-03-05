@@ -90,7 +90,7 @@ void SceneGraph::drawNodes(DirectionNode * viewPoint) {
           SceneData::Instance().getShadowLight()->bindShaderUpdate(node->getMaterial()->getShaderProgram());
           node->draw();
         } else {
-          QVector3D distance = node->getPosition() - SceneData::Instance().getCurrentCamera()->position;
+          QVector3D distance = node->getCenter() - SceneData::Instance().getCurrentCamera()->position;
           transparentNodes.insert(distance.length(), node);
         }
     }

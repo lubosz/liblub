@@ -49,5 +49,6 @@ class Node {
   void setMaterial(Material *material);
   float getSize() const;
   void update();
+  QVector3D getCenter();
 };
 
