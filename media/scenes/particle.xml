@@ -38,9 +38,9 @@
 	<Scene name="terrain">
 		<Light position ="0.3, 100.6, -3.3" direction="1,-5,-1" mesh="sphere" />
 		<Object name="uvmovenode" mesh="skymesh" material="CubeMap" scale="800" position="0, 0, 0" />
-		<Object name="Cloud1" mesh="cloud" material="cloudMat" scale="11" position="-21, -10, 0" transparent="true" rotation="0,10,0" />
-		<Object name="Cloud2" mesh="cloud" material="cloudMat" scale="20" position="-20, -20, 0" transparent="true" rotation="0,20,0" />
-		<Object name="Cloud3" mesh="cloud" material="cloudMat" scale="39" position="-10, -30, 0" transparent="true" rotation="0,30,0" />
+		<Object name="Cloud1" mesh="cloud" material="cloudMat" scale="11" position="-21, -10, 0" transparent="true" rotation="40,20,10" />
+		<Object name="Cloud2" mesh="cloud" material="cloudMat" scale="20" position="-20, -20, 0" transparent="true" rotation="50,30,20" />
+		<Object name="Cloud3" mesh="cloud" material="cloudMat" scale="39" position="-10, -30, 0" transparent="true" rotation="60,60,30" />
 		<!--
 		<Object name="Cloud2" mesh="cloud" material="cloudMatOp" scale="20" position="20, -20, 0" />
 		-->

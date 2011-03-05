@@ -186,7 +186,7 @@ void SceneLoader::appendMesh(const QDomElement & meshNode) {
 }
 
 void SceneLoader::appendObject(const QDomElement & objectNode) {
-    QVector3D position, direction;
+    QVector3D position, direction, rotation;
     string name;
     float scale;
     Material * material;
@@ -196,6 +196,10 @@ void SceneLoader::appendObject(const QDomElement & objectNode) {
         position = stringToVector3D(objectNode.attribute("position"));
     if (objectNode.hasAttribute("direction"))
         direction = stringToVector3D(objectNode.attribute("direction"));
+    if (objectNode.hasAttribute("rotation"))
+      rotation = stringToVector3D(objectNode.attribute("rotation"));
+    else
+      rotation = QVector3D();
     if (objectNode.hasAttribute("name"))
         name = objectNode.attribute("name").toStdString();
     if (objectNode.hasAttribute("scale"))
@@ -258,6 +262,8 @@ void SceneLoader::appendObject(const QDomElement & objectNode) {
         if (objectNode.attribute("transparent").contains("true",
                 Qt::CaseInsensitive))
             node->transparent = true;
+
+        node->setRotation(rotation);
 
         SceneGraph::Instance().addNode(node);
     } else if (objectNode.tagName() == "ObjectPlane") {
