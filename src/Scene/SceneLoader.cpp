@@ -255,6 +255,10 @@ void SceneLoader::appendObject(const QDomElement & objectNode) {
                 Qt::CaseInsensitive))
             node->setCastShadows(false);
 
+        if (objectNode.attribute("transparent").contains("true",
+                Qt::CaseInsensitive))
+            node->transparent = true;
+
         SceneGraph::Instance().addNode(node);
     } else if (objectNode.tagName() == "ObjectPlane") {
         string meshName = objectNode.attribute("mesh").toStdString();

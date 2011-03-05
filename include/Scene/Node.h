@@ -29,6 +29,7 @@ class Node {
 	);
 	virtual ~Node();
 
+	bool transparent;
 	Mesh * mesh;
   bool getCastShadows() const;
   void setCastShadows(bool castShadows);

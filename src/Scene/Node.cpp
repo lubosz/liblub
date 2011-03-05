@@ -18,6 +18,7 @@ Node::Node(string name, const QVector3D& position, float size,
          modelMatrix(QMatrix4x4()), castShadows(true),
         receiveShadows(false), mesh(mesh) {
     update();
+    transparent = false;
 }
 
 void Node::setMesh(Mesh *mesh) {

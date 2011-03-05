@@ -82,11 +82,22 @@ void SceneGraph::setShadowCoords(Node * node, DirectionNode * viewPoint) {
 void SceneGraph::drawNodes(DirectionNode * viewPoint) {
   //TODO: Multiple lights
     foreach(Node * node, sceneNodes) {
-        node->bindShaders(viewPoint);
-        setShadowCoords(node, viewPoint);
-        SceneData::Instance().getShadowLight()->bindShaderUpdate(node->getMaterial()->getShaderProgram());
-        node->draw();
+        if(!node->transparent) {
+          node->bindShaders(viewPoint);
+          setShadowCoords(node, viewPoint);
+          SceneData::Instance().getShadowLight()->bindShaderUpdate(node->getMaterial()->getShaderProgram());
+          node->draw();
+        }
     }
+    foreach(Node * node, sceneNodes) {
+        if(node->transparent) {
+          node->bindShaders(viewPoint);
+          setShadowCoords(node, viewPoint);
+          SceneData::Instance().getShadowLight()->bindShaderUpdate(node->getMaterial()->getShaderProgram());
+          node->draw();
+        }
+    }
+
     glError;
 }
 
