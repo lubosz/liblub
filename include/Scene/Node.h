@@ -14,7 +14,7 @@
 class Node {
  private:
 	string name;
-	QVector3D position;
+	QVector3D position, rotation;
 	float size;
 	Node * parent;
 	Material * material;
@@ -38,6 +38,7 @@ class Node {
   void setSize(float size);
   void setMesh(Mesh *mesh);
   void setPosition(const QVector3D& position);
+  void setRotation(const QVector3D& rotation);
   void draw();
   void bindShaders(ShaderProgram * shaderProgram, DirectionNode * viewPoint);
   void bindShaders(DirectionNode * viewPoint);

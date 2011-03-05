@@ -19,6 +19,7 @@ Node::Node(string name, const QVector3D& position, float size,
         receiveShadows(false), mesh(mesh) {
     update();
     transparent = false;
+    rotation = QVector3D();
 }
 
 void Node::setMesh(Mesh *mesh) {
@@ -27,6 +28,11 @@ void Node::setMesh(Mesh *mesh) {
 
 void Node::setPosition(const QVector3D& position) {
     this->position = position;
+    update();
+}
+
+void Node::setRotation(const QVector3D& rotation) {
+    this->rotation = rotation;
     update();
 }
 
@@ -88,6 +94,9 @@ void Node::update() {
     modelMatrix.setToIdentity();
     modelMatrix.translate(position);
     modelMatrix.scale(size);
+    modelMatrix.rotate(rotation.x(), QVector3D(1,0,0));
+    modelMatrix.rotate(rotation.y(), QVector3D(0,1,0));
+    modelMatrix.rotate(rotation.z(), QVector3D(0,0,1));
 }
 
 void Node::bindShaders(

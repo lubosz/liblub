@@ -86,6 +86,9 @@ Mesh * MeshFactory::load(string file, GLint drawType) {
     vector<GLfloat> uvs;
     vector<GLuint> indices;
 
+    QVector3D boundingBoxMin = QVector3D();
+    QVector3D boundingBoxMax = QVector3D();
+
     unsigned numIndices = 0;
 
     for (unsigned i = 0; i < assMesh->mNumFaces; i++) {
@@ -97,6 +100,24 @@ Mesh * MeshFactory::load(string file, GLint drawType) {
             positions.push_back(position.x);
             positions.push_back(position.y);
             positions.push_back(position.z);
+
+            if(i == 0 && j == 0) {
+                boundingBoxMin = QVector3D(position.x,position.y,position.z);
+                boundingBoxMax = QVector3D(position.x,position.y,position.z);
+            } else {
+              if (boundingBoxMin.x() > position.x)
+                boundingBoxMin.setX(position.x);
+              if (boundingBoxMin.y() > position.y)
+                boundingBoxMin.setY(position.y);
+              if (boundingBoxMin.z() > position.z)
+                boundingBoxMin.setZ(position.z);
+              if (boundingBoxMax.x() < position.x)
+                boundingBoxMax.setX(position.x);
+              if (boundingBoxMax.y() < position.y)
+                boundingBoxMax.setY(position.y);
+              if (boundingBoxMax.z() < position.z)
+                boundingBoxMax.setZ(position.z);
+            }
 
             aiVector3D normal = assMesh->mNormals[vertex];
             normals.push_back(normal.x);
@@ -134,6 +155,8 @@ Mesh * MeshFactory::load(string file, GLint drawType) {
     mesh->addBuffer(uvs, 2, "in_Uv");
     mesh->addElementBuffer(indices);
     mesh->setDrawType(drawType);
+    mesh->boundingBoxMax = boundingBoxMax;
+    mesh->boundingBoxMin = boundingBoxMin;
     glError;
     return mesh;
 }
