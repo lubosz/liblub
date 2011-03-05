@@ -32,7 +32,7 @@ RenderEngine::RenderEngine()
     // glTexEnvi(GL_POINT_SPRITE_ARB, GL_COORD_REPLACE_ARB, GL_TRUE);
     // glEnable(GL_POLYGON_OFFSET_FILL);
     // glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-     glEnable(GL_BLEND);
+
 //          glBlendFunc(GL_SRC_ALPHA,GL_ZERO);
 //          glBlendColor(1,1,1,0);
      glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);

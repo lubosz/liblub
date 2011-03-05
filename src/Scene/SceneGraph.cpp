@@ -80,6 +80,8 @@ void SceneGraph::setShadowCoords(Node * node, DirectionNode * viewPoint) {
 }
 
 void SceneGraph::drawNodes(DirectionNode * viewPoint) {
+  QMap <qreal, Node*> transparentNodes;
+
   //TODO: Multiple lights
     foreach(Node * node, sceneNodes) {
         if(!node->transparent) {
@@ -87,17 +89,26 @@ void SceneGraph::drawNodes(DirectionNode * viewPoint) {
           setShadowCoords(node, viewPoint);
           SceneData::Instance().getShadowLight()->bindShaderUpdate(node->getMaterial()->getShaderProgram());
           node->draw();
+        } else {
+          QVector3D distance = node->getPosition() - SceneData::Instance().getCurrentCamera()->position;
+          transparentNodes.insert(distance.length(), node);
         }
     }
-    foreach(Node * node, sceneNodes) {
-        if(node->transparent) {
-          node->bindShaders(viewPoint);
-          setShadowCoords(node, viewPoint);
-          SceneData::Instance().getShadowLight()->bindShaderUpdate(node->getMaterial()->getShaderProgram());
-          node->draw();
-        }
-    }
+    if (transparentNodes.size() > 0) {
+      glEnable(GL_BLEND);
+      QList<qreal> transparentKeys = transparentNodes.keys();
+      qSort(transparentKeys.begin(), transparentKeys.end(), qGreater<qreal>());
 
+      foreach(qreal transparentKey, transparentKeys) {
+        Node * node = transparentNodes[transparentKey];
+        node->bindShaders(viewPoint);
+        setShadowCoords(node, viewPoint);
+        SceneData::Instance().getShadowLight()->bindShaderUpdate(
+            node->getMaterial()->getShaderProgram());
+        node->draw();
+      }
+      glDisable(GL_BLEND);
+    }
     glError;
 }
 
