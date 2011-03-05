@@ -63,6 +63,7 @@ void Node::setMaterial(Material *material) {
 void Node::draw() {
     material->activate();
     mesh->draw();
+    mesh->boundingBox->draw();
 }
 
 void Node::setSize(float size) {

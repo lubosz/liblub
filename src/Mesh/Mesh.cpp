@@ -81,6 +81,7 @@ void Mesh::setDrawType(GLint drawType) {
 
 void Mesh::draw() {
   // glDrawElementsInstanced(drawType, indexSize, GL_UNSIGNED_INT, 0,6);
+  glError;
   glBindVertexArray(vao);
   glError;
   glDrawElements(drawType, indexSize, GL_UNSIGNED_INT, 0);
