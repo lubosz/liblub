@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<liblub>
+	<Programs>
+		<Program name="Relief">
+			<Shader url="Bump/relief" />
+			<Uniform value="0.2, 0.2, 0.2, 1.0" name="ambient" />
+			<Uniform value="1, 1, 1, 1.0" name="diffuse" />
+			<Uniform value="0.4, 0.4, 0.4, 1.0" name="specular" />
+			<Uniform value="0.1, 1000.0" name="planes" />
+			<Uniform value="1.0" name="tile" />
+			<Uniform value="0.2" name="depth" />
+		</Program>
+	</Programs>
+	<Textures>
+		<Texture name="reliefColor" url="bump/tile1.jpg" />
+		<Texture name="reliefMap" url="bump/tile1.tga" />
+	</Textures>
+	<Meshes>
+		<File name="cube" url="cube.obj" />
+		<File name="blendcube" url="cube2.blend" />
+	</Meshes>
+	<Materials>
+		<Material name="relief" program="Relief">
+			<Layer sampler="colortex" texture="reliefColor" />
+			<Layer sampler="reliefMap" texture="reliefMap" />
+		</Material>
+	</Materials>
+	<Scene name="PCF Shadow Mapping">
+		<Light position ="-9.1, 20.5, 3.5" direction="1,-5,-1" />
+		<Object name="uvmovenode" mesh="blendcube" material="relief" scale="1.0" position="3,-2,-9" />
+		<Object name="bump" mesh="cube" material="relief" scale="1.0" position="3,-2,-5" />
+	</Scene>
+</liblub>
