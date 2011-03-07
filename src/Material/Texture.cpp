@@ -34,7 +34,7 @@ void Texture::uniform(GLuint program) {
 
     glError;
 }
-
+/*
 fipImage * Texture::readImage(
         string path, GLint * glChannelOrder, GLint * texChannelOrder) {
   fipImage * image = new fipImage();
@@ -68,3 +68,4 @@ fipImage * Texture::readImage(
 
     return image;
 }
+*/

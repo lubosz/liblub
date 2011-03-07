@@ -10,6 +10,8 @@
 #include "Material/Textures.h"
 #include "System/Config.h"
 #include "System/Logger.h"
+#include <QImage>
+#include <QDebug>
 
 DepthTexture::DepthTexture(GLuint width, GLuint height, string name,
         GLenum glId) {
@@ -92,10 +94,15 @@ TextureFile::TextureFile(string filename, GLenum glId, string name) {
     this->glId = glId;
     this->name = name;
 
-    string path = Config::Instance().value<string> ("textureDir") + filename;
-    GLint * glChannelOrder = new GLint();
-    GLint * texChannelOrder = new GLint();
-    fipImage * image = readImage(path, glChannelOrder, texChannelOrder);
+    QString path = QString::fromStdString(Config::Instance().value<string> ("textureDir") + filename);
+    QImage * image = new QImage();
+    image->load(path);
+
+    qDebug() << path << image->bitPlaneCount();
+
+//    GLint * glChannelOrder = new GLint();
+//    GLint * texChannelOrder = new GLint();
+//    fipImage * image = readImage(path, glChannelOrder, texChannelOrder);
 
     glGenTextures(1, &texture);
     Logger::Instance().message << "Creating texture from file #" << texture
@@ -114,9 +121,13 @@ TextureFile::TextureFile(string filename, GLenum glId, string name) {
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 
-    glTexImage2D(GL_TEXTURE_2D, 0, *glChannelOrder, image->getWidth(),
-            image->getHeight(), 0, *texChannelOrder, GL_UNSIGNED_BYTE,
-            image->accessPixels());
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, image->width(),
+                image->height(), 0, GL_BGRA, GL_UNSIGNED_BYTE,
+                image->bits());
+
+//    glTexImage2D(GL_TEXTURE_2D, 0, *glChannelOrder, image->getWidth(),
+//            image->getHeight(), 0, *texChannelOrder, GL_UNSIGNED_BYTE,
+//            image->accessPixels());
 
     glBindTexture(textureType, 0);
 }
@@ -196,15 +207,15 @@ CubeTextureFile::CubeTextureFile(string filename, GLenum glId, string name) {
     vector<string> suffixes = Config::Instance().values<string> ("suffixes");
 
     for (int face = 0; face < 6; face++) {
-        string path = textureDir + filename + suffixes[face] + ".jpg";
+      //TODO: jpeg hardcoded
+      QString path = QString::fromStdString(textureDir + filename + suffixes[face] + ".jpg");
 
-        GLint * glChannelOrder = new GLint();
-        GLint * texChannelOrder = new GLint();
-        fipImage * image = readImage(path, glChannelOrder, texChannelOrder);
+        QImage image;
+        image.load(path);
 
         glBindTexture(textureType, texture);
-        glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + face, 0, *glChannelOrder,
-                image->getWidth(), image->getHeight(), 0, *texChannelOrder,
-                GL_UNSIGNED_BYTE, image->accessPixels());
+        glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + face, 0, GL_RGBA,
+                image.width(), image.height(), 0, GL_BGRA,
+                GL_UNSIGNED_BYTE, image.bits());
     }
 }

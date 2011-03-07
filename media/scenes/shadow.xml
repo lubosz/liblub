@@ -40,7 +40,7 @@
 		<Texture name="plane-occlusion" url="plane-occlusion.png" />
 		
 		<Texture name="reliefColor" url="bump/tile1.jpg" />
-		<Texture name="reliefMap" url="bump/tile1.tga" />
+		<Texture name="reliefMap" url="bump/tile1.png" />
 	</Textures>
 	<Meshes>
 		<File name="cube" url="cube.obj" />

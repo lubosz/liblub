@@ -110,7 +110,11 @@ set(SOURCES ${SOURCES} ${GLOB_RESULT})
 add_library(lub ${SOURCES})
 
 #link
-target_link_libraries(lub ${OPENGL_LIB} freeimageplus ${QT_LIBRARIES} assimp)
+target_link_libraries(lub ${OPENGL_LIB} 
+#freeimageplus 
+${QT_LIBRARIES} 
+assimp
+)
 
 IF(WITH_SDL)
     if(SDL_LOCAL)

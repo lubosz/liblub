@@ -89,7 +89,7 @@
 		<Texture name="spectrum" url="spectrum.png" />
 		<Texture name="spheremap_bar" url="spheremaps/spheremap_bar.jpg" />
 		<Texture name="paper" url="Paper_Texture_by_Spiteful_Pie_Stock.jpg" />
-		<Texture name="waves" url="ocean/waves2.dds" />
+		<Texture name="waves" url="ocean/waves.png" />
 		<TextureCube name="sky" url="cubemaps/sky" />
 		<TextureCube name="morning" url="cubemaps/morning" />
 	</Textures>
