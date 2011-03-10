@@ -24,6 +24,13 @@ class TextureFile : public Texture {
 	TextureFile(string filename, GLenum glId, string name);
 };
 
+
+class TextureQImage : public Texture {
+ public:
+  TextureQImage(QImage * image, GLenum glId, string name);
+};
+
+
 class SplatTexture : public Texture {
  public:
 	SplatTexture(GLenum glId, string name, int resolution);

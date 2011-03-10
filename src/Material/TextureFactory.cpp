@@ -47,6 +47,12 @@ Texture * TextureFactory::load(string filename, string name) {
   textureCount++;
   return texture;
 }
+Texture * TextureFactory::load(QImage * image, string name) {
+  Texture * texture =
+          new TextureQImage(image, textureEnums[textureCount], name);
+  textureCount++;
+  return texture;
+}
 Texture * TextureFactory::loadCubeMap(string filename, string name) {
   Texture * texture =
           new CubeTextureFile(filename, textureEnums[textureCount], name);

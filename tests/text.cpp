@@ -15,7 +15,8 @@ public:
 
   void runTest() {
     GUI gui;
-    gui.drawText("Heloww!");
+    QImage * image = gui.drawText("Heloww!");
+    image->save("foo.png");
   }
 };
 

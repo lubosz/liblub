@@ -17,8 +17,11 @@
     along with liblub.  If not, see <http://www.gnu.org/licenses/>.
 */
 #include <string>
+#include <QApplication>
 #include "System/Application.h"
+#include "System/GUI.h"
 #include "Scene/SceneLoader.h"
+#include "Scene/SceneData.h"
 #include "System/Logger.h"
 
 class LoadApp: public Application {
@@ -34,10 +37,26 @@ class LoadApp: public Application {
 
   void scene() {
     sceneLoader->load();
+
+    GUI gui;
+    QImage * textImage = gui.drawText(SceneData::Instance().name);
+
+    Texture * textTexture = TextureFactory::Instance().load(textImage,"myTexture");
+
+    Material * material = new EmptyMat();
+    material->shaderProgram = SceneData::Instance().shaderPrograms.value("Texture");
+    material->addTexture(textTexture);
+//    Material * material = new PhongColor(QVector3D(1, 1, 1));
+    Node * plane = new Node("Plane", { 0, 0, 0 }, 2, MeshFactory::load(
+        "plane.blend"), material);
+    plane->transparent = true;
+    plane->setRotation(QVector3D(-90,0,180));
+    SceneGraph::Instance().addNode(plane);
   }
 };
 
 int main(int argc, char *argv[]) {
+  QApplication app(argc, argv);
   if (argc == 2) {
     LoadApp(argv[1]).run();
   } else {

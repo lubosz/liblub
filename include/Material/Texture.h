@@ -9,6 +9,7 @@
 
 #include "common/OpenGL.h"
 #include <string>
+#include <QImage>
 
 using std::string;
 
@@ -31,5 +32,6 @@ class Texture {
 	void readFreeImage(GLenum target, string path);
 #else
 	void readQImage(GLenum target, string path);
+	void loadQImage(GLenum target, QImage * image);
 #endif
 };

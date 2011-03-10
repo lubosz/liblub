@@ -8,6 +8,7 @@
 #include <vector>
 #include <string>
 #include "Material/Textures.h"
+#include "System/GUI.h"
 #include "System/Config.h"
 #include "System/Logger.h"
 #include <QImage>
@@ -118,6 +119,30 @@ TextureFile::TextureFile(string filename, GLenum glId, string name) {
 #else
     readQImage(GL_TEXTURE_2D,path);
 #endif
+
+    glBindTexture(textureType, 0);
+}
+
+TextureQImage::TextureQImage(QImage * image, GLenum glId, string name) {
+    textureType = GL_TEXTURE_2D;
+
+    this->glId = glId;
+    this->name = name;
+
+    glGenTextures(1, &texture);
+    Logger::Instance().message << "Creating texture from qimage #" << texture
+            << " " << name;
+    Logger::Instance().log("DEBUG", "QImage Texture");
+
+    glBindTexture(GL_TEXTURE_2D, texture);
+
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+
+    loadQImage(GL_TEXTURE_2D,image);
 
     glBindTexture(textureType, 0);
 }

@@ -7,6 +7,7 @@
 
 #pragma once
 #include <vector>
+#include <QImage>
 #include "Material/Texture.h"
 #include "common/Singleton.h"
 
@@ -17,6 +18,7 @@ class TextureFactory : public Singleton<TextureFactory> {
 	Texture * depthTexture(GLuint width, GLuint height, string name);
 	Texture * colorTexture(GLuint width, GLuint height, string name);
 	Texture * load(string filename, string name);
+	Texture * load(QImage * image, string name);
 	Texture * loadCubeMap(string filename, string name);
 	Texture * splatTexture(string name, int resolution);
  private:

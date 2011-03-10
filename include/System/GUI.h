@@ -7,12 +7,14 @@
 
 #pragma once
 
-#include <QString>
+#include <string>
 #include <QImage>
+
+using std::string;
 
 class GUI {
 public:
   GUI();
   virtual ~GUI();
-  QImage * drawText(const QString & text);
+  QImage * drawText(const string & text);
 };
