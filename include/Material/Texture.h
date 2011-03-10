@@ -8,7 +8,6 @@
 #pragma once
 
 #include "common/OpenGL.h"
-#include <FreeImagePlus.h>
 #include <string>
 
 using std::string;
@@ -24,10 +23,13 @@ class Texture {
 	GLenum glId;
 	GLuint texture;
 	GLuint textureType;
+	GLint glChannelOrder, texChannelOrder;
 
 	virtual ~Texture();
 
-	fipImage * readImage(
-	        string path, GLint * glChannelOrder, GLint * texChannelOrder
-	);
+#if USE_FREEIMAGE
+	void readFreeImage(GLenum target, string path);
+#else
+	void readQImage(GLenum target, string path);
+#endif
 };

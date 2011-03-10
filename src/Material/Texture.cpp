@@ -5,6 +5,14 @@
  *  Created on: Mar 24, 2010
  */
 #include <string>
+
+#if USE_FREEIMAGE
+#include <FreeImagePlus.h>
+#else
+#include <QImage>
+#include <QDebug>
+#endif
+
 #include "Material/Texture.h"
 #include "System/Logger.h"
 
@@ -34,9 +42,8 @@ void Texture::uniform(GLuint program) {
 
     glError;
 }
-/*
-fipImage * Texture::readImage(
-        string path, GLint * glChannelOrder, GLint * texChannelOrder) {
+#if USE_FREEIMAGE
+void Texture::readFreeImage(GLenum target, string path) {
   fipImage * image = new fipImage();
   image->load(path.c_str());
   Logger::Instance().message
@@ -48,14 +55,14 @@ fipImage * Texture::readImage(
     Logger::Instance().log("DEBUG", "Texture");
 
     if (image->getBitsPerPixel() == 32) {
-      *glChannelOrder = GL_RGBA;
-      *texChannelOrder = GL_BGRA;
+      glChannelOrder = GL_RGBA;
+      texChannelOrder = GL_BGRA;
     } else if (image->getBitsPerPixel() == 24) {
-      *glChannelOrder = GL_RGB;
-      *texChannelOrder = GL_BGR;
+      glChannelOrder = GL_RGB;
+      texChannelOrder = GL_BGR;
     } else {
-      *glChannelOrder = GL_RGB;
-      *texChannelOrder = GL_BGR;
+      glChannelOrder = GL_RGB;
+      texChannelOrder = GL_BGR;
       Logger::Instance().log("WARNING",
               "Texture", "Converting "+ path+ " to 24bits.");
       if (image->convertTo24Bits()) {
@@ -66,6 +73,31 @@ fipImage * Texture::readImage(
       }
     }
 
-    return image;
+    glTexImage2D(target, 0, glChannelOrder, image->getWidth(),
+                image->getHeight(), 0, texChannelOrder, GL_UNSIGNED_BYTE,
+                image->accessPixels());
 }
-*/
+#else
+void Texture::readQImage(GLenum target, string path) {
+  QImage image;
+  image.load(QString::fromStdString(path));
+
+  if (image.bitPlaneCount() == 32) {
+    glChannelOrder = GL_RGBA;
+    texChannelOrder = GL_BGRA;
+  } else {
+    glChannelOrder = GL_RGB;
+    //TODO: Why a?
+    texChannelOrder = GL_BGRA;
+  }
+    qDebug() << image.bitPlaneCount() << image.format();
+    if (image.hasAlphaChannel())
+      qDebug() << "yup";
+    else
+      qDebug() << "nop";
+
+    glTexImage2D(target, 0, glChannelOrder, image.width(),
+                 image.height(), 0, texChannelOrder, GL_UNSIGNED_BYTE,
+                 image.bits());
+}
+#endif
