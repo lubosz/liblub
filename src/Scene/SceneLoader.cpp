@@ -213,30 +213,27 @@ void SceneLoader::appendObject(const QDomElement & objectNode) {
     }
     if (objectNode.tagName() == "Light") {
       string lightName;
-      if (objectNode.hasAttribute("name")) {
+      if (objectNode.hasAttribute("name"))
         lightName = objectNode.attribute("name").toStdString();
 
-      } else {
-        lightName = "light";
-      }
-        SceneData::Instance().lights.insert(lightName,new Light(position, direction));
-        if (objectNode.hasAttribute("mesh")) {
-          string meshName = objectNode.attribute("mesh").toStdString();
-          if (SceneData::Instance().meshes.count(meshName) > 0)
-            mesh = SceneData::Instance().meshes.value(meshName);
-          else
-            Logger::Instance().log("ERROR", "Mesh Not Found", meshName);
+      SceneData::Instance().addLight(lightName,new Light(position, direction));
+      if (objectNode.hasAttribute("mesh")) {
+        string meshName = objectNode.attribute("mesh").toStdString();
+        if (SceneData::Instance().meshes.count(meshName) > 0)
+          mesh = SceneData::Instance().meshes.value(meshName);
+        else
+          Logger::Instance().log("ERROR", "Mesh Not Found", meshName);
 
-          Material * lightMat;
-          if (objectNode.hasAttribute("material")) {
-            lightMat = material;
-          } else {
-            lightMat = new Simple("Color/white");
-          }
-          Node * lightNode = new Node("Light", position, 1, mesh, lightMat);
-          lightNode->setCastShadows(false);
-          SceneGraph::Instance().addNode(lightNode);
+        Material * lightMat;
+        if (objectNode.hasAttribute("material")) {
+          lightMat = material;
+        } else {
+          lightMat = new Simple("Color/white");
         }
+        Node * lightNode = new Node("Light", position, 1, mesh, lightMat);
+        lightNode->setCastShadows(false);
+        SceneGraph::Instance().addNode(lightNode);
+      }
     } else if (objectNode.tagName() == "Object") {
         string meshName = objectNode.attribute("mesh").toStdString();
         if (SceneData::Instance().meshes.count(meshName) > 0)

@@ -55,7 +55,7 @@
 		<Texture name="mud-normal" url="terrain/mud-normal.png" />
 		<Texture name="noise" url="terrain-noise-blur.jpg" />
 		<TextureCube name="sky" url="cubemaps/sky" />
-		<Texture name="waves" url="ocean/waves2.dds" />
+		<Texture name="waves" url="ocean/waves.png" />
 	</Textures>
 	<Materials>
 		<Material name="uvmove" program="uvmove">

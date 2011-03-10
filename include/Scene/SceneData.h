@@ -29,7 +29,6 @@ public:
   QMap<string, Texture*> textures;
   QMap<string, Material*> materials;
   QMap<string, Mesh*> meshes;
-  QMap<string, Light*> lights;
   QMap<string, Camera*> cameras;
 
   SceneData();
@@ -39,11 +38,15 @@ public:
   void addProgram(string & name, ShaderProgram * program);
   ShaderProgram* getProgram(const string & name);
 
+  void addLight(string & name, Light * light);
+  Light* getLight(const string & name);
+
    Camera * getCurrentCamera();
    Light * getShadowLight();
    Light * getMoveLight();
 private:
   Camera *currentCamera;
+  QMap<string, Light*> lights;
   Light *shadowLight, *moveLight;
 };
 

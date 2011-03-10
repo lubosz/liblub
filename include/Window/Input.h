@@ -27,6 +27,8 @@
 class Input {
  public:
 
+  float inputSpeed, mouseSensitivity;
+
 		#if defined WITH_SDL || defined WITH_SFML
 			Input();
 		#else

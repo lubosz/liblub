@@ -385,7 +385,7 @@ void MediaLayer::mouseLook(int x, int y) {
   int yRel = y - halfHeight;
 
   if (!(xRel == 0 && yRel == 0) && grab) {
-    SceneData::Instance().getCurrentCamera()->setMouseLook(xRel, yRel);
+    SceneData::Instance().getCurrentCamera()->setMouseLook(xRel, yRel, input->mouseSensitivity);
     if (grab)
         XWarpPointer(
                 display, None, window, x, y,

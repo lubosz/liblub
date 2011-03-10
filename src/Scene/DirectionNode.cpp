@@ -14,9 +14,6 @@ DirectionNode::DirectionNode(){
   yaw = 0, pitch = 0, roll = 0;
 
   // TODO(bmonkey): Hardcoded values => xml
-  speed = .1;
-  mouseSensitivity = .1;
-
   aspect = 1920.0 / 1200.0;
 
   fov = 70.0;
@@ -82,4 +79,63 @@ void DirectionNode::setAspect(qreal aspect) {
     /* Create our projection matrix with a 45 degree field of view
      * a width to height ratio of 1 and view from .1 to 100 infront of us */
     updatePerspective();
+}
+
+
+void DirectionNode::forwardDirection(qreal distance) {
+  QVector3D front = direction;
+  front.normalize();
+  position += distance*front;
+  updateView();
+}
+
+void DirectionNode::backwardDirection(qreal distance) {
+  QVector3D front = direction;
+  front.normalize();
+  position -= distance*front;
+  updateView();
+}
+
+void DirectionNode::leftDirection(qreal distance) {
+  QVector3D side = QVector3D::crossProduct(direction, up);
+  side.normalize();
+  position -= distance * side;
+  updateView();
+}
+
+void DirectionNode::rightDirection(qreal distance) {
+  QVector3D side = QVector3D::crossProduct(direction, up);
+  side.normalize();
+  position += distance * side;
+  updateView();
+}
+
+void DirectionNode::leftWorld(qreal distance) {
+    position += QVector3D(-distance, 0, 0);
+    update();
+}
+
+void DirectionNode::rightWorld(qreal distance) {
+    position += QVector3D(distance, 0, 0);
+    update();
+}
+
+void DirectionNode::upWorld(qreal distance) {
+    position += QVector3D(0, distance, 0);
+    update();
+}
+
+void DirectionNode::downWorld(qreal distance) {
+    position += QVector3D(0, -distance, 0);
+    update();
+}
+
+void DirectionNode::forwardWorld(qreal distance) {
+    position += QVector3D(0, 0, distance);
+    update();
+}
+
+void DirectionNode::backWorld(qreal distance) {
+    position += QVector3D(0, 0, -distance);
+    update();
 }

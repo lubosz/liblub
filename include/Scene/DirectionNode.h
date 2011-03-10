@@ -23,8 +23,6 @@ public:
 
   QMatrix4x4 viewMatrix, projectionMatrix, rotation;
 
-  float mouseSensitivity, speed;
-
   QVector3D getDirection() const;
 
   QVector3D getPosition() const;
@@ -38,6 +36,20 @@ public:
   void setAspect(qreal aspect);
   void setParams(qreal fov, qreal near, qreal far);
 
+  void forwardDirection(qreal distance);
+  void backwardDirection(qreal distance);
+  void leftDirection(qreal distance);
+  void rightDirection(qreal distance);
+
+  void leftWorld(qreal distance);
+  void rightWorld(qreal distance);
+  void upWorld(qreal distance);
+  void downWorld(qreal distance);
+  void forwardWorld(qreal distance);
+  void backWorld(qreal distance);
+
   void updatePerspective();
   void updateView();
+
+  virtual void update() = 0;
 };

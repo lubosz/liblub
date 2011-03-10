@@ -20,35 +20,7 @@ Camera::~Camera() {
   // TODO(bmonkey): Auto-generated destructor stub.
 }
 
-void Camera::forward() {
-  QVector3D front = direction;
-  front.normalize();
-  position += speed*front;
-  updateView();
-}
-
-void Camera::backward() {
-  QVector3D front = direction;
-  front.normalize();
-  position -= speed*front;
-  updateView();
-}
-
-void Camera::left() {
-  QVector3D side = QVector3D::crossProduct(direction, up);
-  side.normalize();
-  position -= speed * side;
-  updateView();
-}
-
-void Camera::right() {
-  QVector3D side = QVector3D::crossProduct(direction, up);
-  side.normalize();
-  position += speed * side;
-  updateView();
-}
-
-void Camera::setMouseLook(int mouseXrel, int mouseYrel) {
+void Camera::setMouseLook(int mouseXrel, int mouseYrel, qreal mouseSensitivity) {
   pitch -= mouseSensitivity * mouseXrel;
   yaw -= mouseSensitivity * mouseYrel;
   if (yaw > 89) yaw = 89;
@@ -68,5 +40,9 @@ void Camera::updateRotation() {
   rotation.rotate(yaw, 1, 0, 0);
   direction = rotation * defaultDirection;
   direction.normalize();
+  updateView();
+}
+
+void Camera::update() {
   updateView();
 }

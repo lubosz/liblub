@@ -13,6 +13,10 @@
 #include "Mesh/MeshFactory.h"
 #include "System/Logger.h"
 
+Light::Light() {
+  Light(QVector3D(), QVector3D(0,-1,0));
+}
+
 Light::Light(const QVector3D& position, const QVector3D & direction) {
   this->position = position;
   this->direction = direction;
@@ -71,36 +75,6 @@ void Light::bindShaderInit(ShaderProgram * shaderProgram) {
     // spot
     glUniform1f(glGetUniformLocation(program, "spotOuterAngle"), 0.9);
     glUniform1f(glGetUniformLocation(program, "spotInnerAngle"), 0.8);
-}
-
-void Light::moveLeft() {
-    position += QVector3D(-speed, 0, 0);
-    update();
-}
-
-void Light::moveRight() {
-    position += QVector3D(speed, 0, 0);
-    update();
-}
-
-void Light::moveUp() {
-    position += QVector3D(0, speed, 0);
-    update();
-}
-
-void Light::moveDown() {
-    position += QVector3D(0, -speed, 0);
-    update();
-}
-
-void Light::moveForward() {
-    position += QVector3D(0, 0, speed);
-    update();
-}
-
-void Light::moveBack() {
-    position += QVector3D(0, 0, -speed);
-    update();
 }
 
 void Light::update() {
