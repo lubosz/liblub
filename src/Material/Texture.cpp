@@ -82,19 +82,24 @@ void Texture::readQImage(GLenum target, string path) {
   QImage image;
   image.load(QString::fromStdString(path));
 
+  //Qt loads image with wrong pixel order
+  image = image.mirrored(false, true);
+//    QImage image = QGLWidget::convertToGLFormat(imageFoo);
+
   if (image.bitPlaneCount() == 32) {
     glChannelOrder = GL_RGBA;
     texChannelOrder = GL_BGRA;
   } else {
     glChannelOrder = GL_RGB;
-    //TODO: Why a?
+    //TODO: Qt needs A
     texChannelOrder = GL_BGRA;
   }
-    qDebug() << image.bitPlaneCount() << image.format();
-    if (image.hasAlphaChannel())
-      qDebug() << "yup";
-    else
-      qDebug() << "nop";
+//    qDebug() << image.bitPlaneCount() << image.format();
+//    if (image.hasAlphaChannel())
+//      qDebug() << "yup";
+//    else
+//      qDebug() << "nop";
+
 
     glTexImage2D(target, 0, glChannelOrder, image.width(),
                  image.height(), 0, texChannelOrder, GL_UNSIGNED_BYTE,

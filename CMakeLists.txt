@@ -109,11 +109,11 @@ set(SOURCES ${SOURCES} ${GLOB_RESULT})
 
 add_library(lub ${SOURCES})
 
-ADD_DEFINITIONS(-DUSE_FREEIMAGE)
+#ADD_DEFINITIONS(-DUSE_FREEIMAGE)
 
 #link
 target_link_libraries(lub ${OPENGL_LIB} 
-freeimageplus 
+#freeimageplus 
 ${QT_LIBRARIES} 
 assimp
 )
