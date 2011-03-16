@@ -22,7 +22,7 @@ GUI::~GUI() {
 }
 
 QImage * GUI::drawText(const string & text) {
-  QSize textSize(350,350);
+  QSize textSize(1000,1000);
   QRectF textBox(0,0,textSize.width(), textSize.height());
 
   //clean image
@@ -43,7 +43,7 @@ QImage * GUI::drawText(const string & text) {
   fontPainter.setRenderHint(QPainter::Antialiasing, true);
   fontPainter.setRenderHint(QPainter::TextAntialiasing, true);
   fontPainter.setRenderHint(QPainter::SmoothPixmapTransform, true);
-  fontPainter.setFont(QFont("Arial", 20));
+  fontPainter.setFont(QFont("Ubuntu", 70));
   fontPainter.setPen(Qt::white);
   fontPainter.drawText(textBox, Qt::AlignCenter, QString::fromStdString(text));
   fontPainter.end();
