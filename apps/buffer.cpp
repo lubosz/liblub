@@ -39,15 +39,60 @@ class LoadApp: public Application {
 
 
   void scene() {
+    string bufferName = "LightSourceBuffer";
+    unsigned uniformCount = 4;
+    GLuint* currentUniformIndices= new GLuint[uniformCount];
+    const char* uniformStrings[4] = {
+        "position",
+        "diffuseColor",
+        "specularColor",
+        "direction",
+    };
+
+    GLint bufferSize;
+
     sceneLoader->load();
+
     UniformBuffer * lightBuffer = new UniformBuffer();
     lightBuffer->bind();
     ShaderProgram * uberShader = SceneData::Instance().getProgram("multilight");
     uberShader->bindUniformBuffer("LightSourceBuffer",0,lightBuffer->getHandle());
-    foreach(Light* light, SceneData::Instance().lights){
-      printf("Found Light %s\n", SceneData::Instance().lights.key(light).c_str());
-    }
 
+    GLuint uniBlockIndex = glGetUniformBlockIndex(uberShader->getReference(), bufferName.c_str());
+    glGetActiveUniformBlockiv(
+      uberShader->getReference(),
+      uniBlockIndex,
+      GL_UNIFORM_BLOCK_DATA_SIZE,
+      &bufferSize
+    );
+
+    lightBuffer->alloc(bufferSize);
+
+    foreach(Light* light, SceneData::Instance().lights){
+
+      GLint * bufferOffsets = new GLint[uniformCount];
+
+      printf("Found Light %s\n", SceneData::Instance().lights.key(light).c_str());
+
+      //first, get indices of current lightsource members:
+      glGetUniformIndices(
+          uberShader->getReference(),
+          uniformCount,
+          uniformStrings,
+          currentUniformIndices
+      );
+      glError;
+      //second, get offset in buffer for those members, indentified by the queried indices:
+      glGetActiveUniformsiv(
+          uberShader->getReference(),
+          //uniformCount,
+          0,
+          currentUniformIndices,
+          GL_UNIFORM_OFFSET,
+          bufferOffsets
+      );
+      glError;
+    }
 
   }
 };
