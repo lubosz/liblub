@@ -1,6 +1,6 @@
 #version 330 core
 
-uniform sampler2D color;
+//uniform sampler2D color;
 
 in vec2 uv;
 in vec4 positionView;
@@ -10,6 +10,6 @@ out vec4 fragColor;
 void main(void) {
 //    fragColor = texture(color, uv);
 //fragColor = positionView;
-fragColor = vec4(dist/10.0);
-
+//fragColor = vec4(dist/1000.0);
+fragColor = vec4(1);
 }

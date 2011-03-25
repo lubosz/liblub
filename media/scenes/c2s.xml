@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <liblub>
+	<include url="common/programs.xml" />
 	<Programs>
-		<Program name="uvmove">
+		<Program name="c2s">
 			<Shader url="Geometry/c2s" />
 		<!--
 			<Shader url="Geometry/c2s.vert" type="VERTEX_SHADER" />
@@ -11,21 +12,33 @@
 			<Uniform value="0.8, 0.8, 0.8, 1.0" name="specularMaterialColor" />
 			<Uniform value="4.3" name="shininess" />
 		</Program>
+		<Program name="CubeMap">
+			<Shader url="Env/cubemapSkyFade" />
+		</Program>
 	</Programs>
 	<Textures>
+	<!--
 		<Texture name="bunny" url="ground.jpg" />
+	-->
+		<TextureCube name="sky" url="cubemaps/stormy" />
+		<TextureCube name="space" url="cubemaps/space" />
 	</Textures>
 	<Materials>
-		<Material name="uvmove" program="uvmove">
-			<Layer sampler="color" texture="bunny" />
+		<Material name="c2s" program="c2s">
+			<!--<Layer sampler="color" texture="bunny" />-->
+		</Material>
+		<Material name="CubeMap" program="CubeMap">
+			<Layer sampler="planetMap" texture="sky" />
+			<Layer sampler="spaceMap" texture="space" />
 		</Material>
 	</Materials>
 	<Meshes>
-		<File name="cube" url="clipmapc.blend" />
-		<File name="sphere" url="earth.obj" drawType="LINES" />
+		<File name="clipmapmesh" url="clipmapc.blend" />
+		<File name="skymesh" url="earth.obj" />
 	</Meshes>
-	<Scene name="Cone Step Mapping">
-		<Light position ="0.3, 6.6, -3.3" direction="1,-5,-1" mesh="sphere" />
-		<Object name="uvmovenode" mesh="cube" material="uvmove" scale="1.0" position="0, 0, 0" />
+	<Scene name="Cube2Sphere">
+		<Light position ="0.3, 6.6, -3.3" direction="1,-5,-1" />
+		<Object name="sky" mesh="skymesh" material="CubeMap" scale="800" position="0, 0, 0" />
+		<Object name="planet" mesh="clipmapmesh" material="c2s" scale="100.0" position="0, -100, 0" />
 	</Scene>
 </liblub>

@@ -18,7 +18,7 @@ uniform float Radius;
 void main(void) {
 	uv = in_Uv;
     dist = distance(cameraPosition,in_Vertex.xyz);
-    float Blend = max(0, min((dist -5) / 5.0, 1));
+    float Blend = max(0, min((dist) / 100.0, 1));
 
 	vec3 sphereVert = normalize(in_Vertex);
 	vec3 normal = mix(in_Normal, sphereVert, Blend);
