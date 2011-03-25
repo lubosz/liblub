@@ -4,6 +4,7 @@
  *
  *  Created on: Mar 22, 2010
  */
+#include <assert.h>
 #include <vector>
 #include <string>
 #include "Material/ShaderProgram.h"
@@ -252,6 +253,8 @@ void ShaderProgram::translateUniformf(unsigned id, const vector<float> & values)
 void ShaderProgram::bindUniformBuffer(string name, GLuint bindIndex, GLuint bufferHandle) {
   glBindBufferBase(GL_UNIFORM_BUFFER, bindIndex, bufferHandle);
   GLuint blockIndex = glGetUniformBlockIndex(program, name.c_str());
-//  assert(blockIndex != GL_INVALID_INDEX);
+  if(blockIndex == GL_INVALID_INDEX)
+    Logger::Instance().log("ERROR", "Uniform Buffer not found in Shader", name);
   glUniformBlockBinding(program, blockIndex, bindIndex);
+  glError;
 }

@@ -30,6 +30,7 @@ public:
   QMap<string, Material*> materials;
   QMap<string, Mesh*> meshes;
   QMap<string, Camera*> cameras;
+  QMap<string, Light*> lights;
 
   SceneData();
   virtual ~SceneData();
@@ -46,7 +47,6 @@ public:
    Light * getMoveLight();
 private:
   Camera *currentCamera;
-  QMap<string, Light*> lights;
   Light *shadowLight, *moveLight;
 };
 

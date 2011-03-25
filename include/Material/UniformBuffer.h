@@ -20,6 +20,13 @@ public:
   void read(void* data);
   void copy(GLuint sourceBuffer);
 
+  GLuint getHandle() {
+    return handle;
+  }
+  GLuint getSize() {
+    return size;
+  }
+
 private:
   GLuint handle;
   GLuint size;

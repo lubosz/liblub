@@ -23,6 +23,7 @@
 #include "Scene/SceneLoader.h"
 #include "Scene/SceneData.h"
 #include "System/Logger.h"
+#include "Material/UniformBuffer.h"
 #include <QPainter>
 
 class LoadApp: public Application {
@@ -39,19 +40,15 @@ class LoadApp: public Application {
 
   void scene() {
     sceneLoader->load();
+    UniformBuffer * lightBuffer = new UniformBuffer();
+    lightBuffer->bind();
+    ShaderProgram * uberShader = SceneData::Instance().getProgram("multilight");
+    uberShader->bindUniformBuffer("LightSourceBuffer",0,lightBuffer->getHandle());
+    foreach(Light* light, SceneData::Instance().lights){
+      printf("Found Light %s\n", SceneData::Instance().lights.key(light).c_str());
+    }
 
-//    QImage * image = makeNoise();
-//
-//    Texture * textTexture = TextureFactory::Instance().load(image,"myTexture");
-//
-//    Material * material = new EmptyMat();
-//    material->shaderProgram = SceneData::Instance().shaderPrograms.value("Texture");
-//    material->addTexture(textTexture);
-//    Node * plane = new Node("Plane", { 0,0,-2 }, 1, MeshFactory::load(
-//        "plane.blend"), material);
-//    plane->transparent = true;
-//    plane->setRotation(QVector3D(-90,0,180));
-//    SceneGraph::Instance().addNode(plane);
+
   }
 };
 

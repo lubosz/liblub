@@ -35,17 +35,18 @@ void Light::setColor(QVector4D & color) {
 
 void Light::bindShaderUpdate(ShaderProgram * shaderProgram) {
     QVector4D lightPositionView = SceneData::Instance().getCurrentCamera()->getView() * position;
-
     shaderProgram->setUniform(lightPositionView, "lightPositionView");
-    shaderProgram->setUniform(position, "lightPosition");
+//
+//    shaderProgram->setUniform(position, "lightPositionWorld");
 
-    QVector3D directionView = SceneData::Instance().getCurrentCamera()->getView() * direction;
-    shaderProgram->setUniform(directionView, "spotDirection");
-
-    QVector3D spotDirectionView = SceneData::Instance().getCurrentCamera()->getViewNoTranslation()
-            * direction;
-    spotDirectionView.normalize();
-    shaderProgram->setUniform(spotDirectionView, "spotDirectionView");
+//    QVector3D directionView = SceneData::Instance().getCurrentCamera()->getView() * direction;
+//    shaderProgram->setUniform(directionView, "spotDirection");
+//
+//    QVector3D spotDirectionView = SceneData::Instance().getCurrentCamera()->getViewNoTranslation()
+//            * direction;
+//    spotDirectionView.normalize();
+//    shaderProgram->setUniform(spotDirectionView, "spotDirectionView");
+    glError;
 }
 
 void Light::bindShaderUpdateLight(ShaderProgram * shaderProgram) {
@@ -62,10 +63,12 @@ void Light::bindShaderUpdateLight(ShaderProgram * shaderProgram) {
 }
 
 void Light::bindShaderInit(ShaderProgram * shaderProgram) {
-  //TODO: Hardcoded light stuff
-    shaderProgram->setUniform(QVector4D(1.9, 1.9, 1.9, 1.0), "lightColor");
-
     GLuint program = shaderProgram->getReference();
+    program = 0;
+  /*
+  //TODO: Hardcoded light stuff
+    shaderProgram->setUniform(QVector4D(1.0, 1.0, 1.0, 1.0), "lightColor");
+
 
     // attenuation
     glUniform1f(glGetUniformLocation(program, "constantAttenuation"), 0);
@@ -75,6 +78,7 @@ void Light::bindShaderInit(ShaderProgram * shaderProgram) {
     // spot
     glUniform1f(glGetUniformLocation(program, "spotOuterAngle"), 0.9);
     glUniform1f(glGetUniformLocation(program, "spotInnerAngle"), 0.8);
+    */
 }
 
 void Light::update() {
