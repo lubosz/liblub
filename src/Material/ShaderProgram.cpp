@@ -248,3 +248,10 @@ void ShaderProgram::translateUniformf(unsigned id, const vector<float> & values)
     uniforms[id].values[i] += values[i];
   uniforms[id].init(program);
 }
+
+void ShaderProgram::bindUniformBuffer(string name, GLuint bindIndex, GLuint bufferHandle) {
+  glBindBufferBase(GL_UNIFORM_BUFFER, bindIndex, bufferHandle);
+  GLuint blockIndex = glGetUniformBlockIndex(program, name.c_str());
+//  assert(blockIndex != GL_INVALID_INDEX);
+  glUniformBlockBinding(program, blockIndex, bindIndex);
+}

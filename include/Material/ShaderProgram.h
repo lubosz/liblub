@@ -49,6 +49,7 @@ class ShaderProgram {
 	void translateUniformf(unsigned id, const vector<float> & values);
 
 	void initUniforms();
+	void bindUniformBuffer(string name, GLuint bindIndex, GLuint bufferHandle);
 
 
  private:
