@@ -57,6 +57,6 @@ class LoadApp: public Application {
 
 int main(int argc, char *argv[]) {
   QApplication app(argc, argv);
-  LoadApp("buffer").run();
+  LoadApp("multilight").run();
 }
 

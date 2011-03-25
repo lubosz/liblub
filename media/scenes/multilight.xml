@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<liblub>
+	<Programs>
+		<Program name="Ubershader">
+			<Shader 
+				url="Color/PhongColor" 
+				flags="
+				receiveShadows,
+						useDiffuseTexture,
+						useSpotLight
+						"
+			/>
+			<Uniform value="0.1, 0.1, 0.1, 1.0" name="ambientSceneColor" />
+			<Uniform value="0.1, 0.1, 0.1, 1.0" name="diffuseMaterialColor" />
+			<Uniform value="0.8, 0.8, 0.8,1.0" name="specularMaterialColor" />
+			<Uniform value="4.3" name="shininess" />
+			<Uniform value="0.000833333" name="yPixelOffset" />
+			<Uniform value="0.000520833" name="xPixelOffset" />
+		</Program>
+	</Programs>
+	<Textures>
+		<Texture name="masonry-wall-texture" url="bump/masonry-wall-texture.jpg" />
+		<Texture name="masonry-wall-normal-map" url="bump/masonry-wall-normal-map.jpg" />
+	</Textures>
+	<Meshes>
+		<File name="cube" url="cube.obj" />
+		<File name="radio" url="radio.blend" />
+		<File name="monkey" url="monkey.blend" />
+		<File name="sphere" url="earth.obj" />
+		<File name="plane" url="plane.obj" />
+		<File name="light" url="earth.obj" drawType="LINES" />
+	</Meshes>
+	<Materials>
+		<Material name="white" program="Ubershader">
+			<Layer sampler="diffuseTexture" texture="masonry-wall-texture" />
+			<Layer sampler="normalTexture" texture="masonry-wall-normal-map" />
+		</Material>
+	</Materials>
+	<Scene name="Buffer">
+		<Light position ="-9, 32, 11.5" direction="1,-5,-1" mesh="light" />
+		<Object name="cube" mesh="cube" material="white" scale="2.0" position="5,0,5" />
+		<Object name="sphere" mesh="sphere" material="white" scale="2.0" position="5,0,-5" />
+		<Object name="monkey" mesh="monkey" material="white" scale="2.0" position="-5,0,-5" />
+		<Object name="radio" mesh="radio" material="white" scale="0.5" position="-5,0,5" />
+		<Object name="Plane" mesh="plane" material="white" scale="20" position="0,-5,0" receive_shadows="true" cast_shadows="false" />
+	</Scene>
+</liblub>
