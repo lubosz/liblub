@@ -107,6 +107,7 @@ void Node::update() {
 void Node::bindShaders(
         ShaderProgram * shaderProgram, DirectionNode * viewPoint) {
     glError;
+//    printf("Binding Node %s\n", name.c_str());
     shaderProgram->use();
 
     QMatrix4x4 tempMatrix = viewPoint->getView() * modelMatrix;
