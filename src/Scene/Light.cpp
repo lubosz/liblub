@@ -40,10 +40,10 @@ void Light::bindShaderUpdate(ShaderProgram * shaderProgram) {
 //    QVector3D directionView = SceneData::Instance().getCurrentCamera()->getView() * direction;
 //    shaderProgram->setUniform(directionView, "spotDirection");
 //
-//    QVector3D spotDirectionView = SceneData::Instance().getCurrentCamera()->getViewNoTranslation()
-//            * direction;
+    QVector3D spotDirectionView = SceneData::Instance().getCurrentCamera()->getViewNoTranslation()
+            * direction;
 //    spotDirectionView.normalize();
-//    shaderProgram->setUniform(spotDirectionView, "spotDirectionView");
+    shaderProgram->setUniform(spotDirectionView, "spotDirectionView");
     glError;
 }
 
@@ -62,21 +62,19 @@ void Light::bindShaderUpdateLight(ShaderProgram * shaderProgram) {
 
 void Light::bindShaderInit(ShaderProgram * shaderProgram) {
     GLuint program = shaderProgram->getReference();
-    program = 0;
-  /*
-  //TODO: Hardcoded light stuff
+
+    //TODO: Hardcoded light stuff
     shaderProgram->setUniform(QVector4D(1.0, 1.0, 1.0, 1.0), "lightColor");
 
 
     // attenuation
     glUniform1f(glGetUniformLocation(program, "constantAttenuation"), 0);
-    // glUniform1f(glGetUniformLocation(program, "linearAttenuation"), .8);
+     glUniform1f(glGetUniformLocation(program, "linearAttenuation"), .1);
     glUniform1f(glGetUniformLocation(program, "quadraticAttenuation"), .005);
 
     // spot
     glUniform1f(glGetUniformLocation(program, "spotOuterAngle"), 0.9);
     glUniform1f(glGetUniformLocation(program, "spotInnerAngle"), 0.8);
-    */
 }
 
 void Light::update() {
