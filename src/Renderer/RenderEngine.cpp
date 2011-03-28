@@ -119,7 +119,7 @@ void RenderEngine::clear() {
 }
 
 void RenderEngine::checkVersion() {
-    GLint maxTex1, maxTex2, MajorVersion, MinorVersion, numext, pointSize;
+    GLint maxTex1, maxTex2, MajorVersion, MinorVersion, numext, pointSize, uniformSize;
 
     Logger::Instance().message << glGetString(GL_VERSION);
     Logger::Instance().log("MESSAGE", "OpenGL");
@@ -148,6 +148,24 @@ void RenderEngine::checkVersion() {
     glGetIntegerv(GL_NUM_EXTENSIONS, &numext);
     Logger::Instance().message << "Found " << numext << " GL_EXTENSIONS";
     Logger::Instance().log("MESSAGE", "GL_EXTENSIONS");
+
+
+
+    glGetIntegerv(GL_MAX_VERTEX_UNIFORM_BLOCKS, &uniformSize);
+    Logger::Instance().message << uniformSize;
+    Logger::Instance().log("MESSAGE", "GL_MAX_VERTEX_UNIFORM_BLOCKS");
+
+    glGetIntegerv(GL_MAX_FRAGMENT_UNIFORM_BLOCKS, &uniformSize);
+    Logger::Instance().message << uniformSize;
+    Logger::Instance().log("MESSAGE", "GL_MAX_FRAGMENT_UNIFORM_BLOCKS");
+
+    glGetIntegerv(GL_MAX_GEOMETRY_UNIFORM_BLOCKS, &uniformSize);
+    Logger::Instance().message << uniformSize;
+    Logger::Instance().log("MESSAGE", "GL_MAX_GEOMETRY_UNIFORM_BLOCKS");
+
+    glGetIntegerv(GL_MAX_UNIFORM_BLOCK_SIZE, &uniformSize);
+    Logger::Instance().message << uniformSize;
+    Logger::Instance().log("MESSAGE", "GL_MAX_UNIFORM_BLOCK_SIZE");
 
     // for (int i = 0; i < numext; i++) {
     //  Logger::Instance().message << glGetStringi(GL_EXTENSIONS,i);

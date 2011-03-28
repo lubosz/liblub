@@ -23,8 +23,8 @@
 #include "Scene/SceneLoader.h"
 #include "Scene/SceneData.h"
 #include "System/Logger.h"
-#include "Material/UniformBuffer.h"
 #include <QPainter>
+
 
 class LoadApp: public Application {
  public:
@@ -39,60 +39,40 @@ class LoadApp: public Application {
 
 
   void scene() {
-    string bufferName = "LightSourceBuffer";
-    unsigned uniformCount = 4;
-    GLuint* currentUniformIndices= new GLuint[uniformCount];
-    const char* uniformStrings[4] = {
-        "position",
-        "diffuseColor",
-        "specularColor",
-        "direction",
-    };
-
-    GLint bufferSize;
+//    unsigned uniformCount = 4;
+//    GLuint* uniformIndices= new GLuint[uniformCount];
+//    const char* uniformStrings[4] = {
+//        "position",
+//        "diffuseColor",
+//        "specularColor",
+//        "direction",
+//    };
+//    printf("Buffer Struct Size %ld\n", sizeof(lightBufferData));
+//    lightBuffer->alloc(bufferSize);
+//      GLint * bufferOffsets = new GLint[uniformCount];
+//
+//
+//      //first, get indices of current lightsource members:
+//      glGetUniformIndices(
+//          uberShader->getReference(),
+//          uniformCount,
+//          uniformStrings,
+//          uniformIndices
+//      );
+//      glError;
+//      //second, get offset in buffer for those members, indentified by the queried indices:
+//      glGetActiveUniformsiv(
+//          uberShader->getReference(),
+//          uniformCount,
+////          0,
+//          uniformIndices,
+//          GL_UNIFORM_OFFSET,
+//          bufferOffsets
+//      );
 
     sceneLoader->load();
 
-    UniformBuffer * lightBuffer = new UniformBuffer();
-    lightBuffer->bind();
-    ShaderProgram * uberShader = SceneData::Instance().getProgram("multilight");
-    uberShader->bindUniformBuffer("LightSourceBuffer",0,lightBuffer->getHandle());
-
-    GLuint uniBlockIndex = glGetUniformBlockIndex(uberShader->getReference(), bufferName.c_str());
-    glGetActiveUniformBlockiv(
-      uberShader->getReference(),
-      uniBlockIndex,
-      GL_UNIFORM_BLOCK_DATA_SIZE,
-      &bufferSize
-    );
-
-    lightBuffer->alloc(bufferSize);
-
-    foreach(Light* light, SceneData::Instance().lights){
-
-      GLint * bufferOffsets = new GLint[uniformCount];
-
-      printf("Found Light %s\n", SceneData::Instance().lights.key(light).c_str());
-
-      //first, get indices of current lightsource members:
-      glGetUniformIndices(
-          uberShader->getReference(),
-          uniformCount,
-          uniformStrings,
-          currentUniformIndices
-      );
-      glError;
-      //second, get offset in buffer for those members, indentified by the queried indices:
-      glGetActiveUniformsiv(
-          uberShader->getReference(),
-          //uniformCount,
-          0,
-          currentUniformIndices,
-          GL_UNIFORM_OFFSET,
-          bufferOffsets
-      );
-      glError;
-    }
+    SceneData::Instance().initLightBuffer("multilight", "LightSourceBuffer");
 
   }
 };

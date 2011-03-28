@@ -28,7 +28,12 @@ void UniformBuffer::alloc(GLuint size) {
   glBufferData(target, size, NULL, dynamic ? GL_DYNAMIC_DRAW : GL_STATIC_DRAW);
 }
 
-void UniformBuffer::write(const void* data) {
+void UniformBuffer::write(const void* data, GLuint size) {
+  this->size = size;
+  glBufferData(target, size, data, dynamic ? GL_DYNAMIC_DRAW : GL_STATIC_DRAW);
+}
+
+void UniformBuffer::writeSub(const void* data) {
   glBufferSubData(target, 0, size, data);
 }
 

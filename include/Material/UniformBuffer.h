@@ -16,7 +16,8 @@ public:
 
   void bind();
   void alloc(GLuint size);
-  void write(const void* data);
+  void write(const void* data, GLuint size);
+  void writeSub(const void* data);
   void read(void* data);
   void copy(GLuint sourceBuffer);
 

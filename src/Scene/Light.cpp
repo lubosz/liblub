@@ -21,16 +21,14 @@ Light::Light(const QVector3D& position, const QVector3D & direction) {
   this->position = position;
   this->direction = direction;
   defaultDirection = direction;
+  diffuse = QVector4D(1,1,1,1);
+  specular = QVector4D(1,1,1,1);
   updatePerspective();
   update();
 }
 
 Light::~Light() {
     // TODO(bmonkey): Auto-generated destructor stub
-}
-
-void Light::setColor(QVector4D & color) {
-    this->color = color;
 }
 
 void Light::bindShaderUpdate(ShaderProgram * shaderProgram) {

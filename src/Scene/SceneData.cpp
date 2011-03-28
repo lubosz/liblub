@@ -10,13 +10,48 @@
 #include "Renderer/RenderEngine.h"
 
 SceneData::SceneData() {
-  // TODO Auto-generated constructor stub
   lights = QMap<string, Light*>();
-
+  useMultiLights = false;
 }
 
 SceneData::~SceneData() {
   // TODO Auto-generated destructor stub
+}
+
+void SceneData::initLightBuffer(const string& shaderName, const string& bufferName) {
+  lightBuffer = new UniformBuffer();
+  ShaderProgram * uberShader = SceneData::Instance().getProgram(shaderName);
+  SceneData::Instance().lightBuffer->bind();
+
+  GLuint uniBlockIndex = glGetUniformBlockIndex(uberShader->getReference(), bufferName.c_str());
+  glGetActiveUniformBlockiv(
+    uberShader->getReference(),
+    uniBlockIndex,
+    GL_UNIFORM_BLOCK_DATA_SIZE,
+    &lightBufferSize
+  );
+
+  printf("Light Uniform Buffer Size %d\n", lightBufferSize);
+
+
+  unsigned lightIndex = 0;
+  foreach(Light* light, lights){
+
+    lightBufferData[lightIndex].position = getCurrentCamera()->getView() * light->position;
+    lightBufferData[lightIndex].diffuse = light->diffuse;
+    lightBufferData[lightIndex].specular = light->specular;
+    lightBufferData[lightIndex].direction = light->direction;
+
+    printf("Found Light %s\n", lights.key(light).c_str());
+    qDebug() << lightBufferData[lightIndex].diffuse;
+
+    lightIndex++;
+    glError;
+  }
+  lightBuffer->write(lightBufferData, lightBufferSize);
+
+  uberShader->bindUniformBuffer(bufferName,0,lightBuffer->getHandle());
+  useMultiLights = true;
 }
 
 void SceneData::addProgram(string & name, ShaderProgram* program) {
@@ -112,4 +147,14 @@ Light * SceneData::getMoveLight() {
 //  }
 
   return moveLight;
+}
+
+void SceneData::updateLightBuffer() {
+  if(!useMultiLights) return;
+  unsigned lightIndex = 0;
+  foreach(Light* light, lights) {
+      lightBufferData[lightIndex].position = getCurrentCamera()->getView() * light->position;
+      lightIndex++;
+  }
+  lightBuffer->write(lightBufferData, lightBufferSize);
 }

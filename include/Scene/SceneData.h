@@ -17,6 +17,7 @@
 #include "Scene/Camera.h"
 #include "Scene/Light.h"
 #include "Mesh/Mesh.h"
+#include "Material/UniformBuffer.h"
 
 using std::string;
 
@@ -42,10 +43,25 @@ public:
   void addLight(string & name, Light * light);
   Light* getLight(const string & name);
 
-   Camera * getCurrentCamera();
-   Light * getShadowLight();
-   Light * getMoveLight();
+  void updateLightBuffer();
+  void initLightBuffer(const string& shaderName, const string& bufferName);
+
+  Camera * getCurrentCamera();
+  Light * getShadowLight();
+  Light * getMoveLight();
+
+  struct LightSource {
+    QVector4D position;
+    QVector4D diffuse;
+    QVector4D specular;
+    QVector4D direction;
+  };
+
 private:
+  bool useMultiLights;
+  LightSource lightBufferData[10];
+  UniformBuffer * lightBuffer;
+  GLint lightBufferSize;
   Camera *currentCamera;
   Light *shadowLight, *moveLight;
 };

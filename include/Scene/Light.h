@@ -15,18 +15,15 @@ class Light : public DirectionNode {
   Light();
 	Light(const QVector3D& position, const QVector3D & direction);
 	virtual ~Light();
-    QVector3D getDirection() const;
-    QVector3D getPosition() const;
-    void setColor(QVector4D & color);
+  QVector3D getDirection() const;
+  QVector3D getPosition() const;
 
-    void bindShaderUpdate(ShaderProgram * shaderProgram);
-    void bindShaderInit(ShaderProgram * shaderProgram);
-    void bindShaderUpdateLight(ShaderProgram * shaderProgram);
+  void bindShaderUpdate(ShaderProgram * shaderProgram);
+  void bindShaderInit(ShaderProgram * shaderProgram);
+  void bindShaderUpdateLight(ShaderProgram * shaderProgram);
 
+  void update();
 
-    void update();
-
- private:
-	QVector4D color;
+  QVector4D diffuse, specular;
 };
 

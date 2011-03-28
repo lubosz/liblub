@@ -2,8 +2,8 @@
 
 struct LightSource {
 	vec4 position;
-	vec4 diffuseColor;
-	vec4 specularColor;
+	vec4 diffuse;
+	vec4 specular;
 	vec4 direction; 
 };
 
@@ -17,7 +17,7 @@ uniform vec4 lightPositionView;
 uniform vec4 diffuseMaterialColor;
 
 uniform LightSourceBuffer {
-	LightSource lightSources[10];
+	LightSource lightSources[5];
 };
 
 vec4 diffuseColor(float lambertTerm){
@@ -27,14 +27,17 @@ vec4 diffuseColor(float lambertTerm){
 void main(){ 
 	finalColor = vec4(0);
 
-	vec4 lightDirection = lightPositionView - positionView;
+	for(int i = 0; i < 5 ; i++) {
+		vec4 lightDirection = lightSources[i].position - positionView;
 								
-	vec3 L = normalize(lightDirection.xyz);	
-	vec3 N = normalize(normalView);
+		vec3 L = normalize(lightDirection.xyz);	
+		vec3 N = normalize(normalView);
 	
-	float lambertTerm = max( dot(N,L), 0.0);
+		float lambertTerm = max( dot(N,L), 0.0);
 
-	finalColor += diffuseColor(lambertTerm);
-//	finalColor = vec4(normalWorld,1);
+		finalColor += diffuseColor(lambertTerm) * lightSources[i].diffuse;
+
+	}
+	//finalColor = lightSources[0].diffuse;
 } 
 

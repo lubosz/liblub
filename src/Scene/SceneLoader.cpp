@@ -215,10 +215,18 @@ void SceneLoader::appendObject(const QDomElement & objectNode) {
     }
     if (objectNode.tagName() == "Light") {
       string lightName;
+      Light * light = new Light(position, direction);
+
       if (objectNode.hasAttribute("name"))
         lightName = objectNode.attribute("name").toStdString();
 
-      SceneData::Instance().addLight(lightName,new Light(position, direction));
+      if (objectNode.hasAttribute("diffuse"))
+        light->diffuse = stringToVector3D(objectNode.attribute("diffuse"));
+
+      if (objectNode.hasAttribute("specular"))
+        light->specular = stringToVector3D(objectNode.attribute("specular"));
+
+      SceneData::Instance().addLight(lightName, light);
       if (objectNode.hasAttribute("mesh")) {
         string meshName = objectNode.attribute("mesh").toStdString();
         if (SceneData::Instance().meshes.count(meshName) > 0)
