@@ -28,6 +28,27 @@ uniform samplerCube envMap;
 uniform sampler2DShadow shadowMap;
 uniform mat4 camViewToShadowMapMatrix; //bias*perspLight*viewLight*(viewCam⁻1)
 
+float xPixelOffset = 1.0/1366.0;
+float yPixelOffset = 1.0/768.0;
+
+float lookup( vec2 offSet,vec4 shadowTexCoord){
+	// Values are multiplied by ShadowCoord.w because shadow2DProj does a W division for us.
+	return textureProj(shadowMap, 
+		shadowTexCoord 
+		+ vec4(
+			offSet.x * xPixelOffset * shadowTexCoord.w, 
+			offSet.y * yPixelOffset * shadowTexCoord.w, 
+			0, 
+			0
+		) 
+	);
+	/*if (shadow == 1)
+		return 1.0;
+	else
+		return 0.0;
+		*/
+}
+
 uniform LightSourceBuffer {
 	LightSource lightSources[5];
 };
@@ -59,8 +80,19 @@ void main(){
 	vec4 reflection = texture(envMap, reflectDir);
 
 	//shadow	
+	//vec4 shadowTexCoord = camViewToShadowMapMatrix * positionView;
+	//float shadow = textureProj(shadowMap, shadowTexCoord);
+	
+	// 8x8 kernel PCF
 	vec4 shadowTexCoord = camViewToShadowMapMatrix * positionView;
-	float shadow = textureProj(shadowMap, shadowTexCoord);
+	float shadow = 0;	
+	float x,y;
+	for (y = -3.5 ; y <=3.5 ; y+=1.0)
+		for (x = -3.5 ; x <=3.5 ; x+=1.0)
+			shadow += lookup(vec2(x,y),shadowTexCoord);
+				
+	shadow /= 64.0;
+	//shadow += 0.2;
 
 	for(int i = 0; i < 5 ; i++) {
 		vec4 lightDirection = lightSources[i].position - positionView;
@@ -80,11 +112,8 @@ void main(){
 	
 		float lambertTerm = max( dot(N,L), 0.0);
 
-	//if (shadow == 0) {
-	//	finalColor += diffuseColor(lambertTerm) * lightSources[i].diffuse * diffuseBump*shadow;
-	//} else {
 		finalColor += diffuseColor(lambertTerm) * lightSources[i].diffuse * diffuseBump;
-	//}
+
 		float specular = pow(clamp(dot(
 								reflect(-lightVec, bump), 
 								normalize(eyeVec)
@@ -101,8 +130,11 @@ void main(){
 		finalColor += specularColor(specular) * lightSources[i].specular * reflection;
 		
 	}
-	//finalColor = texture(envMap, reflectDir);
 	
+		//finalColor = vec4(1) * shadow;
+		finalColor *= shadow;
+	//finalColor = texture(envMap, reflectDir);
+	//finalColor = vec4(1) * shadow;
 	//finalColor = lightSources[0].diffuse;
 	//finalColor = texture(normalTexture, uv);
 } 

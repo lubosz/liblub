@@ -13,6 +13,9 @@ RenderSequence::RenderSequence() {
     unsigned width = MediaLayer::Instance().width;
     unsigned height = MediaLayer::Instance().height;
 
+    width = 4096;
+    height = 4096;
+
     fbo = new FrameBuffer(width, height);
 
     // pass1Mat = new ShadowMapPhongPCFAmbient(width, height);

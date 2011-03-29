@@ -27,7 +27,7 @@ RenderEngine::RenderEngine()
     glPointSize(5);
 
     // glBindSampler();
-    // glEnable(GL_CULL_FACE);
+//     glEnable(GL_CULL_FACE);
     // glEnable(GL_POINT_SPRITE_ARB);
     // glTexEnvi(GL_POINT_SPRITE_ARB, GL_COORD_REPLACE_ARB, GL_TRUE);
     // glEnable(GL_POLYGON_OFFSET_FILL);
