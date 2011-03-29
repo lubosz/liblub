@@ -8,10 +8,14 @@
 			<Uniform value="0.8, 0.8, 0.8,1.0" name="specularMaterialColor" />
 			<Uniform value="4.3" name="shininess" />
 		</Program>
+		<Program name="CubeMap">
+			<Shader url="Texture/cubemapSky" />
+		</Program>
 	</Programs>
 	<Textures>
 		<Texture name="masonry-wall-texture" url="bump/masonry-wall-texture.jpg" />
 		<Texture name="masonry-wall-normal-map" url="bump/masonry-wall-normal-map.jpg" />
+		<TextureCube name="sky" url="cubemaps/sky" />
 	</Textures>
 	<Meshes>
 		<File name="cube" url="cube2.obj" />
@@ -23,9 +27,13 @@
 		<File name="light" url="earth.obj" drawType="LINES" />
 	</Meshes>
 	<Materials>
+		<Material name="CubeMap" program="CubeMap">
+			<Layer sampler="EnvMap" texture="sky" />
+		</Material>
 		<Material name="white" program="multilight">
 			<Layer sampler="diffuseTexture" texture="masonry-wall-texture" />
 			<Layer sampler="normalTexture" texture="masonry-wall-normal-map" />
+			<Layer sampler="envMap" texture="sky" />
 		</Material>
 	</Materials>
 	<Scene name="Buffer">
@@ -40,5 +48,6 @@
 		<Object name="monkey" mesh="monkey" material="white" scale="2.0" position="-5,0,-5" />
 		<Object name="radio" mesh="radio" material="white" scale="0.5" position="-5,0,5" />
 		<Object name="Plane" mesh="plane" material="white" scale="20" position="0,-5,0" receive_shadows="true" cast_shadows="false" />
+		<Object name="sky" mesh="sphere" material="CubeMap" scale="800" position="0, 0, 0" />
 	</Scene>
 </liblub>

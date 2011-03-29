@@ -21,6 +21,7 @@ LightViewDepthPass::LightViewDepthPass(FrameBuffer * fbo) {
 }
 
 void LightViewDepthPass::prepare() {
+    glPolygonOffset(200.0, 0.0);
     fbo->bind();
 
     RenderEngine::Instance().clear();
@@ -28,7 +29,6 @@ void LightViewDepthPass::prepare() {
     // In the case we render the shadowmap to a higher resolution,
     // the viewport must be modified accordingly.
     fbo->updateRenderView();
-    glPolygonOffset(2.0, 0.0);
     material->activate();
 }
 
@@ -62,8 +62,9 @@ void FilterPass::prepare() {
     SceneGraph::Instance().drawNodes(SceneData::Instance().getCurrentCamera());
     fbo->unBind();
 
-    glPolygonOffset(2.0, 0.0);
+    glPolygonOffset(20.0, 0.0);
     material->activate();
+
 }
 
 void FilterPass::draw(Material * material) {

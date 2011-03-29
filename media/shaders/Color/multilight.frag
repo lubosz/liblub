@@ -9,7 +9,6 @@ struct LightSource {
 
 in vec4 positionView;
 in vec3 normalView;
-in vec3 normalWorld;
 
 out vec4 finalColor;
 
@@ -23,6 +22,11 @@ uniform vec4 diffuseMaterialColor;
 
 in vec3 tangentView;
 uniform sampler2D normalTexture;
+
+uniform samplerCube envMap;
+
+uniform sampler2DShadow shadowMap;
+uniform mat4 camViewToShadowMapMatrix; //bias*perspLight*viewLight*(viewCam⁻1)
 
 uniform LightSourceBuffer {
 	LightSource lightSources[5];
@@ -49,8 +53,14 @@ void main(){
 	);
 	vec3 bump = normalize( texture(normalTexture, uv).xyz * 2.0 - 1.0);
 	//endnormalmapping
-	
-	
+
+	//env	
+	vec3 reflectDir = reflect(-positionView.xyz, normalView);
+	vec4 reflection = texture(envMap, reflectDir);
+
+	//shadow	
+	vec4 shadowTexCoord = camViewToShadowMapMatrix * positionView;
+	float shadow = textureProj(shadowMap, shadowTexCoord);
 
 	for(int i = 0; i < 5 ; i++) {
 		vec4 lightDirection = lightSources[i].position - positionView;
@@ -70,8 +80,11 @@ void main(){
 	
 		float lambertTerm = max( dot(N,L), 0.0);
 
+	//if (shadow == 0) {
+	//	finalColor += diffuseColor(lambertTerm) * lightSources[i].diffuse * diffuseBump*shadow;
+	//} else {
 		finalColor += diffuseColor(lambertTerm) * lightSources[i].diffuse * diffuseBump;
-		
+	//}
 		float specular = pow(clamp(dot(
 								reflect(-lightVec, bump), 
 								normalize(eyeVec)
@@ -85,9 +98,11 @@ void main(){
 
 		float specular = pow( max(dot(R, E), 0.0), shininess );
 		*/
-		finalColor += specularColor(specular) * lightSources[i].specular;
+		finalColor += specularColor(specular) * lightSources[i].specular * reflection;
 		
 	}
+	//finalColor = texture(envMap, reflectDir);
+	
 	//finalColor = lightSources[0].diffuse;
 	//finalColor = texture(normalTexture, uv);
 } 
