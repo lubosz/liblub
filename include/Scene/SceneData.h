@@ -40,6 +40,8 @@ public:
   void addProgram(string & name, ShaderProgram * program);
   ShaderProgram* getProgram(const string & name);
 
+  Material* getMaterial(const string & name);
+
   void addLight(string & name, Light * light);
   Light* getLight(const string & name);
 

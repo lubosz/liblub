@@ -8,6 +8,7 @@
 #include "Scene/SceneData.h"
 #include "System/Logger.h"
 #include "Renderer/RenderEngine.h"
+#include "Material/Materials.h"
 
 SceneData::SceneData() {
   lights = QMap<string, Light*>();
@@ -69,6 +70,16 @@ ShaderProgram* SceneData::getProgram(const string & name) {
   } else {
   Logger::Instance().log("WARNING", "Program not found", name);
     return new ShaderProgram();
+  }
+}
+
+Material* SceneData::getMaterial(const string & name) {
+  Material * material = materials[name];
+  if (material) {
+    return material;
+  } else {
+  Logger::Instance().log("WARNING", "Material not found", name);
+    return new Minimal();
   }
 }
 
