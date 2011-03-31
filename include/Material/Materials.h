@@ -21,6 +21,17 @@ class Minimal : public Material {
 	void uniforms() {}
 };
 
+class DepthMaterial : public Material {
+  public:
+  DepthMaterial() {
+    init();
+    shaderProgram->attachShader("Common/depth.vert", GL_VERTEX_SHADER);
+    shaderProgram->attachShader("Common/depth.frag", GL_FRAGMENT_SHADER);
+    done();
+  }
+  void uniforms() {}
+};
+
 class Simple : public Material {
  public:
     explicit Simple(string shaders) {
