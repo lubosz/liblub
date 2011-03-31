@@ -17,6 +17,7 @@ MediaLayer::MediaLayer() {
   // FPS Stuff
   fps_lasttime = 0;  // the last recorded time.
   fps_frames = 0;  // frames passed since the last recorded fps.
+  input_lasttime = 0;
 
   fullscreen = false;
   grab = false;
@@ -28,6 +29,7 @@ MediaLayer::MediaLayer() {
 
   createWindow();
   createBlankCursor();
+
 }
 
 void MediaLayer::init(string title) {
@@ -175,7 +177,6 @@ void MediaLayer::createWindow() {
       valuemask,
       valuelist);
 
-  setWindowTitle(programTile);
 
   // NOTE: window must be mapped before glXMakeContextCurrent
   xcb_map_window(connection, window);
@@ -206,6 +207,7 @@ void MediaLayer::createWindow() {
   } else {
     glXSwapInterval(Config::Instance().value<int>("Vsync"));
   }
+  setWindowTitle(programTile);
 }
 
 void MediaLayer::swapBuffers() {
@@ -315,7 +317,7 @@ void MediaLayer::toggleFullScreen() {
 
 void MediaLayer::renderLoop() {
     while (!quit) {
-      input->eventLoop();
+//      input->eventLoop();
       RenderEngine::Instance().display();
       swapBuffers();
       getFPS();
@@ -328,8 +330,15 @@ void MediaLayer::getFPS() {
   clock_gettime(CLOCK_MONOTONIC, &now);
   unsigned ticks = (now.tv_sec - start.tv_sec) * 1000 + (now.tv_nsec
       - start.tv_nsec) / 1000000;
-
   fps_frames++;
+
+  //check input every 1/100 secound
+    if (input_lasttime < ticks - 10) {
+      input->eventLoop();
+      input_lasttime = ticks;
+    }
+
+   //reset fps counter every secound
   if (fps_lasttime < ticks - 1000) {
     fps_lasttime = ticks;
     fps_current = fps_frames;

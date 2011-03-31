@@ -47,6 +47,7 @@ class MediaLayer : public Singleton<MediaLayer> {
     sf::Window * window;
 #else
 	unsigned fps_lasttime;  // the last recorded time.
+	unsigned input_lasttime;  // the last recorded time.
 	unsigned fps_current;  // the current FPS.
 	unsigned fps_frames;  // frames passed since the last recorded fps.
 
