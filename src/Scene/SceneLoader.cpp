@@ -146,7 +146,7 @@ void SceneLoader::appendMesh(const QDomElement & meshNode) {
     if (meshNode.tagName() == "File") {
         string meshUrl = meshNode.attribute("url").toStdString();
         if (meshNode.hasAttribute("drawType")) {
-            GLint drawType;
+            GLint drawType = GL_TRIANGLES;
             string drawTypeString =
                     meshNode.attribute("drawType").toStdString();
 
@@ -190,9 +190,9 @@ void SceneLoader::appendMesh(const QDomElement & meshNode) {
 void SceneLoader::appendObject(const QDomElement & objectNode) {
     QVector3D position, direction, rotation;
     string name;
-    float scale;
-    Material * material;
-    Mesh * mesh;
+    float scale = 1;
+    Material * material = NULL;
+    Mesh * mesh = NULL;
 
     if (objectNode.hasAttribute("position"))
         position = stringToVector3D(objectNode.attribute("position"));
