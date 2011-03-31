@@ -21,10 +21,9 @@ uniform mat3 NormalMatrix;
 void main(){
 
 	vpos = MVMatrix * vec4(in_Vertex,1);
-	normal = NormalMatrix * in_Normal;
-	tangent = NormalMatrix * in_Tangent; 
+	normal = normalize(NormalMatrix * in_Normal);
+	tangent = normalize(NormalMatrix * in_Tangent); 
 	binormal = NormalMatrix * in_Bitangent; 
-	//binormal = cross(normal, tangent);
 	
 	texcoord = in_Uv;
 
