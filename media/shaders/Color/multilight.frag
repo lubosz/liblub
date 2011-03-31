@@ -91,7 +91,8 @@ void main(){
 		for (x = -3.5 ; x <=3.5 ; x+=1.0)
 			shadow += lookup(vec2(x,y),shadowTexCoord);
 				
-	shadow /= 64.0;
+	//shadow /= 64.0;
+	shadow /= 32.0;
 	//shadow += 0.2;
 
 	for(int i = 0; i < 5 ; i++) {
