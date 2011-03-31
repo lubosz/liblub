@@ -14,6 +14,11 @@ class DepthTexture : public Texture {
 	DepthTexture(GLuint width, GLuint height, string name, GLenum glId);
 };
 
+class ShadowTexture : public Texture {
+ public:
+  ShadowTexture(GLuint width, GLuint height, string name, GLenum glId);
+};
+
 class ColorTexture : public Texture {
  public:
 	ColorTexture(GLuint width, GLuint height, string name, GLenum glId);

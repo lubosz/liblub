@@ -39,7 +39,6 @@ void Texture::uniform(GLuint program) {
     // TODO(bmonkey): -1 vs glId - GL_TEXTURE0
 //    glUniform1i(texLoc, glId - GL_TEXTURE0);
     glUniform1i(texLoc, texture-1);
-
     glError;
 }
 #if USE_FREEIMAGE

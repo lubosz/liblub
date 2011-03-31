@@ -32,29 +32,70 @@ DepthTexture::DepthTexture(GLuint width, GLuint height, string name,
      GL_LINEAR does not make sense for depth texture.
      However, next tutorial shows usage of GL_LINEAR and PCF
 
+     */
      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-     */
+
+    // Specifies the texture comparison mode for currently bound depth textures.
+    // That is, a texture whose internal format is GL_DEPTH_COMPONENT_*
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_COMPARE_MODE,
-            GL_COMPARE_REF_TO_TEXTURE);
+            GL_NONE
+     );
+
+    // shadowmap
+    // No need to force GL_DEPTH_COMPONENT24,
+    // drivers usually give you the max precision if available
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT32F, width, height, 0,
+        GL_DEPTH_COMPONENT, GL_FLOAT, 0);
+
+    glBindTexture(textureType, 0);
+}
+
+ShadowTexture::ShadowTexture(GLuint width, GLuint height, string name,
+        GLenum glId) {
+  glError;
+    this->name = name;
+    this->glId = glId;
+    textureType = GL_TEXTURE_2D;
+
+    glGenTextures(1, &texture);
+    glBindTexture(textureType, texture);
+    Logger::Instance().message << "Creating FBO Shadow texture #" << texture
+            << " " << name;
+    Logger::Instance().log("DEBUG", "ShadowTexture");
+
+    /*
+     Shadowmap
+     GL_LINEAR does not make sense for depth texture.
+     However, next tutorial shows usage of GL_LINEAR and PCF
+     */
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+
+    // Specifies the texture comparison mode for currently bound depth textures.
+    // That is, a texture whose internal format is GL_DEPTH_COMPONENT_*
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_COMPARE_MODE,
+            GL_COMPARE_REF_TO_TEXTURE
+     );
+
+    // Specifies the comparison operator used when GL_TEXTURE_COMPARE_MODE is
+    // set to GL_COMPARE_REF_TO_TEXTURE
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_COMPARE_FUNC, GL_LEQUAL);
 
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
-
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-
     // Remove artefact on the edges of the shadowmap
-    // glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP );
-    // glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP );
+     glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE );
+     glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE );
+
+
 
     // shadowmap
     // No need to force GL_DEPTH_COMPONENT24,
     // drivers usually give you the max precision if available
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, width, height, 0,
-            GL_DEPTH_COMPONENT, GL_FLOAT, 0);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT32F, width, height, 0,
+        GL_DEPTH_COMPONENT, GL_FLOAT, 0);
 
     glBindTexture(textureType, 0);
 }

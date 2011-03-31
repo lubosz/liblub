@@ -34,6 +34,13 @@ Texture * TextureFactory::depthTexture(
   textureCount++;
   return texture;
 }
+Texture * TextureFactory::shadowTexture(
+        GLuint width, GLuint height, string name) {
+  Texture * texture =
+          new ShadowTexture(width, height, name, textureEnums[textureCount]);
+  textureCount++;
+  return texture;
+}
 Texture * TextureFactory::colorTexture(
         GLuint width, GLuint height, string name) {
   Texture * texture =

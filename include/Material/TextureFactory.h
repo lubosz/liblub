@@ -16,6 +16,7 @@ using std::vector;
 class TextureFactory : public Singleton<TextureFactory> {
  public:
 	Texture * depthTexture(GLuint width, GLuint height, string name);
+	Texture * shadowTexture(GLuint width, GLuint height, string name);
 	Texture * colorTexture(GLuint width, GLuint height, string name);
 	Texture * load(string filename, string name);
 	Texture * load(QImage * image, string name);
