@@ -116,6 +116,7 @@ target_link_libraries(lub ${OPENGL_LIB}
 #freeimageplus 
 ${QT_LIBRARIES} 
 assimp
+#GLEW
 )
 
 IF(WITH_SDL)
