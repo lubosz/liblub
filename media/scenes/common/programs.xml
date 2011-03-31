@@ -46,6 +46,12 @@
 		<Program name="Texture">
 			<Shader url="Texture/texture" />
 		</Program>
-		
+		<Program name="debugFBO">
+			<Shader url="Texture/debugfbo" />
+		</Program>
 	</Programs>
+	<Materials>
+		<Material name="debugFBO" program="debugFBO">
+		</Material>
+	</Materials>
 </liblub>
