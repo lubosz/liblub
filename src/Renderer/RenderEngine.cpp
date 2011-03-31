@@ -40,6 +40,8 @@ RenderEngine::RenderEngine()
     // glDepthMask(GL_FALSE);
     // glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
+     glDepthRangef(0.0,1.0);
+
     glError;
 }
 
@@ -124,6 +126,7 @@ void RenderEngine::checkVersion() {
     Logger::Instance().message << glGetString(GL_VERSION);
     Logger::Instance().log("MESSAGE", "OpenGL");
 
+
     glGetIntegerv(GL_MAJOR_VERSION, &MajorVersion);
     glGetIntegerv(GL_MINOR_VERSION, &MinorVersion);
     Logger::Instance().message << MajorVersion << "." << MinorVersion;
@@ -166,6 +169,11 @@ void RenderEngine::checkVersion() {
     glGetIntegerv(GL_MAX_UNIFORM_BLOCK_SIZE, &uniformSize);
     Logger::Instance().message << uniformSize;
     Logger::Instance().log("MESSAGE", "GL_MAX_UNIFORM_BLOCK_SIZE");
+
+//    GLfloat floatvalue;
+//    glGetFloatv(GL_DEPTH_BIAS, &floatvalue);
+//    Logger::Instance().message << floatvalue;
+//    Logger::Instance().log("MESSAGE", "GL_DEPTH_BIAS");
 
     // for (int i = 0; i < numext; i++) {
     //  Logger::Instance().message << glGetStringi(GL_EXTENSIONS,i);

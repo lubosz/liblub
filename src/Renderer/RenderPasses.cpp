@@ -10,9 +10,9 @@
 #include "Scene/SceneData.h"
 #include "Material/Materials.h"
 
-LightViewDepthPass::LightViewDepthPass(FrameBuffer * fbo) {
+ShadowPass::ShadowPass(FrameBuffer * fbo) {
     this->fbo = fbo;
-    targetTexture = TextureFactory::Instance().depthTexture(fbo->width,
+    targetTexture = TextureFactory::Instance().shadowTexture(fbo->width,
             fbo->height, "shadowMap");
     fbo->attachTexture(GL_DEPTH_ATTACHMENT, targetTexture);
     fbo->disableColorBuffer();
@@ -20,7 +20,7 @@ LightViewDepthPass::LightViewDepthPass(FrameBuffer * fbo) {
     material = new Minimal();
 }
 
-void LightViewDepthPass::prepare() {
+void ShadowPass::prepare() {
     fbo->bind();
 
     glPolygonOffset(2.0, 0.0);
@@ -32,17 +32,49 @@ void LightViewDepthPass::prepare() {
     material->activate();
 }
 
-void LightViewDepthPass::draw() {
+void ShadowPass::draw() {
   glEnable(GL_CULL_FACE);
   glCullFace(GL_FRONT);
-    SceneGraph::Instance().drawCasters(material);
+  //TODO: Multiple lights
+  SceneGraph::Instance().drawCasters(material,SceneData::Instance().getShadowLight());
 }
 
-void LightViewDepthPass::cleanUp() {
+void ShadowPass::cleanUp() {
     fbo->unBind();
     glPolygonOffset(0.0, 0.0);
     glCullFace(GL_BACK);
     glDisable(GL_CULL_FACE);
+        glViewport(0, 0, MediaLayer::Instance().width,
+                MediaLayer::Instance().height);
+}
+
+DepthPass::DepthPass(FrameBuffer * fbo) {
+    this->fbo = fbo;
+    targetTexture = TextureFactory::Instance().depthTexture(fbo->width,
+            fbo->height, "shadowMap");
+    fbo->attachTexture(GL_DEPTH_ATTACHMENT, targetTexture);
+    fbo->disableColorBuffer();
+
+    material = new DepthMaterial();
+}
+
+void DepthPass::prepare() {
+    fbo->bind();
+    RenderEngine::Instance().clear();
+    // In the case we render the shadowmap to a higher resolution,
+    // the viewport must be modified accordingly.
+    fbo->updateRenderView();
+    material->activate();
+}
+
+void DepthPass::draw() {
+    SceneGraph::Instance().drawCasters(material,SceneData::Instance().getCurrentCamera());
+}
+
+void DepthPass::cleanUp() {
+    fbo->unBind();
+    glViewport(0, 0, MediaLayer::Instance().width,
+                MediaLayer::Instance().height);
 }
 
 FilterPass::FilterPass(FrameBuffer * fbo) {
@@ -88,8 +120,7 @@ void LightTogglePass::prepare() {
 }
 
 void LightTogglePass::draw() {
-    glViewport(0, 0, MediaLayer::Instance().width,
-            MediaLayer::Instance().height);
+
     if (RenderEngine::Instance().lightView) {
         SceneGraph::Instance().drawNodes(SceneData::Instance().getShadowLight());
     } else {
@@ -98,4 +129,25 @@ void LightTogglePass::draw() {
 }
 
 void LightTogglePass::cleanUp() {
+}
+
+FBODebugPass::FBODebugPass(FrameBuffer * fbo) {
+  this->fbo = fbo;
+}
+
+void FBODebugPass::prepare() {
+    RenderEngine::Instance().clear();
+}
+
+void FBODebugPass::draw() {
+  glViewport(0, 0, MediaLayer::Instance().width,
+          MediaLayer::Instance().height);
+  Material* material = SceneData::Instance().getMaterial("debugFBO");
+//  foreach (Texture * texture, material->textures){
+//    printf("Texture! %s\n", texture->name.c_str());
+//  }
+  fbo->draw(material);
+}
+
+void FBODebugPass::cleanUp() {
 }

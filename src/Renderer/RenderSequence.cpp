@@ -25,10 +25,13 @@ RenderSequence::RenderSequence() {
     // fbo->attachTexture(GL_COLOR_ATTACHMENT0, fbo->getDebugTexture());
     // fbo->attachTexture(GL_COLOR_ATTACHMENT0, pass1Mat->textures[0]);
 
-    renderPasses.push_back(new LightViewDepthPass(fbo));
+//    renderPasses.push_back(new ShadowPass(fbo));
+    renderPasses.push_back(new DepthPass(fbo));
 #endif
 
-    renderPasses.push_back(new LightTogglePass());
+//    renderPasses.push_back(new LightTogglePass());
+    renderPasses.push_back(new FBODebugPass(fbo));
+//    renderPasses.push_back(new FilterPass(fbo));
 
 #ifdef USE_FBO
     fbo->checkAndFinish();
