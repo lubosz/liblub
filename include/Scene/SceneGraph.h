@@ -11,7 +11,7 @@ class SceneGraph: public Singleton<SceneGraph> {
 //	Light * light;
 
 	void updateLight();
-	void drawCasters(Material * material);
+	void drawCasters(Material * material, DirectionNode * viewPoint);
 	void drawNodes(DirectionNode * viewPoint);
 	void printMatrix(const QMatrix4x4 & matrix, string name);
 

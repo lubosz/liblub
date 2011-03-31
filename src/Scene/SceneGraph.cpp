@@ -114,13 +114,11 @@ void SceneGraph::drawNodes(DirectionNode * viewPoint) {
     glError;
 }
 
-void SceneGraph::drawCasters(Material * material) {
-  //TODO: Multiple lights
+void SceneGraph::drawCasters(Material * material, DirectionNode * viewPoint) {
     foreach(Node * node, sceneNodes) {
         if (node->getCastShadows()) {
-            node->bindShaders(material->getShaderProgram(), SceneData::Instance().getShadowLight());
-            SceneData::Instance().getShadowLight()->bindShaderUpdate(material->getShaderProgram());
-            node->mesh->draw();
+          node->bindShaders(material->getShaderProgram(), viewPoint);
+          node->mesh->draw();
         }
     }
     glError;
