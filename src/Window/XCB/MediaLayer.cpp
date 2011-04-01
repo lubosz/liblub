@@ -344,7 +344,7 @@ void MediaLayer::getFPS() {
     fps_current = fps_frames;
     fps_frames = 0;
   }
-    // TODO(bmonkey): should be per secound, and not per frame (breaks cam)
+    // TODO(bmonkey): should be per secound, and not per frame (breaks mouse input)
     stringstream windowTitle;
     windowTitle << programTile << " - FPS: " << fps_current;
     setWindowTitle(windowTitle.str());
