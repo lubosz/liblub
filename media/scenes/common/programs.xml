@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <liblub>
 	<Programs>
+	<!--
 		<Program name="Ubershader">
 			<Shader url="Color/PhongColor" 
 				flags="receiveShadows,
@@ -42,7 +43,7 @@
 			<Uniform name="waveFreq" value="0.028" />
 			<Uniform name="waveAmp" value="1.8" />
 		</Program>
-		
+		-->
 		<Program name="Texture">
 			<Shader url="Texture/texture" />
 		</Program>
