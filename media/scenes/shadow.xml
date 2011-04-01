@@ -6,11 +6,8 @@
 			<Shader 
 				url="Color/PhongColor" 
 				flags="receiveShadows,
-						useDiffuseTexture,
 						useSpotLight,
-						usePCF,
-						useAmbientTexture,
-						useNormalTexture"
+						usePCF"
 			/>
 			<Uniform value="0.1, 0.1, 0.1, 1.0" name="ambientSceneColor" />
 			<Uniform value="0.1, 0.1, 0.1, 1.0" name="diffuseMaterialColor" />
@@ -50,24 +47,8 @@
 		<File name="sphere" url="earth.obj" drawType="LINES" />
 	</Meshes>
 	<Materials>
-		<Material name="monkey" program="Ubershader">
-			<Layer sampler="diffuseTexture" texture="masonry-wall-texture" />
-			<Layer sampler="ambientTexture" texture="monkey-occlusion" />
-			<Layer sampler="normalTexture" texture="masonry-wall-normal-map" />
-		</Material>
-		<Material name="radio" program="Ubershader">
-			<Layer sampler="diffuseTexture" texture="masonry-wall-texture" />
-			<Layer sampler="ambientTexture" texture="radio-occlusion" />
-			<Layer sampler="normalTexture" texture="masonry-wall-normal-map" />
-		</Material>
-		<Material name="ground" program="Ubershader">
-			<Layer sampler="diffuseTexture" texture="brickwork-texture" />
-			<Layer sampler="ambientTexture" texture="plane-occlusion" />
-			<Layer sampler="normalTexture" texture="brickwork_normal-map" />
-		</Material>
-		<Material name="relief" program="Relief">
-			<Layer sampler="colortex" texture="reliefColor" />
-			<Layer sampler="reliefMap" texture="reliefMap" />
+		<Material name="white" program="Ubershader">
+
 		</Material>
 		
 

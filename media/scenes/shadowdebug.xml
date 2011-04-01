@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<liblub>
+	<include url="common/programs.xml" />
+	<Programs>
+		<Program name="Ubershader">
+			<Shader 
+				url="Color/PhongColor" 
+				flags="receiveShadows,
+						useSpotLight,
+						usePCF"
+			/>
+			<Uniform value="0.1, 0.1, 0.1, 1.0" name="ambientSceneColor" />
+			<Uniform value="0.1, 0.1, 0.1, 1.0" name="diffuseMaterialColor" />
+			<Uniform value="0.8, 0.8, 0.8,1.0" name="specularMaterialColor" />
+			<Uniform value="4.3" name="shininess" />
+			<Uniform value="0.000833333" name="yPixelOffset" />
+			<Uniform value="0.000520833" name="xPixelOffset" />
+		</Program>
+	</Programs>
+	<Meshes>
+		<File name="cube" url="cube.obj" />
+		<File name="radio" url="radio.blend" />
+		<File name="plane" url="plane.obj" />
+		<File name="sphere" url="earth.obj" drawType="LINES" />
+	</Meshes>
+	<Materials>
+		<Material name="white" program="Ubershader">
+		</Material>
+	</Materials>
+	<Scene name="PCF Shadow Mapping">
+		<Light position ="-9.1, 20.5, 3.5" direction="1,-2,-5" mesh="sphere" name="shadowlight" />
+		<Object name="cube1" mesh="cube" material="white" scale="1.0" position="3,-2,-9" />
+		<Object name="cube2" mesh="cube" material="white" scale="1.0" position="3,-2,-5" />
+		<Object name="radio" mesh="radio" material="white" scale="0.5" position="-5,-4,-5" />
+		<Object name="Plane" mesh="plane" material="white" scale="20" position="0,-4,0" receive_shadows="true" cast_shadows="false" />
+	</Scene>
+</liblub>

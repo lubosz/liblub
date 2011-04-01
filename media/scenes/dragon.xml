@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<liblub>
+<!--
+-->
+	<include url="common/programs.xml" />
+	<Programs>
+		<Program name="Ubershader">
+			<Shader url="Color/PhongColor" 
+				flags="useDiffuseTexture,
+						useSpotLight,
+						useNormalTexture"
+			/>
+<!--
+				receiveShadows,
+						usePCF,
+						-->
+			<Uniform value="0.1, 0.1, 0.1, 1.0" name="ambientSceneColor" />
+			<Uniform value="0.1, 0.1, 0.1, 1.0" name="diffuseMaterialColor" />
+			<Uniform value="0.8, 0.8, 0.8,1.0" name="specularMaterialColor" />
+			<Uniform value="4.3" name="shininess" />
+			<Uniform value="0.000833333" name="yPixelOffset" />
+			<Uniform value="0.000520833" name="xPixelOffset" />
+		</Program>
+	</Programs>
+	<Textures>
+		<Texture name="brickwork-texture" url="bump/brickwork-texture.jpg" />
+		<Texture name="brickwork_normal-map" url="bump/brickwork_normal-map.jpg" />
+	<!--
+		<Texture name="masonry-wall-texture" url="bump/masonry-wall-texture.jpg" />
+		<Texture name="masonry-wall-normal-map" url="bump/masonry-wall-normal-map.jpg" />
+		
+		
+		<Texture name="plane-occlusion" url="plane-occlusion.png" />
+		-->
+	</Textures>
+	<Meshes>
+		<!--
+		<File name="radio" url="radio.blend" />
+		<File name="dragon" url="dragon_vrip_res4.ply" />
+		<File name="dragon" url="dragon_vrip.ply" />
+		-->
+		<File name="dragon" url="dragon.obj" />
+		<File name="plane" url="plane.obj" />
+	</Meshes>
+	<Materials>
+		<Material name="dragon" program="Ubershader">
+			<Layer sampler="diffuseTexture" texture="brickwork-texture" />
+			<Layer sampler="normalTexture" texture="brickwork_normal-map" />
+		</Material>
+				<!--
+		<Material name="ground" program="Ubershader">
+			<Layer sampler="ambientTexture" texture="plane-occlusion" />
+		</Material>
+				-->
+	</Materials>
+	<Scene name="Stanfort Dragon">
+		<Light position ="-9.1, 20.5, 3.5" direction="1,-5,-1" name="somelight" />
+		<!--
+		-->
+		<Object name="dragon" mesh="dragon" material="dragon" scale="30.0" position="-5,-5,-5" />
+		<Object name="Plane" mesh="plane" material="dragon" scale="20" position="0,-7,0" receive_shadows="true" cast_shadows="false" />
+		<!--
+		-->
+	</Scene>
+</liblub>
