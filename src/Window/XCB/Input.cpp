@@ -13,7 +13,7 @@
 Input::Input(xcb_connection_t *connection) {
   this->connection = connection;
   syms = xcb_key_symbols_alloc(connection);
-  pressedKeys = list<xcb_keysym_t>();
+  pressedKeys = QList<xcb_keysym_t>();
   uvmoveprog = SceneData::Instance().getProgram("uvmove");
   // TODO(bmonkey): Hardcoded values => xml
   inputSpeed = .1;
@@ -42,7 +42,7 @@ void Input::eventLoop() {
 
             kr = reinterpret_cast<xcb_key_release_event_t *>(event);
             pressedKey = xcb_key_symbols_get_keysym(syms, kr->detail, 0);
-            pressedKeys.remove(pressedKey);
+            pressedKeys.removeAll(pressedKey);
 
             switch (pressedKey) {
             case XK_Shift_L:

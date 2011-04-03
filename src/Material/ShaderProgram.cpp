@@ -66,7 +66,7 @@ void ShaderProgram::attachShader(
 
 void ShaderProgram::detachShader(Shader *shader) {
   glDetachShader(program, shader->getReference());
-  shaders.remove(shader);
+//  shaders.remove(shader);
   delete shader;
 }
 

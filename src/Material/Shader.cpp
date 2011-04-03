@@ -71,7 +71,6 @@ void Shader::loadAndCompile() {
 char* Shader::readFile(string filePath) {
     FILE *file;
     char *buffer;
-    size_t result;
     int64_t fileSize;
 
     file = fopen(filePath.c_str(), "r"); /* Open file for reading */
@@ -92,7 +91,7 @@ char* Shader::readFile(string filePath) {
     }
 
     /* Read the contents of the file in to the buffer */
-    result = fread(buffer, fileSize, 1, file);
+    fread(buffer, fileSize, 1, file);
 
     /*
      // TODO(bmonkey): Occurs every time

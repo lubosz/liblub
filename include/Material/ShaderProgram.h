@@ -11,8 +11,6 @@
 #include "Material/Shader.h"
 #include "Material/Uniform.h"
 
-using std::list;
-
 class ShaderProgram {
  public:
 	ShaderProgram();
@@ -56,8 +54,8 @@ class ShaderProgram {
 	/* This is a handle to the shader program */
 	GLuint program;
 	template<typename T> void initUniformsByType(vector<Uniform<T> > & uniforms);
-	list<Shader*> shaders;
-	list<string> boundAttribs;
+	vector<Shader*> shaders;
+	vector<string> boundAttribs;
 	unsigned attribCount;
 	void printProgramInfoLog();
 	void detachShader(Shader *shader);

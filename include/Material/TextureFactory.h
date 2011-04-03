@@ -25,7 +25,7 @@ class TextureFactory : public Singleton<TextureFactory> {
  private:
 	friend class Singleton<TextureFactory>;
 	vector<Texture*> textures;
-	GLenum textureEnums[32];
+	vector<GLenum> textureEnums;
 	unsigned textureCount;
 
 	TextureFactory();

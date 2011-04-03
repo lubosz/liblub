@@ -7,9 +7,9 @@
 
 #pragma once
 
-#include <list>
+#include <QList>
 #include "Material/ShaderProgram.h"
-// using namespace std;
+//using std::list;
 
 #ifdef WITH_XCB
 	#include <xcb/xcb_keysyms.h>
@@ -60,7 +60,7 @@ class Input {
 			xcb_key_symbols_t *syms;
 			xcb_keysym_t pressedKey;
 
-			list<xcb_keysym_t> pressedKeys;
+			QList<xcb_keysym_t> pressedKeys;
 
 			void checkKey(xcb_keysym_t pressedKey);
 		#endif
