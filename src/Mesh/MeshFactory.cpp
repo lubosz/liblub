@@ -208,6 +208,7 @@ Mesh * MeshFactory::loadDirect(string file) {
         indices.push_back(i);
     }
     Mesh * mesh = new Mesh();
+    mesh->init();
     mesh->addBuffer(positions, 3, "in_Vertex");
     mesh->addElementBuffer(indices);
     return mesh;

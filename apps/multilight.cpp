@@ -28,7 +28,7 @@
 
 class LoadApp: public Application {
  public:
-
+  RenderSequence * shadowSequence;
 
   explicit LoadApp(string sceneName) {
     QString sceneFile = QString::fromStdString(sceneName + ".xml");
@@ -71,12 +71,12 @@ class LoadApp: public Application {
 //      );
 
     sceneLoader->load();
-    GUI::Instance().init();
     SceneData::Instance().initLightBuffer("multilight", "LightSourceBuffer");
+    shadowSequence = new RenderSequence();
 
   }
   void renderFrame(){
-
+    shadowSequence->render();
   }
 };
 

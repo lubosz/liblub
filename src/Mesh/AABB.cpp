@@ -38,6 +38,7 @@ void AABB::createMesh() {
   vector<GLuint> indicies = { 0, 1, 2, 3, 0, 1 };
 
   mesh = new Mesh();
+  mesh->init();
   mesh->addBuffer(vertices, 3, "in_Vertex");
 //  mesh->addBuffer(vertexColors, 3, "in_Color");
   mesh->addElementBuffer(indicies);

@@ -27,7 +27,7 @@
 class LoadApp: public Application {
  public:
 
-
+  RenderSequence * shadowSequence;
   explicit LoadApp(string sceneName) {
     QString sceneFile = QString::fromStdString(sceneName + ".xml");
     sceneLoader = new SceneLoader(sceneFile);
@@ -37,11 +37,11 @@ class LoadApp: public Application {
 
   void scene() {
     sceneLoader->load();
-    GUI::Instance().init();
-//    SceneGraph::Instance().addNode(plane);
+    shadowSequence = new RenderSequence();
+    //    SceneGraph::Instance().addNode(plane);
   }
   void renderFrame(){
-
+    shadowSequence->render();
   }
 };
 
