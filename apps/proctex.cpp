@@ -24,6 +24,7 @@
 #include "Scene/SceneData.h"
 #include "System/Logger.h"
 #include <QPainter>
+#include <math.h>
 
 class LoadApp: public Application {
  public:
@@ -58,10 +59,28 @@ class LoadApp: public Application {
     return image;
   }
 
+  QImage * makeGlow(QSize size, float exposure, float radius) {
+
+    QImage * image = new QImage(size, QImage::Format_ARGB32);
+
+    for (int y = 0; y < size.height(); y++) {
+      for (int x = 0; x < size.width(); x++) {
+        float fX = ((size.width() - 1) * 0.5f - x) / (float) (size.width() - 1);
+        float fY = ((size.height() - 1) * 0.5f - y) / (float) (size.height() - 1);
+        float distance = std::max(0.0f, (float)sqrt(fX * fX + fY * fY) - radius);
+        float intensity = exp(-exposure * distance);
+        unsigned char color = (unsigned char) (intensity * 192 + 0.5f);
+        image->setPixel(x,y,qRgba(255, 255,255, color));
+      }
+    }
+    return image;
+  }
+
   void scene() {
     sceneLoader->load();
 
-    QImage * image = makeNoise();
+//    QImage * image = makeNoise();
+    QImage * image = makeGlow(QSize(1000,1000),40.0f, 0.1f);
 
     Texture * textTexture = TextureFactory::Instance().load(image,"myTexture");
 
