@@ -37,12 +37,13 @@ class ShaderProgram {
 	string name;
 	vector<Uniform<float> > uniforms;
 	vector<Uniform<int> > uniformsi;
-	void setUniform(float value, string name);
-	void setUniform(const QMatrix3x3 & matrix, string name);
-	void setUniform(const QMatrix4x4 & matrix, string name);
-	void setUniform(const QVector2D & vector, string name);
-	void setUniform(const QVector3D & vector, string name);
-	void setUniform(const QVector4D & vector, string name);
+	void setUniform(string name, int value);
+	void setUniform(string name, float value);
+	void setUniform(string name, const QMatrix3x3 & matrix);
+	void setUniform(string name, const QMatrix4x4 & matrix);
+	void setUniform(string name, const QVector2D & vector);
+	void setUniform(string name, const QVector3D & vector);
+	void setUniform(string name, const QVector4D & vector);
 
 	void translateUniformf(unsigned id, const vector<float> & values);
 

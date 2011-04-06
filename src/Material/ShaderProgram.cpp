@@ -192,17 +192,17 @@ void ShaderProgram::reload() {
   // ShaderFactory::Instance().addUniforms();
 }
 
-void ShaderProgram::setUniform(const QVector4D& vector, string name) {
+void ShaderProgram::setUniform(string name, const QVector4D& vector) {
   glUniform4f(glGetUniformLocation(program, name.c_str()),
           vector.x(), vector.y(), vector.z(), vector.w());
 }
 
-void ShaderProgram::setUniform(const QVector3D& vector, string name) {
+void ShaderProgram::setUniform(string name, const QVector3D& vector) {
   glUniform3f(glGetUniformLocation(program, name.c_str()),
           vector.x(), vector.y(), vector.z());
 }
 
-void ShaderProgram::setUniform(const QVector2D& vector, string name) {
+void ShaderProgram::setUniform(string name, const QVector2D& vector) {
   glUniform2f(glGetUniformLocation(program, name.c_str()),
           vector.x(), vector.y());
 }
@@ -211,7 +211,7 @@ GLuint ShaderProgram::getReference() const {
   return program;
 }
 
-void ShaderProgram::setUniform(const QMatrix3x3 & matrix, string name) {
+void ShaderProgram::setUniform(string name, const QMatrix3x3 & matrix) {
     GLfloat mat[9];
     const qreal *data = matrix.constData();
     for (int i = 0; i < 9; ++i)
@@ -221,7 +221,7 @@ void ShaderProgram::setUniform(const QMatrix3x3 & matrix, string name) {
       glGetUniformLocation(program, name.c_str()), 1, GL_FALSE, mat);
 }
 
-void ShaderProgram::setUniform(const QMatrix4x4 & matrix, string name) {
+void ShaderProgram::setUniform(string name, const QMatrix4x4 & matrix) {
     GLfloat mat[16];
     const qreal *data = matrix.constData();
     for (int i = 0; i < 16; ++i)
@@ -238,8 +238,12 @@ void ShaderProgram::setUniform(const QMatrix4x4 & matrix, string name) {
   */
 }
 
-void ShaderProgram::setUniform(float value, string name) {
+void ShaderProgram::setUniform(string name, float value) {
   glUniform1f(glGetUniformLocation(program, name.c_str()), value);
+}
+
+void ShaderProgram::setUniform(string name, int value) {
+  glUniform1i(glGetUniformLocation(program, name.c_str()), value);
 }
 
 void ShaderProgram::translateUniformf(unsigned id, const vector<float> & values){

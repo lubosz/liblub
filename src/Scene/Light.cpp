@@ -33,7 +33,7 @@ Light::~Light() {
 
 void Light::bindShaderUpdate(ShaderProgram * shaderProgram) {
     QVector4D lightPositionView = SceneData::Instance().getCurrentCamera()->getView() * position;
-    shaderProgram->setUniform(lightPositionView, "lightPositionView");
+    shaderProgram->setUniform("lightPositionView",lightPositionView);
 //
 //    shaderProgram->setUniform(position, "lightPositionWorld");
 
@@ -43,28 +43,28 @@ void Light::bindShaderUpdate(ShaderProgram * shaderProgram) {
     QVector3D spotDirectionView = SceneData::Instance().getCurrentCamera()->getViewNoTranslation()
             * direction;
 //    spotDirectionView.normalize();
-    shaderProgram->setUniform(spotDirectionView, "spotDirectionView");
+    shaderProgram->setUniform("spotDirectionView", spotDirectionView);
     glError;
 }
 
 void Light::bindShaderUpdateLight(ShaderProgram * shaderProgram) {
     QVector4D lightPositionView = getView() * position;
 
-    shaderProgram->setUniform(lightPositionView, "lightPositionView");
+    shaderProgram->setUniform("lightPositionView", lightPositionView);
 
     QVector3D directionView = getView() * direction;
-    shaderProgram->setUniform(directionView, "spotDirection");
+    shaderProgram->setUniform("spotDirection", directionView);
 
     QVector3D spotDirectionView = getViewNoTranslation() * direction;
     spotDirectionView.normalize();
-    shaderProgram->setUniform(spotDirectionView, "spotDirectionView");
+    shaderProgram->setUniform("spotDirectionView", spotDirectionView);
 }
 
 void Light::bindShaderInit(ShaderProgram * shaderProgram) {
     GLuint program = shaderProgram->getReference();
 
     //TODO: Hardcoded light stuff
-    shaderProgram->setUniform(QVector4D(1.0, 1.0, 1.0, 1.0), "lightColor");
+    shaderProgram->setUniform("lightColor",QVector4D(1.0, 1.0, 1.0, 1.0));
 
 
     // attenuation

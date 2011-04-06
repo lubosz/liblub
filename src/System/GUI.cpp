@@ -130,7 +130,7 @@ void GUI::draw() {
   glEnable(GL_BLEND);
   ShaderProgram * shaderProgram = material->getShaderProgram();
   shaderProgram->use();
-  shaderProgram->setUniform(QMatrix4x4(), "MVPMatrix");
+  shaderProgram->setUniform("MVPMatrix",QMatrix4x4());
   node->draw();
   glDisable(GL_BLEND);
   glError;

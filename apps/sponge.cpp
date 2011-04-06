@@ -43,13 +43,13 @@ class Sponge : public Application {
     };
     material->shaderProgram->attachVertFrag("Color/PhongColor", flags);
     material->done();
-    material->shaderProgram->setUniform(QVector4D(0.1, 0.1, 0.1, 1.0), "ambientSceneColor");
-    material->shaderProgram->setUniform(QVector4D(1,1,1,1), "diffuseMaterialColor");
-    material->shaderProgram->setUniform(
-            QVector4D(0.8, 0.8, 0.8, 1.0), "specularMaterialColor");
-    material->shaderProgram->setUniform(4.3, "shininess");
-    material->shaderProgram->setUniform(1.0/1200, "yPixelOffset");
-    material->shaderProgram->setUniform(1.0/1920, "xPixelOffset");
+    material->shaderProgram->setUniform("ambientSceneColor",QVector4D(0.1, 0.1, 0.1, 1.0));
+    material->shaderProgram->setUniform("diffuseMaterialColor",QVector4D(1,1,1,1));
+    material->shaderProgram->setUniform("specularMaterialColor",
+            QVector4D(0.8, 0.8, 0.8, 1.0));
+    material->shaderProgram->setUniform("shininess",4.3f);
+    material->shaderProgram->setUniform("yPixelOffset",1.0f/1200);
+    material->shaderProgram->setUniform("xPixelOffset",1.0f/1920);
 
     for (int i = 0; i < 5; i++) {
       MengerSponge * sponge = new MengerSponge(i);

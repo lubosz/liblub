@@ -77,7 +77,7 @@ void SceneGraph::setShadowCoords(Node * node, DirectionNode * viewPoint) {
             * viewPoint->getView().inverted();
 
     node->getMaterial()->getShaderProgram()->setUniform(
-            camViewToShadowMapMatrix, "camViewToShadowMapMatrix");
+        "camViewToShadowMapMatrix", camViewToShadowMapMatrix);
 }
 
 void SceneGraph::drawNodes(DirectionNode * viewPoint) {

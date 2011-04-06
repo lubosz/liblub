@@ -100,7 +100,7 @@ void FrameBuffer::updateRenderView() {
 
 void FrameBuffer::draw(Material * material) {
     material->getShaderProgram()->use();
-    material->getShaderProgram()->setUniform(QMatrix4x4(), "MVPMatrix");
+    material->getShaderProgram()->setUniform("MVPMatrix",QMatrix4x4());
     material->activate();
     renderPlane->draw();
     glError;

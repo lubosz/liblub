@@ -112,13 +112,13 @@ void Node::setView(
 
     QMatrix4x4 tempMatrix = viewPoint->getView() * modelMatrix;
 
-    shaderProgram->setUniform(tempMatrix, "MVMatrix");
-    shaderProgram->setUniform(tempMatrix.normalMatrix(), "NormalMatrix");
+    shaderProgram->setUniform("MVMatrix", tempMatrix);
+    shaderProgram->setUniform("NormalMatrix", tempMatrix.normalMatrix());
     tempMatrix = viewPoint->getProjection() * tempMatrix;
-    shaderProgram->setUniform(SceneData::Instance().getCurrentCamera()->position, "cameraPosition");
-    shaderProgram->setUniform(SceneData::Instance().getCurrentCamera()->position.length(), "cameraHeight");
+    shaderProgram->setUniform("cameraPosition", SceneData::Instance().getCurrentCamera()->position);
+    shaderProgram->setUniform("cameraHeight", (float)SceneData::Instance().getCurrentCamera()->position.length());
 
-    shaderProgram->setUniform(tempMatrix, "MVPMatrix");
+    shaderProgram->setUniform("MVPMatrix", tempMatrix);
 
     glError;
 }

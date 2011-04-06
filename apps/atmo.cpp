@@ -29,12 +29,32 @@
 
 class AtmosphereApp: public Application {
  public:
-
-  RenderSequence * shadowSequence;
-  ShaderProgram *groundFromAtmosphere, *groundFromSpace,
+  Node * sphereNode;
+  Material *groundFromAtmosphere, *groundFromSpace,
                 *skyFromAtmosphere, *skyFromSpace,
                 *spaceFromAtmosphere,*spaceFromSpace,
                 *HDR;
+
+  bool m_bUseHDR;
+    int m_nSamples;
+//    GLenum m_nPolygonMode;
+    float m_Kr, m_Kr4PI;
+    float m_Km, m_Km4PI;
+    float m_ESun;
+    float m_g;
+    float m_fExposure;
+
+    float m_fInnerRadius;
+    float m_fOuterRadius;
+    float m_fScale;
+    float m_fWavelength[3];
+    float m_fWavelength4[3];
+    float m_fRayleighScaleDepth;
+    float m_fMieScaleDepth;
+
+    Camera* camera;
+    Light * light;
+
 
   explicit AtmosphereApp(string sceneName) {
     QString sceneFile = QString::fromStdString(sceneName + ".xml");
@@ -48,29 +68,12 @@ class AtmosphereApp: public Application {
 
 //    Material * foo = new Simple("Atmo/GroundFromAtmosphere");
 //    if(foo==NULL) printf("1");
-    groundFromAtmosphere = new ShaderProgram();
-    groundFromAtmosphere->attachVertFrag("Atmo/GroundFromAtmosphere");
-    groundFromAtmosphere->init();
-
-    groundFromSpace = new ShaderProgram();
-    groundFromSpace->attachVertFrag("Atmo/GroundFromSpace");
-    groundFromSpace->init();
-
-    skyFromAtmosphere = new ShaderProgram();
-    skyFromAtmosphere->attachVertFrag("Atmo/SkyFromAtmosphere");
-    skyFromAtmosphere->init();
-
-    skyFromSpace = new ShaderProgram();
-    skyFromSpace->attachVertFrag("Atmo/SkyFromSpace");
-    skyFromSpace->init();
-
-    spaceFromAtmosphere = new ShaderProgram();
-    spaceFromAtmosphere->attachVertFrag("Atmo/SpaceFromAtmosphere");
-    spaceFromAtmosphere->init();
-
-    spaceFromSpace = new ShaderProgram();
-    spaceFromSpace->attachVertFrag("Atmo/SpaceFromSpace");
-    spaceFromSpace->init();
+    groundFromAtmosphere = new Simple("Atmo/GroundFromAtmosphere");
+    groundFromSpace = new Simple("Atmo/GroundFromSpace");
+    skyFromAtmosphere = new Simple("Atmo/SkyFromAtmosphere");
+    skyFromSpace = new Simple("Atmo/SkyFromSpace");
+    spaceFromAtmosphere = new Simple("Atmo/SpaceFromAtmosphere");
+    spaceFromSpace = new Simple("Atmo/SpaceFromSpace");
 
 //    HDR = new ShaderProgram();
 //    HDR->attachShader("Atmo/HDR.vert", GL_VERTEX_SHADER);
@@ -87,16 +90,52 @@ class AtmosphereApp: public Application {
     Material * material = new Simple("Color/debug");
     material->addTexture(earthMap);
 
-    Node * sphereNode = new Node("sphere", { 0, 0, 0 }, 1, sphere, material);
+    sphereNode = new Node("sphere", { 0, 0, 0 }, 1, sphere, material);
     sphereNode->setRotation(QVector3D(-90, 0, 180));
-    SceneGraph::Instance().addNode(sphereNode);
-
-
-
-    shadowSequence = new RenderSequence();
+//    SceneGraph::Instance().addNode(sphereNode);
+    camera = SceneData::Instance().getCurrentCamera();
+    light = new Light(QVector3D(-2.5, 21.5, -5.2), QVector3D(1, -5, 0));
+    SceneData::Instance().addLight("foolight", light);
   }
   void renderFrame(){
-    shadowSequence->render();
+    RenderEngine::Instance().clear();
+    sphereNode->setView(camera);
+//    SceneData::Instance().getShadowLight()->bindShaderUpdate(node->getMaterial()->getShaderProgram());
+    sphereNode->draw();
+    GUI::Instance().draw();
+
+
+    Material *space = NULL;
+    if(camera->position.length() < m_fOuterRadius)
+      space = spaceFromAtmosphere;
+    else if(camera->position.z() > 0.0f)
+      space = spaceFromSpace;
+
+
+    if(space) {
+//      space->activate();
+      space->shaderProgram->use();
+      space->shaderProgram->setUniform("v3CameraPos", camera->position);
+      space->shaderProgram->setUniform("v3LightPos", light->direction);
+      space->shaderProgram->setUniform("v3InvWavelength", QVector3D(1/m_fWavelength4[0], 1/m_fWavelength4[1], 1/m_fWavelength4[2]));
+      space->shaderProgram->setUniform("fCameraHeight", (float)camera->position.length());
+      space->shaderProgram->setUniform("fCameraHeight2", float(camera->position.length()*camera->position.length()));
+      space->shaderProgram->setUniform("fInnerRadius", m_fInnerRadius);
+      space->shaderProgram->setUniform("fInnerRadius2", m_fInnerRadius*m_fInnerRadius);
+      space->shaderProgram->setUniform("fOuterRadius", m_fOuterRadius);
+      space->shaderProgram->setUniform("fOuterRadius2", m_fOuterRadius*m_fOuterRadius);
+      space->shaderProgram->setUniform("fKrESun", m_Kr*m_ESun);
+      space->shaderProgram->setUniform("fKmESun", m_Km*m_ESun);
+      space->shaderProgram->setUniform("fKr4PI", m_Kr4PI);
+      space->shaderProgram->setUniform("fKm4PI", m_Km4PI);
+      space->shaderProgram->setUniform("fScale", 1.0f / (m_fOuterRadius - m_fInnerRadius));
+      space->shaderProgram->setUniform("fScaleDepth", m_fRayleighScaleDepth);
+      space->shaderProgram->setUniform("fScaleOverScaleDepth", (1.0f / (m_fOuterRadius - m_fInnerRadius)) / m_fRayleighScaleDepth);
+      space->shaderProgram->setUniform("g", m_g);
+      space->shaderProgram->setUniform("g2", m_g*m_g);
+      space->shaderProgram->setUniform("s2Test", 0);
+    }
+    glError;
   }
 };
 
