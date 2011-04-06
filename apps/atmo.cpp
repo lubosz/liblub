@@ -54,7 +54,7 @@ class AtmosphereApp: public Application {
 
     Camera* camera;
     Light * light;
-
+    Node * spaceNode;
 
   explicit AtmosphereApp(string sceneName) {
     QString sceneFile = QString::fromStdString(sceneName + ".xml");
@@ -84,8 +84,11 @@ class AtmosphereApp: public Application {
 
     Texture * earthMap = TextureFactory::Instance().load("earthmap1k.jpg",
         "myTexture");
-//    Texture * glow = TextureFactory::Instance().load(ProcTextures::makeGlow(
-//        QSize(1000, 2000), 40.0f, 0.1f), "glow");
+    Texture * glow = TextureFactory::Instance().load(ProcTextures::makeGlow(
+        QSize(1000, 2000), 40.0f, 0.1f), "glow");
+
+    spaceFromAtmosphere->addTexture(glow);
+    spaceFromSpace->addTexture(glow);
 
     Material * material = new Simple("Color/debug");
     material->addTexture(earthMap);
@@ -96,6 +99,32 @@ class AtmosphereApp: public Application {
     camera = SceneData::Instance().getCurrentCamera();
     light = new Light(QVector3D(-2.5, 21.5, -5.2), QVector3D(1, -5, 0));
     SceneData::Instance().addLight("foolight", light);
+
+
+    vector<GLfloat> vertices = {
+        -4.0f, 4.0f, -50.0f,
+        -4.0f, -4.0f, -50.0f,
+        4.0f, -4.0f, -50.0f,
+        4.0f, 4.0f, -50.0f
+    };
+    vector<GLfloat> uvCoords = {
+            0.0, 0.0,
+            0.0, 1.0,
+            1.0, 1.0,
+            1.0, 0.0,
+    };
+
+    vector<GLuint> indicies = { 0, 1, 3, 3, 1, 2 };
+
+    Mesh * spacePlane = new Mesh();
+    spacePlane->init();
+    spacePlane->addBuffer(vertices, 3, "in_Vertex");
+    spacePlane->addBuffer(uvCoords, 2, "in_Uv");
+    spacePlane->addElementBuffer(indicies);
+    spacePlane->setDrawType(GL_TRIANGLES);
+
+    spaceNode = new Node("space", { 0, 0, 0 }, 1, spacePlane, spaceFromAtmosphere);
+
   }
   void renderFrame(){
     RenderEngine::Instance().clear();
@@ -104,37 +133,44 @@ class AtmosphereApp: public Application {
     sphereNode->draw();
     GUI::Instance().draw();
 
+    bool drawSpace = false;
 
-    Material *space = NULL;
-    if(camera->position.length() < m_fOuterRadius)
-      space = spaceFromAtmosphere;
-    else if(camera->position.z() > 0.0f)
-      space = spaceFromSpace;
-
-
-    if(space) {
-//      space->activate();
-      space->shaderProgram->use();
-      space->shaderProgram->setUniform("v3CameraPos", camera->position);
-      space->shaderProgram->setUniform("v3LightPos", light->direction);
-      space->shaderProgram->setUniform("v3InvWavelength", QVector3D(1/m_fWavelength4[0], 1/m_fWavelength4[1], 1/m_fWavelength4[2]));
-      space->shaderProgram->setUniform("fCameraHeight", (float)camera->position.length());
-      space->shaderProgram->setUniform("fCameraHeight2", float(camera->position.length()*camera->position.length()));
-      space->shaderProgram->setUniform("fInnerRadius", m_fInnerRadius);
-      space->shaderProgram->setUniform("fInnerRadius2", m_fInnerRadius*m_fInnerRadius);
-      space->shaderProgram->setUniform("fOuterRadius", m_fOuterRadius);
-      space->shaderProgram->setUniform("fOuterRadius2", m_fOuterRadius*m_fOuterRadius);
-      space->shaderProgram->setUniform("fKrESun", m_Kr*m_ESun);
-      space->shaderProgram->setUniform("fKmESun", m_Km*m_ESun);
-      space->shaderProgram->setUniform("fKr4PI", m_Kr4PI);
-      space->shaderProgram->setUniform("fKm4PI", m_Km4PI);
-      space->shaderProgram->setUniform("fScale", 1.0f / (m_fOuterRadius - m_fInnerRadius));
-      space->shaderProgram->setUniform("fScaleDepth", m_fRayleighScaleDepth);
-      space->shaderProgram->setUniform("fScaleOverScaleDepth", (1.0f / (m_fOuterRadius - m_fInnerRadius)) / m_fRayleighScaleDepth);
-      space->shaderProgram->setUniform("g", m_g);
-      space->shaderProgram->setUniform("g2", m_g*m_g);
-      space->shaderProgram->setUniform("s2Test", 0);
+    if(camera->position.length() < m_fOuterRadius) {
+      spaceNode->setMaterial(spaceFromAtmosphere);
+      drawSpace = true;
+    }else if(camera->position.z() > 0.0f) {
+      spaceNode->setMaterial(spaceFromSpace);
+      drawSpace = true;
     }
+
+
+    if(drawSpace) {
+//      space->activate();
+      ShaderProgram * spaceShader = spaceNode->getMaterial()->getShaderProgram();
+      spaceShader->use();
+      spaceShader->setUniform("v3CameraPos", camera->position);
+      spaceShader->setUniform("v3LightPos", light->direction);
+      spaceShader->setUniform("v3InvWavelength", QVector3D(1/m_fWavelength4[0], 1/m_fWavelength4[1], 1/m_fWavelength4[2]));
+      spaceShader->setUniform("fCameraHeight", (float)camera->position.length());
+      spaceShader->setUniform("fCameraHeight2", float(camera->position.length()*camera->position.length()));
+      spaceShader->setUniform("fInnerRadius", m_fInnerRadius);
+      spaceShader->setUniform("fInnerRadius2", m_fInnerRadius*m_fInnerRadius);
+      spaceShader->setUniform("fOuterRadius", m_fOuterRadius);
+      spaceShader->setUniform("fOuterRadius2", m_fOuterRadius*m_fOuterRadius);
+      spaceShader->setUniform("fKrESun", m_Kr*m_ESun);
+      spaceShader->setUniform("fKmESun", m_Km*m_ESun);
+      spaceShader->setUniform("fKr4PI", m_Kr4PI);
+      spaceShader->setUniform("fKm4PI", m_Km4PI);
+      spaceShader->setUniform("fScale", 1.0f / (m_fOuterRadius - m_fInnerRadius));
+      spaceShader->setUniform("fScaleDepth", m_fRayleighScaleDepth);
+      spaceShader->setUniform("fScaleOverScaleDepth", (1.0f / (m_fOuterRadius - m_fInnerRadius)) / m_fRayleighScaleDepth);
+      spaceShader->setUniform("g", m_g);
+      spaceShader->setUniform("g2", m_g*m_g);
+      spaceShader->setUniform("s2Test", 0);
+    }
+
+    spaceNode->draw();
+
     glError;
   }
 };

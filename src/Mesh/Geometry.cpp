@@ -17,8 +17,6 @@ Mesh * Geometry::makePlane(const QRectF &plane) {
         (float)plane.right(), (float)plane.bottom(), -1.0,
         (float)plane.left(), (float)plane.bottom(), -1.0
     };
-    if(plane.width() == 0)
-      printf("d");
     vector<GLfloat> uvCoords = {
             0.0, 0.0,
             1.0, 0.0,
