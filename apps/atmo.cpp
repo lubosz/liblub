@@ -69,6 +69,7 @@ class AtmosphereApp: public Application {
   void setAtmoUniforms(ShaderProgram * program){
     program->use();
     program->setUniform("v3LightPos", lightDirection);
+    program->setUniform("v3InvWavelength", QVector3D(1/m_fWavelength4[0], 1/m_fWavelength4[1], 1/m_fWavelength4[2]));
     program->setUniform("fInnerRadius", m_fInnerRadius);
     program->setUniform("fInnerRadius2", m_fInnerRadius*m_fInnerRadius);
     program->setUniform("fOuterRadius", m_fOuterRadius);
@@ -86,7 +87,6 @@ class AtmosphereApp: public Application {
   void setCameraUniforms(ShaderProgram * program){
     program->use();
     program->setUniform("v3CameraPos", camera->position);
-    program->setUniform("v3InvWavelength", QVector3D(1/m_fWavelength4[0], 1/m_fWavelength4[1], 1/m_fWavelength4[2]));
     program->setUniform("fCameraHeight", (float)camera->position.length());
     program->setUniform("fCameraHeight2", float(camera->position.length()*camera->position.length()));
   }
@@ -123,15 +123,15 @@ class AtmosphereApp: public Application {
     Texture * glow = TextureFactory::Instance().load(ProcTextures::makeGlow(
         QSize(512, 512), 40.0f, 0.1f), "glow");
     Texture * earthMap = TextureFactory::Instance().load("earthmap1k.jpg",
-        "myTexture");
+        "planet");
 
 //    Material * foo = new Simple("Atmo/SpaceFromSpace");
 //    foo->addTexture(glow);
 //    if(foo==NULL) printf("1");
     groundFromAtmosphere = new Simple("Atmo/GroundFromAtmosphere");
-//    groundFromAtmosphere->addTexture(earthMap);
+    groundFromAtmosphere->addTexture(earthMap);
     groundFromSpace = new Simple("Atmo/GroundFromSpace");
-//    groundFromSpace->addTexture(earthMap);
+    groundFromSpace->addTexture(earthMap);
     skyFromAtmosphere = new Simple("Atmo/SkyFromAtmosphere");
     skyFromSpace = new Simple("Atmo/SkyFromSpace");
     spaceFromAtmosphere = new Simple("Atmo/SpaceFromAtmosphere");
@@ -144,8 +144,8 @@ class AtmosphereApp: public Application {
 //    HDR->attachShader("Atmo/HDRRect.frag", GL_FRAGMENT_SHADER); //HDRSquare
 //    HDR->init();
 
-    Material * earth = new Simple("Color/debug");
-    earth->addTexture(earthMap);
+//    Material * earth = new Simple("Color/debug");
+//    earth->addTexture(earthMap);
 
     camera = SceneData::Instance().getCurrentCamera();
     camera->setPosition(QVector3D(0, 0, 25));
@@ -175,12 +175,13 @@ class AtmosphereApp: public Application {
     spacePlane->addBuffer(uvCoords, 2, "in_Uv");
     spacePlane->addElementBuffer(indicies);
     spacePlane->setDrawType(GL_TRIANGLES);
-    Mesh * sphere = Geometry::gluSphere(m_fInnerRadius, 100, 50);
+    Mesh * innerSphere = Geometry::gluSphere(m_fInnerRadius, 1000, 500);
+    Mesh * outerSphere = Geometry::gluSphere(m_fOuterRadius, 1000, 500);
 
     spaceNode = new Node("space", { 0, 0, 0 }, 1, spacePlane, spaceFromAtmosphere);
-    groundNode = new Node("ground", { 0, 0, 0 }, 1, sphere, groundFromAtmosphere);
+    groundNode = new Node("ground", { 0, 0, 0 }, 1, innerSphere, groundFromAtmosphere);
     groundNode->setRotation(QVector3D(-90, 0, 180));
-    skyNode = new Node("sky", { 0, 0, 0 }, 1, sphere, skyFromAtmosphere);
+    skyNode = new Node("sky", { 0, 0, 0 }, 1, outerSphere, skyFromAtmosphere);
     skyNode->setRotation(QVector3D(-90, 0, 180));
 
     setAtmoUniforms(spaceFromAtmosphere->getShaderProgram());

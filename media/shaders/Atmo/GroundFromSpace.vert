@@ -96,5 +96,5 @@ void main(void)
 	// Calculate the attenuation factor for the ground
 	color2 = v3Attenuate;
 	gl_Position = MVPMatrix * vec4(in_Vertex,1);
-	//uv = in_Uv;
+	uv = in_Uv;
 }

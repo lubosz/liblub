@@ -92,4 +92,5 @@ void main(void)
 	gl_Position = MVPMatrix * vec4(in_Vertex,1);
 	//gl_TexCoord[0] = gl_TextureMatrix[0] * gl_MultiTexCoord0;
 	//gl_TexCoord[1] = gl_TextureMatrix[1] * gl_MultiTexCoord1;
+	uv = in_Uv;
 }
