@@ -5,7 +5,7 @@ uniform sampler2D color;
 in vec2 uv;
 in vec3 normalView;
 in vec4 positionView;
-
+in float zoom;
 out vec4 finalColor;
 
 uniform vec4 lightPositionView;
@@ -31,7 +31,8 @@ uniform sampler2D normalTexture;
 vec4 diffuseColor(float lambertTerm){
 
 	return	
-		texture(color, uv) *
+	(mix(texture(color, uv), texture(color, uv*.02),zoom))
+		 *
 		//vec4(0,0,1,1) *
 			lightColor * 
 			lambertTerm;
@@ -71,7 +72,7 @@ void main(void) {
 
 //normalmap
 	vec3 lVec = normalize(lightVec);
-	vec3 bump = normalize( texture(normalTexture, uv).xyz * 2.0 - 1.0);
+	vec3 bump = normalize( mix(texture(normalTexture, uv), texture(normalTexture, uv*.02),zoom) * 2.0 - 1.0).xyz;
 
 	float diffuseBump = max( dot(lVec, bump), 0.0 );
 //
@@ -85,6 +86,7 @@ void main(void) {
 	float lambertTerm = max( dot(N,L), 0.0);
 
 	finalColor = vec4(0,0,0,1);
+	//finalColor += diffuseColor(lambertTerm);
 	if(lambertTerm > 0.0)
 	{
 		//diffuse
@@ -111,11 +113,12 @@ void main(void) {
 		//}
 	}
 	
-	finalColor *= shadow;
+	//finalColor *= shadow;
 
 
 	//fragColor = normalColor;
 	//fragColor = vec4(normalView, 1);
     //finalColor = texture(color, uv);
     //finalColor = vec4(N,1);
+    //finalColor = vec4(1);
 }
