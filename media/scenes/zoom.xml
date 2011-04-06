@@ -4,17 +4,19 @@
 		<Program name="uvmove">
 			<Shader url="Geometry/uvmove" />
 			<Uniform name="uvoffset" value="0.5,1.2" />
-			<Uniform name="tiling" value="1" />
+			<Uniform name="somevalue" value="1" />
 			<Uniform value="0.6, 0.6, 0.6, 1.0" name="specularMaterialColor" />
 			<Uniform value="4.3" name="shininess" />
 			<Uniform value="0.000833333" name="yPixelOffset" />
 			<Uniform value="0.000520833" name="xPixelOffset" />
 		</Program>
 		<Program name="CubeMap">
-			<Shader url="Texture/cubemapSky" />
-			<Uniform value="0.5, 0.5, 1.0" name="BaseColor" />
-			<Uniform value="0.5" name="MixRatio" />
+			<Shader url="Env/cubemapSkyFade" />
 		</Program>
+		<Program name="Font">
+			<Shader url="Texture/font" />
+		</Program>
+		<!-- 
 		<Program name="PhongColorMat">
 			<Shader url="Color/PhongColor" />
 			<Uniform value="0.0, 1.0, 0.0, 1.0" name="diffuseMaterialColor" />
@@ -49,46 +51,58 @@
 			<Uniform name="waveFreq" value="0.028" />
 			<Uniform name="waveAmp" value="1.8" />
 		</Program>
+		<Program name="Texture">
+			<Shader url="Texture/texture" />
+		</Program>
+		 -->
 	</Programs>
 	<Textures>
-		<Texture name="bunny" url="terrain/mud.jpg" />
-		<Texture name="mud-normal" url="terrain/mud-normal.png" />
-		<Texture name="noise" url="terrain-noise-blur.jpg" />
-		<TextureCube name="sky" url="cubemaps/sky" />
+<!-- 
 		<Texture name="waves" url="ocean/waves.png" />
+		<TextureCube name="sky" url="cubemaps/sky" />
+-->
+		<Texture name="terrain" url="terrain/mud.jpg" />
+		<Texture name="terrain-normal" url="terrain/mud-normal.png" />
+		<Texture name="noise" url="terrain-noise-blur.jpg" />
+		<TextureCube name="sky" url="cubemaps/stormy" />
+		<TextureCube name="space" url="cubemaps/space" />
 	</Textures>
 	<Materials>
 		<Material name="uvmove" program="uvmove">
-			<Layer sampler="color" texture="bunny" />
+			<Layer sampler="color" texture="terrain" />
 			<Layer sampler="height" texture="noise" />
-			<Layer sampler="normalTexture" texture="mud-normal" />
+			<Layer sampler="normalTexture" texture="terrain-normal" />
 		</Material>
+
 		<Material name="CubeMap" program="CubeMap">
-			<Layer sampler="EnvMap" texture="sky" />
+			<Layer sampler="planetMap" texture="sky" />
+			<Layer sampler="spaceMap" texture="space" />
 		</Material>
+<!-- 
 		<Material name="PhongColorMat" program="PhongColorMat" />
 		<Material name="Ocean" program="Ocean">
 			<Layer sampler="EnvironmentMap" texture="sky" />
 			<Layer sampler="NormalMap" texture="waves" />
 		</Material>
+ -->
 	</Materials>
 	<Meshes>
 	<!-- 
-		<File name="clipmapmesh" url="clipmapc.blend" />
-	 -->
-		<File name="clipmapmesh" url="clipmapb.blend" />
-		<File name="sphere" url="earth.obj" drawType="LINES" />
-		<File name="skymesh" url="earth.obj" />
-		<File name="plane" url="plane.blend" />
 		<Procedural name="sponge" type="Sponge" recursion="3" />
+		<File name="sphere" url="earth.obj" drawType="LINES" />
+		<File name="clipmapmesh" url="clipmapb.blend" />
+	 -->
+		<File name="clipmapmesh" url="halfsphere.blend" />
+		<File name="sphere" url="earth.obj" />
+		<File name="plane" url="plane.blend" />
 	</Meshes>
 	<Scene name="terrain">
-		<Object name="menger sponge" mesh="sponge" material="PhongColorMat" scale="5.0" position="10, 30, -10" />
-		<Light name="mylight" position ="0.3, 100.6, -3.3" direction="1,-5,-1" mesh="sphere" />
-		<Object name="sky" mesh="skymesh" material="CubeMap" scale="800" position="0, 0, 0" />
-		<Object name="ocean" mesh="plane" material="Ocean" scale="1000" position="0,-50,0" />
+		<Light name="light" position ="0.3, 200.6, -3.3" direction="1,-5,-1" mesh="sphere" />
+		<Object name="terrain" mesh="clipmapmesh" material="uvmove" scale="10" position="0, -7, 0" />
+		<Object name="sky" mesh="sphere" material="CubeMap" scale="2000" position="0, 0, 0" />
 		<!-- 
+		<Object name="menger sponge" mesh="sponge" material="PhongColorMat" scale="5.0" position="10, 30, -10" />
+		<Object name="ocean" mesh="plane" material="Ocean" scale="1000" position="0,-50,0" />
 		-->
-		<Object name="uvmovenode" mesh="clipmapmesh" material="uvmove" scale="100" position="0, -230, 0" />
 	</Scene>
 </liblub>

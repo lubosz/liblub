@@ -4,6 +4,9 @@
 		<Program name="Texture">
 			<Shader url="Texture/texture" />
 		</Program>
+		<Program name="Font">
+			<Shader url="Texture/font" />
+		</Program>
 	</Programs>
 	<Textures>
 		<Texture name="bunny" url="bunny.png" />

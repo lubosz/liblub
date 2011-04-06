@@ -11,6 +11,9 @@
 		<Program name="CubeMap">
 			<Shader url="Texture/cubemapSky" />
 		</Program>
+		<Program name="Font">
+			<Shader url="Texture/font" />
+		</Program>
 	</Programs>
 	<Textures>
 		<Texture name="masonry-wall-texture" url="bump/masonry-wall-texture.jpg" />
@@ -36,7 +39,7 @@
 			<Layer sampler="envMap" texture="sky" />
 		</Material>
 	</Materials>
-	<Scene name="Buffer">
+	<Scene name="Multilights">
 		<Light name="mylight" position ="-9, 32, 11.5" direction="1,-5,-1" mesh="light" diffuse="0,0,1" />
 		<Light name="myotherlight" position ="9, 32, -11.5" direction="-1,-5,1" mesh="light" diffuse="1,0,0" />
 		<Light name="myotherlight1" position ="-5, 16, -2" direction="-1,-5,1" mesh="light" diffuse="0,0.5,0" />

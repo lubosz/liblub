@@ -42,8 +42,8 @@
 			<Uniform name="waveFreq" value="0.028" />
 			<Uniform name="waveAmp" value="1.8" />
 		</Program>
-		<Program name="Texture">
-			<Shader url="Texture/texture" />
+		<Program name="Font">
+			<Shader url="Texture/font" />
 		</Program>
 		<Program name="debugFBO">
 			<Shader url="Texture/debugfbo" />
