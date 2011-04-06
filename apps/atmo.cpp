@@ -175,14 +175,14 @@ class AtmosphereApp: public Application {
     spacePlane->addBuffer(uvCoords, 2, "in_Uv");
     spacePlane->addElementBuffer(indicies);
     spacePlane->setDrawType(GL_TRIANGLES);
-    Mesh * innerSphere = Geometry::gluSphere(m_fInnerRadius, 1000, 500);
-    Mesh * outerSphere = Geometry::gluSphere(m_fOuterRadius, 1000, 500);
+    Mesh * innerSphere = Geometry::gluSphere(m_fInnerRadius, 100, 50);
+    Mesh * outerSphere = Geometry::gluSphere(m_fOuterRadius, 100, 50);
 
     spaceNode = new Node("space", { 0, 0, 0 }, 1, spacePlane, spaceFromAtmosphere);
     groundNode = new Node("ground", { 0, 0, 0 }, 1, innerSphere, groundFromAtmosphere);
-    groundNode->setRotation(QVector3D(-90, 0, 180));
+//    groundNode->setRotation(QVector3D(-90, 0, 180));
     skyNode = new Node("sky", { 0, 0, 0 }, 1, outerSphere, skyFromAtmosphere);
-    skyNode->setRotation(QVector3D(-90, 0, 180));
+//    skyNode->setRotation(QVector3D(-90, 0, 180));
 
     setAtmoUniforms(spaceFromAtmosphere->getShaderProgram());
     setAtmoUniforms(groundFromAtmosphere->getShaderProgram());

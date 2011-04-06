@@ -6,6 +6,7 @@
 // Copyright (c) 2004 Sean O'Neil
 //
 #version 410 core
+precision highp float;
 
 in vec3 in_Vertex;
 in vec3 in_Normal;

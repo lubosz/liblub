@@ -6,6 +6,7 @@
 // Copyright (c) 2004 Sean O'Neil
 //
 #version 410 core
+precision highp float;
 
 in vec3 in_Vertex;
 in vec3 in_Normal;
@@ -66,6 +67,8 @@ void main(void)
 	float fScaledLength = fSampleLength * fScale;
 	vec3 v3SampleRay = v3Ray * fSampleLength;
 	vec3 v3SamplePoint = v3Start + v3SampleRay * 0.5;
+	
+	//vec4 lightPos = MVMatrix * vec4(v3LightPos,1);
 
 	// Now loop through the sample rays
 	vec3 v3FrontColor = vec3(0.0, 0.0, 0.0);

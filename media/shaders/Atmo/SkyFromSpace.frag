@@ -6,6 +6,7 @@
 // Copyright (c) 2004 Sean O'Neil
 //
 #version 410 core
+precision highp float;
 
 uniform vec3 v3LightPos;
 uniform float g;
@@ -24,4 +25,5 @@ void main (void)
     fragColor = vec4(color1 + fMiePhase * color2,1);
     //fragColor = vec4(0) + fMiePhase;
 	fragColor.a = fragColor.b;
+	//fragColor.w = fragColor.y;
 }

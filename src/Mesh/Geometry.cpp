@@ -276,6 +276,7 @@ Mesh * Geometry::gluSphere(GLdouble radius, GLint slices, GLint stacks) {
   bool useTextureCoords = true;
   GLenum drawStyle = GL_FILL;
 #define CACHE_SIZE  240
+//#define CACHE_SIZE  4096
   GLint i, j;
   GLfloat sinCache1a[CACHE_SIZE];
   GLfloat cosCache1a[CACHE_SIZE];
