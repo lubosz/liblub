@@ -5,6 +5,15 @@
 //
 // Copyright (c) 2004 Sean O'Neil
 //
+#version 410 core
+
+in vec3 in_Vertex;
+in vec3 in_Normal;
+in vec2 in_Uv;
+
+uniform mat4 MVMatrix;
+uniform mat4 MVPMatrix;
+uniform mat3 NormalMatrix;
 
 uniform vec3 v3CameraPos;		// The camera's current position
 uniform vec3 v3LightPos;		// The direction vector to the light source
@@ -26,8 +35,9 @@ uniform float fScaleOverScaleDepth;	// fScale / fScaleDepth
 const int nSamples = 2;
 const float fSamples = 2.0;
 
-varying vec3 v3Direction;
-
+out vec3 v3Direction;
+out vec3 color1;
+out vec3 color2;
 
 float scale(float fCos)
 {
@@ -38,7 +48,7 @@ float scale(float fCos)
 void main(void)
 {
 	// Get the ray from the camera to the vertex, and its length (which is the far point of the ray passing through the atmosphere)
-	vec3 v3Pos = gl_Vertex.xyz;
+	vec3 v3Pos = in_Vertex;
 	vec3 v3Ray = v3Pos - v3CameraPos;
 	float fFar = length(v3Ray);
 	v3Ray /= fFar;
@@ -72,8 +82,8 @@ void main(void)
 	}
 
 	// Finally, scale the Mie and Rayleigh colors and set up the varying variables for the pixel shader
-	gl_FrontSecondaryColor.rgb = v3FrontColor * fKmESun;
-	gl_FrontColor.rgb = v3FrontColor * (v3InvWavelength * fKrESun);
-	gl_Position = gl_ModelViewProjectionMatrix * gl_Vertex;
+	color2 = v3FrontColor * fKmESun;
+	color1 = v3FrontColor * (v3InvWavelength * fKrESun);
+	gl_Position = MVPMatrix * vec4(in_Vertex,1);
 	v3Direction = v3CameraPos - v3Pos;
 }

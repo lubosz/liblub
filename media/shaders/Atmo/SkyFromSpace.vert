@@ -36,6 +36,9 @@ const int nSamples = 2;
 const float fSamples = 2.0;
 
 out vec3 v3Direction;
+out vec3 color1;
+out vec3 color2;
+
 
 
 float scale(float fCos)
@@ -87,8 +90,8 @@ void main(void)
 	}
 
 	// Finally, scale the Mie and Rayleigh colors and set up the varying variables for the pixel shader
-	gl_FrontSecondaryColor.rgb = v3FrontColor * fKmESun;
-	gl_FrontColor.rgb = v3FrontColor * (v3InvWavelength * fKrESun);
+	color2 = v3FrontColor * fKmESun;
+	color1 = v3FrontColor * (v3InvWavelength * fKrESun);
 	gl_Position = MVPMatrix * vec4(in_Vertex,1);
 	v3Direction = v3CameraPos - v3Pos;
 }
