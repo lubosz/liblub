@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <liblub>
-	<include url="common/programs.xml" />
+	<!-- 
 	<Programs>
 		<Program name="SkyFromSpace">
 			<Shader url="Atmo/SkyFromSpace" />
@@ -8,14 +8,12 @@
 			<Uniform name="outerRadius" value="10.25" />
 			<Uniform name="innerRadius" value="10" />
 			<Uniform name="invWavelength" value="0.95, 0.5, .05" />
-			<!--
 			<Uniform name="wavelength" value="0.65, 0.57, 0.475" />
 			<Uniform name="cameraHeight" value="10.0" />
 			<Uniform name="scaleDepth" value="0.25" />
 			<Uniform name="kr" value="0.0025" />
 			<Uniform name="km" value="0.001" />
 			<Uniform name="ESun" value="20" />
-			-->
 			<Uniform name="krESun" value="2" />
 			<Uniform name="kmESun" value="2" />
 			<Uniform name="kr4PI" value="6" />
@@ -24,7 +22,6 @@
 			<Uniform name="g" value="-0.99" />
 		</Program>
 	</Programs>
-	<!-- 
 	<Textures>
 		<Texture name="Mars" url="Planets/Mars.jpg" />
 		<Texture name="plane-occlusion" url="sphere_ao.png" />

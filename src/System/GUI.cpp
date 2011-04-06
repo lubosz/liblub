@@ -22,7 +22,7 @@
 
 GUI::GUI() {
   textLines = QMap<string,string>();
-  material = new EmptyMat();
+  material = new Simple("Texture/font");
 
   node = new Node("GUI", { 0, 0, 0 }, 1, Geometry::makePlane(QRectF(0.5,0,0.5,1)), material);
 //      plane->transparent = true;
@@ -61,7 +61,6 @@ void GUI::init() {
   GUI::Instance().addText("cam", "Cam");
   render();
   texture = TextureFactory::Instance().load(image,"myTexture");
-  material->shaderProgram = SceneData::Instance().shaderPrograms.value("Font");
   material->addTexture(texture);
 }
 
