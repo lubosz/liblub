@@ -104,7 +104,7 @@ void Node::update() {
     modelMatrix.rotate(rotation.z(), QVector3D(0,0,1));
 }
 
-void Node::bindShaders(
+void Node::setView(
         ShaderProgram * shaderProgram, DirectionNode * viewPoint) {
     glError;
 //    printf("Binding Node %s\n", name.c_str());
@@ -123,8 +123,8 @@ void Node::bindShaders(
     glError;
 }
 
-void Node::bindShaders(DirectionNode * viewPoint) {
-    bindShaders(material->getShaderProgram(), viewPoint);
+void Node::setView(DirectionNode * viewPoint) {
+	setView(material->getShaderProgram(), viewPoint);
 }
 
 QVector3D Node::getCenter() {

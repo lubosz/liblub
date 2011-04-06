@@ -40,8 +40,8 @@ class Node {
   void setPosition(const QVector3D& position);
   void setRotation(const QVector3D& rotation);
   void draw();
-  void bindShaders(ShaderProgram * shaderProgram, DirectionNode * viewPoint);
-  void bindShaders(DirectionNode * viewPoint);
+  void setView(DirectionNode * viewPoint);
+  void setView(ShaderProgram * shaderProgram, DirectionNode * viewPoint);
   string getName() const;
   const QVector3D& getPosition();
   const QVector3D& getRotation();

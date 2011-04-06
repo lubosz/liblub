@@ -10,6 +10,7 @@
 #include "Mesh/MeshFactory.h"
 #include "System/Logger.h"
 #include "Scene/SceneData.h"
+#include "System/GUI.h"
 
 SceneGraph::SceneGraph() {
     bias = QMatrix4x4();
@@ -82,12 +83,16 @@ void SceneGraph::setShadowCoords(Node * node, DirectionNode * viewPoint) {
 void SceneGraph::drawNodes(DirectionNode * viewPoint) {
   QMap <qreal, Node*> transparentNodes;
 
+  QVector3D terrainPositon(SceneData::Instance().getCurrentCamera()->position.x(),-50,SceneData::Instance().getCurrentCamera()->position.z());
+
+//  sceneNodes["terrain"]->setPosition(terrainPositon);
+
   SceneData::Instance().updateLightBuffer();
 
   //TODO: Multiple lights
     foreach(Node * node, sceneNodes) {
         if(!node->transparent) {
-          node->bindShaders(viewPoint);
+          node->setView(viewPoint);
           setShadowCoords(node, viewPoint);
           SceneData::Instance().getShadowLight()->bindShaderUpdate(node->getMaterial()->getShaderProgram());
           node->draw();
@@ -103,21 +108,24 @@ void SceneGraph::drawNodes(DirectionNode * viewPoint) {
 
       foreach(qreal transparentKey, transparentKeys) {
         Node * node = transparentNodes[transparentKey];
-        node->bindShaders(viewPoint);
-        setShadowCoords(node, viewPoint);
-        SceneData::Instance().getShadowLight()->bindShaderUpdate(
-            node->getMaterial()->getShaderProgram());
+        node->setView(viewPoint);
+//        setShadowCoords(node, viewPoint);
+//        SceneData::Instance().getShadowLight()->bindShaderUpdate(
+//            node->getMaterial()->getShaderProgram());
         node->draw();
       }
       glDisable(GL_BLEND);
     }
     glError;
+
+
+    GUI::Instance().draw();
 }
 
 void SceneGraph::drawCasters(Material * material, DirectionNode * viewPoint) {
     foreach(Node * node, sceneNodes) {
         if (node->getCastShadows()) {
-          node->bindShaders(material->getShaderProgram(), viewPoint);
+          node->setView(material->getShaderProgram(), viewPoint);
           node->mesh->draw();
         }
     }

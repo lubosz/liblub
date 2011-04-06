@@ -73,6 +73,7 @@ class LoadApp: public Application {
     plane->transparent = true;
     plane->setRotation(QVector3D(-90,0,180));
     SceneGraph::Instance().addNode(plane);
+    GUI::Instance().init();
   }
 };
 

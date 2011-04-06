@@ -19,15 +19,15 @@ class Texture {
 	void bind();
 	void uniform(GLuint program);
   GLuint getHandler() const;
+	GLuint texture;
 	string name;
  protected:
 	GLenum glId;
-	GLuint texture;
 	GLuint textureType;
 	GLint glChannelOrder, texChannelOrder;
 
 	virtual ~Texture();
-
+public:
 #if USE_FREEIMAGE
 	void readFreeImage(GLenum target, string path);
 #else

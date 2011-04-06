@@ -27,10 +27,8 @@
 class LoadApp: public Application {
  public:
 
-
-  explicit LoadApp(string sceneName) {
-    QString sceneFile = QString::fromStdString(sceneName + ".xml");
-    sceneLoader = new SceneLoader(sceneFile);
+  explicit LoadApp() {
+    sceneLoader = new SceneLoader("zoom.xml");
   }
 
   ~LoadApp() {}
@@ -38,16 +36,10 @@ class LoadApp: public Application {
   void scene() {
     sceneLoader->load();
     GUI::Instance().init();
-//    SceneGraph::Instance().addNode(plane);
   }
 };
 
 int main(int argc, char *argv[]) {
   QApplication app(argc, argv);
-  if (argc == 2) {
-    LoadApp(argv[1]).run();
-  } else {
-    Logger::Instance().log("NO SCENE SPECIFIED", "Try;", "./load test");
-  }
+  LoadApp().run();
 }
-

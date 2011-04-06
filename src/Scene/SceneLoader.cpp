@@ -76,6 +76,7 @@ void SceneLoader::appendProgram(const QDomElement & programNode) {
         programInfo = programInfo.nextSiblingElement();
     }
     program->init();
+    program->name = name;
     SceneData::Instance().shaderPrograms.insert(name, program);
 }
 

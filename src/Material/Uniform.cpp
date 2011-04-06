@@ -11,25 +11,25 @@
 template <>
 void Uniform<float>::init(GLuint program) {
   glError;
+  GLint location = glGetUniformLocation(program, name.c_str());
+//  Logger::Instance().message << "Size: " << values.size() << " " << name << " " << location;
+//  Logger::Instance().log("DEBUG", "init Uniform");
+//  glError;
   switch (values.size()) {
         case 1:
-            glUniform1f(glGetUniformLocation(program, name.c_str()), values[0]);
+            glUniform1f(location, values[0]);
             break;
         case 2:
-            glUniform2f(glGetUniformLocation(
-                    program, name.c_str()), values[0], values[1]);
+            glUniform2f(location, values[0], values[1]);
             break;
         case 3:
-            glUniform3f(glGetUniformLocation(
-                    program, name.c_str()), values[0], values[1], values[2]);
+            glUniform3f(location, values[0], values[1], values[2]);
             break;
         case 4:
             // TODO(bmonkey): vector methods
             // glUniform4fv(glGetUniformLocation(
             // program, name.c_str()), 4, values.data());
-            glUniform4f(glGetUniformLocation(
-                    program, name.c_str()),
-                    values[0], values[1], values[2], values[3]);
+            glUniform4f(location, values[0], values[1], values[2], values[3]);
     break;
   }
   glError;

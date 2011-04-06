@@ -244,10 +244,9 @@ void ShaderProgram::setUniform(float value, string name) {
 
 void ShaderProgram::translateUniformf(unsigned id, const vector<float> & values){
 //	Logger::Instance().log("DEBUG", "translate Uniform name", uniforms[id].name);
-  unsigned smaller = (uniforms[id].values.size() < values.size()) ? uniforms[id].values.size() : values.size();
-  for (unsigned i = 0; i < smaller; i++)
-    uniforms[id].values[i] += values[i];
-  uniforms[id].init(program);
+	for (unsigned i = 0; i < values.size(); i++)
+		uniforms[id].values[i] += values[i];
+	uniforms[id].init(program);
 }
 
 void ShaderProgram::bindUniformBuffer(string name, GLuint bindIndex, GLuint bufferHandle) {

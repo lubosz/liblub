@@ -30,8 +30,10 @@
 
 
 class MediaLayer : public Singleton<MediaLayer> {
+public:
+	Input * input;
+	unsigned fps_current;  // the current FPS.
  private:
-    Input * input;
 
 #ifdef WITH_SDL
 	Uint32 fps_lasttime;  // the last recorded time.
@@ -48,7 +50,6 @@ class MediaLayer : public Singleton<MediaLayer> {
 #else
 	unsigned fps_lasttime;  // the last recorded time.
 	unsigned input_lasttime;  // the last recorded time.
-	unsigned fps_current;  // the current FPS.
 	unsigned fps_frames;  // frames passed since the last recorded fps.
 
     int visualID;

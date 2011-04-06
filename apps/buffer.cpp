@@ -71,7 +71,7 @@ class LoadApp: public Application {
 //      );
 
     sceneLoader->load();
-
+    GUI::Instance().init();
     SceneData::Instance().initLightBuffer("multilight", "LightSourceBuffer");
 
   }

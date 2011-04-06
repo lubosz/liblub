@@ -9,12 +9,31 @@
 
 #include <string>
 #include <QImage>
-
+#include "common/Singleton.h"
+#include "Scene/Node.h"
+#include <QMap>
+#include <QPainter>
 using std::string;
 
-class GUI {
+class GUI : public Singleton<GUI> {
 public:
+  QMap<string,string> textLines;
+  QImage * image;
+  Node * node;
+  Material * material;
+  QRectF textBox;
+  QSize screenSize;
+  QImage black;
+  QPainter *fontPainter;
+  Texture *texture;
+  QRectF drawBox;
   GUI();
   virtual ~GUI();
-  QImage * drawText(const string & text);
+  void addText(string id, string value);
+  void updateText(string id, string value);
+  void render();
+  void draw();
+  void init();
+  void clear();
+  void update();
 };

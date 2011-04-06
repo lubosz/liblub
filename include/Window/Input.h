@@ -38,7 +38,6 @@ class Input {
 			virtual ~Input();
 			void eventLoop();
  private:
-			ShaderProgram * uvmoveprog;
 
 		#ifdef XCBEVENTS
 

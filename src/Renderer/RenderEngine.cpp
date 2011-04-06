@@ -23,7 +23,7 @@ RenderEngine::RenderEngine()
     glDepthFunc(GL_LESS);
 
     glEnable(GL_VERTEX_PROGRAM_POINT_SIZE_NV);
-
+//    glMatrixMode(GL_PROJECTION);
     glPointSize(5);
 
     // glBindSampler();

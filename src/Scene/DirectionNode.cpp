@@ -17,8 +17,8 @@ DirectionNode::DirectionNode(){
   aspect = 1920.0 / 1200.0;
 
   fov = 70.0;
-  near = 0.1;
-  far = 1000.0;
+  near = 0.01;
+  far = 10000.0;
 }
 
 DirectionNode::~DirectionNode(){

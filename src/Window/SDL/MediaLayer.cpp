@@ -13,6 +13,7 @@
 #include "System/Config.h"
 
 
+
 MediaLayer::MediaLayer() {
 
 	//FPS Stuff
@@ -161,6 +162,7 @@ void MediaLayer::renderLoop(){
            fps_lasttime = SDL_GetTicks();
            fps_current = fps_frames;
            fps_frames = 0;
+
         }
         stringstream windowTitle;
         windowTitle << programTile << " - FPS: " << fps_current;

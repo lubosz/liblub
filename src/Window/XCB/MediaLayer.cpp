@@ -12,6 +12,7 @@
 #include "Scene/SceneData.h"
 #include "System/Config.h"
 #include "System/Logger.h"
+#include "System/GUI.h"
 
 MediaLayer::MediaLayer() {
   // FPS Stuff
@@ -343,10 +344,12 @@ void MediaLayer::getFPS() {
     fps_lasttime = ticks;
     fps_current = fps_frames;
     fps_frames = 0;
+    GUI::Instance().update();
   }
     // TODO(bmonkey): should be per secound, and not per frame (breaks mouse input)
     stringstream windowTitle;
-    windowTitle << programTile << " - FPS: " << fps_current;
+//    windowTitle << programTile << " - FPS: " << fps_current;
+    windowTitle << "FPS: " << fps_current;
     setWindowTitle(windowTitle.str());
 
 }

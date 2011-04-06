@@ -24,8 +24,8 @@ class Application {
 	void run() {
 		Config::Instance().load("config.xml");
 		MediaLayer::Instance();
-		scene();
 		MediaLayer::Instance().init(SceneData::Instance().name);
+		scene();
 		MediaLayer::Instance().renderLoop();
 	}
 };

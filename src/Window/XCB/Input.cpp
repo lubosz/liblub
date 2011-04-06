@@ -9,14 +9,15 @@
 #include "Window/MediaLayer.h"
 #include "Material/Uniform.h"
 #include "Scene/SceneData.h"
+#include "System/Logger.h"
 
 Input::Input(xcb_connection_t *connection) {
   this->connection = connection;
   syms = xcb_key_symbols_alloc(connection);
   pressedKeys = QList<xcb_keysym_t>();
-  uvmoveprog = SceneData::Instance().getProgram("uvmove");
+
   // TODO(bmonkey): Hardcoded values => xml
-  inputSpeed = .1;
+  inputSpeed = .01;
   mouseSensitivity = .1;
 }
 
@@ -46,7 +47,7 @@ void Input::eventLoop() {
 
             switch (pressedKey) {
             case XK_Shift_L:
-              inputSpeed = .1;
+              inputSpeed = .01;
                           break;
 
             }
@@ -76,7 +77,7 @@ void Input::eventLoop() {
                     RenderEngine::Instance().toggleWire();
                     break;
                 case XK_Shift_L:
-                    inputSpeed = 1;
+                    inputSpeed = .1;
                 	break;
                 	
                 default:
@@ -105,22 +106,22 @@ void Input::checkKey(xcb_keysym_t pressedKey) {
 //						->getMaterial()->shaderProgram;
     switch (pressedKey) {
       case XK_i:
-        uvmoveprog->translateUniformf(0,{0,inputSpeed/10.0f});
+        SceneData::Instance().getProgram("uvmove")->translateUniformf(0,{0,inputSpeed/10.0f});
         break;
       case XK_j:
-        uvmoveprog->translateUniformf(0,{-inputSpeed/10.0f,0});
+        SceneData::Instance().getProgram("uvmove")->translateUniformf(0,{-inputSpeed/10.0f,0});
         break;
       case XK_k:
-        uvmoveprog->translateUniformf(0,{0,-inputSpeed/10.0f});
+        SceneData::Instance().getProgram("uvmove")->translateUniformf(0,{0,-inputSpeed/10.0f});
         break;
       case XK_l:
-        uvmoveprog->translateUniformf(0,{inputSpeed/10.0f,0});
+        SceneData::Instance().getProgram("uvmove")->translateUniformf(0,{inputSpeed/10.0f,0});
         break;
       case XK_u:
-        uvmoveprog->translateUniformf(1,{inputSpeed/10.0f,0});
+        SceneData::Instance().getProgram("uvmove")->translateUniformf(1,{inputSpeed/10.0f});
         break;
       case XK_o:
-        uvmoveprog->translateUniformf(1,{-inputSpeed/10.0f,0});
+        SceneData::Instance().getProgram("uvmove")->translateUniformf(1,{-inputSpeed/10.0f});
         break;
         case XK_w:
             SceneData::Instance().getCurrentCamera()->forwardDirection(inputSpeed);
