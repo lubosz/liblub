@@ -23,7 +23,7 @@ ShaderProgram::ShaderProgram() {
 ShaderProgram::~ShaderProgram() {
     Logger::Instance().log("MESSAGE", "ShaderProgram",
             "Shutting down Shader System...");
-    glUseProgram(0);
+//    glUseProgram(0);
 
     while (shaders.size() > 0) {
         detachShader(shaders.back());

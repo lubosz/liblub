@@ -65,8 +65,8 @@ void main(void)
 	vec3 v3SamplePoint = v3Start + v3SampleRay * 0.5;
 
 	// Now loop through the sample rays
-	vec3 v3FrontColor = vec3(0.0, 0.0, 0.0);
-	vec3 v3Attenuate;
+	vec3 v3FrontColor = vec3(0);
+	vec3 v3Attenuate = vec3(0);
 	for(int i=0; i<nSamples; i++)
 	{
 		float fHeight = length(v3SamplePoint);

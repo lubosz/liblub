@@ -26,33 +26,70 @@
 #include <QPainter>
 #include "Mesh/Geometry.h"
 #include "Material/ProcTextures.h"
+#include "Material/ShaderProgram.h"
 
-class LoadApp: public Application {
+class AtmosphereApp: public Application {
  public:
 
-  explicit LoadApp(string sceneName) {
+  ShaderProgram *groundFromAtmosphere, *groundFromSpace,
+                *skyFromAtmosphere, *skyFromSpace,
+                *spaceFromAtmosphere,*spaceFromSpace,
+                *HDR;
+
+  explicit AtmosphereApp(string sceneName) {
     QString sceneFile = QString::fromStdString(sceneName + ".xml");
     sceneLoader = new SceneLoader(sceneFile);
   }
 
-  ~LoadApp() {}
+  ~AtmosphereApp() {}
 
   void scene() {
     sceneLoader->load();
-      Mesh * sphere = Geometry::gluSphere(10, 100, 50);
 
-//    QImage * image = ProcTextures::makeGlow(QSize(1000,2000),40.0f, 0.1f);
-    Texture * textTexture = TextureFactory::Instance().load("earthmap1k.jpg","myTexture");
+//    Material * foo = new Simple("Atmo/GroundFromAtmosphere");
+//    if(foo==NULL) printf("1");
+    groundFromAtmosphere = new ShaderProgram();
+    groundFromAtmosphere->attachVertFrag("Atmo/GroundFromAtmosphere");
+    groundFromAtmosphere->init();
 
-//    Material * material = new Minimal();
+    groundFromSpace = new ShaderProgram();
+    groundFromSpace->attachVertFrag("Atmo/GroundFromSpace");
+    groundFromSpace->init();
+
+    skyFromAtmosphere = new ShaderProgram();
+    skyFromAtmosphere->attachVertFrag("Atmo/SkyFromAtmosphere");
+    skyFromAtmosphere->init();
+
+    skyFromSpace = new ShaderProgram();
+    skyFromSpace->attachVertFrag("Atmo/SkyFromSpace");
+    skyFromSpace->init();
+
+    spaceFromAtmosphere = new ShaderProgram();
+    spaceFromAtmosphere->attachVertFrag("Atmo/SpaceFromAtmosphere");
+    spaceFromAtmosphere->init();
+
+    spaceFromSpace = new ShaderProgram();
+    spaceFromSpace->attachVertFrag("Atmo/SpaceFromSpace");
+    spaceFromSpace->init();
+
+//    HDR = new ShaderProgram();
+//    HDR->attachShader("Atmo/HDR.vert", GL_VERTEX_SHADER);
+//    HDR->attachShader("Atmo/HDRRect.frag", GL_FRAGMENT_SHADER); //HDRSquare
+//    HDR->init();
+
+    Mesh * sphere = Geometry::gluSphere(10, 100, 50);
+
+    Texture * earthMap = TextureFactory::Instance().load("earthmap1k.jpg",
+        "myTexture");
+//    Texture * glow = TextureFactory::Instance().load(ProcTextures::makeGlow(
+//        QSize(1000, 2000), 40.0f, 0.1f), "glow");
+
     Material * material = new Simple("Color/debug");
-//    material->shaderProgram = SceneData::Instance().shaderPrograms.value("Texture");
-    material->addTexture(textTexture);
+    material->addTexture(earthMap);
 
-    Node * sphereNode = new Node("sphere", { 0,0,0 }, 1, sphere, material);
-    sphereNode->setRotation(QVector3D(-90,0,180));
+    Node * sphereNode = new Node("sphere", { 0, 0, 0 }, 1, sphere, material);
+    sphereNode->setRotation(QVector3D(-90, 0, 180));
     SceneGraph::Instance().addNode(sphereNode);
-
 
     GUI::Instance().init();
   }
@@ -60,6 +97,6 @@ class LoadApp: public Application {
 
 int main(int argc, char *argv[]) {
   QApplication app(argc, argv);
-  LoadApp("atmo").run();
+  AtmosphereApp("atmo").run();
 }
 

@@ -1,20 +1,22 @@
-#version 330 core
+//
+// Atmospheric scattering fragment shader
+//
+// Author: Sean O'Neil
+//
+// Copyright (c) 2004 Sean O'Neil
+//
 
-uniform vec3 lightPosition;
+uniform vec3 v3LightPos;
 uniform float g;
-float g2 = g * g;
+uniform float g2;
 
-in vec3 direction;
-in vec3 color1;
-in vec3 color2;
+varying vec3 v3Direction;
 
-out vec4 FragColor;
 
 void main (void)
 {
-	float cosinus = dot(lightPosition, direction) / length(direction);
-	float miePhase = 1.5 * ((1.0 - g2) / (2.0 + g2)) * (1.0 + cosinus*cosinus) / pow(1.0 + g2 - 2.0*g*cosinus, 1.5);
-    FragColor = vec4(color1,1) + miePhase * vec4(color2,1);
-	FragColor.a = FragColor.b;
-	//FragColor = vec4(color2,1);
+	float fCos = dot(v3LightPos, v3Direction) / length(v3Direction);
+	float fMiePhase = 1.5 * ((1.0 - g2) / (2.0 + g2)) * (1.0 + fCos*fCos) / pow(1.0 + g2 - 2.0*g*fCos, 1.5);
+    gl_FragColor = gl_Color + fMiePhase * gl_SecondaryColor;
+	gl_FragColor.a = gl_FragColor.b;
 }
