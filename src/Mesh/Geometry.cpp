@@ -33,6 +33,7 @@ Mesh * Geometry::makePlane() {
     vector<GLuint> indicies = { 0, 1, 3, 3, 1, 2 };
 
     Mesh * mesh = new Mesh();
+    mesh->init();
     mesh->addBuffer(vertices, 3, "in_Vertex");
     mesh->addBuffer(normals, 3, "in_Normal");
     mesh->addBuffer(normals, 3, "in_Tangent");

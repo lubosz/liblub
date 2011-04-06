@@ -29,12 +29,8 @@ class Material {
 	QVector4D diffuseColor;
 	void init();
 
-
 	void addTexture(string file, string name);
 	void addTextureCube(string file, string name);
-
-
-
 
  private:
 	virtual void uniforms() = 0;

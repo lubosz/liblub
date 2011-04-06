@@ -10,10 +10,13 @@
 #include "System/Logger.h"
 
 Mesh::Mesh() {
+  index = 0;
   drawType = GL_POINTS;
   bufferCount = 0;
   indexSize = 0;
+}
 
+void Mesh::init(){
     /* Allocate and assign a Vertex Array Object to our handle */
     glGenVertexArrays(1, &vao);
     Logger::Instance().message << "Generating Vertex Array Object #"<< vao;
@@ -24,9 +27,11 @@ Mesh::Mesh() {
 
     /* Allocate and assign three Vertex Buffer Objects to our handle */
     glGenBuffers(maxBuffers, vbo);
+
 }
 
 Mesh::~Mesh() {
+  glBindVertexArray(vao);
   for (unsigned i = 0; i < bufferCount; i++) {
     glDisableVertexAttribArray(i);
   }
@@ -34,7 +39,8 @@ Mesh::~Mesh() {
     glDeleteVertexArrays(1, &vao);
 }
 
-void Mesh::addBuffer(vector<GLfloat> content, unsigned size, string name) {
+void Mesh::addBuffer(const vector<GLfloat> &content, unsigned size, string name) {
+  glBindVertexArray(vao);
     glError;
 
     /* Bind the first VBO as being the active buffer
@@ -60,7 +66,8 @@ void Mesh::addBuffer(vector<GLfloat> content, unsigned size, string name) {
     glError;
 }
 
-void Mesh::addElementBuffer(vector<GLuint> content) {
+void Mesh::addElementBuffer(const vector<GLuint> & content) {
+  glBindVertexArray(vao);
   indexSize = content.size();
   glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vbo[bufferCount]);
   glError;
@@ -81,9 +88,12 @@ void Mesh::setDrawType(GLint drawType) {
 
 void Mesh::draw() {
   // glDrawElementsInstanced(drawType, indexSize, GL_UNSIGNED_INT, 0,6);
-  glError;
-  glBindVertexArray(vao);
-  glError;
-  glDrawElements(drawType, indexSize, GL_UNSIGNED_INT, 0);
-  glError;
+  if (subMeshes.size() > 0) {
+    foreach(Mesh * mesh, subMeshes)
+        mesh->draw();
+  } else {
+    glBindVertexArray(vao);
+    glDrawElements(drawType, indexSize, GL_UNSIGNED_INT, 0);
+    glError;
+  }
 }

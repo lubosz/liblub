@@ -24,6 +24,7 @@
 			<Uniform name="g" value="-0.99" />
 		</Program>
 	</Programs>
+	<!-- 
 	<Textures>
 		<Texture name="Mars" url="Planets/Mars.jpg" />
 		<Texture name="plane-occlusion" url="sphere_ao.png" />
@@ -50,10 +51,13 @@
 		<File name="sphere" url="earth.obj" />
 		<File name="lightSphere" url="sphere.obj" drawType="LINES" />
 	</Meshes>
+	 -->
 	<Scene name="XML Loader">
-		<Light position ="-15.2, 19.4, 6.5" direction="1,-5,-1" mesh="lightSphere" />
+		<Light position ="-15.2, 19.4, 6.5" direction="1,-5,-1" />
+		<!-- 
 		<Object name="mars" mesh="sphere" material="Mars" scale="10" position="-10,-10,-10" />
 		<Object name="waterplanet" mesh="sphere" material="Mars" scale="1" position="-10,5,.05" />
 		<Object name="skydome" mesh="sphere" material="Mars" scale="800" position="0, 0,0" />
+		-->
 	</Scene>
 </liblub>
