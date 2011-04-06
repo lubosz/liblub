@@ -1,0 +1,65 @@
+/*
+    Copyright © 2010 Lubosz Sarnecki
+
+    This file is part of liblub.
+
+    liblub is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    liblub is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with liblub.  If not, see <http://www.gnu.org/licenses/>.
+*/
+#include <string>
+#include <QApplication>
+#include "System/Application.h"
+#include "System/GUI.h"
+#include "Scene/SceneLoader.h"
+#include "Scene/SceneData.h"
+#include "System/Logger.h"
+#include <QPainter>
+#include "Mesh/Geometry.h"
+#include "Material/ProcTextures.h"
+
+class LoadApp: public Application {
+ public:
+
+  explicit LoadApp(string sceneName) {
+    QString sceneFile = QString::fromStdString(sceneName + ".xml");
+    sceneLoader = new SceneLoader(sceneFile);
+  }
+
+  ~LoadApp() {}
+
+  void scene() {
+    sceneLoader->load();
+      Mesh * sphere = Geometry::gluSphere(10, 100, 50);
+
+//    QImage * image = ProcTextures::makeGlow(QSize(1000,2000),40.0f, 0.1f);
+    Texture * textTexture = TextureFactory::Instance().load("earthmap1k.jpg","myTexture");
+
+//    Material * material = new Minimal();
+    Material * material = new Simple("Color/debug");
+//    material->shaderProgram = SceneData::Instance().shaderPrograms.value("Texture");
+    material->addTexture(textTexture);
+
+    Node * sphereNode = new Node("sphere", { 0,0,0 }, 1, sphere, material);
+    sphereNode->setRotation(QVector3D(-90,0,180));
+    SceneGraph::Instance().addNode(sphereNode);
+
+
+    GUI::Instance().init();
+  }
+};
+
+int main(int argc, char *argv[]) {
+  QApplication app(argc, argv);
+  LoadApp("atmo").run();
+}
+
