@@ -8,6 +8,8 @@
 #ifndef PROCTEXTURES_H_
 #define PROCTEXTURES_H_
 
+#include <math.h>
+
 class ProcTextures {
 public:
   ProcTextures();

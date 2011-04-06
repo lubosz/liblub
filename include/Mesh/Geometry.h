@@ -22,6 +22,7 @@ class Geometry {
 	        float colorIntensity
 	);
 	static Mesh * makeSpiral(int resolution);
+	static Mesh * gluSphere(GLdouble radius, GLint slices, GLint stacks);
  private:
 	float density, randomness;
 	int variation;
