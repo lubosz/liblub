@@ -16,20 +16,40 @@
     You should have received a copy of the GNU General Public License
     along with liblub.  If not, see <http://www.gnu.org/licenses/>.
 */
+#include <QApplication>
 #include "System/Application.h"
 #include "Mesh/MengerSponge.h"
+#include "Scene/SceneData.h"
 
 class Sponge : public Application {
  public:
+  RenderSequence * shadowSequence;
   Sponge() {
     SceneData::Instance().name = "Sponge";
   }
 
   void scene() {
-    SceneData::Instance().getShadowLight()->setPosition(QVector3D(-2.5, 21.5, -5.2));
-    SceneData::Instance().getShadowLight()->setDirection(QVector3D(1, -5, 0));
+    shadowSequence = new RenderSequence();
 
-    Material * material = new PhongColor(QVector3D(1, 1, 1));
+    Material * material = new EmptyMat();
+    material->init();
+#ifdef USE_FBO
+    material->addTexture(shadowSequence->renderPasses[0]->targetTexture);
+#endif
+    vector<string> flags = {
+        "receiveShadows",
+        "useSpotLight",
+        "usePCF"
+    };
+    material->shaderProgram->attachVertFrag("Color/PhongColor", flags);
+    material->done();
+    material->shaderProgram->setUniform(QVector4D(0.1, 0.1, 0.1, 1.0), "ambientSceneColor");
+    material->shaderProgram->setUniform(QVector4D(1,1,1,1), "diffuseMaterialColor");
+    material->shaderProgram->setUniform(
+            QVector4D(0.8, 0.8, 0.8, 1.0), "specularMaterialColor");
+    material->shaderProgram->setUniform(4.3, "shininess");
+    material->shaderProgram->setUniform(1.0/1200, "yPixelOffset");
+    material->shaderProgram->setUniform(1.0/1920, "xPixelOffset");
 
     for (int i = 0; i < 5; i++) {
       MengerSponge * sponge = new MengerSponge(i);
@@ -38,14 +58,20 @@ class Sponge : public Application {
       SceneGraph::Instance().addNode(node);
     }
 
-    Node * plane = new Node("Plane", { 0, -7, 0 }, 20, MeshFactory::load(
-        "plane.obj"), material);
+    Node * plane = new Node("Plane", { 0, -30, 0 }, 20, MeshFactory::plane(), material);
+    plane->setRotation(QVector3D(90,0,0));
     plane->setReceiveShadows(true);
     plane->setCastShadows(false);
     SceneGraph::Instance().addNode(plane);
+
+    SceneData::Instance().addLight("foolight", new Light(QVector3D(-2.5, 21.5, -5.2), QVector3D(1, -5, 0)));
+  }
+  void renderFrame(){
+    shadowSequence->render();
   }
 };
 
-int main() {
+int main(int argc, char *argv[]) {
+  QApplication app(argc, argv);
   Sponge().run();
 }

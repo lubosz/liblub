@@ -149,6 +149,8 @@ Mesh * MeshFactory::load(string file, GLint drawType) {
 
     Mesh * mesh = new Mesh();
 
+    mesh->init();
+
     mesh->addBuffer(positions, 3, "in_Vertex");
 
     if (assMesh->HasNormals())

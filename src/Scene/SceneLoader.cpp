@@ -116,9 +116,9 @@ void SceneLoader::appendMaterial(const QDomElement & materialNode) {
     }
 #ifdef USE_FBO
     // TODO(bmonkey): init shadow map texutre only when needed
-    material->addTexture(
-            RenderEngine::Instance().shadowSequence->
-            renderPasses[0]->targetTexture);
+//    material->addTexture(
+//            RenderEngine::Instance().shadowSequence->
+//            renderPasses[0]->targetTexture);
 #endif
     material->shaderProgram->use();
     material->samplerUniforms();

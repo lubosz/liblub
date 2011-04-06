@@ -17,7 +17,7 @@ RenderEngine::RenderEngine()
     useFBO(false), lightView(false), wire(false), frameCount(0) {
     glError;
     checkVersion();
-    shadowSequence = new RenderSequence();
+
 
     glEnable(GL_DEPTH_TEST);
     glDepthFunc(GL_LESS);
@@ -105,7 +105,7 @@ void RenderEngine::display() {
      frameCount++;
      */
 
-    shadowSequence->render();
+
 }
 
 void RenderEngine::toggleLightView() {

@@ -83,12 +83,13 @@ Material* SceneData::getMaterial(const string & name) {
   }
 }
 
-void SceneData::addLight(string & name, Light* light) {
+void SceneData::addLight(const string & name, Light* light) {
+  string lightName = name;
   if (name == "" || lights.count(name) > 0) {
     QString idString = QString::number(lights.size() + 1);
-    name = "Light" + idString.toStdString();
+    lightName = "Light" + idString.toStdString();
   }
-  lights.insert(name, light);
+  lights.insert(lightName, light);
 
   if(!shadowLight)
     shadowLight = light;

@@ -37,6 +37,9 @@ class LoadApp: public Application {
     sceneLoader->load();
     GUI::Instance().init();
   }
+  void renderFrame(){
+
+  }
 };
 
 int main(int argc, char *argv[]) {

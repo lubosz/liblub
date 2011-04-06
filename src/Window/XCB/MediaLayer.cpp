@@ -316,16 +316,7 @@ void MediaLayer::toggleFullScreen() {
       (const char *) &ev);
 }
 
-void MediaLayer::renderLoop() {
-    while (!quit) {
-//      input->eventLoop();
-      RenderEngine::Instance().display();
-      swapBuffers();
-      getFPS();
-     }
-}
-
-void MediaLayer::getFPS() {
+void MediaLayer::renderFrame() {
   struct timespec now;
   static struct timespec start;
   clock_gettime(CLOCK_MONOTONIC, &now);
@@ -352,6 +343,7 @@ void MediaLayer::getFPS() {
     windowTitle << "FPS: " << fps_current;
     setWindowTitle(windowTitle.str());
 
+      swapBuffers();
 }
 
 void MediaLayer::setWindowTitle(string title) {

@@ -48,30 +48,3 @@ class EmptyMat : public Material {
 	void uniforms() {}
 };
 
-class PhongColor : public Material {
- public:
-	explicit PhongColor(QVector3D color) {
-		init();
-#ifdef USE_FBO
-		addTexture(RenderEngine::Instance().
-		        shadowSequence->renderPasses[0]->targetTexture);
-#endif
-		vector<string> flags = {
-				"receiveShadows",
-				"useSpotLight",
-				"usePCF"
-		};
-		diffuseColor = color.toVector4D();
-		shaderProgram->attachVertFrag("Color/PhongColor", flags);
-		done();
-  }
-	void uniforms() {
-		shaderProgram->setUniform(QVector4D(0.1, 0.1, 0.1, 1.0), "ambientSceneColor");
-		shaderProgram->setUniform(diffuseColor, "diffuseMaterialColor");
-		shaderProgram->setUniform(
-		        QVector4D(0.8, 0.8, 0.8, 1.0), "specularMaterialColor");
-		shaderProgram->setUniform(4.3, "shininess");
-		shaderProgram->setUniform(1.0/1200, "yPixelOffset");
-		shaderProgram->setUniform(1.0/1920, "xPixelOffset");
-	}
-};

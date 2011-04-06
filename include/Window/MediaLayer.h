@@ -32,6 +32,7 @@
 class MediaLayer : public Singleton<MediaLayer> {
 public:
 	Input * input;
+  bool quit;
 	unsigned fps_current;  // the current FPS.
  private:
 
@@ -90,14 +91,11 @@ public:
 
 	bool fullscreen;
 	bool grab;
-	bool quit;
-
 
 
 	string programTile;
 
 	void toggleFullScreen();
-	void getFPS();
 	void toggleMouseGrab();
 	void mouseLook(int x, int y);
 
@@ -108,7 +106,7 @@ public:
 	unsigned width, height;
 	void init(string title);
 	void swapBuffers();
-	void renderLoop();
+	void renderFrame();
 
  protected:
 	void shutdown() {

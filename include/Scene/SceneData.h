@@ -42,7 +42,7 @@ public:
 
   Material* getMaterial(const string & name);
 
-  void addLight(string & name, Light * light);
+  void addLight(const string & name, Light * light);
   Light* getLight(const string & name);
 
   void updateLightBuffer();

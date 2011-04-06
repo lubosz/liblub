@@ -57,6 +57,9 @@ class LoadApp: public Application {
     SceneGraph::Instance().addNode(plane);
     GUI::Instance().init();
   }
+  void renderFrame(){
+
+  }
 };
 
 int main(int argc, char *argv[]) {

@@ -19,7 +19,6 @@
 #include <string>
 #include <QApplication>
 #include "System/Application.h"
-#include "System/GUI.h"
 #include "Scene/SceneLoader.h"
 #include "Scene/SceneData.h"
 #include "System/Logger.h"
@@ -31,6 +30,7 @@
 class AtmosphereApp: public Application {
  public:
 
+  RenderSequence * shadowSequence;
   ShaderProgram *groundFromAtmosphere, *groundFromSpace,
                 *skyFromAtmosphere, *skyFromSpace,
                 *spaceFromAtmosphere,*spaceFromSpace,
@@ -91,9 +91,15 @@ class AtmosphereApp: public Application {
     sphereNode->setRotation(QVector3D(-90, 0, 180));
     SceneGraph::Instance().addNode(sphereNode);
 
-    GUI::Instance().init();
+
+
+    shadowSequence = new RenderSequence();
+  }
+  void renderFrame(){
+    shadowSequence->render();
   }
 };
+
 
 int main(int argc, char *argv[]) {
   QApplication app(argc, argv);

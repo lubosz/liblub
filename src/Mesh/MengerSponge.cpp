@@ -16,6 +16,7 @@ MengerSponge::MengerSponge(unsigned recursion) {
     mesh = new Mesh();
 
     makeSponge(recursion, {0, 0, 0}, 1.0f);
+    mesh->init();
     mesh->addBuffer(oneMeshVertices, 3, "in_Vertex");
     mesh->addBuffer(oneMeshVertices, 3, "in_Normal");
     mesh->addBuffer(oneMeshVertices, 3, "in_Color");

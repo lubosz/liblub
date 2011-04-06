@@ -25,9 +25,9 @@ class Material {
 	vector<Texture*> textures;
 
 	ShaderProgram * shaderProgram;
+	void init();
  protected:
 	QVector4D diffuseColor;
-	void init();
 
 	void addTexture(string file, string name);
 	void addTextureCube(string file, string name);

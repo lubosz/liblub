@@ -58,6 +58,7 @@ Mesh * Geometry::makePlaneTess() {
 
     vector<GLuint> indicies = { 0, 1, 2, 0, 2, 3 };
     Mesh * mesh = new Mesh();
+    mesh->init();
     mesh->addBuffer(vertices, 3, "in_Vertex");
     mesh->addElementBuffer(indicies);
     mesh->setDrawType(GL_PATCHES);
@@ -95,6 +96,7 @@ Mesh * Geometry::makeTetrahedron() {
     vector<GLuint> indicies = { 0, 1, 2, 3, 0, 1 };
 
     Mesh * mesh = new Mesh();
+    mesh->init();
     mesh->addBuffer(vertices, 3, "in_Vertex");
     mesh->addBuffer(vertexColors, 3, "in_Color");
     mesh->addBuffer(normals, 3, "in_Normal");
@@ -148,6 +150,7 @@ Mesh * Geometry::makeCube() {
     };
 
     Mesh * mesh = new Mesh();
+    mesh->init();
     mesh->addBuffer(vertices, 3, "in_Vertex");
     mesh->addBuffer(vertices, 3, "in_Color");
     mesh->addBuffer(uvCoords, 2, "in_Uv");
@@ -199,6 +202,7 @@ Mesh * Geometry::makeStars(vector<float> & resolution, float density,
     Logger::Instance().log("MESSAGE", "makeStars");
 
     Mesh * mesh = new Mesh();
+    mesh->init();
     mesh->addBuffer(vertices, 3, "in_Vertex");
     mesh->addBuffer(colors, 3, "in_Color");
     mesh->addElementBuffer(indicies);
@@ -252,6 +256,7 @@ Mesh * Geometry::makeSpiral(int resolution) {
     Logger::Instance().log("MESSAGE", "makeSpiral");
 
     Mesh * mesh = new Mesh();
+    mesh->init();
     mesh->addBuffer(vertices, 3, "in_Vertex");
     mesh->addBuffer(colors, 3, "in_Color");
     mesh->addElementBuffer(indicies);

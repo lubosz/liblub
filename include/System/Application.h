@@ -13,11 +13,13 @@
 #include "Scene/SceneLoader.h"
 #include "Scene/SceneData.h"
 #include "System/Config.h"
+#include "System/GUI.h"
 
 class Application {
  public:
 	virtual ~Application() {}
 	virtual void scene() = 0;
+	virtual void renderFrame() = 0;
 
 	SceneLoader * sceneLoader;
 
@@ -26,7 +28,11 @@ class Application {
 		MediaLayer::Instance();
 		MediaLayer::Instance().init(SceneData::Instance().name);
 		scene();
-		MediaLayer::Instance().renderLoop();
+		GUI::Instance().init();
+    while (!MediaLayer::Instance().quit) {
+      MediaLayer::Instance().renderFrame();
+      renderFrame();
+     }
 	}
 };
 

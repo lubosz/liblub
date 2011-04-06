@@ -40,7 +40,6 @@ Mesh::~Mesh() {
 }
 
 void Mesh::addBuffer(const vector<GLfloat> &content, unsigned size, string name) {
-  glBindVertexArray(vao);
     glError;
 
     /* Bind the first VBO as being the active buffer
@@ -67,7 +66,6 @@ void Mesh::addBuffer(const vector<GLfloat> &content, unsigned size, string name)
 }
 
 void Mesh::addElementBuffer(const vector<GLuint> & content) {
-  glBindVertexArray(vao);
   indexSize = content.size();
   glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vbo[bufferCount]);
   glError;

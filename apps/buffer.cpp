@@ -75,6 +75,9 @@ class LoadApp: public Application {
     SceneData::Instance().initLightBuffer("multilight", "LightSourceBuffer");
 
   }
+  void renderFrame(){
+
+  }
 };
 
 int main(int argc, char *argv[]) {
