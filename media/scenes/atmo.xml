@@ -52,7 +52,7 @@
 		<File name="lightSphere" url="sphere.obj" drawType="LINES" />
 	</Meshes>
 	 -->
-	<Scene name="XML Loader">
+	<Scene name="Atmosphere">
 		<Light position ="-15.2, 19.4, 6.5" direction="1,-5,-1" />
 		<!-- 
 		<Object name="mars" mesh="sphere" material="Mars" scale="10" position="-10,-10,-10" />

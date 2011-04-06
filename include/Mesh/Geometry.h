@@ -13,7 +13,7 @@ class Geometry {
  public:
 	static Mesh * makeTetrahedron();
 	static Mesh * makeCube();
-	static Mesh * makePlane();
+	static Mesh * makePlane(const QRectF &plane);
 	static Mesh * makePlaneTess();
 	static Mesh * makeStars(
 	        vector<float> & resolution,

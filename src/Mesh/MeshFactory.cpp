@@ -13,6 +13,7 @@
 #include "Mesh/Geometry.h"
 #include "System/Config.h"
 #include "System/Logger.h"
+#include <QRectF>
 
 Mesh * MeshFactory::tetrahedron() {
     Mesh * mesh = Geometry::makeTetrahedron();
@@ -27,7 +28,7 @@ Mesh * MeshFactory::cube() {
 }
 
 Mesh * MeshFactory::plane() {
-    Mesh * mesh = Geometry::makePlane();
+    Mesh * mesh = Geometry::makePlane(QRectF(-1,-1,2,2));
     mesh->setDrawType(GL_TRIANGLES);
     return mesh;
 }

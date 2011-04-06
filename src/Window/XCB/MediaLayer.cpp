@@ -337,6 +337,7 @@ void MediaLayer::getFPS() {
     if (input_lasttime < ticks - 10) {
       input->eventLoop();
       input_lasttime = ticks;
+    GUI::Instance().update();
     }
 
    //reset fps counter every secound
@@ -344,7 +345,6 @@ void MediaLayer::getFPS() {
     fps_lasttime = ticks;
     fps_current = fps_frames;
     fps_frames = 0;
-    GUI::Instance().update();
   }
     // TODO(bmonkey): should be per secound, and not per frame (breaks mouse input)
     stringstream windowTitle;

@@ -16,7 +16,7 @@
 
 #include "Material/Materials.h"
 #include "Scene/SceneData.h"
-#include "Mesh/MeshFactory.h"
+#include "Mesh/Geometry.h"
 #include "Window/MediaLayer.h"
 #include "System/Logger.h"
 
@@ -24,7 +24,7 @@ GUI::GUI() {
   textLines = QMap<string,string>();
   material = new EmptyMat();
 
-  node = new Node("GUI", { 0, 0, 0 }, 1, MeshFactory::plane(), material);
+  node = new Node("GUI", { 0, 0, 0 }, 1, Geometry::makePlane(QRectF(0.5,0,0.5,1)), material);
 //      plane->transparent = true;
 //      plane->setRotation(QVector3D(-90,0,180));
 //      plane->setName("font");
@@ -34,7 +34,7 @@ GUI::GUI() {
   //    Material * material = new PhongColor(QVector3D(1, 1, 1));
   //    Node * plane = new Node("Plane", { 0, 0, 0 }, 2, MeshFactory::load(
   //        "plane.blend"), material);
-  screenSize = QSize(1920,1200);
+  screenSize = QSize(480,600);
   textBox = QRectF(0,0,screenSize.width(), screenSize.height());
   image = new QImage(screenSize, QImage::Format_ARGB32);
 

@@ -10,13 +10,15 @@
 #include "common/Qt3D.h"
 #include "System/Logger.h"
 
-Mesh * Geometry::makePlane() {
+Mesh * Geometry::makePlane(const QRectF &plane) {
     vector<GLfloat> vertices = {
-            -1.0, -1.0, -1.0,
-            1.0, -1.0, -1.0,
-            1.0, 1.0, -1.0,
-            -1.0, 1.0, -1.0 };
-
+        (float)plane.left(), (float)plane.top(), -1.0,
+        (float)plane.right(), (float)plane.top(), -1.0,
+        (float)plane.right(), (float)plane.bottom(), -1.0,
+        (float)plane.left(), (float)plane.bottom(), -1.0
+    };
+    if(plane.width() == 0)
+      printf("d");
     vector<GLfloat> uvCoords = {
             0.0, 0.0,
             1.0, 0.0,
@@ -37,8 +39,8 @@ Mesh * Geometry::makePlane() {
     mesh->init();
     mesh->addBuffer(vertices, 3, "in_Vertex");
     mesh->addBuffer(normals, 3, "in_Normal");
-    mesh->addBuffer(normals, 3, "in_Tangent");
-    mesh->addBuffer(normals, 3, "in_Biangent");
+//    mesh->addBuffer(normals, 3, "in_Tangent");
+//    mesh->addBuffer(normals, 3, "in_Biangent");
     mesh->addBuffer(uvCoords, 2, "in_Uv");
     mesh->addElementBuffer(indicies);
     mesh->setDrawType(GL_TRIANGLES);
