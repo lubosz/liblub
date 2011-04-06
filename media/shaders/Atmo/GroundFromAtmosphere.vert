@@ -5,6 +5,20 @@
 //
 // Copyright (c) 2004 Sean O'Neil
 //
+#version 410 core
+
+in vec3 in_Vertex;
+in vec3 in_Normal;
+in vec2 in_Uv;
+
+out vec2 uv;
+out vec3 color1;
+out vec3 color2;
+
+uniform mat4 MVPMatrix;
+
+uniform mat4 MVMatrix;
+uniform mat3 NormalMatrix;
 
 uniform vec3 v3CameraPos;		// The camera's current position
 uniform vec3 v3LightPos;		// The direction vector to the light source
@@ -36,7 +50,7 @@ float scale(float fCos)
 void main(void)
 {
 	// Get the ray from the camera to the vertex, and its length (which is the far point of the ray passing through the atmosphere)
-	vec3 v3Pos = gl_Vertex.xyz;
+	vec3 v3Pos = in_Vertex;
 	vec3 v3Ray = v3Pos - v3CameraPos;
 	float fFar = length(v3Ray);
 	v3Ray /= fFar;
@@ -70,12 +84,12 @@ void main(void)
 		v3SamplePoint += v3SampleRay;
 	}
 
-	gl_FrontColor.rgb = v3FrontColor * (v3InvWavelength * fKrESun + fKmESun);
+	color1 = v3FrontColor * (v3InvWavelength * fKrESun + fKmESun);
 
 	// Calculate the attenuation factor for the ground
-	gl_FrontSecondaryColor.rgb = v3Attenuate;
+	color2 = v3Attenuate;
 
-	gl_Position = gl_ModelViewProjectionMatrix * gl_Vertex;
-	gl_TexCoord[0] = gl_TextureMatrix[0] * gl_MultiTexCoord0;
-	gl_TexCoord[1] = gl_TextureMatrix[1] * gl_MultiTexCoord1;
+	gl_Position = MVPMatrix * vec4(in_Vertex,1);
+	//gl_TexCoord[0] = gl_TextureMatrix[0] * gl_MultiTexCoord0;
+	//gl_TexCoord[1] = gl_TextureMatrix[1] * gl_MultiTexCoord1;
 }

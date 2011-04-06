@@ -5,6 +5,19 @@
 //
 // Copyright (c) 2004 Sean O'Neil
 //
+#version 410 core
+
+in vec3 in_Vertex;
+in vec3 in_Normal;
+in vec2 in_Uv;
+
+out vec2 uv;
+out vec3 color;
+
+uniform mat4 MVPMatrix;
+
+uniform mat4 MVMatrix;
+uniform mat3 NormalMatrix;
 
 uniform vec3 v3CameraPos;		// The camera's current position
 uniform vec3 v3LightPos;		// The direction vector to the light source
@@ -23,17 +36,14 @@ uniform float fScale;			// 1 / (fOuterRadius - fInnerRadius)
 uniform float fScaleDepth;		// The scale depth (i.e. the altitude at which the atmosphere's average density is found)
 uniform float fScaleOverScaleDepth;	// fScale / fScaleDepth
 
-
-float scale(float fCos)
-{
+float scale(float fCos) {
 	float x = 1.0 - fCos;
 	return fScaleDepth * exp(-0.00287 + x*(0.459 + x*(3.83 + x*(-6.80 + x*5.25))));
 }
 
-void main(void)
-{
+void main(void) {
 	// Get the ray from the camera to the vertex and its length
-	vec3 v3Pos = gl_Vertex.xyz;
+	vec3 v3Pos = in_Vertex;
 	vec3 v3Ray = v3Pos - v3CameraPos;
 	float fFar = length(v3Ray);
 	v3Ray /= fFar;
@@ -53,8 +63,7 @@ void main(void)
 	float fDepth = exp(fScaleOverScaleDepth * (fInnerRadius - fCameraHeight));
 	float fAngle = dot(v3Ray, v3Start) / fHeight;
 	float fScatter = fDepth*scale(fAngle);
-	gl_FrontSecondaryColor.rgb = exp(-fScatter * (v3InvWavelength * fKr4PI + fKm4PI));
-
-	gl_Position = gl_ModelViewProjectionMatrix * gl_Vertex;
-	gl_TexCoord[0].st = gl_MultiTexCoord0.st;
+	color = exp(-fScatter * (v3InvWavelength * fKr4PI + fKm4PI));
+	gl_Position = MVPMatrix * vec4(in_Vertex,1);
+	uv = in_Uv;
 }

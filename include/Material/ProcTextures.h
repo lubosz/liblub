@@ -38,7 +38,8 @@ public:
         float distance = std::max(0.0f, (float)sqrt(fX * fX + fY * fY) - radius);
         float intensity = exp(-exposure * distance);
         unsigned char color = (unsigned char) (intensity * 192 + 0.5f);
-        image->setPixel(x,y,qRgba(255, 255,255, color));
+//        image->setPixel(x,y,qRgba(255, 255,255, color));
+        image->setPixel(x,y,qRgba(color, color,color, color));
       }
     }
     return image;
