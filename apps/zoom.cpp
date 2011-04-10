@@ -27,6 +27,7 @@
 class LoadApp: public Application {
  public:
 
+  RenderSequence * shadowSequence;
   explicit LoadApp() {
     sceneLoader = new SceneLoader("zoom.xml");
   }
@@ -35,10 +36,11 @@ class LoadApp: public Application {
 
   void scene() {
     sceneLoader->load();
-    GUI::Instance().init();
+    shadowSequence = new RenderSequence();
+    //GUI::Instance().init();
   }
   void renderFrame(){
-
+    shadowSequence->render();
   }
 };
 

@@ -20,7 +20,7 @@ class Material {
 	void activate();
 	void samplerUniforms();
 	void addTexture(Texture * texture);
-	void done();
+	void done(const QList<string> & attributes);
 
 	vector<Texture*> textures;
 

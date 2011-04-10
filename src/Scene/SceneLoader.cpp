@@ -75,7 +75,13 @@ void SceneLoader::appendProgram(const QDomElement & programNode) {
         }
         programInfo = programInfo.nextSiblingElement();
     }
-    program->init();
+
+    QList<string> attributes;
+    attributes.push_back("uv");
+    attributes.push_back("normal");
+    attributes.push_back("tangent");
+
+    program->init(attributes);
     program->name = name;
     SceneData::Instance().shaderPrograms.insert(name, program);
 }
@@ -239,7 +245,7 @@ void SceneLoader::appendObject(const QDomElement & objectNode) {
         if (objectNode.hasAttribute("material")) {
           lightMat = material;
         } else {
-          lightMat = new Simple("Color/white");
+          lightMat = new Simple("Color/white", QList<string>());
         }
         Node * lightNode = new Node("Light", position, 1, mesh, lightMat);
         lightNode->setCastShadows(false);

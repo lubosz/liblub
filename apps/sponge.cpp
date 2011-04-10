@@ -42,7 +42,11 @@ class Sponge : public Application {
         "usePCF"
     };
     material->shaderProgram->attachVertFrag("Color/PhongColor", flags);
-    material->done();
+    QList<string> attributes;
+    attributes.push_back("uv");
+    attributes.push_back("normal");
+    attributes.push_back("tangent");
+    material->done(attributes);
     material->shaderProgram->setUniform("ambientSceneColor",QVector4D(0.1, 0.1, 0.1, 1.0));
     material->shaderProgram->setUniform("diffuseMaterialColor",QVector4D(1,1,1,1));
     material->shaderProgram->setUniform("specularMaterialColor",

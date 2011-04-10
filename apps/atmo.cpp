@@ -128,15 +128,20 @@ class AtmosphereApp: public Application {
 //    Material * foo = new Simple("Atmo/SpaceFromSpace");
 //    foo->addTexture(glow);
 //    if(foo==NULL) printf("1");
-    groundFromAtmosphere = new Simple("Atmo/GroundFromAtmosphere");
+
+    QList<string> attributes;
+    attributes.push_back("uv");
+    attributes.push_back("normal");
+
+    groundFromAtmosphere = new Simple("Atmo/GroundFromAtmosphere",attributes);
     groundFromAtmosphere->addTexture(earthMap);
-    groundFromSpace = new Simple("Atmo/GroundFromSpace");
+    groundFromSpace = new Simple("Atmo/GroundFromSpace",attributes);
     groundFromSpace->addTexture(earthMap);
-    skyFromAtmosphere = new Simple("Atmo/SkyFromAtmosphere");
-    skyFromSpace = new Simple("Atmo/SkyFromSpace");
-    spaceFromAtmosphere = new Simple("Atmo/SpaceFromAtmosphere");
+    skyFromAtmosphere = new Simple("Atmo/SkyFromAtmosphere",attributes);
+    skyFromSpace = new Simple("Atmo/SkyFromSpace",attributes);
+    spaceFromAtmosphere = new Simple("Atmo/SpaceFromAtmosphere",attributes);
     spaceFromAtmosphere->addTexture(glow);
-    spaceFromSpace = new Simple("Atmo/SpaceFromSpace");
+    spaceFromSpace = new Simple("Atmo/SpaceFromSpace",attributes);
     spaceFromSpace->addTexture(glow);
 
 //    HDR = new ShaderProgram();

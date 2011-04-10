@@ -24,10 +24,9 @@ void Material::addTextureCube(string file, string name) {
     textures.push_back(TextureFactory::Instance().loadCubeMap(file, name));
 }
 
-void Material::done() {
+void Material::done(const QList<string> & attributes) {
     // TODO(bmonkey): deprecated, materials defined in xml
-
-    shaderProgram->init();
+    shaderProgram->init(attributes);
     uniforms();
     samplerUniforms();
 

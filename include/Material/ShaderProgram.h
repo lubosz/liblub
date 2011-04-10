@@ -7,9 +7,14 @@
 
 #pragma once
 
+#include <string>
+#include <QList>
+
 #include "common/Qt3D.h"
 #include "Material/Shader.h"
 #include "Material/Uniform.h"
+
+using std::string;
 
 class ShaderProgram {
  public:
@@ -29,8 +34,8 @@ class ShaderProgram {
 	void bindAttribIfUnbound(string name);
 	void bindAttrib(string name);
 	void bindAttrib(unsigned position, string name);
-	void defaultAttribs();
-	void init();
+	void bindVertexAttributes(const QList<string> & attributes);
+	void init(const QList<string> & attributes);
 	void linkAndUse();
 	GLuint getReference() const;
 

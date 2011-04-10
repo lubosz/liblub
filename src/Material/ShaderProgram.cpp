@@ -5,8 +5,6 @@
  *  Created on: Mar 22, 2010
  */
 #include <assert.h>
-#include <vector>
-#include <string>
 #include "Material/ShaderProgram.h"
 #include "Scene/SceneGraph.h"
 #include "System/Logger.h"
@@ -112,18 +110,27 @@ void ShaderProgram::bindAttrib(string name) {
   attribCount++;
 }
 
-void ShaderProgram::defaultAttribs() {
-  // TODO(bmonkey): make attribs configurable
-  // TODO(bmonkey): Buffer order not variable
+void ShaderProgram::bindVertexAttributes(const QList<string> & attributes) {
+//Order has to match the shader
+
   Logger::Instance().message <<
           "Initializing Vertex Attributes for Program #" << program;
-    Logger::Instance().log("DEBUG", "Material");
+  Logger::Instance().log("DEBUG", "Material");
+
   bindAttrib("in_Vertex");
-  // bindAttrib("in_Color");
-  bindAttrib("in_Normal");
-//  bindAttrib("in_Tangent");
-//  bindAttrib("in_Bitangent");
-  bindAttrib("in_Uv");
+
+  if(attributes.contains("color"))
+    bindAttrib("in_Color");
+
+  if(attributes.contains("normal"))
+    bindAttrib("in_Normal");
+
+  if(attributes.contains("tangent")) {
+    bindAttrib("in_Tangent");
+    bindAttrib("in_Bitangent");
+  }
+  if(attributes.contains("uv"))
+    bindAttrib("in_Uv");
 }
 
 template<typename T>
@@ -159,8 +166,8 @@ void ShaderProgram::linkAndUse() {
     use();
 }
 
-void ShaderProgram::init() {
-  defaultAttribs();
+void ShaderProgram::init(const QList<string> & attributes) {
+  bindVertexAttributes(attributes);
   linkAndUse();
   Logger::Instance().message <<
       "Initializing Uniforms for Program #" << program;

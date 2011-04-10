@@ -22,7 +22,9 @@
 
 GUI::GUI() {
   textLines = QMap<string,string>();
-  material = new Simple("Texture/font");
+  QList<string> attributes;
+  attributes.push_back("uv");
+  material = new Simple("Texture/font",attributes);
 
   node = new Node("GUI", { 0, 0, 0 }, 1, Geometry::makePlane(QRectF(0.5,0,0.5,1)), material);
 //      plane->transparent = true;
