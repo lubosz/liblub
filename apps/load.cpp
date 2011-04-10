@@ -38,7 +38,6 @@ class LoadApp: public Application {
   void scene() {
     sceneLoader->load();
     shadowSequence = new RenderSequence();
-    //    SceneGraph::Instance().addNode(plane);
   }
   void renderFrame(){
     shadowSequence->render();

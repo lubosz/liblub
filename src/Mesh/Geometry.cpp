@@ -24,19 +24,19 @@ Mesh * Geometry::makePlane(const QRectF &plane) {
             0.0, 1.0,
     };
 
-    vector<GLfloat> normals = {
-            0.0, 0.0, 1.0,
-            0.0, 0.0, 1.0,
-            0.0, 0.0, 1.0,
-            0.0, 0.0, 1.0
-    };
+//    vector<GLfloat> normals = {
+//            0.0, 0.0, 1.0,
+//            0.0, 0.0, 1.0,
+//            0.0, 0.0, 1.0,
+//            0.0, 0.0, 1.0
+//    };
 
     vector<GLuint> indicies = { 0, 1, 3, 3, 1, 2 };
 
     Mesh * mesh = new Mesh();
     mesh->init();
     mesh->addBuffer(vertices, 3, "in_Vertex");
-    mesh->addBuffer(normals, 3, "in_Normal");
+//    mesh->addBuffer(normals, 3, "in_Normal");
 //    mesh->addBuffer(normals, 3, "in_Tangent");
 //    mesh->addBuffer(normals, 3, "in_Biangent");
     mesh->addBuffer(uvCoords, 2, "in_Uv");

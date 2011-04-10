@@ -105,9 +105,6 @@ void GUI::render() {
     fontPainter->setFont(QFont("Ubuntu", 24));
     fontPainter->setLayoutDirection(Qt::RightToLeft);
     fontPainter->setPen(Qt::white);
-
-
-
 //  fontPainter->drawRect(drawBox);
 
   string text;

@@ -83,8 +83,7 @@ void SceneGraph::setShadowCoords(Node * node, DirectionNode * viewPoint) {
 void SceneGraph::drawNodes(DirectionNode * viewPoint) {
   QMap <qreal, Node*> transparentNodes;
 
-  QVector3D terrainPositon(SceneData::Instance().getCurrentCamera()->position.x(),-50,SceneData::Instance().getCurrentCamera()->position.z());
-
+//  QVector3D terrainPositon(SceneData::Instance().getCurrentCamera()->position.x(),-50,SceneData::Instance().getCurrentCamera()->position.z());
 //  sceneNodes["terrain"]->setPosition(terrainPositon);
 
   SceneData::Instance().updateLightBuffer();
