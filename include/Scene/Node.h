@@ -14,7 +14,9 @@
 class Node {
  private:
 	string name;
+ public:
 	QVector3D position, rotation;
+ private:
 	float size;
 	Node * parent;
 	Material * material;

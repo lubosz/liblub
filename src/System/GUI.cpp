@@ -19,6 +19,7 @@
 #include "Mesh/Geometry.h"
 #include "Window/MediaLayer.h"
 #include "System/Logger.h"
+#include "System/Timer.h"
 
 GUI::GUI() {
   textLines = QMap<string,string>();
@@ -61,15 +62,17 @@ void GUI::init() {
   GUI::Instance().addText("fps", "FPS");
 //  GUI::Instance().addText("zoom", "Zoom");
   GUI::Instance().addText("cam", "Cam");
+  GUI::Instance().addText("time", "Time");
   render();
   texture = TextureFactory::Instance().load(image,"myTexture");
   material->addTexture(texture);
 }
 
 void GUI::update() {
-  std::stringstream fps, cam,zoom;
+  std::stringstream fps, cam, zoom, time;
 //    windowTitle << programTile << " - FPS: " << fps_current;
-  fps << "FPS: " << MediaLayer::Instance().fps_current;
+  fps << "FPS: " << Timer::Instance().fps_current;
+  time << "Time: " << Timer::Instance().secoundsPassed << "." << Timer::Instance().nanosecoundsPassed;
   updateText("fps",fps.str());
   cam << "\nCam:\n" << SceneData::Instance().getCurrentCamera()->position.x()
       <<"\n " << SceneData::Instance().getCurrentCamera()->position.y()
@@ -77,6 +80,7 @@ void GUI::update() {
 //  zoom << "\nZoom:\n";
   updateText("fps",fps.str());
   updateText("cam",cam.str());
+  updateText("time",time.str().substr (0,12));
 //  updateText("zoom",zoom.str());
   clear();
   fontPainter->begin(image);

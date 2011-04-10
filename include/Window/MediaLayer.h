@@ -33,7 +33,6 @@ class MediaLayer : public Singleton<MediaLayer> {
 public:
 	Input * input;
   bool quit;
-	unsigned fps_current;  // the current FPS.
  private:
 
 #ifdef WITH_SDL
@@ -49,9 +48,6 @@ public:
 #elif WITH_SFML
     sf::Window * window;
 #else
-	unsigned fps_lasttime;  // the last recorded time.
-	unsigned input_lasttime;  // the last recorded time.
-	unsigned fps_frames;  // frames passed since the last recorded fps.
 
     int visualID;
     int default_screen;

@@ -13,13 +13,9 @@
 #include "System/Config.h"
 #include "System/Logger.h"
 #include "System/GUI.h"
+#include "System/Timer.h"
 
 MediaLayer::MediaLayer() {
-  // FPS Stuff
-  fps_lasttime = 0;  // the last recorded time.
-  fps_frames = 0;  // frames passed since the last recorded fps.
-  input_lasttime = 0;
-
   fullscreen = false;
   grab = false;
   quit = false;
@@ -30,7 +26,6 @@ MediaLayer::MediaLayer() {
 
   createWindow();
   createBlankCursor();
-
 }
 
 void MediaLayer::init(string title) {
@@ -317,33 +312,15 @@ void MediaLayer::toggleFullScreen() {
 }
 
 void MediaLayer::renderFrame() {
-  struct timespec now;
-  static struct timespec start;
-  clock_gettime(CLOCK_MONOTONIC, &now);
-  unsigned ticks = (now.tv_sec - start.tv_sec) * 1000 + (now.tv_nsec
-      - start.tv_nsec) / 1000000;
-  fps_frames++;
+  Timer::Instance().frame();
 
-  //check input every 1/100 secound
-    if (input_lasttime < ticks - 10) {
-      input->eventLoop();
-      input_lasttime = ticks;
-    GUI::Instance().update();
-    }
+  // TODO(bmonkey): should be per secound, and not per frame (breaks mouse input)
+  stringstream windowTitle;
+  //windowTitle << programTile << " - FPS: " << fps_current;
+  windowTitle << "FPS: " << Timer::Instance().fps_current;
+  setWindowTitle(windowTitle.str());
 
-   //reset fps counter every secound
-  if (fps_lasttime < ticks - 1000) {
-    fps_lasttime = ticks;
-    fps_current = fps_frames;
-    fps_frames = 0;
-  }
-    // TODO(bmonkey): should be per secound, and not per frame (breaks mouse input)
-    stringstream windowTitle;
-//    windowTitle << programTile << " - FPS: " << fps_current;
-    windowTitle << "FPS: " << fps_current;
-    setWindowTitle(windowTitle.str());
-
-      swapBuffers();
+  swapBuffers();
 }
 
 void MediaLayer::setWindowTitle(string title) {
