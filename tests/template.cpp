@@ -13,7 +13,7 @@ public:
   TemplateTest( std::string name ) : CppUnit::TestCase( name ) {}
 
   void runTest() {
-    TemplateEngine::Instance();
+    TemplateEngine::Instance().render("test.glsl");
     CPPUNIT_ASSERT( 0 == 0 );
   }
 };

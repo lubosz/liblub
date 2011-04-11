@@ -37,6 +37,7 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Werror -Wextra -Woverloaded-virtu
 
 #check for qt
 FIND_PACKAGE(Qt4 REQUIRED)
+find_package(Grantlee REQUIRED)
 set(QT_USE_QTXML true)
 INCLUDE(${QT_USE_FILE})
 
@@ -116,6 +117,7 @@ target_link_libraries(lub ${OPENGL_LIB}
 #freeimageplus 
 ${QT_LIBRARIES} 
 assimp
+${Grantlee_CORE_LIBRARIES}
 #GLEW
 )
 
