@@ -24,7 +24,6 @@ public:
   QRectF textBox;
   QSize screenSize;
   QImage black;
-  QPainter *fontPainter;
   Texture *texture;
   QRectF drawBox;
   GUI();

@@ -40,11 +40,11 @@ string Node::getName() const {
     return name;
 }
 
-const QVector3D& Node::getPosition() {
+const QVector3D Node::getPosition() {
     return position;
 }
 
-const QVector3D& Node::getRotation(){
+const QVector3D Node::getRotation(){
   return rotation;
 }
 

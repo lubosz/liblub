@@ -17,7 +17,7 @@ class RenderEngine : public Singleton<RenderEngine> {
 	bool useFBO;
 	bool lightView;
 	bool wire;
-	void display();
+//	void display();
 	void toggleFBO();
 	void toggleWire();
 	void clear();

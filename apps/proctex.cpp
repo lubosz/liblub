@@ -23,6 +23,7 @@
 #include "Scene/SceneLoader.h"
 #include "Scene/SceneData.h"
 #include "System/Logger.h"
+#include "System/Timer.h"
 #include <QPainter>
 #include <math.h>
 #include "Material/ProcTextures.h"
@@ -30,6 +31,8 @@
 class LoadApp: public Application {
  public:
 
+   RenderPass * defaultPass;
+   ShaderProgram * perlinNoise;
 
   explicit LoadApp(string sceneName) {
     QString sceneFile = QString::fromStdString(sceneName + ".xml");
@@ -42,23 +45,35 @@ class LoadApp: public Application {
 
   void scene() {
     sceneLoader->load();
+    defaultPass = new LightTogglePass();
+//    QImage * image = ProcTextures::makeGlow(QSize(1000,2000),40.0f, 0.1f);
+//
+//    Texture * textTexture = TextureFactory::Instance().load(image,"myTexture");
+//
+//    Material * material = new EmptyMat();
+//
+//    material->shaderProgram = SceneData::Instance().shaderPrograms.value("Texture");
+//    material->addTexture(textTexture);
 
-    QImage * image = ProcTextures::makeGlow(QSize(1000,2000),40.0f, 0.1f);
+    QList<string> attributes;
+    attributes.push_back("uv");
+//    attributes.push_back("normal");
 
-    Texture * textTexture = TextureFactory::Instance().load(image,"myTexture");
+    Material * material = new Simple("Noise/perlin",attributes);
+    perlinNoise = material->getShaderProgram();
 
-    Material * material = new EmptyMat();
-    material->shaderProgram = SceneData::Instance().shaderPrograms.value("Texture");
-    material->addTexture(textTexture);
-    Node * plane = new Node("Plane", { 0,0,-2 }, 1, MeshFactory::load(
-        "plane.blend"), material);
-    plane->transparent = true;
+
+    Node * plane = new Node("Plane", { 0,0,-2 }, 1, MeshFactory::plane(), material);
+//    plane->transparent = true;
     plane->setRotation(QVector3D(-90,0,180));
     SceneGraph::Instance().addNode(plane);
     GUI::Instance().init();
   }
   void renderFrame(){
-
+    defaultPass->render();
+    float time = float(Timer::Instance().secoundsPassed) + float(Timer::Instance().nanosecoundsPassed)/1000000000.0;
+    perlinNoise->use();
+    perlinNoise->setUniform("time", time);
   }
 };
 

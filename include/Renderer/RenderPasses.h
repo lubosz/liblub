@@ -39,7 +39,7 @@ class LightTogglePass : public RenderPass {
 	LightTogglePass();
 	void prepare();
 	void draw();
-	void cleanUp();
+	void cleanUp(){};
 };
 
 class FBODebugPass : public RenderPass {
@@ -47,5 +47,5 @@ class FBODebugPass : public RenderPass {
   explicit FBODebugPass(FrameBuffer * fbo);
   void prepare();
   void draw();
-  void cleanUp();
+  void cleanUp(){};
 };

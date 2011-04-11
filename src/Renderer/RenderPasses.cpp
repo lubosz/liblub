@@ -128,9 +128,6 @@ void LightTogglePass::draw() {
     }
 }
 
-void LightTogglePass::cleanUp() {
-}
-
 FBODebugPass::FBODebugPass(FrameBuffer * fbo) {
   this->fbo = fbo;
 }
@@ -147,7 +144,4 @@ void FBODebugPass::draw() {
 //    printf("Texture! %s\n", texture->name.c_str());
 //  }
   fbo->draw(material);
-}
-
-void FBODebugPass::cleanUp() {
 }

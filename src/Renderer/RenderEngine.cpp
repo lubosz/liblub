@@ -83,30 +83,30 @@ void RenderEngine::toggleFBO() {
     }
 }
 
-void RenderEngine::display() {
-//  Node *foo = SceneGraph::Instance().getNode("Node12");
-//  foreach(Node * node, SceneGraph::Instance().sceneNodes){
-//    QVector3D oldRot = node->getRotation();
-////    oldRot.setX(oldRot.x() +1);
-//    oldRot.setY(oldRot.y() +1);
-////    oldRot.setZ(oldRot.z() +1);
-//    node->setRotation(oldRot);
-//  }
-    /*
-     * Uniform Animation
-     *
-     SceneGraph::Instance().transform(frameCount);
-     GLfloat floatanim = 10.0/GLfloat(frameCount%100);
-     glUniform4f(glGetUniformLocation(shaderProgram->program, "ScaleFactor"), floatanim, floatanim, floatanim, floatanim);
-     glUniform2f(glGetUniformLocation(shaderProgram->program, "Offset"), floatanim, floatanim);
-     int mode = int(frameCount/100.0)%10;
-     glUniform1i(glGetUniformLocation(shaderProgram->program, "Mode"), mode);
-     cout << "Mode:\t" << mode << "\n";
-     frameCount++;
-     */
-
-
-}
+//void RenderEngine::display() {
+////  Node *foo = SceneGraph::Instance().getNode("Node12");
+////  foreach(Node * node, SceneGraph::Instance().sceneNodes){
+////    QVector3D oldRot = node->getRotation();
+//////    oldRot.setX(oldRot.x() +1);
+////    oldRot.setY(oldRot.y() +1);
+//////    oldRot.setZ(oldRot.z() +1);
+////    node->setRotation(oldRot);
+////  }
+//    /*
+//     * Uniform Animation
+//     *
+//     SceneGraph::Instance().transform(frameCount);
+//     GLfloat floatanim = 10.0/GLfloat(frameCount%100);
+//     glUniform4f(glGetUniformLocation(shaderProgram->program, "ScaleFactor"), floatanim, floatanim, floatanim, floatanim);
+//     glUniform2f(glGetUniformLocation(shaderProgram->program, "Offset"), floatanim, floatanim);
+//     int mode = int(frameCount/100.0)%10;
+//     glUniform1i(glGetUniformLocation(shaderProgram->program, "Mode"), mode);
+//     cout << "Mode:\t" << mode << "\n";
+//     frameCount++;
+//     */
+//
+//
+//}
 
 void RenderEngine::toggleLightView() {
     if (lightView) {

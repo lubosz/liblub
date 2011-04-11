@@ -19,7 +19,7 @@ AABB::~AABB() {
   // TODO Auto-generated destructor stub
 }
 
-const QVector3D& AABB::getCenter() {
+const QVector3D AABB::getCenter() {
   return center;
 }
 

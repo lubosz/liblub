@@ -45,8 +45,8 @@ class Node {
   void setView(DirectionNode * viewPoint);
   void setView(ShaderProgram * shaderProgram, DirectionNode * viewPoint);
   string getName() const;
-  const QVector3D& getPosition();
-  const QVector3D& getRotation();
+  const QVector3D getPosition();
+  const QVector3D getRotation();
   void setName(string name);
   Material *getMaterial() const;
   void setMaterial(Material *material);
