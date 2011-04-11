@@ -49,9 +49,8 @@ GUI::GUI() {
 
 
   clear();
-  fontPainter = new QPainter(image);
    drawBox = QRectF(50,200,screenSize.width()-100, screenSize.height()-100);
-//  fontPainter->end();
+//  fontPainter.end();
 }
 
 GUI::~GUI() {
@@ -83,7 +82,6 @@ void GUI::update() {
   updateText("time",time.str().substr (0,12));
 //  updateText("zoom",zoom.str());
   clear();
-  fontPainter->begin(image);
   render();
   glBindTexture(GL_TEXTURE_2D, texture->texture);
   texture->loadQImage(GL_TEXTURE_2D,image);
@@ -93,31 +91,32 @@ void GUI::clear() {
   image->setAlphaChannel(black);
   //clean image
 //  QPainter cleanPainter(image);
-//  fontPainter->fillRect ( textBox, Qt::white );
-//  fontPainter->end();
+//  fontPainter.fillRect ( textBox, Qt::white );
+//  fontPainter.end();
 //
 //
 //  image->setAlphaChannel(black);
 }
 
 void GUI::render() {
+  QPainter fontPainter(image);
   //draw font
-//  fontPainter->begin(image);
-   fontPainter->setRenderHint(QPainter::Antialiasing, true);
-    fontPainter->setRenderHint(QPainter::TextAntialiasing, true);
-    fontPainter->setRenderHint(QPainter::SmoothPixmapTransform, true);
-    fontPainter->setFont(QFont("Ubuntu", 24));
-    fontPainter->setLayoutDirection(Qt::RightToLeft);
-    fontPainter->setPen(Qt::white);
-//  fontPainter->drawRect(drawBox);
+//  fontPainter.begin(image);
+   fontPainter.setRenderHint(QPainter::Antialiasing, true);
+    fontPainter.setRenderHint(QPainter::TextAntialiasing, true);
+    fontPainter.setRenderHint(QPainter::SmoothPixmapTransform, true);
+    fontPainter.setFont(QFont("Ubuntu", 24));
+    fontPainter.setLayoutDirection(Qt::RightToLeft);
+    fontPainter.setPen(Qt::white);
+//  fontPainter.drawRect(drawBox);
 
   string text;
   foreach(string line, textLines) {
     text += line +"\n";
   }
 
-  fontPainter->drawText(drawBox, Qt::AlignLeft, QString::fromStdString(text));
-  fontPainter->end();
+  fontPainter.drawText(drawBox, Qt::AlignLeft, QString::fromStdString(text));
+  fontPainter.end();
 
 }
 
