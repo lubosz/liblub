@@ -27,7 +27,7 @@ void TemplateEngine::render(const string& file) {
 
   Grantlee::Context c;
   c.insert("precision", false);
-  c.insert( "version", "lolversion" );
+  c.insert("version", "410 core");
 
 
   Grantlee::Template t = m_engine->loadByName(QString::fromStdString(file));
@@ -51,6 +51,7 @@ void TemplateEngine::render(const string& file) {
         << QString("Error rendering template: %1").arg(t->errorString());
     return;
   }
+  content.replace("\n\n", "\n");
 
   std::cout << qPrintable(content);
 }

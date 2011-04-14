@@ -23,30 +23,38 @@
 #include "Scene/SceneLoader.h"
 #include "Scene/SceneData.h"
 #include "System/Logger.h"
+#include "System/Timer.h"
+#include "Scene/Node.h"
 
 class LoadApp: public Application {
  public:
 
-  RenderSequence * shadowSequence;
+  Material * material;
+  Node * node;
   explicit LoadApp() {
-    sceneLoader = new SceneLoader("zoom.xml");
   }
 
   ~LoadApp() {}
 
   void scene() {
-    sceneLoader->load();
-    shadowSequence = new RenderSequence();
-    //GUI::Instance().init();
+    QList<string> attributes;
+    attributes.push_back("color");
+    attributes.push_back("normal");
+    attributes.push_back("uv");
+
+    material = new Simple("Atmo/GroundFromAtmosphere",attributes);
+    Mesh * cube = Geometry::makeCube();
   }
   void renderFrame(){
-    shadowSequence->render();
-//    shaderProgram->setUniform("cameraPosition", SceneData::Instance().getCurrentCamera()->position);
-//    shaderProgram->setUniform("cameraHeight", (float)SceneData::Instance().getCurrentCamera()->position.length());
+    node->setView(viewPoint);
+    setShadowCoords(node, viewPoint);
+    SceneData::Instance().getShadowLight()->bindShaderUpdate(node->getMaterial()->getShaderProgram());
+    node->draw();
   }
 };
 
 int main(int argc, char *argv[]) {
   QApplication app(argc, argv);
-  LoadApp().run();
+  LoadApp(argv[1]).run();
 }
+

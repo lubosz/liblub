@@ -151,8 +151,8 @@ Mesh * Geometry::makeCube() {
     mesh->init();
     mesh->addBuffer(vertices, 3, "in_Vertex");
     mesh->addBuffer(vertices, 3, "in_Color");
-    mesh->addBuffer(uvCoords, 2, "in_Uv");
     mesh->addBuffer(vertices, 3, "in_Normal");
+    mesh->addBuffer(uvCoords, 2, "in_Uv");
     mesh->addElementBuffer(indicies);
     return mesh;
 }

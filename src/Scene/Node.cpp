@@ -116,9 +116,6 @@ void Node::setView(
     shaderProgram->setUniform("MVMatrix", tempMatrix);
     shaderProgram->setUniform("NormalMatrix", tempMatrix.normalMatrix());
     tempMatrix = viewPoint->getProjection() * tempMatrix;
-    shaderProgram->setUniform("cameraPosition", SceneData::Instance().getCurrentCamera()->position);
-    shaderProgram->setUniform("cameraHeight", (float)SceneData::Instance().getCurrentCamera()->position.length());
-
     shaderProgram->setUniform("MVPMatrix", tempMatrix);
 
     glError;

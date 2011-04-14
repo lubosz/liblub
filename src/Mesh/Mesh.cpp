@@ -85,7 +85,6 @@ void Mesh::setDrawType(GLint drawType) {
 }
 
 void Mesh::draw() {
-  // glDrawElementsInstanced(drawType, indexSize, GL_UNSIGNED_INT, 0,6);
   if (subMeshes.size() > 0) {
     foreach(Mesh * mesh, subMeshes)
         mesh->draw();
@@ -94,4 +93,10 @@ void Mesh::draw() {
     glDrawElements(drawType, indexSize, GL_UNSIGNED_INT, 0);
     glError;
   }
+}
+
+void Mesh::draw(unsigned amount) {
+  glBindVertexArray(vao);
+  glDrawElementsInstanced(drawType, indexSize, GL_UNSIGNED_INT, 0, amount);
+  glError;
 }

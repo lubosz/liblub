@@ -38,6 +38,7 @@ class Mesh {
 	void addElementBuffer(const vector<GLuint> &content);
 	void setDrawType(GLint drawType);
 	void draw();
+	void draw(unsigned amount);
 	void init();
 	void addSubMesh(Mesh * mesh) {
 	  subMeshes.push_back(mesh);

@@ -23,13 +23,16 @@
 #include "Scene/SceneLoader.h"
 #include "Scene/SceneData.h"
 #include "System/Logger.h"
+#include "System/Timer.h"
+#include "Scene/Node.h"
 
 class LoadApp: public Application {
  public:
 
   RenderSequence * shadowSequence;
-  explicit LoadApp() {
-    sceneLoader = new SceneLoader("zoom.xml");
+  explicit LoadApp(string sceneName) {
+    QString sceneFile = QString::fromStdString(sceneName + ".xml");
+    sceneLoader = new SceneLoader(sceneFile);
   }
 
   ~LoadApp() {}
@@ -37,16 +40,18 @@ class LoadApp: public Application {
   void scene() {
     sceneLoader->load();
     shadowSequence = new RenderSequence();
-    //GUI::Instance().init();
   }
   void renderFrame(){
     shadowSequence->render();
-//    shaderProgram->setUniform("cameraPosition", SceneData::Instance().getCurrentCamera()->position);
-//    shaderProgram->setUniform("cameraHeight", (float)SceneData::Instance().getCurrentCamera()->position.length());
   }
 };
 
 int main(int argc, char *argv[]) {
   QApplication app(argc, argv);
-  LoadApp().run();
+  if (argc == 2) {
+    LoadApp(argv[1]).run();
+  } else {
+    Logger::Instance().log("NO SCENE SPECIFIED", "Try;", "./load test");
+  }
 }
+
