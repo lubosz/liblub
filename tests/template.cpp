@@ -13,7 +13,10 @@ public:
   TemplateTest( std::string name ) : CppUnit::TestCase( name ) {}
 
   void runTest() {
-    TemplateEngine::Instance().render("test.glsl");
+    printf("Vertex Shader:\n");
+    TemplateEngine::Instance().render("Ubershader.vert");
+    printf("Fragment Shader:\n");
+    TemplateEngine::Instance().render("Ubershader.frag");
     CPPUNIT_ASSERT( 0 == 0 );
   }
 };
