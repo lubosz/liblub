@@ -153,17 +153,17 @@ Mesh * MeshFactory::load(string file, GLint drawType) {
 
     mesh->addBuffer(positions, 3, "in_Vertex");
 
-    if (assMesh->HasNormals())
-      mesh->addBuffer(normals, 3, "in_Normal");
-    else
-      Logger::Instance().log("WARNING", "Assimp Scene Load", file + " has no Normals :/");
-
-    if (assMesh->HasTangentsAndBitangents()) {
-      mesh->addBuffer(tangents, 3, "in_Tangent");
-      mesh->addBuffer(bitangents, 3, "in_Bitangent");
-    } else {
-      Logger::Instance().log("WARNING", "Assimp Scene Load", file + " has no Tangents :/");
-    }
+//    if (assMesh->HasNormals())
+//      mesh->addBuffer(normals, 3, "in_Normal");
+//    else
+//      Logger::Instance().log("WARNING", "Assimp Scene Load", file + " has no Normals :/");
+//
+//    if (assMesh->HasTangentsAndBitangents()) {
+//      mesh->addBuffer(tangents, 3, "in_Tangent");
+//      mesh->addBuffer(bitangents, 3, "in_Bitangent");
+//    } else {
+//      Logger::Instance().log("WARNING", "Assimp Scene Load", file + " has no Tangents :/");
+//    }
 
     if (assMesh->HasTextureCoords(0))
       mesh->addBuffer(uvs, 2, "in_Uv");
