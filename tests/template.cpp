@@ -16,7 +16,7 @@ public:
 //    printf("Vertex Shader:\n");
 //    TemplateEngine::Instance().render("Ubershader.vert");
 //    printf("Fragment Shader:\n");
-    TemplateEngine::Instance().render("Atmo/GroundFromAtmosphere.vert");
+    TemplateEngine::Instance().print("Atmo/GroundFromAtmosphere.vert");
     CPPUNIT_ASSERT( 0 == 0 );
   }
 };

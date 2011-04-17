@@ -65,7 +65,9 @@ void Shader::loadSource() {
 }
 
 void Shader::loadTemplate() {
-  source = const_cast<GLchar *>(TemplateEngine::Instance().render(fileName).toStdString().c_str());
+  string shaderSource = TemplateEngine::Instance().render(fileName).toStdString();
+//  printf("%s:\n\n %s\n", fileName.c_str(), shaderSource.c_str());
+  source = const_cast<GLchar *>(shaderSource.c_str());
   /* Assign our handles a "name" to new shader objects */
   shader = glCreateShader(type);
   /* Set rendered template string as source */

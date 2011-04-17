@@ -133,15 +133,15 @@ class AtmosphereApp: public Application {
     attributes.push_back("uv");
 //    attributes.push_back("normal");
 
-    groundFromAtmosphere = new Simple("Atmo/GroundFromAtmosphere",attributes);
+    groundFromAtmosphere = new Template("Atmo/GroundFromAtmosphere",attributes);
     groundFromAtmosphere->addTexture(earthMap);
-    groundFromSpace = new Simple("Atmo/GroundFromSpace",attributes);
+    groundFromSpace = new Template("Atmo/GroundFromSpace",attributes);
     groundFromSpace->addTexture(earthMap);
-    skyFromAtmosphere = new Simple("Atmo/SkyFromAtmosphere",attributes);
+    skyFromAtmosphere = new Template("Atmo/SkyFromAtmosphere",attributes);
     skyFromSpace = new Simple("Atmo/SkyFromSpace",attributes);
-    spaceFromAtmosphere = new Simple("Atmo/SpaceFromAtmosphere",attributes);
+    spaceFromAtmosphere = new Template("Atmo/SpaceFromAtmosphere",attributes);
     spaceFromAtmosphere->addTexture(glow);
-    spaceFromSpace = new Simple("Atmo/SpaceFromSpace",attributes);
+    spaceFromSpace = new Template("Atmo/SpaceFromSpace",attributes);
     spaceFromSpace->addTexture(glow);
 
 //    HDR = new ShaderProgram();
