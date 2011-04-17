@@ -17,6 +17,8 @@ TemplateEngine::TemplateEngine() {
   loader->setTemplateDirs(QStringList() << "templates");
   m_engine->addTemplateLoader(loader);
 
+  c.insert("precision", false);
+  c.insert("version", "410 core");
 }
 
 TemplateEngine::~TemplateEngine() {
@@ -24,10 +26,6 @@ TemplateEngine::~TemplateEngine() {
 }
 
 QString TemplateEngine::render(const string& file) {
-  Grantlee::Context c;
-  c.insert("precision", false);
-  c.insert("version", "410 core");
-
   Grantlee::Template t = m_engine->loadByName(QString::fromStdString(file));
 
   if (!t) {

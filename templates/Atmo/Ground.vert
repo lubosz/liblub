@@ -10,10 +10,24 @@ out vec3 color2;
 	vec3 v3Ray = v3Pos - v3CameraPos;
 	float fFar = length(v3Ray);
 	v3Ray /= fFar;
-
+	
+	{% if fromSpace %}
+	// Calculate the closest intersection of the ray with the outer atmosphere (which is the near point of the ray passing through the atmosphere)
+	float B = 2.0 * dot(v3CameraPos, v3Ray);
+	float C = fCameraHeight2 - fOuterRadius2;
+	float fDet = max(0.0, B*B - 4.0 * C);
+	float fNear = 0.5 * (-B - sqrt(fDet));
+	
+	// Calculate the ray's starting position, then calculate its scattering offset
+	vec3 v3Start = v3CameraPos + v3Ray * fNear;
+	fFar -= fNear;
+	float fDepth = exp((fInnerRadius - fOuterRadius) / fScaleDepth);
+	{% else %}
 	// Calculate the ray's starting position, then calculate its scattering offset
 	vec3 v3Start = v3CameraPos;
 	float fDepth = exp((fInnerRadius - fCameraHeight) / fScaleDepth);
+	{% endif %}
+
 	float fCameraAngle = dot(-v3Ray, v3Pos) / length(v3Pos);
 	float fLightAngle = dot(v3LightPos, v3Pos) / length(v3Pos);
 	float fCameraScale = scale(fCameraAngle);
@@ -46,7 +60,5 @@ out vec3 color2;
 	color2 = v3Attenuate;
 
 	gl_Position = MVPMatrix * vec4(in_Vertex,1);
-	//gl_TexCoord[0] = gl_TextureMatrix[0] * gl_MultiTexCoord0;
-	//gl_TexCoord[1] = gl_TextureMatrix[1] * gl_MultiTexCoord1;
 	uv = in_Uv;
 {% endblock %}

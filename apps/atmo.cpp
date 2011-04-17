@@ -19,11 +19,12 @@
 #include <math.h>
 #include <string>
 #include <QApplication>
+#include <QPainter>
+#include "System/TemplateEngine.h"
 #include "System/Application.h"
 #include "Scene/SceneLoader.h"
 #include "Scene/SceneData.h"
 #include "System/Logger.h"
-#include <QPainter>
 #include "Mesh/Geometry.h"
 #include "Material/ProcTextures.h"
 #include "Material/ShaderProgram.h"
@@ -133,9 +134,10 @@ class AtmosphereApp: public Application {
     attributes.push_back("uv");
 //    attributes.push_back("normal");
 
-    groundFromAtmosphere = new Template("Atmo/GroundFromAtmosphere",attributes);
+    groundFromAtmosphere = new Template("Atmo/Ground",attributes);
     groundFromAtmosphere->addTexture(earthMap);
-    groundFromSpace = new Template("Atmo/GroundFromSpace",attributes);
+    TemplateEngine::Instance().c.insert("fromSpace", true);
+    groundFromSpace = new Template("Atmo/Ground",attributes);
     groundFromSpace->addTexture(earthMap);
     skyFromAtmosphere = new Template("Atmo/SkyFromAtmosphere",attributes);
     skyFromSpace = new Simple("Atmo/SkyFromSpace",attributes);

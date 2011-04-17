@@ -16,7 +16,12 @@ public:
 //    printf("Vertex Shader:\n");
 //    TemplateEngine::Instance().render("Ubershader.vert");
 //    printf("Fragment Shader:\n");
-    TemplateEngine::Instance().print("Atmo/GroundFromAtmosphere.vert");
+    TemplateEngine::Instance().c.insert("fromSpace", false);
+    TemplateEngine::Instance().print("Atmo/Ground.vert");
+    TemplateEngine::Instance().c.insert("fromSpace", true);
+    TemplateEngine::Instance().print("Atmo/Ground.vert");
+    TemplateEngine::Instance().c.insert("fromSpace", false);
+    TemplateEngine::Instance().print("Atmo/Ground.vert");
     CPPUNIT_ASSERT( 0 == 0 );
   }
 };

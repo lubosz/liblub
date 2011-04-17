@@ -20,6 +20,7 @@ public:
   Grantlee::Engine *m_engine;
   QString render(const string& file);
   void print(const string& file);
+  Grantlee::Context c;
 };
 
 #endif /* TEMPLATEENGINE_H_ */
