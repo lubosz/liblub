@@ -38,54 +38,63 @@ class AtmosphereApp: public Application {
                 *HDR;
 
   bool useHDR;
-  int m_nSamples;
-  //    GLenum m_nPolygonMode;
-  float m_Kr, m_Kr4PI;
-  float m_Km, m_Km4PI;
-  float m_ESun;
-  float m_g;
-  float m_fExposure;
-
-  float m_fInnerRadius;
-  float m_fOuterRadius;
-  float m_fScale;
-  float m_fWavelength[3];
-  float m_fWavelength4[3];
-  float m_fRayleighScaleDepth;
-  float m_fMieScaleDepth;
-
+  float innerRadius;
+  float outerRadius;
   Camera* camera;
   Light * light;
-  Node * spaceNode;
-  Node * groundNode;
-  Node * skyNode;
+  Node * spaceNode,* groundNode,* skyNode;
   QVector3D lightDirection;
   FrameBuffer *fbo;
   Texture * targetTexture;
 
-  explicit AtmosphereApp() {
-    useHDR = true;
+  AtmosphereApp() {
+    useHDR = false;
+    innerRadius = 10.0f;
+    outerRadius = 10.25f;
   }
 
   ~AtmosphereApp() {}
 
-  void setAtmoUniforms(ShaderProgram * program){
+  void setAtmoUniforms(ShaderProgram * program) {
+
+    float wavelength[3];
+    wavelength[0] = 0.650f; // 650 nm for red
+    wavelength[1] = 0.570f; // 570 nm for green
+    wavelength[2] = 0.475f; // 475 nm for blue
+
+    float wavelength4[3];
+    wavelength4[0] = powf(wavelength[0], 4.0f);
+    wavelength4[1] = powf(wavelength[1], 4.0f);
+    wavelength4[2] = powf(wavelength[2], 4.0f);
+
+    QVector3D lightPosition = QVector3D(0, 0, 1000);
+    lightDirection = lightPosition / lightPosition.length();
+
+    float rayleigh = 0.0025f; // Rayleigh scattering constant
+    float rayleigh4Pi = rayleigh * 4.0f * M_PI;
+    float mie = 0.0010f; // Mie scattering constant
+    float mie4Pi = mie * 4.0f * M_PI;
+    float sun = 20.0f; // Sun brightness constant
+    float g = -0.990f; // The Mie phase asymmetry factor
+    float rayleighScaleDepth = 0.25f;
+//    float mieScaleDepth = 0.1f;
+
     program->use();
     program->setUniform("v3LightPos", lightDirection);
-    program->setUniform("v3InvWavelength", QVector3D(1/m_fWavelength4[0], 1/m_fWavelength4[1], 1/m_fWavelength4[2]));
-    program->setUniform("fInnerRadius", m_fInnerRadius);
-    program->setUniform("fInnerRadius2", m_fInnerRadius*m_fInnerRadius);
-    program->setUniform("fOuterRadius", m_fOuterRadius);
-    program->setUniform("fOuterRadius2", m_fOuterRadius*m_fOuterRadius);
-    program->setUniform("fKrESun", m_Kr*m_ESun);
-    program->setUniform("fKmESun", m_Km*m_ESun);
-    program->setUniform("fKr4PI", m_Kr4PI);
-    program->setUniform("fKm4PI", m_Km4PI);
-    program->setUniform("fScale", 1.0f / (m_fOuterRadius - m_fInnerRadius));
-    program->setUniform("fScaleDepth", m_fRayleighScaleDepth);
-    program->setUniform("fScaleOverScaleDepth", (1.0f / (m_fOuterRadius - m_fInnerRadius)) / m_fRayleighScaleDepth);
-    program->setUniform("g", m_g);
-    program->setUniform("g2", m_g*m_g);
+    program->setUniform("v3InvWavelength", QVector3D(1 / wavelength4[0], 1 / wavelength4[1], 1 / wavelength4[2]));
+    program->setUniform("fInnerRadius", innerRadius);
+    program->setUniform("fInnerRadius2", innerRadius * innerRadius);
+    program->setUniform("fOuterRadius", outerRadius);
+    program->setUniform("fOuterRadius2", outerRadius * outerRadius);
+    program->setUniform("fKrESun", rayleigh * sun);
+    program->setUniform("fKmESun", mie * sun);
+    program->setUniform("fKr4PI", rayleigh4Pi);
+    program->setUniform("fKm4PI", mie4Pi);
+    program->setUniform("fScale", 1.0f / (outerRadius - innerRadius));
+    program->setUniform("fScaleDepth", rayleighScaleDepth);
+    program->setUniform("fScaleOverScaleDepth", (1.0f / (outerRadius - innerRadius)) / rayleighScaleDepth);
+    program->setUniform("g", g);
+    program->setUniform("g2", g * g);
   }
   void setCameraUniforms(ShaderProgram * program){
     program->use();
@@ -94,33 +103,32 @@ class AtmosphereApp: public Application {
     program->setUniform("fCameraHeight2", float(camera->position.length()*camera->position.length()));
   }
 
+  Mesh * moonPlane(){
+    vector<GLfloat> vertices = {
+        -4.0f, 4.0f, -50.0f,
+        -4.0f, -4.0f, -50.0f,
+        4.0f, -4.0f, -50.0f,
+        4.0f, 4.0f, -50.0f
+    };
+    vector<GLfloat> uvCoords = {
+            0.0, 0.0,
+            0.0, 1.0,
+            1.0, 1.0,
+            1.0, 0.0,
+    };
+
+    vector<GLuint> indicies = { 0, 1, 3, 3, 1, 2 };
+
+    Mesh * moonPlane = new Mesh();
+    moonPlane->init();
+    moonPlane->addBuffer(vertices, 3, "in_Vertex");
+    moonPlane->addBuffer(uvCoords, 2, "in_Uv");
+    moonPlane->addElementBuffer(indicies);
+    moonPlane->setDrawType(GL_TRIANGLES);
+    return moonPlane;
+  }
+
   void scene() {
-    m_fWavelength[0] = 0.650f;    // 650 nm for red
-    m_fWavelength[1] = 0.570f;    // 570 nm for green
-    m_fWavelength[2] = 0.475f;    // 475 nm for blue
-    m_fWavelength4[0] = powf(m_fWavelength[0], 4.0f);
-    m_fWavelength4[1] = powf(m_fWavelength[1], 4.0f);
-    m_fWavelength4[2] = powf(m_fWavelength[2], 4.0f);
-
-    QVector3D lightPosition = QVector3D(0, 0, 1000);
-    lightDirection = lightPosition / lightPosition.length();
-
-    m_fInnerRadius = 10.0f;
-    m_fOuterRadius = 10.25f;
-    m_fScale = 1 / (m_fOuterRadius - m_fInnerRadius);
-
-    m_nSamples = 3;   // Number of sample rays to use in integral equation
-    m_Kr = 0.0025f;   // Rayleigh scattering constant
-    m_Kr4PI = m_Kr*4.0f*M_PI;
-    m_Km = 0.0010f;   // Mie scattering constant
-    m_Km4PI = m_Km*4.0f*M_PI;
-    m_ESun = 20.0f;   // Sun brightness constant
-    m_g = -0.990f;    // The Mie phase asymmetry factor
-    m_fExposure = 2.0f;
-
-    m_fRayleighScaleDepth = 0.25f;
-    m_fMieScaleDepth = 0.1f;
-
     Texture * glow = TextureFactory::Instance().load(ProcTextures::makeGlow(
         QSize(512, 512), 40.0f, 0.1f), "glow");
     Texture * earthMap = TextureFactory::Instance().load("earthmap1k.jpg",
@@ -131,7 +139,6 @@ class AtmosphereApp: public Application {
 
     groundFromAtmosphere = new Template("Atmo/Ground",attributes);
     groundFromAtmosphere->addTexture(earthMap);
-
     spaceFromAtmosphere = new Template("Atmo/Space",attributes);
     spaceFromAtmosphere->addTexture(glow);
     skyFromAtmosphere = new Template("Atmo/Sky",attributes);
@@ -150,32 +157,10 @@ class AtmosphereApp: public Application {
     light = new Light(QVector3D(-2.5, 21.5, -5.2), QVector3D(1, -5, 0));
     SceneData::Instance().addLight("foolight", light);
 
+    Mesh * innerSphere = Geometry::gluSphere(innerRadius, 100, 50);
+    Mesh * outerSphere = Geometry::gluSphere(outerRadius, 100, 50);
 
-    vector<GLfloat> vertices = {
-        -4.0f, 4.0f, -50.0f,
-        -4.0f, -4.0f, -50.0f,
-        4.0f, -4.0f, -50.0f,
-        4.0f, 4.0f, -50.0f
-    };
-    vector<GLfloat> uvCoords = {
-            0.0, 0.0,
-            0.0, 1.0,
-            1.0, 1.0,
-            1.0, 0.0,
-    };
-
-    vector<GLuint> indicies = { 0, 1, 3, 3, 1, 2 };
-
-    Mesh * spacePlane = new Mesh();
-    spacePlane->init();
-    spacePlane->addBuffer(vertices, 3, "in_Vertex");
-    spacePlane->addBuffer(uvCoords, 2, "in_Uv");
-    spacePlane->addElementBuffer(indicies);
-    spacePlane->setDrawType(GL_TRIANGLES);
-    Mesh * innerSphere = Geometry::gluSphere(m_fInnerRadius, 100, 50);
-    Mesh * outerSphere = Geometry::gluSphere(m_fOuterRadius, 100, 50);
-
-    spaceNode = new Node("space", { 0, 0, 0 }, 1, spacePlane, spaceFromAtmosphere);
+    spaceNode = new Node("space", { 0, 0, 0 }, 1, moonPlane(), spaceFromAtmosphere);
     groundNode = new Node("ground", { 0, 0, 0 }, 1, innerSphere, groundFromAtmosphere);
 //    groundNode->setRotation(QVector3D(-90, 0, 180));
     skyNode = new Node("sky", { 0, 0, 0 }, 1, outerSphere, skyFromAtmosphere);
@@ -211,22 +196,22 @@ class AtmosphereApp: public Application {
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_CULL_FACE);
 
-//    bool drawSpace = false;
-//    if(camera->position.length() < m_fOuterRadius) {
-//      spaceNode->setMaterial(spaceFromAtmosphere);
-//      drawSpace = true;
-//    }else if(camera->position.z() > 0.0f) {
-//      spaceNode->setMaterial(spaceFromSpace);
-//      drawSpace = true;
-//    }
-//
-//    if(drawSpace) {
-//      setCameraUniforms(spaceNode->getMaterial()->getShaderProgram());
-//      spaceNode->setView(camera);
-//      spaceNode->draw();
-//    }
+    bool drawSpace = false;
+    if(camera->position.length() < outerRadius) {
+      spaceNode->setMaterial(spaceFromAtmosphere);
+      drawSpace = true;
+    }else if(camera->position.z() > 0.0f) {
+      spaceNode->setMaterial(spaceFromSpace);
+      drawSpace = true;
+    }
 
-    if(camera->position.length() >= m_fOuterRadius)
+    if(drawSpace) {
+      setCameraUniforms(spaceNode->getMaterial()->getShaderProgram());
+      spaceNode->setView(camera);
+      spaceNode->draw();
+    }
+
+    if(camera->position.length() >= outerRadius)
       groundNode->setMaterial(groundFromSpace);
     else
       groundNode->setMaterial(groundFromAtmosphere);
@@ -235,7 +220,7 @@ class AtmosphereApp: public Application {
     groundNode->setView(camera);
     groundNode->draw();
 
-    if(camera->position.length() >= m_fOuterRadius)
+    if(camera->position.length() >= outerRadius)
       skyNode->setMaterial(skyFromSpace);
     else
       skyNode->setMaterial(skyFromAtmosphere);
