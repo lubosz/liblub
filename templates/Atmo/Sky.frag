@@ -17,7 +17,4 @@ uniform float g2;
 	float fMiePhase = 1.5 * ((1.0 - g2) / (2.0 + g2)) * (1.0 + fCos*fCos) / pow(1.0 + g2 - 2.0*g*fCos, 1.5);
 	fragColor = vec4(color1 + fMiePhase * color2,1);
 	fragColor.a = fragColor.b;
-	//fragColor.w = fragColor.y;
-	//fragColor = vec4(fragColor.x,0,0,1)*fMiePhase;
-	//fragColor = vec4(0) + fMiePhase;
 {% endblock %}

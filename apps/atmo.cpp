@@ -43,7 +43,7 @@ class AtmosphereApp: public Application {
   Camera* camera;
   Light * light;
   Node * spaceNode,* groundNode,* skyNode;
-  QVector3D lightDirection;
+
   FrameBuffer *fbo;
   Texture * targetTexture;
 
@@ -68,7 +68,7 @@ class AtmosphereApp: public Application {
     wavelength4[2] = powf(wavelength[2], 4.0f);
 
     QVector3D lightPosition = QVector3D(0, 0, 1000);
-    lightDirection = lightPosition / lightPosition.length();
+    QVector3D lightDirection = lightPosition / lightPosition.length();
 
     float rayleigh = 0.0025f; // Rayleigh scattering constant
     float rayleigh4Pi = rayleigh * 4.0f * M_PI;
@@ -80,6 +80,7 @@ class AtmosphereApp: public Application {
 //    float mieScaleDepth = 0.1f;
 
     program->use();
+//    program->setUniform("v3LightPos", lightDirection);
     program->setUniform("v3LightPos", lightDirection);
     program->setUniform("v3InvWavelength", QVector3D(1 / wavelength4[0], 1 / wavelength4[1], 1 / wavelength4[2]));
     program->setUniform("fInnerRadius", innerRadius);
@@ -162,7 +163,7 @@ class AtmosphereApp: public Application {
 
     spaceNode = new Node("space", { 0, 0, 0 }, 1, moonPlane(), spaceFromAtmosphere);
     groundNode = new Node("ground", { 0, 0, 0 }, 1, innerSphere, groundFromAtmosphere);
-//    groundNode->setRotation(QVector3D(-90, 0, 180));
+    groundNode->setRotation(QVector3D(-90, 0, 0));
     skyNode = new Node("sky", { 0, 0, 0 }, 1, outerSphere, skyFromAtmosphere);
 //    skyNode->setRotation(QVector3D(-90, 0, 180));
 

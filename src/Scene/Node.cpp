@@ -112,7 +112,7 @@ void Node::setView(
     shaderProgram->use();
 
     QMatrix4x4 tempMatrix = viewPoint->getView() * modelMatrix;
-
+    shaderProgram->setUniform("MMatrix", modelMatrix);
     shaderProgram->setUniform("MVMatrix", tempMatrix);
     shaderProgram->setUniform("NormalMatrix", tempMatrix.normalMatrix());
     tempMatrix = viewPoint->getProjection() * tempMatrix;
