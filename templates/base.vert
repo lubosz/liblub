@@ -4,6 +4,7 @@
 in vec3 in_Vertex;
 {% block linkage %}
 {% endblock %}
+uniform mat4 MVPMatrix;
 {% block uniforms %}
 {% endblock %}
 {% endblock %}

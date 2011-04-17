@@ -19,12 +19,12 @@ RenderEngine::RenderEngine()
     checkVersion();
 
 
-    glEnable(GL_DEPTH_TEST);
-    glDepthFunc(GL_LESS);
+//    glEnable(GL_DEPTH_TEST);
+//    glDepthFunc(GL_LESS);
 
-    glEnable(GL_VERTEX_PROGRAM_POINT_SIZE_NV);
+//    glEnable(GL_VERTEX_PROGRAM_POINT_SIZE_NV);
 //    glMatrixMode(GL_PROJECTION);
-    glPointSize(5);
+//    glPointSize(5);
 
     // glBindSampler();
 //     glEnable(GL_CULL_FACE);
@@ -40,7 +40,7 @@ RenderEngine::RenderEngine()
     // glDepthMask(GL_FALSE);
     // glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
-     glDepthRangef(0.0,1.0);
+//     glDepthRangef(0.0,1.0);
 
     glError;
 }

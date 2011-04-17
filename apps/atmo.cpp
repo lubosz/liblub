@@ -26,6 +26,7 @@
 #include "Scene/SceneData.h"
 #include "System/Logger.h"
 #include "Mesh/Geometry.h"
+#include "Mesh/MeshFactory.h"
 #include "Material/ProcTextures.h"
 #include "Material/ShaderProgram.h"
 
@@ -36,7 +37,7 @@ class AtmosphereApp: public Application {
                 *spaceFromAtmosphere,*spaceFromSpace,
                 *HDR;
 
-  bool m_bUseHDR;
+  bool useHDR;
     int m_nSamples;
 //    GLenum m_nPolygonMode;
     float m_Kr, m_Kr4PI;
@@ -63,6 +64,7 @@ class AtmosphereApp: public Application {
     Texture * targetTexture;
 
   explicit AtmosphereApp(string sceneName) {
+    useHDR = true;
     QString sceneFile = QString::fromStdString(sceneName + ".xml");
     sceneLoader = new SceneLoader(sceneFile);
   }
@@ -133,6 +135,7 @@ class AtmosphereApp: public Application {
 
     groundFromAtmosphere = new Template("Atmo/Ground",attributes);
     groundFromAtmosphere->addTexture(earthMap);
+
     spaceFromAtmosphere = new Template("Atmo/Space",attributes);
     spaceFromAtmosphere->addTexture(glow);
     skyFromAtmosphere = new Template("Atmo/Sky",attributes);
@@ -172,8 +175,9 @@ class AtmosphereApp: public Application {
     spacePlane->addBuffer(uvCoords, 2, "in_Uv");
     spacePlane->addElementBuffer(indicies);
     spacePlane->setDrawType(GL_TRIANGLES);
-    Mesh * innerSphere = Geometry::gluSphere(m_fInnerRadius, 100, 50);
+//    Mesh * innerSphere = Geometry::gluSphere(m_fInnerRadius, 100, 50);
     Mesh * outerSphere = Geometry::gluSphere(m_fOuterRadius, 100, 50);
+    Mesh * innerSphere = MeshFactory::load("sphere.obj");
 
     spaceNode = new Node("space", { 0, 0, 0 }, 1, spacePlane, spaceFromAtmosphere);
     groundNode = new Node("ground", { 0, 0, 0 }, 1, innerSphere, groundFromAtmosphere);
@@ -188,50 +192,38 @@ class AtmosphereApp: public Application {
     setAtmoUniforms(groundFromSpace->getShaderProgram());
     setAtmoUniforms(skyFromSpace->getShaderProgram());
 
-    unsigned width = MediaLayer::Instance().width;
-    unsigned height = MediaLayer::Instance().height;
+    if(useHDR){
+      unsigned width = MediaLayer::Instance().width;
+      unsigned height = MediaLayer::Instance().height;
 
-    fbo = new FrameBuffer(width, height);
-    targetTexture = TextureFactory::Instance().colorTexture(width, height, "targetTexture");
-    fbo->attachTexture(GL_COLOR_ATTACHMENT0, targetTexture);
+      fbo = new FrameBuffer(width, height);
+      targetTexture = TextureFactory::Instance().colorTexture(width, height, "targetTexture");
+      fbo->attachTexture(GL_COLOR_ATTACHMENT0, targetTexture);
 
-//    HDR = new Template("Atmo/HDR",attributes);
-//    HDR->addTexture(targetTexture);
-
-    HDR = new EmptyMat();
-    HDR->init();
-#ifdef USE_FBO
-    HDR->addTexture(targetTexture);
-#endif
-
-    HDR->shaderProgram->attachVertFrag("Atmo/HDR", true);
-    HDR->done(attributes);
-    HDR->shaderProgram->setUniform("fExposure", m_fExposure);
-    HDR->samplerUniforms();
-//    HDR->samplerUniforms();
-
+      HDR = new Template("Atmo/HDR",attributes);
+      HDR->addTexture(targetTexture);
+      HDR->shaderProgram->setUniform("fExposure", m_fExposure);
+    }
   }
   void renderFrame(){
-    fbo->bind();
-    // In the case we render the shadowmap to a higher resolution,
-    // the viewport must be modified accordingly.
-//    fbo->updateRenderView();
+    if(useHDR)
+      fbo->bind();
     RenderEngine::Instance().clear();
 
-    bool drawSpace = false;
-    if(camera->position.length() < m_fOuterRadius) {
-      spaceNode->setMaterial(spaceFromAtmosphere);
-      drawSpace = true;
-    }else if(camera->position.z() > 0.0f) {
-      spaceNode->setMaterial(spaceFromSpace);
-      drawSpace = true;
-    }
-
-    if(drawSpace) {
-      setCameraUniforms(spaceNode->getMaterial()->getShaderProgram());
-      spaceNode->setView(camera);
-      spaceNode->draw();
-    }
+//    bool drawSpace = false;
+//    if(camera->position.length() < m_fOuterRadius) {
+//      spaceNode->setMaterial(spaceFromAtmosphere);
+//      drawSpace = true;
+//    }else if(camera->position.z() > 0.0f) {
+//      spaceNode->setMaterial(spaceFromSpace);
+//      drawSpace = true;
+//    }
+//
+//    if(drawSpace) {
+//      setCameraUniforms(spaceNode->getMaterial()->getShaderProgram());
+//      spaceNode->setView(camera);
+//      spaceNode->draw();
+//    }
 
     if(camera->position.length() >= m_fOuterRadius)
       groundNode->setMaterial(groundFromSpace);
@@ -242,36 +234,33 @@ class AtmosphereApp: public Application {
     groundNode->setView(camera);
     groundNode->draw();
 
-    if(camera->position.length() >= m_fOuterRadius)
-      skyNode->setMaterial(skyFromSpace);
-    else
-      skyNode->setMaterial(skyFromAtmosphere);
+//    if(camera->position.length() >= m_fOuterRadius)
+//      skyNode->setMaterial(skyFromSpace);
+//    else
+//      skyNode->setMaterial(skyFromAtmosphere);
+//
+//    setCameraUniforms(skyNode->getMaterial()->getShaderProgram());
+//    glFrontFace(GL_CW);
+//    glEnable(GL_BLEND);
+//
+//    glBlendFunc(GL_ONE, GL_ONE);
+//    skyNode->setView(camera);
+//    skyNode->draw();
+//
+//    glDisable(GL_BLEND);
+//    glFrontFace(GL_CCW);
 
-    setCameraUniforms(skyNode->getMaterial()->getShaderProgram());
-    glFrontFace(GL_CW);
-    glEnable(GL_BLEND);
-
-    glBlendFunc(GL_ONE, GL_ONE);
-    skyNode->setView(camera);
-    skyNode->draw();
-
-    glDisable(GL_BLEND);
-    glFrontFace(GL_CCW);
-
-//    GUI::Instance().draw();
+    GUI::Instance().draw();
     glError;
 
-    fbo->unBind();
-//        glViewport(0, 0, MediaLayer::Instance().width,
-//                MediaLayer::Instance().height);
-
-    RenderEngine::Instance().clear();
-//    HDR->activate();
-//    HDR->samplerUniforms();
-    HDR->activateTextures();
-    HDR->getShaderProgram()->use();
-    fbo->draw(HDR);
-    glError;
+    if(useHDR){
+      fbo->unBind();
+      RenderEngine::Instance().clear();
+      HDR->activateTextures();
+      HDR->getShaderProgram()->use();
+      fbo->draw(HDR);
+      glError;
+    }
   }
 };
 

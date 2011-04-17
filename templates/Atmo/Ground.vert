@@ -5,6 +5,11 @@ out vec3 color2;
 {% endblock %}
 
 {% block main %}
+	uv = in_Uv;
+	gl_Position = MVPMatrix * vec4(in_Vertex,1);
+{% endblock %}
+
+{% block main2 %}
 	// Get the ray from the camera to the vertex, and its length (which is the far point of the ray passing through the atmosphere)
 	vec3 v3Pos = in_Vertex;
 	vec3 v3Ray = v3Pos - v3CameraPos;

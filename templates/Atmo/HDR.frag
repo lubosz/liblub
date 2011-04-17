@@ -14,5 +14,6 @@ uniform float fExposure;
 {% block main %}
 	vec4 color = texture(targetTexture, uv);
 	//vec4 f4Color = texture2DRect(s2Test, gl_TexCoord[0].st * 1024.0);
-	fragColor = 1.0 - exp(color * -fExposure);
+	//fragColor = 1.0 - exp(color * -fExposure);
+	fragColor = color;
 {% endblock %}

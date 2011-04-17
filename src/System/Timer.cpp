@@ -37,7 +37,7 @@ void Timer::frame() {
     if (input_lasttime < ticks - 10) {
       input_lasttime = ticks;
       MediaLayer::Instance().input->eventLoop();
-//      GUI::Instance().update();
+      GUI::Instance().update();
     }
 
    //reset fps counter every secound
