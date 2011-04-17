@@ -28,7 +28,7 @@ class Application {
 		MediaLayer::Instance();
 		MediaLayer::Instance().init(SceneData::Instance().name);
 		scene();
-		GUI::Instance().init();
+//		GUI::Instance().init();
     while (!MediaLayer::Instance().quit) {
       MediaLayer::Instance().renderFrame();
       renderFrame();

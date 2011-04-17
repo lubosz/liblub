@@ -26,6 +26,7 @@ class Material {
 
 	ShaderProgram * shaderProgram;
 	void init();
+	void activateTextures();
  protected:
 	QVector4D diffuseColor;
 
@@ -35,7 +36,6 @@ class Material {
  private:
 	virtual void uniforms() = 0;
 	void defaultAttribs();
-	void activateTextures();
 };
 
 

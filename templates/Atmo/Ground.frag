@@ -5,7 +5,8 @@ in vec2 uv;
 in vec3 color1;
 in vec3 color2;
 {% endblock %}
-{% block uniform %}
+
+{% block uniforms %}
 uniform sampler2D planet;
 {% endblock %}
 

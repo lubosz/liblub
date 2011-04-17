@@ -1,29 +1,23 @@
-//
-// Atmospheric scattering fragment shader
-//
-// Author: Sean O'Neil
-//
-// Copyright (c) 2004 Sean O'Neil
-//
-#version 410 core
-precision highp float;
+{% extends "base.frag" %}
 
-uniform vec3 v3LightPos;
-uniform float g;
-uniform float g2;
-
+{% block linkage %}
 in vec3 v3Direction;
 in vec3 color1;
 in vec3 color2;
+{% endblock %}
 
-out vec4 fragColor;
+{% block uniforms %}
+uniform vec3 v3LightPos;
+uniform float g;
+uniform float g2;
+{% endblock %}
 
-void main (void)
-{
+{% block main %}
 	float fCos = dot(v3LightPos, v3Direction) / length(v3Direction);
 	float fMiePhase = 1.5 * ((1.0 - g2) / (2.0 + g2)) * (1.0 + fCos*fCos) / pow(1.0 + g2 - 2.0*g*fCos, 1.5);
 	fragColor = vec4(color1 + fMiePhase * color2,1);
 	fragColor.a = fragColor.b;
 	//fragColor.w = fragColor.y;
 	//fragColor = vec4(fragColor.x,0,0,1)*fMiePhase;
-}
+	//fragColor = vec4(0) + fMiePhase;
+{% endblock %}

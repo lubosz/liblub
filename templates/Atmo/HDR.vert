@@ -1,14 +1,15 @@
-//
-// Atmospheric scattering vertex shader
-//
-// Author: Sean O'Neil
-//
-// Copyright (c) 2004 Sean O'Neil
-//
+{% extends "base.vert" %}
 
+{% block linkage %}
+in vec2 in_Uv;
+out vec2 uv;
+{% endblock %}
 
-void main(void)
-{
-	gl_Position = gl_ModelViewProjectionMatrix * gl_Vertex;
-	gl_TexCoord[0] = gl_TextureMatrix[0] * gl_MultiTexCoord0;
-}
+{% block uniforms %}
+uniform mat4 MVPMatrix;
+{% endblock %}
+
+{% block main %}
+	uv = in_Uv;
+	gl_Position = MVPMatrix * vec4(in_Vertex,1);
+{% endblock %}

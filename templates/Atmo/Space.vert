@@ -15,10 +15,13 @@ out vec3 color;
 	float C = fCameraHeight2 - fOuterRadius2;
 	float fDet = max(0.0, B*B - 4.0 * C);
 	fFar = 0.5 * (-B + sqrt(fDet));
+{% if fromSpace %}
 	float fNear = 0.5 * (-B - sqrt(fDet));
-
 	vec3 v3Start = v3CameraPos + v3Ray*fNear;
 	fFar -= fNear;
+{% else %}
+	vec3 v3Start = v3CameraPos;
+{% endif %}
 
 	// Calculate attenuation from the camera to the top of the atmosphere toward the vertex
 	float fHeight = length(v3Start);

@@ -59,6 +59,8 @@ class AtmosphereApp: public Application {
   Node * groundNode;
   Node * skyNode;
     QVector3D lightDirection;
+    FrameBuffer *fbo;
+    Texture * targetTexture;
 
   explicit AtmosphereApp(string sceneName) {
     QString sceneFile = QString::fromStdString(sceneName + ".xml");
@@ -126,33 +128,22 @@ class AtmosphereApp: public Application {
     Texture * earthMap = TextureFactory::Instance().load("earthmap1k.jpg",
         "planet");
 
-//    Material * foo = new Simple("Atmo/SpaceFromSpace");
-//    foo->addTexture(glow);
-//    if(foo==NULL) printf("1");
-
     QList<string> attributes;
     attributes.push_back("uv");
-//    attributes.push_back("normal");
 
     groundFromAtmosphere = new Template("Atmo/Ground",attributes);
     groundFromAtmosphere->addTexture(earthMap);
+    spaceFromAtmosphere = new Template("Atmo/Space",attributes);
+    spaceFromAtmosphere->addTexture(glow);
+    skyFromAtmosphere = new Template("Atmo/Sky",attributes);
+
     TemplateEngine::Instance().c.insert("fromSpace", true);
+
     groundFromSpace = new Template("Atmo/Ground",attributes);
     groundFromSpace->addTexture(earthMap);
-    skyFromAtmosphere = new Template("Atmo/SkyFromAtmosphere",attributes);
-    skyFromSpace = new Simple("Atmo/SkyFromSpace",attributes);
-    spaceFromAtmosphere = new Template("Atmo/SpaceFromAtmosphere",attributes);
-    spaceFromAtmosphere->addTexture(glow);
-    spaceFromSpace = new Template("Atmo/SpaceFromSpace",attributes);
+    spaceFromSpace = new Template("Atmo/Space",attributes);
     spaceFromSpace->addTexture(glow);
-
-//    HDR = new ShaderProgram();
-//    HDR->attachShader("Atmo/HDR.vert", GL_VERTEX_SHADER);
-//    HDR->attachShader("Atmo/HDRRect.frag", GL_FRAGMENT_SHADER); //HDRSquare
-//    HDR->init();
-
-//    Material * earth = new Simple("Color/debug");
-//    earth->addTexture(earthMap);
+    skyFromSpace = new Template("Atmo/Sky",attributes);
 
     camera = SceneData::Instance().getCurrentCamera();
     camera->setPosition(QVector3D(0, 0, 25));
@@ -178,7 +169,6 @@ class AtmosphereApp: public Application {
     Mesh * spacePlane = new Mesh();
     spacePlane->init();
     spacePlane->addBuffer(vertices, 3, "in_Vertex");
-//    spacePlane->addBuffer(vertices, 3, "in_Normal");
     spacePlane->addBuffer(uvCoords, 2, "in_Uv");
     spacePlane->addElementBuffer(indicies);
     spacePlane->setDrawType(GL_TRIANGLES);
@@ -198,8 +188,34 @@ class AtmosphereApp: public Application {
     setAtmoUniforms(groundFromSpace->getShaderProgram());
     setAtmoUniforms(skyFromSpace->getShaderProgram());
 
+    unsigned width = MediaLayer::Instance().width;
+    unsigned height = MediaLayer::Instance().height;
+
+    fbo = new FrameBuffer(width, height);
+    targetTexture = TextureFactory::Instance().colorTexture(width, height, "targetTexture");
+    fbo->attachTexture(GL_COLOR_ATTACHMENT0, targetTexture);
+
+//    HDR = new Template("Atmo/HDR",attributes);
+//    HDR->addTexture(targetTexture);
+
+    HDR = new EmptyMat();
+    HDR->init();
+#ifdef USE_FBO
+    HDR->addTexture(targetTexture);
+#endif
+
+    HDR->shaderProgram->attachVertFrag("Atmo/HDR", true);
+    HDR->done(attributes);
+    HDR->shaderProgram->setUniform("fExposure", m_fExposure);
+    HDR->samplerUniforms();
+//    HDR->samplerUniforms();
+
   }
   void renderFrame(){
+    fbo->bind();
+    // In the case we render the shadowmap to a higher resolution,
+    // the viewport must be modified accordingly.
+//    fbo->updateRenderView();
     RenderEngine::Instance().clear();
 
     bool drawSpace = false;
@@ -242,7 +258,19 @@ class AtmosphereApp: public Application {
     glDisable(GL_BLEND);
     glFrontFace(GL_CCW);
 
-    GUI::Instance().draw();
+//    GUI::Instance().draw();
+    glError;
+
+    fbo->unBind();
+//        glViewport(0, 0, MediaLayer::Instance().width,
+//                MediaLayer::Instance().height);
+
+    RenderEngine::Instance().clear();
+//    HDR->activate();
+//    HDR->samplerUniforms();
+    HDR->activateTextures();
+    HDR->getShaderProgram()->use();
+    fbo->draw(HDR);
     glError;
   }
 };

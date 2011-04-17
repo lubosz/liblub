@@ -3,7 +3,7 @@
 {% block header %}
   {% block linkage %}
   {% endblock %}
-  {% block uniform %}
+  {% block uniforms %}
   {% endblock %}
 out vec4 fragColor;
 {% endblock %}
