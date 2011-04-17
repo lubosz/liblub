@@ -1,14 +1,6 @@
-{% extends "base.vert" %}
+{% extends "Atmo/Atmo.vert" %}
 {% block linkage %}
-in vec2 in_Uv;
-out vec2 uv;
 out vec3 color;
-{% endblock %}
-
-{% block uniforms %}
-uniform mat4 MVPMatrix;
-{% include "Atmo/AtmoUniforms.vert" %}
-{% include "Atmo/ScaleFunction.vert" %}
 {% endblock %}
 
 {% block main %}
