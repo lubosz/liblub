@@ -172,9 +172,8 @@ class AtmosphereApp: public Application {
     spacePlane->addBuffer(uvCoords, 2, "in_Uv");
     spacePlane->addElementBuffer(indicies);
     spacePlane->setDrawType(GL_TRIANGLES);
-//    Mesh * innerSphere = Geometry::gluSphere(m_fInnerRadius, 100, 50);
+    Mesh * innerSphere = Geometry::gluSphere(m_fInnerRadius, 100, 50);
     Mesh * outerSphere = Geometry::gluSphere(m_fOuterRadius, 100, 50);
-    Mesh * innerSphere = MeshFactory::load("sphere.obj");
 
     spaceNode = new Node("space", { 0, 0, 0 }, 1, spacePlane, spaceFromAtmosphere);
     groundNode = new Node("ground", { 0, 0, 0 }, 1, innerSphere, groundFromAtmosphere);
@@ -197,15 +196,20 @@ class AtmosphereApp: public Application {
       targetTexture = TextureFactory::Instance().colorTexture(width, height, "targetTexture");
       fbo->attachTexture(GL_COLOR_ATTACHMENT0, targetTexture);
 
-      HDR = new Template("Atmo/HDR",attributes);
+      HDR = new Template("Post/HDR",attributes);
       HDR->addTexture(targetTexture);
-      HDR->shaderProgram->setUniform("fExposure", m_fExposure);
+      HDR->shaderProgram->setUniform("exposure", 2.0f);
+      fbo->checkAndFinish();
     }
   }
   void renderFrame(){
-    if(useHDR)
+    if(useHDR) {
       fbo->bind();
+      fbo->updateRenderView();
+    }
     RenderEngine::Instance().clear();
+    glEnable(GL_DEPTH_TEST);
+    glEnable(GL_CULL_FACE);
 
 //    bool drawSpace = false;
 //    if(camera->position.length() < m_fOuterRadius) {
@@ -231,22 +235,23 @@ class AtmosphereApp: public Application {
     groundNode->setView(camera);
     groundNode->draw();
 
-//    if(camera->position.length() >= m_fOuterRadius)
-//      skyNode->setMaterial(skyFromSpace);
-//    else
-//      skyNode->setMaterial(skyFromAtmosphere);
-//
-//    setCameraUniforms(skyNode->getMaterial()->getShaderProgram());
-//    glFrontFace(GL_CW);
-//    glEnable(GL_BLEND);
-//
-//    glBlendFunc(GL_ONE, GL_ONE);
-//    skyNode->setView(camera);
-//    skyNode->draw();
-//
-//    glDisable(GL_BLEND);
-//    glFrontFace(GL_CCW);
+    if(camera->position.length() >= m_fOuterRadius)
+      skyNode->setMaterial(skyFromSpace);
+    else
+      skyNode->setMaterial(skyFromAtmosphere);
 
+    setCameraUniforms(skyNode->getMaterial()->getShaderProgram());
+    glFrontFace(GL_CW);
+    glEnable(GL_BLEND);
+
+    glBlendFunc(GL_ONE, GL_ONE);
+    skyNode->setView(camera);
+    skyNode->draw();
+
+    glDisable(GL_BLEND);
+    glFrontFace(GL_CCW);
+    glDisable(GL_CULL_FACE);
+    glDisable(GL_DEPTH_TEST);
     GUI::Instance().draw();
     glError;
 

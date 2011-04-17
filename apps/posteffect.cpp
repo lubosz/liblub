@@ -66,7 +66,7 @@ class AtmosphereApp: public Application {
 
     Mesh * innerSphere = Geometry::gluSphere(10.0f, 100, 50);
 
-    groundNode = new Node("ground", { 0, 0, 0 }, 10, innerSphere,
+    groundNode = new Node("ground", { 0, 0, 0 }, 1, innerSphere,
         textureMaterial);
 
     unsigned width = MediaLayer::Instance().width;
@@ -77,9 +77,9 @@ class AtmosphereApp: public Application {
         "targetTexture");
     fbo->attachTexture(GL_COLOR_ATTACHMENT0, targetTexture);
 
-    postMaterial = new Template("Post/Post", attributes);
+    postMaterial = new Template("Post/HDR", attributes);
     postMaterial->addTexture(targetTexture);
-    //      postMaterial->shaderProgram->setUniform("fExposure", m_fExposure);
+    postMaterial->shaderProgram->setUniform("exposure", 2.0f);
     fbo->checkAndFinish();
 
   }

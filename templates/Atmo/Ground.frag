@@ -18,7 +18,5 @@ uniform sampler2D planet;
 	//fragColor = texture(planet, uv);
 	//fragColor = vec4(1);
 
-	//fragColor = vec4(color1,1) + texture(planet, uv) * vec4(color2,1);
-	fragColor = texture(planet, uv);
-	fragColor.w = 1.0;
+	fragColor = vec4(color1,1) + texture(planet, uv) * vec4(color2,1);
 {% endblock %}

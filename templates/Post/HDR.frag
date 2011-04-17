@@ -6,14 +6,13 @@ in vec2 uv;
 
 {% block uniforms %}
 uniform sampler2D targetTexture;
-//uniform sampler2DRect s2Test;	// RECTANGLE textures supported in GLSL?
-uniform float fExposure;
+//uniform sampler2DRect targetTexture;
+uniform float exposure;
 {% endblock %}
 
 
 {% block main %}
 	vec4 color = texture(targetTexture, uv);
-	//vec4 f4Color = texture2DRect(s2Test, gl_TexCoord[0].st * 1024.0);
-	//fragColor = 1.0 - exp(color * -fExposure);
-	fragColor = color;
+	//vec4 color = textureRect(targetTexture, uv * 1024.0);
+	fragColor = 1.0 - exp(color * -exposure);
 {% endblock %}
