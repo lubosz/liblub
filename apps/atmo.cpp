@@ -38,35 +38,33 @@ class AtmosphereApp: public Application {
                 *HDR;
 
   bool useHDR;
-    int m_nSamples;
-//    GLenum m_nPolygonMode;
-    float m_Kr, m_Kr4PI;
-    float m_Km, m_Km4PI;
-    float m_ESun;
-    float m_g;
-    float m_fExposure;
+  int m_nSamples;
+  //    GLenum m_nPolygonMode;
+  float m_Kr, m_Kr4PI;
+  float m_Km, m_Km4PI;
+  float m_ESun;
+  float m_g;
+  float m_fExposure;
 
-    float m_fInnerRadius;
-    float m_fOuterRadius;
-    float m_fScale;
-    float m_fWavelength[3];
-    float m_fWavelength4[3];
-    float m_fRayleighScaleDepth;
-    float m_fMieScaleDepth;
+  float m_fInnerRadius;
+  float m_fOuterRadius;
+  float m_fScale;
+  float m_fWavelength[3];
+  float m_fWavelength4[3];
+  float m_fRayleighScaleDepth;
+  float m_fMieScaleDepth;
 
-    Camera* camera;
-    Light * light;
-    Node * spaceNode;
+  Camera* camera;
+  Light * light;
+  Node * spaceNode;
   Node * groundNode;
   Node * skyNode;
-    QVector3D lightDirection;
-    FrameBuffer *fbo;
-    Texture * targetTexture;
+  QVector3D lightDirection;
+  FrameBuffer *fbo;
+  Texture * targetTexture;
 
-  explicit AtmosphereApp(string sceneName) {
+  explicit AtmosphereApp() {
     useHDR = true;
-    QString sceneFile = QString::fromStdString(sceneName + ".xml");
-    sceneLoader = new SceneLoader(sceneFile);
   }
 
   ~AtmosphereApp() {}
@@ -123,8 +121,6 @@ class AtmosphereApp: public Application {
     m_fRayleighScaleDepth = 0.25f;
     m_fMieScaleDepth = 0.1f;
 
-
-    sceneLoader->load();
     Texture * glow = TextureFactory::Instance().load(ProcTextures::makeGlow(
         QSize(512, 512), 40.0f, 0.1f), "glow");
     Texture * earthMap = TextureFactory::Instance().load("earthmap1k.jpg",
@@ -150,6 +146,7 @@ class AtmosphereApp: public Application {
 
     camera = SceneData::Instance().getCurrentCamera();
     camera->setPosition(QVector3D(0, 0, 25));
+    camera->update();
     light = new Light(QVector3D(-2.5, 21.5, -5.2), QVector3D(1, -5, 0));
     SceneData::Instance().addLight("foolight", light);
 
@@ -267,6 +264,6 @@ class AtmosphereApp: public Application {
 
 int main(int argc, char *argv[]) {
   QApplication app(argc, argv);
-  AtmosphereApp("atmo").run();
+  AtmosphereApp().run();
 }
 

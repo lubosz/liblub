@@ -18,8 +18,8 @@ using std::cout;
 Logger::Logger() {
   blacklist = {
       "Light Position",
-      "Mesh",
-      "FBO"
+      "Mesh"
+//      "FBO"
   };
 }
 

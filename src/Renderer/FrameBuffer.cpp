@@ -39,15 +39,14 @@ FrameBuffer::FrameBuffer(GLuint width, GLuint height) {
     glGenRenderbuffers(1, &rboId);
     glBindRenderbuffer(GL_RENDERBUFFER, rboId);
     glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, width, height);
+    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, fboId);
     glBindRenderbuffer(GL_RENDERBUFFER, 0);
 
-    /*
-     GLuint stencilbuffer;                       // ID of Renderbuffer object
-     glGenRenderbuffers(1, &stencilbuffer);
-     glBindRenderbuffer(GL_RENDERBUFFER, stencilbuffer);
-     glRenderbufferStorage(GL_RENDERBUFFER, GL_STENCIL_INDEX1, TEXTURE_WIDTH, TEXTURE_HEIGHT);
-     glBindRenderbuffer(GL_RENDERBUFFER, 0);
-     */
+//     GLuint stencilbuffer;                       // ID of Renderbuffer object
+//     glGenRenderbuffers(1, &stencilbuffer);
+//     glBindRenderbuffer(GL_RENDERBUFFER, stencilbuffer);
+//     glRenderbufferStorage(GL_RENDERBUFFER, GL_STENCIL_INDEX1, width, height);
+//     glBindRenderbuffer(GL_RENDERBUFFER, 0);
 
     glError;
 }

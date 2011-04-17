@@ -14,10 +14,10 @@ public:
 
   void runTest() {
     printf("Vertex Shader:\n");
-    TemplateEngine::Instance().print("Atmo/Ground.vert");
+    TemplateEngine::Instance().print("Texture.vert");
 //    TemplateEngine::Instance().render("Ubershader.vert");
     printf("Fragment Shader:\n");
-    TemplateEngine::Instance().print("Atmo/Ground.frag");
+    TemplateEngine::Instance().print("Texture.frag");
 
     CPPUNIT_ASSERT( 0 == 0 );
   }

@@ -19,7 +19,7 @@ RenderEngine::RenderEngine()
     checkVersion();
 
 
-//    glEnable(GL_DEPTH_TEST);
+    glEnable(GL_DEPTH_TEST);
 //    glDepthFunc(GL_LESS);
 
 //    glEnable(GL_VERTEX_PROGRAM_POINT_SIZE_NV);
