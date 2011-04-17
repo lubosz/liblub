@@ -131,7 +131,7 @@ class AtmosphereApp: public Application {
 
     QList<string> attributes;
     attributes.push_back("uv");
-    attributes.push_back("normal");
+//    attributes.push_back("normal");
 
     groundFromAtmosphere = new Simple("Atmo/GroundFromAtmosphere",attributes);
     groundFromAtmosphere->addTexture(earthMap);
@@ -176,7 +176,7 @@ class AtmosphereApp: public Application {
     Mesh * spacePlane = new Mesh();
     spacePlane->init();
     spacePlane->addBuffer(vertices, 3, "in_Vertex");
-    spacePlane->addBuffer(vertices, 3, "in_Normal");
+//    spacePlane->addBuffer(vertices, 3, "in_Normal");
     spacePlane->addBuffer(uvCoords, 2, "in_Uv");
     spacePlane->addElementBuffer(indicies);
     spacePlane->setDrawType(GL_TRIANGLES);

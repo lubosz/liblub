@@ -23,25 +23,23 @@ TemplateEngine::~TemplateEngine() {
   // TODO Auto-generated destructor stub
 }
 
-void TemplateEngine::render(const string& file) {
-
+QString TemplateEngine::render(const string& file) {
   Grantlee::Context c;
   c.insert("precision", false);
   c.insert("version", "410 core");
-
 
   Grantlee::Template t = m_engine->loadByName(QString::fromStdString(file));
 
   if (!t) {
     qDebug() << "Unable to load template"
         << QString("Error loading template: %1").arg(QString::fromStdString(file));
-    return;
+    return QString();
   }
 
   if (t->error()) {
     qDebug() << "Unable to load template"
         << QString("Error loading template: %1").arg(t->errorString());
-    return;
+    return QString();
   }
 
   QString content = t->render(&c);
@@ -49,9 +47,13 @@ void TemplateEngine::render(const string& file) {
   if (t->error()) {
     qDebug() << "Unable render template"
         << QString("Error rendering template: %1").arg(t->errorString());
-    return;
+    return QString();
   }
   content.replace("\n\n", "\n");
 
-  std::cout << qPrintable(content);
+  return content;
+}
+
+void TemplateEngine::print(const string& file) {
+  qDebug() << render(file);
 }

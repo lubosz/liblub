@@ -47,9 +47,9 @@ void ShaderProgram::printProgramInfoLog() {
   }
 }
 
-void ShaderProgram::attachShader(string fileName, GLenum type) {
+void ShaderProgram::attachShader(string fileName, GLenum type, bool useTemplate) {
     /* Attach our shaders to our program */
-  Shader * shader = new Shader(fileName, type);
+  Shader * shader = new Shader(fileName, type, useTemplate);
   shaders.push_back(shader);
   glAttachShader(program, shader->getReference());
 }
@@ -68,9 +68,9 @@ void ShaderProgram::detachShader(Shader *shader) {
   delete shader;
 }
 
-void ShaderProgram::attachVertFrag(string file) {
-  attachShader(file + ".vert", GL_VERTEX_SHADER);
-  attachShader(file + ".frag", GL_FRAGMENT_SHADER);
+void ShaderProgram::attachVertFrag(string file, bool useTemplate) {
+  attachShader(file + ".vert", GL_VERTEX_SHADER, useTemplate);
+  attachShader(file + ".frag", GL_FRAGMENT_SHADER, useTemplate);
 }
 void ShaderProgram::attachVertFrag(
         string file, const vector<string> & defines) {
@@ -78,15 +78,15 @@ void ShaderProgram::attachVertFrag(
     attachShader(file + ".frag", GL_FRAGMENT_SHADER, defines);
 }
 
-void ShaderProgram::attachVertGeom(string file) {
-  attachShader(file + ".vert", GL_VERTEX_SHADER);
-  attachShader(file + ".geom", GL_GEOMETRY_SHADER);
+void ShaderProgram::attachVertGeom(string file, bool useTemplate) {
+  attachShader(file + ".vert", GL_VERTEX_SHADER, useTemplate);
+  attachShader(file + ".geom", GL_GEOMETRY_SHADER, useTemplate);
 }
 
-void ShaderProgram::attachVertFragGeom(string file) {
-  attachShader(file + ".vert", GL_VERTEX_SHADER);
-  attachShader(file + ".geom", GL_GEOMETRY_SHADER);
-  attachShader(file + ".frag", GL_FRAGMENT_SHADER);
+void ShaderProgram::attachVertFragGeom(string file, bool useTemplate) {
+  attachShader(file + ".vert", GL_VERTEX_SHADER, useTemplate);
+  attachShader(file + ".geom", GL_GEOMETRY_SHADER, useTemplate);
+  attachShader(file + ".frag", GL_FRAGMENT_SHADER, useTemplate);
 }
 
 void ShaderProgram::bindAttrib(unsigned position, string name) {
@@ -180,23 +180,6 @@ void ShaderProgram::use() {
   glError;
   glUseProgram(program);
   glError;
-}
-
-void ShaderProgram::reload() {
-    glUseProgram(0);
-    program = glCreateProgram();
-
-    foreach(Shader* shader, shaders) {
-      /*
-
-        delete shader;
-        */
-      shader->reload();
-      // attachShader(shader->fileName,shader->type);
-    }
-
-    linkAndUse();
-  // ShaderFactory::Instance().addUniforms();
 }
 
 void ShaderProgram::setUniform(string name, const QVector4D& vector) {

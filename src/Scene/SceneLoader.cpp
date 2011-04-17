@@ -45,15 +45,15 @@ void SceneLoader::appendProgram(const QDomElement & programNode) {
             if (programInfo.hasAttribute("type")) {
                 QString shaderType = programInfo.attribute("type");
                 if (shaderType == "VERTEX_SHADER")
-                    program->attachShader(shaderUrl, GL_VERTEX_SHADER);
+                    program->attachShader(shaderUrl, GL_VERTEX_SHADER, false);
                 else if (shaderType == "GEOMETRY_SHADER")
-                    program->attachShader(shaderUrl, GL_GEOMETRY_SHADER);
+                    program->attachShader(shaderUrl, GL_GEOMETRY_SHADER, false);
                 else if (shaderType == "FRAGMENT_SHADER")
-                    program->attachShader(shaderUrl, GL_FRAGMENT_SHADER);
+                    program->attachShader(shaderUrl, GL_FRAGMENT_SHADER, false);
                 else if (shaderType == "CONTROL_SHADER")
-                    program->attachShader(shaderUrl, GL_TESS_CONTROL_SHADER);
+                    program->attachShader(shaderUrl, GL_TESS_CONTROL_SHADER, false);
                 else if (shaderType == "EVALUATION_SHADER")
-                    program->attachShader(shaderUrl, GL_TESS_EVALUATION_SHADER);
+                    program->attachShader(shaderUrl, GL_TESS_EVALUATION_SHADER, false);
             } else {
                 if (programInfo.hasAttribute("flags")) {
                     flags
@@ -61,7 +61,7 @@ void SceneLoader::appendProgram(const QDomElement & programNode) {
                                     "flags"));
                     program->attachVertFrag(shaderUrl, flags);
                 } else {
-                    program->attachVertFrag(shaderUrl);
+                    program->attachVertFrag(shaderUrl, false);
                 }
             }
         } else if (programInfo.tagName() == "Uniform") {

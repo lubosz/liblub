@@ -268,7 +268,7 @@ Mesh * Geometry::gluSphere(GLdouble radius, GLint slices, GLint stacks) {
   Mesh * middleStrip = new Mesh();
   Mesh * bottomFan = new Mesh();
   Mesh * topFan = new Mesh();
-  bool hasNormals = true;
+  bool hasNormals = false;
   bool smoothNormals = true;
   bool drawPoints = false;
   bool drawLines = false;
@@ -638,20 +638,22 @@ Mesh * Geometry::gluSphere(GLdouble radius, GLint slices, GLint stacks) {
 
   middleStrip->init();
   middleStrip->initPositions();
-  middleStrip->initNormals();
+//  middleStrip->initNormals();
   middleStrip->initUv();
   middleStrip->initIndex();
   middleStrip->setDrawType(GL_TRIANGLE_STRIP);
 
   topFan->init();
   topFan->initPositions();
-  topFan->initNormals();
+//  topFan->initNormals();
+  topFan->initUv();
   topFan->initIndex();
   topFan->setDrawType(GL_TRIANGLE_FAN);
 
   bottomFan->init();
   bottomFan->initPositions();
-  bottomFan->initNormals();
+//  bottomFan->initNormals();
+  bottomFan->initUv();
   bottomFan->initIndex();
   bottomFan->setDrawType(GL_TRIANGLE_FAN);
 

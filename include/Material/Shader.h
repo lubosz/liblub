@@ -16,11 +16,10 @@ using std::string;
 
 class Shader {
  public:
-	Shader(string fileName, GLenum type);
+	Shader(string fileName, GLenum type, bool useTemplate);
 	Shader(string fileName, GLenum type, const vector<string> & defines);
 	GLuint getReference() const;
 	virtual ~Shader();
-	void reload();
  private:
 	/* These pointers will receive the contents of our shader source code files */
 	GLchar *source;
@@ -36,6 +35,8 @@ class Shader {
 	char* readFile(string filePath);
 	void printShaderInfoLog(GLuint shader);
 
-	void loadAndCompile();
+	void loadSource();
+	void loadTemplate();
+	void compile();
 };
 

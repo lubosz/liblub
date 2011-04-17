@@ -20,15 +20,15 @@ class ShaderProgram {
  public:
 	ShaderProgram();
 	virtual ~ShaderProgram();
-	void attachShader(string fileName, GLenum type);
+	void attachShader(string fileName, GLenum type, bool useTemplate);
 	void attachShader(
 	        string fileName, GLenum type, const vector<string> & defines
 	);
 
-	void attachVertFrag(string file);
+	void attachVertFrag(string file, bool useTemplate);
 	void attachVertFrag(string file, const vector<string> & defines);
-	void attachVertGeom(string file);
-	void attachVertFragGeom(string file);
+	void attachVertGeom(string file, bool useTemplate);
+	void attachVertFragGeom(string file, bool useTemplate);
 
 	void use();
 	void bindAttribIfUnbound(string name);
@@ -65,5 +65,4 @@ class ShaderProgram {
 	unsigned attribCount;
 	void printProgramInfoLog();
 	void detachShader(Shader *shader);
-	void reload();
 };

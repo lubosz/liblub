@@ -12,13 +12,18 @@
 #include <vector>
 #include "System/Logger.h"
 #include "System/Config.h"
+#include "System/TemplateEngine.h"
 
-Shader::Shader(string fileName, GLenum type) {
+Shader::Shader(string fileName, GLenum type, bool useTemplate) {
   Logger::Instance().log("DEBUG", "Shader", "Creating Shader " + fileName);
   this->fileName = fileName;
   this->type = type;
 
-  loadAndCompile();
+  if (useTemplate)
+    loadTemplate();
+  else
+    loadSource();
+  compile();
 }
 
 Shader::Shader(string fileName, GLenum type, const vector<string> & defines) {
@@ -27,7 +32,8 @@ Shader::Shader(string fileName, GLenum type, const vector<string> & defines) {
   this->type = type;
   this->defines = defines;
 
-  loadAndCompile();
+  loadSource();
+  compile();
 }
 
 Shader::~Shader() {
@@ -36,7 +42,7 @@ Shader::~Shader() {
 }
 
 
-void Shader::loadAndCompile() {
+void Shader::loadSource() {
   /* Read our shaders into the appropriate buffers */
   source = readFile(Config::Instance().value<string>("shaderDir") + fileName);
 
@@ -44,26 +50,35 @@ void Shader::loadAndCompile() {
     shader = glCreateShader(type);
 
     if (defines.size() > 0) {
-    // set defines
-    string defineString = "";
+      // set defines
+      string defineString = "";
 
-    foreach(string define, defines) {
-      defineString += "#define " + define + "\n";
-      Logger::Instance().log("DEBUG", "Shader Flags", define);
-    }
-    const GLchar *sources[2] = { defineString.c_str(), source };
-    glShaderSource(shader, 2, sources, NULL);
+      foreach(string define, defines) {
+        defineString += "#define " + define + "\n";
+        Logger::Instance().log("DEBUG", "Shader Flags", define);
+      }
+      const GLchar *sources[2] = { defineString.c_str(), source };
+      glShaderSource(shader, 2, sources, NULL);
     } else {
       glShaderSource(shader, 1,  (const GLchar**)&source, NULL);
     }
-    glError;
+}
 
+void Shader::loadTemplate() {
+  source = const_cast<GLchar *>(TemplateEngine::Instance().render(fileName).toStdString().c_str());
+  /* Assign our handles a "name" to new shader objects */
+  shader = glCreateShader(type);
+  /* Set rendered template string as source */
+  glShaderSource(shader, 1,  (const GLchar**)&source, NULL);
+}
+
+void Shader::compile() {
     Logger::Instance().message << "Compiling Shader#" << shader <<"...";
     /* Compile our shader objects */
     // TODO(bmonkey): driver crashes :/
     glCompileShader(shader);
-    glError;
     printShaderInfoLog(shader);
+    glError;
 }
 
 /* A simple function that will read a file
@@ -124,12 +139,6 @@ void Shader::printShaderInfoLog(GLuint shader) {
   } else {
     Logger::Instance().log("DEBUG", "Shader", "Success");
   }
-}
-
-void Shader::reload() {
-  glDeleteShader(shader);
-  free(source);
-  loadAndCompile();
 }
 
 GLuint Shader::getReference() const {

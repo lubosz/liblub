@@ -18,7 +18,8 @@ public:
   TemplateEngine();
   virtual ~TemplateEngine();
   Grantlee::Engine *m_engine;
-  void render(const string& file);
+  QString render(const string& file);
+  void print(const string& file);
 };
 
 #endif /* TEMPLATEENGINE_H_ */
