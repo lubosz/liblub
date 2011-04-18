@@ -32,7 +32,7 @@
 
 const bool post = true;
 
-class AtmosphereApp: public Application {
+class TesselationApp: public Application {
  public:
   Material *textureMaterial, *postMaterial;
 
@@ -43,10 +43,10 @@ class AtmosphereApp: public Application {
   FrameBuffer * fbo;
   Texture * targetTexture;
 
-  explicit AtmosphereApp() {
+  explicit TesselationApp() {
   }
 
-  ~AtmosphereApp() {}
+  ~TesselationApp() {}
 
   void scene() {
     Texture * earthMap = TextureFactory::Instance().load("earthmap1k.jpg",
@@ -112,6 +112,6 @@ class AtmosphereApp: public Application {
 
 int main(int argc, char *argv[]) {
   QApplication app(argc, argv);
-  AtmosphereApp().run();
+  TesselationApp().run();
 }
 

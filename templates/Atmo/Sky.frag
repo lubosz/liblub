@@ -13,8 +13,8 @@ uniform float g2;
 {% endblock %}
 
 {% block main %}
-	float fCos = dot(v3LightPos, v3Direction) / length(v3Direction);
-	float fMiePhase = 1.5 * ((1.0 - g2) / (2.0 + g2)) * (1.0 + fCos*fCos) / pow(1.0 + g2 - 2.0*g*fCos, 1.5);
-	fragColor = vec4(color1 + fMiePhase * color2,1);
+	float cos = dot(v3LightPos, v3Direction) / length(v3Direction);
+	float miePhase = 1.5 * ((1.0 - g2) / (2.0 + g2)) * (1.0 + cos*cos) / pow(1.0 + g2 - 2.0*g*cos, 1.5);
+	fragColor = vec4(color1 + miePhase * color2,1);
 	fragColor.a = fragColor.b;
 {% endblock %}

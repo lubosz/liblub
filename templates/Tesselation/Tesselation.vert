@@ -2,10 +2,11 @@
 
 {% block linkage %}
 in vec2 in_Uv;
-out vec2 uv;
+out vec2 vUv;
+out vec3 vPosition;
 {% endblock %}
 
 {% block main %}
-	uv = in_Uv;
-	gl_Position = MVPMatrix * vec4(in_Vertex,1);
+	vUv = in_Uv;
+    vPosition = in_Vertex.xyz;
 {% endblock %}

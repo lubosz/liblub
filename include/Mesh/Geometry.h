@@ -23,6 +23,7 @@ class Geometry {
 	);
 	static Mesh * makeSpiral(int resolution);
 	static Mesh * gluSphere(GLdouble radius, GLint slices, GLint stacks);
+	static Mesh * makeIcosahedron();
  private:
 	float density, randomness;
 	int variation;

@@ -81,7 +81,13 @@ void Mesh::addElementBuffer(const vector<GLuint> & content) {
 }
 
 void Mesh::setDrawType(GLint drawType) {
-  this->drawType = drawType;
+
+  if (subMeshes.size() > 0) {
+    foreach(Mesh * mesh, subMeshes)
+        mesh->drawType = drawType;
+  } else {
+    this->drawType = drawType;
+  }
 }
 
 void Mesh::draw() {

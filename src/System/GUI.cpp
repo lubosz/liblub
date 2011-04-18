@@ -57,11 +57,11 @@ GUI::~GUI() {
   // TODO Auto-generated destructor stub
 }
 void GUI::init() {
-  GUI::Instance().addText("ascene", SceneData::Instance().name);
-  GUI::Instance().addText("fps", "FPS");
+  addText("ascene", SceneData::Instance().name);
+  addText("fps", "FPS");
 //  GUI::Instance().addText("zoom", "Zoom");
-  GUI::Instance().addText("cam", "Cam");
-  GUI::Instance().addText("time", "Time");
+  addText("cam", "Cam");
+  addText("time", "Time");
   render();
   texture = TextureFactory::Instance().load(image,"myTexture");
   material->addTexture(texture);

@@ -30,7 +30,7 @@
 #include "Material/ProcTextures.h"
 #include "Material/ShaderProgram.h"
 
-class AtmosphereApp: public Application {
+class TesselationApp: public Application {
  public:
   Material *groundFromAtmosphere, *groundFromSpace,
                 *skyFromAtmosphere, *skyFromSpace,
@@ -47,13 +47,13 @@ class AtmosphereApp: public Application {
   FrameBuffer *fbo;
   Texture * targetTexture;
 
-  AtmosphereApp() {
+  TesselationApp() {
     useHDR = false;
     innerRadius = 10.0f;
     outerRadius = 10.25f;
   }
 
-  ~AtmosphereApp() {}
+  ~TesselationApp() {}
 
   void setAtmoUniforms(ShaderProgram * program) {
 
@@ -165,7 +165,6 @@ class AtmosphereApp: public Application {
     groundNode = new Node("ground", { 0, 0, 0 }, 1, innerSphere, groundFromAtmosphere);
     groundNode->setRotation(QVector3D(-90, 0, 0));
     skyNode = new Node("sky", { 0, 0, 0 }, 1, outerSphere, skyFromAtmosphere);
-//    skyNode->setRotation(QVector3D(-90, 0, 180));
 
     setAtmoUniforms(spaceFromAtmosphere->getShaderProgram());
     setAtmoUniforms(groundFromAtmosphere->getShaderProgram());
@@ -255,6 +254,6 @@ class AtmosphereApp: public Application {
 
 int main(int argc, char *argv[]) {
   QApplication app(argc, argv);
-  AtmosphereApp().run();
+  TesselationApp().run();
 }
 
