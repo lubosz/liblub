@@ -30,30 +30,30 @@
 #include "Material/ProcTextures.h"
 #include "Material/ShaderProgram.h"
 
-class TesselationApp: public Application {
+class AtmosphereApp: public Application {
  public:
   Material *groundFromAtmosphere, *groundFromSpace,
                 *skyFromAtmosphere, *skyFromSpace,
                 *spaceFromAtmosphere,*spaceFromSpace,
                 *HDR;
-
+  Material *terrainMat;
   bool useHDR;
   float innerRadius;
   float outerRadius;
   Camera* camera;
   Light * light;
-  Node * spaceNode,* groundNode,* skyNode;
+  Node * spaceNode,* groundNode,* skyNode, *terrainNode;
 
   FrameBuffer *fbo;
   Texture * targetTexture;
 
-  TesselationApp() {
+  AtmosphereApp() {
     useHDR = false;
     innerRadius = 10.0f;
     outerRadius = 10.25f;
   }
 
-  ~TesselationApp() {}
+  ~AtmosphereApp() {}
 
   void setAtmoUniforms(ShaderProgram * program) {
 
@@ -80,28 +80,27 @@ class TesselationApp: public Application {
 //    float mieScaleDepth = 0.1f;
 
     program->use();
-//    program->setUniform("v3LightPos", lightDirection);
-    program->setUniform("v3LightPos", lightDirection);
-    program->setUniform("v3InvWavelength", QVector3D(1 / wavelength4[0], 1 / wavelength4[1], 1 / wavelength4[2]));
-    program->setUniform("fInnerRadius", innerRadius);
-    program->setUniform("fInnerRadius2", innerRadius * innerRadius);
-    program->setUniform("fOuterRadius", outerRadius);
-    program->setUniform("fOuterRadius2", outerRadius * outerRadius);
-    program->setUniform("fKrESun", rayleigh * sun);
-    program->setUniform("fKmESun", mie * sun);
-    program->setUniform("fKr4PI", rayleigh4Pi);
-    program->setUniform("fKm4PI", mie4Pi);
-    program->setUniform("fScale", 1.0f / (outerRadius - innerRadius));
-    program->setUniform("fScaleDepth", rayleighScaleDepth);
-    program->setUniform("fScaleOverScaleDepth", (1.0f / (outerRadius - innerRadius)) / rayleighScaleDepth);
+    program->setUniform("lightPosition", lightDirection);
+    program->setUniform("invWavelength", QVector3D(1 / wavelength4[0], 1 / wavelength4[1], 1 / wavelength4[2]));
+    program->setUniform("innerRadius", innerRadius);
+    program->setUniform("innerRadius2", innerRadius * innerRadius);
+    program->setUniform("outerRadius", outerRadius);
+    program->setUniform("outerRadius2", outerRadius * outerRadius);
+    program->setUniform("rayleighSun", rayleigh * sun);
+    program->setUniform("mieSun", mie * sun);
+    program->setUniform("rayleigh4Pi", rayleigh4Pi);
+    program->setUniform("mie4Pi", mie4Pi);
+    program->setUniform("invSphereDistance", 1.0f / (outerRadius - innerRadius));
+    program->setUniform("scaleDepth", rayleighScaleDepth);
+    program->setUniform("scaleOverScaleDepth", (1.0f / (outerRadius - innerRadius)) / rayleighScaleDepth);
     program->setUniform("g", g);
     program->setUniform("g2", g * g);
   }
   void setCameraUniforms(ShaderProgram * program){
     program->use();
-    program->setUniform("v3CameraPos", camera->position);
-    program->setUniform("fCameraHeight", (float)camera->position.length());
-    program->setUniform("fCameraHeight2", float(camera->position.length()*camera->position.length()));
+    program->setUniform("cameraPosition", camera->position);
+    program->setUniform("cameraHeight", (float)camera->position.length());
+    program->setUniform("cameraHeight2", float(camera->position.length()*camera->position.length()));
   }
 
   Mesh * moonPlane(){
@@ -186,8 +185,57 @@ class TesselationApp: public Application {
       HDR->shaderProgram->setUniform("exposure", 2.0f);
       fbo->checkAndFinish();
     }
+
+    terrainMat = new EmptyMat();
+
+    terrainMat->init();
+    terrainMat->getShaderProgram()->attachShader("Tesselation/Tesselation.vert",GL_VERTEX_SHADER,true);
+    terrainMat->getShaderProgram()->attachShader("Tesselation/Tesselation.eval",GL_TESS_EVALUATION_SHADER,true);
+    terrainMat->getShaderProgram()->attachShader("Tesselation/Tesselation.cont",GL_TESS_CONTROL_SHADER,true);
+    terrainMat->getShaderProgram()->attachShader("Tesselation/Tesselation.geom",GL_GEOMETRY_SHADER,true);
+    terrainMat->getShaderProgram()->attachShader("Tesselation/Tesselation.frag",GL_FRAGMENT_SHADER,true);
+    terrainMat->done(attributes);
+
+    terrainMat->getShaderProgram()->setUniform("TessLevelInner",1.0f);
+    terrainMat->getShaderProgram()->setUniform("TessLevelOuter",1.0f);
+    terrainMat->getShaderProgram()->setUniform("LightPosition", QVector3D(0.25, 0.25, 1));
+
+    Mesh * groundMesh = MeshFactory::load("earth.obj");
+//    Mesh * mesh = Geometry::gluSphere(10.0f, 100, 50);
+//    Mesh * mesh = Geometry::makeIcosahedron();
+    groundMesh->setDrawType(GL_PATCHES);
+    terrainNode = new Node("ground", { 0, 0, 0 }, 11, groundMesh, terrainMat);
+
+    GUI::Instance().addText("tess", "Tess");
+    GUI::Instance().addText("dist", "Dist");
+
+    Texture * groundTexture = TextureFactory::Instance().load("terrain/mud.jpg","diffuse");
+    Texture * noise = TextureFactory::Instance().load("terrain-noise-blur.jpg","noise");
+    terrainMat->addTexture(groundTexture);
+    terrainMat->addTexture(noise);
+
   }
   void renderFrame(){
+    int maxTess = 30;
+    float tessStartDistance = 8;
+    float scale = maxTess - (camera->position.length() - tessStartDistance);
+
+    std::stringstream tess;
+    tess << "Tess " << int(scale);
+    GUI::Instance().updateText("tess",tess.str());
+
+    std::stringstream dist;
+    dist << "Dist " << camera->position.length();
+    GUI::Instance().updateText("dist",dist.str());
+
+  if (scale > 1){
+    terrainMat->getShaderProgram()->use();
+    terrainMat->getShaderProgram()->setUniform("TessLevelInner",scale);
+    terrainMat->getShaderProgram()->setUniform("TessLevelOuter",scale);
+  }
+
+
+
     if(useHDR) {
       fbo->bind();
       fbo->updateRenderView();
@@ -219,6 +267,9 @@ class TesselationApp: public Application {
     setCameraUniforms(groundNode->getMaterial()->getShaderProgram());
     groundNode->setView(camera);
     groundNode->draw();
+
+//    terrainNode->setView(camera);
+//    terrainNode->draw();
 
     if(camera->position.length() >= outerRadius)
       skyNode->setMaterial(skyFromSpace);
@@ -254,6 +305,6 @@ class TesselationApp: public Application {
 
 int main(int argc, char *argv[]) {
   QApplication app(argc, argv);
-  TesselationApp().run();
+  AtmosphereApp().run();
 }
 

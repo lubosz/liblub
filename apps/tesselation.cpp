@@ -26,7 +26,7 @@ class TesselationApp: public Application {
  public:
   Node * groundNode;
   Camera * camera;
-  Material *material;
+  Material *terrainMat;
 
   explicit TesselationApp() {
   }
@@ -38,21 +38,19 @@ class TesselationApp: public Application {
 
     QList<string> attributes;
 
-    material = new EmptyMat();
+    terrainMat = new EmptyMat();
 
-    material->init();
-    material->getShaderProgram()->attachShader("Tesselation/Tesselation.vert",GL_VERTEX_SHADER,true);
-    material->getShaderProgram()->attachShader("Tesselation/Tesselation.eval",GL_TESS_EVALUATION_SHADER,true);
-    material->getShaderProgram()->attachShader("Tesselation/Tesselation.cont",GL_TESS_CONTROL_SHADER,true);
-    material->getShaderProgram()->attachShader("Tesselation/Tesselation.geom",GL_GEOMETRY_SHADER,true);
-    material->getShaderProgram()->attachShader("Tesselation/Tesselation.frag",GL_FRAGMENT_SHADER,true);
-    material->done(attributes);
+    terrainMat->init();
+    terrainMat->getShaderProgram()->attachShader("Tesselation/Tesselation.vert",GL_VERTEX_SHADER,true);
+    terrainMat->getShaderProgram()->attachShader("Tesselation/Tesselation.eval",GL_TESS_EVALUATION_SHADER,true);
+    terrainMat->getShaderProgram()->attachShader("Tesselation/Tesselation.cont",GL_TESS_CONTROL_SHADER,true);
+    terrainMat->getShaderProgram()->attachShader("Tesselation/Tesselation.geom",GL_GEOMETRY_SHADER,true);
+    terrainMat->getShaderProgram()->attachShader("Tesselation/Tesselation.frag",GL_FRAGMENT_SHADER,true);
+    terrainMat->done(attributes);
 
-    material->getShaderProgram()->setUniform("TessLevelInner",1.0f);
-    material->getShaderProgram()->setUniform("TessLevelOuter",1.0f);
-    material->getShaderProgram()->setUniform("LightPosition", QVector3D(0.25, 0.25, 1));
-    material->getShaderProgram()->setUniform("DiffuseMaterial",QVector3D(0, 0.75, 0.75));
-    material->getShaderProgram()->setUniform("AmbientMaterial",QVector3D(0.04f, 0.04f, 0.04f));
+    terrainMat->getShaderProgram()->setUniform("TessLevelInner",1.0f);
+    terrainMat->getShaderProgram()->setUniform("TessLevelOuter",1.0f);
+    terrainMat->getShaderProgram()->setUniform("LightPosition", QVector3D(0.25, 0.25, 1));
 
     camera = SceneData::Instance().getCurrentCamera();
     camera->setPosition(QVector3D(0, 0, 25));
@@ -65,7 +63,7 @@ class TesselationApp: public Application {
 //    Mesh * mesh = Geometry::makeIcosahedron();
     mesh->setDrawType(GL_PATCHES);
 
-    groundNode = new Node("ground", { 0, 0, 0 }, 10, mesh, material);
+    groundNode = new Node("ground", { 0, 0, 0 }, 10, mesh, terrainMat);
     groundNode->setRotation(QVector3D(90,0,0));
     glError;
 
@@ -74,8 +72,8 @@ class TesselationApp: public Application {
 
     Texture * groundTexture = TextureFactory::Instance().load("terrain/mud.jpg","diffuse");
     Texture * noise = TextureFactory::Instance().load("terrain-noise-blur.jpg","noise");
-    material->addTexture(groundTexture);
-    material->addTexture(noise);
+    terrainMat->addTexture(groundTexture);
+    terrainMat->addTexture(noise);
   }
   void renderFrame() {
       int maxTess = 30;
@@ -91,9 +89,9 @@ class TesselationApp: public Application {
       GUI::Instance().updateText("dist",dist.str());
 
     if (scale > 1){
-      material->getShaderProgram()->use();
-      material->getShaderProgram()->setUniform("TessLevelInner",scale);
-      material->getShaderProgram()->setUniform("TessLevelOuter",scale);
+      terrainMat->getShaderProgram()->use();
+      terrainMat->getShaderProgram()->setUniform("TessLevelInner",scale);
+      terrainMat->getShaderProgram()->setUniform("TessLevelOuter",scale);
     }
     RenderEngine::Instance().clear();
     glEnable(GL_DEPTH_TEST);

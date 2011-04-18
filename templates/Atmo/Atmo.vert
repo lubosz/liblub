@@ -10,28 +10,28 @@ out vec2 uv;
 
 uniform mat4 MVPMatrix;
 
-uniform vec3 v3CameraPos;		// The camera's current position
-uniform vec3 v3LightPos;		// The direction vector to the light source
-uniform vec3 v3InvWavelength;	// 1 / pow(wavelength, 4) for the red, green, and blue channels
-uniform float fCameraHeight;	// The camera's current height
-uniform float fCameraHeight2;	// fCameraHeight^2
-uniform float fOuterRadius;		// The outer (atmosphere) radius
-uniform float fOuterRadius2;	// fOuterRadius^2
-uniform float fInnerRadius;		// The inner (planetary) radius
-uniform float fInnerRadius2;	// fInnerRadius^2
-uniform float fKrESun;			// Kr * ESun
-uniform float fKmESun;			// Km * ESun
-uniform float fKr4PI;			// Kr * 4 * PI
-uniform float fKm4PI;			// Km * 4 * PI
-uniform float fScale;			// 1 / (fOuterRadius - fInnerRadius)
-uniform float fScaleDepth;		// The scale depth (i.e. the altitude at which the atmosphere's average density is found)
-uniform float fScaleOverScaleDepth;	// fScale / fScaleDepth
+uniform vec3 cameraPosition;		// The camera's current position
+uniform vec3 lightPosition;		// The direction vector to the light source
+uniform vec3 invWavelength;	// 1 / pow(wavelength, 4) for the red, green, and blue channels
+uniform float cameraHeight;	// The camera's current height
+uniform float cameraHeight2;	// cameraHeight^2
+uniform float outerRadius;		// The outer (atmosphere) radius
+uniform float outerRadius2;	// outerRadius^2
+uniform float innerRadius;		// The inner (planetary) radius
+uniform float innerRadius2;	// innerRadius^2
+uniform float rayleighSun;			// Kr * ESun
+uniform float mieSun;			// Km * ESun
+uniform float rayleigh4Pi;			// Kr * 4 * PI
+uniform float mie4Pi;			// Km * 4 * PI
+uniform float invSphereDistance;			// 1 / (outerRadius - innerRadius)
+uniform float scaleDepth;		// The scale depth (i.e. the altitude at which the atmosphere's average density is found)
+uniform float scaleOverScaleDepth;	// scale / scaleDepth
 
-const int nSamples = 2;
-const float fSamples = 2.0;
+const int samplesi = 2;
+const float samplesf = 2.0;
 
 float scale(float fCos) {
 	float x = 1.0 - fCos;
-	return fScaleDepth * exp(-0.00287 + x*(0.459 + x*(3.83 + x*(-6.80 + x*5.25))));
+	return scaleDepth * exp(-0.00287 + x*(0.459 + x*(3.83 + x*(-6.80 + x*5.25))));
 }
 {% endblock %}
