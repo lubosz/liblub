@@ -27,8 +27,8 @@ uniform float invSphereDistance;			// 1 / (outerRadius - innerRadius)
 uniform float scaleDepth;		// The scale depth (i.e. the altitude at which the atmosphere's average density is found)
 uniform float scaleOverScaleDepth;	// scale / scaleDepth
 
-const int samplesi = 2;
-const float samplesf = 2.0;
+const int samplesi = 20;
+const float samplesf = 20.0;
 
 float scale(float fCos) {
 	float x = 1.0 - fCos;

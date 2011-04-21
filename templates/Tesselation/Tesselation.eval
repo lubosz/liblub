@@ -5,8 +5,12 @@
 layout(triangles, fractional_even_spacing, ccw) in;
 in vec3 tcPosition[];
 in vec2 tcUv[];
+in vec3 tcColor1[];
+in vec3 tcColor2[];
 out vec3 tePosition;
 out vec2 teUv;
+out vec3 teColor1;
+out vec3 teColor2;
 out vec3 tePatchDistance;
 uniform mat4 MVPMatrix;
 uniform sampler2D noise;
@@ -23,6 +27,17 @@ uniform sampler2D noise;
     vec2 u1 = gl_TessCoord.y * tcUv[1];
     vec2 u2 = gl_TessCoord.z * tcUv[2];
     teUv = u0 + u1 + u2;
+    
+    vec3 c10 = gl_TessCoord.x * tcColor1[0];
+    vec3 c11 = gl_TessCoord.y * tcColor1[1];
+    vec3 c12 = gl_TessCoord.z * tcColor1[2];
+    
+    vec3 c20 = gl_TessCoord.x * tcColor2[0];
+    vec3 c21 = gl_TessCoord.y * tcColor2[1];
+    vec3 c22 = gl_TessCoord.z * tcColor2[2];
+    
+    teColor1 = c10 + c11 + c12;
+    teColor2 = c20 + c21 + c22;
 
 	vec4 height = (texture(noise, teUv)+texture(noise, teUv*3)+texture(noise, teUv*4))/4;
 

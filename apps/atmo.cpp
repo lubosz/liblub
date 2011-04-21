@@ -25,6 +25,7 @@
 #include "Scene/SceneLoader.h"
 #include "Scene/SceneData.h"
 #include "System/Logger.h"
+#include "System/Timer.h"
 #include "Mesh/Geometry.h"
 #include "Mesh/MeshFactory.h"
 #include "Material/ProcTextures.h"
@@ -42,15 +43,16 @@ class AtmosphereApp: public Application {
   float outerRadius;
   Camera* camera;
   Light * light;
-  Node * spaceNode,* groundNode,* skyNode, *terrainNode;
+  Node * spaceNode,* groundNode,* skyNode, *terrainNode, *oceanNode;
+  Material * ocean;
 
   FrameBuffer *fbo;
   Texture * targetTexture;
 
   AtmosphereApp() {
     useHDR = false;
-    innerRadius = 10.0f;
-    outerRadius = 10.25f;
+    innerRadius = 11.0f;
+    outerRadius = 11.55f;
   }
 
   ~AtmosphereApp() {}
@@ -151,6 +153,8 @@ class AtmosphereApp: public Application {
     spaceFromSpace->addTexture(glow);
     skyFromSpace = new Template("Atmo/Sky",attributes);
 
+
+
     camera = SceneData::Instance().getCurrentCamera();
     camera->setPosition(QVector3D(0, 0, 25));
     camera->update();
@@ -158,12 +162,18 @@ class AtmosphereApp: public Application {
     SceneData::Instance().addLight("foolight", light);
 
     Mesh * innerSphere = Geometry::gluSphere(innerRadius, 100, 50);
-    Mesh * outerSphere = Geometry::gluSphere(outerRadius, 100, 50);
+    Mesh * outerSphere = Geometry::gluSphere(outerRadius, 300, 500);
+
+//    Mesh * monkey = MeshFactory::load("monkey.obj");
 
     spaceNode = new Node("space", { 0, 0, 0 }, 1, moonPlane(), spaceFromAtmosphere);
     groundNode = new Node("ground", { 0, 0, 0 }, 1, innerSphere, groundFromAtmosphere);
     groundNode->setRotation(QVector3D(-90, 0, 0));
     skyNode = new Node("sky", { 0, 0, 0 }, 1, outerSphere, skyFromAtmosphere);
+
+//    groundNode = new Node("ground", { 0, 0, 0 }, 10, monkey, groundFromAtmosphere);
+////    groundNode->setRotation(QVector3D(-90, 0, 0));
+//    skyNode = new Node("sky", { 0, 0, 0 }, 11, monkey, skyFromAtmosphere);
 
     setAtmoUniforms(spaceFromAtmosphere->getShaderProgram());
     setAtmoUniforms(groundFromAtmosphere->getShaderProgram());
@@ -189,33 +199,95 @@ class AtmosphereApp: public Application {
     terrainMat = new EmptyMat();
 
     terrainMat->init();
-    terrainMat->getShaderProgram()->attachShader("Tesselation/Tesselation.vert",GL_VERTEX_SHADER,true);
+    terrainMat->getShaderProgram()->attachShader("Atmo/GroundTesselation.vert",GL_VERTEX_SHADER,true);
     terrainMat->getShaderProgram()->attachShader("Tesselation/Tesselation.eval",GL_TESS_EVALUATION_SHADER,true);
     terrainMat->getShaderProgram()->attachShader("Tesselation/Tesselation.cont",GL_TESS_CONTROL_SHADER,true);
     terrainMat->getShaderProgram()->attachShader("Tesselation/Tesselation.geom",GL_GEOMETRY_SHADER,true);
-    terrainMat->getShaderProgram()->attachShader("Tesselation/Tesselation.frag",GL_FRAGMENT_SHADER,true);
+    terrainMat->getShaderProgram()->attachShader("Atmo/GroundTesselation.frag",GL_FRAGMENT_SHADER,true);
+    Texture * groundTexture = TextureFactory::Instance().load("terrain/mud.jpg","diffuse");
+    Texture * noise = TextureFactory::Instance().load("terrain-noise-blur.jpg","noise");
+    terrainMat->addTexture(groundTexture);
+    terrainMat->addTexture(noise);
     terrainMat->done(attributes);
 
     terrainMat->getShaderProgram()->setUniform("TessLevelInner",1.0f);
     terrainMat->getShaderProgram()->setUniform("TessLevelOuter",1.0f);
     terrainMat->getShaderProgram()->setUniform("LightPosition", QVector3D(0.25, 0.25, 1));
-
+    setAtmoUniforms(terrainMat->getShaderProgram());
     Mesh * groundMesh = MeshFactory::load("earth.obj");
 //    Mesh * mesh = Geometry::gluSphere(10.0f, 100, 50);
 //    Mesh * mesh = Geometry::makeIcosahedron();
-    groundMesh->setDrawType(GL_PATCHES);
-    terrainNode = new Node("ground", { 0, 0, 0 }, 11, groundMesh, terrainMat);
+//    groundMesh->setDrawType(GL_PATCHES);
+    terrainNode = new Node("ground", { 0, 0, 0 }, 12.1, groundMesh, terrainMat);
 
     GUI::Instance().addText("tess", "Tess");
     GUI::Instance().addText("dist", "Dist");
 
-    Texture * groundTexture = TextureFactory::Instance().load("terrain/mud.jpg","diffuse");
-    Texture * noise = TextureFactory::Instance().load("terrain-noise-blur.jpg","noise");
-    terrainMat->addTexture(groundTexture);
-    terrainMat->addTexture(noise);
+    ocean = new Template("Ocean",attributes);
+    ocean->getShaderProgram()->use();
+    ocean->getShaderProgram()->setUniform("deepColor", QVector4D(0, 0.3, 0.5, 1.0));
+    ocean->getShaderProgram()->setUniform("shallowColor",QVector4D(0, 1, 1, 1.0));
+    ocean->getShaderProgram()->setUniform("reflectionColor",QVector4D(0.95, 1, 1, 1.0));
+    ocean->getShaderProgram()->setUniform("reflectionAmount",1.0f);
+    ocean->getShaderProgram()->setUniform("reflectionBlur",0.0f);
+    ocean->getShaderProgram()->setUniform("waterAmount",0.3f);
+    ocean->getShaderProgram()->setUniform("fresnelPower",5.0f);
+    ocean->getShaderProgram()->setUniform("fresnelBias",0.328f);
+    ocean->getShaderProgram()->setUniform("hdrMultiplier", 0.471f);
+    ocean->getShaderProgram()->setUniform("textureScale",QVector2D(25, 26));
+    ocean->getShaderProgram()->setUniform("bumpSpeed",QVector2D(0.015, 0.005));
+    ocean->getShaderProgram()->setUniform("eyePosition",QVector3D(0.5, 0.5, 0.5));
+    ocean->getShaderProgram()->setUniform("BumpScale",0.2f);
+    ocean->getShaderProgram()->setUniform("time",0.7f);
+    ocean->getShaderProgram()->setUniform("waveFreq",0.028f);
+    ocean->getShaderProgram()->setUniform("waveAmp",1.8f);
+
+    Texture * oceanNormal = TextureFactory::Instance().load("ocean/waves.png","NormalMap");
+    ocean->addTexture(oceanNormal);
+    Texture * oceanSky = TextureFactory::Instance().loadCubeMap("cubemaps/sky","EnvironmentMap");
+    ocean->addTexture(oceanSky);
+
+    oceanNode = new Node("ocean", { 0, 0, 0 }, 1, innerSphere, ocean);
 
   }
   void renderFrame(){
+
+//    updateTesselation();
+
+    if(useHDR) {
+      fbo->bind();
+      fbo->updateRenderView();
+    }
+    RenderEngine::Instance().clear();
+    glEnable(GL_DEPTH_TEST);
+    glEnable(GL_CULL_FACE);
+
+//    drawMoon();
+//    drawGround();
+    float time = float(Timer::Instance().secoundsPassed) + float(Timer::Instance().nanosecoundsPassed)/1000000000.0;
+    oceanNode->setView(camera);
+    ocean->getShaderProgram()->setUniform("time",time);
+    oceanNode->draw();
+
+    drawSky();
+    GUI::Instance().draw();
+    glError;
+
+    if(useHDR){
+      fbo->unBind();
+      RenderEngine::Instance().clear();
+      HDR->activateTextures();
+      HDR->getShaderProgram()->use();
+      fbo->draw(HDR);
+      glError;
+    }
+  }
+
+  void updateTesselation(){
+    while (camera->position.length() < 11.01){
+      camera->position += camera->position.normalized() *  0.01;
+      camera->update();
+    }
     int maxTess = 30;
     float tessStartDistance = 8;
     float scale = maxTess - (camera->position.length() - tessStartDistance);
@@ -228,22 +300,14 @@ class AtmosphereApp: public Application {
     dist << "Dist " << camera->position.length();
     GUI::Instance().updateText("dist",dist.str());
 
-  if (scale > 1){
-    terrainMat->getShaderProgram()->use();
-    terrainMat->getShaderProgram()->setUniform("TessLevelInner",scale);
-    terrainMat->getShaderProgram()->setUniform("TessLevelOuter",scale);
+    if (scale > 1){
+      terrainMat->getShaderProgram()->use();
+      terrainMat->getShaderProgram()->setUniform("TessLevelInner",scale);
+      terrainMat->getShaderProgram()->setUniform("TessLevelOuter",scale);
+    }
   }
 
-
-
-    if(useHDR) {
-      fbo->bind();
-      fbo->updateRenderView();
-    }
-    RenderEngine::Instance().clear();
-    glEnable(GL_DEPTH_TEST);
-    glEnable(GL_CULL_FACE);
-
+  void drawMoon(){
     bool drawSpace = false;
     if(camera->position.length() < outerRadius) {
       spaceNode->setMaterial(spaceFromAtmosphere);
@@ -258,50 +322,44 @@ class AtmosphereApp: public Application {
       spaceNode->setView(camera);
       spaceNode->draw();
     }
+  }
 
+  void drawGround(){
+        if(camera->position.length() >= outerRadius)
+          groundNode->setMaterial(groundFromSpace);
+        else
+          groundNode->setMaterial(groundFromAtmosphere);
+
+        setCameraUniforms(groundNode->getMaterial()->getShaderProgram());
+        groundNode->setView(camera);
+
+        groundNode->draw();
+
+        //    setCameraUniforms(terrainNode->getMaterial()->getShaderProgram());
+        //    terrainNode->setView(camera);
+        //    terrainNode->draw();
+  }
+
+  void drawSky(){
     if(camera->position.length() >= outerRadius)
-      groundNode->setMaterial(groundFromSpace);
-    else
-      groundNode->setMaterial(groundFromAtmosphere);
+        skyNode->setMaterial(skyFromSpace);
+      else
+        skyNode->setMaterial(skyFromAtmosphere);
 
-    setCameraUniforms(groundNode->getMaterial()->getShaderProgram());
-    groundNode->setView(camera);
-    groundNode->draw();
+      setCameraUniforms(skyNode->getMaterial()->getShaderProgram());
+      glFrontFace(GL_CW);
+      glEnable(GL_BLEND);
 
-//    terrainNode->setView(camera);
-//    terrainNode->draw();
+      glBlendFunc(GL_ONE, GL_ONE);
+      skyNode->setView(camera);
+      skyNode->draw();
 
-    if(camera->position.length() >= outerRadius)
-      skyNode->setMaterial(skyFromSpace);
-    else
-      skyNode->setMaterial(skyFromAtmosphere);
-
-    setCameraUniforms(skyNode->getMaterial()->getShaderProgram());
-    glFrontFace(GL_CW);
-    glEnable(GL_BLEND);
-
-    glBlendFunc(GL_ONE, GL_ONE);
-    skyNode->setView(camera);
-    skyNode->draw();
-
-    glDisable(GL_BLEND);
-    glFrontFace(GL_CCW);
-    glDisable(GL_CULL_FACE);
-    glDisable(GL_DEPTH_TEST);
-    GUI::Instance().draw();
-    glError;
-
-    if(useHDR){
-      fbo->unBind();
-      RenderEngine::Instance().clear();
-      HDR->activateTextures();
-      HDR->getShaderProgram()->use();
-      fbo->draw(HDR);
-      glError;
-    }
+      glDisable(GL_BLEND);
+      glFrontFace(GL_CCW);
+      glDisable(GL_CULL_FACE);
+      glDisable(GL_DEPTH_TEST);
   }
 };
-
 
 int main(int argc, char *argv[]) {
   QApplication app(argc, argv);

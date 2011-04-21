@@ -71,8 +71,16 @@ class LoadApp: public Application {
 //        }
 //      }
 //    }
-//    SceneData::Instance().addLight("foolight", new Light(QVector3D(-2.5, 21.5, -5.2), QVector3D(1, -5, 0)));
+    /*
+    SceneData::Instance().addLight("foolight", new Light(QVector3D(-2.5, 21.5, -5.2), QVector3D(1, -5, 0)));
 
+
+    for (int x = 0; x < 63; x++){
+      for (int y = 0; y < 63; y++){
+        SceneGraph::Instance().addNode(new Node("", QVector3D(2*x, 2*((x+y)%5), 2*y), 1, cube, material));
+      }
+    }
+*/
 
   }
   void renderFrame(){

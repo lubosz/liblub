@@ -8,5 +8,5 @@ out vec3 vPosition;
 
 {% block main %}
 	vUv = in_Uv;
-    vPosition = in_Vertex.xyz;
+    vPosition = in_Vertex;
 {% endblock %}

@@ -4,8 +4,12 @@
 layout(vertices = 3) out;
 in vec3 vPosition[];
 in vec2 vUv[];
+in vec3 vColor1[];
+in vec3 vColor2[];
 out vec3 tcPosition[];
 out vec2 tcUv[];
+out vec3 tcColor1[];
+out vec3 tcColor2[];
 uniform float TessLevelInner;
 uniform float TessLevelOuter;
 
@@ -15,6 +19,8 @@ uniform float TessLevelOuter;
 {% block main %}
     tcPosition[ID] = vPosition[ID];
     tcUv[ID] = vUv[ID];
+    tcColor1[ID] = vColor1[ID];
+    tcColor2[ID] = vColor2[ID];
     if (ID == 0) {
         gl_TessLevelInner[0] = TessLevelInner;
         gl_TessLevelOuter[0] = TessLevelOuter;
