@@ -24,19 +24,19 @@ Mesh * Geometry::makePlane(const QRectF &plane) {
             0.0, 1.0,
     };
 
-//    vector<GLfloat> normals = {
-//            0.0, 0.0, 1.0,
-//            0.0, 0.0, 1.0,
-//            0.0, 0.0, 1.0,
-//            0.0, 0.0, 1.0
-//    };
+    vector<GLfloat> normals = {
+            0.0, 0.0, 1.0,
+            0.0, 0.0, 1.0,
+            0.0, 0.0, 1.0,
+            0.0, 0.0, 1.0
+    };
 
     vector<GLuint> indicies = { 0, 1, 3, 3, 1, 2 };
 
     Mesh * mesh = new Mesh();
     mesh->init();
     mesh->addBuffer(vertices, 3, "in_Vertex");
-//    mesh->addBuffer(normals, 3, "in_Normal");
+    mesh->addBuffer(normals, 3, "in_Normal");
 //    mesh->addBuffer(normals, 3, "in_Tangent");
 //    mesh->addBuffer(normals, 3, "in_Biangent");
     mesh->addBuffer(uvCoords, 2, "in_Uv");
@@ -317,7 +317,7 @@ Mesh * Geometry::gluSphere(GLdouble radius, GLint slices, GLint stacks) {
   Mesh * middleStrip = new Mesh();
   Mesh * bottomFan = new Mesh();
   Mesh * topFan = new Mesh();
-  bool hasNormals = false;
+  bool hasNormals = true;
   bool smoothNormals = true;
   bool drawPoints = false;
   bool drawLines = false;
@@ -687,21 +687,21 @@ Mesh * Geometry::gluSphere(GLdouble radius, GLint slices, GLint stacks) {
 
   middleStrip->init();
   middleStrip->initPositions();
-//  middleStrip->initNormals();
+  middleStrip->initNormals();
   middleStrip->initUv();
   middleStrip->initIndex();
   middleStrip->setDrawType(GL_TRIANGLE_STRIP);
 
   topFan->init();
   topFan->initPositions();
-//  topFan->initNormals();
+  topFan->initNormals();
   topFan->initUv();
   topFan->initIndex();
   topFan->setDrawType(GL_TRIANGLE_FAN);
 
   bottomFan->init();
   bottomFan->initPositions();
-//  bottomFan->initNormals();
+  bottomFan->initNormals();
   bottomFan->initUv();
   bottomFan->initIndex();
   bottomFan->setDrawType(GL_TRIANGLE_FAN);

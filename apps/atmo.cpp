@@ -124,6 +124,7 @@ class AtmosphereApp: public Application {
     Mesh * moonPlane = new Mesh();
     moonPlane->init();
     moonPlane->addBuffer(vertices, 3, "in_Vertex");
+    moonPlane->addBuffer(vertices, 3, "in_Normal");
     moonPlane->addBuffer(uvCoords, 2, "in_Uv");
     moonPlane->addElementBuffer(indicies);
     moonPlane->setDrawType(GL_TRIANGLES);
@@ -137,6 +138,7 @@ class AtmosphereApp: public Application {
         "planet");
 
     QList<string> attributes;
+    attributes.push_back("normal");
     attributes.push_back("uv");
 
     groundFromAtmosphere = new Template("Atmo/Ground",attributes);
@@ -238,7 +240,6 @@ class AtmosphereApp: public Application {
     ocean->getShaderProgram()->setUniform("hdrMultiplier", 0.471f);
     ocean->getShaderProgram()->setUniform("textureScale",QVector2D(25, 26));
     ocean->getShaderProgram()->setUniform("bumpSpeed",QVector2D(0.015, 0.005));
-    ocean->getShaderProgram()->setUniform("eyePosition",QVector3D(0.5, 0.5, 0.5));
     ocean->getShaderProgram()->setUniform("BumpScale",0.2f);
     ocean->getShaderProgram()->setUniform("time",0.7f);
     ocean->getShaderProgram()->setUniform("waveFreq",0.028f);
@@ -269,6 +270,7 @@ class AtmosphereApp: public Application {
     float time = float(Timer::Instance().secoundsPassed) + float(Timer::Instance().nanosecoundsPassed)/1000000000.0;
     oceanNode->setView(camera);
     ocean->getShaderProgram()->setUniform("time",time);
+    ocean->getShaderProgram()->setUniform("eyePosition",camera->position);
     oceanNode->draw();
 
     drawSky();
@@ -290,7 +292,7 @@ class AtmosphereApp: public Application {
       camera->position += camera->position.normalized() *  0.01;
       camera->update();
     }
-    int maxTess = 30;
+    int maxTess = 60;
     float tessStartDistance = 8;
     float scale = maxTess - (camera->position.length() - tessStartDistance);
 

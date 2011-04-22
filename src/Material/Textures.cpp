@@ -167,14 +167,16 @@ TextureFile::TextureFile(string filename, GLenum glId, string name) {
 //    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-
+//    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+    //GL_NEAREST , GL_LINEAR, GL_NEAREST_MIPMAP_NEAREST, GL_LINEAR_MIPMAP_NEAREST, GL_NEAREST_MIPMAP_LINEAR and GL_LINEAR_MIPMAP_LINEAR
 #if USE_FREEIMAGE
     readFreeImage(GL_TEXTURE_2D,path);
 #else
     readQImage(GL_TEXTURE_2D,path);
 #endif
 
+    glGenerateMipmap(GL_TEXTURE_2D);
     glBindTexture(textureType, 0);
 }
 
@@ -220,6 +222,8 @@ SplatTexture::SplatTexture(GLenum glId, string name, int resolution) {
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, resolution, resolution, 0,
             GL_RGBA, GL_UNSIGNED_BYTE, data);
+
+
 }
 
 /**

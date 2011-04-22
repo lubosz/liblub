@@ -1,5 +1,3 @@
-#version 150 core
-
 /*********************************************************************NVMH3****
 Copyright NVIDIA Corporation 2003
 TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, THIS SOFTWARE IS PROVIDED
@@ -20,8 +18,9 @@ Comments:
 11 Aug 05: converted from HLSL to GLSL by Jeff Doyle (nfz) to work in Ogre
 
 ******************************************************************************/
+{% extends "base.frag" %}
 
-
+{% block uniforms %}
 uniform sampler2D NormalMap;
 uniform samplerCube EnvironmentMap;
 
@@ -35,25 +34,27 @@ uniform float waterAmount;
 uniform float fresnelPower;
 uniform float fresnelBias;
 uniform float hdrMultiplier;
+{% endblock %}
 
+{% block linkage %}
 in mat3 rotMatrix; // first row of the 3x3 transform from tangent to cube space
 in vec2 bumpCoord0;
 in vec2 bumpCoord1;
 in vec2 bumpCoord2;
 in vec3 eyeVector;
+in vec3 normalView;
+{% endblock %}
 
-out vec4 FragColor;
-
-void main(void)
-{
+{% block main %}
 	// sum normal maps
 	// sample from 3 different points so no texture repetition is noticeable
     vec4 t0 = texture2D(NormalMap, bumpCoord0) * 2.0 - 1.0;
     vec4 t1 = texture2D(NormalMap, bumpCoord1) * 2.0 - 1.0;
     vec4 t2 = texture2D(NormalMap, bumpCoord2) * 2.0 - 1.0;
     vec3 N = t0.xyz + t1.xyz + t2.xyz;
-
     N = normalize(rotMatrix * N);
+
+   //N = normalView;
 
 	// reflection
     vec3 E = normalize(eyeVector);
@@ -72,8 +73,9 @@ void main(void)
     vec4 waterColor = mix(shallowColor, deepColor, facing) * waterAmount;
 
     reflection = mix(waterColor,  reflection * reflectionColor, fresnel) * reflectionAmount;
-    FragColor = waterColor + reflection;
+    fragColor = waterColor + reflection;
 	//FragColor = vec4(1,1,0,1);
 	//FragColor = vec4(1,1,1,1);
-	FragColor = reflection;
-}
+	//FragColor = reflection;
+	//fragColor = texture2D(NormalMap, bumpCoord0);
+{% endblock %}

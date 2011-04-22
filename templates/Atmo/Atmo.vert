@@ -2,6 +2,7 @@
 
 {% block header %}
 in vec3 in_Vertex;
+in vec3 in_Normal;
 in vec2 in_Uv;
 out vec2 uv;
 
