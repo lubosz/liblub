@@ -55,10 +55,6 @@ class LoadApp: public Application {
 
 int main(int argc, char *argv[]) {
   QApplication app(argc, argv);
-  if (argc == 2) {
-    LoadApp(argv[1]).run();
-  } else {
-    Logger::Instance().log("NO SCENE SPECIFIED", "Try;", "./load test");
-  }
+  LoadApp("nice").run();
 }
 
