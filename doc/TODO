@@ -1,44 +1,34 @@
 Code:
 	- kurze konstruktoren
-	- getter / setter vermeiden?
-	- public / private verwalten
+	- getter / setter
+	- public / private
 
 Engine:
 	- input verallgemeinern
-	- fullscreen
-	- config auslagern
-	- recource managment auslagern
-	- material durch xml
-	- multiple lichtquellen
-	- stuct / array uniforms
+	- medialayer durch vererbung
 	- gui thread
+	- mehr config optionen
+	- recource managment verbessern
+	- mehrere shadow maps (texture buffer)
+	- mehr struct uniforms nutzen
 	- maus lag fixen
-	- auflösung selber erkennen
-	- auflösung in allen objekten
 	- multiple uv coords
 	- node konstruktor aufräumen
 	- refactoring mit diagram
 
 Shader:
-	- geometry shader
 	- Shader ausmisten
-	- shader templates
-	- uniform animation
 	- shader reload
-	- Skydome
 
 Scene:
 	- graph performance
 	- blender scene laden
-	- rotationen / umlaufbahnen
+	- umlaufbahnen
 
 Rendering:
-	- terrain mit heightmap
-	- render passes
+	- render passes aufräumen und verallgemeinern
 	- wolken
-	- atmo shader
 	- pflanzen / gras
-	- wasser
 	
 GUI App:
 	- runtime uniform editor
