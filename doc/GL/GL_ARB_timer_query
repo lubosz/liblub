@@ -1,0 +1,131 @@
+(1) Here is some rough sample code that demonstrates the intended usage
+        of this extension.
+
+        GLint queries[N];
+        GLint available = 0;
+        // timer queries can contain more than 32 bits of data, so always
+        // query them using the 64 bit types to avoid overflow
+        GLuint64 timeElapsed = 0;
+
+        // Create a query object.
+        glGenQueries(N, queries);
+
+        // Start query 1
+        glBeginQuery(GL_TIME_ELAPSED, queries[0]);
+
+        // Draw object 1
+        ....
+
+        // End query 1
+        glEndQuery(GL_TIME_ELAPSED);
+
+        ...
+
+        // Start query N
+        glBeginQuery(GL_TIME_ELAPSED, queries[N-1]);
+
+        // Draw object N
+        ....
+
+        // End query N
+        glEndQuery(GL_TIME_ELAPSED);
+
+        // Wait for all results to become available
+        while (!available) {
+            glGetQueryObjectiv(queries[N-1], GL_QUERY_RESULT_AVAILABLE, &available);
+        }
+
+        for (i = 0; i < N; i++) {
+            // See how much time the rendering of object i took in nanoseconds.
+            glGetQueryObjectui64v(queries[i], GL_QUERY_RESULT, &timeElapsed);
+
+            // Do something useful with the time.  Note that care should be
+            // taken to use all significant bits of the result, not just the
+            // least significant 32 bits.
+            AdjustObjectLODBasedOnDrawTime(i, timeElapsed);
+        }
+
+        This example is sub-optimal in that it stalls at the end of every
+        frame to wait for query results.  Ideally, the collection of results
+        would be delayed one frame to minimize the amount of time spent
+        waiting for the GPU to finish rendering.
+        
+    (2) This example is basically the same as the example above but uses
+        QueryCounter instead.
+    
+        GLint queries[N+1];
+        GLint available = 0;
+        // timer queries can contain more than 32 bits of data, so always
+        // query them using the 64 bit types to avoid overflow
+        GLuint64 timeStart, timeEnd, timeElapsed = 0;
+
+        // Create a query object.
+        glGenQueries(N+1, queries);
+
+        // Query current timestamp 1
+        glQueryCounter(queries[0], GL_TIMESTAMP);
+
+        // Draw object 1
+        ....
+
+        // Query current timestamp N
+        glQueryCounter(queries[N-1], GL_TIMESTAMP);
+
+        // Draw object N
+        ....
+
+        // Query current timestamp N+1
+        glQueryCounter(queries[N], GL_TIMESTAMP);
+
+        // Wait for all results to become available
+        while (!available) {
+            glGetQueryObjectiv(queries[N], GL_QUERY_RESULT_AVAILABLE, &available);
+        }
+
+        for (i = 0; i < N; i++) {
+            // See how much time the rendering of object i took in nanoseconds.
+            glGetQueryObjectui64v(queries[i], GL_QUERY_RESULT, &timeStart);
+            glGetQueryObjectui64v(queries[i+1], GL_QUERY_RESULT, &timeEnd);
+            timeElapsed = timeEnd - timeStart;
+
+            // Do something useful with the time.  Note that care should be
+            // taken to use all significant bits of the result, not just the
+            // least significant 32 bits.
+            AdjustObjectLODBasedOnDrawTime(i, timeElapsed);
+        }
+        
+    (3) This example demonstrates how to measure the latency between GL
+        commands reaching the server and being realized in the framebuffer.
+        
+        /* Submit a frame of rendering commands */
+        while (!doneRendering) {
+          ...
+          glDrawElements(...);
+        }
+
+        /*
+         * Measure rendering latency:
+         *
+         * Some commands may have already been submitted to hardware,
+         * and some of those may have already completed.  The goal is
+         * to measure the time it takes for the remaining commands to
+         * complete, thereby measuring how far behind the app the GPU
+         * is lagging, but without synchronizing the GPU with the CPU.
+         */
+
+        /* Queue a query to find out when the frame finishes on the GL */
+        glQueryCounter(GL_TIMESTAMP, endFrameQuery);
+
+        /* Get the current GL time without stalling the GL */
+        glGet(GL_TIMESTAMP, &flushTime);
+
+        /* Finish the frame, submitting outstanding commands to the GL */
+        SwapBuffers();
+
+        /* Render another frame */
+
+        /*
+         * Later, compare the query result of <endFrameQuery>
+         * and <flushTime> to measure the latency of the frame
+         */
+

@@ -1,0 +1,61 @@
+(07:25:12 PM) mgottschlag: can't you draw that in a more optimized way?
+(07:25:27 PM) mgottschlag: without small cubes?
+(07:26:16 PM) mgottschlag: but rather more optimized larger cubes containing more geometry?
+(07:27:02 PM) lubosz: my vertex buffer size is 76800000 for recursion 5
+(07:27:22 PM) lubosz: thats 25,600,000 vertices
+(07:27:28 PM) lubosz: twenty five million
+(07:27:34 PM) mgottschlag: might actually be cheaper to split that up
+(07:27:34 PM) lubosz: i don't want to add more
+(07:27:38 PM) mgottschlag: or via geom shaders
+(07:27:53 PM) lubosz: yeah, i'm trying to optimize that
+(07:27:58 PM) lubosz: this is the naive method
+(07:28:00 PM) mgottschlag: oh, actually the one with larger cubes will actually use less memory
+(07:28:05 PM) lubosz: but its with one draw call
+(07:28:14 PM) mgottschlag: I mean, use recursion 2 as one basic block
+(07:28:22 PM) mgottschlag: and build it up from that one
+(07:28:30 PM) lubosz: hmm
+(07:28:34 PM) mgottschlag: or even three
+(07:28:40 PM) lubosz: you mean instancing of rec2?
+(07:29:00 PM) lubosz: i'd have to try it in a geomerty shader yet
+(07:29:05 PM) mgottschlag: instancing, or just building your large vbo from it
+(07:29:22 PM) mgottschlag: I mean, if you are already building up the whole mesh, you can as well optimize larger parts
+(07:29:28 PM) lubosz: my next attempt is to draw less faces
+(07:30:01 PM) lubosz: because i draw full cube, but only >1/2 of the faces are needed
+(07:30:23 PM) mgottschlag: also think about possibilities to draw from the front to the back
+(07:30:37 PM) lubosz: hmk
+(07:30:55 PM) mgottschlag: because overdraw might as well kill your fps here
+(07:31:21 PM) lubosz: how could i do that?
+(07:31:26 PM) mgottschlag: or from the outer parts to the center, might work as well, and you don't need any additional drawing calls
+(07:31:34 PM) mgottschlag: well, you'd have to split that thing up
+(07:31:45 PM) mgottschlag: into several slices or sth like that
+(07:31:48 PM) mgottschlag: brb
+(07:31:58 PM) lubosz: and how do i check if a slice is visible?
+(07:34:13 PM) mgottschlag: lubosz: huh? if you are just drawing from the front to the back, you don't at all
+(07:34:23 PM) mgottschlag: hm. occlusion culling might be another way to optimize that
+(07:34:38 PM) mgottschlag: if you want to test whether a part of it is not visible
+(07:34:51 PM) mgottschlag: you have lots and lots of opportunities to optimize :D
+(07:34:54 PM) lubosz: k
+(07:35:25 PM) lubosz: do you have a example with drawing from front to back? or any further reading?
+(07:36:27 PM) mgottschlag: nope, just cut it into slices, all parallel to one side of it
+(07:36:54 PM) lubosz: and that will be faster automatically?
+(07:36:58 PM) lubosz: if i split up the vboß
+(07:37:03 PM) mgottschlag: no
+(07:37:15 PM) mgottschlag: but it will be faster if you render the slice in the front first
+(07:37:30 PM) mgottschlag: because later pixels might get clipped earlier in the pipeline
+(07:38:20 PM) lubosz: mgottschlag: k i try that
+(07:38:45 PM) mgottschlag: well, and then look how you might be able to use occlusion culling
+
+(07:34:50 PM) dennda: lubosz: you again
+(07:37:30 PM) lubosz: dennda: we have too common interests
+(07:37:38 PM) dennda: lubosz: indeed. what's that for?
+(07:37:56 PM) lubosz: http://github.com/lubosz/liblub dennda
+(07:38:37 PM) dennda: heh had i known you were into cmake i'd have forced you to write a pretty hairy cmake file
+(07:39:47 PM) lubosz: dennda: are you still into python medical stuff rendering?
+(07:40:58 PM) lubosz: mgottschlag: and with those optimizations i can use uv coords correctly ;)
+(07:41:11 PM) dennda: lubosz: heh, kinda, but stopped working on that
+(07:41:23 PM) dennda: lubosz: i'm in paris atm to do some multitouch image processing vodoo
+(07:41:51 PM) lubosz: dennda: i saw your blog on reddit again :p
+(07:42:06 PM) lubosz: dennda: seems thats the release log for pymultitouch know ^^
+(07:43:25 PM) dennda: heh
+(07:43:32 PM) dennda: yeah i even was on heise.de
+

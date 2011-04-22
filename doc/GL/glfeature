@@ -1,0 +1,53 @@
+2.0
+
+shader structs
+3d textures
+
+GL Features yet to use:
+ 3.0
+FBO Multisampling 	GL_EXT_framebuffer_multisample 	
+Hardware Instancing 	GL_EXT_draw_instanced 	glDrawArraysInstancedEXT, glDrawElementsInstancedEXT
+sRGB Framebuffers (gamma 2.2) 	GL_EXT_framebuffer_sRGB 	FRAMEBUFFER_SRGB_EXT
+
+# Ability to render vertex transformations into a buffer
+# Texture arrays
+
+3.1
+
+# Texture Buffer Objects - a new texture type that holds a one-dimensional array of texels
+# Uniform Buffer Objects for fast data share/update
+Signed normalized textures (±1.0 range)
+# Primitive restart
+
+3.2
+Shader Fragment coordinate convention control
+Seamless cube map filtering
+Fragment depth clamping
+# Multisampled textures and texture samples for specific sample locations
+# Sync and Fence objects
+
+GL_ARB_explicit_attrib_location
+http://www.opengl.org/registry/specs/ARB/explicit_attrib_location.txt
+
+GL_ARB_blend_func_extended
+http://www.opengl.org/registry/specs/ARB/blend_func_extended.txt
+SRC_ALPHA_SATURATE
+    void BindFragDataLocationIndexed(uint program, uint colorNumber,
+                                        uint index, const char * name);
+
+    int GetFragDataIndex(uint program, const char * name);
+        SRC1_COLOR                                      0x88F9
+        SRC1_ALPHA
+        ONE_MINUS_SRC1_COLOR                            0x88FA
+        ONE_MINUS_SRC1_ALPHA                            0x88FB
+
+    Accepted by the <pname> parameter of GetBooleanv, GetIntegerv, GetFloatv
+    and GetDoublev:
+
+        MAX_DUAL_SOURCE_DRAW_BUFFERS                    0x88FC
+
+GL_ARB_occlusion_query2
+http://www.opengl.org/registry/specs/ARB/occlusion_query2.txt
+
+3.3
+

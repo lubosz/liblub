@@ -1,0 +1,95 @@
+    Here is some rough sample code that illustrates how this extension
+    can be used.
+
+        GLuint    queries[N];
+        GLint     sampleBoolean;
+        GLint     available;
+
+
+        glGenQueries(N, queries);
+        ...
+        // before this point, render major occluders
+        glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE);
+        glDepthMask(GL_FALSE);
+        // also disable texturing and any fancy shaders
+        for (i = 0; i < N; i++) {
+            glBeginQuery(GL_ANY_SAMPLES_PASSED, queries[i]);
+            // render bounding box for object i
+            glEndQuery(GL_ANY_SAMPLES_PASSED);
+        }
+
+        glFlush();
+
+        // Do other work until "most" of the queries are back, to avoid
+        // wasting time spinning
+        i = N*3/4; // instead of N-1, to prevent the GPU from going idle
+        do {
+            DoSomeStuff();
+            glGetQueryObjectiv(queries[i],
+                                  GL_QUERY_RESULT_AVAILABLE,
+                                  &available);
+        } while (!available);
+
+        glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
+        glDepthMask(GL_TRUE);
+        // reenable other state, such as texturing
+        for (i = 0; i < N; i++) {
+            glGetQueryObjectuiv(queries[i], GL_QUERY_RESULT,
+                                   &sampleBoolean);
+            if (sampleBoolean != 0) {
+                // render object i
+            }
+        }
+
+    Here is some rough sample code for a simple multipass rendering
+    application that does not use occlusion queries.
+
+        for (i = 0; i < N; i++) {
+            // First rendering pass
+            glDisable(GL_BLEND);
+            glDepthFunc(GL_LESS);
+            glDepthMask(GL_TRUE);
+            // configure shader 0
+            // render object i
+
+            // Second rendering pass
+            glEnable(GL_BLEND);
+            glBlendFunc(...);
+            glDepthFunc(GL_EQUAL);
+            glDepthMask(GL_FALSE);
+            // configure shader 1
+            // render object i
+        }
+
+    Here is the previous example, enhanced using occlusion queries.
+
+        GLuint queries[N];
+        GLuint sampleBoolean;
+
+        glGenQueries(N, queries);
+        ...
+        // First rendering pass plus almost-free visibility checks
+        glDisable(GL_BLEND);
+        glDepthFunc(GL_LESS);
+        glDepthMask(GL_TRUE);
+        // configure shader 0
+        for (i = 0; i < N; i++) {
+            glBeginQuery(GL_ANY_SAMPLES_PASSED, queries[i]);
+            // render object i
+            glEndQuery(GL_ANY_SAMPLES_PASSED);
+        }
+
+        // Second pass only on objects that were visible
+        glEnable(GL_BLEND);
+        glBlendFunc(...);
+        glDepthFunc(GL_EQUAL);
+        glDepthMask(GL_FALSE);
+        // configure shader 1
+        for (i = 0; i < N; i++) {
+            glGetQueryObjectuiv(queries[i], GL_QUERY_RESULT,
+                                   &sampleBoolean);
+            if (sampleBoolean != 0) {
+                // render object i
+            }
+        }
+
