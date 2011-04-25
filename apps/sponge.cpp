@@ -20,6 +20,7 @@
 #include "System/Application.h"
 #include "Mesh/MengerSponge.h"
 #include "Scene/SceneData.h"
+#include "Mesh/Geometry.h"
 
 class Sponge : public Application {
  public:
@@ -62,7 +63,7 @@ class Sponge : public Application {
       SceneGraph::Instance().addNode(node);
     }
 
-    Node * plane = new Node("Plane", { 0, -30, 0 }, 20, MeshFactory::plane(), material);
+    Node * plane = new Node("Plane", { 0, -30, 0 }, 20, Geometry::plane(QRectF(-1,-1,2,2)), material);
     plane->setRotation(QVector3D(90,0,0));
     plane->setReceiveShadows(true);
     plane->setCastShadows(false);

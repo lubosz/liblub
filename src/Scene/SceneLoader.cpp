@@ -168,7 +168,8 @@ void SceneLoader::appendMesh(const QDomElement & meshNode) {
             else if (drawTypeString == "LINES")
                 drawType = GL_LINES;
 
-            mesh = MeshFactory::load(meshUrl, drawType);
+            mesh = MeshFactory::load(meshUrl);
+            mesh->setDrawType(drawType);
         } else {
             mesh = MeshFactory::load(meshUrl);
         }
@@ -178,8 +179,10 @@ void SceneLoader::appendMesh(const QDomElement & meshNode) {
                     "recursion").toInt());
             mesh = sponge->getMesh();
         } else if (meshNode.attribute("type") == "Stars") {
-            mesh = MeshFactory::stars(
-                    meshNode.attribute("resolution").toFloat(),
+          float resolution = meshNode.attribute("resolution").toFloat();
+          vector<float> resolutionvec = { resolution, resolution, resolution };
+            mesh = Geometry::stars(
+                    resolutionvec,
                     meshNode.attribute("density").toFloat(),
                     meshNode.attribute("randomness").toFloat(),
                     meshNode.attribute("colorIntensity").toFloat());

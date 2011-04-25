@@ -27,6 +27,7 @@
 #include <QPainter>
 #include <math.h>
 #include "Material/ProcTextures.h"
+#include "Mesh/Geometry.h"
 
 class LoadApp: public Application {
  public:
@@ -68,8 +69,8 @@ class LoadApp: public Application {
 //    perlinNoise = material->getShaderProgram();
 
 
-    Node * plane = new Node("Plane", { 10,8,-3 }, 10, MeshFactory::plane(), zoomIn);
-    Node * plane2 = new Node("Plane", { -10,8,-3 }, 10, MeshFactory::plane(), zoomOut);
+    Node * plane = new Node("Plane", { 10,8,-3 }, 10, Geometry::plane(QRectF(-1,-1,2,2)), zoomIn);
+    Node * plane2 = new Node("Plane", { -10,8,-3 }, 10, Geometry::plane(QRectF(-1,-1,2,2)), zoomOut);
 //    plane->transparent = true;
     plane->setRotation(QVector3D(-90,0,180));
     plane2->setRotation(QVector3D(-90,0,180));

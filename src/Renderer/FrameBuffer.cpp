@@ -10,7 +10,7 @@
 #include "Material/Materials.h"
 #include "Scene/SceneGraph.h"
 #include "Scene/Camera.h"
-#include "Mesh/MeshFactory.h"
+#include "Mesh/Geometry.h"
 #include "System/Logger.h"
 
 
@@ -21,7 +21,7 @@ FrameBuffer::FrameBuffer(GLuint width, GLuint height) {
     this->width = width;
     this->height = height;
 
-    renderPlane = MeshFactory::plane();
+    renderPlane = Geometry::plane(QRectF(-1,-1,2,2));
 
     glError;
 

@@ -84,6 +84,7 @@ Mesh * Geometry::tetrahedron() {
     mesh->addBuffer(uvCoords, 2, "in_Uv");
 
     mesh->addElementBuffer(indicies);
+    mesh->setDrawType(GL_TRIANGLE_STRIP);
     return mesh;
 }
 
@@ -137,6 +138,7 @@ Mesh * Geometry::cube() {
     mesh->addBuffer(vertices, 3, "in_Normal");
     mesh->addBuffer(uvCoords, 2, "in_Uv");
     mesh->addElementBuffer(indicies);
+    mesh->setDrawType(GL_TRIANGLES);
     return mesh;
 }
 
@@ -236,6 +238,7 @@ Mesh * Geometry::stars(vector<float> & resolution, float density,
     mesh->addBuffer(vertices, 3, "in_Vertex");
     mesh->addBuffer(colors, 3, "in_Color");
     mesh->addElementBuffer(indicies);
+    mesh->setDrawType(GL_POINTS);
     return mesh;
 }
 

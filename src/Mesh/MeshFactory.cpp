@@ -15,44 +15,7 @@
 #include "System/Logger.h"
 #include <QRectF>
 
-Mesh * MeshFactory::tetrahedron() {
-    Mesh * mesh = Geometry::tetrahedron();
-    mesh->setDrawType(GL_TRIANGLE_STRIP);
-    return mesh;
-}
-
-Mesh * MeshFactory::cube() {
-    Mesh * mesh = Geometry::cube();
-    mesh->setDrawType(GL_TRIANGLES);
-    return mesh;
-}
-
-Mesh * MeshFactory::plane() {
-    Mesh * mesh = Geometry::plane(QRectF(-1,-1,2,2));
-    mesh->setDrawType(GL_TRIANGLES);
-    return mesh;
-}
-
-Mesh * MeshFactory::stars(float resolution, float density, float randomness,
-        float colorIntensity) {
-    vector<float> resolutionvec = { resolution, resolution, resolution };
-    Mesh * mesh = Geometry::stars(resolutionvec, density, randomness,
-            colorIntensity);
-    mesh->setDrawType(GL_POINTS);
-    return mesh;
-}
-
-Mesh * MeshFactory::spiral() {
-    Mesh * mesh = Geometry::spiral(500000);
-    mesh->setDrawType(GL_POINTS);
-    return mesh;
-}
-
 Mesh * MeshFactory::load(string file) {
-    return load(file, GL_TRIANGLES);
-}
-
-Mesh * MeshFactory::load(string file, GLint drawType) {
     string path = Config::Instance().value<string> ("meshDir") + file;
 
     // Create an instance of the Importer class
@@ -171,45 +134,8 @@ Mesh * MeshFactory::load(string file, GLint drawType) {
       Logger::Instance().log("WARNING", "Assimp Scene Load", file + " has no UV coords :/");
 
     mesh->addElementBuffer(indices);
-    mesh->setDrawType(drawType);
+    mesh->setDrawType(GL_TRIANGLES);
     mesh->boundingBox = new AABB(boundingBoxMin,boundingBoxMax);
     glError;
-    return mesh;
-}
-
-Mesh * MeshFactory::loadDirect(string file) {
-    string path = Config::Instance().value<string> ("meshDir") + file;
-
-    // Create an instance of the Importer class
-    Assimp::Importer importer;
-
-    // And have it read the given file with some example postprocessing
-    // Usually - if speed is not the most important aspect for you - you'll
-    // propably to request more postprocessing than we do in this example.
-    const aiScene* scene = importer.ReadFile(path, aiProcess_SortByPType);
-
-    // If the import failed, report it
-    if (!scene) {
-        Logger::Instance().log("ERROR", "Assimp Scene Load",
-                importer.GetErrorString());
-    }
-
-    aiMesh * assMesh = scene->mMeshes[0];
-
-    vector<GLfloat> positions;
-    vector<GLuint> indices;
-
-    for (unsigned i = 0; i < assMesh->mNumVertices; i++) {
-        aiVector3D vertex = assMesh->mVertices[i];
-        positions.push_back(vertex.x);
-        positions.push_back(vertex.y);
-        positions.push_back(vertex.z);
-
-        indices.push_back(i);
-    }
-    Mesh * mesh = new Mesh();
-    mesh->init();
-    mesh->addBuffer(positions, 3, "in_Vertex");
-    mesh->addElementBuffer(indices);
     return mesh;
 }
