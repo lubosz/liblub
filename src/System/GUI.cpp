@@ -27,7 +27,7 @@ GUI::GUI() {
   attributes.push_back("uv");
   material = new Simple("Texture/font",attributes);
 
-  node = new Node("GUI", { 0, 0, 0 }, 1, Geometry::makePlane(QRectF(0.5,0,0.5,1)), material);
+  node = new Node("GUI", { 0, 0, 0 }, 1, Geometry::plane(QRectF(0.5,0,0.5,1)), material);
 //      plane->transparent = true;
 //      plane->setRotation(QVector3D(-90,0,180));
 //      plane->setName("font");

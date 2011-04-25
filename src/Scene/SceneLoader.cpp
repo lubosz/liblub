@@ -183,10 +183,8 @@ void SceneLoader::appendMesh(const QDomElement & meshNode) {
                     meshNode.attribute("density").toFloat(),
                     meshNode.attribute("randomness").toFloat(),
                     meshNode.attribute("colorIntensity").toFloat());
-        } else if (meshNode.attribute("type") == "Tess") {
-            mesh = Geometry::makePlaneTess();
         } else if (meshNode.attribute("type") == "Spiral") {
-            mesh = Geometry::makeSpiral(
+            mesh = Geometry::spiral(
                     meshNode.attribute("resolution").toFloat());
         }
     }

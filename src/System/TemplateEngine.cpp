@@ -6,6 +6,7 @@
  */
 
 #include "System/TemplateEngine.h"
+#include "System/Config.h"
 #include <QDebug>
 #include <iostream>
 
@@ -18,7 +19,12 @@ TemplateEngine::TemplateEngine() {
   m_engine->addTemplateLoader(loader);
 
   c.insert("precision", false);
-  c.insert("version", "410 core");
+
+  vector<int> glContext = Config::Instance().values<int>("GLcontext");
+
+  QString version = QString::number(glContext[0]) +  QString::number(glContext[1]) + "0 core";
+
+  c.insert("version", version);
 }
 
 TemplateEngine::~TemplateEngine() {

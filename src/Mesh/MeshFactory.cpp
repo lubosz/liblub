@@ -16,19 +16,19 @@
 #include <QRectF>
 
 Mesh * MeshFactory::tetrahedron() {
-    Mesh * mesh = Geometry::makeTetrahedron();
+    Mesh * mesh = Geometry::tetrahedron();
     mesh->setDrawType(GL_TRIANGLE_STRIP);
     return mesh;
 }
 
 Mesh * MeshFactory::cube() {
-    Mesh * mesh = Geometry::makeCube();
+    Mesh * mesh = Geometry::cube();
     mesh->setDrawType(GL_TRIANGLES);
     return mesh;
 }
 
 Mesh * MeshFactory::plane() {
-    Mesh * mesh = Geometry::makePlane(QRectF(-1,-1,2,2));
+    Mesh * mesh = Geometry::plane(QRectF(-1,-1,2,2));
     mesh->setDrawType(GL_TRIANGLES);
     return mesh;
 }
@@ -36,14 +36,14 @@ Mesh * MeshFactory::plane() {
 Mesh * MeshFactory::stars(float resolution, float density, float randomness,
         float colorIntensity) {
     vector<float> resolutionvec = { resolution, resolution, resolution };
-    Mesh * mesh = Geometry::makeStars(resolutionvec, density, randomness,
+    Mesh * mesh = Geometry::stars(resolutionvec, density, randomness,
             colorIntensity);
     mesh->setDrawType(GL_POINTS);
     return mesh;
 }
 
 Mesh * MeshFactory::spiral() {
-    Mesh * mesh = Geometry::makeSpiral(500000);
+    Mesh * mesh = Geometry::spiral(500000);
     mesh->setDrawType(GL_POINTS);
     return mesh;
 }

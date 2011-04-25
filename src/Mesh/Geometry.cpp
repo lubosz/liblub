@@ -10,7 +10,7 @@
 #include "common/Qt3D.h"
 #include "System/Logger.h"
 
-Mesh * Geometry::makePlane(const QRectF &plane) {
+Mesh * Geometry::plane(const QRectF &plane) {
     vector<GLfloat> vertices = {
         (float)plane.left(), (float)plane.top(), -1.0,
         (float)plane.right(), (float)plane.top(), -1.0,
@@ -46,24 +46,7 @@ Mesh * Geometry::makePlane(const QRectF &plane) {
     return mesh;
 }
 
-Mesh * Geometry::makePlaneTess() {
-    vector<GLfloat> vertices = {
-            1, 1, 0,
-            1, -1, 0,
-            -1, -1, 0,
-            -1, 1, 0
-    };
-
-    vector<GLuint> indicies = { 0, 1, 2, 0, 2, 3 };
-    Mesh * mesh = new Mesh();
-    mesh->init();
-    mesh->addBuffer(vertices, 3, "in_Vertex");
-    mesh->addElementBuffer(indicies);
-    mesh->setDrawType(GL_PATCHES);
-    return mesh;
-}
-
-Mesh * Geometry::makeTetrahedron() {
+Mesh * Geometry::tetrahedron() {
     vector<GLfloat> vertices = {
             1.0, 1.0, 1.0,
             -1.0, -1.0, 1.0,
@@ -104,7 +87,7 @@ Mesh * Geometry::makeTetrahedron() {
     return mesh;
 }
 
-Mesh * Geometry::makeCube() {
+Mesh * Geometry::cube() {
     vector<GLfloat> vertices = {
         1.0, -1.0, -1.0,
         1.0, -1.0, 1.0,
@@ -157,7 +140,7 @@ Mesh * Geometry::makeCube() {
     return mesh;
 }
 
-Mesh * Geometry::makeIcosahedron() {
+Mesh * Geometry::icosahedron() {
   vector<GLuint> indicies = {
         2, 1, 0,
         3, 2, 0,
@@ -213,7 +196,7 @@ float Geometry::randomize(float density, float randomness) {
     return density + (density * randomValue * randomness);
 }
 
-Mesh * Geometry::makeStars(vector<float> & resolution, float density,
+Mesh * Geometry::stars(vector<float> & resolution, float density,
         float randomness, float colorIntensity) {
     vector<GLfloat> vertices, colors;
     vector<GLuint> indicies;
@@ -256,7 +239,7 @@ Mesh * Geometry::makeStars(vector<float> & resolution, float density,
     return mesh;
 }
 
-Mesh * Geometry::makeSpiral(int resolution) {
+Mesh * Geometry::spiral(int resolution) {
     vector<GLfloat> vertices, colors;
     vector<GLuint> indicies;
 
@@ -311,7 +294,7 @@ Mesh * Geometry::makeSpiral(int resolution) {
     return mesh;
 }
 
-Mesh * Geometry::gluSphere(GLdouble radius, GLint slices, GLint stacks) {
+Mesh * Geometry::sphere(GLdouble radius, GLint slices, GLint stacks) {
 
   Mesh *sphere = new Mesh();
   Mesh * middleStrip = new Mesh();

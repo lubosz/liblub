@@ -163,8 +163,8 @@ class AtmosphereApp: public Application {
     light = new Light(QVector3D(-2.5, 21.5, -5.2), QVector3D(1, -5, 0));
     SceneData::Instance().addLight("foolight", light);
 
-    Mesh * innerSphere = Geometry::gluSphere(innerRadius, 100, 50);
-    Mesh * outerSphere = Geometry::gluSphere(outerRadius, 300, 500);
+    Mesh * innerSphere = Geometry::sphere(innerRadius, 100, 50);
+    Mesh * outerSphere = Geometry::sphere(outerRadius, 300, 500);
 
 //    Mesh * monkey = MeshFactory::load("monkey.obj");
 

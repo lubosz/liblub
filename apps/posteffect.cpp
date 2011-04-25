@@ -64,7 +64,7 @@ class TesselationApp: public Application {
     light = new Light(QVector3D(-2.5, 21.5, -5.2), QVector3D(1, -5, 0));
     SceneData::Instance().addLight("foolight", light);
 
-    Mesh * innerSphere = Geometry::gluSphere(10.0f, 100, 50);
+    Mesh * innerSphere = Geometry::sphere(10.0f, 100, 50);
 
     groundNode = new Node("ground", { 0, 0, 0 }, 1, innerSphere,
         textureMaterial);

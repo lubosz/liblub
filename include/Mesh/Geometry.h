@@ -11,19 +11,18 @@
 
 class Geometry {
  public:
-	static Mesh * makeTetrahedron();
-	static Mesh * makeCube();
-	static Mesh * makePlane(const QRectF &plane);
-	static Mesh * makePlaneTess();
-	static Mesh * makeStars(
+	static Mesh * tetrahedron();
+	static Mesh * cube();
+	static Mesh * plane(const QRectF &plane);
+	static Mesh * stars(
 	        vector<float> & resolution,
 	        float density,
 	        float randomness,
 	        float colorIntensity
 	);
-	static Mesh * makeSpiral(int resolution);
-	static Mesh * gluSphere(GLdouble radius, GLint slices, GLint stacks);
-	static Mesh * makeIcosahedron();
+	static Mesh * spiral(int resolution);
+	static Mesh * sphere(GLdouble radius, GLint slices, GLint stacks);
+	static Mesh * icosahedron();
  private:
 	float density, randomness;
 	int variation;
