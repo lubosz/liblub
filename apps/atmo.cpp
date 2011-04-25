@@ -27,7 +27,7 @@
 #include "System/Logger.h"
 #include "System/Timer.h"
 #include "Mesh/Geometry.h"
-#include "Mesh/MeshFactory.h"
+#include "Mesh/MeshLoader.h"
 #include "Material/ProcTextures.h"
 #include "Material/ShaderProgram.h"
 
@@ -218,7 +218,7 @@ class AtmosphereApp: public Application {
     terrainMat->getShaderProgram()->setUniform("TessLevelOuter",1.0f);
     terrainMat->getShaderProgram()->setUniform("LightPosition", QVector3D(0.25, 0.25, 1));
     setAtmoUniforms(terrainMat->getShaderProgram());
-    Mesh * groundMesh = MeshFactory::load("earth.obj");
+    Mesh * groundMesh = MeshLoader::load("earth.obj");
 //    Mesh * mesh = Geometry::gluSphere(10.0f, 100, 50);
 //    Mesh * mesh = Geometry::makeIcosahedron();
     groundMesh->setDrawType(GL_PATCHES);

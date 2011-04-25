@@ -6,7 +6,7 @@
  */
 #include <string>
 #include "Scene/Node.h"
-#include "Mesh/MeshFactory.h"
+#include "Mesh/MeshLoader.h"
 #include "Scene/Camera.h"
 #include "System/Logger.h"
 #include "Scene/SceneData.h"

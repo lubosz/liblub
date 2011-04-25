@@ -7,7 +7,7 @@
 #include "Scene/Camera.h"
 #include "Renderer/RenderEngine.h"
 #include "Material/Materials.h"
-#include "Mesh/MeshFactory.h"
+#include "Mesh/MeshLoader.h"
 #include "System/Logger.h"
 #include "Scene/SceneData.h"
 #include "System/GUI.h"
@@ -133,7 +133,7 @@ void SceneGraph::drawCasters(Material * material, DirectionNode * viewPoint) {
 
 void SceneGraph::meshCube(string file, float cubeSize, float step,
         Material * material) {
-    Mesh * mesh = MeshFactory::load(file);
+    Mesh * mesh = MeshLoader::load(file);
 
     for (float x = -cubeSize / 2.0; x < cubeSize / 2.0; x += step) {
         for (float y = -cubeSize / 2.0; y < cubeSize / 2.0; y += step) {
@@ -146,7 +146,7 @@ void SceneGraph::meshCube(string file, float cubeSize, float step,
 
 void SceneGraph::meshCube(string file, float cubeSize, float step,
     vector<Material*> materials) {
-    Mesh * mesh = MeshFactory::load(file);
+    Mesh * mesh = MeshLoader::load(file);
     unsigned position = 0;
     for (float x = -cubeSize / 2.0; x < cubeSize / 2.0; x += step) {
         for (float y = -cubeSize / 2.0; y < cubeSize / 2.0; y += step) {

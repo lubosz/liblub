@@ -7,7 +7,7 @@
 
 #include "Scene/Camera.h"
 #include "Scene/SceneGraph.h"
-#include "Mesh/MeshFactory.h"
+#include "Mesh/MeshLoader.h"
 #include "System/Logger.h"
 
 Camera::Camera() {

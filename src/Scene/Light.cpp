@@ -10,7 +10,7 @@
 #include "Scene/SceneData.h"
 #include "Scene/Camera.h"
 #include "Material/Materials.h"
-#include "Mesh/MeshFactory.h"
+#include "Mesh/MeshLoader.h"
 #include "System/Logger.h"
 
 Light::Light() {

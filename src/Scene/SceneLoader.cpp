@@ -10,7 +10,7 @@
 #include <string>
 #include "Scene/SceneLoader.h"
 #include "Scene/SceneData.h"
-#include "Mesh/MeshFactory.h"
+#include "Mesh/MeshLoader.h"
 #include "Mesh/MengerSponge.h"
 #include "Mesh/Geometry.h"
 #include "System/Config.h"
@@ -168,10 +168,10 @@ void SceneLoader::appendMesh(const QDomElement & meshNode) {
             else if (drawTypeString == "LINES")
                 drawType = GL_LINES;
 
-            mesh = MeshFactory::load(meshUrl);
+            mesh = MeshLoader::load(meshUrl);
             mesh->setDrawType(drawType);
         } else {
-            mesh = MeshFactory::load(meshUrl);
+            mesh = MeshLoader::load(meshUrl);
         }
     } else if (meshNode.tagName() == "Procedural") {
         if (meshNode.attribute("type") == "Sponge") {

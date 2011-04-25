@@ -27,7 +27,7 @@
 #include "System/Logger.h"
 #include "System/Timer.h"
 #include "Mesh/Geometry.h"
-#include "Mesh/MeshFactory.h"
+#include "Mesh/MeshLoader.h"
 #include "Material/ProcTextures.h"
 #include "Material/ShaderProgram.h"
 

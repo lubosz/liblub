@@ -54,7 +54,7 @@ class LoadApp: public Application {
 
     material = new Simple("Stuff/instancing",attributes);
 //    cube = Geometry::makeCube();
-    cube = MeshFactory::load("monkey.obj");
+    cube = MeshLoader::load("monkey.obj");
     cube->setDrawType(GL_TRIANGLES);
     node = new Node("cube", {0,0,-5}, 1, cube, material);
 

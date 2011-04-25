@@ -9,13 +9,13 @@
 #include <assimp/aiPostProcess.h>
 #include <string>
 #include <vector>
-#include "Mesh/MeshFactory.h"
+#include "Mesh/MeshLoader.h"
 #include "Mesh/Geometry.h"
 #include "System/Config.h"
 #include "System/Logger.h"
 #include <QRectF>
 
-Mesh * MeshFactory::load(string file) {
+Mesh * MeshLoader::load(string file) {
     string path = Config::Instance().value<string> ("meshDir") + file;
 
     // Create an instance of the Importer class

@@ -9,7 +9,7 @@
 
 #include "Window/MediaLayer.h"
 #include "Material/Materials.h"
-#include "Mesh/MeshFactory.h"
+#include "Mesh/MeshLoader.h"
 #include "Scene/SceneLoader.h"
 #include "Scene/SceneData.h"
 #include "System/Config.h"

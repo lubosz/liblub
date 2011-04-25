@@ -9,7 +9,7 @@
 
 #include "Mesh.h"
 
-class MeshFactory {
+class MeshLoader {
  public:
 	static Mesh * load(string file);
 };
