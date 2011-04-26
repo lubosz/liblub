@@ -52,9 +52,9 @@ INCLUDE(${QT_USE_FILE})
 
 #check for opengl3 headers
 function(download_gl_header GL_HEADER)
-    IF(NOT EXISTS include/GL3/${GL_HEADER})
+    IF(NOT EXISTS src/Renderer/GL3/${GL_HEADER})
 		execute_process(
-			WORKING_DIRECTORY include/GL3
+			WORKING_DIRECTORY src/Renderer/GL3
 			COMMAND wget http://www.opengl.org/registry/api/${GL_HEADER}
 		)
 	ENDIF()
@@ -64,15 +64,15 @@ IF(EXISTS /usr/include/GL3)
 	message("OpenGL 3 Headers in /usr/include")
 ELSE()
 	message("No OpenGL 3 Headers found in /usr! Using local ones")
-	IF(NOT EXISTS include/GL3)
-		execute_process(COMMAND mkdir include/GL3)
+	IF(NOT EXISTS src/Renderer/GL3)
+		execute_process(COMMAND mkdir src/Renderer/GL3)
 	ENDIF()
 	SET(GL_HEADERS gl3.h glext.h glxext.h)
 	foreach(GL_HEADER ${GL_HEADERS})
 		    download_gl_header(${GL_HEADER})
     endforeach(GL_HEADER)
 
-	include_directories(include/GL3)
+	include_directories(src/Renderer/GL3)
 ENDIF()
 
 
@@ -86,7 +86,7 @@ ELSE()
 ENDIF() 
 
 include_directories(
-	include
+	src
 	${QT_INCLUDES}	
 	if(SDL_LOCAL)
 	    ${SDL_DIR}/include
