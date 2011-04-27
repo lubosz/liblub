@@ -42,7 +42,7 @@ public:
   template<class T>
   Logger& operator<< (const T & i) {
     if(print)
-      std::cout << i;
+      std::cout << i << " ";
     return *this;
   }
 

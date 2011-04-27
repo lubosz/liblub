@@ -38,7 +38,7 @@ Logger::Logger(const char* file, int line, Logger::LogLevel level) {
 
 Logger::~Logger() {
   if (print)
-    std::cout<<std::endl;
+    cout<<std::endl;
   if (fatal)
     exit(0);
 }
