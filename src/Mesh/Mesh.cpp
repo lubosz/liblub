@@ -23,6 +23,7 @@ Mesh::Mesh() {
 void Mesh::init() {
   LogDebug << "Buffersize" << buffers.count() << "Indexsize" << indices.size();
   assert(!buffers.empty());
+  assert(!buffers["position"].empty());
   assert(!indices.empty());
   /* Allocate and assign a Vertex Array Object to our handle */
   glGenVertexArrays(1, &vao);
@@ -31,26 +32,16 @@ void Mesh::init() {
   /* Bind our Vertex Array Object as the current used object */
   glBindVertexArray(vao);
 
-  /* Allocate and assign three Vertex Buffer Objects to our handle */
-  //    glGenBuffers(buffers.size()+1, vbo);
-
-  //    if (assMesh->HasNormals())
-  //      mesh->addBuffer(normals, 3, "in_Normal");
-  //    else
-  //      LogWarning << file << "has no Normals :/";
-  //
-  ////    if (assMesh->HasTangentsAndBitangents()) {
-  ////      mesh->addBuffer(tangents, 3, "in_Tangent");
-  ////      mesh->addBuffer(bitangents, 3, "in_Bitangent");
-  ////    } else {
-  ////      Logger::Instance().log("WARNING", "Assimp Scene Load", file + " has no Tangents :/");
-  ////    }
-  //
-  //    if (assMesh->HasTextureCoords(0))
-  //      mesh->addBuffer(uvs, 2, "in_Uv");
-  //    else
-  //      LogWarning << file << "has no UV coords :/";
-
+  addBuffer(buffers["position"], 3, "in_Vertex");
+  if(!buffers["normal"].empty())
+    addBuffer(buffers["normal"], 3, "in_Normal");
+  if(!buffers["tangent"].empty())
+    addBuffer(buffers["tangent"], 3, "in_Tangent");
+  if(!buffers["bitangent"].empty())
+    addBuffer(buffers["bitangent"], 3, "in_Bitangent");
+  if(!buffers["uv"].empty())
+    addBuffer(buffers["uv"], 2, "in_Uv");
+  addElementBuffer(indices);
 }
 
 Mesh::~Mesh() {
@@ -133,18 +124,6 @@ void Mesh::draw(unsigned amount) {
 
 void Mesh::addSubMesh(Mesh * mesh) {
   subMeshes.push_back(mesh);
-}
-void Mesh::initPositions() {
-  addBuffer(buffers["position"], 3, "in_Vertex");
-}
-void Mesh::initNormals() {
-  addBuffer(buffers["normal"], 3, "in_Normal");
-}
-void Mesh::initUv() {
-  addBuffer(buffers["uv"], 2, "in_Uv");
-}
-void Mesh::initIndex() {
-  addElementBuffer(indices);
 }
 
 void Mesh::addVertex(GLfloat x, GLfloat y, GLfloat z, vector<GLfloat> * buffer) {

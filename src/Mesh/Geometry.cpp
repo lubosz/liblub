@@ -35,10 +35,6 @@ Mesh * Geometry::plane(const QRectF &plane) {
     mesh->indices = { 0, 1, 3, 3, 1, 2 };
 
     mesh->init();
-    mesh->initPositions();
-    mesh->initNormals();
-    mesh->initUv();
-    mesh->initIndex();
     mesh->setDrawType(GL_TRIANGLES);
     glError;
     return mesh;
@@ -621,25 +617,13 @@ Mesh * Geometry::sphere(GLdouble radius, GLint slices, GLint stacks) {
   }
 
   middleStrip->init();
-  middleStrip->initPositions();
-  middleStrip->initNormals();
-  middleStrip->initUv();
-  middleStrip->initIndex();
   middleStrip->setDrawType(GL_TRIANGLE_STRIP);
 
   if(!useTextureCoords) {
     topFan->init();
-    topFan->initPositions();
-    topFan->initNormals();
-    topFan->initUv();
-    topFan->initIndex();
     topFan->setDrawType(GL_TRIANGLE_FAN);
 
     bottomFan->init();
-    bottomFan->initPositions();
-    bottomFan->initNormals();
-    bottomFan->initUv();
-    bottomFan->initIndex();
     bottomFan->setDrawType(GL_TRIANGLE_FAN);
 
     sphere->addSubMesh(middleStrip);

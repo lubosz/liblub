@@ -33,10 +33,6 @@ class Mesh {
 	void draw(unsigned amount);
 	void init();
 	void addSubMesh(Mesh * mesh);
-	void initPositions();
-	void initNormals();
-  void initUv();
-	void initIndex();
   void addVertex(GLfloat x, GLfloat y, GLfloat z, vector<GLfloat> * buffer);
   void addPosition(GLfloat x, GLfloat y, GLfloat z);
   void addColor(GLfloat x, GLfloat y, GLfloat z);
