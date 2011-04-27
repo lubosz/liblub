@@ -12,36 +12,33 @@
 #include "Renderer/RenderEngine.h"
 
 Mesh * Geometry::plane(const QRectF &plane) {
-    vector<GLfloat> vertices = {
+    Mesh * mesh = new Mesh();
+
+    mesh->buffers["position"] = {
         (float)plane.left(), (float)plane.top(), -1.0,
         (float)plane.right(), (float)plane.top(), -1.0,
         (float)plane.right(), (float)plane.bottom(), -1.0,
         (float)plane.left(), (float)plane.bottom(), -1.0
     };
-    vector<GLfloat> uvCoords = {
+    mesh->buffers["uv"] = {
             0.0, 0.0,
             1.0, 0.0,
             1.0, 1.0,
             0.0, 1.0,
     };
-
-    vector<GLfloat> normals = {
+    mesh->buffers["normal"] = {
             0.0, 0.0, 1.0,
             0.0, 0.0, 1.0,
             0.0, 0.0, 1.0,
             0.0, 0.0, 1.0
     };
+    mesh->indices = { 0, 1, 3, 3, 1, 2 };
 
-    vector<GLuint> indicies = { 0, 1, 3, 3, 1, 2 };
-
-    Mesh * mesh = new Mesh();
     mesh->init();
-    mesh->addBuffer(vertices, 3, "in_Vertex");
-    mesh->addBuffer(normals, 3, "in_Normal");
-//    mesh->addBuffer(normals, 3, "in_Tangent");
-//    mesh->addBuffer(normals, 3, "in_Biangent");
-    mesh->addBuffer(uvCoords, 2, "in_Uv");
-    mesh->addElementBuffer(indicies);
+    mesh->initPositions();
+    mesh->initNormals();
+    mesh->initUv();
+    mesh->initIndex();
     mesh->setDrawType(GL_TRIANGLES);
     glError;
     return mesh;
