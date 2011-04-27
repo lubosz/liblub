@@ -13,21 +13,13 @@
 MengerSponge::MengerSponge(unsigned recursion) {
   oneMeshIndices = {};
   oneMeshVertices = {};
-    mesh = new Mesh();
-
-    makeSponge(recursion, {0, 0, 0}, 1.0f);
-    mesh->init();
-    mesh->addBuffer(oneMeshVertices, 3, "in_Vertex");
-    mesh->addBuffer(oneMeshVertices, 3, "in_Normal");
-    mesh->addBuffer(oneMeshVertices, 3, "in_Color");
-    mesh->addElementBuffer(oneMeshIndices);
-//        mesh->addBuffer(globalVertices, 3, "in_Vertex");
-//        mesh->addBuffer(globalVertices, 3, "in_Normal");
-//        mesh->addBuffer(globalVertices, 3, "in_Color");
-//        mesh->addElementBuffer(globalIndices);
-
-    mesh->setDrawType(GL_TRIANGLES);
-    glError;
+  mesh = new Mesh();
+  makeSponge(recursion, {0, 0, 0}, 1.0f);
+  mesh->init();
+  mesh->buffers["position"] = oneMeshVertices;
+  mesh->indices = oneMeshIndices;
+  mesh->setDrawType(GL_TRIANGLES);
+  glError;
 }
 
 MengerSponge::~MengerSponge() {

@@ -28,19 +28,14 @@ void AABB::draw() {
 }
 
 void AABB::createMesh() {
-  vector<GLfloat> vertices = {
+  mesh = new Mesh();
+  mesh->buffers["position"] = {
           1.0, 1.0, 1.0,
           -1.0, -1.0, 1.0,
           -1.0, 1.0, -1.0,
           1.0, -1.0, -1.0
   };
-
-  vector<GLuint> indicies = { 0, 1, 2, 3, 0, 1 };
-
-  mesh = new Mesh();
+  mesh->indices = { 0, 1, 2, 3, 0, 1 };
   mesh->init();
-  mesh->addBuffer(vertices, 3, "in_Vertex");
-//  mesh->addBuffer(vertexColors, 3, "in_Color");
-  mesh->addElementBuffer(indicies);
   mesh->setDrawType(GL_LINES);
 }

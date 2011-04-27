@@ -45,49 +45,44 @@ Mesh * Geometry::plane(const QRectF &plane) {
 }
 
 Mesh * Geometry::tetrahedron() {
-    vector<GLfloat> vertices = {
+    Mesh * mesh = new Mesh();
+    mesh->buffers["position"] = {
             1.0, 1.0, 1.0,
             -1.0, -1.0, 1.0,
             -1.0, 1.0, -1.0,
             1.0, -1.0, -1.0
     };
 
-    vector<GLfloat> vertexColors = {
+    mesh->buffers["color"] = {
             1.0, 0.0, 0.0,
             0.0, 1.0, 0.0,
             0.0, 0.0, 1.0,
             1.0, 1.0, 1.0
     };
 
-    vector<GLfloat> uvCoords = {
+    mesh->buffers["uv"] = {
             1.0, 0.0,
             0.0, 1.0,
             0.0, 0.0,
             1.0, 1.0
     };
 
-    vector<GLfloat> normals = {
+    mesh->buffers["normal"] = {
             1.0, 1.0, 1.0,
             -1.0, -1.0, 1.0,
             -1.0, 1.0, -1.0,
             1.0, -1.0, -1.0 };
 
-    vector<GLuint> indicies = { 0, 1, 2, 3, 0, 1 };
+    mesh->indices = { 0, 1, 2, 3, 0, 1 };
 
-    Mesh * mesh = new Mesh();
     mesh->init();
-    mesh->addBuffer(vertices, 3, "in_Vertex");
-    mesh->addBuffer(vertexColors, 3, "in_Color");
-    mesh->addBuffer(normals, 3, "in_Normal");
-    mesh->addBuffer(uvCoords, 2, "in_Uv");
-
-    mesh->addElementBuffer(indicies);
     mesh->setDrawType(GL_TRIANGLE_STRIP);
     return mesh;
 }
 
 Mesh * Geometry::cube() {
-    vector<GLfloat> vertices = {
+    Mesh * mesh = new Mesh();
+    mesh->buffers["position"] = {
         1.0, -1.0, -1.0,
         1.0, -1.0, 1.0,
         -1.0, -1.0, 1.0,
@@ -97,8 +92,7 @@ Mesh * Geometry::cube() {
         -1.0, 1.0, 1.0,
         -1.0, 1.0, -1.0
     };
-
-    vector<GLfloat> vertexColors = {
+    mesh->buffers["color"] = {
             1.0, 0.0, 0.0,
             0.0, 1.0, 0.0,
             0.0, 0.0, 1.0,
@@ -108,8 +102,7 @@ Mesh * Geometry::cube() {
             0.0, 0.0, 1.0,
             1.0, 1.0, 1.0
     };
-
-    vector<GLfloat> uvCoords = {
+    mesh->buffers["uv"] = {
         1.0, 0.0,
         0.0, 0.0,
         0.0, 1.0,
@@ -119,8 +112,7 @@ Mesh * Geometry::cube() {
         1.0, 1.0,
         0.0, 1.0
     };
-
-    vector<GLuint> indicies = {
+    mesh->indices = {
             4, 0, 3, 4, 3, 7,
             1, 5, 2, 5, 6, 2,
             2, 6, 7, 2, 7, 3,
@@ -128,20 +120,14 @@ Mesh * Geometry::cube() {
             4, 7, 5, 7, 6, 5,
             0, 1, 2, 0, 2, 3
     };
-
-    Mesh * mesh = new Mesh();
     mesh->init();
-    mesh->addBuffer(vertices, 3, "in_Vertex");
-    mesh->addBuffer(vertices, 3, "in_Color");
-    mesh->addBuffer(vertices, 3, "in_Normal");
-    mesh->addBuffer(uvCoords, 2, "in_Uv");
-    mesh->addElementBuffer(indicies);
     mesh->setDrawType(GL_TRIANGLES);
     return mesh;
 }
 
 Mesh * Geometry::icosahedron() {
-  vector<GLuint> indicies = {
+  Mesh * mesh = new Mesh();
+  mesh->indices = {
         2, 1, 0,
         3, 2, 0,
         4, 3, 0,
@@ -167,7 +153,7 @@ Mesh * Geometry::icosahedron() {
         1, 6, 10
   };
 
-  vector<GLfloat> vertices = {
+  mesh->buffers["position"] = {
          0.000f,  0.000f,  1.000f,
          0.894f,  0.000f,  0.447f,
          0.276f,  0.851f,  0.447f,
@@ -182,10 +168,7 @@ Mesh * Geometry::icosahedron() {
          0.000f,  0.000f, -1.000f
   };
 
-  Mesh * mesh = new Mesh();
   mesh->init();
-  mesh->addBuffer(vertices, 3, "in_Vertex");
-  mesh->addElementBuffer(indicies);
   return mesh;
 }
 
@@ -197,99 +180,71 @@ float Geometry::randomize(float density, float randomness) {
 }
 
 Mesh * Geometry::stars(vector<float> & resolution, float density,
-        float randomness, float colorIntensity) {
-    vector<GLfloat> vertices, colors;
-    vector<GLuint> indicies;
+    float randomness, float colorIntensity) {
 
-    unsigned i = 0;
+  Mesh * mesh = new Mesh();
+  unsigned i = 0;
 
-    srand(time(NULL));
+  srand(time(NULL));
 
-    for (float x = 0; x < resolution.at(0);
-            x += randomize(density, randomness)) {
-        for (float y = 0; y < resolution.at(1); y += randomize(density,
-                randomness)) {
-            for (float z = 0; z < resolution.at(2); z += randomize(density,
-                    randomness)) {
-                vertices.push_back(x);
-                vertices.push_back(y);
-                vertices.push_back(z);
-
-                colors.push_back(static_cast<float>(
-                        static_cast<int>(x * colorIntensity) % 255) / 256);
-                colors.push_back(static_cast<float>(
-                        static_cast<int>(y * colorIntensity) % 255) / 256);
-                colors.push_back(static_cast<float>(
-                        static_cast<int>(z * colorIntensity) % 255) / 256);
-
-                indicies.push_back(i);
-
-                i++;
-            }
-        }
+  for (float x = 0; x < resolution.at(0); x += randomize(density, randomness)) {
+    for (float y = 0; y < resolution.at(1); y += randomize(density, randomness)) {
+      for (float z = 0; z < resolution.at(2); z += randomize(density, randomness)) {
+        mesh->addPosition(x, y, z);
+        mesh->addColor(
+            static_cast<float> (static_cast<int> (x * colorIntensity) % 255)
+                / 256,
+            static_cast<float> (static_cast<int> (y * colorIntensity) % 255)
+                / 256,
+            static_cast<float> (static_cast<int> (z * colorIntensity) % 255)
+                / 256);
+      }
     }
-    LogInfo << i << "stars generated";
-    Mesh * mesh = new Mesh();
-    mesh->init();
-    mesh->addBuffer(vertices, 3, "in_Vertex");
-    mesh->addBuffer(colors, 3, "in_Color");
-    mesh->addElementBuffer(indicies);
-    mesh->setDrawType(GL_POINTS);
-    return mesh;
+  }
+  LogInfo << i << "stars generated";
+  mesh->init();
+  mesh->setDrawType(GL_POINTS);
+  return mesh;
 }
 
 Mesh * Geometry::spiral(int resolution) {
-    vector<GLfloat> vertices, colors;
-    vector<GLuint> indicies;
+  Mesh * mesh = new Mesh();
+  QVector3D point = QVector3D(1, 0, 0);
+  QMatrix4x4 rotation = QMatrix4x4();
+  rotation.rotate(0.5, 0.0, 1.0, 0.0);
 
-    QVector3D point = QVector3D(1, 0, 0);
-    QMatrix4x4 rotation = QMatrix4x4();
-    rotation.rotate(0.5, 0.0, 1.0, 0.0);
+  QMatrix4x4 rotation2 = QMatrix4x4();
+  rotation2.rotate(0.5, 0.0, 0.0, 1.0);
 
-    QMatrix4x4 rotation2 = QMatrix4x4();
-    rotation2.rotate(0.5, 0.0, 0.0, 1.0);
+  int i = 1;
 
-    int i = 1;
+  srand(time(NULL));
+  for (; i < resolution; i++) {
+    QVector3D tempPoint = point.normalized();
+    point += (tempPoint / 20.0);
 
-    srand(time(NULL));
-    for (; i < resolution; i++) {
-        QVector3D tempPoint = point.normalized();
-        point += (tempPoint / 20.0);
+    point = rotation * point;
 
-        point = rotation * point;
+    QVector3D newPoint = point;
+    for (int j = 0; j < 100; j++) {
+      newPoint = rotation2 * newPoint;
 
-        QVector3D newPoint = point;
-        for (int j = 0; j < 100; j++) {
-            newPoint = rotation2 * newPoint;
+      QVector3D tempPoint2 = newPoint.normalized();
+      newPoint += (tempPoint2 / 20.0);
 
-            QVector3D tempPoint2 = newPoint.normalized();
-            newPoint += (tempPoint2 / 20.0);
-
-            vertices.push_back(newPoint.x());
-            vertices.push_back(newPoint.y());
-            vertices.push_back(newPoint.z());
-
-            colors.push_back(1.0 - (static_cast<float>(
-                    static_cast<int>(newPoint.x()) % 255) / 256));
-            colors.push_back(1.0 - (static_cast<float>(
-                    static_cast<int>(newPoint.y()) % 255) / 256));
-            colors.push_back(1.0 - (static_cast<float>(
-                    static_cast<int>(newPoint.z()) % 255) / 256));
-
-            indicies.push_back(i);
-            i++;
-        }
+      mesh->addPosition(newPoint.x(), newPoint.y(), newPoint.z());
+      mesh->addColor(
+          static_cast<float> (static_cast<int> (newPoint.x()) % 255) / 256,
+          static_cast<float> (static_cast<int> (newPoint.y()) % 255) / 256,
+          static_cast<float> (static_cast<int> (newPoint.z()) % 255) / 256);
     }
+  }
 
-    LogInfo << i << "spiral points generated";
+  LogInfo << i << "spiral points generated";
 
-    Mesh * mesh = new Mesh();
-    mesh->init();
-    mesh->addBuffer(vertices, 3, "in_Vertex");
-    mesh->addBuffer(colors, 3, "in_Color");
-    mesh->addElementBuffer(indicies);
-    mesh->setDrawType(GL_POINTS);
-    return mesh;
+  mesh->init();
+  mesh->setDrawType(GL_POINTS);
+  return mesh;
 }
 
 //From gluSphere (MESA)

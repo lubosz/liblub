@@ -17,6 +17,7 @@
 #include "Renderer/RenderEngine.h"
 
 Mesh * MeshLoader::load(string file) {
+    Mesh * mesh = new Mesh();
     string path = Config::Instance().value<string> ("meshDir") + file;
 
     // Create an instance of the Importer class
@@ -38,18 +39,8 @@ Mesh * MeshLoader::load(string file) {
 
     aiMesh * assMesh = scene->mMeshes[0];
 
-
-    vector<GLfloat> positions;
-    vector<GLfloat> normals;
-    vector<GLfloat> tangents;
-    vector<GLfloat> bitangents;
-    vector<GLfloat> uvs;
-    vector<GLuint> indices;
-
     QVector3D boundingBoxMin = QVector3D();
     QVector3D boundingBoxMax = QVector3D();
-
-    unsigned numIndices = 0;
 
     for (unsigned i = 0; i < assMesh->mNumFaces; i++) {
         aiFace face = assMesh->mFaces[i];
@@ -57,9 +48,7 @@ Mesh * MeshLoader::load(string file) {
             int vertex = face.mIndices[j];
 
             aiVector3D position = assMesh->mVertices[vertex];
-            positions.push_back(position.x);
-            positions.push_back(position.y);
-            positions.push_back(position.z);
+            mesh->addPosition(position.x,position.y,position.z);
 
             if(i == 0 && j == 0) {
                 boundingBoxMin = QVector3D(position.x,position.y,position.z);
@@ -81,59 +70,26 @@ Mesh * MeshLoader::load(string file) {
 
             if(assMesh->HasNormals()) {
               aiVector3D normal = assMesh->mNormals[vertex];
-              normals.push_back(normal.x);
-              normals.push_back(normal.y);
-              normals.push_back(normal.z);
+              mesh->addNormal(normal.x, normal.y, normal.z);
             }
 
             if (assMesh->HasTangentsAndBitangents()) {
               aiVector3D tangent = assMesh->mTangents[vertex];
-              tangents.push_back(tangent.x);
-              tangents.push_back(tangent.y);
-              tangents.push_back(tangent.z);
+              mesh->addTangent(tangent.x, tangent.y, tangent.z);
 
               aiVector3D bitangent = assMesh->mBitangents[vertex];
-
-              bitangents.push_back(bitangent.x);
-              bitangents.push_back(bitangent.y);
-              bitangents.push_back(bitangent.z);
+              mesh->addBitangent(bitangent.x, bitangent.y, bitangent.z);
             }
 
             if(assMesh->HasTextureCoords(0)){
               aiVector3D uv = assMesh->mTextureCoords[0][vertex];
-              uvs.push_back(uv.x);
-              uvs.push_back(uv.y);
+              mesh->addUv(uv.x, uv.y);
             }
-
-            indices.push_back(numIndices);
-            numIndices++;
         }
     }
 
-    Mesh * mesh = new Mesh();
 
     mesh->init();
-
-    mesh->addBuffer(positions, 3, "in_Vertex");
-
-    if (assMesh->HasNormals())
-      mesh->addBuffer(normals, 3, "in_Normal");
-    else
-      LogWarning << file << "has no Normals :/";
-
-//    if (assMesh->HasTangentsAndBitangents()) {
-//      mesh->addBuffer(tangents, 3, "in_Tangent");
-//      mesh->addBuffer(bitangents, 3, "in_Bitangent");
-//    } else {
-//      Logger::Instance().log("WARNING", "Assimp Scene Load", file + " has no Tangents :/");
-//    }
-
-    if (assMesh->HasTextureCoords(0))
-      mesh->addBuffer(uvs, 2, "in_Uv");
-    else
-      LogWarning << file << "has no UV coords :/";
-
-    mesh->addElementBuffer(indices);
     mesh->setDrawType(GL_TRIANGLES);
     mesh->boundingBox = new AABB(boundingBoxMin,boundingBoxMax);
     glError;

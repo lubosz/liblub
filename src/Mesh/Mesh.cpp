@@ -34,6 +34,23 @@ void Mesh::init() {
   /* Allocate and assign three Vertex Buffer Objects to our handle */
   //    glGenBuffers(buffers.size()+1, vbo);
 
+  //    if (assMesh->HasNormals())
+  //      mesh->addBuffer(normals, 3, "in_Normal");
+  //    else
+  //      LogWarning << file << "has no Normals :/";
+  //
+  ////    if (assMesh->HasTangentsAndBitangents()) {
+  ////      mesh->addBuffer(tangents, 3, "in_Tangent");
+  ////      mesh->addBuffer(bitangents, 3, "in_Bitangent");
+  ////    } else {
+  ////      Logger::Instance().log("WARNING", "Assimp Scene Load", file + " has no Tangents :/");
+  ////    }
+  //
+  //    if (assMesh->HasTextureCoords(0))
+  //      mesh->addBuffer(uvs, 2, "in_Uv");
+  //    else
+  //      LogWarning << file << "has no UV coords :/";
+
 }
 
 Mesh::~Mesh() {
@@ -144,6 +161,18 @@ void Mesh::addPosition(GLfloat x, GLfloat y, GLfloat z) {
 
 void Mesh::addNormal(GLfloat x, GLfloat y, GLfloat z) {
   addVertex(x, y, z, &buffers["normal"]);
+}
+
+void Mesh::addTangent(GLfloat x, GLfloat y, GLfloat z) {
+  addVertex(x, y, z, &buffers["tangent"]);
+}
+
+void Mesh::addBitangent(GLfloat x, GLfloat y, GLfloat z) {
+  addVertex(x, y, z, &buffers["bitangent"]);
+}
+
+void Mesh::addColor(GLfloat x, GLfloat y, GLfloat z) {
+  addVertex(x, y, z, &buffers["color"]);
 }
 
 void Mesh::addUv(GLfloat x, GLfloat y) {

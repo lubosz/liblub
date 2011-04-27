@@ -106,27 +106,21 @@ class AtmosphereApp: public Application {
   }
 
   Mesh * moonPlane(){
-    vector<GLfloat> vertices = {
+    Mesh * moonPlane = new Mesh();
+    moonPlane->buffers["position"] = {
         -4.0f, 4.0f, -50.0f,
         -4.0f, -4.0f, -50.0f,
         4.0f, -4.0f, -50.0f,
         4.0f, 4.0f, -50.0f
     };
-    vector<GLfloat> uvCoords = {
+    moonPlane->buffers["uv"] = {
             0.0, 0.0,
             0.0, 1.0,
             1.0, 1.0,
             1.0, 0.0,
     };
-
-    vector<GLuint> indicies = { 0, 1, 3, 3, 1, 2 };
-
-    Mesh * moonPlane = new Mesh();
+    moonPlane->indices = { 0, 1, 3, 3, 1, 2 };
     moonPlane->init();
-    moonPlane->addBuffer(vertices, 3, "in_Vertex");
-    moonPlane->addBuffer(vertices, 3, "in_Normal");
-    moonPlane->addBuffer(uvCoords, 2, "in_Uv");
-    moonPlane->addElementBuffer(indicies);
     moonPlane->setDrawType(GL_TRIANGLES);
     return moonPlane;
   }
