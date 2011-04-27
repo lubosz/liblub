@@ -301,12 +301,15 @@ Mesh * Geometry::sphere(GLdouble radius, GLint slices, GLint stacks) {
   Mesh * middleStrip = new Mesh();
   Mesh * bottomFan = new Mesh();
   Mesh * topFan = new Mesh();
+  middleStrip->name = "Middle Strip";
+  topFan->name = "topFan";
+  bottomFan->name = "bottomFan";
   bool hasNormals = true;
   bool smoothNormals = true;
   bool drawPoints = false;
   bool drawLines = false;
   bool orientationOutside = true;
-  bool useTextureCoords = true;
+  bool useTextureCoords = false;
   GLenum drawStyle = GL_FILL;
 #define CACHE_SIZE  240
 //#define CACHE_SIZE  4096
@@ -669,6 +672,7 @@ Mesh * Geometry::sphere(GLdouble radius, GLint slices, GLint stacks) {
     break;
   }
 
+  LogDebug << "Middle Strip";
   middleStrip->init();
   middleStrip->initPositions();
   middleStrip->initNormals();
@@ -676,6 +680,7 @@ Mesh * Geometry::sphere(GLdouble radius, GLint slices, GLint stacks) {
   middleStrip->initIndex();
   middleStrip->setDrawType(GL_TRIANGLE_STRIP);
 
+  LogDebug << "topFan";
   topFan->init();
   topFan->initPositions();
   topFan->initNormals();
@@ -683,6 +688,7 @@ Mesh * Geometry::sphere(GLdouble radius, GLint slices, GLint stacks) {
   topFan->initIndex();
   topFan->setDrawType(GL_TRIANGLE_FAN);
 
+  LogDebug << "bottomFan";
   bottomFan->init();
   bottomFan->initPositions();
   bottomFan->initNormals();

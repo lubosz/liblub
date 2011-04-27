@@ -18,7 +18,7 @@ struct LogSetting {
 };
 
 const LogSetting blackList[] = {
-  { "Mesh.cpp", Logger::Warning },
+  { "Timer.cpp", Logger::Warning },
 };
 
 Logger::Logger(const std::string& file, int line, Logger::LogLevel level) {
