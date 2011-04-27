@@ -2,6 +2,9 @@
 
 #include <QRectF>
 #include "Mesh/Geometry.h"
+#include "Mesh/MeshLoader.h"
+#include "System/Config.h"
+#include "Mesh/MengerSponge.h"
 
 class MeshTest: public CppUnit::TestCase {
 public:
@@ -10,6 +13,7 @@ public:
   }
 
   void runTest() {
+    Config::Instance().load("config.xml");
     Mesh * sphere = Geometry::sphere(11.0f, 100, 50);
     sphere->setDrawType(GL_PATCHES);
     Mesh * cube = Geometry::cube();
@@ -25,6 +29,11 @@ public:
     spiral->setDrawType(GL_PATCHES);
     Mesh * icosahedron = Geometry::icosahedron();
     icosahedron->setDrawType(GL_PATCHES);
+    Mesh * monkey = MeshLoader::load("monkey.blend");
+    monkey->setDrawType(GL_POINTS);
+    MengerSponge * sponge = new MengerSponge(3);
+    Mesh * spongeMesh = sponge->getMesh();
+    spongeMesh->setDrawType(GL_POINTS);
   }
 };
 

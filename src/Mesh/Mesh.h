@@ -33,7 +33,6 @@ class Mesh {
 	void draw(unsigned amount);
 	void init();
 	void addSubMesh(Mesh * mesh);
-  void addVertex(GLfloat x, GLfloat y, GLfloat z, vector<GLfloat> * buffer);
   void addPosition(GLfloat x, GLfloat y, GLfloat z);
   void addColor(GLfloat x, GLfloat y, GLfloat z);
   void addNormal(GLfloat x, GLfloat y, GLfloat z);
@@ -49,6 +48,7 @@ class Mesh {
 	unsigned indexSize;
 	unsigned bufferCount;
 
+  void addVertex(GLfloat x, GLfloat y, GLfloat z, vector<GLfloat> * buffer);
 	void addBuffer(const vector<GLfloat> &content, unsigned size, string name);
 	void addElementBuffer(const vector<GLuint> &content);
 };
