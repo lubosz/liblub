@@ -14,15 +14,6 @@ class MengerSponge {
  private:
 	Mesh * mesh;
 
-	GLfloat globalVertices[];
-  GLfloat globalNormals[];
-	GLuint globalIndices[];
-
-	vector<GLfloat> oneMeshVertices;
-//	vector<GLfloat> oneMeshUVCoords;
-	vector<GLuint> oneMeshIndices;
-//	vector<GLfloat> oneMeshNormals;
-
 	void makeSponge(
 	        unsigned recursion,
 	        const vector<float> & position,

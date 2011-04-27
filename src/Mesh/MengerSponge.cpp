@@ -11,13 +11,9 @@
 #include "System/Logger.h"
 
 MengerSponge::MengerSponge(unsigned recursion) {
-  oneMeshIndices = {};
-  oneMeshVertices = {};
   mesh = new Mesh();
   makeSponge(recursion, {0, 0, 0}, 1.0f);
   mesh->init();
-  mesh->buffers["position"] = oneMeshVertices;
-  mesh->indices = oneMeshIndices;
   mesh->setDrawType(GL_TRIANGLES);
   glError;
 }
@@ -100,7 +96,7 @@ void MengerSponge::makeSponge(
 }
 
 void MengerSponge::addCube(const vector<float> & position, float size) {
-  unsigned indexSize = oneMeshVertices.size()/3;
+  unsigned indexSize = mesh->buffers["position"].size()/3;
 
   vector<GLfloat> vertices = {
       size + position[0], -size + position[1], -size + position[2],
@@ -113,8 +109,8 @@ void MengerSponge::addCube(const vector<float> & position, float size) {
       -size + position[0], size + position[1], -size + position[2]
   };
 
-  oneMeshVertices.insert(
-          oneMeshVertices.end(), vertices.begin(), vertices.end());
+  mesh->buffers["position"].insert(
+      mesh->buffers["position"].end(), vertices.begin(), vertices.end());
 
 //  vector<GLfloat> uvCoords = {
 //      1.0, 0.0,
@@ -190,7 +186,7 @@ void MengerSponge::addCube(const vector<float> & position, float size) {
   };
   indices.insert(indices.end(), bottom.begin(), bottom.end());
 
-  oneMeshIndices.insert(oneMeshIndices.end(), indices.begin(), indices.end());
+  mesh->indices.insert(mesh->indices.end(), indices.begin(), indices.end());
 }
 
 Mesh * MengerSponge::getMesh() {
