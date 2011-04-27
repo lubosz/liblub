@@ -1,27 +1,17 @@
-/*
- * Copyright © 2010 Lubosz Sarnecki
- * Logger.h
- *
- *  Created on: Dec 9, 2010
- */
-
 #pragma once
 
 #include <string>
 #include <sstream>
 #include <vector>
 #include <cstring>
-#include "common/Singleton.h"
-
+#include <iostream>
+#include <string>
 
 #define LogDebug    Logger(__FILE__,__LINE__, Logger::Debug)
 #define LogError    Logger(__FILE__,__LINE__, Logger::Error)
 #define LogWarning  Logger(__FILE__,__LINE__, Logger::Warning)
 #define LogInfo     Logger(__FILE__,__LINE__, Logger::Info)
 #define LogFatal    Logger(__FILE__,__LINE__, Logger::Fatal)
-
-#include <iostream>
-#include <string>
 
 using std::string;
 

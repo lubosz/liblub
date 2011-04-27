@@ -1,10 +1,3 @@
-/*
- * Copyright © 2010 Lubosz Sarnecki
- * Logger.cpp
- *
- *  Created on: Dec 9, 2010
- */
-
 #include <QtCore>
 #include <string>
 #include <iostream>
