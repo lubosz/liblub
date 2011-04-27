@@ -13,6 +13,7 @@
 #include "System/Logger.h"
 #include <QImage>
 #include <QDebug>
+#include "Renderer/RenderEngine.h"
 
 DepthTexture::DepthTexture(GLuint width, GLuint height, string name,
         GLenum glId) {
@@ -23,9 +24,7 @@ DepthTexture::DepthTexture(GLuint width, GLuint height, string name,
 
     glGenTextures(1, &texture);
     glBindTexture(textureType, texture);
-    Logger::Instance().message << "Creating FBO Depth texture #" << texture
-            << " " << name;
-    Logger::Instance().log("DEBUG", "DepthTexture");
+    LogDebug << "Creating FBO Depth texture #" << texture << " " << name;
 
     /*
      Shadowmap
@@ -60,9 +59,7 @@ ShadowTexture::ShadowTexture(GLuint width, GLuint height, string name,
 
     glGenTextures(1, &texture);
     glBindTexture(textureType, texture);
-    Logger::Instance().message << "Creating FBO Shadow texture #" << texture
-            << " " << name;
-    Logger::Instance().log("DEBUG", "ShadowTexture");
+    LogDebug << "Creating FBO Shadow texture #" << texture << " " << name;
 
     /*
      Shadowmap
@@ -107,9 +104,8 @@ ColorTexture::ColorTexture(GLuint width, GLuint height, string name,
     textureType = GL_TEXTURE_2D;
 
     glGenTextures(1, &texture);
-    Logger::Instance().message << "Creating FBO Color texture #" << texture
+    LogDebug << "Creating FBO Color texture #" << texture
             << " " << name;
-    Logger::Instance().log("DEBUG", "ColorTexture");
     glBindTexture(textureType, texture);
 
 //    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_COMPARE_MODE,
@@ -150,9 +146,7 @@ TextureFile::TextureFile(string filename, GLenum glId, string name) {
     string path = Config::Instance().value<string> ("textureDir") + filename;
 
     glGenTextures(1, &texture);
-    Logger::Instance().message << "Creating texture from file #" << texture
-            << " " << name;
-    Logger::Instance().log("DEBUG", "TextureFile");
+    LogDebug << "Creating texture from file #" << texture << " " << name;
 
     glBindTexture(GL_TEXTURE_2D, texture);
     /*
@@ -187,9 +181,7 @@ TextureQImage::TextureQImage(QImage * image, GLenum glId, string name) {
     this->name = name;
 
     glGenTextures(1, &texture);
-    Logger::Instance().message << "Creating texture from qimage #" << texture
-            << " " << name;
-    Logger::Instance().log("DEBUG", "QImage Texture");
+    LogDebug << "Creating texture from qimage #" << texture << " " << name;
 
     glBindTexture(GL_TEXTURE_2D, texture);
 

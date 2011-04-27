@@ -15,6 +15,8 @@
 #include "System/GUI.h"
 #include "System/Timer.h"
 
+using std::stringstream;
+
 MediaLayer::MediaLayer() {
   fullscreen = false;
   grab = false;
@@ -67,15 +69,13 @@ void MediaLayer::createBlankCursor() {
 void MediaLayer::initScreen() {
     /* Open Xlib Display */
     display = XOpenDisplay(0);
-    if (!display) Logger::Instance().log("ERROR",
-            "initScreen", "Can't open display");
+    if (!display) LogError << "Can't open display";
 
     default_screen = DefaultScreen(display);
 
     /* Get the XCB connection from the display */
     connection = XGetXCBConnection(display);
-    if (!connection) Logger::Instance().log("ERROR",
-            "initScreen", "Can't get xcb connection from display");
+    if (!connection) LogError << "Can't get xcb connection from display";
 
     /* Acquire event queue ownership */
     XSetEventQueueOwner(display, XCBOwnsEventQueue);
@@ -99,8 +99,7 @@ void MediaLayer::initFrameBuffer() {
     int num_fb_configs = 0;
     fb_configs = glXGetFBConfigs(display, default_screen, &num_fb_configs);
     if (!fb_configs || num_fb_configs == 0)
-        Logger::Instance().log("ERROR",
-                "initFrameBuffer", "glXGetFBConfigs failed");
+      LogError << "glXGetFBConfigs failed";
     fb_config = fb_configs[0];
 }
 
@@ -133,9 +132,7 @@ void MediaLayer::createGLContext() {
   context = glXCreateContextAttribs(display, fb_config, NULL, True,
       attribs);
 
-  if (!context)
-      Logger::Instance().log("ERROR",
-              "createGLContext", "glXCreateNewContext failed");
+  if (!context) LogError << "glXCreateNewContext failed";
 }
 
 void MediaLayer::createColorMap() {
@@ -181,17 +178,15 @@ void MediaLayer::createWindow() {
   glxwindow = glXCreateWindow(display, fb_config, window, 0);
 
   if (!glxwindow)
-    Logger::Instance().log("ERROR",
-            "createWindow", "glXCreateWindow failed");
+    LogError << "glXCreateWindow failed";
 
   drawable = glxwindow;
 
-  Logger::Instance().log("MESSAGE", "XCB", "Making Context Current");
+  LogInfo << "Making Context Current";
   /* make OpenGL context current */
   if (!glXMakeContextCurrent(display, drawable, drawable, context))
-    Logger::Instance().log("ERROR",
-            "createWindow", "glXMakeContextCurrent failed");
-  Logger::Instance().log("MESSAGE", "XCB", "Context activated");
+    LogError <<  "glXMakeContextCurrent failed";
+  LogInfo<< "Context activated";
 
   // Set swap interval
   PFNGLXSWAPINTERVALSGIPROC
@@ -199,7 +194,7 @@ void MediaLayer::createWindow() {
           (PFNGLXSWAPINTERVALSGIPROC) glXGetProcAddress(
                   reinterpret_cast<GLubyte const *>("glXSwapIntervalSGI"));
   if (!glXSwapInterval) {
-    Logger::Instance().log("MediaLayer", "WARNING", "VSync is not supported");
+    LogWarning << "VSync is not supported";
   } else {
     glXSwapInterval(Config::Instance().value<int>("Vsync"));
   }
@@ -266,18 +261,16 @@ xcb_atom_t MediaLayer::getReplyAtomFromCookie(xcb_intern_atom_cookie_t cookie) {
   xcb_intern_atom_reply_t *reply =
           xcb_intern_atom_reply(connection, cookie, &error);
   if (error) {
-      Logger::Instance().message
-              << "Can't set the screen. Error Code: "<< error->error_code;
-      Logger::Instance().log("XCB", "ERROR", "");
+    LogError << "Can't set the screen. Error Code: "<< error->error_code;
   }
   return reply->atom;
 }
 
 void MediaLayer::toggleFullScreen() {
   if (fullscreen) {
-    Logger::Instance().log("MESSAGE", "Fullscreen", "off");
+    LogInfo << "Fullscreen off";
   } else {
-    Logger::Instance().log("MESSAGE", "Fullscreen", "on");
+    LogInfo << "Fullscreen on";
   }
   fullscreen = !fullscreen;
 

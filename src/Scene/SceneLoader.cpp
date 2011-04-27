@@ -98,9 +98,9 @@ void SceneLoader::appendMaterial(const QDomElement & materialNode) {
         if (SceneData::Instance().shaderPrograms.count(program) > 0)
             material->shaderProgram = SceneData::Instance().shaderPrograms.value(program);
         else
-            Logger::Instance().log("ERROR", "Program Not Found", program);
+            LogError << "Program Not Found"<< program;
     } else {
-        Logger::Instance().log("Error", "NO SHADER PROGRAM");
+      LogError << "NO SHADER PROGRAM";
     }
 
     QDomElement layers = materialNode.firstChildElement();
@@ -109,12 +109,11 @@ void SceneLoader::appendMaterial(const QDomElement & materialNode) {
             Texture * texture = SceneData::Instance().textures.value(
                     layers.attribute("texture").toStdString());
             if (SceneData::Instance().textures.count(layers.attribute("texture").toStdString()) == 0)
-                Logger::Instance().log("ERROR", "Scene Loader", "Texture "
-                        + layers.attribute("texture").toStdString()
-                        + " not found.");
+              LogError << "Texture "
+                        << layers.attribute("texture").toStdString()
+                        << " not found.";
             // TODO(bmonkey): uniform name reset
-            Logger::Instance().log("DEBUG", "SceneLoader", layers.attribute(
-                    "sampler").toStdString());
+            LogDebug << layers.attribute("sampler").toStdString();
             texture->name = layers.attribute("sampler").toStdString();
             material->addTexture(texture);
         }
@@ -133,7 +132,7 @@ void SceneLoader::appendMaterial(const QDomElement & materialNode) {
 
 void SceneLoader::appendTexture(const QDomElement & textureNode) {
     string name = textureNode.attribute("name").toStdString();
-    Logger::Instance().log("DEBUG", "SceneLoader", "Texture name:" + name);
+    LogDebug << "Texture name:" << name;
     Texture * texture;
     if (textureNode.tagName() == "Texture") {
         texture = TextureFactory::Instance().load(
@@ -147,7 +146,7 @@ void SceneLoader::appendTexture(const QDomElement & textureNode) {
 
 void SceneLoader::appendMesh(const QDomElement & meshNode) {
     string name = meshNode.attribute("name").toStdString();
-    Logger::Instance().log("DEBUG", "SceneLoader", "Mesh name:" + name);
+    LogDebug << "Mesh name:" << name;
     Mesh *mesh;
 
     if (meshNode.tagName() == "File") {
@@ -219,7 +218,7 @@ void SceneLoader::appendObject(const QDomElement & objectNode) {
         if (SceneData::Instance().materials.count(materialName) > 0)
             material = SceneData::Instance().materials.value(materialName);
         else
-            Logger::Instance().log("ERROR", "Material Not Found", materialName);
+            LogError << "Material Not Found" << materialName;
     }
     if (objectNode.tagName() == "Light") {
       string lightName;
@@ -240,7 +239,7 @@ void SceneLoader::appendObject(const QDomElement & objectNode) {
         if (SceneData::Instance().meshes.count(meshName) > 0)
           mesh = SceneData::Instance().meshes.value(meshName);
         else
-          Logger::Instance().log("ERROR", "Mesh Not Found", meshName);
+          LogError << "Mesh Not Found" << meshName;
 
         Material * lightMat;
         if (objectNode.hasAttribute("material")) {
@@ -257,7 +256,7 @@ void SceneLoader::appendObject(const QDomElement & objectNode) {
         if (SceneData::Instance().meshes.count(meshName) > 0)
             mesh = SceneData::Instance().meshes.value(meshName);
         else
-            Logger::Instance().log("ERROR", "Mesh Not Found", meshName);
+            LogError << "Mesh Not Found"<< meshName;
 
         Node * node = new Node(name, position, scale, mesh, material);
         if (objectNode.attribute("receive_shadows").contains("true",
@@ -286,7 +285,7 @@ void SceneLoader::appendObject(const QDomElement & objectNode) {
         if (SceneData::Instance().meshes.count(meshName) > 0)
             mesh = SceneData::Instance().meshes.value(meshName);
         else
-            Logger::Instance().log("ERROR", "Mesh Not Found", meshName);
+            LogError << "Mesh Not Found"<< meshName;
 
         vector<string> materialNames =
             splitValues<string> (objectNode.attribute("materials"));
@@ -297,7 +296,7 @@ void SceneLoader::appendObject(const QDomElement & objectNode) {
           if (SceneData::Instance().materials.count(materialName) > 0)
             planeMaterials.push_back(SceneData::Instance().materials.value(materialName));
           else
-            Logger::Instance().log("ERROR", "Material Not Found", materialName);
+            LogError << "Material Not Found"<< materialName;
         }
 
         SceneGraph::Instance().meshPlane(
@@ -354,7 +353,7 @@ void SceneLoader::load(const QString & fileName) {
 
           if (document.hasAttribute("name")){
               SceneData::Instance().name = document.attribute("name").toStdString();
-              Logger::Instance().log("MESSAGE", "Loading Scene", SceneData::Instance().name);
+              LogInfo << "Loading Scene" << SceneData::Instance().name;
           }
           if (document.hasAttribute("backgroundColor")){
               SceneData::Instance().setBackgroundColor(stringToVector3D(document.attribute("backgroundColor")));

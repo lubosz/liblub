@@ -14,6 +14,7 @@
 #include "System/Config.h"
 #include "System/Logger.h"
 #include <QRectF>
+#include "Renderer/RenderEngine.h"
 
 Mesh * MeshLoader::load(string file) {
     string path = Config::Instance().value<string> ("meshDir") + file;
@@ -32,8 +33,7 @@ Mesh * MeshLoader::load(string file) {
 
     // If the import failed, report it
     if (!scene) {
-        Logger::Instance().log("ERROR",
-                "Assimp Scene Load", importer.GetErrorString());
+        LogError << "Assimp Scene Load"<< importer.GetErrorString();
     }
 
     aiMesh * assMesh = scene->mMeshes[0];
@@ -119,7 +119,7 @@ Mesh * MeshLoader::load(string file) {
     if (assMesh->HasNormals())
       mesh->addBuffer(normals, 3, "in_Normal");
     else
-      Logger::Instance().log("WARNING", "Assimp Scene Load", file + " has no Normals :/");
+      LogWarning << file << "has no Normals :/";
 
 //    if (assMesh->HasTangentsAndBitangents()) {
 //      mesh->addBuffer(tangents, 3, "in_Tangent");
@@ -131,7 +131,7 @@ Mesh * MeshLoader::load(string file) {
     if (assMesh->HasTextureCoords(0))
       mesh->addBuffer(uvs, 2, "in_Uv");
     else
-      Logger::Instance().log("WARNING", "Assimp Scene Load", file + " has no UV coords :/");
+      LogWarning << file << "has no UV coords :/";
 
     mesh->addElementBuffer(indices);
     mesh->setDrawType(GL_TRIANGLES);

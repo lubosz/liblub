@@ -80,8 +80,7 @@ void Light::bindShaderInit(ShaderProgram * shaderProgram) {
 void Light::update() {
   //TODO: Multiple lights
     SceneGraph::Instance().setPosition("Light", position);
-    Logger::Instance().message << position.x() << " " << position.y() << " "
+    LogDebug << position.x() << " " << position.y() << " "
             << position.z();
-    Logger::Instance().log("DEBUG", "Light Position");
     updateView();
 }

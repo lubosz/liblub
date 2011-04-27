@@ -9,19 +9,18 @@
 #include "Scene/SceneGraph.h"
 #include "System/Logger.h"
 #include "Scene/SceneData.h"
+#include "Renderer/RenderEngine.h"
 
 ShaderProgram::ShaderProgram() {
   attribCount = 0;
     /* Assign our program handle a "name" */
     program = glCreateProgram();
-    Logger::Instance().message << "Creating Program #" << program;
-    Logger::Instance().log("DEBUG", "ShaderProgram");
+    LogDebug << "Creating Program #" << program;
 }
 
 ShaderProgram::~ShaderProgram() {
-    Logger::Instance().log("MESSAGE", "ShaderProgram",
-            "Shutting down Shader System...");
-//    glUseProgram(0);
+    LogInfo << "Shutting down Shader Program...";
+    glUseProgram(0);
 
     while (shaders.size() > 0) {
         detachShader(shaders.back());
@@ -34,16 +33,15 @@ void ShaderProgram::printProgramInfoLog() {
   if (infologLen > 1) {
     GLchar * infoLog = reinterpret_cast<GLchar*>(malloc(infologLen));
     if (infoLog == NULL) {
-      Logger::Instance().log("ERROR", "Program Log",
-              "Could not allocate InfoLog buffer");
+      LogError << "Could not allocate InfoLog buffer";
     }
     int charsWritten = 0;
     glGetProgramInfoLog(program, infologLen, &charsWritten, infoLog);
     string shaderlog = infoLog;
     free(infoLog);
-    Logger::Instance().log("ERROR", "Program Log", shaderlog);
+    LogFatal << "Program Log"<< shaderlog;
   } else {
-    Logger::Instance().log("DEBUG", "Program", "Done");
+    LogDebug << "Program compiled";
   }
 }
 
@@ -96,7 +94,7 @@ void ShaderProgram::bindAttrib(unsigned position, string name) {
 void ShaderProgram::bindAttribIfUnbound(string name) {
   foreach(string attrib, boundAttribs)
         if (attrib == name) return;
-  Logger::Instance().log("DEBUG", "ShaderProgram", "Binding " + name);
+  LogDebug << "Binding " + name;
   boundAttribs.push_back(name);
   bindAttrib(name);
 }
@@ -104,8 +102,7 @@ void ShaderProgram::bindAttribIfUnbound(string name) {
 
 
 void ShaderProgram::bindAttrib(string name) {
-  Logger::Instance().message << name << " #"<< attribCount;
-  Logger::Instance().log("ShaderProgram", "Binding Shader Attribute");
+  LogDebug << "Binding Shader Attribute" << name << " #"<< attribCount;
   bindAttrib(attribCount, name);
   attribCount++;
 }
@@ -113,9 +110,7 @@ void ShaderProgram::bindAttrib(string name) {
 void ShaderProgram::bindVertexAttributes(const QList<string> & attributes) {
 //Order has to match the shader
 
-  Logger::Instance().message <<
-          "Initializing Vertex Attributes for Program #" << program;
-  Logger::Instance().log("DEBUG", "Material");
+  LogDebug << "Initializing Vertex Attributes for Program #" << program;
 
   bindAttrib("in_Vertex");
 
@@ -136,45 +131,36 @@ void ShaderProgram::bindVertexAttributes(const QList<string> & attributes) {
 template<typename T>
 void ShaderProgram::initUniformsByType(vector<Uniform<T> > & uniforms) {
   foreach(Uniform<T> uniform, uniforms) {
-      Logger::Instance().message << "Uniform: " + uniform.name + ": ";
+      LogDebug << "Uniform: " + uniform.name + ": ";
       foreach(T value, uniform.values) {
-        Logger::Instance().message << value << ", ";
+        LogDebug << value << ", ";
       }
-      Logger::Instance().log("UNIFORMS", "ShaderProgram");
-
-
       uniform.init(program);
-
-      Logger::Instance().message << uniform.values.size() << " bound.";
-      Logger::Instance().log("UNIFORMS", "ShaderProgram");
-
+      LogDebug << uniform.values.size() << " bound.";
       glError;
     }
 }
 
 void ShaderProgram::initUniforms() {
-  initUniformsByType<float>(uniforms);
-  initUniformsByType<int>(uniformsi);
+  initUniformsByType<float> (uniforms);
+  initUniformsByType<int> (uniformsi);
   // TODO: Multiple Light sources
   SceneData::Instance().getShadowLight()->bindShaderInit(this);
 }
 
 void ShaderProgram::linkAndUse() {
-    /* Link our program, and set it as being actively used */
-    glLinkProgram(program);
-    printProgramInfoLog();
-    use();
+  /* Link our program, and set it as being actively used */
+  glLinkProgram(program);
+  printProgramInfoLog();
+  use();
 }
 
 void ShaderProgram::init(const QList<string> & attributes) {
   bindVertexAttributes(attributes);
   linkAndUse();
-  Logger::Instance().message <<
-      "Initializing Uniforms for Program #" << program;
-    Logger::Instance().log("DEBUG", "Material");
-    initUniforms();
+  LogDebug << "Initializing Uniforms for Program #" << program;
+  initUniforms();
 }
-
 
 void ShaderProgram::use() {
   glError;
@@ -247,7 +233,7 @@ void ShaderProgram::bindUniformBuffer(string name, GLuint bindIndex, GLuint buff
   glBindBufferBase(GL_UNIFORM_BUFFER, bindIndex, bufferHandle);
   GLuint blockIndex = glGetUniformBlockIndex(program, name.c_str());
   if(blockIndex == GL_INVALID_INDEX)
-    Logger::Instance().log("ERROR", "Uniform Buffer not found in Shader", name);
+    LogFatal << "Uniform Buffer not found in Shader" << name;
   glUniformBlockBinding(program, blockIndex, bindIndex);
   glError;
 }

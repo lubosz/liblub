@@ -9,6 +9,7 @@
 #include "Mesh/Geometry.h"
 #include "common/Qt3D.h"
 #include "System/Logger.h"
+#include "Renderer/RenderEngine.h"
 
 Mesh * Geometry::plane(const QRectF &plane) {
     vector<GLfloat> vertices = {
@@ -230,9 +231,7 @@ Mesh * Geometry::stars(vector<float> & resolution, float density,
             }
         }
     }
-    Logger::Instance().message << i << " Generated Stars";
-    Logger::Instance().log("MESSAGE", "makeStars");
-
+    LogInfo << i << "stars generated";
     Mesh * mesh = new Mesh();
     mesh->init();
     mesh->addBuffer(vertices, 3, "in_Vertex");
@@ -285,8 +284,7 @@ Mesh * Geometry::spiral(int resolution) {
         }
     }
 
-    Logger::Instance().message << i << " Generated Points";
-    Logger::Instance().log("MESSAGE", "makeSpiral");
+    LogInfo << i << "spiral points generated";
 
     Mesh * mesh = new Mesh();
     mesh->init();

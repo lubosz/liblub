@@ -8,6 +8,7 @@
 #include "Material/TextureFactory.h"
 #include "Material/Textures.h"
 #include "System/Logger.h"
+#include "Renderer/RenderEngine.h"
 
 TextureFactory::TextureFactory() {
 	glError;

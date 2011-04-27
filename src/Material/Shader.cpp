@@ -13,9 +13,10 @@
 #include "System/Logger.h"
 #include "System/Config.h"
 #include "System/TemplateEngine.h"
+#include "Renderer/RenderEngine.h"
 
 Shader::Shader(string fileName, GLenum type, bool useTemplate) {
-  Logger::Instance().log("DEBUG", "Shader", "Creating Shader " + fileName);
+  LogDebug << "Creating Shader" << fileName;
   this->fileName = fileName;
   this->type = type;
 
@@ -27,7 +28,7 @@ Shader::Shader(string fileName, GLenum type, bool useTemplate) {
 }
 
 Shader::Shader(string fileName, GLenum type, const vector<string> & defines) {
-  Logger::Instance().log("DEBUG", "Shader", "Creating Shader " + fileName);
+  LogDebug << "Creating Shader" << fileName;
   this->fileName = fileName;
   this->type = type;
   this->defines = defines;
@@ -55,7 +56,7 @@ void Shader::loadSource() {
 
       foreach(string define, defines) {
         defineString += "#define " + define + "\n";
-        Logger::Instance().log("DEBUG", "Shader Flags", define);
+        LogDebug << "Shader Flags" << define;
       }
       const GLchar *sources[2] = { defineString.c_str(), source };
       glShaderSource(shader, 2, sources, NULL);
@@ -75,12 +76,12 @@ void Shader::loadTemplate() {
 }
 
 void Shader::compile() {
-    Logger::Instance().message << "Compiling Shader#" << shader <<"...";
-    /* Compile our shader objects */
-    // TODO(bmonkey): driver crashes :/
-    glCompileShader(shader);
-    printShaderInfoLog(shader);
-    glError;
+  LogDebug << "Compiling Shader#" << shader << "...";
+  /* Compile our shader objects */
+  // TODO(bmonkey): driver crashes :/
+  glCompileShader(shader);
+  printShaderInfoLog(shader);
+  glError;
 }
 
 /* A simple function that will read a file
@@ -92,7 +93,7 @@ char* Shader::readFile(string filePath) {
 
     file = fopen(filePath.c_str(), "r"); /* Open file for reading */
     if (!file)
-        Logger::Instance().log("ERROR", "Shader", "File error: " + filePath);
+        LogError << "File error: "<< filePath;
 
     // obtain file size:
     fseek(file, 0, SEEK_END); /* Seek to the end of the file */
@@ -130,16 +131,15 @@ void Shader::printShaderInfoLog(GLuint shader) {
   if (infologLen > 1) {
     GLchar * infoLog = reinterpret_cast<GLchar*>(malloc(infologLen));
     if (infoLog == NULL) {
-      Logger::Instance().log("ERROR",
-              "Shader Log", "Could not allocate InfoLog buffer");
+      LogError << "Could not allocate InfoLog buffer";
     }
     int charsWritten = 0;
     glGetShaderInfoLog(shader, infologLen, &charsWritten, infoLog);
     string shaderlog = infoLog;
     free(infoLog);
-    Logger::Instance().log("ERROR", "Shader Log", shaderlog);
+    LogError << "Shader Log"<< shaderlog;
   } else {
-    Logger::Instance().log("DEBUG", "Shader", "Success");
+    LogDebug << "Success";
   }
 }
 

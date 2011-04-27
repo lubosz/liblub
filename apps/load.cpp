@@ -49,7 +49,7 @@ int main(int argc, char *argv[]) {
   if (argc == 2) {
     LoadApp(argv[1]).run();
   } else {
-    Logger::Instance().log("NO SCENE SPECIFIED", "Try;", "./load test");
+    LogError << "NO SCENE SPECIFIED. Try; ./load test";
   }
 }
 

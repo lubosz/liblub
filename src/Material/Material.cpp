@@ -7,6 +7,7 @@
 #include <string>
 #include "Scene/SceneGraph.h"
 #include "System/Logger.h"
+#include "Renderer/RenderEngine.h"
 
 void Material::init() {
     diffuseColor = QVector4D();

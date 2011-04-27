@@ -10,6 +10,7 @@
 #include "Scene/Camera.h"
 #include "System/Logger.h"
 #include "Scene/SceneData.h"
+#include "Renderer/RenderEngine.h"
 
 Node::Node(string name, const QVector3D& position, float size,
     Mesh * mesh, Material * material)

@@ -15,6 +15,7 @@
 
 #include "Material/Texture.h"
 #include "System/Logger.h"
+#include "Renderer/RenderEngine.h"
 
 Texture::~Texture() {
   // TODO(bmonkey): Auto-generated destructor stub

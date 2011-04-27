@@ -23,7 +23,7 @@ vector<T> Config::getValues(string name, const vector<ConfigOption<T>> & config)
             if (configOption.name == name)
                 return configOption.optionVec;
     }
-    Logger::Instance().log("ERROR", "Config not found", name);
+    LogError << "Config not found" << name;
     return vector<T>();
 }
 
@@ -77,7 +77,7 @@ void Config::load(const QString & fileName) {
 void Config::appendOption(const QDomElement & optionNode) {
     string name = optionNode.attribute("name").toStdString();
     QString value = optionNode.attribute("value");
-    Logger::Instance().log("DEBUG", "Config", "Option name:" + name);
+    LogDebug << "Option name:" << name;
 
     if (optionNode.tagName() == "Int") {
         vector<int> options = splitValues<int> (value);

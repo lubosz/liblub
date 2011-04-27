@@ -68,7 +68,7 @@ ShaderProgram* SceneData::getProgram(const string & name) {
   if (program) {
     return program;
   } else {
-  Logger::Instance().log("WARNING", "Program not found", name);
+  LogWarning << "Program not found" << name;
     return new ShaderProgram();
   }
 }
@@ -78,7 +78,7 @@ Material* SceneData::getMaterial(const string & name) {
   if (material) {
     return material;
   } else {
-  Logger::Instance().log("WARNING", "Material not found", name);
+    LogWarning << "Material not found"<< name;
     return new Minimal();
   }
 }
@@ -103,7 +103,7 @@ Light* SceneData::getLight(const string & name) {
   if (light) {
     return light;
   } else {
-  Logger::Instance().log("WARNING", "Light not found", name);
+    LogWarning <<  "Light not found" << name;
     return new Light();
   }
 }

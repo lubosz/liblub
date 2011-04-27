@@ -18,7 +18,6 @@ RenderEngine::RenderEngine()
     glError;
     checkVersion();
 
-
     glEnable(GL_DEPTH_TEST);
 //    glDepthFunc(GL_LESS);
 
@@ -49,8 +48,7 @@ RenderEngine::~RenderEngine() {
     glError;
 
     /* Cleanup all the things we bound and allocated */
-    Logger::Instance().message << "Shutting down Render Engine...";
-    Logger::Instance().log("MESSAGE");
+    LogInfo << "Shutting down Render Engine...";
     glError;
 }
 
@@ -61,125 +59,84 @@ void RenderEngine::setClearColor(const QVector3D & backgroundColor){
 }
 
 void RenderEngine::toggleWire() {
-    wire = !wire;
-    if (wire) {
-        Logger::Instance().log("MESSAGE", "Wireframe", "on");
-        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-    } else {
-        Logger::Instance().log("MESSAGE", "Wireframe", "off");
-        glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-    }
+  wire = !wire;
+  if (wire) {
+    LogInfo << "Wireframe on";
+    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+  } else {
+    LogInfo << "Wireframe off";
+    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+  }
 }
 
 void RenderEngine::toggleFBO() {
-    if (useFBO) {
-        Logger::Instance().message << "FBO Rendering diabled";
-        Logger::Instance().log("MESSAGE");
-        useFBO = false;
-    } else {
-        useFBO = true;
-        Logger::Instance().message << "FBO Rendering enabled";
-        Logger::Instance().log("MESSAGE");
-    }
+  if (useFBO) {
+    useFBO = false;
+    LogInfo << "FBO Rendering diabled";
+  } else {
+    useFBO = true;
+    LogInfo << "FBO Rendering enabled";
+  }
 }
 
-//void RenderEngine::display() {
-////  Node *foo = SceneGraph::Instance().getNode("Node12");
-////  foreach(Node * node, SceneGraph::Instance().sceneNodes){
-////    QVector3D oldRot = node->getRotation();
-//////    oldRot.setX(oldRot.x() +1);
-////    oldRot.setY(oldRot.y() +1);
-//////    oldRot.setZ(oldRot.z() +1);
-////    node->setRotation(oldRot);
-////  }
-//    /*
-//     * Uniform Animation
-//     *
-//     SceneGraph::Instance().transform(frameCount);
-//     GLfloat floatanim = 10.0/GLfloat(frameCount%100);
-//     glUniform4f(glGetUniformLocation(shaderProgram->program, "ScaleFactor"), floatanim, floatanim, floatanim, floatanim);
-//     glUniform2f(glGetUniformLocation(shaderProgram->program, "Offset"), floatanim, floatanim);
-//     int mode = int(frameCount/100.0)%10;
-//     glUniform1i(glGetUniformLocation(shaderProgram->program, "Mode"), mode);
-//     cout << "Mode:\t" << mode << "\n";
-//     frameCount++;
-//     */
-//
-//
-//}
-
 void RenderEngine::toggleLightView() {
-    if (lightView) {
-        lightView = false;
-    } else {
-        lightView = true;
-    }
+  if (lightView) {
+    lightView = false;
+  } else {
+    lightView = true;
+  }
 }
 
 void RenderEngine::clear() {
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
 void RenderEngine::checkVersion() {
     GLint maxTex1, maxTex2, MajorVersion, MinorVersion, numext, pointSize, uniformSize;
 
-    Logger::Instance().message << glGetString(GL_VERSION);
-    Logger::Instance().log("MESSAGE", "OpenGL");
+    LogInfo << "OpenGL" << glGetString(GL_VERSION);
 
 
     glGetIntegerv(GL_MAJOR_VERSION, &MajorVersion);
     glGetIntegerv(GL_MINOR_VERSION, &MinorVersion);
-    Logger::Instance().message << MajorVersion << "." << MinorVersion;
-    Logger::Instance().log("MESSAGE", "Version");
+    LogInfo << "Version" << MajorVersion << "." << MinorVersion;
 
-    Logger::Instance().message << glGetString(GL_SHADING_LANGUAGE_VERSION);
-    Logger::Instance().log("MESSAGE", "GLSL");
+    LogInfo << "GLSL" << glGetString(GL_SHADING_LANGUAGE_VERSION);
 
     glGetIntegerv(GL_POINT_SIZE, &pointSize);
-    Logger::Instance().message << pointSize;
-    Logger::Instance().log("MESSAGE", "Point Size");
+    LogInfo << "Point Size" << pointSize;
 
-    Logger::Instance().message << glGetString(GL_VENDOR) << " - "
+    LogInfo << "Hardware"
+            << glGetString(GL_VENDOR) << " - "
             << glGetString(GL_RENDERER);
-    Logger::Instance().log("MESSAGE", "Hardware");
 
     glGetIntegerv(GL_MAX_VERTEX_TEXTURE_IMAGE_UNITS, &maxTex1);
     glGetIntegerv(GL_MAX_TEXTURE_IMAGE_UNITS, &maxTex2);
-    Logger::Instance().message << maxTex1 << " " << maxTex2;
-    Logger::Instance().log("MESSAGE", "MaxTex");
+    LogInfo << "MaxTex" << maxTex1 << " " << maxTex2;
 
     glGetIntegerv(GL_NUM_EXTENSIONS, &numext);
-    Logger::Instance().message << "Found " << numext << " GL_EXTENSIONS";
-    Logger::Instance().log("MESSAGE", "GL_EXTENSIONS");
-
-
+    LogInfo << "Found " << numext << " GL_EXTENSIONS";
 
     glGetIntegerv(GL_MAX_VERTEX_UNIFORM_BLOCKS, &uniformSize);
-    Logger::Instance().message << uniformSize;
-    Logger::Instance().log("MESSAGE", "GL_MAX_VERTEX_UNIFORM_BLOCKS");
+    LogInfo << "GL_MAX_VERTEX_UNIFORM_BLOCKS" << uniformSize;
 
     glGetIntegerv(GL_MAX_FRAGMENT_UNIFORM_BLOCKS, &uniformSize);
-    Logger::Instance().message << uniformSize;
-    Logger::Instance().log("MESSAGE", "GL_MAX_FRAGMENT_UNIFORM_BLOCKS");
+    LogInfo << "GL_MAX_FRAGMENT_UNIFORM_BLOCKS" << uniformSize;
 
     glGetIntegerv(GL_MAX_GEOMETRY_UNIFORM_BLOCKS, &uniformSize);
-    Logger::Instance().message << uniformSize;
-    Logger::Instance().log("MESSAGE", "GL_MAX_GEOMETRY_UNIFORM_BLOCKS");
+    LogInfo << "GL_MAX_GEOMETRY_UNIFORM_BLOCKS" << uniformSize;
 
     glGetIntegerv(GL_MAX_UNIFORM_BLOCK_SIZE, &uniformSize);
-    Logger::Instance().message << uniformSize;
-    Logger::Instance().log("MESSAGE", "GL_MAX_UNIFORM_BLOCK_SIZE");
+    LogInfo << "GL_MAX_UNIFORM_BLOCK_SIZE" << uniformSize;
 
 //    GLfloat floatvalue;
 //    glGetFloatv(GL_DEPTH_BIAS, &floatvalue);
-//    Logger::Instance().message << floatvalue;
+//    LogInfo << floatvalue;
 //    Logger::Instance().log("MESSAGE", "GL_DEPTH_BIAS");
 
     // for (int i = 0; i < numext; i++) {
-    //  Logger::Instance().message << glGetStringi(GL_EXTENSIONS,i);
+    //  LogInfo << glGetStringi(GL_EXTENSIONS,i);
     //  Logger::Instance().log("DEBUG","GL_EXTENSIONS");
     // }
 }
-
-
 

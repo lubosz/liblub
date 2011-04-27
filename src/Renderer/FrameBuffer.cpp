@@ -13,6 +13,7 @@
 #include "Mesh/Geometry.h"
 #include "System/Logger.h"
 
+using std::stringstream;
 
 FrameBuffer::FrameBuffer(GLuint width, GLuint height) {
     glError;
@@ -54,8 +55,7 @@ FrameBuffer::FrameBuffer(GLuint width, GLuint height) {
 void FrameBuffer::checkAndFinish() {
     // check FBO status
     printFramebufferInfo();
-
-    Logger::Instance().log("DEBUG", "FBO", checkFramebufferStatus());
+    LogDebug << checkFramebufferStatus();
     unBind();
 }
 
@@ -114,10 +114,8 @@ void FrameBuffer::printFramebufferInfo() {
     // print max # of colorbuffers supported by FBO
     int colorBufferCount = 0;
     glGetIntegerv(GL_MAX_COLOR_ATTACHMENTS, &colorBufferCount);
-    Logger::Instance().message
-            << "Max Number of Color Buffer Attachment Points: "
+    LogDebug << "Max Number of Color Buffer Attachment Points: "
             << colorBufferCount;
-    Logger::Instance().log("DEBUG", "FBO");
 
     int objectType;
     int objectId;
@@ -134,14 +132,13 @@ void FrameBuffer::printFramebufferInfo() {
 
             string formatName;
 
-            Logger::Instance().message << "Color Attachment " << i << ": ";
+            LogDebug << "Color Attachment " << i << ": ";
             if (objectType == GL_TEXTURE)
-                Logger::Instance().message << "GL_TEXTURE, "
+              LogDebug << "GL_TEXTURE, "
                         << getTextureParameters(objectId);
             else if (objectType == GL_RENDERBUFFER)
-                Logger::Instance().message << "GL_RENDERBUFFER, "
+              LogDebug << "GL_RENDERBUFFER, "
                         << getRenderbufferParameters(objectId);
-            Logger::Instance().log("DEBUG", "FBO");
         }
     }
 
@@ -153,18 +150,17 @@ void FrameBuffer::printFramebufferInfo() {
                 GL_DEPTH_ATTACHMENT, GL_FRAMEBUFFER_ATTACHMENT_OBJECT_NAME,
                 &objectId);
 
-        Logger::Instance().message << "Depth Attachment: ";
+        LogDebug << "Depth Attachment: ";
         switch (objectType) {
         case GL_TEXTURE:
-            Logger::Instance().message << "GL_TEXTURE, "
+            LogDebug << "GL_TEXTURE, "
                     << getTextureParameters(objectId);
             break;
         case GL_RENDERBUFFER:
-            Logger::Instance().message << "GL_RENDERBUFFER, "
+            LogDebug << "GL_RENDERBUFFER, "
                     << getRenderbufferParameters(objectId);
             break;
         }
-        Logger::Instance().log("DEBUG", "FBO");
     }
 
     // print info of the stencilbuffer attachable image
@@ -176,18 +172,17 @@ void FrameBuffer::printFramebufferInfo() {
                 GL_STENCIL_ATTACHMENT, GL_FRAMEBUFFER_ATTACHMENT_OBJECT_NAME,
                 &objectId);
 
-        Logger::Instance().message << "Stencil Attachment: ";
+        LogDebug << "Stencil Attachment: ";
         switch (objectType) {
         case GL_TEXTURE:
-            Logger::Instance().message << "GL_TEXTURE, "
+            LogDebug << "GL_TEXTURE, "
                     << getTextureParameters(objectId);
             break;
         case GL_RENDERBUFFER:
-            Logger::Instance().message << "GL_RENDERBUFFER, "
+            LogDebug << "GL_RENDERBUFFER, "
                     << getRenderbufferParameters(objectId);
             break;
         }
-        Logger::Instance().log("DEBUG", "FBO");
     }
 }
 

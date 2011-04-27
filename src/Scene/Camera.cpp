@@ -30,8 +30,7 @@ void Camera::setMouseLook(int mouseXrel, int mouseYrel, qreal mouseSensitivity) 
 }
 
 void Camera::setMouseZoom(int wheelX, int wheelY) {
-  Logger::Instance().message << "\t" << wheelX << "\t" << wheelY;
-  Logger::Instance().log("DEBUG", "Camera Wheel");
+  LogDebug << "\t" << wheelX << "\t" << wheelY;
 }
 
 void Camera::updateRotation() {
