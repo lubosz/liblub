@@ -186,17 +186,21 @@ void SceneLoader::appendMesh(const QDomElement & meshNode) {
                     "recursion").toInt());
           mesh = sponge->getMesh();
         } else if (meshNode.attribute("type") == "Stars") {
+          QList<string> attributes;
+          attributes.push_back("color");
           float resolution = meshNode.attribute("resolution").toFloat();
           vector<float> resolutionvec = { resolution, resolution, resolution };
             mesh = Geometry::stars(
-                QList<string>(),
+                attributes,
                     resolutionvec,
                     meshNode.attribute("density").toFloat(),
                     meshNode.attribute("randomness").toFloat(),
                     meshNode.attribute("colorIntensity").toFloat());
         } else if (meshNode.attribute("type") == "Spiral") {
+          QList<string> attributes;
+          attributes.push_back("color");
             mesh = Geometry::spiral(
-                QList<string>(),
+                attributes,
                     meshNode.attribute("resolution").toFloat());
         }
     }
