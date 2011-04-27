@@ -186,8 +186,8 @@ Mesh * Geometry::stars(vector<float> & resolution, float density,
   for (float x = 0; x < resolution.at(0); x += randomize(density, randomness)) {
     for (float y = 0; y < resolution.at(1); y += randomize(density, randomness)) {
       for (float z = 0; z < resolution.at(2); z += randomize(density, randomness)) {
-        mesh->addPosition(x, y, z);
-        mesh->addColor(
+        mesh->vertex("position",x, y, z);
+        mesh->vertex("color",
             static_cast<float> (static_cast<int> (x * colorIntensity) % 255)
                 / 256,
             static_cast<float> (static_cast<int> (y * colorIntensity) % 255)
@@ -228,8 +228,8 @@ Mesh * Geometry::spiral(int resolution) {
       QVector3D tempPoint2 = newPoint.normalized();
       newPoint += (tempPoint2 / 20.0);
 
-      mesh->addPosition(newPoint.x(), newPoint.y(), newPoint.z());
-      mesh->addColor(
+      mesh->vertex("position",newPoint.x(), newPoint.y(), newPoint.z());
+      mesh->vertex("color",
           static_cast<float> (static_cast<int> (newPoint.x()) % 255) / 256,
           static_cast<float> (static_cast<int> (newPoint.y()) % 255) / 256,
           static_cast<float> (static_cast<int> (newPoint.z()) % 255) / 256);
@@ -382,7 +382,7 @@ Mesh * Geometry::sphere(GLdouble radius, GLint slices, GLint stacks) {
       if(smoothNormals){
         sintemp3 = sinCache2b[1];
         costemp3 = cosCache2b[1];
-        topFan->addNormal(sinCache2a[0] * sinCache2b[0], cosCache2a[0]
+        topFan->vertex("normal",sinCache2a[0] * sinCache2b[0], cosCache2a[0]
             * sinCache2b[0], cosCache2b[0]);
       }else{
         sintemp3 = sinCache3b[1];
@@ -390,31 +390,31 @@ Mesh * Geometry::sphere(GLdouble radius, GLint slices, GLint stacks) {
       }
 
       //glBegin(GL_TRIANGLE_FAN);
-      topFan->addPosition(0.0, 0.0, radius);
+      topFan->vertex("position",0.0, 0.0, radius);
       if (orientationOutside) {
         for (i = slices; i >= 0; i--) {
           if (smoothNormals) {
-            topFan->addNormal(sinCache2a[i] * sintemp3,
+            topFan->vertex("normal",sinCache2a[i] * sintemp3,
                 cosCache2a[i] * sintemp3, costemp3);
           } else {
             if (i != slices) {
-              topFan->addNormal(sinCache3a[i + 1] * sintemp3,
+              topFan->vertex("normal",sinCache3a[i + 1] * sintemp3,
                   cosCache3a[i + 1] * sintemp3, costemp3);
             }
           }
-          topFan->addPosition(sintemp2 * sinCache1a[i],
+          topFan->vertex("position",sintemp2 * sinCache1a[i],
               sintemp2 * cosCache1a[i], zHigh);
         }
       } else {
         for (i = 0; i <= slices; i++) {
           if (smoothNormals) {
-            topFan->addNormal(sinCache2a[i] * sintemp3,
+            topFan->vertex("normal",sinCache2a[i] * sintemp3,
                 cosCache2a[i] * sintemp3, costemp3);
           } else {
-            topFan->addNormal(sinCache3a[i] * sintemp3,
+            topFan->vertex("normal",sinCache3a[i] * sintemp3,
                 cosCache3a[i] * sintemp3, costemp3);
           }
-          topFan->addPosition(sintemp2 * sinCache1a[i],
+          topFan->vertex("position",sintemp2 * sinCache1a[i],
               sintemp2 * cosCache1a[i], zHigh);
         }
       }
@@ -426,38 +426,38 @@ Mesh * Geometry::sphere(GLdouble radius, GLint slices, GLint stacks) {
       if (smoothNormals) {
         sintemp3 = sinCache2b[stacks - 1];
         costemp3 = cosCache2b[stacks - 1];
-        bottomFan->addNormal(sinCache2a[stacks] * sinCache2b[stacks],
+        bottomFan->vertex("normal",sinCache2a[stacks] * sinCache2b[stacks],
             cosCache2a[stacks] * sinCache2b[stacks], cosCache2b[stacks]);
       } else {
         sintemp3 = sinCache3b[stacks];
         costemp3 = cosCache3b[stacks];
       }
 
-      bottomFan->addPosition(0.0, 0.0, -radius);
+      bottomFan->vertex("position",0.0, 0.0, -radius);
       if (orientationOutside) {
         for (i = 0; i <= slices; i++) {
           if (smoothNormals) {
-            bottomFan->addNormal(sinCache2a[i] * sintemp3,
+            bottomFan->vertex("normal",sinCache2a[i] * sintemp3,
                 cosCache2a[i] * sintemp3, costemp3);
           } else {
-            bottomFan->addNormal(sinCache3a[i] * sintemp3,
+            bottomFan->vertex("normal",sinCache3a[i] * sintemp3,
                 cosCache3a[i] * sintemp3, costemp3);
           }
-          bottomFan->addPosition(sintemp2 * sinCache1a[i],
+          bottomFan->vertex("position",sintemp2 * sinCache1a[i],
               sintemp2 * cosCache1a[i], zHigh);
         }
       } else {
         for (i = slices; i >= 0; i--) {
           if (smoothNormals) {
-            bottomFan->addNormal(sinCache2a[i] * sintemp3, cosCache2a[i] * sintemp3,
+            bottomFan->vertex("normal",sinCache2a[i] * sintemp3, cosCache2a[i] * sintemp3,
                 costemp3);
           } else {
             if (i != slices) {
-              bottomFan->addNormal(sinCache3a[i + 1] * sintemp3,
+              bottomFan->vertex("normal",sinCache3a[i + 1] * sintemp3,
                   cosCache3a[i + 1] * sintemp3, costemp3);
             }
           }
-          bottomFan->addPosition(sintemp2 * sinCache1a[i], sintemp2 * cosCache1a[i], zHigh);
+          bottomFan->vertex("position",sintemp2 * sinCache1a[i], sintemp2 * cosCache1a[i], zHigh);
         }
       }
       //glEnd();
@@ -492,36 +492,36 @@ Mesh * Geometry::sphere(GLdouble radius, GLint slices, GLint stacks) {
       //glBegin(GL_QUAD_STRIP);
       for (i = 0; i <= slices; i++) {
           if (smoothNormals)
-            middleStrip->addNormal(sinCache2a[i] * sintemp3, cosCache2a[i] * sintemp3,
+            middleStrip->vertex("normal",sinCache2a[i] * sintemp3, cosCache2a[i] * sintemp3,
                 costemp3);
         if (orientationOutside) {
           if (useTextureCoords) {
-            middleStrip->addUv(1 - (float) i / slices, 1 - (float) (j + 1) / stacks);
+            middleStrip->vertex("uv",1 - (float) i / slices, 1 - (float) (j + 1) / stacks);
           }
-          middleStrip->addPosition(sintemp2 * sinCache1a[i], sintemp2 * cosCache1a[i],
+          middleStrip->vertex("position",sintemp2 * sinCache1a[i], sintemp2 * cosCache1a[i],
               zHigh);
         } else {
 //            if (useTextureCoords) {
 //              glTexCoord2f(1 - (float) i / slices, 1 - (float) j / stacks);
 //            }
-//            addPosition(sintemp1 * sinCache1a[i], sintemp1 * cosCache1a[i], zLow);
+//            vertex("position",sintemp1 * sinCache1a[i], sintemp1 * cosCache1a[i], zLow);
         }
         if (hasNormals && smoothNormals) {
-          middleStrip->addNormal(sinCache2a[i] * sintemp4, cosCache2a[i] * sintemp4,
+          middleStrip->vertex("normal",sinCache2a[i] * sintemp4, cosCache2a[i] * sintemp4,
               costemp4);
-//            middleStrip->addNormal(sinCache3a[i] * sintemp4, cosCache3a[i] * sintemp4,
+//            middleStrip->vertex("normal",sinCache3a[i] * sintemp4, cosCache3a[i] * sintemp4,
 //                costemp4);
         }
         if (orientationOutside) {
           if (useTextureCoords) {
-            middleStrip->addUv(1 - (float) i / slices, 1 - (float) j / stacks);
+            middleStrip->vertex("uv",1 - (float) i / slices, 1 - (float) j / stacks);
           }
-          middleStrip->addPosition(sintemp1 * sinCache1a[i], sintemp1 * cosCache1a[i], zLow);
+          middleStrip->vertex("position",sintemp1 * sinCache1a[i], sintemp1 * cosCache1a[i], zLow);
         } else {
 //            if (useTextureCoords) {
 //              glTexCoord2f(1 - (float) i / slices, 1 - (float) (j + 1) / stacks);
 //            }
-//            addPosition(sintemp2 * sinCache1a[i], sintemp2 * cosCache1a[i],
+//            vertex("position",sintemp2 * sinCache1a[i], sintemp2 * cosCache1a[i],
 //                zHigh);
         }
       }
@@ -540,7 +540,7 @@ Mesh * Geometry::sphere(GLdouble radius, GLint slices, GLint stacks) {
 //
 //        for (i = 0; i < slices; i++) {
 //          if (hasNormals && smoothNormals) {
-//            addNormal(sinCache2a[i] * sintemp2, cosCache2a[i] * sintemp2,
+//            vertex("normal",sinCache2a[i] * sintemp2, cosCache2a[i] * sintemp2,
 //                costemp2);
 //          }
 //
@@ -549,7 +549,7 @@ Mesh * Geometry::sphere(GLdouble radius, GLint slices, GLint stacks) {
 //          if (useTextureCoords) {
 //            glTexCoord2f(1 - (float) i / slices, 1 - (float) j / stacks);
 //          }
-//          addPosition(sintemp1 * sinCache1a[i], sintemp1 * cosCache1a[i],
+//          vertex("position",sintemp1 * sinCache1a[i], sintemp1 * cosCache1a[i],
 //              costemp1);
 //        }
 //      }
@@ -568,17 +568,17 @@ Mesh * Geometry::sphere(GLdouble radius, GLint slices, GLint stacks) {
 //        for (i = 0; i <= slices; i++) {
 //          if (hasNormals) {
 //            if (smoothNormals) {
-//            addNormal(sinCache2a[i] * sintemp2, cosCache2a[i] * sintemp2,
+//            vertex("normal",sinCache2a[i] * sintemp2, cosCache2a[i] * sintemp2,
 //                costemp2);
 //            } else {
-//            addNormal(sinCache3a[i] * sintemp2, cosCache3a[i] * sintemp2,
+//            vertex("normal",sinCache3a[i] * sintemp2, cosCache3a[i] * sintemp2,
 //                costemp2);
 //            }
 //          }
 //          if (useTextureCoords) {
 //            glTexCoord2f(1 - (float) i / slices, 1 - (float) j / stacks);
 //          }
-//          addPosition(sintemp1 * sinCache1a[i], sintemp1 * cosCache1a[i],
+//          vertex("position",sintemp1 * sinCache1a[i], sintemp1 * cosCache1a[i],
 //              costemp1);
 //        }
 //        //glEnd();
@@ -595,10 +595,10 @@ Mesh * Geometry::sphere(GLdouble radius, GLint slices, GLint stacks) {
 //        for (j = 0; j <= stacks; j++) {
 //          if (hasNormals) {
 //            if (smoothNormals) {
-//            addNormal(sintemp2 * sinCache2b[j], costemp2 * sinCache2b[j],
+//            vertex("normal",sintemp2 * sinCache2b[j], costemp2 * sinCache2b[j],
 //                cosCache2b[j]);
 //            } else {
-//            addNormal(sintemp2 * sinCache3b[j], costemp2 * sinCache3b[j],
+//            vertex("normal",sintemp2 * sinCache3b[j], costemp2 * sinCache3b[j],
 //                cosCache3b[j]);
 //            }
 //          }
@@ -606,7 +606,7 @@ Mesh * Geometry::sphere(GLdouble radius, GLint slices, GLint stacks) {
 //          if (useTextureCoords) {
 //            glTexCoord2f(1 - (float) i / slices, 1 - (float) j / stacks);
 //          }
-//          addPosition(sintemp1 * sinCache1b[j], costemp1 * sinCache1b[j],
+//          vertex("position",sintemp1 * sinCache1b[j], costemp1 * sinCache1b[j],
 //              cosCache1b[j]);
 //        }
 //        //glEnd();

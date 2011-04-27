@@ -126,35 +126,18 @@ void Mesh::addSubMesh(Mesh * mesh) {
   subMeshes.push_back(mesh);
 }
 
-void Mesh::addVertex(GLfloat x, GLfloat y, GLfloat z, vector<GLfloat> * buffer) {
-  buffer->push_back(x);
-  buffer->push_back(y);
-  buffer->push_back(z);
+void Mesh::vertex(string type, GLfloat x, GLfloat y, GLfloat z) {
+  buffers[type].push_back(x);
+  buffers[type].push_back(y);
+  buffers[type].push_back(z);
+  if (type == "position") {
+    indices.push_back(index);
+    index++;
+  }
 }
 
-void Mesh::addPosition(GLfloat x, GLfloat y, GLfloat z) {
-  addVertex(x, y, z, &buffers["position"]);
-  indices.push_back(index);
-  index++;
-}
-
-void Mesh::addNormal(GLfloat x, GLfloat y, GLfloat z) {
-  addVertex(x, y, z, &buffers["normal"]);
-}
-
-void Mesh::addTangent(GLfloat x, GLfloat y, GLfloat z) {
-  addVertex(x, y, z, &buffers["tangent"]);
-}
-
-void Mesh::addBitangent(GLfloat x, GLfloat y, GLfloat z) {
-  addVertex(x, y, z, &buffers["bitangent"]);
-}
-
-void Mesh::addColor(GLfloat x, GLfloat y, GLfloat z) {
-  addVertex(x, y, z, &buffers["color"]);
-}
-
-void Mesh::addUv(GLfloat x, GLfloat y) {
-  buffers["uv"].push_back(x);
-  buffers["uv"].push_back(y);
+//currently used only for uv buffer
+void Mesh::vertex(string type, GLfloat x, GLfloat y) {
+  buffers[type].push_back(x);
+  buffers[type].push_back(y);
 }

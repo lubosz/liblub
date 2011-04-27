@@ -48,7 +48,7 @@ Mesh * MeshLoader::load(string file) {
             int vertex = face.mIndices[j];
 
             aiVector3D position = assMesh->mVertices[vertex];
-            mesh->addPosition(position.x,position.y,position.z);
+            mesh->vertex("position",position.x,position.y,position.z);
 
             if(i == 0 && j == 0) {
                 boundingBoxMin = QVector3D(position.x,position.y,position.z);
@@ -70,20 +70,20 @@ Mesh * MeshLoader::load(string file) {
 
             if(assMesh->HasNormals()) {
               aiVector3D normal = assMesh->mNormals[vertex];
-              mesh->addNormal(normal.x, normal.y, normal.z);
+              mesh->vertex("normal",normal.x, normal.y, normal.z);
             }
 
             if (assMesh->HasTangentsAndBitangents()) {
               aiVector3D tangent = assMesh->mTangents[vertex];
-              mesh->addTangent(tangent.x, tangent.y, tangent.z);
+              mesh->vertex("tangent",tangent.x, tangent.y, tangent.z);
 
               aiVector3D bitangent = assMesh->mBitangents[vertex];
-              mesh->addBitangent(bitangent.x, bitangent.y, bitangent.z);
+              mesh->vertex("bitangent",bitangent.x, bitangent.y, bitangent.z);
             }
 
             if(assMesh->HasTextureCoords(0)){
               aiVector3D uv = assMesh->mTextureCoords[0][vertex];
-              mesh->addUv(uv.x, uv.y);
+              mesh->vertex("uv",uv.x, uv.y);
             }
         }
     }
