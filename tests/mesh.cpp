@@ -14,6 +14,10 @@ public:
 
   void runTest() {
     QList<string> attributes;
+    attributes.push_back("color");
+    attributes.push_back("normal");
+    attributes.push_back("tangent");
+    attributes.push_back("bitangent");
     attributes.push_back("uv");
     Config::Instance().load("config.xml");
     Mesh * sphere = Geometry::sphere(attributes, 11.0f, 100, 50);
