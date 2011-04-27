@@ -68,7 +68,7 @@ class AtmosphereApp: public Application {
     light = new Light(QVector3D(-2.5, 21.5, -5.2), QVector3D(1, -5, 0));
     SceneData::Instance().addLight("foolight", light);
 
-    Mesh * innerSphere = Geometry::sphere(11.0f, 100, 50);
+    Mesh * innerSphere = Geometry::sphere(attributes, 11.0f, 100, 50);
 //    Mesh * innerSphere = MeshFactory::plane();
 //    Mesh * innerSphere = MeshFactory::load("earth.obj");
 

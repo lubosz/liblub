@@ -151,6 +151,12 @@ void SceneLoader::appendMesh(const QDomElement & meshNode) {
 
     if (meshNode.tagName() == "File") {
         string meshUrl = meshNode.attribute("url").toStdString();
+        QList<string> attributes;
+        attributes.push_back("normal");
+        attributes.push_back("tangent");
+        attributes.push_back("bitangent");
+        attributes.push_back("uv");
+
         if (meshNode.hasAttribute("drawType")) {
             GLint drawType = GL_TRIANGLES;
             string drawTypeString =
@@ -167,26 +173,30 @@ void SceneLoader::appendMesh(const QDomElement & meshNode) {
             else if (drawTypeString == "LINES")
                 drawType = GL_LINES;
 
-            mesh = MeshLoader::load(meshUrl);
+            mesh = MeshLoader::load(attributes, meshUrl);
             mesh->setDrawType(drawType);
         } else {
-            mesh = MeshLoader::load(meshUrl);
+            mesh = MeshLoader::load(attributes, meshUrl);
         }
     } else if (meshNode.tagName() == "Procedural") {
         if (meshNode.attribute("type") == "Sponge") {
-            MengerSponge * sponge = new MengerSponge(meshNode.attribute(
+          QList<string> attributes;
+          attributes.push_back("normal");
+          MengerSponge * sponge = new MengerSponge(attributes, meshNode.attribute(
                     "recursion").toInt());
-            mesh = sponge->getMesh();
+          mesh = sponge->getMesh();
         } else if (meshNode.attribute("type") == "Stars") {
           float resolution = meshNode.attribute("resolution").toFloat();
           vector<float> resolutionvec = { resolution, resolution, resolution };
             mesh = Geometry::stars(
+                QList<string>(),
                     resolutionvec,
                     meshNode.attribute("density").toFloat(),
                     meshNode.attribute("randomness").toFloat(),
                     meshNode.attribute("colorIntensity").toFloat());
         } else if (meshNode.attribute("type") == "Spiral") {
             mesh = Geometry::spiral(
+                QList<string>(),
                     meshNode.attribute("resolution").toFloat());
         }
     }

@@ -16,8 +16,8 @@
 #include <QRectF>
 #include "Renderer/RenderEngine.h"
 
-Mesh * MeshLoader::load(string file) {
-    Mesh * mesh = new Mesh();
+Mesh * MeshLoader::load(const QList<string> & attributes, string file) {
+    Mesh * mesh = new Mesh(attributes);
     string path = Config::Instance().value<string> ("meshDir") + file;
 
     // Create an instance of the Importer class

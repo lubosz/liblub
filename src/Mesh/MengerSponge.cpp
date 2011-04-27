@@ -10,8 +10,8 @@
 #include <algorithm>
 #include "System/Logger.h"
 
-MengerSponge::MengerSponge(unsigned recursion) {
-  mesh = new Mesh();
+MengerSponge::MengerSponge(const QList<string> & attributes, unsigned recursion) {
+  mesh = new Mesh(attributes);
   makeSponge(recursion, {0, 0, 0}, 1.0f);
   mesh->init();
   mesh->setDrawType(GL_TRIANGLES);

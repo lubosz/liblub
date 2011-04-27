@@ -22,7 +22,10 @@ FrameBuffer::FrameBuffer(GLuint width, GLuint height) {
     this->width = width;
     this->height = height;
 
-    renderPlane = Geometry::plane(QRectF(-1,-1,2,2));
+    QList<string> attributes;
+    attributes.push_back("uv");
+
+    renderPlane = Geometry::plane(attributes, QRectF(-1,-1,2,2));
 
     glError;
 

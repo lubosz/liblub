@@ -11,8 +11,8 @@
 #include "System/Logger.h"
 #include "Renderer/RenderEngine.h"
 
-Mesh * Geometry::plane(const QRectF &plane) {
-    Mesh * mesh = new Mesh();
+Mesh * Geometry::plane(const QList<string> & attributes, const QRectF &plane) {
+    Mesh * mesh = new Mesh(attributes);
 
     mesh->buffers["position"] = {
         (float)plane.left(), (float)plane.top(), -1.0,
@@ -40,8 +40,8 @@ Mesh * Geometry::plane(const QRectF &plane) {
     return mesh;
 }
 
-Mesh * Geometry::tetrahedron() {
-    Mesh * mesh = new Mesh();
+Mesh * Geometry::tetrahedron(const QList<string> & attributes) {
+    Mesh * mesh = new Mesh(attributes);
     mesh->buffers["position"] = {
             1.0, 1.0, 1.0,
             -1.0, -1.0, 1.0,
@@ -76,8 +76,8 @@ Mesh * Geometry::tetrahedron() {
     return mesh;
 }
 
-Mesh * Geometry::cube() {
-    Mesh * mesh = new Mesh();
+Mesh * Geometry::cube(const QList<string> & attributes) {
+    Mesh * mesh = new Mesh(attributes);
     mesh->buffers["position"] = {
         1.0, -1.0, -1.0,
         1.0, -1.0, 1.0,
@@ -121,8 +121,8 @@ Mesh * Geometry::cube() {
     return mesh;
 }
 
-Mesh * Geometry::icosahedron() {
-  Mesh * mesh = new Mesh();
+Mesh * Geometry::icosahedron(const QList<string> & attributes) {
+  Mesh * mesh = new Mesh(attributes);
   mesh->indices = {
         2, 1, 0,
         3, 2, 0,
@@ -175,10 +175,10 @@ float Geometry::randomize(float density, float randomness) {
     return density + (density * randomValue * randomness);
 }
 
-Mesh * Geometry::stars(vector<float> & resolution, float density,
+Mesh * Geometry::stars(const QList<string> & attributes, vector<float> & resolution, float density,
     float randomness, float colorIntensity) {
 
-  Mesh * mesh = new Mesh();
+  Mesh * mesh = new Mesh(attributes);
   unsigned i = 0;
 
   srand(time(NULL));
@@ -203,8 +203,8 @@ Mesh * Geometry::stars(vector<float> & resolution, float density,
   return mesh;
 }
 
-Mesh * Geometry::spiral(int resolution) {
-  Mesh * mesh = new Mesh();
+Mesh * Geometry::spiral(const QList<string> & attributes, int resolution) {
+  Mesh * mesh = new Mesh(attributes);
   QVector3D point = QVector3D(1, 0, 0);
   QMatrix4x4 rotation = QMatrix4x4();
   rotation.rotate(0.5, 0.0, 1.0, 0.0);
@@ -244,21 +244,22 @@ Mesh * Geometry::spiral(int resolution) {
 }
 
 //From gluSphere (MESA)
-Mesh * Geometry::sphere(GLdouble radius, GLint slices, GLint stacks) {
+Mesh * Geometry::sphere(const QList<string> & attributes, GLdouble radius, GLint slices, GLint stacks) {
 
-  Mesh *sphere = new Mesh();
-  Mesh * middleStrip = new Mesh();
-  Mesh * bottomFan = new Mesh();
-  Mesh * topFan = new Mesh();
+  Mesh * middleStrip = new Mesh(attributes);
+  Mesh * bottomFan = new Mesh(attributes);
+  Mesh * topFan = new Mesh(attributes);
+
   middleStrip->name = "Middle Strip";
   topFan->name = "topFan";
   bottomFan->name = "bottomFan";
-  bool hasNormals = true;
+
+  bool hasNormals = attributes.contains("normal");
   bool smoothNormals = true;
   bool drawPoints = false;
   bool drawLines = false;
   bool orientationOutside = true;
-  bool useTextureCoords = true;
+  bool useTextureCoords = attributes.contains("uv");
   GLenum drawStyle = GL_FILL;
 #define CACHE_SIZE  240
   GLint i, j;
@@ -620,6 +621,7 @@ Mesh * Geometry::sphere(GLdouble radius, GLint slices, GLint stacks) {
   middleStrip->setDrawType(GL_TRIANGLE_STRIP);
 
   if(!useTextureCoords) {
+    Mesh * sphere = new Mesh(attributes);
     topFan->init();
     topFan->setDrawType(GL_TRIANGLE_FAN);
 

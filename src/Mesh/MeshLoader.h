@@ -11,6 +11,6 @@
 
 class MeshLoader {
  public:
-	static Mesh * load(string file);
+	static Mesh * load(const QList<string> & attributes, string file);
 };
 

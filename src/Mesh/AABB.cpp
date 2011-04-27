@@ -28,7 +28,7 @@ void AABB::draw() {
 }
 
 void AABB::createMesh() {
-  mesh = new Mesh();
+  mesh = new Mesh(QList<string>());
   mesh->buffers["position"] = {
           1.0, 1.0, 1.0,
           -1.0, -1.0, 1.0,

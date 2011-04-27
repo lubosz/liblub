@@ -22,7 +22,7 @@ class MengerSponge {
 	void addCube(const vector<float> & position, float size);
 
  public:
-	explicit MengerSponge(unsigned recursion);
+	explicit MengerSponge(const QList<string> & attributes, unsigned recursion);
 	virtual ~MengerSponge();
 
 	Mesh * getMesh();

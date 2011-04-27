@@ -10,6 +10,7 @@
 #include "common/OpenGL.h"
 #include <string>
 #include <QMap>
+#include <QList>
 #include <vector>
 #include <QVector3D>
 #include "Mesh/AABB.h"
@@ -26,12 +27,14 @@ class Mesh {
   vector<GLuint>  indices;
   vector<Mesh*> subMeshes;
 	AABB * boundingBox;
+	QList<string> usedAttributes;
 
-	Mesh();
+	Mesh(const QList<string> & attributes);
 	void setDrawType(GLint drawType);
 	void draw();
 	void draw(unsigned amount);
 	void init();
+	void initBuffer(string name, string linkage, unsigned vertexSize);
 	void addSubMesh(Mesh * mesh);
 	virtual ~Mesh();
 	void vertex(string type, GLfloat x, GLfloat y, GLfloat z);

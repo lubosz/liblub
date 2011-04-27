@@ -105,8 +105,8 @@ class AtmosphereApp: public Application {
     program->setUniform("cameraHeight2", float(camera->position.length()*camera->position.length()));
   }
 
-  Mesh * moonPlane(){
-    Mesh * moonPlane = new Mesh();
+  Mesh * moonPlane(const QList<string> & attributes){
+    Mesh * moonPlane = new Mesh(attributes);
     moonPlane->buffers["position"] = {
         -4.0f, 4.0f, -50.0f,
         -4.0f, -4.0f, -50.0f,
@@ -157,12 +157,12 @@ class AtmosphereApp: public Application {
     light = new Light(QVector3D(-2.5, 21.5, -5.2), QVector3D(1, -5, 0));
     SceneData::Instance().addLight("foolight", light);
 
-    Mesh * innerSphere = Geometry::sphere(innerRadius, 100, 50);
-    Mesh * outerSphere = Geometry::sphere(outerRadius, 300, 500);
+    Mesh * innerSphere = Geometry::sphere(attributes, innerRadius, 100, 50);
+    Mesh * outerSphere = Geometry::sphere(attributes, outerRadius, 300, 500);
 
 //    Mesh * monkey = MeshFactory::load("monkey.obj");
 
-    spaceNode = new Node("space", { 0, 0, 0 }, 1, moonPlane(), spaceFromAtmosphere);
+    spaceNode = new Node("space", { 0, 0, 0 }, 1, moonPlane(attributes), spaceFromAtmosphere);
     groundNode = new Node("ground", { 0, 0, 0 }, 1, innerSphere, groundFromAtmosphere);
     groundNode->setRotation(QVector3D(-90, 0, 0));
     skyNode = new Node("sky", { 0, 0, 0 }, 1, outerSphere, skyFromAtmosphere);
@@ -212,7 +212,7 @@ class AtmosphereApp: public Application {
     terrainMat->getShaderProgram()->setUniform("TessLevelOuter",1.0f);
     terrainMat->getShaderProgram()->setUniform("LightPosition", QVector3D(0.25, 0.25, 1));
     setAtmoUniforms(terrainMat->getShaderProgram());
-    Mesh * groundMesh = MeshLoader::load("earth.obj");
+    Mesh * groundMesh = MeshLoader::load(attributes, "earth.obj");
 //    Mesh * mesh = Geometry::gluSphere(10.0f, 100, 50);
 //    Mesh * mesh = Geometry::makeIcosahedron();
     groundMesh->setDrawType(GL_PATCHES);

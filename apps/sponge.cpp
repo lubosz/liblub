@@ -57,13 +57,13 @@ class Sponge : public Application {
     material->shaderProgram->setUniform("xPixelOffset",1.0f/1920);
 
     for (int i = 0; i < 5; i++) {
-      MengerSponge * sponge = new MengerSponge(i);
+      MengerSponge * sponge = new MengerSponge(attributes, i);
       Node * node = new Node("sponge", { static_cast<float> (i - 2.5),
           static_cast<float> (i * 3 - 6), -5 }, 1, sponge->getMesh(), material);
       SceneGraph::Instance().addNode(node);
     }
 
-    Node * plane = new Node("Plane", { 0, -30, 0 }, 20, Geometry::plane(QRectF(-1,-1,2,2)), material);
+    Node * plane = new Node("Plane", { 0, -30, 0 }, 20, Geometry::plane(attributes, QRectF(-1,-1,2,2)), material);
     plane->setRotation(QVector3D(90,0,0));
     plane->setReceiveShadows(true);
     plane->setCastShadows(false);

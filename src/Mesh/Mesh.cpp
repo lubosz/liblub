@@ -11,7 +11,8 @@
 #include "Renderer/RenderEngine.h"
 #include "System/Logger.h"
 
-Mesh::Mesh() {
+Mesh::Mesh(const QList<string> & attributes) {
+  usedAttributes = attributes;
   index = 0;
   drawType = GL_POINTS;
   bufferCount = 0;
@@ -33,15 +34,27 @@ void Mesh::init() {
   glBindVertexArray(vao);
 
   addBuffer(buffers["position"], 3, "in_Vertex");
-  if(!buffers["normal"].empty())
-    addBuffer(buffers["normal"], 3, "in_Normal");
-  if(!buffers["tangent"].empty())
-    addBuffer(buffers["tangent"], 3, "in_Tangent");
-  if(!buffers["bitangent"].empty())
-    addBuffer(buffers["bitangent"], 3, "in_Bitangent");
-  if(!buffers["uv"].empty())
-    addBuffer(buffers["uv"], 2, "in_Uv");
+  initBuffer("color", "in_Color", 3);
+  initBuffer("normal", "in_Normal", 3);
+  initBuffer("tangent", "in_Tangent", 3);
+  initBuffer("bitangent", "in_Bitangent", 3);
+  initBuffer("uv", "in_Uv", 2);
   addElementBuffer(indices);
+}
+
+void Mesh::initBuffer(string name, string linkage, unsigned vertexSize) {
+  if(usedAttributes.contains(name)) {
+    if(!buffers[name].empty()) {
+      addBuffer(buffers[name], vertexSize, linkage);
+    } else {
+      if (vertexSize == 3) {
+        LogWarning << "No" << name << "Buffer found. Will use Position Buffer instead.";
+        addBuffer(buffers["position"], vertexSize, linkage);
+      } else {
+        LogError << "No" << name << "Buffer found.";
+      }
+    }
+  }
 }
 
 Mesh::~Mesh() {

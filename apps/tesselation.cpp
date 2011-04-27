@@ -58,7 +58,7 @@ class TesselationApp: public Application {
     light = new Light(QVector3D(-2.5, 21.5, -5.2), QVector3D(1, -5, 0));
     SceneData::Instance().addLight("foolight", light);
 
-    Mesh * mesh = MeshLoader::load("earth.obj");
+    Mesh * mesh = MeshLoader::load(attributes, "earth.obj");
 //    Mesh * mesh = Geometry::gluSphere(10.0f, 100, 50);
 //    Mesh * mesh = Geometry::makeIcosahedron();
     mesh->setDrawType(GL_PATCHES);

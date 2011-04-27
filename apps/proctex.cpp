@@ -65,7 +65,7 @@ class LoadApp: public Application {
     perlinNoise = material->getShaderProgram();
 
 
-    Node * plane = new Node("Plane", { 0,0,-2 }, 1, Geometry::plane(QRectF(-1,-1,2,2)), material);
+    Node * plane = new Node("Plane", { 0,0,-2 }, 1, Geometry::plane(attributes, QRectF(-1,-1,2,2)), material);
 //    plane->transparent = true;
     plane->setRotation(QVector3D(-90,0,180));
     SceneGraph::Instance().addNode(plane);
