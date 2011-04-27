@@ -292,6 +292,7 @@ Mesh * Geometry::spiral(int resolution) {
     return mesh;
 }
 
+//From gluSphere (MESA)
 Mesh * Geometry::sphere(GLdouble radius, GLint slices, GLint stacks) {
 
   Mesh *sphere = new Mesh();
@@ -306,10 +307,9 @@ Mesh * Geometry::sphere(GLdouble radius, GLint slices, GLint stacks) {
   bool drawPoints = false;
   bool drawLines = false;
   bool orientationOutside = true;
-  bool useTextureCoords = false;
+  bool useTextureCoords = true;
   GLenum drawStyle = GL_FILL;
 #define CACHE_SIZE  240
-//#define CACHE_SIZE  4096
   GLint i, j;
   GLfloat sinCache1a[CACHE_SIZE];
   GLfloat cosCache1a[CACHE_SIZE];
@@ -438,37 +438,35 @@ Mesh * Geometry::sphere(GLdouble radius, GLint slices, GLint stacks) {
         costemp3 = cosCache3b[1];
       }
 
-
       //glBegin(GL_TRIANGLE_FAN);
       topFan->addPosition(0.0, 0.0, radius);
       if (orientationOutside) {
         for (i = slices; i >= 0; i--) {
-          if(smoothNormals){
-            topFan->addNormal(sinCache2a[i] * sintemp3, cosCache2a[i] * sintemp3,
-                costemp3);
-          }else{
+          if (smoothNormals) {
+            topFan->addNormal(sinCache2a[i] * sintemp3,
+                cosCache2a[i] * sintemp3, costemp3);
+          } else {
             if (i != slices) {
-              topFan->addNormal(sinCache3a[i + 1] * sintemp3, cosCache3a[i + 1]
-                  * sintemp3, costemp3);
+              topFan->addNormal(sinCache3a[i + 1] * sintemp3,
+                  cosCache3a[i + 1] * sintemp3, costemp3);
             }
           }
-          topFan->addPosition(sintemp2 * sinCache1a[i], sintemp2 * cosCache1a[i],
-              zHigh);
+          topFan->addPosition(sintemp2 * sinCache1a[i],
+              sintemp2 * cosCache1a[i], zHigh);
         }
       } else {
-//          for (i = 0; i <= slices; i++) {
-//            if (smoothNormals) {
-//              addNormal(sinCache2a[i] * sintemp3, cosCache2a[i] * sintemp3,
-//                  costemp3);
-//            } else {
-//              addNormal(sinCache3a[i] * sintemp3, cosCache3a[i] * sintemp3,
-//                  costemp3);
-//            }
-//            addPosition(sintemp2 * sinCache1a[i], sintemp2 * cosCache1a[i],
-//                zHigh);
-//          }
+        for (i = 0; i <= slices; i++) {
+          if (smoothNormals) {
+            topFan->addNormal(sinCache2a[i] * sintemp3,
+                cosCache2a[i] * sintemp3, costemp3);
+          } else {
+            topFan->addNormal(sinCache3a[i] * sintemp3,
+                cosCache3a[i] * sintemp3, costemp3);
+          }
+          topFan->addPosition(sintemp2 * sinCache1a[i],
+              sintemp2 * cosCache1a[i], zHigh);
+        }
       }
-      //glEnd();
 
       /* High end next (j == stacks-1 iteration) */
       sintemp2 = sinCache1b[stacks - 1];
@@ -484,34 +482,32 @@ Mesh * Geometry::sphere(GLdouble radius, GLint slices, GLint stacks) {
         costemp3 = cosCache3b[stacks];
       }
 
-      //glBegin(GL_TRIANGLE_FAN);
       bottomFan->addPosition(0.0, 0.0, -radius);
       if (orientationOutside) {
         for (i = 0; i <= slices; i++) {
           if (smoothNormals) {
+            bottomFan->addNormal(sinCache2a[i] * sintemp3,
+                cosCache2a[i] * sintemp3, costemp3);
+          } else {
+            bottomFan->addNormal(sinCache3a[i] * sintemp3,
+                cosCache3a[i] * sintemp3, costemp3);
+          }
+          bottomFan->addPosition(sintemp2 * sinCache1a[i],
+              sintemp2 * cosCache1a[i], zHigh);
+        }
+      } else {
+        for (i = slices; i >= 0; i--) {
+          if (smoothNormals) {
             bottomFan->addNormal(sinCache2a[i] * sintemp3, cosCache2a[i] * sintemp3,
                 costemp3);
           } else {
-            bottomFan->addNormal(sinCache3a[i] * sintemp3, cosCache3a[i] * sintemp3,
-                costemp3);
+            if (i != slices) {
+              bottomFan->addNormal(sinCache3a[i + 1] * sintemp3,
+                  cosCache3a[i + 1] * sintemp3, costemp3);
+            }
           }
-          bottomFan->addPosition(sintemp2 * sinCache1a[i], sintemp2 * cosCache1a[i],
-              zHigh);
+          bottomFan->addPosition(sintemp2 * sinCache1a[i], sintemp2 * cosCache1a[i], zHigh);
         }
-      } else {
-//          for (i = slices; i >= 0; i--) {
-//            if (smoothNormals) {
-//              addNormal(sinCache2a[i] * sintemp3, cosCache2a[i] * sintemp3,
-//                  costemp3);
-//            } else {
-//              if (i != slices) {
-//                addNormal(sinCache3a[i + 1] * sintemp3, cosCache3a[i + 1]
-//                    * sintemp3, costemp3);
-//              }
-//            }
-//            addPosition(sintemp2 * sinCache1a[i], sintemp2 * cosCache1a[i],
-//                zHigh);
-//          }
       }
       //glEnd();
     } else {
@@ -669,7 +665,6 @@ Mesh * Geometry::sphere(GLdouble radius, GLint slices, GLint stacks) {
     break;
   }
 
-  LogDebug << "Middle Strip";
   middleStrip->init();
   middleStrip->initPositions();
   middleStrip->initNormals();
@@ -677,26 +672,28 @@ Mesh * Geometry::sphere(GLdouble radius, GLint slices, GLint stacks) {
   middleStrip->initIndex();
   middleStrip->setDrawType(GL_TRIANGLE_STRIP);
 
-  LogDebug << "topFan";
-  topFan->init();
-  topFan->initPositions();
-  topFan->initNormals();
-  topFan->initUv();
-  topFan->initIndex();
-  topFan->setDrawType(GL_TRIANGLE_FAN);
+  if(!useTextureCoords) {
+    topFan->init();
+    topFan->initPositions();
+    topFan->initNormals();
+    topFan->initUv();
+    topFan->initIndex();
+    topFan->setDrawType(GL_TRIANGLE_FAN);
 
-  LogDebug << "bottomFan";
-  bottomFan->init();
-  bottomFan->initPositions();
-  bottomFan->initNormals();
-  bottomFan->initUv();
-  bottomFan->initIndex();
-  bottomFan->setDrawType(GL_TRIANGLE_FAN);
+    bottomFan->init();
+    bottomFan->initPositions();
+    bottomFan->initNormals();
+    bottomFan->initUv();
+    bottomFan->initIndex();
+    bottomFan->setDrawType(GL_TRIANGLE_FAN);
 
-  sphere->addSubMesh(middleStrip);
-  sphere->addSubMesh(topFan);
-  sphere->addSubMesh(bottomFan);
+    sphere->addSubMesh(middleStrip);
+    sphere->addSubMesh(topFan);
+    sphere->addSubMesh(bottomFan);
 
-  return sphere;
+    return sphere;
+  } else {
+    return middleStrip;
+  }
 
 }
