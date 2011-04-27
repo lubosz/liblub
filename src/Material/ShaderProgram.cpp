@@ -11,6 +11,8 @@
 #include "Scene/SceneData.h"
 #include "Renderer/RenderEngine.h"
 
+using std::stringstream;
+
 ShaderProgram::ShaderProgram() {
   attribCount = 0;
     /* Assign our program handle a "name" */
@@ -131,12 +133,13 @@ void ShaderProgram::bindVertexAttributes(const QList<string> & attributes) {
 template<typename T>
 void ShaderProgram::initUniformsByType(vector<Uniform<T> > & uniforms) {
   foreach(Uniform<T> uniform, uniforms) {
-      LogDebug << "Uniform: " + uniform.name + ": ";
+    stringstream log;
+      log << "Uniform: " + uniform.name + ": ";
       foreach(T value, uniform.values) {
-        LogDebug << value << ", ";
+        log << value << ", ";
       }
       uniform.init(program);
-      LogDebug << uniform.values.size() << " bound.";
+      LogDebug << log.str() << uniform.values.size() << " bound.";
       glError;
     }
 }
