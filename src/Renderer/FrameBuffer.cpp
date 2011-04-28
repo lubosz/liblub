@@ -65,7 +65,7 @@ void FrameBuffer::checkAndFinish() {
 void FrameBuffer::attachTexture(GLenum attachmentPoint, Texture * texture) {
     // attach a texture to FBO color attachement point
     glFramebufferTexture2D(GL_FRAMEBUFFER, attachmentPoint, GL_TEXTURE_2D,
-            texture->getHandler(), 0);
+            texture->getHandle(), 0);
 }
 
 void FrameBuffer::disableColorBuffer() {

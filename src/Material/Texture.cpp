@@ -21,7 +21,7 @@ Texture::~Texture() {
   // TODO(bmonkey): Auto-generated destructor stub
 }
 
-GLuint Texture::getHandler() const {
+GLuint Texture::getHandle() const {
     return texture;
 }
 
@@ -42,42 +42,7 @@ void Texture::uniform(GLuint program) {
     glUniform1i(texLoc, texture-1);
     glError;
 }
-#if USE_FREEIMAGE
-void Texture::readFreeImage(GLenum target, string path) {
-  fipImage * image = new fipImage();
-  image->load(path.c_str());
-  Logger::Instance().message
-          << path
-          << " Bits Per Pixel:\t"
-          << image->getBitsPerPixel() << "\t"
-          << image->getWidth()
-          << "x" << image->getHeight();
-    Logger::Instance().log("DEBUG", "Texture");
 
-    if (image->getBitsPerPixel() == 32) {
-      glChannelOrder = GL_RGBA;
-      texChannelOrder = GL_BGRA;
-    } else if (image->getBitsPerPixel() == 24) {
-      glChannelOrder = GL_RGB;
-      texChannelOrder = GL_BGR;
-    } else {
-      glChannelOrder = GL_RGB;
-      texChannelOrder = GL_BGR;
-      Logger::Instance().log("WARNING",
-              "Texture", "Converting "+ path+ " to 24bits.");
-      if (image->convertTo24Bits()) {
-        Logger::Instance().log("WARNING", "Texture", "SUCESS!");
-      } else {
-        Logger::Instance().log("ERROR",
-                "Texture", "Converting "+ path+ " to 24bit failed.");
-      }
-    }
-
-    glTexImage2D(target, 0, glChannelOrder, image->getWidth(),
-                image->getHeight(), 0, texChannelOrder, GL_UNSIGNED_BYTE,
-                image->accessPixels());
-}
-#else
 void Texture::readQImage(GLenum target, string path) {
   QImage * image = new QImage();
   image->load(QString::fromStdString(path));
@@ -114,4 +79,3 @@ void Texture::loadQImage(GLenum target, QImage * image) {
 //    void glCopyTexImage2D(GLenum  target,  GLint  level,  GLenum  internalformat,  GLint  x,  GLint  y,  GLsizei  width,  GLsizei  height,  GLint  border);
 //    void glTexImage2D(GLenum  target,  GLint  level,  GLint  internalFormat,  GLsizei  width,  GLsizei  height,  GLint  border,  GLenum  format,  GLenum  type,  const GLvoid *  data);
 }
-#endif

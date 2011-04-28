@@ -18,7 +18,7 @@ class Texture {
 	void activate();
 	void bind();
 	void uniform(GLuint program);
-  GLuint getHandler() const;
+  GLuint getHandle() const;
 	GLuint texture;
 	string name;
  protected:
@@ -28,10 +28,6 @@ class Texture {
 
 	virtual ~Texture();
 public:
-#if USE_FREEIMAGE
-	void readFreeImage(GLenum target, string path);
-#else
 	void readQImage(GLenum target, string path);
 	void loadQImage(GLenum target, QImage * image);
-#endif
 };

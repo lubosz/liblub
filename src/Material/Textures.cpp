@@ -164,11 +164,8 @@ TextureFile::TextureFile(string filename, GLenum glId, string name) {
 //    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
     //GL_NEAREST , GL_LINEAR, GL_NEAREST_MIPMAP_NEAREST, GL_LINEAR_MIPMAP_NEAREST, GL_NEAREST_MIPMAP_LINEAR and GL_LINEAR_MIPMAP_LINEAR
-#if USE_FREEIMAGE
-    readFreeImage(GL_TEXTURE_2D,path);
-#else
+
     readQImage(GL_TEXTURE_2D,path);
-#endif
 
     glGenerateMipmap(GL_TEXTURE_2D);
     glBindTexture(textureType, 0);
