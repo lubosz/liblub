@@ -48,6 +48,7 @@ endif()
 FIND_PACKAGE(Qt4 REQUIRED)
 find_package(Grantlee REQUIRED)
 set(QT_USE_QTXML true)
+set(QT_USE_QTOPENGL false)
 INCLUDE(${QT_USE_FILE})
 
 #check for opengl3 headers

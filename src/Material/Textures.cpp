@@ -203,11 +203,9 @@ SplatTexture::SplatTexture(GLenum glId, string name, int resolution) {
     unsigned char* data = createGaussianMap(resolution);
     glGenTextures(1, &texture);
     glBindTexture(GL_TEXTURE_2D, texture);
-#ifndef USE_GL3
+
     glTexParameteri(GL_TEXTURE_2D, GL_GENERATE_MIPMAP_SGIS, GL_TRUE);
-#else
-    glTexParameteri(GL_TEXTURE_2D, 0, GL_TRUE);
-#endif
+
 
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER,
             GL_LINEAR_MIPMAP_LINEAR);

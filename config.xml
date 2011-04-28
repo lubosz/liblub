@@ -6,6 +6,7 @@
 		<String name="textureDir" value="media/textures/" />
 		<String name="sceneDir" value="media/scenes/" />
 		<String name="meshDir" value="media/meshes/" />
+		<String name="templateDir" value="templates/" />
 		<String name="suffixes" value="_RT, _LF, _DN,_UP, _FR, _BK" />
 		<Float name="backgroundColor" value="0.0,0.0,0.0" />
 		<Float name="FPS_INTERVAL" value="1.0" />

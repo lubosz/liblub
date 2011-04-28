@@ -15,7 +15,8 @@ TemplateEngine::TemplateEngine() {
   Grantlee::FileSystemTemplateLoader::Ptr loader =
       Grantlee::FileSystemTemplateLoader::Ptr(
           new Grantlee::FileSystemTemplateLoader());
-  loader->setTemplateDirs(QStringList() << "templates");
+  string dir = Config::Instance().value<string> ("templateDir");
+  loader->setTemplateDirs(QStringList() << QString::fromStdString(dir));
   m_engine->addTemplateLoader(loader);
 
   c.insert("precision", false);
