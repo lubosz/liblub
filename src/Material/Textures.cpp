@@ -17,13 +17,11 @@
 
 DepthTexture::DepthTexture(GLuint width, GLuint height, string name,
         GLenum glId) {
-	glError;
-    this->name = name;
     this->glId = glId;
-    textureType = GL_TEXTURE_2D;
+  this->name = name;
 
     glGenTextures(1, &texture);
-    glBindTexture(textureType, texture);
+    glBindTexture(target, texture);
     LogDebug << "Creating FBO Depth texture #" << texture << " " << name;
 
     /*
@@ -32,33 +30,32 @@ DepthTexture::DepthTexture(GLuint width, GLuint height, string name,
      However, next tutorial shows usage of GL_LINEAR and PCF
 
      */
-     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+     glTexParameteri(target, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+     glTexParameteri(target, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
     // Specifies the texture comparison mode for currently bound depth textures.
     // That is, a texture whose internal format is GL_DEPTH_COMPONENT_*
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_COMPARE_MODE,
+    glTexParameteri(target, GL_TEXTURE_COMPARE_MODE,
             GL_NONE
      );
 
     // shadowmap
     // No need to force GL_DEPTH_COMPONENT24,
     // drivers usually give you the max precision if available
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT32F, width, height, 0,
+    glTexImage2D(target, 0, GL_DEPTH_COMPONENT32F, width, height, 0,
         GL_DEPTH_COMPONENT, GL_FLOAT, 0);
 
-    glBindTexture(textureType, 0);
+    glBindTexture(target, 0);
+	glError;
 }
 
 ShadowTexture::ShadowTexture(GLuint width, GLuint height, string name,
         GLenum glId) {
-  glError;
-    this->name = name;
     this->glId = glId;
-    textureType = GL_TEXTURE_2D;
+  this->name = name;
 
     glGenTextures(1, &texture);
-    glBindTexture(textureType, texture);
+    glBindTexture(target, texture);
     LogDebug << "Creating FBO Shadow texture #" << texture << " " << name;
 
     /*
@@ -66,151 +63,139 @@ ShadowTexture::ShadowTexture(GLuint width, GLuint height, string name,
      GL_LINEAR does not make sense for depth texture.
      However, next tutorial shows usage of GL_LINEAR and PCF
      */
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(target, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameteri(target, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 
     // Specifies the texture comparison mode for currently bound depth textures.
     // That is, a texture whose internal format is GL_DEPTH_COMPONENT_*
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_COMPARE_MODE,
+    glTexParameteri(target, GL_TEXTURE_COMPARE_MODE,
             GL_COMPARE_REF_TO_TEXTURE
      );
 
     // Specifies the comparison operator used when GL_TEXTURE_COMPARE_MODE is
     // set to GL_COMPARE_REF_TO_TEXTURE
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_COMPARE_FUNC, GL_LEQUAL);
+    glTexParameteri(target, GL_TEXTURE_COMPARE_FUNC, GL_LEQUAL);
 
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+    glTexParameteri(target, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
+    glTexParameteri(target, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
+    glTexParameteri(target, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
     // Remove artefact on the edges of the shadowmap
-     glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE );
-     glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE );
+     glTexParameterf(target, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE );
+     glTexParameterf(target, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE );
 
 
 
     // shadowmap
     // No need to force GL_DEPTH_COMPONENT24,
     // drivers usually give you the max precision if available
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT32F, width, height, 0,
+    glTexImage2D(target, 0, GL_DEPTH_COMPONENT32F, width, height, 0,
         GL_DEPTH_COMPONENT, GL_FLOAT, 0);
 
-    glBindTexture(textureType, 0);
+    glBindTexture(target, 0);
+  glError;
 }
 
 ColorTexture::ColorTexture(GLuint width, GLuint height, string name,
-        GLenum glId) {
-    this->name = name;
+    GLenum glId) {
     this->glId = glId;
-    textureType = GL_TEXTURE_2D;
+  this->name = name;
 
-    glGenTextures(1, &texture);
-    LogDebug << "Creating FBO Color texture #" << texture
-            << " " << name;
-    glBindTexture(textureType, texture);
+  glGenTextures(1, &texture);
+  LogDebug << "Creating FBO Color texture #" << texture << " " << name;
+  glBindTexture(target, texture);
 
-//    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_COMPARE_MODE,
-//            GL_COMPARE_REF_TO_TEXTURE);
-//    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_COMPARE_FUNC, GL_GEQUAL);
+  //    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_COMPARE_MODE,
+  //            GL_COMPARE_REF_TO_TEXTURE);
+  //    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_COMPARE_FUNC, GL_GEQUAL);
 
-    // FBO
+  // FBO
 
-//    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
-//    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
-//    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
-//
-//    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-//    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-
-
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-
-   // Specifies the texture comparison mode for currently bound depth textures.
-   // That is, a texture whose internal format is GL_DEPTH_COMPONENT_*
-   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_COMPARE_MODE,
-           GL_NONE
-    );
+  //    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
+  //    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
+  //    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+  //
+  //    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+  //    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 
 
-    glTexImage2D(textureType, 0, GL_RGBA, width, height, 0, GL_RGBA,
-            GL_UNSIGNED_BYTE, 0);
-    glBindTexture(textureType, 0);
+  glTexParameteri(target, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+  glTexParameteri(target, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+
+  // Specifies the texture comparison mode for currently bound depth textures.
+  // That is, a texture whose internal format is GL_DEPTH_COMPONENT_*
+  glTexParameteri(target, GL_TEXTURE_COMPARE_MODE, GL_NONE);
+
+  glTexImage2D(target, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE,
+      0);
+  glBindTexture(target, 0);
 }
 
 TextureFile::TextureFile(string filename, GLenum glId, string name) {
-    textureType = GL_TEXTURE_2D;
-
     this->glId = glId;
-    this->name = name;
+  this->name = name;
 
     string path = Config::Instance().value<string> ("textureDir") + filename;
 
     glGenTextures(1, &texture);
     LogDebug << "Creating texture from file #" << texture << " " << name;
 
-    glBindTexture(GL_TEXTURE_2D, texture);
+    glBindTexture(target, texture);
     /*
      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
      */
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTexParameteri(target, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(target, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
 //    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 //    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameteri(target, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 //    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+    glTexParameteri(target, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
     //GL_NEAREST , GL_LINEAR, GL_NEAREST_MIPMAP_NEAREST, GL_LINEAR_MIPMAP_NEAREST, GL_NEAREST_MIPMAP_LINEAR and GL_LINEAR_MIPMAP_LINEAR
 
-    readQImage(GL_TEXTURE_2D,path);
+    readQImage(target,path);
 
-    glGenerateMipmap(GL_TEXTURE_2D);
-    glBindTexture(textureType, 0);
+    glGenerateMipmap(target);
+    glBindTexture(target, 0);
 }
 
 TextureQImage::TextureQImage(QImage * image, GLenum glId, string name) {
-    textureType = GL_TEXTURE_2D;
-
     this->glId = glId;
-    this->name = name;
+  this->name = name;
 
     glGenTextures(1, &texture);
     LogDebug << "Creating texture from qimage #" << texture << " " << name;
 
-    glBindTexture(GL_TEXTURE_2D, texture);
+    glBindTexture(target, texture);
 
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTexParameteri(target, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(target, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(target, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameteri(target, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 
-    loadQImage(GL_TEXTURE_2D,image);
+    loadQImage(target,image);
 
-    glBindTexture(textureType, 0);
+    glBindTexture(target, 0);
 }
 
 SplatTexture::SplatTexture(GLenum glId, string name, int resolution) {
     this->glId = glId;
-    this->name = name;
+  this->name = name;
 
-    unsigned char* data = createGaussianMap(resolution);
-    glGenTextures(1, &texture);
-    glBindTexture(GL_TEXTURE_2D, texture);
+  unsigned char* data = createGaussianMap(resolution);
+  glGenTextures(1, &texture);
+  glBindTexture(target, texture);
 
-    glTexParameteri(GL_TEXTURE_2D, GL_GENERATE_MIPMAP_SGIS, GL_TRUE);
+  glTexParameteri(target, GL_GENERATE_MIPMAP_SGIS, GL_TRUE);
 
-
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER,
-            GL_LINEAR_MIPMAP_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, resolution, resolution, 0,
-            GL_RGBA, GL_UNSIGNED_BYTE, data);
-
-
+  glTexParameteri(target, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+  glTexParameteri(target, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+  glTexImage2D(target, 0, GL_RGBA8, resolution, resolution, 0, GL_RGBA,
+      GL_UNSIGNED_BYTE, data);
 }
 
 /**
@@ -253,36 +238,23 @@ unsigned char* SplatTexture::createGaussianMap(int N) {
 }
 
 CubeTextureFile::CubeTextureFile(string filename, GLenum glId, string name) {
-    this->glId = glId;
-    this->name = name;
+  this->glId = glId;
+  this->name = name;
 
-    textureType = GL_TEXTURE_CUBE_MAP;
+  target = GL_TEXTURE_CUBE_MAP;
 
-    glGenTextures(1, &texture);
-    glBindTexture(textureType, texture);
+  glGenTextures(1, &texture);
+  glBindTexture(target, texture);
 
-    glTexParameteri(textureType, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glTexParameteri(textureType, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+  glTexParameteri(target, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+  glTexParameteri(target, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 
-    string textureDir = Config::Instance().value<string> ("textureDir");
-    vector<string> suffixes = Config::Instance().values<string> ("suffixes");
+  string textureDir = Config::Instance().value<string> ("textureDir");
+  vector<string> suffixes = Config::Instance().values<string> ("suffixes");
 
-    for (int face = 0; face < 6; face++) {
-      //TODO: jpeg hardcoded
-      string path = textureDir + filename + suffixes[face] + ".jpg";
-
-        glBindTexture(textureType, texture);
-#if USE_FREEIMAGE
-    readFreeImage(GL_TEXTURE_CUBE_MAP_POSITIVE_X + face,path);
-#else
-    readQImage(GL_TEXTURE_CUBE_MAP_POSITIVE_X + face,path);
-#endif
-
-//        QImage image;
-//        image.load(path);
-//
-//        glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + face, 0, GL_RGBA,
-//                image.width(), image.height(), 0, GL_BGRA,
-//                GL_UNSIGNED_BYTE, image.bits());
-    }
+  for (int face = 0; face < 6; face++) {
+    //TODO: jpeg hardcoded
+    string path = textureDir + filename + suffixes[face] + ".jpg";
+    readQImage(GL_TEXTURE_CUBE_MAP_POSITIVE_X + face, path);
+  }
 }

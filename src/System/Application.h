@@ -24,7 +24,7 @@ class Application {
 	SceneLoader * sceneLoader;
 
 	void run() {
-		Config::Instance().load("../config.xml");
+		Config::Instance().load("config.xml");
 		MediaLayer::Instance();
 		MediaLayer::Instance().init(SceneData::Instance().name);
 		scene();

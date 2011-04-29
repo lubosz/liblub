@@ -15,18 +15,19 @@ using std::string;
 
 class Texture {
  public:
+  Texture();
 	void activate();
 	void bind();
 	void uniform(GLuint program);
   GLuint getHandle() const;
 	GLuint texture;
+	virtual ~Texture();
 	string name;
  protected:
 	GLenum glId;
-	GLuint textureType;
+	GLuint target;
 	GLint glChannelOrder, texChannelOrder;
 
-	virtual ~Texture();
 public:
 	void readQImage(GLenum target, string path);
 	void loadQImage(GLenum target, QImage * image);

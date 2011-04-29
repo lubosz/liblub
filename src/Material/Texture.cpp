@@ -5,17 +5,16 @@
  *  Created on: Mar 24, 2010
  */
 #include <string>
-
-#if USE_FREEIMAGE
-#include <FreeImagePlus.h>
-#else
 #include <QImage>
 #include <QDebug>
-#endif
 
 #include "Material/Texture.h"
 #include "System/Logger.h"
 #include "Renderer/RenderEngine.h"
+
+Texture::Texture()  {
+  target = GL_TEXTURE_2D;
+}
 
 Texture::~Texture() {
   // TODO(bmonkey): Auto-generated destructor stub
@@ -31,7 +30,7 @@ void Texture::activate() {
 }
 
 void Texture::bind() {
-  glBindTexture(textureType, texture);
+  glBindTexture(target, texture);
     glError;
 }
 
