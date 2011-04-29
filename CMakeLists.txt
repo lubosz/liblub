@@ -156,13 +156,15 @@ endforeach(EXAMPLE_PATH)
 
 
 #build tests
-file(GLOB_RECURSE TESTS ${TEST_DIR}/*.cpp)
-foreach(TEST_PATH ${TESTS})
-    STRING(REGEX REPLACE "\\.cpp" "" TEST_NAME "${TEST_PATH}")
-    STRING(REGEX REPLACE "^.*/([^/]*)\$" "\\1" TEST_NAME "${TEST_NAME}")
-    add_executable(${TEST_NAME} "${TEST_PATH}")
-    target_link_libraries(${TEST_NAME} lub cppunit)
-endforeach(TEST_PATH)
+if(BUILD_TESTS)
+    file(GLOB_RECURSE TESTS ${TEST_DIR}/*.cpp)
+    foreach(TEST_PATH ${TESTS})
+        STRING(REGEX REPLACE "\\.cpp" "" TEST_NAME "${TEST_PATH}")
+        STRING(REGEX REPLACE "^.*/([^/]*)\$" "\\1" TEST_NAME "${TEST_NAME}")
+        add_executable(${TEST_NAME} "${TEST_PATH}")
+        target_link_libraries(${TEST_NAME} lub cppunit)
+    endforeach(TEST_PATH)
+endif()
 
 #check code stlye
 IF(EXISTS "/usr/bin/python2")

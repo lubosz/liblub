@@ -93,7 +93,7 @@ char* Shader::readFile(string filePath) {
 
     file = fopen(filePath.c_str(), "r"); /* Open file for reading */
     if (!file)
-        LogError << "File error: "<< filePath;
+        LogFatal << "File not found:" << filePath;
 
     // obtain file size:
     fseek(file, 0, SEEK_END); /* Seek to the end of the file */

@@ -50,13 +50,12 @@ class TesselationApp: public Application {
   ~TesselationApp() {}
 
   void scene() {
-    Texture * earthMap = new TextureFile("earthmap1k.jpg",
-        "color");
+    Texture * earthMap = new TextureFile("earthmap1k.jpg", "color");
 
     QList<string> attributes;
     attributes.push_back("uv");
 
-    textureMaterial = new Template("Texture",attributes);
+    textureMaterial = new Template("Texture", attributes);
     textureMaterial->addTexture(earthMap);
 
     camera = SceneData::Instance().getCurrentCamera();
