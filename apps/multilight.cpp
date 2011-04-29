@@ -71,8 +71,12 @@ class LoadApp: public Application {
 //      );
 
     sceneLoader->load();
-    SceneData::Instance().initLightBuffer("multilight", "LightSourceBuffer");
     shadowSequence = new RenderSequence();
+#ifdef USE_FBO
+    Material * multilightMat = SceneData::Instance().getMaterial("white");
+    multilightMat->addTexture(shadowSequence->renderPasses[0]->targetTexture);
+#endif
+    SceneData::Instance().initLightBuffer("multilight", "LightSourceBuffer");
 
   }
   void renderFrame(){

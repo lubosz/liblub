@@ -34,9 +34,6 @@
 
 class AtmosphereApp: public Application {
  public:
-
-
-
   Camera* camera;
   Light * light;
   Node *oceanNode;
@@ -47,15 +44,12 @@ class AtmosphereApp: public Application {
 
   ~AtmosphereApp() {}
 
-
   void setCameraUniforms(ShaderProgram * program){
     program->use();
     program->setUniform("cameraPosition", camera->position);
     program->setUniform("cameraHeight", (float)camera->position.length());
     program->setUniform("cameraHeight2", float(camera->position.length()*camera->position.length()));
   }
-
-
 
   void scene() {
 
@@ -105,9 +99,9 @@ class AtmosphereApp: public Application {
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_CULL_FACE);
 
-    float time = float(Timer::Instance().secoundsPassed) + float(Timer::Instance().nanosecoundsPassed)/1000000000.0;
+//    float time = float(Timer::Instance().secoundsPassed) + float(Timer::Instance().nanosecoundsPassed)/1000000000.0;
     oceanNode->setView(camera);
-    ocean->getShaderProgram()->setUniform("time",time);
+//    ocean->getShaderProgram()->setUniform("time",time);
     ocean->getShaderProgram()->setUniform("eyePosition",camera->position);
     oceanNode->draw();
 

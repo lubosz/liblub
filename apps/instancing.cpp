@@ -54,13 +54,15 @@ class LoadApp: public Application {
 //    attributes.push_back("tangent");
 
     material = new Simple("Stuff/instancing",attributes);
-//    cube = Geometry::makeCube();
-    cube = MeshLoader::load(attributes, "monkey.obj");
+    cube = Geometry::cube(attributes);
+//    cube = MeshLoader::load(attributes, "monkey.obj");
     cube->setDrawType(GL_TRIANGLES);
     node = new Node("cube", {0,0,-5}, 1, cube, material);
 
 
     Texture * texture = new TextureFile("diamond.png", "diffuse");
+    texture->bind();
+    texture->filterMinMag(GL_LINEAR_MIPMAP_LINEAR, GL_NEAREST);
     material->addTexture(texture);
 
     initPositionBuffer();
