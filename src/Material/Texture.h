@@ -31,4 +31,5 @@ class Texture {
 public:
 	void readQImage(GLenum target, string path);
 	void loadQImage(GLenum target, QImage * image);
+	void filterMinMag(GLenum min, GLenum mag);
 };

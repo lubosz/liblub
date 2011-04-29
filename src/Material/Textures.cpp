@@ -30,8 +30,8 @@ DepthTexture::DepthTexture(GLuint width, GLuint height, string name,
      However, next tutorial shows usage of GL_LINEAR and PCF
 
      */
-     glTexParameteri(target, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-     glTexParameteri(target, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+
+    filterMinMag(GL_NEAREST, GL_NEAREST);
 
     // Specifies the texture comparison mode for currently bound depth textures.
     // That is, a texture whose internal format is GL_DEPTH_COMPONENT_*
@@ -63,8 +63,8 @@ ShadowTexture::ShadowTexture(GLuint width, GLuint height, string name,
      GL_LINEAR does not make sense for depth texture.
      However, next tutorial shows usage of GL_LINEAR and PCF
      */
-    glTexParameteri(target, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glTexParameteri(target, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    filterMinMag(GL_LINEAR, GL_LINEAR);
+
 
     // Specifies the texture comparison mode for currently bound depth textures.
     // That is, a texture whose internal format is GL_DEPTH_COMPONENT_*
@@ -118,8 +118,7 @@ ColorTexture::ColorTexture(GLuint width, GLuint height, string name,
   //    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 
 
-  glTexParameteri(target, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-  glTexParameteri(target, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+  filterMinMag(GL_NEAREST, GL_NEAREST);
 
   // Specifies the texture comparison mode for currently bound depth textures.
   // That is, a texture whose internal format is GL_DEPTH_COMPONENT_*
@@ -131,59 +130,41 @@ ColorTexture::ColorTexture(GLuint width, GLuint height, string name,
 }
 
 TextureFile::TextureFile(string filename, GLenum glId, string name) {
-    this->glId = glId;
+  this->glId = glId;
   this->name = name;
-
-    string path = Config::Instance().value<string> ("textureDir") + filename;
-
-    glGenTextures(1, &texture);
-    LogDebug << "Creating texture from file #" << texture << " " << name;
-
-    glBindTexture(target, texture);
-    /*
-     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
-     */
-    glTexParameteri(target, GL_TEXTURE_WRAP_S, GL_REPEAT);
-    glTexParameteri(target, GL_TEXTURE_WRAP_T, GL_REPEAT);
-
-//    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-//    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-
-    glTexParameteri(target, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-//    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(target, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-    //GL_NEAREST , GL_LINEAR, GL_NEAREST_MIPMAP_NEAREST, GL_LINEAR_MIPMAP_NEAREST, GL_NEAREST_MIPMAP_LINEAR and GL_LINEAR_MIPMAP_LINEAR
-
-    readQImage(target,path);
-
-    glGenerateMipmap(target);
-    glBindTexture(target, 0);
+  string path = Config::Instance().value<string> ("textureDir") + filename;
+  glGenTextures(1, &texture);
+  LogDebug << "Creating texture from file #" << texture << " " << name;
+  glBindTexture(target, texture);
+  /*
+   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+   */
+  glTexParameteri(target, GL_TEXTURE_WRAP_S, GL_REPEAT);
+  glTexParameteri(target, GL_TEXTURE_WRAP_T, GL_REPEAT);
+  filterMinMag(GL_LINEAR_MIPMAP_LINEAR, GL_LINEAR);
+  readQImage(target, path);
+  glGenerateMipmap(target);
+  glBindTexture(target, 0);
 }
 
 TextureQImage::TextureQImage(QImage * image, GLenum glId, string name) {
-    this->glId = glId;
+  this->glId = glId;
   this->name = name;
-
-    glGenTextures(1, &texture);
-    LogDebug << "Creating texture from qimage #" << texture << " " << name;
-
-    glBindTexture(target, texture);
-
-    glTexParameteri(target, GL_TEXTURE_WRAP_S, GL_REPEAT);
-    glTexParameteri(target, GL_TEXTURE_WRAP_T, GL_REPEAT);
-
-    glTexParameteri(target, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glTexParameteri(target, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-
-    loadQImage(target,image);
-
-    glBindTexture(target, 0);
+  glGenTextures(1, &texture);
+  LogDebug << "Creating texture from qimage #" << texture << " " << name;
+  glBindTexture(target, texture);
+  glTexParameteri(target, GL_TEXTURE_WRAP_S, GL_REPEAT);
+  glTexParameteri(target, GL_TEXTURE_WRAP_T, GL_REPEAT);
+  filterMinMag(GL_LINEAR_MIPMAP_LINEAR, GL_LINEAR);
+  loadQImage(target, image);
+  glGenerateMipmap(target);
+  glBindTexture(target, 0);
 }
 
 SplatTexture::SplatTexture(GLenum glId, string name, int resolution) {
-    this->glId = glId;
+  this->glId = glId;
   this->name = name;
 
   unsigned char* data = createGaussianMap(resolution);
@@ -192,8 +173,7 @@ SplatTexture::SplatTexture(GLenum glId, string name, int resolution) {
 
   glTexParameteri(target, GL_GENERATE_MIPMAP_SGIS, GL_TRUE);
 
-  glTexParameteri(target, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-  glTexParameteri(target, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+  filterMinMag(GL_LINEAR_MIPMAP_LINEAR, GL_LINEAR);
   glTexImage2D(target, 0, GL_RGBA8, resolution, resolution, 0, GL_RGBA,
       GL_UNSIGNED_BYTE, data);
 }
@@ -246,8 +226,7 @@ CubeTextureFile::CubeTextureFile(string filename, GLenum glId, string name) {
   glGenTextures(1, &texture);
   glBindTexture(target, texture);
 
-  glTexParameteri(target, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-  glTexParameteri(target, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+  filterMinMag(GL_LINEAR, GL_LINEAR);
 
   string textureDir = Config::Instance().value<string> ("textureDir");
   vector<string> suffixes = Config::Instance().values<string> ("suffixes");
