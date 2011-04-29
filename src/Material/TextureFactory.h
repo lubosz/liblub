@@ -6,12 +6,8 @@
  */
 
 #pragma once
-#include <vector>
-#include <QImage>
-#include "Material/Texture.h"
 #include "common/Singleton.h"
-
-using std::vector;
+#include "common/OpenGL.h"
 
 const GLenum textureEnums[32] = {
     GL_TEXTURE0, GL_TEXTURE1, GL_TEXTURE2, GL_TEXTURE3, GL_TEXTURE4,
@@ -25,13 +21,7 @@ const GLenum textureEnums[32] = {
 
 class TextureFactory : public Singleton<TextureFactory> {
  public:
-	Texture * depthTexture(GLuint width, GLuint height, string name);
-	Texture * shadowTexture(GLuint width, GLuint height, string name);
-	Texture * colorTexture(GLuint width, GLuint height, string name);
-	Texture * load(string filename, string name);
-	Texture * load(QImage * image, string name);
-	Texture * loadCubeMap(string filename, string name);
-	Texture * splatTexture(string name, int resolution);
+  GLenum getNextId();
  private:
 	friend class Singleton<TextureFactory>;
 	unsigned textureCount;

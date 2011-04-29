@@ -29,6 +29,7 @@
 #include "Mesh/Geometry.h"
 #include "Mesh/MeshLoader.h"
 #include "Material/ProcTextures.h"
+#include "Material/Textures.h"
 #include "Material/ShaderProgram.h"
 
 class AtmosphereApp: public Application {
@@ -126,9 +127,9 @@ class AtmosphereApp: public Application {
   }
 
   void scene() {
-    Texture * glow = TextureFactory::Instance().load(ProcTextures::makeGlow(
+    Texture * glow = new TextureQImage(ProcTextures::makeGlow(
         QSize(512, 512), 40.0f, 0.1f), "glow");
-    Texture * earthMap = TextureFactory::Instance().load("earthmap1k.jpg",
+    Texture * earthMap = new TextureFile("earthmap1k.jpg",
         "planet");
 
     QList<string> attributes;
@@ -183,7 +184,7 @@ class AtmosphereApp: public Application {
       unsigned height = MediaLayer::Instance().height;
 
       fbo = new FrameBuffer(width, height);
-      targetTexture = TextureFactory::Instance().colorTexture(width, height, "targetTexture");
+      targetTexture = new ColorTexture(width, height, "targetTexture");
       fbo->attachTexture(GL_COLOR_ATTACHMENT0, targetTexture);
 
       HDR = new Template("Post/HDR",attributes);
@@ -202,8 +203,8 @@ class AtmosphereApp: public Application {
     terrainMat->getShaderProgram()->attachShader("Tesselation/Tesselation.geom",GL_GEOMETRY_SHADER,true);
 //    terrainMat->getShaderProgram()->attachShader("Atmo/GroundTesselation.frag",GL_FRAGMENT_SHADER,true);
     terrainMat->getShaderProgram()->attachShader("Tesselation/Tesselation.frag",GL_FRAGMENT_SHADER,true);
-    Texture * groundTexture = TextureFactory::Instance().load("terrain/mud.jpg","diffuse");
-    Texture * noise = TextureFactory::Instance().load("terrain-noise-blur.jpg","noise");
+    Texture * groundTexture = new TextureFile("terrain/mud.jpg","diffuse");
+    Texture * noise = new TextureFile("terrain-noise-blur.jpg","noise");
     terrainMat->addTexture(groundTexture);
     terrainMat->addTexture(noise);
     terrainMat->done(attributes);
@@ -239,9 +240,9 @@ class AtmosphereApp: public Application {
     ocean->getShaderProgram()->setUniform("waveFreq",0.028f);
     ocean->getShaderProgram()->setUniform("waveAmp",1.8f);
 
-    Texture * oceanNormal = TextureFactory::Instance().load("ocean/waves.png","NormalMap");
+    Texture * oceanNormal = new TextureFile("ocean/waves.png","NormalMap");
     ocean->addTexture(oceanNormal);
-    Texture * oceanSky = TextureFactory::Instance().loadCubeMap("cubemaps/sky","EnvironmentMap");
+    Texture * oceanSky = new CubeTextureFile("cubemaps/sky","EnvironmentMap");
     ocean->addTexture(oceanSky);
 
     oceanNode = new Node("ocean", { 0, 0, 0 }, 1, innerSphere, ocean);

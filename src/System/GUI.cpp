@@ -15,6 +15,7 @@
 #include <QMap>
 
 #include "Material/Materials.h"
+#include "Material/Textures.h"
 #include "Scene/SceneData.h"
 #include "Mesh/Geometry.h"
 #include "Window/MediaLayer.h"
@@ -63,7 +64,7 @@ void GUI::init() {
   addText("cam", "Cam");
   addText("time", "Time");
   render();
-  texture = TextureFactory::Instance().load(image,"myTexture");
+  texture = new TextureQImage(image,"myTexture");
   material->addTexture(texture);
 }
 

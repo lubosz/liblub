@@ -8,6 +8,7 @@
 #pragma once
 
 #include "Scene/SceneGraph.h"
+#include "common/Singleton.h"
 #include "Renderer/RenderSequence.h"
 
 class RenderSequence;

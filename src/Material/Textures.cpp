@@ -15,9 +15,7 @@
 #include <QDebug>
 #include "Renderer/RenderEngine.h"
 
-DepthTexture::DepthTexture(GLuint width, GLuint height, string name,
-        GLenum glId) {
-    this->glId = glId;
+DepthTexture::DepthTexture(GLuint width, GLuint height, string name) {
   this->name = name;
 
     glGenTextures(1, &handle);
@@ -35,9 +33,7 @@ DepthTexture::DepthTexture(GLuint width, GLuint height, string name,
 
     // Specifies the texture comparison mode for currently bound depth textures.
     // That is, a texture whose internal format is GL_DEPTH_COMPONENT_*
-    glTexParameteri(target, GL_TEXTURE_COMPARE_MODE,
-            GL_NONE
-     );
+    glTexParameteri(target, GL_TEXTURE_COMPARE_MODE, GL_NONE);
 
     // shadowmap
     // No need to force GL_DEPTH_COMPONENT24,
@@ -49,9 +45,7 @@ DepthTexture::DepthTexture(GLuint width, GLuint height, string name,
 	glError;
 }
 
-ShadowTexture::ShadowTexture(GLuint width, GLuint height, string name,
-        GLenum glId) {
-    this->glId = glId;
+ShadowTexture::ShadowTexture(GLuint width, GLuint height, string name) {
   this->name = name;
 
     glGenTextures(1, &handle);
@@ -95,9 +89,7 @@ ShadowTexture::ShadowTexture(GLuint width, GLuint height, string name,
   glError;
 }
 
-ColorTexture::ColorTexture(GLuint width, GLuint height, string name,
-    GLenum glId) {
-    this->glId = glId;
+ColorTexture::ColorTexture(GLuint width, GLuint height, string name) {
   this->name = name;
 
   glGenTextures(1, &handle);
@@ -129,8 +121,7 @@ ColorTexture::ColorTexture(GLuint width, GLuint height, string name,
   unbind();
 }
 
-TextureFile::TextureFile(string filename, GLenum glId, string name) {
-  this->glId = glId;
+TextureFile::TextureFile(string filename, string name) {
   this->name = name;
   string path = Config::Instance().value<string> ("textureDir") + filename;
   glGenTextures(1, &handle);
@@ -149,8 +140,7 @@ TextureFile::TextureFile(string filename, GLenum glId, string name) {
   unbind();
 }
 
-TextureQImage::TextureQImage(QImage * image, GLenum glId, string name) {
-  this->glId = glId;
+TextureQImage::TextureQImage(QImage * image, string name) {
   this->name = name;
   glGenTextures(1, &handle);
   LogDebug << "Creating texture from qimage #" << handle << " " << name;
@@ -162,8 +152,7 @@ TextureQImage::TextureQImage(QImage * image, GLenum glId, string name) {
   unbind();
 }
 
-SplatTexture::SplatTexture(GLenum glId, string name, int resolution) {
-  this->glId = glId;
+SplatTexture::SplatTexture(string name, int resolution) {
   this->name = name;
 
   unsigned char* data = createGaussianMap(resolution);
@@ -216,8 +205,7 @@ unsigned char* SplatTexture::createGaussianMap(int N) {
     return (B);
 }
 
-CubeTextureFile::CubeTextureFile(string filename, GLenum glId, string name) {
-  this->glId = glId;
+CubeTextureFile::CubeTextureFile(string filename, string name) {
   this->name = name;
 
   target = GL_TEXTURE_CUBE_MAP;

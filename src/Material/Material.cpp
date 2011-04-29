@@ -8,6 +8,7 @@
 #include "Scene/SceneGraph.h"
 #include "System/Logger.h"
 #include "Renderer/RenderEngine.h"
+#include "Material/Textures.h"
 
 void Material::init() {
     diffuseColor = QVector4D();
@@ -19,10 +20,10 @@ void Material::addTexture(Texture * texture) {
 }
 
 void Material::addTexture(string file, string name) {
-    textures.push_back(TextureFactory::Instance().load(file, name));
+    textures.push_back(new TextureFile(file, name));
 }
 void Material::addTextureCube(string file, string name) {
-    textures.push_back(TextureFactory::Instance().loadCubeMap(file, name));
+    textures.push_back(new CubeTextureFile(file, name));
 }
 
 void Material::done(const QList<string> & attributes) {

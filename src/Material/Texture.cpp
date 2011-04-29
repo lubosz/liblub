@@ -9,11 +9,13 @@
 #include <QDebug>
 
 #include "Material/Texture.h"
+#include "Material/TextureFactory.h"
 #include "System/Logger.h"
 #include "Renderer/RenderEngine.h"
 
 Texture::Texture()  {
   target = GL_TEXTURE_2D;
+  glId = TextureFactory::Instance().getNextId();
 }
 
 Texture::~Texture() {

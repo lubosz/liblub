@@ -7,12 +7,14 @@
 
 #include "Window/MediaLayer.h"
 #include "Scene/Camera.h"
+#include "Material/Textures.h"
 #include "Scene/SceneData.h"
+#include "Scene/SceneGraph.h"
 #include "Material/Materials.h"
 
 ShadowPass::ShadowPass(FrameBuffer * fbo) {
     this->fbo = fbo;
-    targetTexture = TextureFactory::Instance().shadowTexture(fbo->width,
+    targetTexture = new ShadowTexture(fbo->width,
             fbo->height, "shadowMap");
     fbo->attachTexture(GL_DEPTH_ATTACHMENT, targetTexture);
     fbo->disableColorBuffer();
@@ -50,7 +52,7 @@ void ShadowPass::cleanUp() {
 
 DepthPass::DepthPass(FrameBuffer * fbo) {
     this->fbo = fbo;
-    targetTexture = TextureFactory::Instance().depthTexture(fbo->width,
+    targetTexture = new DepthTexture(fbo->width,
             fbo->height, "shadowMap");
     fbo->attachTexture(GL_DEPTH_ATTACHMENT, targetTexture);
     fbo->disableColorBuffer();
@@ -79,7 +81,7 @@ void DepthPass::cleanUp() {
 
 FilterPass::FilterPass(FrameBuffer * fbo) {
     this->fbo = fbo;
-    targetTexture = TextureFactory::Instance().depthTexture(fbo->width,
+    targetTexture = new DepthTexture(fbo->width,
             fbo->height, "shadowMap");
     fbo->attachTexture(GL_DEPTH_ATTACHMENT, targetTexture);
     fbo->disableColorBuffer();

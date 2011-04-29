@@ -15,6 +15,7 @@
 #include "Mesh/Geometry.h"
 #include "System/Config.h"
 #include "System/Logger.h"
+#include "Material/Textures.h"
 
 SceneLoader::SceneLoader(const QString & fileName)
 :
@@ -135,10 +136,10 @@ void SceneLoader::appendTexture(const QDomElement & textureNode) {
     LogDebug << "Texture name:" << name;
     Texture * texture;
     if (textureNode.tagName() == "Texture") {
-        texture = TextureFactory::Instance().load(
+        texture = new TextureFile(
                 textureNode.attribute("url").toStdString(), name);
     } else if (textureNode.tagName() == "TextureCube") {
-        texture = TextureFactory::Instance().loadCubeMap(textureNode.attribute(
+        texture = new CubeTextureFile(textureNode.attribute(
                 "url").toStdString(), name);
     }
     SceneData::Instance().textures.insert(name, texture);

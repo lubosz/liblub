@@ -21,6 +21,7 @@
 #include "System/Logger.h"
 #include "Mesh/Geometry.h"
 #include "Mesh/MeshLoader.h"
+#include "Material/Textures.h"
 
 class TesselationApp: public Application {
  public:
@@ -70,8 +71,8 @@ class TesselationApp: public Application {
     GUI::Instance().addText("tess", "Tess");
     GUI::Instance().addText("dist", "Dist");
 
-    Texture * groundTexture = TextureFactory::Instance().load("terrain/mud.jpg","diffuse");
-    Texture * noise = TextureFactory::Instance().load("terrain-noise-blur.jpg","noise");
+    Texture * groundTexture = new TextureFile("terrain/mud.jpg","diffuse");
+    Texture * noise = new TextureFile("terrain-noise-blur.jpg","noise");
     terrainMat->addTexture(groundTexture);
     terrainMat->addTexture(noise);
   }

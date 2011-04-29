@@ -28,6 +28,7 @@
 #include "Mesh/Geometry.h"
 #include "Mesh/MeshLoader.h"
 #include "Material/ProcTextures.h"
+#include "Material/Textures.h"
 #include "Material/ShaderProgram.h"
 
 const bool post = true;
@@ -49,7 +50,7 @@ class TesselationApp: public Application {
   ~TesselationApp() {}
 
   void scene() {
-    Texture * earthMap = TextureFactory::Instance().load("earthmap1k.jpg",
+    Texture * earthMap = new TextureFile("earthmap1k.jpg",
         "color");
 
     QList<string> attributes;
@@ -73,7 +74,7 @@ class TesselationApp: public Application {
     unsigned height = MediaLayer::Instance().height;
 
     fbo = new FrameBuffer(width, height);
-    targetTexture = TextureFactory::Instance().colorTexture(width, height,
+    targetTexture = new ColorTexture(width, height,
         "targetTexture");
     fbo->attachTexture(GL_COLOR_ATTACHMENT0, targetTexture);
 

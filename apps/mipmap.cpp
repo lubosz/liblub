@@ -27,6 +27,7 @@
 #include <QPainter>
 #include <math.h>
 #include "Material/ProcTextures.h"
+#include "Material/Textures.h"
 #include "Mesh/Geometry.h"
 
 class LoadApp: public Application {
@@ -63,7 +64,7 @@ class LoadApp: public Application {
 //    Material * material = new Simple("Noise/perlin",attributes);
     Material * zoomIn = new Simple("Texture/texture",attributes);
     Material * zoomOut = new Simple("Texture/texture",attributes);
-    Texture * groundTexture = TextureFactory::Instance().load("terrain/mud.jpg","diffuse");
+    Texture * groundTexture = new TextureFile("terrain/mud.jpg","diffuse");
     zoomIn->addTexture(groundTexture);
     zoomOut->addTexture(groundTexture);
 //    perlinNoise = material->getShaderProgram();

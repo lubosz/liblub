@@ -8,7 +8,7 @@
 #pragma once
 
 #include "ShaderProgram.h"
-#include "TextureFactory.h"
+#include "Texture.h"
 
 
 // using namespace std;

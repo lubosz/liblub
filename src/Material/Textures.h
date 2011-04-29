@@ -11,34 +11,34 @@
 
 class DepthTexture : public Texture {
  public:
-	DepthTexture(GLuint width, GLuint height, string name, GLenum glId);
+	DepthTexture(GLuint width, GLuint height, string name);
 };
 
 class ShadowTexture : public Texture {
  public:
-  ShadowTexture(GLuint width, GLuint height, string name, GLenum glId);
+  ShadowTexture(GLuint width, GLuint height, string name);
 };
 
 class ColorTexture : public Texture {
  public:
-	ColorTexture(GLuint width, GLuint height, string name, GLenum glId);
+	ColorTexture(GLuint width, GLuint height, string name);
 };
 
 class TextureFile : public Texture {
  public:
-	TextureFile(string filename, GLenum glId, string name);
+	TextureFile(string filename, string name);
 };
 
 
 class TextureQImage : public Texture {
  public:
-  TextureQImage(QImage * image, GLenum glId, string name);
+  TextureQImage(QImage * image, string name);
 };
 
 
 class SplatTexture : public Texture {
  public:
-	SplatTexture(GLenum glId, string name, int resolution);
+	SplatTexture(string name, int resolution);
 	/**
 	* EvalHermite(float pA, float pB, float vA, float vB, float u)
 	* @brief Evaluates Hermite basis functions for the specified coefficients.
@@ -49,7 +49,7 @@ class SplatTexture : public Texture {
 
 class CubeTextureFile : public Texture {
  public:
-	CubeTextureFile(string filename, GLenum glId, string name);
+	CubeTextureFile(string filename, string name);
 };
 
 

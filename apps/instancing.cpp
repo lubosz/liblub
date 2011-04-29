@@ -28,6 +28,7 @@
 #include "System/Timer.h"
 #include "Scene/Node.h"
 #include "Mesh/Geometry.h"
+#include "Material/Textures.h"
 
 class LoadApp: public Application {
  public:
@@ -59,7 +60,7 @@ class LoadApp: public Application {
     node = new Node("cube", {0,0,-5}, 1, cube, material);
 
 
-    Texture * texture = TextureFactory::Instance().load("diamond.png", "diffuse");
+    Texture * texture = new TextureFile("diamond.png", "diffuse");
     material->addTexture(texture);
 
     initPositionBuffer();

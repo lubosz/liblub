@@ -29,6 +29,7 @@
 #include "Mesh/Geometry.h"
 #include "Mesh/MeshLoader.h"
 #include "Material/ProcTextures.h"
+#include "Material/Textures.h"
 #include "Material/ShaderProgram.h"
 
 class AtmosphereApp: public Application {
@@ -90,9 +91,9 @@ class AtmosphereApp: public Application {
     ocean->getShaderProgram()->setUniform("waveFreq",0.028f);
     ocean->getShaderProgram()->setUniform("waveAmp",1.8f);
 
-    Texture * oceanNormal = TextureFactory::Instance().load("ocean/waves.png","NormalMap");
+    Texture * oceanNormal = new TextureFile("ocean/waves.png","NormalMap");
     ocean->addTexture(oceanNormal);
-    Texture * oceanSky = TextureFactory::Instance().loadCubeMap("cubemaps/sky","EnvironmentMap");
+    Texture * oceanSky = new CubeTextureFile("cubemaps/sky","EnvironmentMap");
     ocean->addTexture(oceanSky);
 
     oceanNode = new Node("ocean", { 0, 0, 0 }, 1, innerSphere, ocean);
