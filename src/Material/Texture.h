@@ -18,18 +18,21 @@ class Texture {
   Texture();
 	void activate();
 	void bind();
+	void unbind();
 	void uniform(GLuint program);
   GLuint getHandle() const;
-	GLuint texture;
 	virtual ~Texture();
 	string name;
  protected:
+	GLuint handle;
 	GLenum glId;
 	GLuint target;
 	GLint glChannelOrder, texChannelOrder;
 
 public:
-	void readQImage(GLenum target, string path);
-	void loadQImage(GLenum target, QImage * image);
+	void loadFile(const string & path);
+	void loadQImage(QImage * image);
+  void loadFile(GLenum target, const string & path);
+  void loadQImage(GLenum target, QImage * image);
 	void filterMinMag(GLenum min, GLenum mag);
 };

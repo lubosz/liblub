@@ -83,8 +83,8 @@ void GUI::update() {
 //  updateText("zoom",zoom.str());
   clear();
   render();
-  glBindTexture(GL_TEXTURE_2D, texture->texture);
-  texture->loadQImage(GL_TEXTURE_2D,image);
+  texture->bind();
+  texture->loadQImage(image);
 }
 
 void GUI::clear() {

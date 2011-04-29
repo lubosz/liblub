@@ -21,33 +21,44 @@ Texture::~Texture() {
 }
 
 GLuint Texture::getHandle() const {
-    return texture;
+    return handle;
 }
 
 void Texture::activate() {
     glActiveTexture(glId);
-    glError;
 }
 
 void Texture::bind() {
-  glBindTexture(target, texture);
-    glError;
+  glBindTexture(target, handle);
 }
+
+void Texture::unbind() {
+  glBindTexture(target, 0);
+}
+
 
 void Texture::uniform(GLuint program) {
     GLint texLoc = glGetUniformLocation(program, name.c_str());
     // TODO(bmonkey): -1 vs glId - GL_TEXTURE0
 //    glUniform1i(texLoc, glId - GL_TEXTURE0);
-    glUniform1i(texLoc, texture-1);
+    glUniform1i(texLoc, handle-1);
     glError;
 }
 
-void Texture::readQImage(GLenum target, string path) {
+void Texture::loadFile(const string & path) {
+  loadFile(target, path);
+}
+
+void Texture::loadFile(GLenum target, const string & path) {
   QImage * image = new QImage();
   image->load(QString::fromStdString(path));
 
   //Qt loads image with wrong pixel order
   *image = image->mirrored(false, true);
+  loadQImage(target, image);
+}
+
+void Texture::loadQImage(QImage * image) {
   loadQImage(target, image);
 }
 

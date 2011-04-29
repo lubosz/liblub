@@ -20,9 +20,9 @@ DepthTexture::DepthTexture(GLuint width, GLuint height, string name,
     this->glId = glId;
   this->name = name;
 
-    glGenTextures(1, &texture);
-    glBindTexture(target, texture);
-    LogDebug << "Creating FBO Depth texture #" << texture << " " << name;
+    glGenTextures(1, &handle);
+    bind();
+    LogDebug << "Creating FBO Depth texture #" << handle << " " << name;
 
     /*
      Shadowmap
@@ -45,7 +45,7 @@ DepthTexture::DepthTexture(GLuint width, GLuint height, string name,
     glTexImage2D(target, 0, GL_DEPTH_COMPONENT32F, width, height, 0,
         GL_DEPTH_COMPONENT, GL_FLOAT, 0);
 
-    glBindTexture(target, 0);
+    unbind();
 	glError;
 }
 
@@ -54,9 +54,9 @@ ShadowTexture::ShadowTexture(GLuint width, GLuint height, string name,
     this->glId = glId;
   this->name = name;
 
-    glGenTextures(1, &texture);
-    glBindTexture(target, texture);
-    LogDebug << "Creating FBO Shadow texture #" << texture << " " << name;
+    glGenTextures(1, &handle);
+    bind();
+    LogDebug << "Creating FBO Shadow texture #" << handle << " " << name;
 
     /*
      Shadowmap
@@ -91,7 +91,7 @@ ShadowTexture::ShadowTexture(GLuint width, GLuint height, string name,
     glTexImage2D(target, 0, GL_DEPTH_COMPONENT32F, width, height, 0,
         GL_DEPTH_COMPONENT, GL_FLOAT, 0);
 
-    glBindTexture(target, 0);
+    unbind();
   glError;
 }
 
@@ -100,9 +100,9 @@ ColorTexture::ColorTexture(GLuint width, GLuint height, string name,
     this->glId = glId;
   this->name = name;
 
-  glGenTextures(1, &texture);
-  LogDebug << "Creating FBO Color texture #" << texture << " " << name;
-  glBindTexture(target, texture);
+  glGenTextures(1, &handle);
+  LogDebug << "Creating FBO Color texture #" << handle << " " << name;
+  bind();
 
   //    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_COMPARE_MODE,
   //            GL_COMPARE_REF_TO_TEXTURE);
@@ -126,16 +126,16 @@ ColorTexture::ColorTexture(GLuint width, GLuint height, string name,
 
   glTexImage2D(target, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE,
       0);
-  glBindTexture(target, 0);
+  unbind();
 }
 
 TextureFile::TextureFile(string filename, GLenum glId, string name) {
   this->glId = glId;
   this->name = name;
   string path = Config::Instance().value<string> ("textureDir") + filename;
-  glGenTextures(1, &texture);
-  LogDebug << "Creating texture from file #" << texture << " " << name;
-  glBindTexture(target, texture);
+  glGenTextures(1, &handle);
+  LogDebug << "Creating texture from file #" << handle << " " << name;
+  bind();
   /*
    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
@@ -144,23 +144,23 @@ TextureFile::TextureFile(string filename, GLenum glId, string name) {
   glTexParameteri(target, GL_TEXTURE_WRAP_S, GL_REPEAT);
   glTexParameteri(target, GL_TEXTURE_WRAP_T, GL_REPEAT);
   filterMinMag(GL_LINEAR_MIPMAP_LINEAR, GL_LINEAR);
-  readQImage(target, path);
+  loadFile(path);
   glGenerateMipmap(target);
-  glBindTexture(target, 0);
+  unbind();
 }
 
 TextureQImage::TextureQImage(QImage * image, GLenum glId, string name) {
   this->glId = glId;
   this->name = name;
-  glGenTextures(1, &texture);
-  LogDebug << "Creating texture from qimage #" << texture << " " << name;
-  glBindTexture(target, texture);
+  glGenTextures(1, &handle);
+  LogDebug << "Creating texture from qimage #" << handle << " " << name;
+  bind();
   glTexParameteri(target, GL_TEXTURE_WRAP_S, GL_REPEAT);
   glTexParameteri(target, GL_TEXTURE_WRAP_T, GL_REPEAT);
   filterMinMag(GL_LINEAR_MIPMAP_LINEAR, GL_LINEAR);
-  loadQImage(target, image);
+  loadQImage(image);
   glGenerateMipmap(target);
-  glBindTexture(target, 0);
+  unbind();
 }
 
 SplatTexture::SplatTexture(GLenum glId, string name, int resolution) {
@@ -168,8 +168,8 @@ SplatTexture::SplatTexture(GLenum glId, string name, int resolution) {
   this->name = name;
 
   unsigned char* data = createGaussianMap(resolution);
-  glGenTextures(1, &texture);
-  glBindTexture(target, texture);
+  glGenTextures(1, &handle);
+  bind();
 
   glTexParameteri(target, GL_GENERATE_MIPMAP_SGIS, GL_TRUE);
 
@@ -223,8 +223,8 @@ CubeTextureFile::CubeTextureFile(string filename, GLenum glId, string name) {
 
   target = GL_TEXTURE_CUBE_MAP;
 
-  glGenTextures(1, &texture);
-  glBindTexture(target, texture);
+  glGenTextures(1, &handle);
+  bind();
 
   filterMinMag(GL_LINEAR, GL_LINEAR);
 
@@ -234,6 +234,6 @@ CubeTextureFile::CubeTextureFile(string filename, GLenum glId, string name) {
   for (int face = 0; face < 6; face++) {
     //TODO: jpeg hardcoded
     string path = textureDir + filename + suffixes[face] + ".jpg";
-    readQImage(GL_TEXTURE_CUBE_MAP_POSITIVE_X + face, path);
+    loadFile(GL_TEXTURE_CUBE_MAP_POSITIVE_X + face, path);
   }
 }
