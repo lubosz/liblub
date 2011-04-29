@@ -157,9 +157,8 @@ TextureQImage::TextureQImage(QImage * image, GLenum glId, string name) {
   bind();
   glTexParameteri(target, GL_TEXTURE_WRAP_S, GL_REPEAT);
   glTexParameteri(target, GL_TEXTURE_WRAP_T, GL_REPEAT);
-  filterMinMag(GL_LINEAR_MIPMAP_LINEAR, GL_LINEAR);
+  filterMinMag(GL_LINEAR, GL_LINEAR);
   loadQImage(image);
-  glGenerateMipmap(target);
   unbind();
 }
 
