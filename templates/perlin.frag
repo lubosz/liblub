@@ -3,16 +3,14 @@
 {% block linkage %}
 uniform float time; // Used for texture animation
 in vec2 uv;
-out vec4 fragColor;
+in vec3 normal;
 
 
-vec4 permute(vec4 x)
-{
+vec4 permute(vec4 x) {
   return mod(((x*34.0)+1.0)*x, 289.0);
 }
 
-vec4 taylorInvSqrt(vec4 r)
-{
+vec4 taylorInvSqrt(vec4 r) {
   return 1.79284291400159 - 0.85373472095314 * r;
 }
 
@@ -21,8 +19,7 @@ vec3 fade(vec3 t) {
 }
 
 // Classic Perlin noise
-float cnoise(vec3 P)
-{
+float cnoise(vec3 P) {
   vec3 Pi0 = floor(P); // Integer part for indexing
   vec3 Pi1 = Pi0 + vec3(1.0); // Integer part + 1
   Pi0 = mod(Pi0, 289.0);
@@ -91,8 +88,7 @@ float cnoise(vec3 P)
 }
 
 // Classic Perlin noise, periodic variant
-float pnoise(vec3 P, vec3 rep)
-{
+float pnoise(vec3 P, vec3 rep) {
   vec3 Pi0 = mod(floor(P), rep); // Integer part, modulo period
   vec3 Pi1 = mod(Pi0 + vec3(1.0), rep); // Integer part + 1, mod period
   Pi0 = mod(Pi0, 289.0);
@@ -162,6 +158,16 @@ float pnoise(vec3 P, vec3 rep)
 {% endblock %}
 
 {% block main %}
-  float n = cnoise(10*vec3(uv,time/3.0));
-  fragColor = vec4(0.5 + 0.5 * vec3(n, n, n), 1.0);
+//  float n = cnoise(10*vec3(uv*5,time/20.0));
+//  float nalt = cnoise(10*vec3(uv*2,time/20.0));
+  float noiseor = (pnoise(vec3(normal.yz*8,time/5.0),vec3(0)) + pnoise(vec3(normal.xz*8,time/5.0),vec3(0)));
+  noiseor += (pnoise(vec3(normal.yz*3,time/10.0),vec3(0)) + pnoise(vec3(normal.xz*3,time/10.0),vec3(0)));
+  //fragColor = vec4(0.5 + 0.5 * vec3(n, n, n), 1.0);
+  //vec4 red = vec4(0);
+  //vec4 yellow = vec4(0);
+  //red.r = (0.5 + 0.5 * vec3(n, n, n)).r;
+  vec4 yellow = (0.5+noiseor) * vec4(1,1,0,0);
+  vec4 red = vec4(1,0,0,0);
+  fragColor = (yellow+red);
+  
 {% endblock %}

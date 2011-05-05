@@ -44,11 +44,12 @@ class AtmosphereApp: public Application {
   float outerRadius;
   Camera* camera;
   Light * light;
-  Node * spaceNode,* groundNode,* skyNode, *terrainNode, *oceanNode;
+  Node * spaceNode,* groundNode,* skyNode, *terrainNode, *oceanNode, *sunNode;
   Material * ocean;
 
   FrameBuffer *fbo;
   Texture * targetTexture;
+  ShaderProgram * perlinNoise;
 
   AtmosphereApp() {
     useHDR = false;
@@ -247,6 +248,14 @@ class AtmosphereApp: public Application {
 
     oceanNode = new Node("ocean", { 0, 0, 0 }, 1, innerSphere, ocean);
 
+    QList<string> sunAttributes;
+    sunAttributes.push_back("normal");
+    sunAttributes.push_back("uv");
+    Material * sunMaterial = new Template("perlin",sunAttributes);
+    sunNode = new Node("sun", { 0,0,0 }, 1, Geometry::sphere(sunAttributes, innerRadius, 100, 50), sunMaterial);
+    sunNode->setRotation(QVector3D(-90,0,180));
+    perlinNoise = sunMaterial->getShaderProgram();
+
   }
   void renderFrame(){
 
@@ -261,12 +270,16 @@ class AtmosphereApp: public Application {
     glEnable(GL_CULL_FACE);
 
 //    drawMoon();
-    drawGround();
+//    drawGround();
     float time = float(Timer::Instance().secoundsPassed) + float(Timer::Instance().nanosecoundsPassed)/1000000000.0;
+    perlinNoise->use();
+    perlinNoise->setUniform("time", time);
     oceanNode->setView(camera);
-    ocean->getShaderProgram()->setUniform("time",time);
+//    ocean->getShaderProgram()->setUniform("time",time);
     ocean->getShaderProgram()->setUniform("eyePosition",camera->position);
-    oceanNode->draw();
+//    oceanNode->draw();
+    sunNode->setView(camera);
+    sunNode->draw();
 
     drawSky();
     GUI::Instance().draw();
