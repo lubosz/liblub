@@ -155,13 +155,18 @@ float pnoise(vec3 P, vec3 rep) {
   float n_xyz = mix(n_yz.x, n_yz.y, fade_xyz.x); 
   return 2.2 * n_xyz;
 }
+
+float normalNoise(vec3 normal, float time) {
+  return pnoise(vec3(normal.xy,time*0.8),vec3(0)) + pnoise(vec3(normal.yz*0.8,time),vec3(0));
+}
 {% endblock %}
 
 {% block main %}
 //  float n = cnoise(10*vec3(uv*5,time/20.0));
 //  float nalt = cnoise(10*vec3(uv*2,time/20.0));
-  float noiseor = (pnoise(vec3(normal.yz*8,time/5.0),vec3(0)) + pnoise(vec3(normal.xz*8,time/5.0),vec3(0)));
-  noiseor += (pnoise(vec3(normal.yz*3,time/10.0),vec3(0)) + pnoise(vec3(normal.xz*3,time/10.0),vec3(0)));
+  float noiseor = normalNoise(normal*8,time/5.0);
+  noiseor += normalNoise(normal*3,time/10.0);
+
   //fragColor = vec4(0.5 + 0.5 * vec3(n, n, n), 1.0);
   //vec4 red = vec4(0);
   //vec4 yellow = vec4(0);

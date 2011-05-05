@@ -19,7 +19,7 @@ TemplateEngine::TemplateEngine() {
   loader->setTemplateDirs(QStringList() << QString::fromStdString(dir));
   m_engine->addTemplateLoader(loader);
 
-  c.insert("precision", false);
+  c.insert("precision", true);
 
   vector<int> glContext = Config::Instance().values<int>("GLcontext");
 

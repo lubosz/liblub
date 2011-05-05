@@ -48,11 +48,10 @@ class AtmosphereApp: public Application {
   Material * ocean;
 
   FrameBuffer *fbo;
-  Texture * targetTexture;
   ShaderProgram * perlinNoise;
 
   AtmosphereApp() {
-    useHDR = false;
+    useHDR = true;
     innerRadius = 11.0f;
     outerRadius = 11.55f;
   }
@@ -63,8 +62,11 @@ class AtmosphereApp: public Application {
 
     float wavelength[3];
     wavelength[0] = 0.650f; // 650 nm for red
-    wavelength[1] = 0.570f; // 570 nm for green
-    wavelength[2] = 0.475f; // 475 nm for blue
+//    wavelength[1] = 0.570f; // 570 nm for green
+//    wavelength[2] = 0.475f; // 475 nm for blue
+
+    wavelength[1] = 1.0; // 570 nm for green
+    wavelength[2] = 0.0; // 475 nm for blue
 
     float wavelength4[3];
     wavelength4[0] = powf(wavelength[0], 4.0f);
@@ -127,7 +129,15 @@ class AtmosphereApp: public Application {
     return moonPlane;
   }
 
-  void scene() {
+  void initCamAndLight(){
+    camera = SceneData::Instance().getCurrentCamera();
+    camera->setPosition(QVector3D(0, 0, 25));
+    camera->update();
+    light = new Light(QVector3D(-2.5, 21.5, -5.2), QVector3D(1, -5, 0));
+    SceneData::Instance().addLight("foolight", light);
+  }
+
+  void initPlanet() {
     Texture * glow = new TextureQImage(ProcTextures::makeGlow(
         QSize(512, 512), 40.0f, 0.1f), "glow");
     Texture * earthMap = new TextureFile("earthmap1k.jpg",
@@ -151,27 +161,13 @@ class AtmosphereApp: public Application {
     spaceFromSpace->addTexture(glow);
     skyFromSpace = new Template("Atmo/Sky",attributes);
 
-
-
-    camera = SceneData::Instance().getCurrentCamera();
-    camera->setPosition(QVector3D(0, 0, 25));
-    camera->update();
-    light = new Light(QVector3D(-2.5, 21.5, -5.2), QVector3D(1, -5, 0));
-    SceneData::Instance().addLight("foolight", light);
-
     Mesh * innerSphere = Geometry::sphere(attributes, innerRadius, 100, 50);
     Mesh * outerSphere = Geometry::sphere(attributes, outerRadius, 300, 500);
-
-//    Mesh * monkey = MeshFactory::load("monkey.obj");
 
     spaceNode = new Node("space", { 0, 0, 0 }, 1, moonPlane(attributes), spaceFromAtmosphere);
     groundNode = new Node("ground", { 0, 0, 0 }, 1, innerSphere, groundFromAtmosphere);
     groundNode->setRotation(QVector3D(-90, 0, 0));
     skyNode = new Node("sky", { 0, 0, 0 }, 1, outerSphere, skyFromAtmosphere);
-
-//    groundNode = new Node("ground", { 0, 0, 0 }, 10, monkey, groundFromAtmosphere);
-////    groundNode->setRotation(QVector3D(-90, 0, 0));
-//    skyNode = new Node("sky", { 0, 0, 0 }, 11, monkey, skyFromAtmosphere);
 
     setAtmoUniforms(spaceFromAtmosphere->getShaderProgram());
     setAtmoUniforms(groundFromAtmosphere->getShaderProgram());
@@ -179,20 +175,31 @@ class AtmosphereApp: public Application {
     setAtmoUniforms(spaceFromSpace->getShaderProgram());
     setAtmoUniforms(groundFromSpace->getShaderProgram());
     setAtmoUniforms(skyFromSpace->getShaderProgram());
+  }
 
+  void initPostProcessing(){
     if(useHDR){
       unsigned width = MediaLayer::Instance().width;
       unsigned height = MediaLayer::Instance().height;
 
       fbo = new FrameBuffer(width, height);
-      targetTexture = new ColorTexture(width, height, "targetTexture");
+      Texture * targetTexture = new ColorTexture(width, height, "targetTexture");
       fbo->attachTexture(GL_COLOR_ATTACHMENT0, targetTexture);
+
+      QList<string> attributes;
+      attributes.push_back("uv");
 
       HDR = new Template("Post/HDR",attributes);
       HDR->addTexture(targetTexture);
       HDR->shaderProgram->setUniform("exposure", 2.0f);
       fbo->checkAndFinish();
     }
+  }
+
+  void initTerrain(){
+    QList<string> attributes;
+     attributes.push_back("normal");
+     attributes.push_back("uv");
 
     terrainMat = new EmptyMat();
 
@@ -216,12 +223,17 @@ class AtmosphereApp: public Application {
     setAtmoUniforms(terrainMat->getShaderProgram());
     Mesh * groundMesh = MeshLoader::load(attributes, "earth.obj");
 //    Mesh * mesh = Geometry::gluSphere(10.0f, 100, 50);
-//    Mesh * mesh = Geometry::makeIcosahedron();
     groundMesh->setDrawType(GL_PATCHES);
     terrainNode = new Node("ground", { 0, 0, 0 }, 12.1, groundMesh, terrainMat);
 
     GUI::Instance().addText("tess", "Tess");
     GUI::Instance().addText("dist", "Dist");
+  }
+
+  void initOcean(){
+    QList<string> attributes;
+     attributes.push_back("normal");
+     attributes.push_back("uv");
 
     ocean = new Template("Ocean",attributes);
     ocean->getShaderProgram()->use();
@@ -245,9 +257,11 @@ class AtmosphereApp: public Application {
     ocean->addTexture(oceanNormal);
     Texture * oceanSky = new CubeTextureFile("cubemaps/sky","EnvironmentMap");
     ocean->addTexture(oceanSky);
-
+    Mesh * innerSphere = Geometry::sphere(attributes, innerRadius, 100, 50);
     oceanNode = new Node("ocean", { 0, 0, 0 }, 1, innerSphere, ocean);
+  }
 
+  void initSun(){
     QList<string> sunAttributes;
     sunAttributes.push_back("normal");
     sunAttributes.push_back("uv");
@@ -255,8 +269,17 @@ class AtmosphereApp: public Application {
     sunNode = new Node("sun", { 0,0,0 }, 1, Geometry::sphere(sunAttributes, innerRadius, 100, 50), sunMaterial);
     sunNode->setRotation(QVector3D(-90,0,180));
     perlinNoise = sunMaterial->getShaderProgram();
-
   }
+
+  void scene() {
+    initPlanet();
+    initCamAndLight();
+    initPostProcessing();
+    initTerrain();
+    initOcean();
+    initSun();
+  }
+
   void renderFrame(){
 
     updateTesselation();
