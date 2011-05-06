@@ -95,9 +95,10 @@ void FrameBuffer::bindMulti() {
       GL_COLOR_ATTACHMENT1_EXT,
       GL_COLOR_ATTACHMENT2_EXT,
       GL_COLOR_ATTACHMENT3_EXT,
-      GL_COLOR_ATTACHMENT4_EXT
+      GL_COLOR_ATTACHMENT4_EXT,
+      GL_COLOR_ATTACHMENT5_EXT
   };
-  glDrawBuffers(5, buffers);
+  glDrawBuffers(6, buffers);
 
   glError;
 }

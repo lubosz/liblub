@@ -10,6 +10,7 @@ out vec3 normalView;
 out vec3 tangentView;
 out vec2 uv;
 
+uniform mat4 MMatrix;
 uniform mat4 MVMatrix;
 uniform mat3 NormalMatrix;
 {% endblock %}

@@ -46,6 +46,10 @@ class DefferedLightApp: public Application {
 
   ~DefferedLightApp() {}
 
+  void initDumpMaterial() {
+
+  }
+
   void initPostProcessing(){
     if(useHDR){
       unsigned width = MediaLayer::Instance().width;
@@ -57,12 +61,14 @@ class DefferedLightApp: public Application {
       Texture * diffuseTexture = new ColorTexture(width, height, "diffuseTexture");
       Texture * tangentTexture = new ColorTexture(width, height, "tangentTexture");
       Texture * normalTextureTexture = new ColorTexture(width, height, "normalTextureTexture");
+      Texture * envTexture = new ColorTexture(width, height, "envTexture");
 
       fbo->attachTexture(GL_COLOR_ATTACHMENT0, positionTexture);
       fbo->attachTexture(GL_COLOR_ATTACHMENT1, normalTexture);
       fbo->attachTexture(GL_COLOR_ATTACHMENT2, diffuseTexture);
       fbo->attachTexture(GL_COLOR_ATTACHMENT3, tangentTexture);
       fbo->attachTexture(GL_COLOR_ATTACHMENT4, normalTextureTexture);
+      fbo->attachTexture(GL_COLOR_ATTACHMENT5, envTexture);
 
       QList<string> attributes;
       attributes.push_back("uv");
@@ -73,6 +79,7 @@ class DefferedLightApp: public Application {
       HDR->addTexture(diffuseTexture);
       HDR->addTexture(tangentTexture);
       HDR->addTexture(normalTextureTexture);
+      HDR->addTexture(envTexture);
 //      HDR->shaderProgram->setUniform("exposure", 2.0f);
       fbo->checkAndFinish();
     }
@@ -99,12 +106,36 @@ class DefferedLightApp: public Application {
   }
 
   void scene() {
+    ShaderProgram * fistPass = new ShaderProgram();
+    fistPass->attachVertFrag("Post/MultiTarget", true);
+    GLuint multiTargetProgram = fistPass->getHandle();
+    glBindFragDataLocation(multiTargetProgram, 0, "fragColor");
+    glBindFragDataLocation(multiTargetProgram, 1, "normalColor");
+    glBindFragDataLocation(multiTargetProgram, 2, "diffuseColor");
+    glBindFragDataLocation(multiTargetProgram, 3, "tangentColor");
+    glBindFragDataLocation(multiTargetProgram, 4, "normalTextureColor");
+    glBindFragDataLocation(multiTargetProgram, 5, "envColor");
+    string programname = "multilight";
+
+    QList<string> attributes;
+    attributes.push_back("uv");
+    attributes.push_back("normal");
+    attributes.push_back("tangent");
+
+    fistPass->init(attributes);
+    fistPass->name = programname;
+    SceneData::Instance().addProgram(programname,fistPass);
+
+
+
     sceneLoader->load();
 //    Material * multilightMat = SceneData::Instance().getMaterial("white");
-//    multilightMat->addTexture(shadowSequence->renderPasses[0]->targetTexture);
+
+    //    multilightMat->addTexture(shadowSequence->renderPasses[0]->targetTexture);
 
     initPostProcessing();
-    SceneData::Instance().initLightBuffer(HDR->getShaderProgram(), "LightSourceBuffer");
+    SceneData::Instance().initLightBuffer(HDR->getShaderProgram(),
+        "LightSourceBuffer");
   }
 
   void renderFrame(){

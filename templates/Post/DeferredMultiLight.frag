@@ -16,6 +16,7 @@ uniform sampler2D normalTexture;
 uniform sampler2D diffuseTexture;
 uniform sampler2D tangentTexture;
 uniform sampler2D normalTextureTexture;
+uniform sampler2D envTexture;
 uniform LightSourceBuffer {
 	LightSource lightSources[5];
 };
@@ -23,16 +24,17 @@ uniform LightSourceBuffer {
 
 
 {% block main %}
-
+	fragColor = vec4(0);
 	for(int i = 0; i < 5 ; i++) {
 		vec4 lightDirection = lightSources[i].position - texture(positionTexture, uv);
 		vec4 L = normalize(lightDirection);	
 		vec4 N = normalize(texture(normalTexture, uv));
 		float lambertTerm = max( dot(N,L), 0.0);
-		fragColor = lambertTerm * vec4(1);
+		fragColor += lambertTerm * lightSources[i].diffuse;
 	}
+	fragColor *= texture(diffuseTexture, uv)* texture(envTexture, uv);
 	
 			
 
-	//fragColor = texture(tangentTexture, uv);
+	//fragColor = texture(positionTexture, uv);
 {% endblock %}
