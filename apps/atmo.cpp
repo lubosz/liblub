@@ -83,6 +83,9 @@ class AtmosphereApp: public Application {
   }
 
   void startPass(){
+
+    useHDR = !RenderEngine::Instance().wire;
+
     if(useHDR) {
       fbo->bind();
       fbo->updateRenderView();
