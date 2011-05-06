@@ -73,7 +73,7 @@ ELSE()
 		    download_gl_header(${GL_HEADER})
     endforeach(GL_HEADER)
 
-	include_directories(src/Renderer/GL3)
+	include_directories(src/Renderer/)
 ENDIF()
 
 
