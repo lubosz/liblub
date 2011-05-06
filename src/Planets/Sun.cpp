@@ -20,12 +20,12 @@ Sun::~Sun() {
   // TODO Auto-generated destructor stub
 }
 
-void Sun::init(){
+void Sun::init(const QVector3D& position, float size){
   QList<string> sunAttributes;
   sunAttributes.push_back("normal");
   sunAttributes.push_back("uv");
   Material * sunMaterial = new Template("perlin",sunAttributes);
-  sunNode = new Node("sun", { 0,0,0 }, 1, Geometry::sphere(sunAttributes, innerRadius, 100, 50), sunMaterial);
+  sunNode = new Node("sun", position, size, Geometry::sphere(sunAttributes, innerRadius, 100, 50), sunMaterial);
   sunNode->setRotation(QVector3D(-90,0,180));
   perlinNoise = sunMaterial->getShaderProgram();
 }

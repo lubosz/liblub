@@ -4,6 +4,7 @@
 in vec3 v3Direction;
 in vec3 color1;
 in vec3 color2;
+in vec3 debugColor;
 {% endblock %}
 
 {% block uniforms %}
@@ -17,4 +18,5 @@ uniform float g2;
 	float miePhase = 1.5 * ((1.0 - g2) / (2.0 + g2)) * (1.0 + cos*cos) / pow(1.0 + g2 - 2.0*g*cos, 1.5);
 	fragColor = vec4(color1 + miePhase * color2,1);
 	fragColor.a = fragColor.b;
+	fragColor = vec4(debugColor,1);
 {% endblock %}

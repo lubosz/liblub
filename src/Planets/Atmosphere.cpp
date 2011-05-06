@@ -66,36 +66,31 @@ void Atmosphere::setAtmoUniforms(ShaderProgram * program, float innerRadius, flo
    program->setUniform("g2", g * g);
  }
 
-void Atmosphere::init() {
+void Atmosphere::init(const QVector3D& position, float size) {
   QList<string> attributes;
    attributes.push_back("normal");
    attributes.push_back("uv");
+   this->position = position;
 
+   TemplateEngine::Instance().c.insert("fromSpace", false);
   skyFromAtmosphere = new Template("Atmo/Sky",attributes);
   TemplateEngine::Instance().c.insert("fromSpace", true);
   skyFromSpace = new Template("Atmo/Sky",attributes);
   Mesh * outerSphere = Geometry::sphere(attributes, outerRadius, 300, 500);
-  skyNode = new Node("sky", { 0, 0, 0 }, 1, outerSphere, skyFromAtmosphere);
+  skyNode = new Node("sky", position, size, outerSphere, skyFromAtmosphere);
   setAtmoUniforms(skyFromAtmosphere->getShaderProgram(), innerRadius, outerRadius);
   setAtmoUniforms(skyFromSpace->getShaderProgram(), innerRadius, outerRadius);
 }
 
 void Atmosphere::draw(){
-  if(SceneData::Instance().getCurrentCamera()->position.length() >= outerRadius)
+  QVector3D camFromPlanet = SceneData::Instance().getCurrentCamera()->position - position;
+  float camDistance = camFromPlanet.length();
+  if(camDistance >= outerRadius)
       skyNode->setMaterial(skyFromSpace);
     else
       skyNode->setMaterial(skyFromAtmosphere);
 
-  SceneData::Instance().getCurrentCamera()->setUniforms(skyNode->getMaterial()->getShaderProgram());
-    glFrontFace(GL_CW);
-    glEnable(GL_BLEND);
-
-    glBlendFunc(GL_ONE, GL_ONE);
+  SceneData::Instance().getCurrentCamera()->setUniforms(skyNode->getMaterial()->getShaderProgram(), position);
     skyNode->setView(SceneData::Instance().getCurrentCamera());
     skyNode->draw();
-
-    glDisable(GL_BLEND);
-    glFrontFace(GL_CCW);
-    glDisable(GL_CULL_FACE);
-    glDisable(GL_DEPTH_TEST);
 }

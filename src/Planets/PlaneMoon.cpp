@@ -42,10 +42,11 @@ Mesh * PlaneMoon::moonPlane(const QList<string> & attributes) {
   return moonPlane;
 }
 
-void PlaneMoon::init() {
+void PlaneMoon::init(const QVector3D& position, float size) {
   QList<string> attributes;
    attributes.push_back("normal");
    attributes.push_back("uv");
+   this->position = position;
 
   Texture * glow = new TextureQImage(
       ProcTextures::makeGlow(QSize(512, 512), 40.0f, 0.1f), "glow");
@@ -55,7 +56,7 @@ void PlaneMoon::init() {
   spaceFromSpace = new Template("Atmo/Space", attributes);
   spaceFromSpace->addTexture(glow);
 
-  spaceNode = new Node("space", { 0, 0, 0 }, 1, moonPlane(attributes), spaceFromAtmosphere);
+  spaceNode = new Node("space", position, size, moonPlane(attributes), spaceFromAtmosphere);
   Atmosphere::setAtmoUniforms(spaceFromAtmosphere->getShaderProgram(), innerRadius, outerRadius);
   Atmosphere::setAtmoUniforms(spaceFromSpace->getShaderProgram(), innerRadius, outerRadius);
 }
@@ -71,7 +72,7 @@ void PlaneMoon::draw() {
   }
 
   if (drawSpace) {
-    SceneData::Instance().getCurrentCamera()->setUniforms(spaceNode->getMaterial()->getShaderProgram());
+    SceneData::Instance().getCurrentCamera()->setUniforms(spaceNode->getMaterial()->getShaderProgram(), position);
     spaceNode->setView(SceneData::Instance().getCurrentCamera());
     spaceNode->draw();
   }

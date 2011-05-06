@@ -18,7 +18,7 @@ public:
   Material *skyFromAtmosphere, *skyFromSpace;
   Atmosphere(float innerRadius, float outerRadius);
   virtual ~Atmosphere();
-  void init();
+  void init(const QVector3D& position, float size);
   void draw();
   static void setAtmoUniforms(ShaderProgram * program, float innerRadius, float outerRadius);
 };

@@ -20,5 +20,5 @@ class Camera: public DirectionNode {
 	void update();
 	void setMouseLook(int mouseXrel, int mouseYrel, qreal mouseSensitivity);
 	void setMouseZoom(int wheelX, int wheelY);
-	void setUniforms(ShaderProgram * program);
+	void setUniforms(ShaderProgram * program, const QVector3D fromPosition);
 };

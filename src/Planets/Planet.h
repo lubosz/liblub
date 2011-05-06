@@ -8,24 +8,26 @@
 #ifndef PLANET_H_
 #define PLANET_H_
 
-#include "Terrain.h"
-#include "Ocean.h"
 #include "Atmosphere.h"
-#include "Sun.h"
-#include "PlaneMoon.h"
+#include "PlanetElement.h"
+
 
 class Planet {
 public:
-  float innerRadius;
-  float outerRadius;
-  Terrain * terrain;
-  Ocean * ocean;
+  enum PlanetType {
+    sun = 0,
+    ocean,
+    terrain
+  };
   Atmosphere * atmoSphere;
-  Sun * sun;
-  PlaneMoon * planeMoon;
-  Planet();
+  PlanetElement * ground;
+//  Terrain * terrain;
+//  Ocean * ocean;
+//  Sun * sun;
+//  PlaneMoon * planeMoon;
+  Planet(float innerRadius, float outerRadius, PlanetType type);
   virtual ~Planet();
-  void init();
+  void init(const QVector3D& position, float size);
   void draw();
 };
 

@@ -46,9 +46,12 @@ void Camera::update() {
   updateView();
 }
 
-void Camera::setUniforms(ShaderProgram * program){
+void Camera::setUniforms(ShaderProgram * program, const QVector3D fromPosition){
   program->use();
-  program->setUniform("cameraPosition", position);
-  program->setUniform("cameraHeight", (float)position.length());
-  program->setUniform("cameraHeight2", float(position.length()*position.length()));
+  program->setUniform("cameraPosition", position-fromPosition);
+  QVector3D cameraDistance = fromPosition - position;
+  //LogDebug << fromPosition.x();
+//  QVector3D cameraDistance = position;
+  program->setUniform("cameraHeight", (float)cameraDistance.length());
+  program->setUniform("cameraHeight2", float(cameraDistance.length()*cameraDistance.length()));
 }

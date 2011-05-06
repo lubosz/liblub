@@ -24,10 +24,11 @@ Terrain::~Terrain() {
   // TODO Auto-generated destructor stub
 }
 
-void Terrain::init(){
+void Terrain::init(const QVector3D& position, float size){
    QList<string> attributes;
     attributes.push_back("normal");
     attributes.push_back("uv");
+    this->position = position;
 
   Texture * earthMap = new TextureFile("earthmap1k.jpg",
       "planet");
@@ -38,7 +39,7 @@ void Terrain::init(){
   groundFromSpace->addTexture(earthMap);
 
   Mesh * innerSphere = Geometry::sphere(attributes, innerRadius, 100, 50);
-  groundNode = new Node("ground", { 0, 0, 0 }, 1, innerSphere, groundFromAtmosphere);
+  groundNode = new Node("ground", position, size, innerSphere, groundFromAtmosphere);
   groundNode->setRotation(QVector3D(-90, 0, 0));
   Atmosphere::setAtmoUniforms(groundFromAtmosphere->getShaderProgram(),innerRadius, outerRadius);
   Atmosphere::setAtmoUniforms(groundFromSpace->getShaderProgram(),innerRadius, outerRadius);
@@ -67,7 +68,7 @@ void Terrain::init(){
    Mesh * groundMesh = MeshLoader::load(attributes, "earth.obj");
 //    Mesh * mesh = Geometry::gluSphere(10.0f, 100, 50);
    groundMesh->setDrawType(GL_PATCHES);
-   terrainNode = new Node("ground", { 0, 0, 0 }, 12.1, groundMesh, terrainMat);
+   terrainNode = new Node("ground", position, size*12.1, groundMesh, terrainMat);
 
    GUI::Instance().addText("tess", "Tess");
    GUI::Instance().addText("dist", "Dist");
@@ -104,12 +105,12 @@ void Terrain::init(){
   else
     groundNode->setMaterial(groundFromAtmosphere);
 
-  SceneData::Instance().getCurrentCamera()->setUniforms(groundNode->getMaterial()->getShaderProgram());
+  SceneData::Instance().getCurrentCamera()->setUniforms(groundNode->getMaterial()->getShaderProgram(), position);
   groundNode->setView(SceneData::Instance().getCurrentCamera());
 
   groundNode->draw();
 
-  SceneData::Instance().getCurrentCamera()->setUniforms(terrainNode->getMaterial()->getShaderProgram());
+  SceneData::Instance().getCurrentCamera()->setUniforms(terrainNode->getMaterial()->getShaderProgram(), position);
   terrainNode->setView(SceneData::Instance().getCurrentCamera());
   terrainNode->draw();
 }

@@ -20,7 +20,7 @@ Ocean::~Ocean() {
   // TODO Auto-generated destructor stub
 }
 
-void Ocean::init(){
+void Ocean::init(const QVector3D& position, float size){
   QList<string> attributes;
    attributes.push_back("normal");
    attributes.push_back("uv");
@@ -48,7 +48,7 @@ void Ocean::init(){
   Texture * oceanSky = new CubeTextureFile("cubemaps/sky","EnvironmentMap");
   ocean->addTexture(oceanSky);
   Mesh * innerSphere = Geometry::sphere(attributes, innerRadius, 100, 50);
-  oceanNode = new Node("ocean", { 0, 0, 0 }, 1, innerSphere, ocean);
+  oceanNode = new Node("ocean", position, size, innerSphere, ocean);
 }
 void Ocean::draw() {
   oceanNode->setView(SceneData::Instance().getCurrentCamera());

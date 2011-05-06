@@ -18,7 +18,7 @@ public:
   Material * ocean;
   Ocean(float innerRadius, float outerRadius);
   virtual ~Ocean();
-  void init();
+  void init(const QVector3D& position, float size);
   void draw();
 };
 

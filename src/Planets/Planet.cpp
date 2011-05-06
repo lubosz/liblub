@@ -10,40 +10,35 @@
 #include "Planet.h"
 #include "Mesh/Geometry.h"
 
+#include "Terrain.h"
+#include "Ocean.h"
+#include "Sun.h"
+//#include "PlaneMoon.h"
 
-Planet::Planet() {
-  innerRadius = 11.0f;
-  outerRadius = 11.55f;
-  terrain = new Terrain(innerRadius,outerRadius);
-  ocean = new Ocean(innerRadius,outerRadius);
+Planet::Planet(float innerRadius, float outerRadius, PlanetType type) {
+  switch (type){
+  case sun:
+    ground = new Sun(innerRadius,outerRadius);
+    break;
+  case terrain:
+    ground = new Terrain(innerRadius,outerRadius);
+    break;
+  case ocean:
+    ground = new Ocean(innerRadius,outerRadius);
+    break;
+  }
   atmoSphere = new Atmosphere(innerRadius,outerRadius);
-  sun = new Sun(innerRadius,outerRadius);
-  planeMoon = new PlaneMoon(innerRadius,outerRadius);
-
 }
 
 Planet::~Planet() {
-  // TODO Auto-generated destructor stub
 }
 
-void Planet::init() {
-
-  QList<string> attributes;
-  attributes.push_back("normal");
-  attributes.push_back("uv");
-
-  terrain->init();
-  ocean->init();
-  atmoSphere->init();
-  sun->init();
-  planeMoon->init();
-
+void Planet::init(const QVector3D& position, float size) {
+  atmoSphere->init(position, size);
+  ground->init(position, size);
 }
 
 void Planet::draw() {
-//  terrain->draw(outerRadius);
-  ocean->draw();
-//  sun->draw();
-  atmoSphere->draw();
-//  planeMoon->draw(outerRadius);
+  ground->draw();
+//  atmoSphere->draw();
 }

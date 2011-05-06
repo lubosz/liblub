@@ -18,7 +18,7 @@ public:
   Material *terrainMat, *groundFromAtmosphere, *groundFromSpace;
   Terrain(float innerRadius, float outerRadius);
   virtual ~Terrain();
-  void init();
+  void init(const QVector3D& position, float size);
   void draw();
   void updateTesselation();
 };

@@ -40,11 +40,12 @@ class AtmosphereApp: public Application {
   Light * light;
 
   FrameBuffer *fbo;
-  Planet * planet;
+  Planet * planet, *sun;
 
   AtmosphereApp() {
     useHDR = true;
-    planet = new Planet();
+    planet = new Planet(11,11.55, Planet::ocean);
+    sun = new Planet(11,11.55, Planet::sun);
   }
 
   ~AtmosphereApp() {}
@@ -52,7 +53,7 @@ class AtmosphereApp: public Application {
 
   void initCamAndLight(){
     camera = SceneData::Instance().getCurrentCamera();
-    camera->setPosition(QVector3D(0, 0, 25));
+    camera->setPosition(QVector3D(15, 0, 25));
     camera->update();
     light = new Light(QVector3D(-2.5, 21.5, -5.2), QVector3D(1, -5, 0));
     SceneData::Instance().addLight("foolight", light);
@@ -95,7 +96,8 @@ class AtmosphereApp: public Application {
   }
 
   void scene() {
-    planet-> init();
+    planet-> init({0,0,0},1);
+    sun-> init({30,0,0},1);
     initCamAndLight();
     initPostProcessing();
   }
@@ -106,6 +108,20 @@ class AtmosphereApp: public Application {
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_CULL_FACE);
     planet->draw();
+//    planet->atmoSphere->draw();
+    sun->draw();
+
+    glFrontFace(GL_CW);
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_ONE, GL_ONE);
+    planet->atmoSphere->draw();
+    sun->atmoSphere->draw();
+
+    glDisable(GL_BLEND);
+    glFrontFace(GL_CCW);
+    glDisable(GL_CULL_FACE);
+    glDisable(GL_DEPTH_TEST);
+
     endPass();
     GUI::Instance().draw();
     glError;
