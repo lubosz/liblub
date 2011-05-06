@@ -17,7 +17,8 @@ public:
   enum PlanetType {
     sun = 0,
     ocean,
-    terrain
+    terrainPlain,
+    terrainTess
   };
   Atmosphere * atmoSphere;
   PlanetElement * ground;

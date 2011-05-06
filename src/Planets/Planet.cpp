@@ -10,7 +10,8 @@
 #include "Planet.h"
 #include "Mesh/Geometry.h"
 
-#include "Terrain.h"
+#include "TerrainPlain.h"
+#include "TerrainTesselation.h"
 #include "Ocean.h"
 #include "Sun.h"
 //#include "PlaneMoon.h"
@@ -20,8 +21,11 @@ Planet::Planet(float innerRadius, float outerRadius, PlanetType type, const QVec
   case sun:
     ground = new Sun(innerRadius,outerRadius);
     break;
-  case terrain:
-    ground = new Terrain(innerRadius,outerRadius, atmoColor);
+  case terrainPlain:
+    ground = new TerrainPlain(innerRadius,outerRadius, atmoColor);
+    break;
+  case terrainTess:
+    ground = new TerrainTesselation(innerRadius,outerRadius, atmoColor);
     break;
   case ocean:
     ground = new Ocean(innerRadius,outerRadius);
