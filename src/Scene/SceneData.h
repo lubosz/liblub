@@ -47,6 +47,7 @@ public:
 
   void updateLightBuffer();
   void initLightBuffer(const string& shaderName, const string& bufferName);
+  void initLightBuffer(ShaderProgram * shader, const string& bufferName);
 
   Camera * getCurrentCamera();
   Light * getShadowLight();

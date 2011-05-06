@@ -45,7 +45,7 @@ void Material::activateTextures() {
 
 void Material::samplerUniforms() {
     foreach(Texture* texture, textures) {
-            texture->uniform(shaderProgram->getReference());
+            texture->uniform(shaderProgram->getHandle());
         }
 }
 

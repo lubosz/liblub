@@ -2,7 +2,10 @@
 <liblub>
 	<Programs>
 		<Program name="multilight">
-			<Shader url="Color/multilight" />
+			<!-- 
+			 <Shader url="Color/multilight" />
+			 -->
+			 <Template url="Post/MultiTarget" />
 			<Uniform value="0, 0, 0, 0" name="ambientSceneColor" />
 			<Uniform value="1.0, 1.0, 1.0, 1.0" name="diffuseMaterialColor" />
 			<Uniform value="0.8, 0.8, 0.8,1.0" name="specularMaterialColor" />

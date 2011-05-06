@@ -80,15 +80,26 @@ void FrameBuffer::bind() {
     // set the rendering destination to FBO
     glBindFramebuffer(GL_FRAMEBUFFER, fboId);
 
-    // Multiple render targets
-    // GLenum buffers[] =
-    // { GL_COLOR_ATTACHMENT0_EXT, GL_COLOR_ATTACHMENT1_EXT };
-    // glDrawBuffers(2, buffers);
-
     // Set the render target
     // glDrawBuffer(GL_COLOR_ATTACHMENT0);
-
     glError;
+}
+
+void FrameBuffer::bindMulti() {
+  // set the rendering destination to FBO
+  glBindFramebuffer(GL_FRAMEBUFFER, fboId);
+
+  // Multiple render targets
+  GLenum buffers[] = {
+      GL_COLOR_ATTACHMENT0_EXT,
+      GL_COLOR_ATTACHMENT1_EXT,
+      GL_COLOR_ATTACHMENT2_EXT,
+      GL_COLOR_ATTACHMENT3_EXT,
+      GL_COLOR_ATTACHMENT4_EXT
+  };
+  glDrawBuffers(5, buffers);
+
+  glError;
 }
 
 void FrameBuffer::unBind() {

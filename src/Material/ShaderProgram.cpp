@@ -16,8 +16,8 @@ using std::stringstream;
 ShaderProgram::ShaderProgram() {
   attribCount = 0;
     /* Assign our program handle a "name" */
-    program = glCreateProgram();
-    LogDebug << "Creating Program #" << program;
+    handle = glCreateProgram();
+    LogDebug << "Creating Program #" << handle;
 }
 
 ShaderProgram::~ShaderProgram() {
@@ -31,14 +31,14 @@ ShaderProgram::~ShaderProgram() {
 
 void ShaderProgram::printProgramInfoLog() {
   int infologLen = 0;
-  glGetProgramiv(program, GL_INFO_LOG_LENGTH, &infologLen);
+  glGetProgramiv(handle, GL_INFO_LOG_LENGTH, &infologLen);
   if (infologLen > 1) {
     GLchar * infoLog = reinterpret_cast<GLchar*>(malloc(infologLen));
     if (infoLog == NULL) {
       LogError << "Could not allocate InfoLog buffer";
     }
     int charsWritten = 0;
-    glGetProgramInfoLog(program, infologLen, &charsWritten, infoLog);
+    glGetProgramInfoLog(handle, infologLen, &charsWritten, infoLog);
     string shaderlog = infoLog;
     free(infoLog);
     LogFatal << "Program Log"<< shaderlog;
@@ -51,7 +51,7 @@ void ShaderProgram::attachShader(string fileName, GLenum type, bool useTemplate)
     /* Attach our shaders to our program */
   Shader * shader = new Shader(fileName, type, useTemplate);
   shaders.push_back(shader);
-  glAttachShader(program, shader->getReference());
+  glAttachShader(handle, shader->getReference());
 }
 
 void ShaderProgram::attachShader(
@@ -59,11 +59,11 @@ void ShaderProgram::attachShader(
     /* Attach our shaders to our program */
   Shader * shader = new Shader(fileName, type, defines);
   shaders.push_back(shader);
-  glAttachShader(program, shader->getReference());
+  glAttachShader(handle, shader->getReference());
 }
 
 void ShaderProgram::detachShader(Shader *shader) {
-  glDetachShader(program, shader->getReference());
+  glDetachShader(handle, shader->getReference());
 //  shaders.remove(shader);
   delete shader;
 }
@@ -90,7 +90,7 @@ void ShaderProgram::attachVertFragGeom(string file, bool useTemplate) {
 }
 
 void ShaderProgram::bindAttrib(unsigned position, string name) {
-  glBindAttribLocation(program, position, name.c_str());
+  glBindAttribLocation(handle, position, name.c_str());
 }
 
 void ShaderProgram::bindAttribIfUnbound(string name) {
@@ -112,7 +112,7 @@ void ShaderProgram::bindAttrib(string name) {
 void ShaderProgram::bindVertexAttributes(const QList<string> & attributes) {
 //Order has to match the shader
 
-  LogDebug << "Initializing Vertex Attributes for Program #" << program;
+  LogDebug << "Initializing Vertex Attributes for Program #" << handle;
 
   bindAttrib("in_Vertex");
 
@@ -138,7 +138,7 @@ void ShaderProgram::initUniformsByType(vector<Uniform<T> > & uniforms) {
       foreach(T value, uniform.values) {
         log << value << ", ";
       }
-      uniform.init(program);
+      uniform.init(handle);
       LogDebug << log.str() << uniform.values.size() << " bound.";
       glError;
     }
@@ -153,7 +153,7 @@ void ShaderProgram::initUniforms() {
 
 void ShaderProgram::linkAndUse() {
   /* Link our program, and set it as being actively used */
-  glLinkProgram(program);
+  glLinkProgram(handle);
   printProgramInfoLog();
   use();
 }
@@ -161,33 +161,33 @@ void ShaderProgram::linkAndUse() {
 void ShaderProgram::init(const QList<string> & attributes) {
   bindVertexAttributes(attributes);
   linkAndUse();
-  LogDebug << "Initializing Uniforms for Program #" << program;
+  LogDebug << "Initializing Uniforms for Program #" << handle;
   initUniforms();
 }
 
 void ShaderProgram::use() {
   glError;
-  glUseProgram(program);
+  glUseProgram(handle);
   glError;
 }
 
 void ShaderProgram::setUniform(string name, const QVector4D& vector) {
-  glUniform4f(glGetUniformLocation(program, name.c_str()),
+  glUniform4f(glGetUniformLocation(handle, name.c_str()),
           vector.x(), vector.y(), vector.z(), vector.w());
 }
 
 void ShaderProgram::setUniform(string name, const QVector3D& vector) {
-  glUniform3f(glGetUniformLocation(program, name.c_str()),
+  glUniform3f(glGetUniformLocation(handle, name.c_str()),
           vector.x(), vector.y(), vector.z());
 }
 
 void ShaderProgram::setUniform(string name, const QVector2D& vector) {
-  glUniform2f(glGetUniformLocation(program, name.c_str()),
+  glUniform2f(glGetUniformLocation(handle, name.c_str()),
           vector.x(), vector.y());
 }
 
-GLuint ShaderProgram::getReference() const {
-  return program;
+GLuint ShaderProgram::getHandle() const {
+  return handle;
 }
 
 void ShaderProgram::setUniform(string name, const QMatrix3x3 & matrix) {
@@ -197,7 +197,7 @@ void ShaderProgram::setUniform(string name, const QMatrix3x3 & matrix) {
         mat[i] = data[i];
 
   glUniformMatrix3fv(
-      glGetUniformLocation(program, name.c_str()), 1, GL_FALSE, mat);
+      glGetUniformLocation(handle, name.c_str()), 1, GL_FALSE, mat);
 }
 
 void ShaderProgram::setUniform(string name, const QMatrix4x4 & matrix) {
@@ -207,7 +207,7 @@ void ShaderProgram::setUniform(string name, const QMatrix4x4 & matrix) {
         mat[i] = data[i];
 
   glUniformMatrix4fv(
-      glGetUniformLocation(program, name.c_str()), 1, GL_FALSE,
+      glGetUniformLocation(handle, name.c_str()), 1, GL_FALSE,
       // reinterpret_cast<const GLfloat *>(matrix.constData())
       mat);
   /* DOUBLE PRECISION
@@ -218,25 +218,25 @@ void ShaderProgram::setUniform(string name, const QMatrix4x4 & matrix) {
 }
 
 void ShaderProgram::setUniform(string name, float value) {
-  glUniform1f(glGetUniformLocation(program, name.c_str()), value);
+  glUniform1f(glGetUniformLocation(handle, name.c_str()), value);
 }
 
 void ShaderProgram::setUniform(string name, int value) {
-  glUniform1i(glGetUniformLocation(program, name.c_str()), value);
+  glUniform1i(glGetUniformLocation(handle, name.c_str()), value);
 }
 
 void ShaderProgram::translateUniformf(unsigned id, const vector<float> & values){
 //	Logger::Instance().log("DEBUG", "translate Uniform name", uniforms[id].name);
 	for (unsigned i = 0; i < values.size(); i++)
 		uniforms[id].values[i] += values[i];
-	uniforms[id].init(program);
+	uniforms[id].init(handle);
 }
 
 void ShaderProgram::bindUniformBuffer(string name, GLuint bindIndex, GLuint bufferHandle) {
   glBindBufferBase(GL_UNIFORM_BUFFER, bindIndex, bufferHandle);
-  GLuint blockIndex = glGetUniformBlockIndex(program, name.c_str());
+  GLuint blockIndex = glGetUniformBlockIndex(handle, name.c_str());
   if(blockIndex == GL_INVALID_INDEX)
     LogFatal << "Uniform Buffer not found in Shader" << name;
-  glUniformBlockBinding(program, blockIndex, bindIndex);
+  glUniformBlockBinding(handle, blockIndex, bindIndex);
   glError;
 }

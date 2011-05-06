@@ -99,9 +99,9 @@ class LoadApp: public Application {
     positionBuffer = new UniformBuffer();
     positionBuffer->bind();
 
-    GLuint uniBlockIndex = glGetUniformBlockIndex(material->getShaderProgram()->getReference(), "positions");
+    GLuint uniBlockIndex = glGetUniformBlockIndex(material->getShaderProgram()->getHandle(), "positions");
     glGetActiveUniformBlockiv(
-      material->getShaderProgram()->getReference(),
+      material->getShaderProgram()->getHandle(),
       uniBlockIndex,
       GL_UNIFORM_BLOCK_DATA_SIZE,
       &positionBufferSize

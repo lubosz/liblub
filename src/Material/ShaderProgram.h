@@ -37,7 +37,7 @@ class ShaderProgram {
 	void bindVertexAttributes(const QList<string> & attributes);
 	void init(const QList<string> & attributes);
 	void linkAndUse();
-	GLuint getReference() const;
+	GLuint getHandle() const;
 
 	string name;
 	vector<Uniform<float> > uniforms;
@@ -58,7 +58,7 @@ class ShaderProgram {
 
  private:
 	/* This is a handle to the shader program */
-	GLuint program;
+	GLuint handle;
 	template<typename T> void initUniformsByType(vector<Uniform<T> > & uniforms);
 	vector<Shader*> shaders;
 	vector<string> boundAttribs;

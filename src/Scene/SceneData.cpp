@@ -18,15 +18,18 @@ SceneData::SceneData() {
 SceneData::~SceneData() {
   // TODO Auto-generated destructor stub
 }
-
 void SceneData::initLightBuffer(const string& shaderName, const string& bufferName) {
+  ShaderProgram * shader = SceneData::Instance().getProgram(shaderName);
+  initLightBuffer(shader, bufferName);
+}
+
+void SceneData::initLightBuffer(ShaderProgram * shader, const string& bufferName) {
   lightBuffer = new UniformBuffer();
-  ShaderProgram * uberShader = SceneData::Instance().getProgram(shaderName);
   SceneData::Instance().lightBuffer->bind();
 
-  GLuint uniBlockIndex = glGetUniformBlockIndex(uberShader->getReference(), bufferName.c_str());
+  GLuint uniBlockIndex = glGetUniformBlockIndex(shader->getHandle(), bufferName.c_str());
   glGetActiveUniformBlockiv(
-    uberShader->getReference(),
+    shader->getHandle(),
     uniBlockIndex,
     GL_UNIFORM_BLOCK_DATA_SIZE,
     &lightBufferSize
@@ -51,7 +54,7 @@ void SceneData::initLightBuffer(const string& shaderName, const string& bufferNa
   }
   lightBuffer->write(lightBufferData, lightBufferSize);
 
-  uberShader->bindUniformBuffer(bufferName,0,lightBuffer->getHandle());
+  shader->bindUniformBuffer(bufferName,0,lightBuffer->getHandle());
   useMultiLights = true;
 }
 

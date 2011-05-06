@@ -11,6 +11,7 @@ in vec4 positionView;
 in vec3 normalView;
 
 out vec4 finalColor;
+out vec4 normalColor;
 
 uniform vec4 lightPositionView;
 uniform float shininess;
@@ -138,5 +139,8 @@ void main(){
 	//finalColor = vec4(1) * shadow;
 	//finalColor = lightSources[0].diffuse;
 	//finalColor = texture(normalTexture, uv);
+	//finalColor = vec4(normalView,1);
+	normalColor = vec4(normalView,1);
+	
 } 
 

@@ -34,7 +34,7 @@ class ConvolutionMaterial : public Material {
 		done();
   }
 	void uniforms() {
-		GLuint program = shaderProgram->getReference();
+		GLuint program = shaderProgram->getHandle();
 		// array of offsets for accessing the base image
 		glUniform2f(glGetUniformLocation(program, "Offset"), 0.0, 0.0);
 		// size of kernel (width * height) for this execution
@@ -70,7 +70,7 @@ class HatchingMat : public Material {
 		done();
   }
 	void uniforms() {
-		GLuint program = shaderProgram->getReference();
+		GLuint program = shaderProgram->getHandle();
 		glUniform1f(glGetUniformLocation(program, "Time"), 1.0);
 	}
 };
@@ -91,7 +91,7 @@ class FogMaterial : public Material {
 		done();
   }
 	void uniforms() {
-		GLuint program = shaderProgram->getReference();
+		GLuint program = shaderProgram->getHandle();
 
 		glUniform1f(glGetUniformLocation(program, "uFogPos"), 0.8);
 		glUniform3f(glGetUniformLocation(program, "uEyePos"), 0.0, 0.0, 1.0);

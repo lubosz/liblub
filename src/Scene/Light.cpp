@@ -61,7 +61,7 @@ void Light::bindShaderUpdateLight(ShaderProgram * shaderProgram) {
 }
 
 void Light::bindShaderInit(ShaderProgram * shaderProgram) {
-    GLuint program = shaderProgram->getReference();
+    GLuint program = shaderProgram->getHandle();
 
     //TODO: Hardcoded light stuff
     shaderProgram->setUniform("lightColor",QVector4D(1.0, 1.0, 1.0, 1.0));

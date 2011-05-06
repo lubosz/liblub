@@ -16,6 +16,7 @@ class FrameBuffer {
 	FrameBuffer(GLuint width, GLuint height);
 	virtual ~FrameBuffer();
     void bind();
+    void bindMulti();
     void unBind();
     void draw(Material * material);
     void updateRenderView();

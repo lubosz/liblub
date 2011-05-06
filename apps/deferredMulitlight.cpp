@@ -18,7 +18,6 @@
 */
 #include <string>
 #include <QApplication>
-#include <QPainter>
 #include "System/TemplateEngine.h"
 #include "System/Application.h"
 #include "Scene/SceneLoader.h"
@@ -30,38 +29,22 @@
 #include "Material/ProcTextures.h"
 #include "Material/Textures.h"
 #include "Material/ShaderProgram.h"
-#include "Planets/Planet.h"
 
-class AtmosphereApp: public Application {
+class DefferedLightApp: public Application {
  public:
   Material *HDR;
   bool useHDR;
-  Camera* camera;
-  Light * light;
-
+//  Camera* camera;
+//  Light * light;
   FrameBuffer *fbo;
-  Planet * planet, *sun, *terrain, *terrainTess;
-  vector <Planet*> planets;
+//  RenderSequence * shadowSequence;
 
-  AtmosphereApp() {
+  DefferedLightApp() {
+    sceneLoader = new SceneLoader("multilight.xml");
     useHDR = true;
-    planet = new Planet(11,11.55, Planet::ocean, QVector3D(0.650f, 0.570f,0.475f));
-    sun = new Planet(11,11.55, Planet::sun, QVector3D(0.650f,1,0));
-    terrain = new Planet(11,11.55, Planet::terrainPlain, QVector3D(0.650f,1,0.475f));
-    terrainTess = new Planet(11,11.55, Planet::terrainTess, QVector3D(0,1,0));
-//    planets.push_back();
   }
 
-  ~AtmosphereApp() {}
-
-
-  void initCamAndLight(){
-    camera = SceneData::Instance().getCurrentCamera();
-    camera->setPosition(QVector3D(15, 0, 25));
-    camera->update();
-    light = new Light(QVector3D(-2.5, 21.5, -5.2), QVector3D(1, -5, 0));
-    SceneData::Instance().addLight("foolight", light);
-  }
+  ~DefferedLightApp() {}
 
   void initPostProcessing(){
     if(useHDR){
@@ -69,25 +52,38 @@ class AtmosphereApp: public Application {
       unsigned height = MediaLayer::Instance().height;
 
       fbo = new FrameBuffer(width, height);
-      Texture * targetTexture = new ColorTexture(width, height, "targetTexture");
-      fbo->attachTexture(GL_COLOR_ATTACHMENT0, targetTexture);
+      Texture * positionTexture = new ColorTexture(width, height, "positionTexture");
+      Texture * normalTexture = new ColorTexture(width, height, "normalTexture");
+      Texture * diffuseTexture = new ColorTexture(width, height, "diffuseTexture");
+      Texture * tangentTexture = new ColorTexture(width, height, "tangentTexture");
+      Texture * normalTextureTexture = new ColorTexture(width, height, "normalTextureTexture");
+
+      fbo->attachTexture(GL_COLOR_ATTACHMENT0, positionTexture);
+      fbo->attachTexture(GL_COLOR_ATTACHMENT1, normalTexture);
+      fbo->attachTexture(GL_COLOR_ATTACHMENT2, diffuseTexture);
+      fbo->attachTexture(GL_COLOR_ATTACHMENT3, tangentTexture);
+      fbo->attachTexture(GL_COLOR_ATTACHMENT4, normalTextureTexture);
 
       QList<string> attributes;
       attributes.push_back("uv");
 
-      HDR = new Template("Post/HDR",attributes);
-      HDR->addTexture(targetTexture);
-      HDR->shaderProgram->setUniform("exposure", 2.0f);
+      HDR = new Template("Post/DeferredMultiLight",attributes);
+      HDR->addTexture(positionTexture);
+      HDR->addTexture(normalTexture);
+      HDR->addTexture(diffuseTexture);
+      HDR->addTexture(tangentTexture);
+      HDR->addTexture(normalTextureTexture);
+//      HDR->shaderProgram->setUniform("exposure", 2.0f);
       fbo->checkAndFinish();
     }
   }
 
   void startPass(){
 
-    useHDR = !RenderEngine::Instance().wire;
+//    useHDR = !RenderEngine::Instance().wire;
 
     if(useHDR) {
-      fbo->bind();
+      fbo->bindMulti();
       fbo->updateRenderView();
     }
   }
@@ -103,37 +99,18 @@ class AtmosphereApp: public Application {
   }
 
   void scene() {
-    planet-> init({-30,0,0},1);
-    terrain-> init({0,0,0},1);
-    terrainTess-> init({0,30,0},1);
-    sun-> init({30,0,0},1);
-    initCamAndLight();
+    sceneLoader->load();
+//    Material * multilightMat = SceneData::Instance().getMaterial("white");
+//    multilightMat->addTexture(shadowSequence->renderPasses[0]->targetTexture);
+
     initPostProcessing();
+    SceneData::Instance().initLightBuffer(HDR->getShaderProgram(), "LightSourceBuffer");
   }
 
   void renderFrame(){
     startPass();
     RenderEngine::Instance().clear();
-    glEnable(GL_DEPTH_TEST);
-    glEnable(GL_CULL_FACE);
-    planet->draw();
-    sun->draw();
-    terrain->draw();
-    terrainTess->draw();
-
-    glFrontFace(GL_CW);
-    glEnable(GL_BLEND);
-    glBlendFunc(GL_ONE, GL_ONE);
-    planet->atmoSphere->draw();
-    sun->atmoSphere->draw();
-    terrain->atmoSphere->draw();
-    terrainTess->atmoSphere->draw();
-
-    glDisable(GL_BLEND);
-    glFrontFace(GL_CCW);
-    glDisable(GL_CULL_FACE);
-    glDisable(GL_DEPTH_TEST);
-
+    SceneGraph::Instance().drawNodes(SceneData::Instance().getCurrentCamera());
     endPass();
     GUI::Instance().draw();
     glError;
@@ -142,6 +119,6 @@ class AtmosphereApp: public Application {
 
 int main(int argc, char *argv[]) {
   QApplication app(argc, argv);
-  AtmosphereApp().run();
+  DefferedLightApp().run();
 }
 

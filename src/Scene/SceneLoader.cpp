@@ -65,6 +65,9 @@ void SceneLoader::appendProgram(const QDomElement & programNode) {
                     program->attachVertFrag(shaderUrl, false);
                 }
             }
+        } else if (programInfo.tagName() == "Template") {
+          shaderUrl = programInfo.attribute("url").toStdString();
+          program->attachVertFrag(shaderUrl, true);
         } else if (programInfo.tagName() == "Uniform") {
             program->uniforms.push_back(Uniform<float> (programInfo.attribute(
                     "name").toStdString(), splitValues<float> (

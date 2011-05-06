@@ -75,8 +75,8 @@ class LoadApp: public Application {
 #ifdef USE_FBO
     Material * multilightMat = SceneData::Instance().getMaterial("white");
     multilightMat->addTexture(shadowSequence->renderPasses[0]->targetTexture);
-#endif
     SceneData::Instance().initLightBuffer("multilight", "LightSourceBuffer");
+#endif
 
   }
   void renderFrame(){
