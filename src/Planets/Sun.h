@@ -11,11 +11,13 @@
 #include "Scene/Node.h"
 #include "Material/ShaderProgram.h"
 
-class Sun {
+#include "PlanetElement.h"
+
+class Sun: public PlanetElement {
 public:
   ShaderProgram * perlinNoise;
   Node *sunNode;
-  Sun();
+  Sun(float innerRadius, float outerRadius);
   virtual ~Sun();
   void init();
   void draw();

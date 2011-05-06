@@ -10,16 +10,17 @@
 
 #include "Scene/Node.h"
 #include "Material/Material.h"
+#include "PlanetElement.h"
 
-class Atmosphere {
+class Atmosphere  : public PlanetElement{
 public:
   Node * skyNode;
   Material *skyFromAtmosphere, *skyFromSpace;
-  Atmosphere();
+  Atmosphere(float innerRadius, float outerRadius);
   virtual ~Atmosphere();
   void init();
   void draw();
-  void setAtmoUniforms(ShaderProgram * program, float innerRadius, float outerRadius);
+  static void setAtmoUniforms(ShaderProgram * program, float innerRadius, float outerRadius);
 };
 
 #endif /* ATMOSPHERE_H_ */

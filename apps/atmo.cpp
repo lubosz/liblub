@@ -50,13 +50,6 @@ class AtmosphereApp: public Application {
   ~AtmosphereApp() {}
 
 
-  void setCameraUniforms(ShaderProgram * program){
-    program->use();
-    program->setUniform("cameraPosition", camera->position);
-    program->setUniform("cameraHeight", (float)camera->position.length());
-    program->setUniform("cameraHeight2", float(camera->position.length()*camera->position.length()));
-  }
-
   void initCamAndLight(){
     camera = SceneData::Instance().getCurrentCamera();
     camera->setPosition(QVector3D(0, 0, 25));

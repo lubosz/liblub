@@ -8,10 +8,13 @@
 #include <math.h>
 #include "Atmosphere.h"
 #include "Material/Materials.h"
+#include "System/TemplateEngine.h"
+#include "Mesh/Geometry.h"
+#include "Scene/SceneData.h"
 
-Atmosphere::Atmosphere() {
-  // TODO Auto-generated constructor stub
-
+Atmosphere::Atmosphere(float innerRadius, float outerRadius) {
+  this->innerRadius = innerRadius;
+  this->outerRadius = outerRadius;
 }
 
 Atmosphere::~Atmosphere() {
@@ -64,26 +67,31 @@ void Atmosphere::setAtmoUniforms(ShaderProgram * program, float innerRadius, flo
  }
 
 void Atmosphere::init() {
+  QList<string> attributes;
+   attributes.push_back("normal");
+   attributes.push_back("uv");
+
   skyFromAtmosphere = new Template("Atmo/Sky",attributes);
   TemplateEngine::Instance().c.insert("fromSpace", true);
   skyFromSpace = new Template("Atmo/Sky",attributes);
+  Mesh * outerSphere = Geometry::sphere(attributes, outerRadius, 300, 500);
   skyNode = new Node("sky", { 0, 0, 0 }, 1, outerSphere, skyFromAtmosphere);
-  setAtmoUniforms(skyFromAtmosphere->getShaderProgram());
-  setAtmoUniforms(skyFromSpace->getShaderProgram());
+  setAtmoUniforms(skyFromAtmosphere->getShaderProgram(), innerRadius, outerRadius);
+  setAtmoUniforms(skyFromSpace->getShaderProgram(), innerRadius, outerRadius);
 }
 
 void Atmosphere::draw(){
-  if(camera->position.length() >= outerRadius)
+  if(SceneData::Instance().getCurrentCamera()->position.length() >= outerRadius)
       skyNode->setMaterial(skyFromSpace);
     else
       skyNode->setMaterial(skyFromAtmosphere);
 
-    setCameraUniforms(skyNode->getMaterial()->getShaderProgram());
+  SceneData::Instance().getCurrentCamera()->setUniforms(skyNode->getMaterial()->getShaderProgram());
     glFrontFace(GL_CW);
     glEnable(GL_BLEND);
 
     glBlendFunc(GL_ONE, GL_ONE);
-    skyNode->setView(camera);
+    skyNode->setView(SceneData::Instance().getCurrentCamera());
     skyNode->draw();
 
     glDisable(GL_BLEND);

@@ -9,17 +9,18 @@
 #include "Material/Materials.h"
 #include "Material/Textures.h"
 #include "Mesh/Geometry.h"
+#include "Scene/SceneData.h"
 
-Ocean::Ocean() {
-  // TODO Auto-generated constructor stub
-
+Ocean::Ocean(float innerRadius, float outerRadius) {
+  this->innerRadius = innerRadius;
+  this->outerRadius = outerRadius;
 }
 
 Ocean::~Ocean() {
   // TODO Auto-generated destructor stub
 }
 
-void Ocean::init(float innerRadius){
+void Ocean::init(){
   QList<string> attributes;
    attributes.push_back("normal");
    attributes.push_back("uv");
@@ -50,8 +51,8 @@ void Ocean::init(float innerRadius){
   oceanNode = new Node("ocean", { 0, 0, 0 }, 1, innerSphere, ocean);
 }
 void Ocean::draw() {
-  oceanNode->setView(camera);
+  oceanNode->setView(SceneData::Instance().getCurrentCamera());
 //    ocean->getShaderProgram()->setUniform("time",time);
-  ocean->getShaderProgram()->setUniform("eyePosition",camera->position);
+  ocean->getShaderProgram()->setUniform("eyePosition",SceneData::Instance().getCurrentCamera()->position);
   oceanNode->draw();
 }

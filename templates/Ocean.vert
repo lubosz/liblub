@@ -78,7 +78,7 @@ struct Wave {
 	{
 		angle = dot(wave[i].dir, P.xz) * wave[i].freq + time * wave[i].phase;
 		//P.y += wave[i].amp * sin( angle );
-		P += normalize(vec4(in_Normal,1)) * wave[i].amp * sin( angle );
+		//P += normalize(vec4(in_Normal,1)) * wave[i].amp * sin( angle );
 		// calculate derivate of wave function
 		deriv = wave[i].freq * wave[i].amp * cos(angle);
 		ddx -= deriv * wave[i].dir.x;

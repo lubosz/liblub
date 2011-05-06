@@ -45,3 +45,10 @@ void Camera::updateRotation() {
 void Camera::update() {
   updateView();
 }
+
+void Camera::setUniforms(ShaderProgram * program){
+  program->use();
+  program->setUniform("cameraPosition", position);
+  program->setUniform("cameraHeight", (float)position.length());
+  program->setUniform("cameraHeight2", float(position.length()*position.length()));
+}

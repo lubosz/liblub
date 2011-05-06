@@ -6,10 +6,14 @@
  */
 
 #include "Sun.h"
+#include "System/Timer.h"
+#include "Scene/SceneData.h"
+#include "Material/Materials.h"
+#include "Mesh/Geometry.h"
 
-Sun::Sun() {
-  // TODO Auto-generated constructor stub
-
+Sun::Sun(float innerRadius, float outerRadius) {
+  this->innerRadius = innerRadius;
+  this->outerRadius = outerRadius;
 }
 
 Sun::~Sun() {
@@ -29,6 +33,6 @@ void Sun::draw(){
   float time = float(Timer::Instance().secoundsPassed) + float(Timer::Instance().nanosecoundsPassed)/1000000000.0;
   perlinNoise->use();
   perlinNoise->setUniform("time", time);
-  sunNode->setView(camera);
+  sunNode->setView(SceneData::Instance().getCurrentCamera());
   sunNode->draw();
 }

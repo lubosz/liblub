@@ -11,12 +11,13 @@
 #include "Scene/Node.h"
 #include "Material/Material.h"
 #include "Mesh/Mesh.h"
+#include "PlanetElement.h"
 
-class PlaneMoon {
+class PlaneMoon  : public PlanetElement{
 public:
   Material *spaceFromAtmosphere, *spaceFromSpace;
   Node * spaceNode;
-  PlaneMoon();
+  PlaneMoon(float innerRadius, float outerRadius);
   void init();
   void draw();
   virtual ~PlaneMoon();

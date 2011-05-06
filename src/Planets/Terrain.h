@@ -10,14 +10,15 @@
 
 #include "Scene/Node.h"
 #include "Material/Material.h"
+#include "PlanetElement.h"
 
-class Terrain {
+class Terrain  : public PlanetElement{
 public:
   Node * groundNode, *terrainNode;
   Material *terrainMat, *groundFromAtmosphere, *groundFromSpace;
-  Terrain();
+  Terrain(float innerRadius, float outerRadius);
   virtual ~Terrain();
-  void init(float innerRadius);
+  void init();
   void draw();
   void updateTesselation();
 };

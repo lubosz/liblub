@@ -10,14 +10,15 @@
 
 #include "Scene/Node.h"
 #include "Material/Material.h"
+#include "PlanetElement.h"
 
-class Ocean {
+class Ocean : public PlanetElement{
 public:
   Node * oceanNode;
   Material * ocean;
-  Ocean();
+  Ocean(float innerRadius, float outerRadius);
   virtual ~Ocean();
-  void init(float innerRadius);
+  void init();
   void draw();
 };
 

@@ -10,14 +10,15 @@
 #include "Planet.h"
 #include "Mesh/Geometry.h"
 
+
 Planet::Planet() {
   innerRadius = 11.0f;
   outerRadius = 11.55f;
-  terrain = new Terrain();
-  ocean = new Ocean();
-  atmoSphere = new Atmosphere();
-  sun = new Sun();
-  planeMoon = new PlaneMoon();
+  terrain = new Terrain(innerRadius,outerRadius);
+  ocean = new Ocean(innerRadius,outerRadius);
+  atmoSphere = new Atmosphere(innerRadius,outerRadius);
+  sun = new Sun(innerRadius,outerRadius);
+  planeMoon = new PlaneMoon(innerRadius,outerRadius);
 
 }
 
@@ -31,9 +32,6 @@ void Planet::init() {
   attributes.push_back("normal");
   attributes.push_back("uv");
 
-//
-//  Mesh * outerSphere = Geometry::sphere(attributes, outerRadius, 300, 500);
-
   terrain->init();
   ocean->init();
   atmoSphere->init();
@@ -43,14 +41,9 @@ void Planet::init() {
 }
 
 void Planet::draw() {
-//    drawMoon();
-//    drawGround();
-//  drawOcean();
-//    drawSun();
-//  drawSky();
-  terrain->draw();
+//  terrain->draw(outerRadius);
   ocean->draw();
+//  sun->draw();
   atmoSphere->draw();
-  sun->draw();
-  planeMoon->draw();
+//  planeMoon->draw(outerRadius);
 }

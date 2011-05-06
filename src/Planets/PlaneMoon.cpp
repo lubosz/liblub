@@ -10,9 +10,12 @@
 #include "Material/ProcTextures.h"
 #include "Material/Materials.h"
 #include "System/TemplateEngine.h"
+#include "Atmosphere.h"
+#include "Scene/SceneData.h"
 
-PlaneMoon::PlaneMoon() {
-  // TODO Auto-generated constructor stub
+PlaneMoon::PlaneMoon(float innerRadius, float outerRadius) {
+  this->innerRadius = innerRadius;
+  this->outerRadius = outerRadius;
 }
 
 PlaneMoon::~PlaneMoon() {
@@ -53,23 +56,23 @@ void PlaneMoon::init() {
   spaceFromSpace->addTexture(glow);
 
   spaceNode = new Node("space", { 0, 0, 0 }, 1, moonPlane(attributes), spaceFromAtmosphere);
-  setAtmoUniforms(spaceFromAtmosphere->getShaderProgram());
-  setAtmoUniforms(spaceFromSpace->getShaderProgram());
+  Atmosphere::setAtmoUniforms(spaceFromAtmosphere->getShaderProgram(), innerRadius, outerRadius);
+  Atmosphere::setAtmoUniforms(spaceFromSpace->getShaderProgram(), innerRadius, outerRadius);
 }
 
-void PlaneMoon::draw(Camera * camera, float outerRadius) {
+void PlaneMoon::draw() {
   bool drawSpace = false;
-  if (camera->position.length() < outerRadius) {
+  if (SceneData::Instance().getCurrentCamera()->position.length() < outerRadius) {
     spaceNode->setMaterial(spaceFromAtmosphere);
     drawSpace = true;
-  } else if (camera->position.z() > 0.0f) {
+  } else if (SceneData::Instance().getCurrentCamera()->position.z() > 0.0f) {
     spaceNode->setMaterial(spaceFromSpace);
     drawSpace = true;
   }
 
   if (drawSpace) {
-    setCameraUniforms(spaceNode->getMaterial()->getShaderProgram());
-    spaceNode->setView(camera);
+    SceneData::Instance().getCurrentCamera()->setUniforms(spaceNode->getMaterial()->getShaderProgram());
+    spaceNode->setView(SceneData::Instance().getCurrentCamera());
     spaceNode->draw();
   }
 }
