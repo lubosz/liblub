@@ -12,7 +12,7 @@
 #include "Mesh/Geometry.h"
 #include "Scene/SceneData.h"
 
-Atmosphere::Atmosphere(float innerRadius, float outerRadius) {
+Atmosphere::Atmosphere(float innerRadius, float outerRadius, const QVector3D color):color(color) {
   this->innerRadius = innerRadius;
   this->outerRadius = outerRadius;
 }
@@ -24,12 +24,15 @@ Atmosphere::~Atmosphere() {
 void Atmosphere::setAtmoUniforms(ShaderProgram * program, float innerRadius, float outerRadius) {
 
    float wavelength[3];
-   wavelength[0] = 0.650f; // 650 nm for red
+   wavelength[0] = color.x();
+   wavelength[1] = color.y();
+   wavelength[2] = color.z();
+//   wavelength[0] = 0.650f; // 650 nm for red
 //    wavelength[1] = 0.570f; // 570 nm for green
 //    wavelength[2] = 0.475f; // 475 nm for blue
 
-   wavelength[1] = 1.0; // 570 nm for green
-   wavelength[2] = 0.0; // 475 nm for blue
+//   wavelength[1] = 1.0; // 570 nm for green
+//   wavelength[2] = 0.0; // 475 nm for blue
 
    float wavelength4[3];
    wavelength4[0] = powf(wavelength[0], 4.0f);

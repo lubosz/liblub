@@ -15,7 +15,7 @@
 #include "Sun.h"
 //#include "PlaneMoon.h"
 
-Planet::Planet(float innerRadius, float outerRadius, PlanetType type) {
+Planet::Planet(float innerRadius, float outerRadius, PlanetType type, const QVector3D atmoColor) {
   switch (type){
   case sun:
     ground = new Sun(innerRadius,outerRadius);
@@ -27,7 +27,7 @@ Planet::Planet(float innerRadius, float outerRadius, PlanetType type) {
     ground = new Ocean(innerRadius,outerRadius);
     break;
   }
-  atmoSphere = new Atmosphere(innerRadius,outerRadius);
+  atmoSphere = new Atmosphere(innerRadius,outerRadius, atmoColor);
 }
 
 Planet::~Planet() {

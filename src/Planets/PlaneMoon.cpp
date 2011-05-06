@@ -57,8 +57,8 @@ void PlaneMoon::init(const QVector3D& position, float size) {
   spaceFromSpace->addTexture(glow);
 
   spaceNode = new Node("space", position, size, moonPlane(attributes), spaceFromAtmosphere);
-  Atmosphere::setAtmoUniforms(spaceFromAtmosphere->getShaderProgram(), innerRadius, outerRadius);
-  Atmosphere::setAtmoUniforms(spaceFromSpace->getShaderProgram(), innerRadius, outerRadius);
+//  Atmosphere::setAtmoUniforms(spaceFromAtmosphere->getShaderProgram(), innerRadius, outerRadius);
+//  Atmosphere::setAtmoUniforms(spaceFromSpace->getShaderProgram(), innerRadius, outerRadius);
 }
 
 void PlaneMoon::draw() {

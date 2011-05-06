@@ -41,11 +41,13 @@ class AtmosphereApp: public Application {
 
   FrameBuffer *fbo;
   Planet * planet, *sun;
+  vector <Planet*> planets;
 
   AtmosphereApp() {
     useHDR = true;
-    planet = new Planet(11,11.55, Planet::ocean);
-    sun = new Planet(11,11.55, Planet::sun);
+    planet = new Planet(11,11.55, Planet::ocean, QVector3D(0.650f, 0.570f,0.475f));
+    sun = new Planet(11,11.55, Planet::sun, QVector3D(0.650f,1,0));
+//    planets.push_back();
   }
 
   ~AtmosphereApp() {}

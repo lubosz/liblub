@@ -25,7 +25,7 @@ public:
 //  Ocean * ocean;
 //  Sun * sun;
 //  PlaneMoon * planeMoon;
-  Planet(float innerRadius, float outerRadius, PlanetType type);
+  Planet(float innerRadius, float outerRadius, PlanetType type, const QVector3D atmoColor);
   virtual ~Planet();
   void init(const QVector3D& position, float size);
   void draw();

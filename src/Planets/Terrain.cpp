@@ -41,8 +41,8 @@ void Terrain::init(const QVector3D& position, float size){
   Mesh * innerSphere = Geometry::sphere(attributes, innerRadius, 100, 50);
   groundNode = new Node("ground", position, size, innerSphere, groundFromAtmosphere);
   groundNode->setRotation(QVector3D(-90, 0, 0));
-  Atmosphere::setAtmoUniforms(groundFromAtmosphere->getShaderProgram(),innerRadius, outerRadius);
-  Atmosphere::setAtmoUniforms(groundFromSpace->getShaderProgram(),innerRadius, outerRadius);
+//  Atmosphere::setAtmoUniforms(groundFromAtmosphere->getShaderProgram(),innerRadius, outerRadius);
+//  Atmosphere::setAtmoUniforms(groundFromSpace->getShaderProgram(),innerRadius, outerRadius);
 
 
    terrainMat = new EmptyMat();
@@ -64,7 +64,7 @@ void Terrain::init(const QVector3D& position, float size){
    terrainMat->getShaderProgram()->setUniform("TessLevelInner",1.0f);
    terrainMat->getShaderProgram()->setUniform("TessLevelOuter",1.0f);
    terrainMat->getShaderProgram()->setUniform("LightPosition", QVector3D(0.25, 0.25, 1));
-   Atmosphere::setAtmoUniforms(terrainMat->getShaderProgram(),innerRadius, outerRadius);
+//   Atmosphere::setAtmoUniforms(terrainMat->getShaderProgram(),innerRadius, outerRadius);
    Mesh * groundMesh = MeshLoader::load(attributes, "earth.obj");
 //    Mesh * mesh = Geometry::gluSphere(10.0f, 100, 50);
    groundMesh->setDrawType(GL_PATCHES);
