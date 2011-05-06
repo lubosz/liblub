@@ -21,7 +21,7 @@ Atmosphere::~Atmosphere() {
   // TODO Auto-generated destructor stub
 }
 
-void Atmosphere::setAtmoUniforms(ShaderProgram * program, float innerRadius, float outerRadius) {
+void Atmosphere::setAtmoUniforms(ShaderProgram * program, float innerRadius, float outerRadius, const QVector3D & color) {
 
    float wavelength[3];
    wavelength[0] = color.x();
@@ -81,8 +81,8 @@ void Atmosphere::init(const QVector3D& position, float size) {
   skyFromSpace = new Template("Atmo/Sky",attributes);
   Mesh * outerSphere = Geometry::sphere(attributes, outerRadius, 300, 500);
   skyNode = new Node("sky", position, size, outerSphere, skyFromAtmosphere);
-  setAtmoUniforms(skyFromAtmosphere->getShaderProgram(), innerRadius, outerRadius);
-  setAtmoUniforms(skyFromSpace->getShaderProgram(), innerRadius, outerRadius);
+  setAtmoUniforms(skyFromAtmosphere->getShaderProgram(), innerRadius, outerRadius, color);
+  setAtmoUniforms(skyFromSpace->getShaderProgram(), innerRadius, outerRadius, color);
 }
 
 void Atmosphere::draw(){

@@ -15,7 +15,7 @@
 #include "Atmosphere.h"
 #include "Scene/SceneData.h"
 
-Terrain::Terrain(float innerRadius, float outerRadius) {
+Terrain::Terrain(float innerRadius, float outerRadius, const QVector3D atmoColor) : atmoColor(atmoColor){
   this->innerRadius = innerRadius;
   this->outerRadius = outerRadius;
 }
@@ -41,8 +41,8 @@ void Terrain::init(const QVector3D& position, float size){
   Mesh * innerSphere = Geometry::sphere(attributes, innerRadius, 100, 50);
   groundNode = new Node("ground", position, size, innerSphere, groundFromAtmosphere);
   groundNode->setRotation(QVector3D(-90, 0, 0));
-//  Atmosphere::setAtmoUniforms(groundFromAtmosphere->getShaderProgram(),innerRadius, outerRadius);
-//  Atmosphere::setAtmoUniforms(groundFromSpace->getShaderProgram(),innerRadius, outerRadius);
+  Atmosphere::setAtmoUniforms(groundFromAtmosphere->getShaderProgram(),innerRadius, outerRadius, atmoColor);
+  Atmosphere::setAtmoUniforms(groundFromSpace->getShaderProgram(),innerRadius, outerRadius, atmoColor);
 
 
    terrainMat = new EmptyMat();
@@ -64,7 +64,7 @@ void Terrain::init(const QVector3D& position, float size){
    terrainMat->getShaderProgram()->setUniform("TessLevelInner",1.0f);
    terrainMat->getShaderProgram()->setUniform("TessLevelOuter",1.0f);
    terrainMat->getShaderProgram()->setUniform("LightPosition", QVector3D(0.25, 0.25, 1));
-//   Atmosphere::setAtmoUniforms(terrainMat->getShaderProgram(),innerRadius, outerRadius);
+   Atmosphere::setAtmoUniforms(terrainMat->getShaderProgram(),innerRadius, outerRadius, atmoColor);
    Mesh * groundMesh = MeshLoader::load(attributes, "earth.obj");
 //    Mesh * mesh = Geometry::gluSphere(10.0f, 100, 50);
    groundMesh->setDrawType(GL_PATCHES);
@@ -75,21 +75,24 @@ void Terrain::init(const QVector3D& position, float size){
  }
 
  void Terrain::updateTesselation(){
-   while (SceneData::Instance().getCurrentCamera()->position.length() < 11.01){
+   QVector3D camFromPlanet = SceneData::Instance().getCurrentCamera()->position - position;
+   float camDistance = camFromPlanet.length();
+
+   while (camDistance < 11.01){
      SceneData::Instance().getCurrentCamera()->position += SceneData::Instance().getCurrentCamera()->position.normalized() *  0.01;
      SceneData::Instance().getCurrentCamera()->update();
    }
    int maxTess = 60;
    float tessStartDistance = 8;
-   float scale = maxTess - (SceneData::Instance().getCurrentCamera()->position.length() - tessStartDistance);
+   float scale = maxTess - (camDistance - tessStartDistance);
 
-   std::stringstream tess;
-   tess << "Tess " << int(scale);
-   GUI::Instance().updateText("tess",tess.str());
-
-   std::stringstream dist;
-   dist << "Dist " << SceneData::Instance().getCurrentCamera()->position.length();
-   GUI::Instance().updateText("dist",dist.str());
+//   std::stringstream tess;
+//   tess << "Tess " << int(scale);
+//   GUI::Instance().updateText("tess",tess.str());
+//
+//   std::stringstream dist;
+//   dist << "Dist " << camDistance;
+//   GUI::Instance().updateText("dist",dist.str());
 
    if (scale > 1){
      terrainMat->getShaderProgram()->use();
@@ -100,7 +103,9 @@ void Terrain::init(const QVector3D& position, float size){
 
  void Terrain::draw() {
   updateTesselation();
-  if (SceneData::Instance().getCurrentCamera()->position.length() >= outerRadius)
+  QVector3D camFromPlanet = SceneData::Instance().getCurrentCamera()->position - position;
+  float camDistance = camFromPlanet.length();
+  if (camDistance >= outerRadius)
     groundNode->setMaterial(groundFromSpace);
   else
     groundNode->setMaterial(groundFromAtmosphere);

@@ -21,7 +21,7 @@ Planet::Planet(float innerRadius, float outerRadius, PlanetType type, const QVec
     ground = new Sun(innerRadius,outerRadius);
     break;
   case terrain:
-    ground = new Terrain(innerRadius,outerRadius);
+    ground = new Terrain(innerRadius,outerRadius, atmoColor);
     break;
   case ocean:
     ground = new Ocean(innerRadius,outerRadius);

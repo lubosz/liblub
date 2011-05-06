@@ -40,13 +40,14 @@ class AtmosphereApp: public Application {
   Light * light;
 
   FrameBuffer *fbo;
-  Planet * planet, *sun;
+  Planet * planet, *sun, *terrain;
   vector <Planet*> planets;
 
   AtmosphereApp() {
     useHDR = true;
     planet = new Planet(11,11.55, Planet::ocean, QVector3D(0.650f, 0.570f,0.475f));
     sun = new Planet(11,11.55, Planet::sun, QVector3D(0.650f,1,0));
+    terrain = new Planet(11,11.55, Planet::terrain, QVector3D(0.650f,1,0.475f));
 //    planets.push_back();
   }
 
@@ -98,7 +99,8 @@ class AtmosphereApp: public Application {
   }
 
   void scene() {
-    planet-> init({0,0,0},1);
+    planet-> init({-30,0,0},1);
+    terrain-> init({0,0,0},1);
     sun-> init({30,0,0},1);
     initCamAndLight();
     initPostProcessing();
@@ -112,12 +114,14 @@ class AtmosphereApp: public Application {
     planet->draw();
 //    planet->atmoSphere->draw();
     sun->draw();
+    terrain->draw();
 
     glFrontFace(GL_CW);
     glEnable(GL_BLEND);
     glBlendFunc(GL_ONE, GL_ONE);
     planet->atmoSphere->draw();
     sun->atmoSphere->draw();
+    terrain->atmoSphere->draw();
 
     glDisable(GL_BLEND);
     glFrontFace(GL_CCW);

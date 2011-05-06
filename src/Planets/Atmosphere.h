@@ -21,7 +21,7 @@ public:
   virtual ~Atmosphere();
   void init(const QVector3D& position, float size);
   void draw();
-  void setAtmoUniforms(ShaderProgram * program, float innerRadius, float outerRadius);
+  static void setAtmoUniforms(ShaderProgram * program, float innerRadius, float outerRadius, const QVector3D & color);
 };
 
 #endif /* ATMOSPHERE_H_ */
