@@ -86,7 +86,7 @@ void SceneGraph::drawNodes(DirectionNode * viewPoint) {
 //  QVector3D terrainPositon(SceneData::Instance().getCurrentCamera()->position.x(),-50,SceneData::Instance().getCurrentCamera()->position.z());
 //  sceneNodes["terrain"]->setPosition(terrainPositon);
 
-  SceneData::Instance().updateLightBuffer();
+//  SceneData::Instance().updateLightBuffer();
 
   //TODO: Multiple lights
     foreach(Node * node, sceneNodes) {

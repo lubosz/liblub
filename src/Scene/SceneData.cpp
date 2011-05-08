@@ -41,7 +41,8 @@ void SceneData::initLightBuffer(ShaderProgram * shader, const string& bufferName
   unsigned lightIndex = 0;
   foreach(Light* light, lights){
 
-    lightBufferData[lightIndex].position = getCurrentCamera()->getView() * light->position;
+//    lightBufferData[lightIndex].position = getCurrentCamera()->getView() * light->position;
+    lightBufferData[lightIndex].position = light->position;
     lightBufferData[lightIndex].diffuse = light->diffuse;
     lightBufferData[lightIndex].specular = light->specular;
     lightBufferData[lightIndex].direction = light->direction;

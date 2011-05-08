@@ -101,6 +101,7 @@ class DefferedLightApp: public Application {
       RenderEngine::Instance().clear();
       HDR->activateTextures();
       HDR->getShaderProgram()->use();
+      HDR->getShaderProgram()->setUniform("camPosition", SceneData::Instance().getCurrentCamera()->position.toVector4D());
       fbo->draw(HDR);
     }
   }
