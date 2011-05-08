@@ -8,7 +8,7 @@
 #pragma once
 
 #include "common/Qt3D.h"
-
+#include <QtCore>
 const QVector3D up(0, 1, 0);
 
 class DirectionNode {
@@ -17,8 +17,13 @@ public:
   virtual ~DirectionNode();
 
   // View Params
-  qreal aspect, fov, near, far;
-  qreal yaw, pitch, roll;
+  qreal aspect;
+  qreal fov;
+  qreal nearClip;
+  qreal farClip;
+  qreal yaw;
+  qreal pitch;
+  qreal roll;
   QVector3D position, direction, defaultDirection;
 
   QMatrix4x4 viewMatrix, projectionMatrix, rotation;

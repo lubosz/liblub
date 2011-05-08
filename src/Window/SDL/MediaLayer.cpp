@@ -8,11 +8,12 @@
 #include <iostream>
 #include <sstream>
 #include "Window/MediaLayer.h"
-#include "Scene/Camera.h"
+#include "Scene/SceneData.h"
 #include "System/Logger.h"
 #include "System/Config.h"
+#include "System/Timer.h"
 
-
+using std::stringstream;
 
 MediaLayer::MediaLayer() {
 
@@ -33,7 +34,7 @@ void MediaLayer::init(string title) {
     /* Create our window, opengl context, etc... */
 
     if (SDL_Init(SDL_INIT_VIDEO) < 0) /* Initialize SDL's Video subsystem */
-        Logger::Instance().log("ERROR","Unable to initialize SDL"); /* Or die on error */
+        LogFatal << "Unable to initialize SDL"; /* Or die on error */
 
     /* Request an opengl 3.2 context.
      * SDL doesn't have the ability to choose which profile at this time of writing,
@@ -58,9 +59,10 @@ void MediaLayer::init(string title) {
 	height = mode.h;
 
     //cout << "WIDTH/HEIGHT "<< info->current_w << " " << info->current_h << "\n";
-	Logger::Instance().message << "WIDTH/HEIGHT "<< width << " " << height << "\n";
-	Logger::Instance().log("Debug","SDL");
-    Camera::Instance().setAspect(float(MediaLayer::Instance().width)/float(MediaLayer::Instance().height));
+	LogDebug << "WIDTH/HEIGHT "<< width << " " << height << "\n";
+	SceneData::Instance().getCurrentCamera()->setAspect(
+      float(MediaLayer::Instance().width)
+          / float(MediaLayer::Instance().height));
     /* Create our window centered at 512x512 resolution */
     mainWindow = SDL_CreateWindow(
 				title.c_str(),
@@ -73,7 +75,7 @@ void MediaLayer::init(string title) {
 			);
 
     if (!mainWindow) /* Die if creation failed */
-    	Logger::Instance().log("ERROR","Unable to create window");
+    	LogError << "Unable to create window";
 
     /* Create our opengl context and attach it to our window */
     mainContext = SDL_GL_CreateContext(mainWindow);
@@ -129,44 +131,37 @@ void MediaLayer::toggleFullScreen(){
 
 void MediaLayer::toggleMouseGrab(){
 	if (grab){
-		SDL_SetWindowGrab(mainWindow,0);
+		SDL_SetWindowGrab(mainWindow, SDL_FALSE);
 //		SDL_WM_GrabInput(SDL_GRAB_OFF);
 		SDL_ShowCursor(1);
-		Logger::Instance().log("DEBUG","Grab Off");
+		LogDebug << "Grab Off";
 		grab = false;
 	}else{
-		SDL_SetWindowGrab(mainWindow,1);
+		SDL_SetWindowGrab(mainWindow, SDL_TRUE);
 		//SDL_WM_GrabInput(SDL_GRAB_ON);
 		SDL_ShowCursor(0);
-		Logger::Instance().log("DEBUG","Grab On");
+		LogDebug << "Grab On";
 		grab = true;
 	}
 }
 
-void MediaLayer::renderLoop(){
-    while (!quit) {
+void MediaLayer::renderFrame(){
+  Timer::Instance().frame();
+
+//    while (!quit) {
         /* process pending events */
-    	input->eventLoop();
+//    	input->eventLoop();
     	/* update the screen */
-    	RenderEngine::Instance().display();
+//    	RenderEngine::Instance().display();
         swapBuffers();
 
         if(grab){
         	SDL_WarpMouseInWindow(mainWindow, width/2, height/2);
         }
 
-        //FPS Stuff
-        fps_frames++;
-        if (fps_lasttime < SDL_GetTicks() - 1000)
-        {
-           fps_lasttime = SDL_GetTicks();
-           fps_current = fps_frames;
-           fps_frames = 0;
-
-        }
         stringstream windowTitle;
-        windowTitle << programTile << " - FPS: " << fps_current;
+        windowTitle << "FPS: " << Timer::Instance().fps_current;
         SDL_SetWindowTitle(mainWindow, windowTitle.str().c_str());
 
-    }
+//    }
 }

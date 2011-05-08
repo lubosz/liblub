@@ -15,7 +15,9 @@ Timer::Timer() {
   input_lasttime = 0;
   secoundsPassed = 0;
   nanosecoundsPassed = 0;
+#ifndef WITH_SDL
   clock_gettime(CLOCK_MONOTONIC, &start);
+#endif
 }
 
 Timer::~Timer() {
@@ -24,6 +26,8 @@ Timer::~Timer() {
 
 
 void Timer::frame() {
+
+#ifndef WITH_SDL
   timespec now;
   clock_gettime(CLOCK_MONOTONIC, &now);
 
@@ -31,6 +35,9 @@ void Timer::frame() {
   nanosecoundsPassed = now.tv_nsec;
 
   ticks = now.tv_sec * 1000 + now.tv_nsec / 1000000;
+#else
+  ticks = SDL_GetTicks();
+#endif
   fps_frames++;
 
   //check input every 1/100 secound

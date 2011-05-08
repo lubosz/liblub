@@ -113,5 +113,6 @@ class AtmosphereApp: public Application {
 int main(int argc, char *argv[]) {
   QApplication app(argc, argv);
   AtmosphereApp().run();
+  return 0;
 }
 

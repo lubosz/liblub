@@ -6,13 +6,15 @@
  */
 
 #include "Window/Input.h"
-#include "Scene/Camera.h"
+#include "Scene/SceneData.h"
 #include "Window/MediaLayer.h"
 #include "Renderer/RenderEngine.h"
 #include "System/Logger.h"
 
 Input::Input() {
-
+  // TODO(bmonkey): Hardcoded values => xml
+  inputSpeed = .01;
+  mouseSensitivity = .1;
 }
 
 Input::~Input() {
@@ -23,17 +25,17 @@ void Input::eventLoop(){
 	keystate = SDL_GetKeyboardState(NULL);
 	if ( keystate[SDL_SCANCODE_RETURN] ) printf("<RETURN> is pressed.\n");
 	if ( keystate[SDL_SCANCODE_ESCAPE] ) MediaLayer::Instance().shutdown();
-	if ( keystate[SDL_SCANCODE_W] ) Camera::Instance().forward();
-	if ( keystate[SDL_SCANCODE_A] ) Camera::Instance().left();
-	if ( keystate[SDL_SCANCODE_S] ) Camera::Instance().backward();
-	if ( keystate[SDL_SCANCODE_D] ) Camera::Instance().right();
+	if ( keystate[SDL_SCANCODE_W] ) SceneData::Instance().getCurrentCamera()->forwardDirection(inputSpeed);
+	if ( keystate[SDL_SCANCODE_A] ) SceneData::Instance().getCurrentCamera()->leftDirection(inputSpeed);
+	if ( keystate[SDL_SCANCODE_S] ) SceneData::Instance().getCurrentCamera()->backwardDirection(inputSpeed);
+	if ( keystate[SDL_SCANCODE_D] ) SceneData::Instance().getCurrentCamera()->rightDirection(inputSpeed);
 
-	if ( keystate[SDL_SCANCODE_LEFT] ) SceneGraph::Instance().light->moveLeft();
-	if ( keystate[SDL_SCANCODE_RIGHT] ) SceneGraph::Instance().light->moveRight();
-	if ( keystate[SDL_SCANCODE_UP] ) SceneGraph::Instance().light->moveUp();
-	if ( keystate[SDL_SCANCODE_DOWN] ) SceneGraph::Instance().light->moveDown();
-	if ( keystate[SDL_SCANCODE_1] ) SceneGraph::Instance().light->moveForward();
-	if ( keystate[SDL_SCANCODE_7] ) SceneGraph::Instance().light->moveBack();
+//	if ( keystate[SDL_SCANCODE_LEFT] ) SceneGraph::Instance().light->moveLeft();
+//	if ( keystate[SDL_SCANCODE_RIGHT] ) SceneGraph::Instance().light->moveRight();
+//	if ( keystate[SDL_SCANCODE_UP] ) SceneGraph::Instance().light->moveUp();
+//	if ( keystate[SDL_SCANCODE_DOWN] ) SceneGraph::Instance().light->moveDown();
+//	if ( keystate[SDL_SCANCODE_1] ) SceneGraph::Instance().light->moveForward();
+//	if ( keystate[SDL_SCANCODE_7] ) SceneGraph::Instance().light->moveBack();
 
     while( SDL_PollEvent( &event ) ) {
 
@@ -58,8 +60,9 @@ void Input::eventLoop(){
 				}
 
         case SDL_MOUSEMOTION:
-        	Camera::Instance().setMouseLook(event.motion.xrel, event.motion.yrel);
-        	//Camera::Instance().setMouseLookInverseVP(event.motion.x, event.motion.y);
+//        	SceneData::Instance().getCurrentCamera()->setMouseLook(event.motion.xrel, event.motion.yrel);
+        	//SceneData::Instance().getCurrentCamera()->setMouseLookInverseVP(event.motion.x, event.motion.y);
+          SceneData::Instance().getCurrentCamera()->setMouseLook(event.motion.xrel, event.motion.yrel, mouseSensitivity);
             break;
 
          case SDL_QUIT:
@@ -67,8 +70,8 @@ void Input::eventLoop(){
             break;
 
          case SDL_MOUSEWHEEL:
-        	 Logger::Instance().log("DEBUG","Wheel");
-        	 Camera::Instance().setMouseZoom(event.wheel.x,event.wheel.y);
+        	 LogDebug <<"Wheel";
+        	 SceneData::Instance().getCurrentCamera()->setMouseZoom(event.wheel.x,event.wheel.y);
         	 break;
 
          case SDL_WINDOWEVENT: //User resized window

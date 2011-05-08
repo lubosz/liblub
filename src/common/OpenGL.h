@@ -7,13 +7,25 @@
 
 #pragma once
 
+#ifdef WIN32
+//# include <GL3/gl3.h>
+# include <GL/glew.h>
+# include <GL/wglew.h>
+//# include <GL/glext.h>
+# define glfGetProcAddress wglGetProcAddress
+#include "WinGL.h"
+#elif defined(linux) || defined(__linux)
+//# include <GL/glew.h>
 #define GL3_PROTOTYPES 1
-//#include <GL/glew.h>
-#include <GL3/gl3.h>
-#include <GL3/glext.h>
+# define GL_GLEXT_PROTOTYPES 1
+# include <GL3/gl3.h>
+# include <GL3/glext.h>
+#else
+# error "Unsupported platform"
+#endif
+
 
 #include <System/Logger.h>
-
 #define glError OpenGL::checkGlError(__FILE__,__LINE__)
 
 class OpenGL {

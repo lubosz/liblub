@@ -139,9 +139,19 @@ class AtmosphereApp: public Application {
     glError;
   }
 };
-
+#ifdef LIBLUB_WINDOWS
+#include <windows.h>
+int WINAPI WinMain(HINSTANCE inst,HINSTANCE prev,LPSTR cmd,int show) {
+  LogDebug << "WINMAIN STUFF" << inst << prev << cmd << show;
+  QApplication app();
+  AtmosphereApp().run();
+  return 0;
+}
+#else
 int main(int argc, char *argv[]) {
   QApplication app(argc, argv);
   AtmosphereApp().run();
+  return 0;
 }
+#endif
 

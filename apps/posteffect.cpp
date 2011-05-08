@@ -113,5 +113,6 @@ class TesselationApp: public Application {
 int main(int argc, char *argv[]) {
   QApplication app(argc, argv);
   TesselationApp().run();
+  return 0;
 }
 

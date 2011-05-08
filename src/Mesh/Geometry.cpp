@@ -169,10 +169,13 @@ Mesh * Geometry::icosahedron(const QList<string> & attributes) {
 }
 
 float Geometry::randomize(float density, float randomness) {
+#ifndef LIBLUB_WINDOWS
     unsigned seed;
     float randomValue = 1 / static_cast<float>((rand_r(&seed) % 20) + 1);
-
     return density + (density * randomValue * randomness);
+#else
+    return density*randomness;
+#endif
 }
 
 Mesh * Geometry::stars(const QList<string> & attributes, vector<float> & resolution, float density,
@@ -180,9 +183,9 @@ Mesh * Geometry::stars(const QList<string> & attributes, vector<float> & resolut
 
   Mesh * mesh = new Mesh(attributes);
   unsigned i = 0;
-
+#ifndef LIBLUB_WINDOWS
   srand(time(NULL));
-
+#endif
   for (float x = 0; x < resolution.at(0); x += randomize(density, randomness)) {
     for (float y = 0; y < resolution.at(1); y += randomize(density, randomness)) {
       for (float z = 0; z < resolution.at(2); z += randomize(density, randomness)) {
@@ -213,8 +216,9 @@ Mesh * Geometry::spiral(const QList<string> & attributes, int resolution) {
   rotation2.rotate(0.5, 0.0, 0.0, 1.0);
 
   int i = 1;
-
+#ifndef LIBLUB_WINDOWS
   srand(time(NULL));
+#endif
   for (; i < resolution; i++) {
     QVector3D tempPoint = point.normalized();
     point += (tempPoint / 20.0);

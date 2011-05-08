@@ -123,7 +123,7 @@ class LoadApp: public Application {
     }
 
 
-    printf("Position Array Size %ld\n", positionBufferData.size());
+    LogDebug << "Position Array Size" << positionBufferData.size();
 
 //    for (int i = 0; i < 2000; i++) {
 //      positionBufferData[i].position = QVector4D(2*i, 0, -5, 1);
@@ -138,5 +138,6 @@ class LoadApp: public Application {
 int main(int argc, char *argv[]) {
   QApplication app(argc, argv);
   LoadApp().run();
+  return 0;
 }
 

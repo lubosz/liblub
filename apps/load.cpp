@@ -43,7 +43,15 @@ class LoadApp: public Application {
     shadowSequence->render();
   }
 };
-
+#ifdef LIBLUB_WINDOWS
+#include <windows.h>
+int WINAPI WinMain(HINSTANCE inst,HINSTANCE prev,LPSTR cmd,int show) {
+  LogDebug << "WINMAIN STUFF" << inst << prev << cmd << show;
+  QApplication app();
+  LoadApp("nice").run();
+  return 0;
+}
+#else
 int main(int argc, char *argv[]) {
   QApplication app(argc, argv);
   if (argc == 2) {
@@ -51,5 +59,7 @@ int main(int argc, char *argv[]) {
   } else {
     LogError << "NO SCENE SPECIFIED. Try; ./load test";
   }
+  return 0;
 }
+#endif
 

@@ -21,7 +21,9 @@ public:
   unsigned ticks;
   unsigned secoundsPassed;
   unsigned nanosecoundsPassed;
+#ifndef WITH_SDL
   timespec start;
+#endif
   Timer();
   virtual ~Timer();
   void frame();

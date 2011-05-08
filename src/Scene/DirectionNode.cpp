@@ -17,8 +17,8 @@ DirectionNode::DirectionNode(){
   aspect = 1920.0 / 1200.0;
 
   fov = 70.0;
-  near = 0.01;
-  far = 10000.0;
+  nearClip = 0.01;
+  farClip = 10000.0;
 }
 
 DirectionNode::~DirectionNode(){
@@ -60,7 +60,7 @@ void DirectionNode::setDirection(const QVector3D & direction) {
  * window aspect ratio, near and far clipping planes */
 void DirectionNode::updatePerspective() {
     projectionMatrix.setToIdentity();
-    projectionMatrix.perspective(fov, aspect, near, far);
+    projectionMatrix.perspective(fov, aspect, nearClip, farClip);
 }
 
 void DirectionNode::updateView() {
@@ -70,8 +70,8 @@ void DirectionNode::updateView() {
 
 void DirectionNode::setParams(qreal fov, qreal near, qreal far) {
     this->fov = fov;
-    this->near = near;
-    this->far = far;
+    this->nearClip = near;
+    this->farClip = far;
 }
 
 void DirectionNode::setAspect(qreal aspect) {

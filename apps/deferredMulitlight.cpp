@@ -152,5 +152,6 @@ class DefferedLightApp: public Application {
 int main(int argc, char *argv[]) {
   QApplication app(argc, argv);
   DefferedLightApp().run();
+  return 0;
 }
 

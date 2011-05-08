@@ -61,7 +61,7 @@ function(download_gl_header GL_HEADER)
 	ENDIF()
 endfunction(download_gl_header)
 
-IF(EXISTS /usr/include/GL3)
+IF(EXISTS /usr/include/GL3 AND !LIBLUB_WINDOWS)
 	message("OpenGL 3 Headers in /usr/include")
 ELSE()
 	message("No OpenGL 3 Headers found in /usr! Using local ones")
@@ -76,6 +76,10 @@ ELSE()
 	include_directories(src/Renderer/)
 ENDIF()
 
+find_package(OpenGL)
+if(NOT OPENGL_FOUND)
+	message("ERROR: OpenGL not found")
+endif(NOT OPENGL_FOUND)
 
 #Check for nvidia libGL in ubuntu
 IF(EXISTS "/usr/lib/nvidia-current/libGL.so")
@@ -83,7 +87,9 @@ IF(EXISTS "/usr/lib/nvidia-current/libGL.so")
 	SET(OPENGL_LIB /usr/lib/nvidia-current/libGL.so)
 ELSE()
 	message("Taking system libGL")
-	SET(OPENGL_LIB GL)
+	#SET(OPENGL_LIB GL)
+	#set(OPENGL_LIB opengl32)
+	set(OPENGL_LIB ${OPENGL_LIBRARY})
 ENDIF() 
 
 include_directories(
@@ -92,7 +98,11 @@ include_directories(
 	if(SDL_LOCAL)
 	    ${SDL_DIR}/include
 	else()
+	   if(LIBLUB_WINDOWS)
+	   /usr/i486-mingw32/include/SDL
+	    else()
 	   /usr/include/SDL/
+	    endif()
 	endif()
 )
 
@@ -124,12 +134,18 @@ add_library(lub ${SOURCES})
 
 #link
 target_link_libraries(lub ${OPENGL_LIB} 
+
 #freeimageplus 
 ${QT_LIBRARIES} 
-assimp
 ${Grantlee_CORE_LIBRARIES}
+assimp
+#/home/bmonkey/Desktop/Assimp32.dll
+#/usr/i486-mingw32/lib/libassimp.dll
 #GLEW
 )
+if(LIBLUB_WINDOWS)
+target_link_libraries(lub glew32)
+endif()
 
 IF(WITH_SDL)
     if(SDL_LOCAL)
