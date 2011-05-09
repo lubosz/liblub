@@ -28,11 +28,28 @@ uniform float invSphereDistance;			// 1 / (outerRadius - innerRadius)
 uniform float scaleDepth;		// The scale depth (i.e. the altitude at which the atmosphere's average density is found)
 uniform float scaleOverScaleDepth;	// scale / scaleDepth
 
-const int samplesi = 20;
-const float samplesf = 20.0;
+const int samplesi = 10;
+const float samplesf = float(samplesi);
 
-float scale(float fCos) {
-	float x = 1.0 - fCos;
+// The scale equation calculated by Vernier's Graphical Analysis
+float scale(float cosinus) {
+	float x = 1.0 - cosinus;
 	return scaleDepth * exp(-0.00287 + x*(0.459 + x*(3.83 + x*(-6.80 + x*5.25))));
+}
+
+// Returns the near intersection point of a line and a sphere
+float getNearIntersection(vec3 position, vec3 ray, float distance2, float radius2) {
+	float B = 2.0 * dot(position, ray);
+	float C = distance2 - radius2;
+	float det = max(0.0, B*B - 4.0 * C);
+	return 0.5 * (-B - sqrt(det));
+}
+
+// Returns the far intersection point of a line and a sphere
+float getFarIntersection(vec3 position, vec3 ray, float distance2, float radius2) {
+	float B = 2.0 * dot(position, ray);
+	float C = distance2 - radius2;
+	float det = max(0.0, B*B - 4.0 * C);
+	return 0.5 * (-B + sqrt(det));
 }
 {% endblock %}

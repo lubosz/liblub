@@ -40,15 +40,18 @@ class AtmosphereApp: public Application {
   Light * light;
 
   FrameBuffer *fbo;
-  Planet * planet, *sun, *terrain, *terrainTess;
+  Planet * planet, *sun, *terrain
+//  , *terrainTess
+  ;
   vector <Planet*> planets;
 
   AtmosphereApp() {
     useHDR = true;
-    planet = new Planet(11,11.55, Planet::ocean, QVector3D(0.650f, 0.570f,0.475f));
-    sun = new Planet(11,11.55, Planet::sun, QVector3D(0.650f,1,0));
-    terrain = new Planet(11,11.55, Planet::terrainPlain, QVector3D(0.650f,1,0.475f));
-    terrainTess = new Planet(11,11.55, Planet::terrainTess, QVector3D(0,1,0));
+//    planet = new Planet(11,11.55, Planet::ocean, QVector3D(0.650f, 0.570f,0.475f));
+//    sun = new Planet(11,11.55, Planet::sun, QVector3D(0.650f,1,0));
+//    terrain = new Planet(11,11.55, Planet::terrainPlain, QVector3D(0.650f,1,0.475f));
+    terrain = new Planet(11,11.55, Planet::terrainPlain, QVector3D(0.650f, 0.570f,0.475f));
+//    terrainTess = new Planet(11,11.55, Planet::terrainTess, QVector3D(0,1,0));
 //    planets.push_back();
   }
 
@@ -57,10 +60,18 @@ class AtmosphereApp: public Application {
 
   void initCamAndLight(){
     camera = SceneData::Instance().getCurrentCamera();
-    camera->setPosition(QVector3D(15, 0, 25));
+//    camera->setPosition(QVector3D(0, 10, 7));
+    camera->setPosition(QVector3D(0, 11.1, -0.85));
     camera->update();
     light = new Light(QVector3D(-2.5, 21.5, -5.2), QVector3D(1, -5, 0));
     SceneData::Instance().addLight("foolight", light);
+
+    camera->yaw = 2.9;
+    camera->pitch = 176.6;
+    camera->update();
+    camera->updateView();
+    camera->updateRotation();
+    camera->updatePerspective();
   }
 
   void initPostProcessing(){
@@ -103,10 +114,10 @@ class AtmosphereApp: public Application {
   }
 
   void scene() {
-    planet-> init({-30,0,0},1);
+//    planet-> init({-30,0,0},1);
     terrain-> init({0,0,0},1);
-    terrainTess-> init({0,30,0},1);
-    sun-> init({30,0,0},1);
+//    terrainTess-> init({0,30,0},1);
+//    sun-> init({0,0,1000},5);
     initCamAndLight();
     initPostProcessing();
   }
@@ -116,18 +127,18 @@ class AtmosphereApp: public Application {
     RenderEngine::Instance().clear();
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_CULL_FACE);
-    planet->draw();
-    sun->draw();
+//    planet->draw();
+//    sun->draw();
     terrain->draw();
-    terrainTess->draw();
+//    terrainTess->draw();
 
     glFrontFace(GL_CW);
     glEnable(GL_BLEND);
     glBlendFunc(GL_ONE, GL_ONE);
-    planet->atmoSphere->draw();
-    sun->atmoSphere->draw();
+//    planet->atmoSphere->draw();
+//    sun->atmoSphere->draw();
     terrain->atmoSphere->draw();
-    terrainTess->atmoSphere->draw();
+//    terrainTess->atmoSphere->draw();
 
     glDisable(GL_BLEND);
     glFrontFace(GL_CCW);
@@ -137,6 +148,9 @@ class AtmosphereApp: public Application {
     endPass();
     GUI::Instance().draw();
     glError;
+
+//    LogDebug << camera->position.x() << camera->position.y() << camera->position.z();
+//    LogDebug << camera->yaw << camera->pitch << camera->roll;
   }
 };
 #ifdef LIBLUB_WINDOWS

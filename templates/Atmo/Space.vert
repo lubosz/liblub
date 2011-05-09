@@ -11,10 +11,7 @@ out vec3 color;
 	v3Ray /= fFar;
 
 	// Calculate the farther intersection of the ray with the outer atmosphere (which is the far point of the ray passing through the atmosphere)
-	float B = 2.0 * dot(cameraPosition, v3Ray);
-	float C = cameraHeight2 - outerRadius2;
-	float fDet = max(0.0, B*B - 4.0 * C);
-	fFar = 0.5 * (-B + sqrt(fDet));
+	fFar = getFarIntersection(cameraPosition, v3Ray, cameraHeight2, outerRadius2);
 {% if fromSpace %}
 	float fNear = 0.5 * (-B - sqrt(fDet));
 	vec3 v3Start = cameraPosition + v3Ray*fNear;
