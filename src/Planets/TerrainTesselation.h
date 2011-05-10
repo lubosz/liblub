@@ -14,12 +14,11 @@
 
 class TerrainTesselation  : public PlanetElement{
 public:
-  QVector3D atmoColor;
   Node *terrainNode;
   Material *terrainMat;
-  TerrainTesselation(float innerRadius, float outerRadius, const QVector3D atmoColor);
+  TerrainTesselation(Planet * planet);
   virtual ~TerrainTesselation();
-  void init(const QVector3D& position, float size);
+  void init();
   void draw();
   void updateTesselation();
 };

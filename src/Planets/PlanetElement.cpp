@@ -7,9 +7,7 @@
 
 #include "PlanetElement.h"
 
-PlanetElement::PlanetElement(float innerRadius, float outerRadius) : innerRadius(innerRadius), outerRadius(outerRadius) {
-  // TODO Auto-generated constructor stub
-
+PlanetElement::PlanetElement(Planet * planet) : planet(planet) {
 }
 
 PlanetElement::~PlanetElement() {

@@ -14,21 +14,20 @@
 #include "Mesh/MeshLoader.h"
 #include "Atmosphere.h"
 #include "Scene/SceneData.h"
+#include "Planet.h"
 
-TerrainTesselation::TerrainTesselation(float innerRadius, float outerRadius, const QVector3D atmoColor) : atmoColor(atmoColor){
-  this->innerRadius = innerRadius;
-  this->outerRadius = outerRadius;
+TerrainTesselation::TerrainTesselation(Planet * planet) {
+  this->planet = planet;
 }
 
 TerrainTesselation::~TerrainTesselation() {
   // TODO Auto-generated destructor stub
 }
 
-void TerrainTesselation::init(const QVector3D& position, float size){
+void TerrainTesselation::init(){
    QList<string> attributes;
     attributes.push_back("normal");
     attributes.push_back("uv");
-    this->position = position;
 
    terrainMat = new EmptyMat();
 
@@ -49,18 +48,18 @@ void TerrainTesselation::init(const QVector3D& position, float size){
    terrainMat->getShaderProgram()->setUniform("TessLevelInner",1.0f);
    terrainMat->getShaderProgram()->setUniform("TessLevelOuter",1.0f);
    terrainMat->getShaderProgram()->setUniform("LightPosition", QVector3D(0.25, 0.25, 1));
-   Atmosphere::setAtmoUniforms(terrainMat->getShaderProgram(),innerRadius, outerRadius, atmoColor);
+   planet->atmoSphere->setAtmoUniforms(terrainMat->getShaderProgram());
    Mesh * groundMesh = MeshLoader::load(attributes, "earth.obj");
 //    Mesh * mesh = Geometry::gluSphere(10.0f, 100, 50);
    groundMesh->setDrawType(GL_PATCHES);
-   terrainNode = new Node("ground", position, size*11.5, groundMesh, terrainMat);
+   terrainNode = new Node("ground", planet->position, planet->size*11.5, groundMesh, terrainMat);
 
 //   GUI::Instance().addText("tess", "Tess");
 //   GUI::Instance().addText("dist", "Dist");
  }
 
  void TerrainTesselation::updateTesselation(){
-   QVector3D camFromPlanet = SceneData::Instance().getCurrentCamera()->position - position;
+   QVector3D camFromPlanet = SceneData::Instance().getCurrentCamera()->position - planet->position;
    float camDistance = camFromPlanet.length();
 
    while (camDistance < 11.01){
@@ -88,7 +87,7 @@ void TerrainTesselation::init(const QVector3D& position, float size){
 
  void TerrainTesselation::draw() {
   updateTesselation();
-  SceneData::Instance().getCurrentCamera()->setUniforms(terrainNode->getMaterial()->getShaderProgram(), position);
+  SceneData::Instance().getCurrentCamera()->setUniforms(terrainNode->getMaterial()->getShaderProgram(), planet->position);
   terrainNode->setView(SceneData::Instance().getCurrentCamera());
   terrainNode->draw();
 }

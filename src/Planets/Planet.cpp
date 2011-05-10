@@ -16,33 +16,35 @@
 #include "Sun.h"
 //#include "PlaneMoon.h"
 
-Planet::Planet(float innerRadius, float outerRadius, PlanetType type, const QVector3D atmoColor) {
-  switch (type){
-  case sun:
-    ground = new Sun(innerRadius,outerRadius);
-    break;
-  case terrainPlain:
-    ground = new TerrainPlain(innerRadius,outerRadius, atmoColor);
-    break;
-  case terrainTess:
-    ground = new TerrainTesselation(innerRadius,outerRadius, atmoColor);
-    break;
-  case ocean:
-    ground = new Ocean(innerRadius,outerRadius);
-    break;
-  }
-  atmoSphere = new Atmosphere(innerRadius,outerRadius, atmoColor);
+Planet::Planet(float innerRadius, float outerRadius, PlanetType type, const QVector3D & lightWavelength, const QVector3D & position, float size)
+: innerRadius(innerRadius),outerRadius(outerRadius),type(type),lightWavelength(lightWavelength),position(position),size(size){
 }
 
 Planet::~Planet() {
 }
 
-void Planet::init(const QVector3D& position, float size) {
-  atmoSphere->init(position, size);
-  ground->init(position, size);
+void Planet::init() {
+  switch (type){
+  case sun:
+    elements.push_back(new Sun(this));
+    break;
+  case terrainPlain:
+    elements.push_back(new TerrainPlain(this));
+    break;
+  case terrainTess:
+    elements.push_back(new TerrainTesselation(this));
+    break;
+  case ocean:
+    elements.push_back(new Ocean(this));
+    break;
+  }
+  atmoSphere = new Atmosphere(this);
+  foreach(PlanetElement * element, elements)
+    element->init();
+  atmoSphere->init();
 }
 
 void Planet::draw() {
-  ground->draw();
-//  atmoSphere->draw();
+  foreach(PlanetElement * element, elements)
+    element->draw();
 }

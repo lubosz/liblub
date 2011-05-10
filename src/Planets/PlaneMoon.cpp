@@ -12,10 +12,10 @@
 #include "System/TemplateEngine.h"
 #include "Atmosphere.h"
 #include "Scene/SceneData.h"
+#include "Planet.h"
 
-PlaneMoon::PlaneMoon(float innerRadius, float outerRadius) {
-  this->innerRadius = innerRadius;
-  this->outerRadius = outerRadius;
+PlaneMoon::PlaneMoon(Planet * planet) {
+  this->planet = planet;
 }
 
 PlaneMoon::~PlaneMoon() {
@@ -42,11 +42,10 @@ Mesh * PlaneMoon::moonPlane(const QList<string> & attributes) {
   return moonPlane;
 }
 
-void PlaneMoon::init(const QVector3D& position, float size) {
+void PlaneMoon::init() {
   QList<string> attributes;
    attributes.push_back("normal");
    attributes.push_back("uv");
-   this->position = position;
 
   Texture * glow = new TextureQImage(
       ProcTextures::makeGlow(QSize(512, 512), 40.0f, 0.1f), "glow");
@@ -56,14 +55,14 @@ void PlaneMoon::init(const QVector3D& position, float size) {
   spaceFromSpace = new Template("Atmo/Space", attributes);
   spaceFromSpace->addTexture(glow);
 
-  spaceNode = new Node("space", position, size, moonPlane(attributes), spaceFromAtmosphere);
+  spaceNode = new Node("space", planet->position, planet->size, moonPlane(attributes), spaceFromAtmosphere);
 //  Atmosphere::setAtmoUniforms(spaceFromAtmosphere->getShaderProgram(), innerRadius, outerRadius);
 //  Atmosphere::setAtmoUniforms(spaceFromSpace->getShaderProgram(), innerRadius, outerRadius);
 }
 
 void PlaneMoon::draw() {
   bool drawSpace = false;
-  if (SceneData::Instance().getCurrentCamera()->position.length() < outerRadius) {
+  if (SceneData::Instance().getCurrentCamera()->position.length() < planet->outerRadius) {
     spaceNode->setMaterial(spaceFromAtmosphere);
     drawSpace = true;
   } else if (SceneData::Instance().getCurrentCamera()->position.z() > 0.0f) {
@@ -72,7 +71,7 @@ void PlaneMoon::draw() {
   }
 
   if (drawSpace) {
-    SceneData::Instance().getCurrentCamera()->setUniforms(spaceNode->getMaterial()->getShaderProgram(), position);
+    SceneData::Instance().getCurrentCamera()->setUniforms(spaceNode->getMaterial()->getShaderProgram(), planet->position);
     spaceNode->setView(SceneData::Instance().getCurrentCamera());
     spaceNode->draw();
   }

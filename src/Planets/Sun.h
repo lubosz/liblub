@@ -17,9 +17,9 @@ class Sun: public PlanetElement {
 public:
   ShaderProgram * perlinNoise;
   Node *sunNode;
-  Sun(float innerRadius, float outerRadius);
+  Sun(Planet * planet);
   virtual ~Sun();
-  void init(const QVector3D& position, float size);
+  void init();
   void draw();
 };
 

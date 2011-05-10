@@ -14,12 +14,11 @@
 
 class TerrainPlain  : public PlanetElement{
 public:
-  QVector3D atmoColor;
   Node * groundNode;
   Material *groundFromAtmosphere, *groundFromSpace;
-  TerrainPlain(float innerRadius, float outerRadius, const QVector3D atmoColor);
+  TerrainPlain(Planet * planet);
   virtual ~TerrainPlain();
-  void init(const QVector3D& position, float size);
+  void init();
   void draw();
 };
 

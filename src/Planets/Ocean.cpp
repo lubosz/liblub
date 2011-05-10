@@ -10,17 +10,17 @@
 #include "Material/Textures.h"
 #include "Mesh/Geometry.h"
 #include "Scene/SceneData.h"
+#include "Planet.h"
 
-Ocean::Ocean(float innerRadius, float outerRadius) {
-  this->innerRadius = innerRadius;
-  this->outerRadius = outerRadius;
+Ocean::Ocean(Planet * planet) {
+  this->planet = planet;
 }
 
 Ocean::~Ocean() {
   // TODO Auto-generated destructor stub
 }
 
-void Ocean::init(const QVector3D& position, float size){
+void Ocean::init(){
   QList<string> attributes;
    attributes.push_back("normal");
    attributes.push_back("uv");
@@ -47,8 +47,8 @@ void Ocean::init(const QVector3D& position, float size){
   ocean->addTexture(oceanNormal);
   Texture * oceanSky = new CubeTextureFile("cubemaps/sky","EnvironmentMap");
   ocean->addTexture(oceanSky);
-  Mesh * innerSphere = Geometry::sphere(attributes, innerRadius, 100, 50);
-  oceanNode = new Node("ocean", position, size, innerSphere, ocean);
+  Mesh * innerSphere = Geometry::sphere(attributes, planet->innerRadius, 100, 50);
+  oceanNode = new Node("ocean", planet->position, planet->size, innerSphere, ocean);
 }
 void Ocean::draw() {
   oceanNode->setView(SceneData::Instance().getCurrentCamera());

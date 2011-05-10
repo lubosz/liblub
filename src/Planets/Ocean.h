@@ -16,9 +16,9 @@ class Ocean : public PlanetElement{
 public:
   Node * oceanNode;
   Material * ocean;
-  Ocean(float innerRadius, float outerRadius);
+  Ocean(Planet * planet);
   virtual ~Ocean();
-  void init(const QVector3D& position, float size);
+  void init();
   void draw();
 };
 

@@ -17,8 +17,8 @@ class PlaneMoon  : public PlanetElement{
 public:
   Material *spaceFromAtmosphere, *spaceFromSpace;
   Node * spaceNode;
-  PlaneMoon(float innerRadius, float outerRadius);
-  void init(const QVector3D& position, float size);
+  PlaneMoon(Planet * planet);
+  void init();
   void draw();
   virtual ~PlaneMoon();
   Mesh * moonPlane(const QList<string> & attributes);

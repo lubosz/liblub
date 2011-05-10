@@ -14,14 +14,13 @@
 
 class Atmosphere  : public PlanetElement{
 public:
-  QVector3D color;
   Node * skyNode;
   Material *skyFromAtmosphere, *skyFromSpace;
-  Atmosphere(float innerRadius, float outerRadius, const QVector3D color);
+  Atmosphere(Planet * planet);
   virtual ~Atmosphere();
-  void init(const QVector3D& position, float size);
+  void init();
   void draw();
-  static void setAtmoUniforms(ShaderProgram * program, float innerRadius, float outerRadius, const QVector3D & color);
+  void setAtmoUniforms(ShaderProgram * program);
 };
 
 #endif /* ATMOSPHERE_H_ */

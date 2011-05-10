@@ -10,14 +10,15 @@
 
 #include <QVector3D>
 
+class Planet;
+
 class PlanetElement {
 public:
-  float innerRadius, outerRadius;
-  QVector3D position;
+  Planet * planet;
   PlanetElement() {};
-  PlanetElement(float innerRadius, float outerRadius);
+  PlanetElement(Planet * planet);
   virtual ~PlanetElement();
-  virtual void init(const QVector3D& position, float size) = 0;
+  virtual void init() = 0;
   virtual void draw() = 0;
 };
 

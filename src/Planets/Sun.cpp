@@ -10,22 +10,22 @@
 #include "Scene/SceneData.h"
 #include "Material/Materials.h"
 #include "Mesh/Geometry.h"
+#include "Planet.h"
 
-Sun::Sun(float innerRadius, float outerRadius) {
-  this->innerRadius = innerRadius;
-  this->outerRadius = outerRadius;
+Sun::Sun(Planet * planet) {
+  this->planet = planet;
 }
 
 Sun::~Sun() {
   // TODO Auto-generated destructor stub
 }
 
-void Sun::init(const QVector3D& position, float size){
+void Sun::init(){
   QList<string> sunAttributes;
   sunAttributes.push_back("normal");
   sunAttributes.push_back("uv");
   Material * sunMaterial = new Template("perlin",sunAttributes);
-  sunNode = new Node("sun", position, size, Geometry::sphere(sunAttributes, innerRadius, 100, 50), sunMaterial);
+  sunNode = new Node("sun", planet->position, planet->size, Geometry::sphere(sunAttributes, planet->innerRadius, 100, 50), sunMaterial);
   sunNode->setRotation(QVector3D(-90,0,180));
   perlinNoise = sunMaterial->getShaderProgram();
 }

@@ -14,21 +14,20 @@
 #include "Mesh/MeshLoader.h"
 #include "Atmosphere.h"
 #include "Scene/SceneData.h"
+#include "Planet.h"
 
-TerrainPlain::TerrainPlain(float innerRadius, float outerRadius, const QVector3D atmoColor) : atmoColor(atmoColor){
-  this->innerRadius = innerRadius;
-  this->outerRadius = outerRadius;
+TerrainPlain::TerrainPlain(Planet * planet){
+  this->planet = planet;
 }
 
 TerrainPlain::~TerrainPlain() {
   // TODO Auto-generated destructor stub
 }
 
-void TerrainPlain::init(const QVector3D& position, float size){
+void TerrainPlain::init(){
    QList<string> attributes;
     attributes.push_back("normal");
     attributes.push_back("uv");
-    this->position = position;
 
   Texture * earthMap = new TextureFile("earthmap1k.jpg",
       "planet");
@@ -38,22 +37,22 @@ void TerrainPlain::init(const QVector3D& position, float size){
   groundFromSpace = new Template("Atmo/Ground",attributes);
   groundFromSpace->addTexture(earthMap);
 
-  Mesh * innerSphere = Geometry::sphere(attributes, innerRadius, 100, 50);
-  groundNode = new Node("ground", position, size, innerSphere, groundFromAtmosphere);
+  Mesh * innerSphere = Geometry::sphere(attributes, planet->innerRadius, 100, 50);
+  groundNode = new Node("ground", planet->position, planet->size, innerSphere, groundFromAtmosphere);
   groundNode->setRotation(QVector3D(-90, 0, 0));
-  Atmosphere::setAtmoUniforms(groundFromAtmosphere->getShaderProgram(),innerRadius, outerRadius, atmoColor);
-  Atmosphere::setAtmoUniforms(groundFromSpace->getShaderProgram(),innerRadius, outerRadius, atmoColor);
+  planet->atmoSphere->setAtmoUniforms(groundFromAtmosphere->getShaderProgram());
+  planet->atmoSphere->setAtmoUniforms(groundFromSpace->getShaderProgram());
  }
 
  void TerrainPlain::draw() {
-  QVector3D camFromPlanet = SceneData::Instance().getCurrentCamera()->position - position;
+  QVector3D camFromPlanet = SceneData::Instance().getCurrentCamera()->position - planet->position;
   float camDistance = camFromPlanet.length();
-  if (camDistance >= outerRadius)
+  if (camDistance >= planet->outerRadius)
     groundNode->setMaterial(groundFromSpace);
   else
     groundNode->setMaterial(groundFromAtmosphere);
 
-  SceneData::Instance().getCurrentCamera()->setUniforms(groundNode->getMaterial()->getShaderProgram(), position);
+  SceneData::Instance().getCurrentCamera()->setUniforms(groundNode->getMaterial()->getShaderProgram(), planet->position);
   groundNode->setView(SceneData::Instance().getCurrentCamera());
 
   groundNode->draw();

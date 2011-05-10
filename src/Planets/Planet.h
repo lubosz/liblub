@@ -8,9 +8,11 @@
 #ifndef PLANET_H_
 #define PLANET_H_
 
-#include "Atmosphere.h"
+#include <vector>
 #include "PlanetElement.h"
+#include "Atmosphere.h"
 
+using std::vector;
 
 class Planet {
 public:
@@ -20,15 +22,18 @@ public:
     terrainPlain,
     terrainTess
   };
+  float innerRadius;
+  float outerRadius;
+  PlanetType type;
+  QVector3D lightWavelength;
+  QVector3D position;
+  float size;
+  vector<PlanetElement*> elements;
   Atmosphere * atmoSphere;
-  PlanetElement * ground;
-//  Terrain * terrain;
-//  Ocean * ocean;
-//  Sun * sun;
-//  PlaneMoon * planeMoon;
-  Planet(float innerRadius, float outerRadius, PlanetType type, const QVector3D atmoColor);
+
+  Planet(float innerRadius, float outerRadius, PlanetType type, const QVector3D & lightWavelength, const QVector3D & position, float size);
   virtual ~Planet();
-  void init(const QVector3D& position, float size);
+  void init();
   void draw();
 };
 

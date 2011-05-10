@@ -11,22 +11,22 @@
 #include "System/TemplateEngine.h"
 #include "Mesh/Geometry.h"
 #include "Scene/SceneData.h"
+#include "Planet.h"
 
-Atmosphere::Atmosphere(float innerRadius, float outerRadius, const QVector3D color):color(color) {
-  this->innerRadius = innerRadius;
-  this->outerRadius = outerRadius;
+Atmosphere::Atmosphere(Planet * planet) {
+  this->planet = planet;
 }
 
 Atmosphere::~Atmosphere() {
   // TODO Auto-generated destructor stub
 }
 
-void Atmosphere::setAtmoUniforms(ShaderProgram * program, float innerRadius, float outerRadius, const QVector3D & color) {
+void Atmosphere::setAtmoUniforms(ShaderProgram * program) {
 
    float wavelength[3];
-   wavelength[0] = color.x();
-   wavelength[1] = color.y();
-   wavelength[2] = color.z();
+   wavelength[0] = planet->lightWavelength.x();
+   wavelength[1] = planet->lightWavelength.y();
+   wavelength[2] = planet->lightWavelength.z();
 //   wavelength[0] = 0.650f; // 650 nm for red
 //    wavelength[1] = 0.570f; // 570 nm for green
 //    wavelength[2] = 0.475f; // 475 nm for blue
@@ -54,46 +54,45 @@ void Atmosphere::setAtmoUniforms(ShaderProgram * program, float innerRadius, flo
    program->use();
    program->setUniform("lightPosition", lightDirection);
    program->setUniform("invWavelength", QVector3D(1 / wavelength4[0], 1 / wavelength4[1], 1 / wavelength4[2]));
-   program->setUniform("innerRadius", innerRadius);
-   program->setUniform("innerRadius2", innerRadius * innerRadius);
-   program->setUniform("outerRadius", outerRadius);
-   program->setUniform("outerRadius2", outerRadius * outerRadius);
+   program->setUniform("innerRadius", planet->innerRadius);
+   program->setUniform("innerRadius2", planet->innerRadius * planet->innerRadius);
+   program->setUniform("outerRadius", planet->outerRadius);
+   program->setUniform("outerRadius2", planet->outerRadius * planet->outerRadius);
    program->setUniform("rayleighSun", rayleigh * sun);
    program->setUniform("mieSun", mie * sun);
    program->setUniform("rayleigh4Pi", rayleigh4Pi);
    program->setUniform("mie4Pi", mie4Pi);
-   program->setUniform("invSphereDistance", 1.0f / (outerRadius - innerRadius));
+   program->setUniform("invSphereDistance", 1.0f / (planet->outerRadius - planet->innerRadius));
    program->setUniform("scaleDepth", rayleighScaleDepth);
-   program->setUniform("scaleOverScaleDepth", (1.0f / (outerRadius - innerRadius)) / rayleighScaleDepth);
+   program->setUniform("scaleOverScaleDepth", (1.0f / (planet->outerRadius - planet->innerRadius)) / rayleighScaleDepth);
    program->setUniform("g", g);
    program->setUniform("g2", g * g);
  }
 
-void Atmosphere::init(const QVector3D& position, float size) {
+void Atmosphere::init() {
   QList<string> attributes;
    attributes.push_back("normal");
    attributes.push_back("uv");
-   this->position = position;
 
    TemplateEngine::Instance().c.insert("fromSpace", false);
   skyFromAtmosphere = new Template("Atmo/Sky",attributes);
   TemplateEngine::Instance().c.insert("fromSpace", true);
   skyFromSpace = new Template("Atmo/Sky",attributes);
-  Mesh * outerSphere = Geometry::sphere(attributes, outerRadius, 300, 500);
-  skyNode = new Node("sky", position, size, outerSphere, skyFromAtmosphere);
-  setAtmoUniforms(skyFromAtmosphere->getShaderProgram(), innerRadius, outerRadius, color);
-  setAtmoUniforms(skyFromSpace->getShaderProgram(), innerRadius, outerRadius, color);
+  Mesh * outerSphere = Geometry::sphere(attributes, planet->outerRadius, 300, 500);
+  skyNode = new Node("sky", planet->position, planet->size, outerSphere, skyFromAtmosphere);
+  setAtmoUniforms(skyFromAtmosphere->getShaderProgram());
+  setAtmoUniforms(skyFromSpace->getShaderProgram());
 }
 
 void Atmosphere::draw(){
-  QVector3D camFromPlanet = SceneData::Instance().getCurrentCamera()->position - position;
+  QVector3D camFromPlanet = SceneData::Instance().getCurrentCamera()->position - planet->position;
   float camDistance = camFromPlanet.length();
-  if(camDistance >= outerRadius)
+  if(camDistance >= planet->outerRadius)
       skyNode->setMaterial(skyFromSpace);
     else
       skyNode->setMaterial(skyFromAtmosphere);
 
-  SceneData::Instance().getCurrentCamera()->setUniforms(skyNode->getMaterial()->getShaderProgram(), position);
+  SceneData::Instance().getCurrentCamera()->setUniforms(skyNode->getMaterial()->getShaderProgram(), planet->position);
     skyNode->setView(SceneData::Instance().getCurrentCamera());
     skyNode->draw();
 }

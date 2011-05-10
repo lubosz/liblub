@@ -38,21 +38,16 @@ class AtmosphereApp: public Application {
   bool useHDR;
   Camera* camera;
   Light * light;
-
   FrameBuffer *fbo;
-  Planet * planet, *sun, *terrain
-//  , *terrainTess
-  ;
   vector <Planet*> planets;
 
   AtmosphereApp() {
     useHDR = true;
-//    planet = new Planet(11,11.55, Planet::ocean, QVector3D(0.650f, 0.570f,0.475f));
-//    sun = new Planet(11,11.55, Planet::sun, QVector3D(0.650f,1,0));
-//    terrain = new Planet(11,11.55, Planet::terrainPlain, QVector3D(0.650f,1,0.475f));
-    terrain = new Planet(11,11.55, Planet::terrainPlain, QVector3D(0.650f, 0.570f,0.475f));
-//    terrainTess = new Planet(11,11.55, Planet::terrainTess, QVector3D(0,1,0));
-//    planets.push_back();
+    planets.push_back(new Planet(11,11.55, Planet::ocean, QVector3D(0.650f, 0.570f,0.475f),QVector3D(100,0,0),1));
+//    planets.push_back(new Planet(11,11.55, Planet::sun, QVector3D(0.650f,1,0),{0,0,50},1));
+//    planets.push_back(new Planet(11,11.55, Planet::terrainPlain, QVector3D(0.650f,1,0.475f),{0,0,0},1));
+//    planets.push_back(new Planet(11,11.55, Planet::terrainTess, QVector3D(0,1,0),{-10,0,0},1));
+//    planets.push_back(new Planet(11,11.55, Planet::terrainPlain, QVector3D(0.650f, 0.570f,0.475f),{0,0,0},1));
   }
 
   ~AtmosphereApp() {}
@@ -114,10 +109,8 @@ class AtmosphereApp: public Application {
   }
 
   void scene() {
-//    planet-> init({-30,0,0},1);
-    terrain-> init({0,0,0},1);
-//    terrainTess-> init({0,30,0},1);
-//    sun-> init({0,0,1000},5);
+    foreach(Planet * planet, planets)
+        planet->init();
     initCamAndLight();
     initPostProcessing();
   }
@@ -127,23 +120,21 @@ class AtmosphereApp: public Application {
     RenderEngine::Instance().clear();
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_CULL_FACE);
-//    planet->draw();
-//    sun->draw();
-    terrain->draw();
-//    terrainTess->draw();
 
-    glFrontFace(GL_CW);
-    glEnable(GL_BLEND);
-    glBlendFunc(GL_ONE, GL_ONE);
-//    planet->atmoSphere->draw();
-//    sun->atmoSphere->draw();
-    terrain->atmoSphere->draw();
-//    terrainTess->atmoSphere->draw();
+    foreach(Planet * planet, planets)
+        planet->draw();
 
-    glDisable(GL_BLEND);
-    glFrontFace(GL_CCW);
-    glDisable(GL_CULL_FACE);
-    glDisable(GL_DEPTH_TEST);
+//    glFrontFace(GL_CW);
+//    glEnable(GL_BLEND);
+//    glBlendFunc(GL_ONE, GL_ONE);
+//
+//    foreach(Planet * planet, planets)
+//        planet->atmoSphere->draw();
+//
+//    glDisable(GL_BLEND);
+//    glFrontFace(GL_CCW);
+//    glDisable(GL_CULL_FACE);
+//    glDisable(GL_DEPTH_TEST);
 
     endPass();
     GUI::Instance().draw();
