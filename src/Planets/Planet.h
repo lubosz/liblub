@@ -27,7 +27,6 @@ public:
   PlanetType type;
   QVector3D lightWavelength;
   QVector3D position;
-  float size;
   vector<PlanetElement*> elements;
   Atmosphere * atmoSphere;
 
@@ -35,6 +34,9 @@ public:
   virtual ~Planet();
   void init();
   void draw();
+  float getSize() const;
+private:
+  float size;
 };
 
 #endif /* PLANET_H_ */

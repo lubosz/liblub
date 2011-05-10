@@ -25,7 +25,7 @@ void Sun::init(){
   sunAttributes.push_back("normal");
   sunAttributes.push_back("uv");
   Material * sunMaterial = new Template("perlin",sunAttributes);
-  sunNode = new Node("sun", planet->position, planet->size, Geometry::sphere(sunAttributes, planet->innerRadius, 100, 50), sunMaterial);
+  sunNode = new Node("sun", planet->position, planet->getSize(), Geometry::sphere(sunAttributes, planet->innerRadius, 100, 50), sunMaterial);
   sunNode->setRotation(QVector3D(-90,0,180));
   perlinNoise = sunMaterial->getShaderProgram();
 }

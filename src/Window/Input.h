@@ -29,7 +29,7 @@ class Input {
 
   float inputSpeed, mouseSensitivity;
 
-		#if defined WITH_SDL || defined WITH_SFML
+		#if defined WITH_SDL || defined WITH_SFML || defined WITH_Qt
 			Input();
 		#else
 			explicit Input(xcb_connection_t *connection);

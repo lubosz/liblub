@@ -124,11 +124,20 @@ else()
   SET(WINDOW_TYPE XCB)
 endif()
 
+SET(WINDOW_TYPE Qt)
+
 ADD_DEFINITIONS(-DWITH_${WINDOW_TYPE})
 file(GLOB_RECURSE GLOB_RESULT ${SRC_DIR}/${SOURCE_DIR}/Window/${WINDOW_TYPE}/*.cpp)
+
+qt4_wrap_cpp (MOC_OUTFILES )
+
+#moc qt stuff
+set(MOC_INFILES "src/Window/Qt/Window.h" "src/Window/Qt/glWidget.h")
+qt4_wrap_cpp (MOC_OUTFILES ${MOC_INFILES})
+
 set(SOURCES ${SOURCES} ${GLOB_RESULT})
 
-add_library(lub ${SOURCES})
+add_library(lub ${SOURCES} ${MOC_OUTFILES})
 
 #ADD_DEFINITIONS(-DUSE_FREEIMAGE)
 

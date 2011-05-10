@@ -48,7 +48,7 @@ void Ocean::init(){
   Texture * oceanSky = new CubeTextureFile("cubemaps/sky","EnvironmentMap");
   ocean->addTexture(oceanSky);
   Mesh * innerSphere = Geometry::sphere(attributes, planet->innerRadius, 100, 50);
-  oceanNode = new Node("ocean", planet->position, planet->size, innerSphere, ocean);
+  oceanNode = new Node("ocean", planet->position, planet->getSize(), innerSphere, ocean);
 }
 void Ocean::draw() {
   oceanNode->setView(SceneData::Instance().getCurrentCamera());

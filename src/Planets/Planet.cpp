@@ -16,6 +16,10 @@
 #include "Sun.h"
 //#include "PlaneMoon.h"
 
+float Planet::getSize() const {
+    return size;
+}
+
 Planet::Planet(float innerRadius, float outerRadius, PlanetType type, const QVector3D & lightWavelength, const QVector3D & position, float size)
 : innerRadius(innerRadius),outerRadius(outerRadius),type(type),lightWavelength(lightWavelength),position(position),size(size){
 }

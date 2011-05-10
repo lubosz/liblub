@@ -29,8 +29,10 @@ void TerrainPlain::init(){
     attributes.push_back("normal");
     attributes.push_back("uv");
 
-  Texture * earthMap = new TextureFile("earthmap1k.jpg",
-      "planet");
+//  Texture * earthMap = new TextureFile("earthmap1k.jpg",
+//      "planet");
+    Texture * earthMap = new TextureFile("Planets/Mars.jpg",
+        "planet");
   groundFromAtmosphere = new Template("Atmo/Ground",attributes);
   groundFromAtmosphere->addTexture(earthMap);
   TemplateEngine::Instance().c.insert("fromSpace", true);
@@ -38,7 +40,7 @@ void TerrainPlain::init(){
   groundFromSpace->addTexture(earthMap);
 
   Mesh * innerSphere = Geometry::sphere(attributes, planet->innerRadius, 100, 50);
-  groundNode = new Node("ground", planet->position, planet->size, innerSphere, groundFromAtmosphere);
+  groundNode = new Node("ground", planet->position, planet->getSize(), innerSphere, groundFromAtmosphere);
   groundNode->setRotation(QVector3D(-90, 0, 0));
   planet->atmoSphere->setAtmoUniforms(groundFromAtmosphere->getShaderProgram());
   planet->atmoSphere->setAtmoUniforms(groundFromSpace->getShaderProgram());

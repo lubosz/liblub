@@ -55,7 +55,7 @@ void PlaneMoon::init() {
   spaceFromSpace = new Template("Atmo/Space", attributes);
   spaceFromSpace->addTexture(glow);
 
-  spaceNode = new Node("space", planet->position, planet->size, moonPlane(attributes), spaceFromAtmosphere);
+  spaceNode = new Node("space", planet->position, planet->getSize(), moonPlane(attributes), spaceFromAtmosphere);
 //  Atmosphere::setAtmoUniforms(spaceFromAtmosphere->getShaderProgram(), innerRadius, outerRadius);
 //  Atmosphere::setAtmoUniforms(spaceFromSpace->getShaderProgram(), innerRadius, outerRadius);
 }

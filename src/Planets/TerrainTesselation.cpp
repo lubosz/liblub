@@ -52,7 +52,7 @@ void TerrainTesselation::init(){
    Mesh * groundMesh = MeshLoader::load(attributes, "earth.obj");
 //    Mesh * mesh = Geometry::gluSphere(10.0f, 100, 50);
    groundMesh->setDrawType(GL_PATCHES);
-   terrainNode = new Node("ground", planet->position, planet->size*11.5, groundMesh, terrainMat);
+   terrainNode = new Node("ground", planet->position, planet->getSize()*11.5, groundMesh, terrainMat);
 
 //   GUI::Instance().addText("tess", "Tess");
 //   GUI::Instance().addText("dist", "Dist");

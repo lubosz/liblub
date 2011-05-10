@@ -42,12 +42,15 @@ class AtmosphereApp: public Application {
   vector <Planet*> planets;
 
   AtmosphereApp() {
+    //   wavelength[0] = 0.650f; // 650 nm for red
+    //    wavelength[1] = 0.570f; // 570 nm for green
+    //    wavelength[2] = 0.475f; // 475 nm for blue
     useHDR = true;
-    planets.push_back(new Planet(11,11.55, Planet::ocean, QVector3D(0.650f, 0.570f,0.475f),QVector3D(100,0,0),1));
-//    planets.push_back(new Planet(11,11.55, Planet::sun, QVector3D(0.650f,1,0),{0,0,50},1));
-//    planets.push_back(new Planet(11,11.55, Planet::terrainPlain, QVector3D(0.650f,1,0.475f),{0,0,0},1));
-//    planets.push_back(new Planet(11,11.55, Planet::terrainTess, QVector3D(0,1,0),{-10,0,0},1));
-//    planets.push_back(new Planet(11,11.55, Planet::terrainPlain, QVector3D(0.650f, 0.570f,0.475f),{0,0,0},1));
+    planets.push_back(new Planet(11,11.55, Planet::ocean, {0.650f, 0.570f,0.475f},{50,0,0},1));
+    planets.push_back(new Planet(11,11.55, Planet::sun, {0.650f,1,0},{0,0,50},1));
+//    planets.push_back(new Planet(11,11.55, Planet::terrainTess, {0.150f, 0.870f,0.175f},{-10,0,0},1));
+//    planets.push_back(new Planet(11,11.55, Planet::terrainPlain, {0.650f, 0.570f,0.475f},{0,0,0},1));
+    planets.push_back(new Planet(11,11.55, Planet::terrainPlain, {0.150f, 0.570f,0.475f},{0,0,0},1));
   }
 
   ~AtmosphereApp() {}
@@ -115,31 +118,33 @@ class AtmosphereApp: public Application {
     initPostProcessing();
   }
 
-  void renderFrame(){
-    startPass();
-    RenderEngine::Instance().clear();
+  void drawPlanets() {
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_CULL_FACE);
 
     foreach(Planet * planet, planets)
         planet->draw();
 
-//    glFrontFace(GL_CW);
-//    glEnable(GL_BLEND);
-//    glBlendFunc(GL_ONE, GL_ONE);
-//
-//    foreach(Planet * planet, planets)
-//        planet->atmoSphere->draw();
-//
-//    glDisable(GL_BLEND);
-//    glFrontFace(GL_CCW);
-//    glDisable(GL_CULL_FACE);
-//    glDisable(GL_DEPTH_TEST);
+    glFrontFace(GL_CW);
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_ONE, GL_ONE);
 
+    foreach(Planet * planet, planets)
+        planet->atmoSphere->draw();
+
+    glDisable(GL_BLEND);
+    glFrontFace(GL_CCW);
+    glDisable(GL_CULL_FACE);
+    glDisable(GL_DEPTH_TEST);
+  }
+
+  void renderFrame(){
+    startPass();
+    RenderEngine::Instance().clear();
+    drawPlanets();
     endPass();
     GUI::Instance().draw();
     glError;
-
 //    LogDebug << camera->position.x() << camera->position.y() << camera->position.z();
 //    LogDebug << camera->yaw << camera->pitch << camera->roll;
   }

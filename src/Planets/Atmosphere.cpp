@@ -27,12 +27,6 @@ void Atmosphere::setAtmoUniforms(ShaderProgram * program) {
    wavelength[0] = planet->lightWavelength.x();
    wavelength[1] = planet->lightWavelength.y();
    wavelength[2] = planet->lightWavelength.z();
-//   wavelength[0] = 0.650f; // 650 nm for red
-//    wavelength[1] = 0.570f; // 570 nm for green
-//    wavelength[2] = 0.475f; // 475 nm for blue
-
-//   wavelength[1] = 1.0; // 570 nm for green
-//   wavelength[2] = 0.0; // 475 nm for blue
 
    float wavelength4[3];
    wavelength4[0] = powf(wavelength[0], 4.0f);
@@ -79,7 +73,7 @@ void Atmosphere::init() {
   TemplateEngine::Instance().c.insert("fromSpace", true);
   skyFromSpace = new Template("Atmo/Sky",attributes);
   Mesh * outerSphere = Geometry::sphere(attributes, planet->outerRadius, 300, 500);
-  skyNode = new Node("sky", planet->position, planet->size, outerSphere, skyFromAtmosphere);
+  skyNode = new Node("sky", planet->position, planet->getSize(), outerSphere, skyFromAtmosphere);
   setAtmoUniforms(skyFromAtmosphere->getShaderProgram());
   setAtmoUniforms(skyFromSpace->getShaderProgram());
 }

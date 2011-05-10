@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <liblub>
 	<Config>
-		<Int name="Vsync" value="0" />
+		<Int name="Vsync" value="1" />
 		<String name="shaderDir" value="media/shaders/" />
 		<String name="textureDir" value="media/textures/" />
 		<String name="sceneDir" value="media/scenes/" />
