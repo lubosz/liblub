@@ -8,9 +8,11 @@
 #pragma once
 
 #ifdef WIN32
+//#define GL3_PROTOTYPES 1
 //# include <GL3/gl3.h>
 # include <GL/glew.h>
 # include <GL/wglew.h>
+//#include <QtOpenGL>
 //# include <GL/glext.h>
 # define glfGetProcAddress wglGetProcAddress
 #include "WinGL.h"
