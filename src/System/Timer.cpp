@@ -15,7 +15,7 @@ Timer::Timer() {
   input_lasttime = 0;
   secoundsPassed = 0;
   nanosecoundsPassed = 0;
-#ifndef WITH_SDL
+#ifndef LIBLUB_WINDOWS
   clock_gettime(CLOCK_MONOTONIC, &start);
 #endif
 }
@@ -27,7 +27,7 @@ Timer::~Timer() {
 
 void Timer::frame() {
 
-#ifndef WITH_SDL
+#ifndef LIBLUB_WINDOWS
   timespec now;
   clock_gettime(CLOCK_MONOTONIC, &now);
 
@@ -35,7 +35,7 @@ void Timer::frame() {
   nanosecoundsPassed = now.tv_nsec;
 
   ticks = now.tv_sec * 1000 + now.tv_nsec / 1000000;
-#else
+#elif WITH_SDL
   ticks = SDL_GetTicks();
 #endif
   fps_frames++;

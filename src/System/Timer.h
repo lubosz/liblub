@@ -21,7 +21,7 @@ public:
   unsigned ticks;
   unsigned secoundsPassed;
   unsigned nanosecoundsPassed;
-#ifndef WITH_SDL
+#ifndef LIBLUB_WINDOWS
   timespec start;
 #endif
   Timer();

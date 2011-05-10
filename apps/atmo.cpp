@@ -31,6 +31,7 @@
 #include "Material/Textures.h"
 #include "Material/ShaderProgram.h"
 #include "Planets/Planet.h"
+#include "Window/Qt/Window.h"
 
 class AtmosphereApp: public Application {
  public:
@@ -159,9 +160,9 @@ int WINAPI WinMain(HINSTANCE inst,HINSTANCE prev,LPSTR cmd,int show) {
 }
 #else
 int main(int argc, char *argv[]) {
-  QApplication app(argc, argv);
-  AtmosphereApp().run();
-  return 0;
+    QApplication app(argc, argv);
+    AtmosphereApp().run();
+    return 0;
 }
 #endif
 

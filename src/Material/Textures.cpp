@@ -159,7 +159,7 @@ SplatTexture::SplatTexture(string name, int resolution) {
   glGenTextures(1, &handle);
   bind();
 
-  glTexParameteri(target, GL_GENERATE_MIPMAP_SGIS, GL_TRUE);
+//  glTexParameteri(target, GL_GENERATE_MIPMAP_SGIS, GL_TRUE);
 
   filterMinMag(GL_LINEAR_MIPMAP_LINEAR, GL_LINEAR);
   glTexImage2D(target, 0, GL_RGBA8, resolution, resolution, 0, GL_RGBA,

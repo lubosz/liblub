@@ -10,6 +10,8 @@ OPTION(USE_FBO "Use Framebuffer Objects" ON)
 OPTION(CHECKSTYLE "Check Style" OFF)
 OPTION(BUILD_TESTS "Build Tests" OFF)
 
+
+
 if(USE_FBO)
     ADD_DEFINITIONS(-DUSE_FBO)
 endif()
@@ -48,8 +50,17 @@ endif()
 FIND_PACKAGE(Qt4 REQUIRED)
 find_package(Grantlee REQUIRED)
 set(QT_USE_QTXML true)
-set(QT_USE_QTOPENGL false)
+#set(QT_USE_QTOPENGL false)
+set(QT_USE_QTOPENGL true)
 INCLUDE(${QT_USE_FILE})
+find_package(OpenGL)
+if(NOT OPENGL_FOUND)
+	message("ERROR: OpenGL not found")
+endif(NOT OPENGL_FOUND)
+
+#moc qt stuff
+set(MOC_INFILES src/Window/Qt/Window.h src/Window/Qt/glWidget.h)
+qt4_wrap_cpp (MOC_OUTFILES ${MOC_INFILES})
 
 #check for opengl3 headers
 function(download_gl_header GL_HEADER)
@@ -76,10 +87,6 @@ ELSE()
 	include_directories(src/Renderer/)
 ENDIF()
 
-find_package(OpenGL)
-if(NOT OPENGL_FOUND)
-	message("ERROR: OpenGL not found")
-endif(NOT OPENGL_FOUND)
 
 #Check for nvidia libGL in ubuntu
 IF(EXISTS "/usr/lib/nvidia-current/libGL.so")
@@ -129,20 +136,14 @@ SET(WINDOW_TYPE Qt)
 ADD_DEFINITIONS(-DWITH_${WINDOW_TYPE})
 file(GLOB_RECURSE GLOB_RESULT ${SRC_DIR}/${SOURCE_DIR}/Window/${WINDOW_TYPE}/*.cpp)
 
-qt4_wrap_cpp (MOC_OUTFILES )
-
-#moc qt stuff
-set(MOC_INFILES "src/Window/Qt/Window.h" "src/Window/Qt/glWidget.h")
-qt4_wrap_cpp (MOC_OUTFILES ${MOC_INFILES})
-
 set(SOURCES ${SOURCES} ${GLOB_RESULT})
-
-add_library(lub ${SOURCES} ${MOC_OUTFILES})
+set(SOURCES ${SOURCES} ${MOC_OUTFILES})
+add_library(lub ${SOURCES})
 
 #ADD_DEFINITIONS(-DUSE_FREEIMAGE)
 
 #link
-target_link_libraries(lub ${OPENGL_LIB} 
+target_link_libraries(lub ${OPENGL_LIB}
 
 #freeimageplus 
 ${QT_LIBRARIES} 
@@ -165,7 +166,7 @@ IF(WITH_SDL)
 	endif()
 ELSEIF(WITH_SFML)
 	target_link_libraries(lub sfml-graphics)
-ELSE()
+ELSEIF(WITH_XCB)
 	target_link_libraries(lub X11-xcb xcb-keysyms)
 ENDIF()
 

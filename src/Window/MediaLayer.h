@@ -11,12 +11,12 @@
 #include "Renderer/RenderEngine.h"
 #include "Window/Input.h"
 
-#ifdef WITH_SDL
+#if WITH_SDL
 	#define SDL_NO_COMPAT
 	#include "SDL.h"
 #elif WITH_SFML
 	#include <SFML/Graphics.hpp>
-#else
+#elif WITH_XCB
     // Needed for GL3 Context Creation
 	#define GLX_GLXEXT_PROTOTYPES 1
 	#include <GL/glx.h>
@@ -25,7 +25,6 @@
 	#include <X11/Xlib-xcb.h>
 
 	#include <xcb/xcb.h>
-
 #endif
 
 
@@ -47,7 +46,7 @@ public:
 
 #elif WITH_SFML
     sf::Window * window;
-#else
+#elif WITH_XCB
 
     int visualID;
     int default_screen;
@@ -79,10 +78,9 @@ public:
 
     xcb_intern_atom_cookie_t getCookieForAtom(string state_name);
     xcb_atom_t getReplyAtomFromCookie(xcb_intern_atom_cookie_t cookie);
-
 #endif
 
-    friend class Singleton<MediaLayer>;
+  friend class Singleton<MediaLayer>;
 	friend class Input;
 
 	bool fullscreen;
