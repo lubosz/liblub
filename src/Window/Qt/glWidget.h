@@ -28,7 +28,6 @@ protected:
 
 private:
   QPoint lastPos;
-
   Material *HDR;
   bool useHDR;
   Camera* camera;
