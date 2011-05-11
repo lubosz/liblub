@@ -50,6 +50,7 @@ endif()
 FIND_PACKAGE(Qt4 REQUIRED)
 find_package(Grantlee REQUIRED)
 set(QT_USE_QTXML true)
+set(QT_USE_QTUITOOLS true)
 #set(QT_USE_QTOPENGL false)
 set(QT_USE_QTOPENGL true)
 INCLUDE(${QT_USE_FILE})
@@ -59,7 +60,7 @@ if(NOT OPENGL_FOUND)
 endif(NOT OPENGL_FOUND)
 
 #moc qt stuff
-set(MOC_INFILES src/Window/Qt/Window.h src/Window/Qt/glWidget.h)
+set(MOC_INFILES src/Window/Qt/Window.h src/Window/Qt/glWidget.h src/Planets/Planet.h)
 qt4_wrap_cpp (MOC_OUTFILES ${MOC_INFILES})
 
 #check for opengl3 headers

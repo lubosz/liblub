@@ -42,11 +42,9 @@
 #define WINDOW_H
 #include <QWidget>
 
-QT_BEGIN_NAMESPACE
 class QSlider;
-QT_END_NAMESPACE
-//! [0]
 class GLWidget;
+class QVBoxLayout;
 
 class QtWindow : public QWidget
 {
@@ -57,8 +55,12 @@ public:
 
 protected:
     void keyPressEvent(QKeyEvent *event);
+    void keyReleaseEvent(QKeyEvent *e);
+    void executeKeys();
+    QVBoxLayout * createControlElement(QString name, const char *targetColor);
 
 private:
+    QList<int> pressedKeys;
     QSlider *createSlider();
 
     GLWidget *glWidget;
@@ -66,6 +68,5 @@ private:
     QSlider *ySlider;
     QSlider *zSlider;
 };
-//! [0]
 
 #endif

@@ -39,7 +39,7 @@ int main(int argc, char *argv[]) {
 #endif
   QApplication app(argc, argv);
   QtWindow window;
-  window.resize(window.sizeHint());
+  window.resize(QSize(1920,1200));
   //  int desktopArea = QApplication::desktop()->width()
   //      * QApplication::desktop()->height();
   //  int widgetArea = window.width() * window.height();
@@ -47,6 +47,7 @@ int main(int argc, char *argv[]) {
   window.show();
   //  else
   //    window.showMaximized();
+
   return app.exec();
 }
 

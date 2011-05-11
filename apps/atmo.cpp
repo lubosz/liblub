@@ -31,7 +31,6 @@
 #include "Material/Textures.h"
 #include "Material/ShaderProgram.h"
 #include "Planets/Planet.h"
-#include "Window/Qt/Window.h"
 
 class AtmosphereApp: public Application {
  public:
