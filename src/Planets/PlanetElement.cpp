@@ -34,6 +34,14 @@ void PlanetElement::updateWaveLength(){
   updateWaveLength(node->getMaterial()->getShaderProgram());
 }
 
+void PlanetElement::setAttenuation(bool attenuation){
+  node->getMaterial()->getShaderProgram()->setUniform("attenuation", attenuation);
+  if (attenuation)
+    LogDebug << "Attenuation!";
+  else
+    LogDebug << "No Attenuation!";
+}
+
 void PlanetElement::setAtmoUniforms(ShaderProgram * program) {
   updateWaveLength(program);
 

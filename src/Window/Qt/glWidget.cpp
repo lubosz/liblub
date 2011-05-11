@@ -17,15 +17,10 @@
 
 GLWidget::GLWidget(QWidget *parent) :
   QGLWidget(QGLFormat(QGL::SampleBuffers), parent) {
-  xRot = 0;
-  yRot = 0;
-  zRot = 0;
   earthWaveLength = QVector3D();
 
   QGLFormat fmt;
   fmt.setVersion(4,1);
-//  fmt.setAlpha(true);
-//  fmt.setStereo(true);
   QGLFormat::setDefaultFormat(fmt);
 }
 
@@ -38,37 +33,6 @@ QSize GLWidget::minimumSizeHint() const {
 
 QSize GLWidget::sizeHint() const {
   return QSize(1720, 1200);
-}
-
-static void qNormalizeAngle(int &angle) {
-  while (angle < 0)
-    angle += 360 * 16;
-  while (angle > 360 * 16)
-    angle -= 360 * 16;
-}
-
-void GLWidget::setXRotation(int angle) {
-  qNormalizeAngle(angle);
-  if (angle != xRot) {
-    xRot = angle;
-    SceneData::Instance().getCurrentCamera()->yaw = xRot;
-    SceneData::Instance().getCurrentCamera()->updateRotation();
-    emit
-    xRotationChanged(angle);
-    updateGL();
-  }
-}
-
-void GLWidget::setYRotation(int angle) {
-  qNormalizeAngle(angle);
-  if (angle != yRot) {
-    yRot = angle;
-    SceneData::Instance().getCurrentCamera()->pitch = yRot;
-    SceneData::Instance().getCurrentCamera()->updateRotation();
-    emit
-    yRotationChanged(angle);
-    updateGL();
-  }
 }
 
 void GLWidget::setRed(int red){
@@ -89,22 +53,19 @@ void GLWidget::setBlue(int blue){
   updateGL();
 }
 
-void GLWidget::setZRotation(int angle) {
-  qNormalizeAngle(angle);
-  if (angle != zRot) {
-    zRot = angle;
-    SceneData::Instance().getCurrentCamera()->roll = zRot;
-    SceneData::Instance().getCurrentCamera()->updateRotation();
-    emit
-    zRotationChanged(angle);
-    updateGL();
-  }
+void GLWidget::setAttenuation(bool attenuation){
+  if (attenuation)
+    LogDebug << "Attenuation!";
+  else
+    LogDebug << "No Attenuation!";
+  earth->atmoSphere->setAttenuation(attenuation);
+  updateGL();
 }
 
 void GLWidget::initializeGL() {
   Config::Instance().load("config.xml");
-  SceneLoader * sceneLoader = new SceneLoader("nice.xml");
-  sceneLoader->load();
+//  SceneLoader * sceneLoader = new SceneLoader("nice.xml");
+//  sceneLoader->load();
   GUI::Instance().init();
 
   //   wavelength[0] = 0.650f; // 650 nm for red
@@ -140,15 +101,8 @@ void GLWidget::paintGL() {
 }
 
 void GLWidget::resizeGL(int width, int height) {
-//  int side = qMin(width, height);
   SceneData::Instance().getCurrentCamera()->setAspect(float(width) / float(height));
   glViewport(0, 0, width,height);
-//  LogDebug << side;
-//  glViewport((width - side) / 2, (height - side) / 2, side, side);
-//  glMatrixMode( GL_PROJECTION);
-//  glLoadIdentity();
-//  glOrtho(-0.5, +0.5, -0.5, +0.5, 4.0, 15.0);
-//  glMatrixMode( GL_MODELVIEW);
 //  initPostProcessing();
 }
 
@@ -160,14 +114,10 @@ void GLWidget::mouseMoveEvent(QMouseEvent *event) {
   int dx = event->x() - lastPos.x();
   int dy = event->y() - lastPos.y();
 
-  SceneData::Instance().getCurrentCamera()->setMouseLook(dx, dy, .1);
-//  if (event->buttons() & Qt::LeftButton) {
-//    setXRotation(xRot + 8 * dy);
-//    setYRotation(yRot + 8 * dx);
-//  } else if (event->buttons() & Qt::RightButton) {
-//    setXRotation(xRot + 8 * dy);
-//    setZRotation(zRot + 8 * dx);
-//  }
+  if (event->buttons() & Qt::LeftButton) {
+    SceneData::Instance().getCurrentCamera()->setMouseLook(dx, dy, .1);
+  } else if (event->buttons() & Qt::RightButton) {
+  }
   lastPos = event->pos();
   updateGL();
 }

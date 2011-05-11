@@ -24,6 +24,7 @@ public:
   virtual void draw() = 0;
   void updateWaveLength();
   void updateWaveLength(ShaderProgram * program);
+  void setAttenuation(bool attenuation);
 protected:
   void setAtmoUniforms(ShaderProgram * program);
 };

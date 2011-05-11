@@ -45,17 +45,19 @@ debugColor = v3Pos;
 	
 	// Now loop through the sample rays
 	vec3 v3FrontColor = vec3(0.0, 0.0, 0.0);
+	vec3 v3Attenuate = vec3(0);
 	for(int i=0; i<samplesi; i++)	{
 		float fHeight = length(v3SamplePoint);
 		float fDepth = exp(scaleOverScaleDepth * (innerRadius - fHeight));
 		//Attenuate
-		float fLightAngle = dot(lightPosition, v3SamplePoint) / fHeight;
-		float fCameraAngle = dot(v3Ray, v3SamplePoint) / fHeight;
-		float fScatter = (fStartOffset + fDepth*(scale(fLightAngle) - scale(fCameraAngle)));
-		vec3 v3Attenuate = exp(-fScatter * (invWavelength * rayleigh4Pi + mie4Pi));
-		/*
-		vec3 v3Attenuate = vec3(1);
-		*/
+		if(attenuation){
+			float fLightAngle = dot(lightPosition, v3SamplePoint) / fHeight;
+			float fCameraAngle = dot(v3Ray, v3SamplePoint) / fHeight;
+			float fScatter = (fStartOffset + fDepth*(scale(fLightAngle) - scale(fCameraAngle)));
+			v3Attenuate = exp(-fScatter * (invWavelength * rayleigh4Pi + mie4Pi));
+		} else {
+			v3Attenuate = vec3(1);
+		}
 		v3FrontColor += v3Attenuate * (fDepth * scaledLength);
 		v3SamplePoint += v3SampleRay;
 		//debugColor = length(v3SamplePoint)*vec3(1);

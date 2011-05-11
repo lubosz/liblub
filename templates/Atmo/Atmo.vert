@@ -28,6 +28,8 @@ uniform float invSphereDistance;			// 1 / (outerRadius - innerRadius)
 uniform float scaleDepth;		// The scale depth (i.e. the altitude at which the atmosphere's average density is found)
 uniform float scaleOverScaleDepth;	// scale / scaleDepth
 
+uniform bool attenuation;
+
 const int samplesi = 10;
 const float samplesf = float(samplesi);
 

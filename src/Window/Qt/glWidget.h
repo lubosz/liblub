@@ -1,5 +1,6 @@
 #ifndef GLWIDGET_H
 #define GLWIDGET_H
+
 #include <QGLWidget>
 #include "Renderer/FrameBuffer.h"
 #include "Scene/Light.h"
@@ -7,7 +8,7 @@
 #include "Planets/Planet.h"
 
 class GLWidget: public QGLWidget {
-Q_OBJECT
+  Q_OBJECT
 
 public:
   GLWidget(QWidget *parent = 0);
@@ -18,12 +19,10 @@ public:
   Planet* earth;
 
 public slots:
-  void setXRotation(int angle);
-  void setYRotation(int angle);
-  void setZRotation(int angle);
   void setRed(int red);
   void setGreen(int red);
   void setBlue(int red);
+  void setAttenuation(bool attenuation);
 
 signals:
   void xRotationChanged(int angle);
@@ -38,9 +37,6 @@ protected:
   void mouseMoveEvent(QMouseEvent *event);
 
 private:
-  int xRot;
-  int yRot;
-  int zRot;
   QVector3D earthWaveLength;
   QPoint lastPos;
 
