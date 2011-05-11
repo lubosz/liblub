@@ -14,10 +14,7 @@ uniform mat4 MMatrix;
 	
 {% if fromSpace %}
 	// Calculate the closest intersection of the ray with the outer atmosphere (which is the near point of the ray passing through the atmosphere)
-	float B = 2.0 * dot(cameraPosition, v3Ray);
-	float C = cameraHeight2 - outerRadius2;
-	float fDet = max(0.0, B*B - 4.0 * C);
-	float fNear = 0.5 * (-B - sqrt(fDet));
+	float fNear = getNearIntersection(cameraPosition, v3Ray, cameraHeight2, outerRadius2);
 	
 	// Calculate the ray's starting position, then calculate its scattering offset
 	vec3 v3Start = cameraPosition + v3Ray * fNear;
