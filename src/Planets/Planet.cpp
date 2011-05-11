@@ -25,6 +25,7 @@ Planet::Planet(float innerRadius, float outerRadius, PlanetType type, const QVec
 }
 
 Planet::~Planet() {
+  attenuation = true;
 }
 
 void Planet::init() {
@@ -53,15 +54,34 @@ void Planet::draw() {
     element->draw();
 }
 
-void Planet::updateWaveLength(const QVector3D & lightWaveLength){
-  this->lightWavelength = lightWaveLength;
+void Planet::setWaveLength(const QVector3D & lightWavelength) {
+  this->lightWavelength = lightWavelength;
+}
+
+void Planet::updateWaveLength(){
   atmoSphere->updateWaveLength();
   foreach(PlanetElement * element, elements)
     element->updateWaveLength();
 }
 
 void Planet::setAttenuation(bool attenuation) {
-  atmoSphere->setAttenuation(attenuation);
+  this->attenuation = attenuation;
+  atmoSphere->updateAttenuation();
   foreach(PlanetElement * element, elements)
-    element->setAttenuation(attenuation);
+    element->updateAttenuation();
+}
+
+void Planet::setRed(int red){
+  lightWavelength.setX(float(red)/256.0);
+  updateWaveLength();
+}
+
+void Planet::setGreen(int green){
+  lightWavelength.setY(float(green)/256.0);
+  updateWaveLength();
+}
+
+void Planet::setBlue(int blue){
+  lightWavelength.setZ(float(blue)/256.0);
+  updateWaveLength();
 }

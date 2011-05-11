@@ -3,10 +3,11 @@
 #include "glWidget.h"
 #include "Window.h"
 #include "Scene/SceneData.h"
+#include "System/Config.h"
 
 QtWindow::QtWindow() {
   glWidget = new GLWidget;
-
+  Config::Instance().load("config.xml");
 //  QUiLoader uiLoader;
 //  QFile uiFile("scripts/valueChanger.ui");
 //  QWidget *valueChanger = uiLoader.load(&uiFile);
@@ -23,19 +24,22 @@ QtWindow::QtWindow() {
   sliderBarLayout->addLayout(createFloatElement("Green",SLOT(setGreen(int))));
   sliderBarLayout->addLayout(createFloatElement("Blue",SLOT(setBlue(int))));
 
-  QCheckBox *checkBox = new QCheckBox();
-  checkBox->setText("Attenuation");
-  sliderBarLayout->addWidget(checkBox);
-  connect(checkBox, SIGNAL(clicked(bool)), glWidget, SLOT(setAttenuation(bool)));
+  sliderBarLayout->addWidget(createBoolElement("Attenuation", SLOT(setAttenuation(bool))));
   setLayout(mainLayout);
 
   setWindowTitle(tr("LibLub"));
 }
 
+QCheckBox * QtWindow::createBoolElement(QString name, const char *target) {
+  QCheckBox *checkBox = new QCheckBox();
+  checkBox->setText(name);
+  connect(checkBox, SIGNAL(clicked(bool)), glWidget->earth, target);
+  connect(checkBox, SIGNAL(clicked(bool)), glWidget, SLOT(updateGL()));
+  return checkBox;
+}
 
-QVBoxLayout * QtWindow::createFloatElement(QString name, const char *targetColor) {
+QVBoxLayout * QtWindow::createFloatElement(QString name, const char *target) {
   QVBoxLayout *sliderLayout = new QVBoxLayout;
-
   QHBoxLayout *textAndValueLayout = new QHBoxLayout;
   QLabel * label = new QLabel(name);
   textAndValueLayout->addWidget(label);
@@ -44,11 +48,12 @@ QVBoxLayout * QtWindow::createFloatElement(QString name, const char *targetColor
   sliderLayout->addLayout(textAndValueLayout);
   QSlider *slider = new QSlider(Qt::Horizontal);
   slider->setRange(0, 256);
-  spinBox->setRange(0,256);
+  spinBox->setRange(0, 256);
   sliderLayout->addWidget(slider);
   connect(spinBox, SIGNAL(valueChanged(int)), slider, SLOT(setValue(int)));
   connect(slider, SIGNAL(valueChanged(int)), spinBox, SLOT(setValue(int)));
-  connect(slider, SIGNAL(valueChanged(int)), glWidget, targetColor);
+  connect(slider, SIGNAL(valueChanged(int)), glWidget->earth, target);
+  connect(slider, SIGNAL(valueChanged(int)), glWidget, SLOT(updateGL()));
   return sliderLayout;
 }
 

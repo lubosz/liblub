@@ -17,17 +17,7 @@ public:
   QSize minimumSizeHint() const;
   QSize sizeHint() const;
   Planet* earth;
-
-public slots:
-  void setRed(int red);
-  void setGreen(int red);
-  void setBlue(int red);
-  void setAttenuation(bool attenuation);
-
-signals:
-  void xRotationChanged(int angle);
-  void yRotationChanged(int angle);
-  void zRotationChanged(int angle);
+  vector<Planet*> planets;
 
 protected:
   void initializeGL();
@@ -37,7 +27,6 @@ protected:
   void mouseMoveEvent(QMouseEvent *event);
 
 private:
-  QVector3D earthWaveLength;
   QPoint lastPos;
 
   Material *HDR;
@@ -45,7 +34,6 @@ private:
   Camera* camera;
   Light * light;
   FrameBuffer *fbo;
-  vector<Planet*> planets;
 
   void initCamAndLight();
   void initPostProcessing();

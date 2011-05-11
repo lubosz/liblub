@@ -14,7 +14,8 @@
 
 using std::vector;
 
-class Planet {
+class Planet: public QObject {
+  Q_OBJECT
 public:
   enum PlanetType {
     sun = 0,
@@ -29,16 +30,23 @@ public:
   QVector3D position;
   vector<PlanetElement*> elements;
   Atmosphere * atmoSphere;
+  bool attenuation;
 
   Planet(float innerRadius, float outerRadius, PlanetType type, const QVector3D & lightWavelength, const QVector3D & position, float size);
   virtual ~Planet();
   void init();
   void draw();
   float getSize() const;
-  void updateWaveLength(const QVector3D & lightWaveLength);
-  void setAttenuation(bool attenuation);
+  void updateWaveLength();
+  void setWaveLength(const QVector3D & lightWavelength);
 private:
   float size;
+
+public slots:
+  void setRed(int red);
+  void setGreen(int red);
+  void setBlue(int red);
+  void setAttenuation(bool attenuation);
 };
 
 #endif /* PLANET_H_ */

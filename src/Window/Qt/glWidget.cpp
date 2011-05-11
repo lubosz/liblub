@@ -6,7 +6,6 @@
 #include "Scene/SceneLoader.h"
 #include "Scene/SceneData.h"
 #include "Material/Materials.h"
-#include "System/Config.h"
 #include "Material/Textures.h"
 #include "Renderer/RenderEngine.h"
 #include "System/Timer.h"
@@ -17,11 +16,18 @@
 
 GLWidget::GLWidget(QWidget *parent) :
   QGLWidget(QGLFormat(QGL::SampleBuffers), parent) {
-  earthWaveLength = QVector3D();
 
   QGLFormat fmt;
   fmt.setVersion(4,1);
   QGLFormat::setDefaultFormat(fmt);
+  useHDR = false;
+  planets.push_back(new Planet(11,11.55, Planet::ocean, {0.650f, 0.570f,0.475f},{50,0,0},1));
+  planets.push_back(new Planet(11,11.55, Planet::sun, {0.650f,1,0},{0,0,500},1));
+//    planets.push_back(new Planet(11,11.55, Planet::terrainTess, {0.150f, 0.870f,0.175f},{-10,0,0},1));
+//    planets.push_back(new Planet(11,11.55, Planet::terrainPlain, {0.650f, 0.570f,0.475f},{0,0,0},1));
+
+  earth = new Planet(11,11.55, Planet::terrainPlain, {0.150f, 0.570f,0.475f},{0,0,0},1);
+  planets.push_back(earth);
 }
 
 GLWidget::~GLWidget() {
@@ -35,31 +41,7 @@ QSize GLWidget::sizeHint() const {
   return QSize(1720, 1200);
 }
 
-void GLWidget::setRed(int red){
-  earthWaveLength.setX(float(red)/256.0);
-  earth->updateWaveLength(earthWaveLength);
-  updateGL();
-}
-
-void GLWidget::setGreen(int green){
-  earthWaveLength.setY(float(green)/256.0);
-  earth->updateWaveLength(earthWaveLength);
-  updateGL();
-}
-
-void GLWidget::setBlue(int blue){
-  earthWaveLength.setZ(float(blue)/256.0);
-  earth->updateWaveLength(earthWaveLength);
-  updateGL();
-}
-
-void GLWidget::setAttenuation(bool attenuation){
-  earth->setAttenuation(attenuation);
-  updateGL();
-}
-
 void GLWidget::initializeGL() {
-  Config::Instance().load("config.xml");
 //  SceneLoader * sceneLoader = new SceneLoader("nice.xml");
 //  sceneLoader->load();
   GUI::Instance().init();
@@ -67,14 +49,6 @@ void GLWidget::initializeGL() {
   //   wavelength[0] = 0.650f; // 650 nm for red
   //    wavelength[1] = 0.570f; // 570 nm for green
   //    wavelength[2] = 0.475f; // 475 nm for blue
-  useHDR = false;
-  planets.push_back(new Planet(11,11.55, Planet::ocean, {0.650f, 0.570f,0.475f},{50,0,0},1));
-  planets.push_back(new Planet(11,11.55, Planet::sun, {0.650f,1,0},{0,0,50},1));
-//    planets.push_back(new Planet(11,11.55, Planet::terrainTess, {0.150f, 0.870f,0.175f},{-10,0,0},1));
-//    planets.push_back(new Planet(11,11.55, Planet::terrainPlain, {0.650f, 0.570f,0.475f},{0,0,0},1));
-
-  earth = new Planet(11,11.55, Planet::terrainPlain, {0.150f, 0.570f,0.475f},{0,0,0},1);
-  planets.push_back(earth);
 
   foreach(Planet * planet, planets)
       planet->init();

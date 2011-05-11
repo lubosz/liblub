@@ -9,7 +9,6 @@
 #include "Planet.h"
 
 PlanetElement::PlanetElement(Planet * planet) : planet(planet) {
-  attenuation = true;
 }
 
 PlanetElement::~PlanetElement() {
@@ -35,15 +34,10 @@ void PlanetElement::updateWaveLength(){
   updateWaveLength(node->getMaterial()->getShaderProgram());
 }
 
-void PlanetElement::setAttenuation(bool attenuation) {
-  this->attenuation = attenuation;
-  updateAttenuation();
-}
-
 void PlanetElement::updateAttenuation(){
   ShaderProgram * program = node->getMaterial()->getShaderProgram();
   program->use();
-  program->setUniform("attenuation", attenuation);
+  program->setUniform("attenuation", planet->attenuation);
 }
 
 void PlanetElement::setAtmoUniforms(ShaderProgram * program) {
