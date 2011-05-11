@@ -36,6 +36,7 @@ public:
   void draw();
   float getSize() const;
   void updateWaveLength(const QVector3D & lightWaveLength);
+  void setAttenuation(bool attenuation);
 private:
   float size;
 };

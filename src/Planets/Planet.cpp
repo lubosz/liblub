@@ -59,3 +59,9 @@ void Planet::updateWaveLength(const QVector3D & lightWaveLength){
   foreach(PlanetElement * element, elements)
     element->updateWaveLength();
 }
+
+void Planet::setAttenuation(bool attenuation) {
+  atmoSphere->setAttenuation(attenuation);
+  foreach(PlanetElement * element, elements)
+    element->setAttenuation(attenuation);
+}

@@ -45,12 +45,15 @@ uniform mat4 MMatrix;
 	// Now loop through the sample rays
 	vec3 v3FrontColor = vec3(0);
 	vec3 v3Attenuate = vec3(0);
-	for(int i=0; i<samplesi; i++)
-	{
+	for(int i=0; i<samplesi; i++) {
 		float fHeight = length(v3SamplePoint);
 		float fDepth = exp(scaleOverScaleDepth * (innerRadius - fHeight));
-		float fScatter = fDepth*fTemp - fCameraOffset;
-		v3Attenuate = exp(-fScatter * (invWavelength * rayleigh4Pi + mie4Pi));
+		if(attenuation){
+			float fScatter = fDepth*fTemp - fCameraOffset;
+			v3Attenuate = exp(-fScatter * (invWavelength * rayleigh4Pi + mie4Pi));
+		} else {
+			v3Attenuate = vec3(1);
+		}
 		v3FrontColor += v3Attenuate * (fDepth * scaledLength);
 		v3SamplePoint += v3SampleRay;
 	}

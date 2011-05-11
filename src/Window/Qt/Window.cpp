@@ -26,8 +26,7 @@ QtWindow::QtWindow() {
   QCheckBox *checkBox = new QCheckBox();
   checkBox->setText("Attenuation");
   sliderBarLayout->addWidget(checkBox);
-  connect(checkBox, SIGNAL(valueChanged(bool)), glWidget, SLOT(setAttenuation(bool)));
-
+  connect(checkBox, SIGNAL(clicked(bool)), glWidget, SLOT(setAttenuation(bool)));
   setLayout(mainLayout);
 
   setWindowTitle(tr("LibLub"));

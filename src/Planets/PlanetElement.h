@@ -17,6 +17,7 @@ class PlanetElement {
 public:
   Planet * planet;
   Node * node;
+  bool attenuation;
   PlanetElement() {};
   PlanetElement(Planet * planet);
   virtual ~PlanetElement();
@@ -25,6 +26,7 @@ public:
   void updateWaveLength();
   void updateWaveLength(ShaderProgram * program);
   void setAttenuation(bool attenuation);
+  void updateAttenuation();
 protected:
   void setAtmoUniforms(ShaderProgram * program);
 };

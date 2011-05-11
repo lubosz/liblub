@@ -51,13 +51,13 @@ void TerrainPlain::init(){
       - planet->position;
   float camDistance = camFromPlanet.length();
   if (camDistance >= planet->outerRadius) {
-
     node->setMaterial(groundFromSpace);
     updateWaveLength();
+    updateAttenuation();
   } else {
     node->setMaterial(groundFromAtmosphere);
     updateWaveLength();
-
+    updateAttenuation();
   }
 
   SceneData::Instance().getCurrentCamera()->setUniforms(

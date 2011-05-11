@@ -54,11 +54,7 @@ void GLWidget::setBlue(int blue){
 }
 
 void GLWidget::setAttenuation(bool attenuation){
-  if (attenuation)
-    LogDebug << "Attenuation!";
-  else
-    LogDebug << "No Attenuation!";
-  earth->atmoSphere->setAttenuation(attenuation);
+  earth->setAttenuation(attenuation);
   updateGL();
 }
 
