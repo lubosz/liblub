@@ -6,6 +6,7 @@ class QSlider;
 class GLWidget;
 class QVBoxLayout;
 class QCheckBox;
+class Planet;
 
 class QtWindow: public QWidget {
   Q_OBJECT
@@ -17,8 +18,9 @@ protected:
   void keyPressEvent(QKeyEvent *event);
   void keyReleaseEvent(QKeyEvent *e);
   void executeKeys();
-  QVBoxLayout * createFloatElement(QString name, const char *target, int value);
-  QCheckBox * createBoolElement(QString name, const char *target, bool value);
+  QVBoxLayout * planetControls(Planet* planet);
+  QVBoxLayout * createFloatElement(QString name, const char *target, int value, int from, int to, Planet* planet);
+  QCheckBox * createBoolElement(QString name, const char *target, bool value, Planet* planet);
 
 private:
   QList<int> pressedKeys;

@@ -15,31 +15,33 @@ QtWindow::QtWindow() {
 
   QHBoxLayout *mainLayout = new QHBoxLayout;
   mainLayout->addWidget(glWidget);
-
-  QVBoxLayout *sliderBarLayout = new QVBoxLayout;
-  sliderBarLayout->setContentsMargins(0,0,0,800);
-  mainLayout->addLayout(sliderBarLayout);
-
-  sliderBarLayout->addLayout(createFloatElement("Red",SLOT(setRed(int)), 50));
-  sliderBarLayout->addLayout(createFloatElement("Green",SLOT(setGreen(int)), 50));
-  sliderBarLayout->addLayout(createFloatElement("Blue",SLOT(setBlue(int)), 50));
-
-  sliderBarLayout->addWidget(createBoolElement("Attenuation", SLOT(setAttenuation(bool)), true));
+  mainLayout->addLayout(planetControls(glWidget->earth));
   setLayout(mainLayout);
 
   setWindowTitle(tr("LibLub"));
+  glWidget->setFocus();
 }
 
-QCheckBox * QtWindow::createBoolElement(QString name, const char *target, bool value) {
+QVBoxLayout * QtWindow::planetControls(Planet* planet) {
+  QVBoxLayout *sliderBarLayout = new QVBoxLayout;
+  sliderBarLayout->setContentsMargins(0,0,0,800);
+  sliderBarLayout->addLayout(createFloatElement("Red",SLOT(setRed(int)), 170, 0, 256, planet));
+  sliderBarLayout->addLayout(createFloatElement("Green",SLOT(setGreen(int)), 170, 0, 256, planet));
+  sliderBarLayout->addLayout(createFloatElement("Blue",SLOT(setBlue(int)), 170, 0, 256, planet));
+  sliderBarLayout->addWidget(createBoolElement("Attenuation", SLOT(setAttenuation(bool)), true, glWidget->earth));
+  return sliderBarLayout;
+}
+
+QCheckBox * QtWindow::createBoolElement(QString name, const char *target, bool value, Planet* planet) {
   QCheckBox *checkBox = new QCheckBox();
   checkBox->setText(name);
   checkBox->setChecked(value);
-  connect(checkBox, SIGNAL(clicked(bool)), glWidget->earth, target);
+  connect(checkBox, SIGNAL(clicked(bool)), planet, target);
   connect(checkBox, SIGNAL(clicked(bool)), glWidget, SLOT(updateGL()));
   return checkBox;
 }
 
-QVBoxLayout * QtWindow::createFloatElement(QString name, const char *target, int value) {
+QVBoxLayout * QtWindow::createFloatElement(QString name, const char *target, int value, int from, int to, Planet* planet) {
   QVBoxLayout *sliderLayout = new QVBoxLayout;
   QHBoxLayout *textAndValueLayout = new QHBoxLayout;
   QLabel * label = new QLabel(name);
@@ -48,14 +50,14 @@ QVBoxLayout * QtWindow::createFloatElement(QString name, const char *target, int
   textAndValueLayout->addWidget(spinBox);
   sliderLayout->addLayout(textAndValueLayout);
   QSlider *slider = new QSlider(Qt::Horizontal);
-  slider->setRange(0, 256);
-  spinBox->setRange(0, 256);
+  slider->setRange(from, to);
+  spinBox->setRange(from, to);
   slider->setValue(value);
   spinBox->setValue(value);
   sliderLayout->addWidget(slider);
   connect(spinBox, SIGNAL(valueChanged(int)), slider, SLOT(setValue(int)));
   connect(slider, SIGNAL(valueChanged(int)), spinBox, SLOT(setValue(int)));
-  connect(slider, SIGNAL(valueChanged(int)), glWidget->earth, target);
+  connect(slider, SIGNAL(valueChanged(int)), planet, target);
   connect(slider, SIGNAL(valueChanged(int)), glWidget, SLOT(updateGL()));
   return sliderLayout;
 }
