@@ -28,7 +28,7 @@ GLWidget::GLWidget(QWidget *parent) :
   planets.push_back(new Planet(11,11.55, Planet::sun, {0.650f,1,0},{0,0,500},1));
 //    planets.push_back(new Planet(11,11.55, Planet::terrainTess, {0.150f, 0.870f,0.175f},{-10,0,0},1));
 //    planets.push_back(new Planet(11,11.55, Planet::terrainPlain, {0.650f, 0.570f,0.475f},{0,0,0},1));
-  earth = new Planet(11,11.55, Planet::terrainPlain, {0.150f, 0.570f,0.475f},{0,0,0},1);
+  earth = new Planet(11,11.55, Planet::terrainPlain, {0.650f, 0.570f,0.475f},{0,0,0},1);
   planets.push_back(earth);
 }
 

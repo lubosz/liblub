@@ -43,9 +43,9 @@ private:
   float size;
 
 public slots:
-  void setRed(int red);
-  void setGreen(int red);
-  void setBlue(int red);
+  void setRed(double red);
+  void setGreen(double red);
+  void setBlue(double red);
   void setAttenuation(bool attenuation);
 };
 

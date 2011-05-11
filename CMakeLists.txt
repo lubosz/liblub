@@ -60,7 +60,13 @@ if(NOT OPENGL_FOUND)
 endif(NOT OPENGL_FOUND)
 
 #moc qt stuff
-set(MOC_INFILES src/Window/Qt/Window.h src/Window/Qt/glWidget.h src/Planets/Planet.h)
+set(MOC_INFILES 
+    src/Window/Qt/Window.h 
+    src/Window/Qt/glWidget.h 
+    src/Planets/Planet.h 
+    src/Window/Qt/PlanetWidget.h
+    src/Window/Qt/FloatEditorWidget.h
+)
 qt4_wrap_cpp (MOC_OUTFILES ${MOC_INFILES})
 
 #check for opengl3 headers

@@ -22,10 +22,10 @@ float Planet::getSize() const {
 
 Planet::Planet(float innerRadius, float outerRadius, PlanetType type, const QVector3D & lightWavelength, const QVector3D & position, float size)
 : innerRadius(innerRadius),outerRadius(outerRadius),type(type),lightWavelength(lightWavelength),position(position),size(size){
+  attenuation = true;
 }
 
 Planet::~Planet() {
-  attenuation = true;
 }
 
 void Planet::init() {
@@ -71,17 +71,17 @@ void Planet::setAttenuation(bool attenuation) {
     element->updateAttenuation();
 }
 
-void Planet::setRed(int red){
-  lightWavelength.setX(float(red)/256.0);
+void Planet::setRed(double red){
+  lightWavelength.setX(red);
   updateWaveLength();
 }
 
-void Planet::setGreen(int green){
-  lightWavelength.setY(float(green)/256.0);
+void Planet::setGreen(double green){
+  lightWavelength.setY(green);
   updateWaveLength();
 }
 
-void Planet::setBlue(int blue){
-  lightWavelength.setZ(float(blue)/256.0);
+void Planet::setBlue(double blue){
+  lightWavelength.setZ(blue);
   updateWaveLength();
 }
