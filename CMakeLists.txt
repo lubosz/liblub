@@ -73,7 +73,7 @@ function(download_gl_header GL_HEADER)
 	ENDIF()
 endfunction(download_gl_header)
 
-IF(EXISTS /usr/include/GL3 AND !LIBLUB_WINDOWS)
+IF(EXISTS /usr/include/GL3 AND NOT LIBLUB_WINDOWS)
 	message("OpenGL 3 Headers in /usr/include")
 ELSE()
 	message("No OpenGL 3 Headers found in /usr! Using local ones")

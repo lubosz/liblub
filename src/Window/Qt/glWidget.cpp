@@ -47,8 +47,6 @@ void GLWidget::initializeGL() {
 //  SceneLoader * sceneLoader = new SceneLoader("nice.xml");
 //  sceneLoader->load();
   GUI::Instance().init();
-
-
   foreach(Planet * planet, planets)
       planet->init();
   initCamAndLight();
@@ -153,6 +151,7 @@ void GLWidget::mouseMoveEvent(QMouseEvent *event) {
   glEnable( GL_BLEND);
   glBlendFunc(GL_ONE, GL_ONE);
 
+  //sort atmospheres
   QMap <qreal, Atmosphere*> atmoSpheres;
 
   foreach(Planet * planet, planets) {

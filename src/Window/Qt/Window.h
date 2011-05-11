@@ -17,8 +17,8 @@ protected:
   void keyPressEvent(QKeyEvent *event);
   void keyReleaseEvent(QKeyEvent *e);
   void executeKeys();
-  QVBoxLayout * createFloatElement(QString name, const char *target);
-  QCheckBox * createBoolElement(QString name, const char *target);
+  QVBoxLayout * createFloatElement(QString name, const char *target, int value);
+  QCheckBox * createBoolElement(QString name, const char *target, bool value);
 
 private:
   QList<int> pressedKeys;
