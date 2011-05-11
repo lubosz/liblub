@@ -48,11 +48,11 @@ void Ocean::init(){
   Texture * oceanSky = new CubeTextureFile("cubemaps/sky","EnvironmentMap");
   ocean->addTexture(oceanSky);
   Mesh * innerSphere = Geometry::sphere(attributes, planet->innerRadius, 100, 50);
-  oceanNode = new Node("ocean", planet->position, planet->getSize(), innerSphere, ocean);
+  node = new Node("ocean", planet->position, planet->getSize(), innerSphere, ocean);
 }
 void Ocean::draw() {
-  oceanNode->setView(SceneData::Instance().getCurrentCamera());
+  node->setView(SceneData::Instance().getCurrentCamera());
 //    ocean->getShaderProgram()->setUniform("time",time);
   ocean->getShaderProgram()->setUniform("eyePosition",SceneData::Instance().getCurrentCamera()->position);
-  oceanNode->draw();
+  node->draw();
 }

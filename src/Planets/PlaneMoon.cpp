@@ -55,7 +55,7 @@ void PlaneMoon::init() {
   spaceFromSpace = new Template("Atmo/Space", attributes);
   spaceFromSpace->addTexture(glow);
 
-  spaceNode = new Node("space", planet->position, planet->getSize(), moonPlane(attributes), spaceFromAtmosphere);
+  node = new Node("space", planet->position, planet->getSize(), moonPlane(attributes), spaceFromAtmosphere);
 //  Atmosphere::setAtmoUniforms(spaceFromAtmosphere->getShaderProgram(), innerRadius, outerRadius);
 //  Atmosphere::setAtmoUniforms(spaceFromSpace->getShaderProgram(), innerRadius, outerRadius);
 }
@@ -63,16 +63,16 @@ void PlaneMoon::init() {
 void PlaneMoon::draw() {
   bool drawSpace = false;
   if (SceneData::Instance().getCurrentCamera()->position.length() < planet->outerRadius) {
-    spaceNode->setMaterial(spaceFromAtmosphere);
+    node->setMaterial(spaceFromAtmosphere);
     drawSpace = true;
   } else if (SceneData::Instance().getCurrentCamera()->position.z() > 0.0f) {
-    spaceNode->setMaterial(spaceFromSpace);
+    node->setMaterial(spaceFromSpace);
     drawSpace = true;
   }
 
   if (drawSpace) {
-    SceneData::Instance().getCurrentCamera()->setUniforms(spaceNode->getMaterial()->getShaderProgram(), planet->position);
-    spaceNode->setView(SceneData::Instance().getCurrentCamera());
-    spaceNode->draw();
+    SceneData::Instance().getCurrentCamera()->setUniforms(node->getMaterial()->getShaderProgram(), planet->position);
+    node->setView(SceneData::Instance().getCurrentCamera());
+    node->draw();
   }
 }

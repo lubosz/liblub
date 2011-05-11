@@ -21,48 +21,6 @@ Atmosphere::~Atmosphere() {
   // TODO Auto-generated destructor stub
 }
 
-void Atmosphere::setAtmoUniforms(ShaderProgram * program) {
-
-   float wavelength[3];
-   wavelength[0] = planet->lightWavelength.x();
-   wavelength[1] = planet->lightWavelength.y();
-   wavelength[2] = planet->lightWavelength.z();
-
-   float wavelength4[3];
-   wavelength4[0] = powf(wavelength[0], 4.0f);
-   wavelength4[1] = powf(wavelength[1], 4.0f);
-   wavelength4[2] = powf(wavelength[2], 4.0f);
-
-   QVector3D lightPosition = QVector3D(0, 0, 1000);
-   QVector3D lightDirection = lightPosition / lightPosition.length();
-
-   float rayleigh = 0.0025f; // Rayleigh scattering constant
-   float rayleigh4Pi = rayleigh * 4.0f * M_PI;
-   float mie = 0.0010f; // Mie scattering constant
-   float mie4Pi = mie * 4.0f * M_PI;
-   float sun = 20.0f; // Sun brightness constant
-   float g = -0.990f; // The Mie phase asymmetry factor
-   float rayleighScaleDepth = 0.25f;
-//    float mieScaleDepth = 0.1f;
-
-   program->use();
-   program->setUniform("lightPosition", lightDirection);
-   program->setUniform("invWavelength", QVector3D(1 / wavelength4[0], 1 / wavelength4[1], 1 / wavelength4[2]));
-   program->setUniform("innerRadius", planet->innerRadius);
-   program->setUniform("innerRadius2", planet->innerRadius * planet->innerRadius);
-   program->setUniform("outerRadius", planet->outerRadius);
-   program->setUniform("outerRadius2", planet->outerRadius * planet->outerRadius);
-   program->setUniform("rayleighSun", rayleigh * sun);
-   program->setUniform("mieSun", mie * sun);
-   program->setUniform("rayleigh4Pi", rayleigh4Pi);
-   program->setUniform("mie4Pi", mie4Pi);
-   program->setUniform("invSphereDistance", 1.0f / (planet->outerRadius - planet->innerRadius));
-   program->setUniform("scaleDepth", rayleighScaleDepth);
-   program->setUniform("scaleOverScaleDepth", (1.0f / (planet->outerRadius - planet->innerRadius)) / rayleighScaleDepth);
-   program->setUniform("g", g);
-   program->setUniform("g2", g * g);
- }
-
 void Atmosphere::init() {
   QList<string> attributes;
    attributes.push_back("normal");
@@ -73,20 +31,25 @@ void Atmosphere::init() {
   TemplateEngine::Instance().c.insert("fromSpace", true);
   skyFromSpace = new Template("Atmo/Sky",attributes);
   Mesh * outerSphere = Geometry::sphere(attributes, planet->outerRadius, 300, 500);
-  skyNode = new Node("sky", planet->position, planet->getSize(), outerSphere, skyFromAtmosphere);
+  node = new Node("sky", planet->position, planet->getSize(), outerSphere, skyFromAtmosphere);
   setAtmoUniforms(skyFromAtmosphere->getShaderProgram());
   setAtmoUniforms(skyFromSpace->getShaderProgram());
 }
 
-void Atmosphere::draw(){
-  QVector3D camFromPlanet = SceneData::Instance().getCurrentCamera()->position - planet->position;
+void Atmosphere::draw() {
+  QVector3D camFromPlanet = SceneData::Instance().getCurrentCamera()->position
+      - planet->position;
   float camDistance = camFromPlanet.length();
-  if(camDistance >= planet->outerRadius)
-      skyNode->setMaterial(skyFromSpace);
-    else
-      skyNode->setMaterial(skyFromAtmosphere);
+  if (camDistance >= planet->outerRadius) {
+    node->setMaterial(skyFromSpace);
+    updateWaveLength();
+  } else {
+    node->setMaterial(skyFromAtmosphere);
+    updateWaveLength();
+  }
 
-  SceneData::Instance().getCurrentCamera()->setUniforms(skyNode->getMaterial()->getShaderProgram(), planet->position);
-    skyNode->setView(SceneData::Instance().getCurrentCamera());
-    skyNode->draw();
+  SceneData::Instance().getCurrentCamera()->setUniforms(
+      node->getMaterial()->getShaderProgram(), planet->position);
+  node->setView(SceneData::Instance().getCurrentCamera());
+  node->draw();
 }

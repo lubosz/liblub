@@ -14,7 +14,6 @@
 
 class TerrainTesselation  : public PlanetElement{
 public:
-  Node *terrainNode;
   Material *terrainMat;
   TerrainTesselation(Planet * planet);
   virtual ~TerrainTesselation();

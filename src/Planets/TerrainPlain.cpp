@@ -40,22 +40,29 @@ void TerrainPlain::init(){
   groundFromSpace->addTexture(earthMap);
 
   Mesh * innerSphere = Geometry::sphere(attributes, planet->innerRadius, 100, 50);
-  groundNode = new Node("ground", planet->position, planet->getSize(), innerSphere, groundFromAtmosphere);
-  groundNode->setRotation(QVector3D(-90, 0, 0));
-  planet->atmoSphere->setAtmoUniforms(groundFromAtmosphere->getShaderProgram());
-  planet->atmoSphere->setAtmoUniforms(groundFromSpace->getShaderProgram());
+  node = new Node("ground", planet->position, planet->getSize(), innerSphere, groundFromAtmosphere);
+  node->setRotation(QVector3D(-90, 0, 0));
+  setAtmoUniforms(groundFromAtmosphere->getShaderProgram());
+  setAtmoUniforms(groundFromSpace->getShaderProgram());
  }
 
  void TerrainPlain::draw() {
-  QVector3D camFromPlanet = SceneData::Instance().getCurrentCamera()->position - planet->position;
+  QVector3D camFromPlanet = SceneData::Instance().getCurrentCamera()->position
+      - planet->position;
   float camDistance = camFromPlanet.length();
-  if (camDistance >= planet->outerRadius)
-    groundNode->setMaterial(groundFromSpace);
-  else
-    groundNode->setMaterial(groundFromAtmosphere);
+  if (camDistance >= planet->outerRadius) {
 
-  SceneData::Instance().getCurrentCamera()->setUniforms(groundNode->getMaterial()->getShaderProgram(), planet->position);
-  groundNode->setView(SceneData::Instance().getCurrentCamera());
+    node->setMaterial(groundFromSpace);
+    updateWaveLength();
+  } else {
+    node->setMaterial(groundFromAtmosphere);
+    updateWaveLength();
 
-  groundNode->draw();
+  }
+
+  SceneData::Instance().getCurrentCamera()->setUniforms(
+      node->getMaterial()->getShaderProgram(), planet->position);
+  node->setView(SceneData::Instance().getCurrentCamera());
+
+  node->draw();
 }

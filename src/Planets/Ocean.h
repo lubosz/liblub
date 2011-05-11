@@ -14,7 +14,6 @@
 
 class Ocean : public PlanetElement{
 public:
-  Node * oceanNode;
   Material * ocean;
   Ocean(Planet * planet);
   virtual ~Ocean();

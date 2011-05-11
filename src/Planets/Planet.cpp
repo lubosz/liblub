@@ -52,3 +52,10 @@ void Planet::draw() {
   foreach(PlanetElement * element, elements)
     element->draw();
 }
+
+void Planet::updateWaveLength(const QVector3D & lightWaveLength){
+  this->lightWavelength = lightWaveLength;
+  atmoSphere->updateWaveLength();
+  foreach(PlanetElement * element, elements)
+    element->updateWaveLength();
+}

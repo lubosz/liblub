@@ -48,11 +48,11 @@ void TerrainTesselation::init(){
    terrainMat->getShaderProgram()->setUniform("TessLevelInner",1.0f);
    terrainMat->getShaderProgram()->setUniform("TessLevelOuter",1.0f);
    terrainMat->getShaderProgram()->setUniform("LightPosition", QVector3D(0.25, 0.25, 1));
-   planet->atmoSphere->setAtmoUniforms(terrainMat->getShaderProgram());
+   setAtmoUniforms(terrainMat->getShaderProgram());
    Mesh * groundMesh = MeshLoader::load(attributes, "earth.obj");
 //    Mesh * mesh = Geometry::gluSphere(10.0f, 100, 50);
    groundMesh->setDrawType(GL_PATCHES);
-   terrainNode = new Node("ground", planet->position, planet->getSize()*11.5, groundMesh, terrainMat);
+   node = new Node("ground", planet->position, planet->getSize()*11.5, groundMesh, terrainMat);
 
 //   GUI::Instance().addText("tess", "Tess");
 //   GUI::Instance().addText("dist", "Dist");
@@ -87,7 +87,7 @@ void TerrainTesselation::init(){
 
  void TerrainTesselation::draw() {
   updateTesselation();
-  SceneData::Instance().getCurrentCamera()->setUniforms(terrainNode->getMaterial()->getShaderProgram(), planet->position);
-  terrainNode->setView(SceneData::Instance().getCurrentCamera());
-  terrainNode->draw();
+  SceneData::Instance().getCurrentCamera()->setUniforms(node->getMaterial()->getShaderProgram(), planet->position);
+  node->setView(SceneData::Instance().getCurrentCamera());
+  node->draw();
 }

@@ -14,13 +14,11 @@
 
 class Atmosphere  : public PlanetElement{
 public:
-  Node * skyNode;
   Material *skyFromAtmosphere, *skyFromSpace;
   Atmosphere(Planet * planet);
   virtual ~Atmosphere();
   void init();
   void draw();
-  void setAtmoUniforms(ShaderProgram * program);
 };
 
 #endif /* ATMOSPHERE_H_ */

@@ -16,7 +16,6 @@
 class Sun: public PlanetElement {
 public:
   ShaderProgram * perlinNoise;
-  Node *sunNode;
   Sun(Planet * planet);
   virtual ~Sun();
   void init();

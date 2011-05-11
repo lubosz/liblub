@@ -16,7 +16,6 @@
 class PlaneMoon  : public PlanetElement{
 public:
   Material *spaceFromAtmosphere, *spaceFromSpace;
-  Node * spaceNode;
   PlaneMoon(Planet * planet);
   void init();
   void draw();

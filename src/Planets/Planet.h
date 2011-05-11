@@ -35,6 +35,7 @@ public:
   void init();
   void draw();
   float getSize() const;
+  void updateWaveLength(const QVector3D & lightWaveLength);
 private:
   float size;
 };
