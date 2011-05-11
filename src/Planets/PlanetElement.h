@@ -23,8 +23,10 @@ public:
   virtual void init() = 0;
   virtual void draw() = 0;
   void updateWaveLength();
+  void updateUseMie();
+  void updateUseRayleigh();
   void updateWaveLength(ShaderProgram * program);
-  void updateAttenuation();
+  void updateUseAttenuation();
 protected:
   void setAtmoUniforms(ShaderProgram * program);
 };

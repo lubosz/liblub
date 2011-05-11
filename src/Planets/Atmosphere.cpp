@@ -43,11 +43,11 @@ void Atmosphere::draw() {
   if (camDistance >= planet->outerRadius) {
     node->setMaterial(skyFromSpace);
     updateWaveLength();
-    updateAttenuation();
+    updateUseAttenuation();
   } else {
     node->setMaterial(skyFromAtmosphere);
     updateWaveLength();
-    updateAttenuation();
+    updateUseAttenuation();
   }
 
   SceneData::Instance().getCurrentCamera()->setUniforms(

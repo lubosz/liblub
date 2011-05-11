@@ -22,12 +22,12 @@ FloatEditorWidget::FloatEditorWidget(QString name, const char *target, float val
     textAndValueLayout->addWidget(spinBox);
     sliderLayout->addLayout(textAndValueLayout);
     slider = new QSlider(Qt::Horizontal);
-    slider->setRange(0, int(to * 100));
+    slider->setRange(int(from * 100), int(to * 100));
     spinBox->setRange(from, to);
     slider->setValue(int(value * 100));
     spinBox->setValue(value);
     LogDebug << target << planet->getSize();
-    spinBox->setSingleStep (0.01);
+    spinBox->setSingleStep (to / 100.0);
     sliderLayout->addWidget(slider);
     connect(spinBox, SIGNAL(valueChanged(double)), this, SLOT(updateFromSpinBox(double)));
     connect(slider, SIGNAL(valueChanged(int)), this, SLOT(updateFromSlider(int)));

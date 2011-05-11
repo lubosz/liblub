@@ -30,7 +30,7 @@ public:
   QVector3D position;
   vector<PlanetElement*> elements;
   Atmosphere * atmoSphere;
-  bool attenuation;
+  bool useAttenuation, useMie, useRayleigh;
 
   Planet(float innerRadius, float outerRadius, PlanetType type, const QVector3D & lightWavelength, const QVector3D & position, float size);
   virtual ~Planet();
@@ -38,6 +38,8 @@ public:
   void draw();
   float getSize() const;
   void updateWaveLength();
+  void updatePosition();
+  void updateScattering();
   void setWaveLength(const QVector3D & lightWavelength);
 private:
   float size;
@@ -46,7 +48,12 @@ public slots:
   void setRed(double red);
   void setGreen(double red);
   void setBlue(double red);
+  void setX(double x);
+  void setY(double y);
+  void setZ(double z);
   void setAttenuation(bool attenuation);
+  void setMie(bool mie);
+  void setRayleigh(bool rayleigh);
 };
 
 #endif /* PLANET_H_ */

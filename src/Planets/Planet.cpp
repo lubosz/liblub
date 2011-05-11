@@ -22,7 +22,9 @@ float Planet::getSize() const {
 
 Planet::Planet(float innerRadius, float outerRadius, PlanetType type, const QVector3D & lightWavelength, const QVector3D & position, float size)
 : innerRadius(innerRadius),outerRadius(outerRadius),type(type),lightWavelength(lightWavelength),position(position),size(size){
-  attenuation = true;
+  useAttenuation = true;
+  useRayleigh = true;
+  useMie = true;
 }
 
 Planet::~Planet() {
@@ -64,11 +66,26 @@ void Planet::updateWaveLength(){
     element->updateWaveLength();
 }
 
-void Planet::setAttenuation(bool attenuation) {
-  this->attenuation = attenuation;
-  atmoSphere->updateAttenuation();
+void Planet::updatePosition(){
+  atmoSphere->node->setPosition(position);
   foreach(PlanetElement * element, elements)
-    element->updateAttenuation();
+    element->node->setPosition(position);
+}
+
+void Planet::updateScattering(){
+  atmoSphere->updateUseMie();
+  atmoSphere->updateUseRayleigh();
+  foreach(PlanetElement * element, elements){
+    element->updateUseMie();
+    element->updateUseRayleigh();
+  }
+}
+
+void Planet::setAttenuation(bool attenuation) {
+  this->useAttenuation = attenuation;
+  atmoSphere->updateUseAttenuation();
+  foreach(PlanetElement * element, elements)
+    element->updateUseAttenuation();
 }
 
 void Planet::setRed(double red){
@@ -84,4 +101,28 @@ void Planet::setGreen(double green){
 void Planet::setBlue(double blue){
   lightWavelength.setZ(blue);
   updateWaveLength();
+}
+
+void Planet::setX(double x){
+  position.setX(x);
+  updatePosition();
+}
+
+void Planet::setY(double y){
+  position.setY(y);
+  updatePosition();
+}
+
+void Planet::setZ(double z){
+  position.setZ(z);
+  updatePosition();
+}
+
+void Planet::setMie(bool mie){
+  useMie = mie;
+  updateScattering();
+}
+void Planet::setRayleigh(bool rayleigh){
+  useRayleigh = rayleigh;
+  updateScattering();
 }

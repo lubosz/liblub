@@ -34,17 +34,30 @@ void PlanetElement::updateWaveLength(){
   updateWaveLength(node->getMaterial()->getShaderProgram());
 }
 
-void PlanetElement::updateAttenuation(){
+void PlanetElement::updateUseAttenuation(){
   ShaderProgram * program = node->getMaterial()->getShaderProgram();
   program->use();
-  program->setUniform("attenuation", planet->attenuation);
+  program->setUniform("attenuation", planet->useAttenuation);
+}
+
+void PlanetElement::updateUseMie(){
+  ShaderProgram * program = node->getMaterial()->getShaderProgram();
+  program->use();
+  program->setUniform("useMie", planet->useMie);
+}
+
+void PlanetElement::updateUseRayleigh(){
+  ShaderProgram * program = node->getMaterial()->getShaderProgram();
+  program->use();
+  program->setUniform("useRayleigh", planet->useRayleigh);
 }
 
 void PlanetElement::setAtmoUniforms(ShaderProgram * program) {
   updateWaveLength(program);
 
   QVector3D lightPosition = QVector3D(0, 0, 1000);
-  QVector3D lightDirection = lightPosition / lightPosition.length();
+  QVector3D lightDirection = lightPosition - planet->position;
+  lightDirection = lightDirection / lightDirection.length();
 
   float rayleigh = 0.0025f; // Rayleigh scattering constant
   float rayleigh4Pi = rayleigh * 4.0f * M_PI;
@@ -72,4 +85,7 @@ void PlanetElement::setAtmoUniforms(ShaderProgram * program) {
       (1.0f / (planet->outerRadius - planet->innerRadius)) / rayleighScaleDepth);
   program->setUniform("g", g);
   program->setUniform("g2", g * g);
+  program->setUniform("useRayleigh", planet->useRayleigh);
+  program->setUniform("useMie", planet->useMie);
+  program->setUniform("attenuation", planet->useAttenuation);
 }
