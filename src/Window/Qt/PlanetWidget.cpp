@@ -30,8 +30,6 @@ PlanetWidget::PlanetWidget(Planet* planet) {
 
   QVBoxLayout *planetTabLayout = new QVBoxLayout(planetTab);
   QVBoxLayout *atmoTabLayout = new QVBoxLayout(atmoTab);
-  planetTabLayout->setContentsMargins(0, 0, 0, 200);
-  atmoTabLayout->setContentsMargins(0, 0, 0, 200);
 
   atmoTabLayout->addWidget(
         tripleFloatGroup(
@@ -51,10 +49,14 @@ PlanetWidget::PlanetWidget(Planet* planet) {
         )
     );
 
-  atmoTabLayout->addWidget(createBoolElement("Attenuation", SLOT(setAttenuation(bool)), planet->useAttenuation, planet));
-  atmoTabLayout->addWidget(createBoolElement("Mie Phase", SLOT(setMie(bool)), planet->useMie, planet));
-  atmoTabLayout->addWidget(createBoolElement("Rayleigh Phase", SLOT(setRayleigh(bool)), planet->useRayleigh, planet));
-
+  QGroupBox * groupBox = new QGroupBox();
+    groupBox->setMaximumHeight(200);
+    groupBox->setTitle("Atmosphere Options");
+    QVBoxLayout *groupBoxLayout = new QVBoxLayout(groupBox);
+    groupBoxLayout->addWidget(createBoolElement("Attenuation", SLOT(setAttenuation(bool)), planet->useAttenuation, planet));
+    groupBoxLayout->addWidget(createBoolElement("Mie Phase", SLOT(setMie(bool)), planet->useMie, planet));
+    groupBoxLayout->addWidget(createBoolElement("Rayleigh Phase", SLOT(setRayleigh(bool)), planet->useRayleigh, planet));
+    atmoTabLayout->addWidget(groupBox);
     QComboBox * comboBox = new QComboBox();
 
     comboBox->insertItems(0, QStringList() << "Sun" << "Ocean" << "TerrainPlain" << "TerrainTess");
@@ -68,6 +70,7 @@ QGroupBox * PlanetWidget::tripleFloatGroup(const QString & title,
     Planet* planet, const QVector3D & defaultValues, float from, float to,
     QList<const char*> targets, QStringList names) {
   QGroupBox * groupBox = new QGroupBox();
+  groupBox->setMaximumHeight(300);
   groupBox->setTitle(title);
 
   FloatEditorWidget* red = new FloatEditorWidget(names[0],targets[0], defaultValues.x(), from, to, planet);
