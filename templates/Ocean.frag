@@ -42,25 +42,24 @@ in vec2 bumpCoord0;
 in vec2 bumpCoord1;
 in vec2 bumpCoord2;
 in vec3 eyeVector;
-in vec3 normalView;
+
 {% endblock %}
 
 {% block main %}
 	// sum normal maps
 	// sample from 3 different points so no texture repetition is noticeable
-    vec4 t0 = texture2D(NormalMap, bumpCoord0) * 2.0 - 1.0;
-    vec4 t1 = texture2D(NormalMap, bumpCoord1) * 2.0 - 1.0;
-    vec4 t2 = texture2D(NormalMap, bumpCoord2) * 2.0 - 1.0;
+    vec4 t0 = texture(NormalMap, bumpCoord0) * 2.0 - 1.0;
+    vec4 t1 = texture(NormalMap, bumpCoord1) * 2.0 - 1.0;
+    vec4 t2 = texture(NormalMap, bumpCoord2) * 2.0 - 1.0;
     vec3 N = t0.xyz + t1.xyz + t2.xyz;
     N = normalize(rotMatrix * N);
 
-   //N = normalView;
-
 	// reflection
-    vec3 E = normalize(eyeVector);
+	//negate eye vector for propper cubemap lookup
+    vec3 E = -normalize(eyeVector);
     vec3 R = reflect(E, N);
     // Ogre conversion for cube map lookup
-    R.z = -R.z;
+   // R.z = -R.z;
 
 	vec4 reflection = texture(EnvironmentMap, R, reflectionBlur);
     // cheap hdr effect
@@ -73,9 +72,5 @@ in vec3 normalView;
     vec4 waterColor = mix(shallowColor, deepColor, facing) * waterAmount;
 
     reflection = mix(waterColor,  reflection * reflectionColor, fresnel) * reflectionAmount;
-    fragColor = waterColor + reflection;
-	//FragColor = vec4(1,1,0,1);
-	//FragColor = vec4(1,1,1,1);
-	//FragColor = reflection;
-	//fragColor = texture2D(NormalMap, bumpCoord0);
+	fragColor = reflection+waterColor;
 {% endblock %}

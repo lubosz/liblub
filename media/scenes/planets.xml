@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <liblub>
 	<include url="common/programs.xml" />
+		<Programs>
+		<Program name="Texture">
+			<Shader url="Texture/texture" />
+		</Program>
+	</Programs>
 	<Textures>
 		<Texture name="Mars" url="Planets/Mars.jpg" />
 		<Texture name="plane-occlusion" url="sphere_ao.png" />

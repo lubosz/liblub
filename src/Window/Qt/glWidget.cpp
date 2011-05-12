@@ -25,11 +25,11 @@ GLWidget::GLWidget(QWidget *parent) :
   //   wavelength[0] = 0.650f; // 650 nm for red
   //    wavelength[1] = 0.570f; // 570 nm for green
   //    wavelength[2] = 0.475f; // 475 nm for blue
-  planets.push_back(new Planet("Ocean", 11,11.55, Planet::ocean, {0.650f, 0.570f,0.475f},{50,0,0},1));
-  planets.push_back(new Planet("Sun",11,11.55, Planet::sun, {0.650f,1,0},{0,0,500},1));
+//  planets.push_back(new Planet("Ocean", 11,11.55, Planet::ocean, {0.650f, 0.570f,0.475f},{50,0,0},1));
+//  planets.push_back(new Planet("Sun",11,11.55, Planet::sun, {0.650f,1,0},{0,0,500},1));
 //    planets.push_back(new Planet(11,11.55, Planet::terrainTess, {0.150f, 0.870f,0.175f},{-10,0,0},1));
 //    planets.push_back(new Planet(11,11.55, Planet::terrainPlain, {0.650f, 0.570f,0.475f},{0,0,0},1));
-  focusedPlanet = new Planet("Earth", 11,11.55, Planet::terrainPlain, {0.650f, 0.570f,0.475f},{0,0,0},1);
+  focusedPlanet = new Planet("Earth", 11,11.55, Planet::ocean, {0.650f, 0.570f,0.475f},{0,0,0},1);
   planets.push_back(focusedPlanet);
 //  timerId = startTimer(0);
 }
@@ -59,7 +59,7 @@ QSize GLWidget::sizeHint() const {
 }
 
 void GLWidget::initializeGL() {
-//  SceneLoader * sceneLoader = new SceneLoader("nice.xml");
+//  SceneLoader * sceneLoader = new SceneLoader("planets.xml");
 //  sceneLoader->load();
   initCamAndLight();
   GUI::Instance().init();
@@ -70,11 +70,11 @@ void GLWidget::initializeGL() {
 
 void GLWidget::paintGL() {
 //  RenderEngine::Instance().clear();
-//  SceneGraph::Instance().drawNodes(SceneData::Instance().getCurrentCamera());
   Timer::Instance().frame();
   startPass();
   RenderEngine::Instance().clear();
   drawPlanets();
+//  SceneGraph::Instance().drawNodes(SceneData::Instance().getCurrentCamera());
   endPass();
   GUI::Instance().draw();
   glError;

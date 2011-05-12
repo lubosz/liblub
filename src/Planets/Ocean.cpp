@@ -45,6 +45,8 @@ void Ocean::init(){
 
   Texture * oceanNormal = new TextureFile("ocean/waves.png","NormalMap");
   ocean->addTexture(oceanNormal);
+  Texture * oceanSkyMap = new TextureFile("Planets/TychoSkymap.jpg","skyMap");
+  ocean->addTexture(oceanSkyMap);
   Texture * oceanSky = new CubeTextureFile("cubemaps/sky","EnvironmentMap");
   ocean->addTexture(oceanSky);
   Mesh * innerSphere = Geometry::sphere(attributes, planet->innerRadius, 100, 50);

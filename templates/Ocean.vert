@@ -41,13 +41,11 @@ uniform vec3 LightPosition;
 in vec3 in_Normal;
 in vec2 in_Uv;
 
-out vec3 normalView;
 out mat3 rotMatrix; //  transform from tangent to obj space
 out vec2 bumpCoord0;
 out vec2 bumpCoord1;
 out vec2 bumpCoord2;
 out vec3 eyeVector;
-
 // wave functions
 struct Wave {
   float freq;  // 2*PI / wavelength
@@ -61,7 +59,6 @@ struct Wave {
 	#define NWAVES 2
 
 	Wave wave[NWAVES];
-	normalView = in_Normal;
 	wave[0] = Wave( waveFreq, waveAmp, 0.5, vec2(-1, 0) );
 	wave[1] = Wave( 3.0 * waveFreq, 0.33 * waveAmp, 1.7, vec2(-0.7, 0.7) );
 
