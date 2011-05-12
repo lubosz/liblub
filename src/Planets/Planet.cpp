@@ -20,8 +20,8 @@ float Planet::getSize() const {
     return size;
 }
 
-Planet::Planet(float innerRadius, float outerRadius, PlanetType type, const QVector3D & lightWavelength, const QVector3D & position, float size)
-: innerRadius(innerRadius),outerRadius(outerRadius),type(type),lightWavelength(lightWavelength),position(position),size(size){
+Planet::Planet(const QString & name, float innerRadius, float outerRadius, PlanetType type, const QVector3D & lightWavelength, const QVector3D & position, float size)
+: name(name), innerRadius(innerRadius),outerRadius(outerRadius),type(type),lightWavelength(lightWavelength),position(position),size(size){
   useAttenuation = true;
   useRayleigh = true;
   useMie = true;

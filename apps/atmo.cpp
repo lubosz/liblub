@@ -46,11 +46,11 @@ class AtmosphereApp: public Application {
     //    wavelength[1] = 0.570f; // 570 nm for green
     //    wavelength[2] = 0.475f; // 475 nm for blue
     useHDR = true;
-    planets.push_back(new Planet(11,11.55, Planet::ocean, {0.650f, 0.570f,0.475f},{50,0,0},1));
-    planets.push_back(new Planet(11,11.55, Planet::sun, {0.650f,1,0},{0,0,50},1));
+    planets.push_back(new Planet("Ocean",11,11.55, Planet::ocean, {0.650f, 0.570f,0.475f},{50,0,0},1));
+    planets.push_back(new Planet("sun",11,11.55, Planet::sun, {0.650f,1,0},{0,0,50},1));
 //    planets.push_back(new Planet(11,11.55, Planet::terrainTess, {0.150f, 0.870f,0.175f},{-10,0,0},1));
 //    planets.push_back(new Planet(11,11.55, Planet::terrainPlain, {0.650f, 0.570f,0.475f},{0,0,0},1));
-    planets.push_back(new Planet(11,11.55, Planet::terrainPlain, {0.150f, 0.570f,0.475f},{0,0,0},1));
+    planets.push_back(new Planet("terrainPlain",11,11.55, Planet::terrainPlain, {0.150f, 0.570f,0.475f},{0,0,0},1));
   }
 
   ~AtmosphereApp() {}

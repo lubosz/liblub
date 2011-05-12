@@ -23,6 +23,7 @@ public:
     terrainPlain,
     terrainTess
   };
+  QString name;
   float innerRadius;
   float outerRadius;
   PlanetType type;
@@ -32,7 +33,7 @@ public:
   Atmosphere * atmoSphere;
   bool useAttenuation, useMie, useRayleigh;
 
-  Planet(float innerRadius, float outerRadius, PlanetType type, const QVector3D & lightWavelength, const QVector3D & position, float size);
+  Planet(const QString & name, float innerRadius, float outerRadius, PlanetType type, const QVector3D & lightWavelength, const QVector3D & position, float size);
   virtual ~Planet();
   void init();
   void draw();

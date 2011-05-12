@@ -48,16 +48,6 @@ PlanetWidget::PlanetWidget(Planet* planet) {
     sliderBarLayout->addWidget(createBoolElement("Mie Phase", SLOT(setMie(bool)), planet->useMie, planet));
     sliderBarLayout->addWidget(createBoolElement("Rayleigh Phase", SLOT(setRayleigh(bool)), planet->useRayleigh, planet));
 
-
-    QListWidget * planetList = new QListWidget();
-    new QListWidgetItem(planetList);
-    new QListWidgetItem(planetList);
-    new QListWidgetItem(planetList);
-    new QListWidgetItem(planetList);
-    planetList->item(0)->setText("Earth");
-    planetList->item(2)->setText("Ocean");
-    planetList->item(3)->setText("Sun");
-
     QComboBox * comboBox = new QComboBox();
 
     comboBox->insertItems(0, QStringList() << "Sun" << "TerrainTess" << "Ocean" << "TerrainPlain");
@@ -65,7 +55,6 @@ PlanetWidget::PlanetWidget(Planet* planet) {
     //    QListWidgetItem *___qlistwidgetitem = listWidget->item(0);
     //    ___qlistwidgetitem->setText(QApplication::translate("MainWindow", "Sun", 0, QApplication::UnicodeUTF8));
 
-    sliderBarLayout->addWidget(planetList);
     sliderBarLayout->addWidget(comboBox);
 }
 

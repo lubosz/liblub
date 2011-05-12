@@ -18,7 +18,21 @@ QtWindow::QtWindow() {
   mainLayout->addWidget(glWidget);
   PlanetWidget * planetWidget = new PlanetWidget(glWidget->earth);
   connect(planetWidget, SIGNAL(updateGL(void)), glWidget, SLOT(updateGL(void)));
-  mainLayout->addWidget(planetWidget);
+
+  QVBoxLayout *sideLayout = new QVBoxLayout;
+
+
+
+  QListWidget * planetList = new QListWidget();
+
+  foreach(Planet * planet , glWidget->planets){
+    QListWidgetItem * planetItem = new QListWidgetItem(planetList);
+    planetItem->setText(planet->name);
+  }
+  sideLayout->addWidget(planetList);
+  sideLayout->addWidget(planetWidget);
+  mainLayout->addLayout(sideLayout);
+
   setLayout(mainLayout);
 
   setWindowTitle(tr("LibLub"));
