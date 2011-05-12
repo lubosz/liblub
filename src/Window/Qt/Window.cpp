@@ -32,7 +32,16 @@ QtWindow::QtWindow() {
   connect(checkBox, SIGNAL(clicked(bool)), glWidget, SLOT(setPostprocessing(bool)));
   connect(checkBox, SIGNAL(clicked(bool)), glWidget, SLOT(updateGL()));
   sideLayout->addWidget(checkBox);
-  sideLayout->addWidget(planetList);
+
+  QCheckBox *checkBox2 = new QCheckBox();
+  checkBox2->setText("Wireframe");
+  checkBox2->setChecked(false);
+  connect(checkBox2, SIGNAL(clicked(bool)), glWidget, SLOT(setWireframe(bool)));
+  connect(checkBox2, SIGNAL(clicked(bool)), glWidget, SLOT(updateGL()));
+  sideLayout->addWidget(checkBox2);
+
+
+//  sideLayout->addWidget(planetList);
   sideLayout->addWidget(focusPlanet());
 
 

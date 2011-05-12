@@ -37,6 +37,7 @@ GLWidget::~GLWidget() {
 }
 void GLWidget::setWireframe(bool wire){
   useWireframe = wire;
+  RenderEngine::Instance().setWire(wire);
 }
 void GLWidget:: setPostprocessing(bool post){
   usePostprocessing = post;

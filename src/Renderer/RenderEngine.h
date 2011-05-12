@@ -21,6 +21,7 @@ class RenderEngine : public Singleton<RenderEngine> {
 //	void display();
 	void toggleFBO();
 	void toggleWire();
+	void setWire(bool wire);
 	void clear();
 	void toggleLightView();
 	void setClearColor(const QVector3D & backgroundColor);

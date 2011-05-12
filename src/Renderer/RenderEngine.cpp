@@ -60,6 +60,12 @@ void RenderEngine::setClearColor(const QVector3D & backgroundColor){
 
 void RenderEngine::toggleWire() {
   wire = !wire;
+  setWire(wire);
+
+}
+
+void RenderEngine::setWire(bool wire){
+  this->wire = wire;
   if (wire) {
     LogInfo << "Wireframe on";
     glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
