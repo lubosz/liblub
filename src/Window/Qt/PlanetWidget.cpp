@@ -21,8 +21,6 @@
 PlanetWidget::PlanetWidget(Planet* planet) {
   QVBoxLayout *sliderBarLayout = new QVBoxLayout(this);
 
-
-
   QTabWidget * tabWidget = new QTabWidget(this);
   sliderBarLayout->addWidget(tabWidget);
   QWidget * atmoTab = new QWidget();
@@ -34,16 +32,6 @@ PlanetWidget::PlanetWidget(Planet* planet) {
   QVBoxLayout *atmoTabLayout = new QVBoxLayout(atmoTab);
   planetTabLayout->setContentsMargins(0, 0, 0, 800);
   atmoTabLayout->setContentsMargins(0, 0, 0, 800);
-//  tabWidget->setCurrentIndex(1);
-
-//  tabWidget->setTabText(
-//      tabWidget->indexOf(tab),
-//      "Atmosphere");
-//  tabWidget->setTabText(
-//      tabWidget->indexOf(tab_2),
-//      "Planet");
-
-//  sliderBarLayout->addWidget(tabWidget);
 
   atmoTabLayout->addWidget(
         tripleFloatGroup(
@@ -69,8 +57,9 @@ PlanetWidget::PlanetWidget(Planet* planet) {
 
     QComboBox * comboBox = new QComboBox();
 
-    comboBox->insertItems(0, QStringList() << "Sun" << "TerrainTess" << "Ocean" << "TerrainPlain");
-
+    comboBox->insertItems(0, QStringList() << "Sun" << "Ocean" << "TerrainPlain" << "TerrainTess");
+    connect(comboBox, SIGNAL(activated(int)), planet, SLOT(setType(int)));
+    comboBox->setCurrentIndex(planet->type);
     planetTabLayout->addWidget(comboBox);
 }
 

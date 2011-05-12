@@ -31,20 +31,8 @@ Planet::~Planet() {
 }
 
 void Planet::init() {
-  switch (type){
-  case sun:
-    elements.push_back(new Sun(this));
-    break;
-  case terrainPlain:
-    elements.push_back(new TerrainPlain(this));
-    break;
-  case terrainTess:
-    elements.push_back(new TerrainTesselation(this));
-    break;
-  case ocean:
-    elements.push_back(new Ocean(this));
-    break;
-  }
+  elements.push_back(makePlanetElement());
+
   atmoSphere = new Atmosphere(this);
   foreach(PlanetElement * element, elements)
     element->init();
@@ -54,6 +42,37 @@ void Planet::init() {
 void Planet::draw() {
   foreach(PlanetElement * element, elements)
     element->draw();
+}
+
+void Planet::setType(int type) {
+  LogDebug << "Set type" << type;
+  this->type = (PlanetType)type;
+  updateGround();
+}
+
+void Planet::updateGround(){
+//  delete elements[0];
+  elements[0] = makePlanetElement();
+  elements[0]->init();
+}
+
+PlanetElement* Planet::makePlanetElement(){
+  switch (type){
+  case sun:
+    return new Sun(this);
+    break;
+  case terrainPlain:
+    return new TerrainPlain(this);
+    break;
+  case terrainTess:
+    return new TerrainTesselation(this);
+    break;
+  case ocean:
+    return new Ocean(this);
+    break;
+  default:
+    return new Sun(this);
+  }
 }
 
 void Planet::setWaveLength(const QVector3D & lightWavelength) {

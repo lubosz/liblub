@@ -42,10 +42,15 @@ public:
   void updatePosition();
   void updateScattering();
   void setWaveLength(const QVector3D & lightWavelength);
+
+  void updateGround();
+  PlanetElement* makePlanetElement();
+
 private:
   float size;
 
 public slots:
+  void setType(int type);
   void setRed(double red);
   void setGreen(double red);
   void setBlue(double red);
