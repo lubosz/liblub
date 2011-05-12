@@ -14,7 +14,6 @@
 
 class TerrainPlain  : public PlanetElement{
 public:
-  Material *groundFromAtmosphere, *groundFromSpace;
   TerrainPlain(Planet * planet);
   virtual ~TerrainPlain();
   void init();

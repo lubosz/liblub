@@ -17,6 +17,7 @@ class PlanetElement {
 public:
   Planet * planet;
   Node * node;
+  Material *fromAtmosphere, *fromSpace;
   PlanetElement() {};
   PlanetElement(Planet * planet);
   virtual ~PlanetElement();
@@ -27,6 +28,8 @@ public:
   void updateUseRayleigh();
   void updateWaveLength(ShaderProgram * program);
   void updateUseAttenuation();
+  void initMaterials(string name, const QList<string> & attributes);
+  void checkMaterialToggle();
 protected:
   void setAtmoUniforms(ShaderProgram * program);
 };

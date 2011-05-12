@@ -17,6 +17,7 @@ public:
   Material * ocean;
   Ocean(Planet * planet);
   virtual ~Ocean();
+  void setOceanUniforms(ShaderProgram * program);
   void init();
   void draw();
 };

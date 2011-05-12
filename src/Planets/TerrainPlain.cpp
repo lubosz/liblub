@@ -7,8 +7,7 @@
 
 #include "TerrainPlain.h"
 #include "Material/Textures.h"
-#include "Material/Materials.h"
-#include "System/TemplateEngine.h"
+
 #include "System/GUI.h"
 #include "Mesh/Geometry.h"
 #include "Mesh/MeshLoader.h"
@@ -25,40 +24,21 @@ TerrainPlain::~TerrainPlain() {
 }
 
 void TerrainPlain::init(){
-   QList<string> attributes;
-    attributes.push_back("normal");
-    attributes.push_back("uv");
-
+    QList<string> attributes = QList<string>() << "normal" << "uv";
+    initMaterials("Atmo/Ground", attributes);
 //  Texture * earthMap = new TextureFile("earthmap1k.jpg",
 //      "planet");
     Texture * earthMap = new TextureFile("Planets/Mars.jpg",
         "planet");
-  groundFromAtmosphere = new Template("Atmo/Ground",attributes);
-  groundFromAtmosphere->addTexture(earthMap);
-  TemplateEngine::Instance().c.insert("fromSpace", true);
-  groundFromSpace = new Template("Atmo/Ground",attributes);
-  groundFromSpace->addTexture(earthMap);
-
+    fromAtmosphere->addTexture(earthMap);
+    fromSpace->addTexture(earthMap);
   Mesh * innerSphere = Geometry::sphere(attributes, planet->innerRadius, 100, 50);
-  node = new Node("ground", planet->position, planet->getSize(), innerSphere, groundFromAtmosphere);
+  node = new Node("ground", planet->position, planet->getSize(), innerSphere, fromAtmosphere);
   node->setRotation(QVector3D(-90, 0, 0));
-  setAtmoUniforms(groundFromAtmosphere->getShaderProgram());
-  setAtmoUniforms(groundFromSpace->getShaderProgram());
  }
 
  void TerrainPlain::draw() {
-  QVector3D camFromPlanet = SceneData::Instance().getCurrentCamera()->position
-      - planet->position;
-  float camDistance = camFromPlanet.length();
-  if (camDistance >= planet->outerRadius) {
-    node->setMaterial(groundFromSpace);
-    updateWaveLength();
-    updateUseAttenuation();
-  } else {
-    node->setMaterial(groundFromAtmosphere);
-    updateWaveLength();
-    updateUseAttenuation();
-  }
+   checkMaterialToggle();
 
   SceneData::Instance().getCurrentCamera()->setUniforms(
       node->getMaterial()->getShaderProgram(), planet->position);

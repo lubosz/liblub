@@ -14,7 +14,6 @@
 
 class Atmosphere  : public PlanetElement{
 public:
-  Material *skyFromAtmosphere, *skyFromSpace;
   Atmosphere(Planet * planet);
   virtual ~Atmosphere();
   void init();

@@ -8,12 +8,23 @@
 #include "PlanetElement.h"
 #include "Planet.h"
 #include "Scene/SceneData.h"
+#include "System/TemplateEngine.h"
+#include "Material/Materials.h"
 
 PlanetElement::PlanetElement(Planet * planet) : planet(planet) {
 }
 
 PlanetElement::~PlanetElement() {
   // TODO Auto-generated destructor stub
+}
+
+void PlanetElement::initMaterials(string name, const QList<string> & attributes){
+  TemplateEngine::Instance().c.insert("fromSpace", false);
+  fromAtmosphere = new Template(name,attributes);
+  TemplateEngine::Instance().c.insert("fromSpace", true);
+  fromSpace = new Template(name,attributes);
+  setAtmoUniforms(fromAtmosphere->getShaderProgram());
+  setAtmoUniforms(fromSpace->getShaderProgram());
 }
 
 void PlanetElement::updateWaveLength(ShaderProgram * program){
@@ -89,4 +100,19 @@ void PlanetElement::setAtmoUniforms(ShaderProgram * program) {
   program->setUniform("useRayleigh", planet->useRayleigh);
   program->setUniform("useMie", planet->useMie);
   program->setUniform("attenuation", planet->useAttenuation);
+}
+
+void  PlanetElement::checkMaterialToggle(){
+  QVector3D camFromPlanet = SceneData::Instance().getCurrentCamera()->position
+      - planet->position;
+  float camDistance = camFromPlanet.length();
+  if (camDistance >= planet->outerRadius) {
+    node->setMaterial(fromSpace);
+    updateWaveLength();
+    updateUseAttenuation();
+  } else {
+    node->setMaterial(fromAtmosphere);
+    updateWaveLength();
+    updateUseAttenuation();
+  }
 }
