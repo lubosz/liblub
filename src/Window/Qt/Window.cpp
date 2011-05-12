@@ -8,8 +8,6 @@
 #include "FloatEditorWidget.h"
 
 QtWindow::QtWindow() {
-//  connect(this, SIGNAL(flush()), glWidget, SLOT(updateGL()));
-
   glWidget = new GLWidget;
   Config::Instance().load("config.xml");
 //  QUiLoader uiLoader;
@@ -62,6 +60,7 @@ QtWindow::QtWindow() {
 
   setWindowTitle(tr("Planets Demo"));
   glWidget->setFocus();
+  setMaximumSize(QSize(1920, 1200));
 }
 
 PlanetWidget * QtWindow::focusPlanet(){
@@ -69,12 +68,6 @@ PlanetWidget * QtWindow::focusPlanet(){
   connect(planetWidget, SIGNAL(updateGL(void)), glWidget, SLOT(updateGL(void)));
   return planetWidget;
 }
-
-//QWidget * QtWindow::planetControls(Planet* planet) {
-//  QWidget * pcontrol = new QWidget();
-////  pcontrol->addLayout(sliderBarLayout);
-//  return pcontrol;
-//}
 
 void QtWindow::keyPressEvent(QKeyEvent *e) {
   if (e->key() == Qt::Key_Escape)

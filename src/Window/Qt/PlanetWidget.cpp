@@ -30,8 +30,8 @@ PlanetWidget::PlanetWidget(Planet* planet) {
 
   QVBoxLayout *planetTabLayout = new QVBoxLayout(planetTab);
   QVBoxLayout *atmoTabLayout = new QVBoxLayout(atmoTab);
-  planetTabLayout->setContentsMargins(0, 0, 0, 800);
-  atmoTabLayout->setContentsMargins(0, 0, 0, 800);
+  planetTabLayout->setContentsMargins(0, 0, 0, 200);
+  atmoTabLayout->setContentsMargins(0, 0, 0, 200);
 
   atmoTabLayout->addWidget(
         tripleFloatGroup(

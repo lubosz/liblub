@@ -7,6 +7,7 @@
 
 #include "PlanetElement.h"
 #include "Planet.h"
+#include "Scene/SceneData.h"
 
 PlanetElement::PlanetElement(Planet * planet) : planet(planet) {
 }
@@ -55,9 +56,9 @@ void PlanetElement::updateUseRayleigh(){
 void PlanetElement::setAtmoUniforms(ShaderProgram * program) {
   updateWaveLength(program);
 
-  QVector3D lightPosition = QVector3D(0, 0, 1000);
+  QVector3D lightPosition = SceneData::Instance().getLight("sunlight")->position;
   QVector3D lightDirection = lightPosition - planet->position;
-  lightDirection = lightDirection / lightDirection.length();
+  lightDirection.normalize();
 
   float rayleigh = 0.0025f; // Rayleigh scattering constant
   float rayleigh4Pi = rayleigh * 4.0f * M_PI;

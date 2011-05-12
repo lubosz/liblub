@@ -8,6 +8,7 @@ uniform mat4 MMatrix;
 {% block main %}
 	// Get the ray from the camera to the vertex, and its length (which is the far point of the ray passing through the atmosphere)
 	vec3 v3Pos = (MMatrix*vec4(in_Vertex,1)).xyz;
+	//vec3 v3Pos = in_Vertex;
 	vec3 v3Ray = v3Pos - cameraPosition;
 	float fFar = length(v3Ray);
 	v3Ray /= fFar;

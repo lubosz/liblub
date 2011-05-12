@@ -61,10 +61,10 @@ QSize GLWidget::sizeHint() const {
 void GLWidget::initializeGL() {
 //  SceneLoader * sceneLoader = new SceneLoader("nice.xml");
 //  sceneLoader->load();
+  initCamAndLight();
   GUI::Instance().init();
   foreach(Planet * planet, planets)
       planet->init();
-  initCamAndLight();
   initPostProcessing();
 }
 
@@ -86,7 +86,6 @@ void GLWidget::resizeGL(int width, int height) {
       float(width) / float(height));
   glViewport(0, 0, width, height);
   viewSize = QSize(width, height);
-  LogDebug << viewSize.width() << viewSize.height();
 }
 
 void GLWidget::mousePressEvent(QMouseEvent *event) {
@@ -111,8 +110,8 @@ void GLWidget::mouseMoveEvent(QMouseEvent *event) {
 //    camera->setPosition(QVector3D(0, 10, 7));
    camera->setPosition(QVector3D(0, 11.1, -0.85));
    camera->update();
-   light = new Light(QVector3D(-2.5, 21.5, -5.2), QVector3D(1, -5, 0));
-   SceneData::Instance().addLight("foolight", light);
+   light = new Light(QVector3D(0,0,1000), QVector3D(1, -5, 0));
+   SceneData::Instance().addLight("sunlight", light);
 
    camera->yaw = 2.9;
    camera->pitch = 176.6;
