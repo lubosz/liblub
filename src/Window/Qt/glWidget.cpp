@@ -40,9 +40,14 @@ void GLWidget::setWireframe(bool wire){
   useWireframe = wire;
   RenderEngine::Instance().setWire(wire);
 }
-void GLWidget:: setPostprocessing(bool post){
+void GLWidget::setPostprocessing(bool post){
   usePostprocessing = post;
+  updateGL();
+}
 
+void GLWidget::setExposure(double exposure){
+  HDR->shaderProgram->use();
+  HDR->shaderProgram->setUniform("exposure", (float) exposure);
   updateGL();
 }
 QSize GLWidget::minimumSizeHint() const {

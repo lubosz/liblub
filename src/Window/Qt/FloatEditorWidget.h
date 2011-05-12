@@ -15,7 +15,7 @@ class QSlider;
 class FloatEditorWidget  : public QWidget {
   Q_OBJECT
 public:
-  FloatEditorWidget(QString name, const char *target, float value, float from, float to, Planet* planet);
+  FloatEditorWidget(QString name, const char *targetSlot, float value, float from, float to, QObject* targetObject);
   virtual ~FloatEditorWidget();
 private:
   QDoubleSpinBox * spinBox;

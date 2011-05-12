@@ -5,6 +5,7 @@
 #include "Scene/SceneData.h"
 #include "System/Config.h"
 #include "PlanetWidget.h"
+#include "FloatEditorWidget.h"
 
 QtWindow::QtWindow() {
 //  connect(this, SIGNAL(flush()), glWidget, SLOT(updateGL()));
@@ -34,6 +35,10 @@ QtWindow::QtWindow() {
   connect(checkBox, SIGNAL(clicked(bool)), glWidget, SLOT(setPostprocessing(bool)));
   connect(checkBox, SIGNAL(clicked(bool)), glWidget, SLOT(updateGL()));
   sideLayout->addWidget(checkBox);
+
+  FloatEditorWidget* exposure = new FloatEditorWidget("Exposure",SLOT(setExposure(double)), 2.0, 0, 10, glWidget);
+  connect(exposure, SIGNAL(updateGL()), glWidget, SIGNAL(updateGL()));
+  sideLayout->addWidget(exposure);
 
   QCheckBox *checkBox2 = new QCheckBox();
   checkBox2->setText("Wireframe");

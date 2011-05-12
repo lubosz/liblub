@@ -39,6 +39,7 @@ private:
   void timerEvent(QTimerEvent *) { update(); }
   int timerId;
 
+
   void initCamAndLight();
   void initPostProcessing();
   void updatePostProcessing();
@@ -46,6 +47,7 @@ private:
   void endPass();
   void drawPlanets();
 public slots:
+  void setExposure(double exposure);
   void setLazy(bool lazy);
   void setWireframe(bool wire);
   void setPostprocessing(bool post);

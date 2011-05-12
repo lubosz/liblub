@@ -13,7 +13,7 @@
 #include <QSlider>
 #include "Planets/Planet.h"
 
-FloatEditorWidget::FloatEditorWidget(QString name, const char *target, float value, float from, float to, Planet* planet) {
+FloatEditorWidget::FloatEditorWidget(QString name, const char *targetSlot, float value, float from, float to, QObject* targetObject) {
   QVBoxLayout *sliderLayout = new QVBoxLayout(this);
     QHBoxLayout *textAndValueLayout = new QHBoxLayout;
     QLabel * label = new QLabel(name);
@@ -26,12 +26,11 @@ FloatEditorWidget::FloatEditorWidget(QString name, const char *target, float val
     spinBox->setRange(from, to);
     slider->setValue(int(value * 100));
     spinBox->setValue(value);
-    LogDebug << target << planet->getSize();
     spinBox->setSingleStep (to / 100.0);
     sliderLayout->addWidget(slider);
     connect(spinBox, SIGNAL(valueChanged(double)), this, SLOT(updateFromSpinBox(double)));
     connect(slider, SIGNAL(valueChanged(int)), this, SLOT(updateFromSlider(int)));
-    connect(spinBox, SIGNAL(valueChanged(double)), planet, target);
+    connect(spinBox, SIGNAL(valueChanged(double)), targetObject, targetSlot);
 }
 
 void FloatEditorWidget::updateFromSlider(int value) {
