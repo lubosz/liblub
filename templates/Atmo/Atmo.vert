@@ -8,6 +8,8 @@ out vec2 uv;
 
 {% block linkage %}
 {% endblock %}
+{% block uniforms %}
+{% endblock %}
 
 uniform mat4 MVPMatrix;
 

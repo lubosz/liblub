@@ -19,7 +19,7 @@ Comments:
 
 ******************************************************************************/
 
-{% extends "base.vert" %}
+{% extends "Atmo/Atmo.vert" %}
 
 {% block uniforms %}
 uniform vec2 textureScale;
@@ -38,14 +38,15 @@ uniform vec3 LightPosition;
 {% endblock %}
 
 {% block linkage %}
-in vec3 in_Normal;
-in vec2 in_Uv;
 
 out mat3 rotMatrix; //  transform from tangent to obj space
 out vec2 bumpCoord0;
 out vec2 bumpCoord1;
 out vec2 bumpCoord2;
 out vec3 eyeVector;
+out vec3 color1;
+out vec3 color2;
+uniform mat4 MMatrix;
 // wave functions
 struct Wave {
   float freq;  // 2*PI / wavelength
@@ -56,6 +57,7 @@ struct Wave {
 {% endblock %}
 
 {% block main %}
+	{% include "Atmo/GroundMain.glsl" %}
 	#define NWAVES 2
 
 	Wave wave[NWAVES];

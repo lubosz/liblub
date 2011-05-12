@@ -37,6 +37,10 @@ uniform float hdrMultiplier;
 {% endblock %}
 
 {% block linkage %}
+in vec2 uv;
+in vec3 color1;
+in vec3 color2;
+
 in mat3 rotMatrix; // first row of the 3x3 transform from tangent to cube space
 in vec2 bumpCoord0;
 in vec2 bumpCoord1;
@@ -73,4 +77,5 @@ in vec3 eyeVector;
 
     reflection = mix(waterColor,  reflection * reflectionColor, fresnel) * reflectionAmount;
 	fragColor = reflection+waterColor;
+	fragColor = vec4(color1,1) + fragColor * vec4(color2,1);
 {% endblock %}

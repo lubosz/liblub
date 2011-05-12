@@ -51,10 +51,17 @@ void Ocean::init(){
   ocean->addTexture(oceanSky);
   Mesh * innerSphere = Geometry::sphere(attributes, planet->innerRadius, 100, 50);
   node = new Node("ocean", planet->position, planet->getSize(), innerSphere, ocean);
+
+  setAtmoUniforms(ocean->getShaderProgram());
 }
 void Ocean::draw() {
   node->setView(SceneData::Instance().getCurrentCamera());
 //    ocean->getShaderProgram()->setUniform("time",time);
   ocean->getShaderProgram()->setUniform("eyePosition",SceneData::Instance().getCurrentCamera()->position);
+
+  SceneData::Instance().getCurrentCamera()->setUniforms(
+      node->getMaterial()->getShaderProgram(), planet->position);
+  node->setView(SceneData::Instance().getCurrentCamera());
+
   node->draw();
 }
