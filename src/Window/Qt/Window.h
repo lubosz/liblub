@@ -3,6 +3,7 @@
 #include <QWidget>
 
 class GLWidget;
+class PlanetWidget;
 
 class QtWindow: public QWidget {
   Q_OBJECT
@@ -14,7 +15,7 @@ protected:
   void keyPressEvent(QKeyEvent *event);
   void keyReleaseEvent(QKeyEvent *e);
   void executeKeys();
-//  QWidget *  planetControls(Planet* planet);
+  PlanetWidget *  focusPlanet();
 
 private:
   QList<int> pressedKeys;

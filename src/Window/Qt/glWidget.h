@@ -16,7 +16,7 @@ public:
 
   QSize minimumSizeHint() const;
   QSize sizeHint() const;
-  Planet* earth;
+  Planet* focusedPlanet;
   vector<Planet*> planets;
 
 protected:

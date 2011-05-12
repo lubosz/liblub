@@ -16,8 +16,6 @@ QtWindow::QtWindow() {
 
   QHBoxLayout *mainLayout = new QHBoxLayout;
   mainLayout->addWidget(glWidget);
-  PlanetWidget * planetWidget = new PlanetWidget(glWidget->earth);
-  connect(planetWidget, SIGNAL(updateGL(void)), glWidget, SLOT(updateGL(void)));
 
   QVBoxLayout *sideLayout = new QVBoxLayout;
 
@@ -30,13 +28,19 @@ QtWindow::QtWindow() {
     planetItem->setText(planet->name);
   }
   sideLayout->addWidget(planetList);
-  sideLayout->addWidget(planetWidget);
+  sideLayout->addWidget(focusPlanet());
   mainLayout->addLayout(sideLayout);
 
   setLayout(mainLayout);
 
   setWindowTitle(tr("LibLub"));
   glWidget->setFocus();
+}
+
+PlanetWidget * QtWindow::focusPlanet(){
+  PlanetWidget * planetWidget = new PlanetWidget(glWidget->focusedPlanet);
+  connect(planetWidget, SIGNAL(updateGL(void)), glWidget, SLOT(updateGL(void)));
+  return planetWidget;
 }
 
 //QWidget * QtWindow::planetControls(Planet* planet) {
