@@ -19,10 +19,33 @@
 #include "FloatEditorWidget.h"
 
 PlanetWidget::PlanetWidget(Planet* planet) {
-    QVBoxLayout *sliderBarLayout = new QVBoxLayout(this);
-    sliderBarLayout->setContentsMargins(0,0,0,800);
+  QVBoxLayout *sliderBarLayout = new QVBoxLayout(this);
 
-    sliderBarLayout->addWidget(
+
+
+  QTabWidget * tabWidget = new QTabWidget(this);
+  sliderBarLayout->addWidget(tabWidget);
+  QWidget * atmoTab = new QWidget();
+  tabWidget->addTab(atmoTab, "Atmosphere");
+  QWidget * planetTab = new QWidget();
+  tabWidget->addTab(planetTab, "Planet");
+
+  QVBoxLayout *planetTabLayout = new QVBoxLayout(planetTab);
+  QVBoxLayout *atmoTabLayout = new QVBoxLayout(atmoTab);
+  planetTabLayout->setContentsMargins(0, 0, 0, 800);
+  atmoTabLayout->setContentsMargins(0, 0, 0, 800);
+//  tabWidget->setCurrentIndex(1);
+
+//  tabWidget->setTabText(
+//      tabWidget->indexOf(tab),
+//      "Atmosphere");
+//  tabWidget->setTabText(
+//      tabWidget->indexOf(tab_2),
+//      "Planet");
+
+//  sliderBarLayout->addWidget(tabWidget);
+
+  atmoTabLayout->addWidget(
         tripleFloatGroup(
             "Light Wavelength [nm]",
             planet, planet->lightWavelength, 0.20, 1.5,
@@ -31,7 +54,7 @@ PlanetWidget::PlanetWidget(Planet* planet) {
         )
     );
 
-    sliderBarLayout->addWidget(
+  planetTabLayout->addWidget(
         tripleFloatGroup(
             "Position",
             planet, planet->position, -50, 50,
@@ -40,15 +63,15 @@ PlanetWidget::PlanetWidget(Planet* planet) {
         )
     );
 
-    sliderBarLayout->addWidget(createBoolElement("Attenuation", SLOT(setAttenuation(bool)), planet->useAttenuation, planet));
-    sliderBarLayout->addWidget(createBoolElement("Mie Phase", SLOT(setMie(bool)), planet->useMie, planet));
-    sliderBarLayout->addWidget(createBoolElement("Rayleigh Phase", SLOT(setRayleigh(bool)), planet->useRayleigh, planet));
+  atmoTabLayout->addWidget(createBoolElement("Attenuation", SLOT(setAttenuation(bool)), planet->useAttenuation, planet));
+  atmoTabLayout->addWidget(createBoolElement("Mie Phase", SLOT(setMie(bool)), planet->useMie, planet));
+  atmoTabLayout->addWidget(createBoolElement("Rayleigh Phase", SLOT(setRayleigh(bool)), planet->useRayleigh, planet));
 
     QComboBox * comboBox = new QComboBox();
 
     comboBox->insertItems(0, QStringList() << "Sun" << "TerrainTess" << "Ocean" << "TerrainPlain");
 
-    sliderBarLayout->addWidget(comboBox);
+    planetTabLayout->addWidget(comboBox);
 }
 
 QGroupBox * PlanetWidget::tripleFloatGroup(const QString & title,
