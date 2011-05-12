@@ -11,7 +11,7 @@
 #include "Mesh/Geometry.h"
 #include "Scene/SceneData.h"
 #include "Planet.h"
-
+#include "System/Timer.h"
 Ocean::Ocean(Planet * planet) {
   this->planet = planet;
 }
@@ -20,7 +20,7 @@ Ocean::~Ocean() {
   // TODO Auto-generated destructor stub
 }
 
-void Ocean::setOceanUniforms(ShaderProgram * program){
+void Ocean::setOceanUniforms(ShaderProgram * program) {
   program->use();
   program->setUniform("deepColor", QVector4D(0, 0.3, 0.5, 1.0));
   program->setUniform("shallowColor",QVector4D(0, 1, 1, 1.0));
@@ -59,9 +59,10 @@ void Ocean::init(){
 }
 void Ocean::draw() {
   checkMaterialToggle();
+  float time = float(Timer::Instance().secoundsPassed) + float(Timer::Instance().nanosecoundsPassed)/1000000000.0;
 
   node->setView(SceneData::Instance().getCurrentCamera());
-//    ocean->getShaderProgram()->setUniform("time",time);
+  node->getMaterial()->getShaderProgram()->setUniform("time",time);
   node->getMaterial()->getShaderProgram()->setUniform("eyePosition",SceneData::Instance().getCurrentCamera()->position);
 
   SceneData::Instance().getCurrentCamera()->setUniforms(
