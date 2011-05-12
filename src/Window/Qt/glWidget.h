@@ -35,6 +35,7 @@ private:
   Camera* camera;
   Light * light;
   FrameBuffer *fbo;
+  Node * skyDomeNode;
 
   void timerEvent(QTimerEvent *) { update(); }
   int timerId;

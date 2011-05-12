@@ -9,6 +9,7 @@
 #include "Material/Textures.h"
 #include "Renderer/RenderEngine.h"
 #include "System/Timer.h"
+#include "Mesh/Geometry.h"
 
 #ifndef GL_MULTISAMPLE
 #define GL_MULTISAMPLE  0x809D
@@ -32,6 +33,7 @@ GLWidget::GLWidget(QWidget *parent) :
   focusedPlanet = new Planet("Earth", 11,11.55, Planet::ocean, {0.650f, 0.570f,0.475f},{0,0,0},1);
   planets.push_back(focusedPlanet);
 //  timerId = startTimer(0);
+
 }
 
 GLWidget::~GLWidget() {
@@ -59,6 +61,8 @@ QSize GLWidget::sizeHint() const {
 }
 
 void GLWidget::initializeGL() {
+
+
 //  SceneLoader * sceneLoader = new SceneLoader("planets.xml");
 //  sceneLoader->load();
   initCamAndLight();
@@ -66,6 +70,14 @@ void GLWidget::initializeGL() {
   foreach(Planet * planet, planets)
       planet->init();
   initPostProcessing();
+
+  Texture * skyDomeMap = new TextureFile("Earth/StarsMap_2500x1250.jpg",
+      "diffuse");
+  Material * skyDomeMat = new Template("Texture", QList<string>() << "uv");
+  skyDomeMat->addTexture(skyDomeMap);
+  Mesh * skyDomeMesh = Geometry::sphere(QList<string>() << "uv", 1000, 100, 50);
+  skyDomeNode = new Node("skydome", QVector3D(0,0,0), 1, skyDomeMesh, skyDomeMat);
+  skyDomeNode->setRotation(QVector3D(-90, 0, 0));
 }
 
 void GLWidget::paintGL() {
@@ -73,6 +85,8 @@ void GLWidget::paintGL() {
   Timer::Instance().frame();
   startPass();
   RenderEngine::Instance().clear();
+  skyDomeNode->setView(SceneData::Instance().getCurrentCamera());
+  skyDomeNode->draw();
   drawPlanets();
 //  SceneGraph::Instance().drawNodes(SceneData::Instance().getCurrentCamera());
   endPass();

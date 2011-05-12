@@ -30,6 +30,7 @@ void TerrainPlain::init(){
 //      "planet");
     Texture * earthMap = new TextureFile("Planets/Mars.jpg",
         "planet");
+
     fromAtmosphere->addTexture(earthMap);
     fromSpace->addTexture(earthMap);
   Mesh * innerSphere = Geometry::sphere(attributes, planet->innerRadius, 100, 50);
