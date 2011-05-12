@@ -51,7 +51,7 @@ void Planet::setType(int type) {
 }
 
 void Planet::updateGround(){
-//  delete elements[0];
+  delete elements[0];
   elements[0] = makePlanetElement();
   elements[0]->init();
 }

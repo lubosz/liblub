@@ -18,8 +18,8 @@ protected:
   PlanetWidget *  focusPlanet();
 
 private:
-  QList<int> pressedKeys;
   GLWidget *glWidget;
+  QList<int> pressedKeys;
 };
 
 #endif

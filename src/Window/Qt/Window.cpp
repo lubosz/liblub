@@ -18,8 +18,7 @@ QtWindow::QtWindow() {
   mainLayout->addWidget(glWidget);
 
   QVBoxLayout *sideLayout = new QVBoxLayout;
-
-
+  mainLayout->addLayout(sideLayout);
 
   QListWidget * planetList = new QListWidget();
 
@@ -27,13 +26,19 @@ QtWindow::QtWindow() {
     QListWidgetItem * planetItem = new QListWidgetItem(planetList);
     planetItem->setText(planet->name);
   }
+  QCheckBox *checkBox = new QCheckBox();
+  checkBox->setText("Postprocessing");
+  checkBox->setChecked(true);
+  connect(checkBox, SIGNAL(clicked(bool)), glWidget, SLOT(setPostprocessing(bool)));
+  connect(checkBox, SIGNAL(clicked(bool)), glWidget, SLOT(updateGL()));
+  sideLayout->addWidget(checkBox);
   sideLayout->addWidget(planetList);
   sideLayout->addWidget(focusPlanet());
-  mainLayout->addLayout(sideLayout);
+
 
   setLayout(mainLayout);
 
-  setWindowTitle(tr("LibLub"));
+  setWindowTitle(tr("Planets Demo"));
   glWidget->setFocus();
 }
 

@@ -16,6 +16,7 @@ public:
 
   QSize minimumSizeHint() const;
   QSize sizeHint() const;
+  QSize viewSize;
   Planet* focusedPlanet;
   vector<Planet*> planets;
 
@@ -29,16 +30,21 @@ protected:
 private:
   QPoint lastPos;
   Material *HDR;
-  bool useHDR;
+  bool usePostprocessing;
+  bool useWireframe;
   Camera* camera;
   Light * light;
   FrameBuffer *fbo;
 
   void initCamAndLight();
   void initPostProcessing();
+  void updatePostProcessing();
   void startPass();
   void endPass();
   void drawPlanets();
+public slots:
+  void setWireframe(bool wire);
+  void setPostprocessing(bool post);
 };
 
 #endif

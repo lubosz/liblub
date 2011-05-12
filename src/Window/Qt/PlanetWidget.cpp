@@ -59,6 +59,7 @@ PlanetWidget::PlanetWidget(Planet* planet) {
 
     comboBox->insertItems(0, QStringList() << "Sun" << "Ocean" << "TerrainPlain" << "TerrainTess");
     connect(comboBox, SIGNAL(activated(int)), planet, SLOT(setType(int)));
+    connect(comboBox, SIGNAL(activated(int)), this, SIGNAL(updateGL()));
     comboBox->setCurrentIndex(planet->type);
     planetTabLayout->addWidget(comboBox);
 }

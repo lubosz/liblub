@@ -20,7 +20,8 @@ GLWidget::GLWidget(QWidget *parent) :
   QGLFormat fmt;
   fmt.setVersion(4,1);
   QGLFormat::setDefaultFormat(fmt);
-  useHDR = false;
+  usePostprocessing = true;
+  useWireframe = false;
   //   wavelength[0] = 0.650f; // 650 nm for red
   //    wavelength[1] = 0.570f; // 570 nm for green
   //    wavelength[2] = 0.475f; // 475 nm for blue
@@ -34,7 +35,14 @@ GLWidget::GLWidget(QWidget *parent) :
 
 GLWidget::~GLWidget() {
 }
+void GLWidget::setWireframe(bool wire){
+  useWireframe = wire;
+}
+void GLWidget:: setPostprocessing(bool post){
+  usePostprocessing = post;
 
+  updateGL();
+}
 QSize GLWidget::minimumSizeHint() const {
   return QSize(800, 600);
 }
@@ -61,14 +69,17 @@ void GLWidget::paintGL() {
   RenderEngine::Instance().clear();
   drawPlanets();
   endPass();
-  GUI::Instance().draw();
+//  GUI::Instance().draw();
   glError;
 
 }
 
 void GLWidget::resizeGL(int width, int height) {
-  SceneData::Instance().getCurrentCamera()->setAspect(float(width) / float(height));
-  glViewport(0, 0, width,height);
+  SceneData::Instance().getCurrentCamera()->setAspect(
+      float(width) / float(height));
+  glViewport(0, 0, width, height);
+  viewSize = QSize(width, height);
+  LogDebug << viewSize.width() << viewSize.height();
 }
 
 void GLWidget::mousePressEvent(QMouseEvent *event) {
@@ -105,35 +116,31 @@ void GLWidget::mouseMoveEvent(QMouseEvent *event) {
  }
 
  void GLWidget::initPostProcessing(){
-   if(useHDR){
-     unsigned width = this->sizeHint().width();
-     unsigned height = this->sizeHint().height();
-
+//     unsigned width = this->sizeHint().width();
+//     unsigned height = this->sizeHint().height();
+   unsigned width = 1920;
+   unsigned height = 1200;
      fbo = new FrameBuffer(width, height);
      Texture * targetTexture = new ColorTexture(width, height, "targetTexture");
      fbo->attachTexture(GL_COLOR_ATTACHMENT0, targetTexture);
+     fbo->checkAndFinish();
 
-     QList<string> attributes;
-     attributes.push_back("uv");
-
-     HDR = new Template("Post/HDR",attributes);
+     HDR = new Template("Post/HDR",QList<string>() << "uv");
      HDR->addTexture(targetTexture);
      HDR->shaderProgram->setUniform("exposure", 2.0f);
-     fbo->checkAndFinish();
-   }
  }
 
  void GLWidget::startPass(){
-//   useHDR = !RenderEngine::Instance().wire;
-   if(useHDR) {
+   if(usePostprocessing && !useWireframe) {
      fbo->bind();
      fbo->updateRenderView();
    }
  }
 
  void GLWidget::endPass(){
-   if(useHDR){
+   if(usePostprocessing && !useWireframe){
      fbo->unBind();
+     glViewport(0, 0, viewSize.width(),viewSize.height());
      RenderEngine::Instance().clear();
      HDR->activateTextures();
      HDR->getShaderProgram()->use();
