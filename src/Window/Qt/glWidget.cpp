@@ -31,6 +31,7 @@ GLWidget::GLWidget(QWidget *parent) :
 //    planets.push_back(new Planet(11,11.55, Planet::terrainPlain, {0.650f, 0.570f,0.475f},{0,0,0},1));
   focusedPlanet = new Planet("Earth", 11,11.55, Planet::terrainPlain, {0.650f, 0.570f,0.475f},{0,0,0},1);
   planets.push_back(focusedPlanet);
+//  timerId = startTimer(0);
 }
 
 GLWidget::~GLWidget() {
@@ -70,7 +71,7 @@ void GLWidget::paintGL() {
   RenderEngine::Instance().clear();
   drawPlanets();
   endPass();
-//  GUI::Instance().draw();
+  GUI::Instance().draw();
   glError;
 
 }
@@ -116,20 +117,18 @@ void GLWidget::mouseMoveEvent(QMouseEvent *event) {
    camera->updatePerspective();
  }
 
- void GLWidget::initPostProcessing(){
-//     unsigned width = this->sizeHint().width();
-//     unsigned height = this->sizeHint().height();
-   unsigned width = 1920;
-   unsigned height = 1200;
-     fbo = new FrameBuffer(width, height);
-     Texture * targetTexture = new ColorTexture(width, height, "targetTexture");
-     fbo->attachTexture(GL_COLOR_ATTACHMENT0, targetTexture);
-     fbo->checkAndFinish();
+ void GLWidget::initPostProcessing() {
+  unsigned width = 1920;
+  unsigned height = 1200;
+  fbo = new FrameBuffer(width, height);
+  Texture * targetTexture = new ColorTexture(width, height, "targetTexture");
+  fbo->attachTexture(GL_COLOR_ATTACHMENT0, targetTexture);
+  fbo->checkAndFinish();
 
-     HDR = new Template("Post/HDR",QList<string>() << "uv");
-     HDR->addTexture(targetTexture);
-     HDR->shaderProgram->setUniform("exposure", 2.0f);
- }
+  HDR = new Template("Post/HDR", QList<string> () << "uv");
+  HDR->addTexture(targetTexture);
+  HDR->shaderProgram->setUniform("exposure", 2.0f);
+}
 
  void GLWidget::startPass(){
    if(usePostprocessing && !useWireframe) {
@@ -180,4 +179,13 @@ void GLWidget::mouseMoveEvent(QMouseEvent *event) {
   glDisable(GL_CULL_FACE);
   glDisable(GL_DEPTH_TEST);
 }
+
+ void GLWidget::setLazy(bool lazy){
+   if(lazy){
+       killTimer(timerId);
+   }else{
+       timerId = startTimer(0);
+   }
+
+ }
 

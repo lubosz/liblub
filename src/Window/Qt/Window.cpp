@@ -7,6 +7,8 @@
 #include "PlanetWidget.h"
 
 QtWindow::QtWindow() {
+//  connect(this, SIGNAL(flush()), glWidget, SLOT(updateGL()));
+
   glWidget = new GLWidget;
   Config::Instance().load("config.xml");
 //  QUiLoader uiLoader;
@@ -40,6 +42,12 @@ QtWindow::QtWindow() {
   connect(checkBox2, SIGNAL(clicked(bool)), glWidget, SLOT(updateGL()));
   sideLayout->addWidget(checkBox2);
 
+  QCheckBox *checkBox3 = new QCheckBox();
+  checkBox3->setText("Lazy Rendering");
+  checkBox3->setChecked(true);
+  connect(checkBox3, SIGNAL(clicked(bool)), glWidget, SLOT(setLazy(bool)));
+  connect(checkBox3, SIGNAL(clicked(bool)), glWidget, SLOT(updateGL()));
+  sideLayout->addWidget(checkBox3);
 
 //  sideLayout->addWidget(planetList);
   sideLayout->addWidget(focusPlanet());

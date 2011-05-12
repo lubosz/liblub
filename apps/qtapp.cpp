@@ -39,6 +39,7 @@ int main(int argc, char *argv[]) {
   initWinGL();
 #endif
   QApplication app(argc, argv);
+
   QtWindow window;
   window.resize(QSize(1920,1200));
   //  int desktopArea = QApplication::desktop()->width()

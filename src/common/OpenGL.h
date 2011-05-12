@@ -16,14 +16,12 @@
 //# include <GL/glext.h>
 # define glfGetProcAddress wglGetProcAddress
 #include "WinGL.h"
-#elif defined(linux) || defined(__linux)
+#else
 //# include <GL/glew.h>
 #define GL3_PROTOTYPES 1
 # define GL_GLEXT_PROTOTYPES 1
 # include <GL3/gl3.h>
 # include <GL3/glext.h>
-#else
-# error "Unsupported platform"
 #endif
 
 

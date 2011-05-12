@@ -117,7 +117,7 @@ ColorTexture::ColorTexture(GLuint width, GLuint height, string name) {
   glTexParameteri(target, GL_TEXTURE_COMPARE_MODE, GL_NONE);
 
 //  glTexImage2D(target, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0);
-  glTexImage2D(target, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_FLOAT, 0);
+  glTexImage2D(target, 0, GL_RGBA32F, width, height, 0, GL_RGBA, GL_FLOAT, 0);
   unbind();
 }
 
