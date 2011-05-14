@@ -13,6 +13,7 @@
 #include "Atmosphere.h"
 #include "Scene/SceneData.h"
 #include "Planet.h"
+#include "Mesh/Geometry.h"
 
 PlaneMoon::PlaneMoon(Planet * planet) {
   this->planet = planet;
@@ -43,36 +44,40 @@ Mesh * PlaneMoon::moonPlane(const QList<string> & attributes) {
 }
 
 void PlaneMoon::init() {
-  QList<string> attributes;
-   attributes.push_back("normal");
-   attributes.push_back("uv");
+//    Material * skyDomeMat = new Template("Texture", QList<string>() << "uv");
 
-  Texture * glow = new TextureQImage(
-      ProcTextures::makeGlow(QSize(512, 512), 40.0f, 0.1f), "glow");
-  spaceFromAtmosphere = new Template("Atmo/Space", attributes);
-  spaceFromAtmosphere->addTexture(glow);
-  TemplateEngine::Instance().c.insert("fromSpace", true);
-  spaceFromSpace = new Template("Atmo/Space", attributes);
-  spaceFromSpace->addTexture(glow);
+    QList<string> attributes = QList<string>() << "normal" << "uv";
+    initMaterials("Atmo/Space", attributes);
 
-  node = new Node("space", planet->position, planet->getSize(), moonPlane(attributes), spaceFromAtmosphere);
-//  Atmosphere::setAtmoUniforms(spaceFromAtmosphere->getShaderProgram(), innerRadius, outerRadius);
-//  Atmosphere::setAtmoUniforms(spaceFromSpace->getShaderProgram(), innerRadius, outerRadius);
+    Texture * skyDomeMap = new TextureFile("Earth/StarsMap_2500x1250.jpg", "glow");
+    fromAtmosphere->addTexture(skyDomeMap);
+    fromSpace->addTexture(skyDomeMap);
+
+//    Mesh * skyDomeMesh = Geometry::sphere(attributes, 1000, 100, 50);
+    Mesh * skyDomeMesh = Geometry::sphere(attributes, 50, 100, 50);
+//    Mesh * skyDomeMesh = moonPlane(attributes);
+    node = new Node("space", QVector3D(0,0,0), 1, skyDomeMesh, fromAtmosphere);
+//    node->setRotation(QVector3D(-90, 0, 0));
+
+
+//  QList<string> attributes = QList<string>() << "normal" << "uv";
+//  initMaterials("Atmo/Space", attributes);
+//
+//  Texture * glow = new TextureQImage(ProcTextures::makeGlow(QSize(512, 512), 40.0f, 0.1f), "glow");
+//  fromAtmosphere->addTexture(glow);
+//  fromSpace->addTexture(glow);
+//
+//  node = new Node("space", planet->position, planet->getSize(), moonPlane(attributes), fromAtmosphere);
+//  setAtmoUniforms(fromAtmosphere->getShaderProgram());
+//  setAtmoUniforms(fromSpace->getShaderProgram());
 }
 
 void PlaneMoon::draw() {
-  bool drawSpace = false;
-  if (SceneData::Instance().getCurrentCamera()->position.length() < planet->outerRadius) {
-    node->setMaterial(spaceFromAtmosphere);
-    drawSpace = true;
-  } else if (SceneData::Instance().getCurrentCamera()->position.z() > 0.0f) {
-    node->setMaterial(spaceFromSpace);
-    drawSpace = true;
-  }
-
-  if (drawSpace) {
-    SceneData::Instance().getCurrentCamera()->setUniforms(node->getMaterial()->getShaderProgram(), planet->position);
-    node->setView(SceneData::Instance().getCurrentCamera());
-    node->draw();
-  }
+  checkMaterialToggle();
+  SceneData::Instance().getCurrentCamera()->setUniforms(
+      node->getMaterial()->getShaderProgram(), planet->position);
+  node->setView(SceneData::Instance().getCurrentCamera());
+  glDisable(GL_CULL_FACE);
+  node->draw();
+  glEnable(GL_CULL_FACE);
 }

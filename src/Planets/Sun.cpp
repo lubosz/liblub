@@ -21,18 +21,20 @@ Sun::~Sun() {
 }
 
 void Sun::init(){
-  QList<string> sunAttributes;
-  sunAttributes.push_back("normal");
-  sunAttributes.push_back("uv");
-  Material * sunMaterial = new Template("perlin",sunAttributes);
-  node = new Node("sun", planet->position, planet->getSize(), Geometry::sphere(sunAttributes, planet->innerRadius, 100, 50), sunMaterial);
-  node->setRotation(QVector3D(-90,0,180));
-  perlinNoise = sunMaterial->getShaderProgram();
+  QList<string> attributes = QList<string>() << "normal" << "uv";
+
+  initMaterials("Atmo/Sun", attributes);
+
+  node = new Node("sun", planet->position, planet->getSize(), Geometry::sphere(attributes, planet->innerRadius, 100, 50), fromAtmosphere);
+//  node->setRotation(QVector3D(-90,0,180));
 }
 void Sun::draw(){
+  checkMaterialToggle();
   float time = float(Timer::Instance().secoundsPassed) + float(Timer::Instance().nanosecoundsPassed)/1000000000.0;
-  perlinNoise->use();
-  perlinNoise->setUniform("time", time);
+  node->getMaterial()->getShaderProgram()->use();
+  node->getMaterial()->getShaderProgram()->setUniform("time", time);
+  SceneData::Instance().getCurrentCamera()->setUniforms(
+      node->getMaterial()->getShaderProgram(), planet->position);
   node->setView(SceneData::Instance().getCurrentCamera());
   node->draw();
 }

@@ -49,10 +49,28 @@ PlanetWidget::PlanetWidget(Planet* planet) {
         )
     );
 
-  QGroupBox * groupBox = new QGroupBox();
+    QGroupBox * groupBox2 = new QGroupBox();
+      groupBox2->setMaximumHeight(400);
+      groupBox2->setTitle("Planet Size");
+    QVBoxLayout *groupBoxLayout2 = new QVBoxLayout(groupBox2);
+    FloatEditorWidget* depthScale = new FloatEditorWidget("Scale Depth", SLOT(setScaleDepth(double)), 0.25, 0.03, 3, planet);
+    connect(depthScale, SIGNAL(updateGL()), this, SIGNAL(updateGL()));
+    groupBoxLayout2->addWidget(depthScale);
+
+    FloatEditorWidget* innerRadius = new FloatEditorWidget("Inner Radius", SLOT(setInnerRadius(double)), 10.00, 0, 100, planet);
+    connect(innerRadius, SIGNAL(updateGL()), this, SIGNAL(updateGL()));
+    groupBoxLayout2->addWidget(innerRadius);
+
+    FloatEditorWidget* outerRadius = new FloatEditorWidget("Outer Radius", SLOT(setOuterRadius(double)), 10.25, 0, 100, planet);
+    connect(outerRadius, SIGNAL(updateGL()), this, SIGNAL(updateGL()));
+    groupBoxLayout2->addWidget(outerRadius);
+
+
+    QGroupBox * groupBox = new QGroupBox();
     groupBox->setMaximumHeight(200);
     groupBox->setTitle("Atmosphere Options");
     QVBoxLayout *groupBoxLayout = new QVBoxLayout(groupBox);
+
     groupBoxLayout->addWidget(createBoolElement("Attenuation", SLOT(setAttenuation(bool)), planet->useAttenuation, planet));
     groupBoxLayout->addWidget(createBoolElement("Mie Phase", SLOT(setMie(bool)), planet->useMie, planet));
     groupBoxLayout->addWidget(createBoolElement("Rayleigh Phase", SLOT(setRayleigh(bool)), planet->useRayleigh, planet));
@@ -64,6 +82,7 @@ PlanetWidget::PlanetWidget(Planet* planet) {
     connect(comboBox, SIGNAL(activated(int)), this, SIGNAL(updateGL()));
     comboBox->setCurrentIndex(planet->type);
     planetTabLayout->addWidget(comboBox);
+    planetTabLayout->addWidget(groupBox2);
 }
 
 QGroupBox * PlanetWidget::tripleFloatGroup(const QString & title,

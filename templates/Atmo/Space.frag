@@ -11,4 +11,5 @@ uniform sampler2D glow;
 
 {% block main %}
 	fragColor = vec4(color,1) * texture(glow, uv);
+	//fragColor = vec4(color,1);
 {% endblock %}

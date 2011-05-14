@@ -32,6 +32,7 @@ public:
   vector<PlanetElement*> elements;
   Atmosphere * atmoSphere;
   bool useAttenuation, useMie, useRayleigh;
+  float rayleighScaleDepth;
 
   Planet(const QString & name, float innerRadius, float outerRadius, PlanetType type, const QVector3D & lightWavelength, const QVector3D & position, float size);
   virtual ~Planet();
@@ -46,11 +47,16 @@ public:
   void updateGround();
   PlanetElement* makePlanetElement();
 
+  void updateSize();
+
 private:
   float size;
 
 public slots:
+  void setInnerRadius(double radius);
+  void setOuterRadius(double radius);
   void setType(int type);
+  void setScaleDepth(double scale);
   void setRed(double red);
   void setGreen(double red);
   void setBlue(double red);

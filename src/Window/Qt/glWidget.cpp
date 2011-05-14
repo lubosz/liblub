@@ -30,9 +30,12 @@ GLWidget::GLWidget(QWidget *parent) :
 //  planets.push_back(new Planet("Sun",11,11.55, Planet::sun, {0.650f,1,0},{0,0,500},1));
 //    planets.push_back(new Planet(11,11.55, Planet::terrainTess, {0.150f, 0.870f,0.175f},{-10,0,0},1));
 //    planets.push_back(new Planet(11,11.55, Planet::terrainPlain, {0.650f, 0.570f,0.475f},{0,0,0},1));
-  focusedPlanet = new Planet("Earth", 11,11.55, Planet::ocean, {0.650f, 0.570f,0.475f},{0,0,0},1);
+  focusedPlanet = new Planet("Earth", 11,11.55, Planet::sun, {0.650f, 0.570f,0.475f},{0,0,0},1);
   planets.push_back(focusedPlanet);
 //  timerId = startTimer(0);
+
+//  m_fInnerRadius = 10.0f;
+//  m_fOuterRadius = 10.25f;
 
 }
 
@@ -61,8 +64,6 @@ QSize GLWidget::sizeHint() const {
 }
 
 void GLWidget::initializeGL() {
-
-
 //  SceneLoader * sceneLoader = new SceneLoader("planets.xml");
 //  sceneLoader->load();
   initCamAndLight();
@@ -71,13 +72,6 @@ void GLWidget::initializeGL() {
       planet->init();
   initPostProcessing();
 
-  Texture * skyDomeMap = new TextureFile("Earth/StarsMap_2500x1250.jpg",
-      "diffuse");
-  Material * skyDomeMat = new Template("Texture", QList<string>() << "uv");
-  skyDomeMat->addTexture(skyDomeMap);
-  Mesh * skyDomeMesh = Geometry::sphere(QList<string>() << "uv", 1000, 100, 50);
-  skyDomeNode = new Node("skydome", QVector3D(0,0,0), 1, skyDomeMesh, skyDomeMat);
-  skyDomeNode->setRotation(QVector3D(-90, 0, 0));
 }
 
 void GLWidget::paintGL() {
@@ -85,8 +79,6 @@ void GLWidget::paintGL() {
   Timer::Instance().frame();
   startPass();
   RenderEngine::Instance().clear();
-  skyDomeNode->setView(SceneData::Instance().getCurrentCamera());
-  skyDomeNode->draw();
   drawPlanets();
 //  SceneGraph::Instance().drawNodes(SceneData::Instance().getCurrentCamera());
   endPass();

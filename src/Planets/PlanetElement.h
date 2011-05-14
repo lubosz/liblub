@@ -26,6 +26,7 @@ public:
   void updateWaveLength();
   void updateUseMie();
   void updateUseRayleigh();
+  void updateSize();
   void updateWaveLength(ShaderProgram * program);
   void updateUseAttenuation();
   void initMaterials(string name, const QList<string> & attributes);

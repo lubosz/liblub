@@ -14,7 +14,7 @@
 #include "TerrainTesselation.h"
 #include "Ocean.h"
 #include "Sun.h"
-//#include "PlaneMoon.h"
+#include "PlaneMoon.h"
 
 float Planet::getSize() const {
     return size;
@@ -25,13 +25,40 @@ Planet::Planet(const QString & name, float innerRadius, float outerRadius, Plane
   useAttenuation = true;
   useRayleigh = true;
   useMie = true;
+  rayleighScaleDepth = 0.25f;
 }
 
 Planet::~Planet() {
 }
 
+void Planet::setScaleDepth(double scale){
+  rayleighScaleDepth = scale;
+  updateSize();
+}
+
+void Planet::setInnerRadius(double radius){
+  innerRadius = radius;
+  updateSize();
+}
+
+void Planet::setOuterRadius(double radius){
+  outerRadius = radius;
+  updateSize();
+}
+
+void Planet::updateSize(){
+  foreach(PlanetElement * element, elements)
+    element->updateSize();
+  atmoSphere->updateSize();
+
+  QList<string> attributes = QList<string>() << "normal" << "uv";
+  elements[0]->node->mesh = Geometry::sphere(attributes, innerRadius, 100, 50);
+  atmoSphere->node->mesh = Geometry::sphere(attributes, outerRadius, 300, 500);
+}
+
 void Planet::init() {
   elements.push_back(makePlanetElement());
+  elements.push_back(new PlaneMoon(this));
 
   atmoSphere = new Atmosphere(this);
   foreach(PlanetElement * element, elements)

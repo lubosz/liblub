@@ -64,6 +64,20 @@ void PlanetElement::updateUseRayleigh(){
   program->setUniform("useRayleigh", planet->useRayleigh);
 }
 
+void PlanetElement::updateSize(){
+  ShaderProgram * program = node->getMaterial()->getShaderProgram();
+  program->use();
+  program->setUniform("invSphereDistance",
+      1.0f / (planet->outerRadius - planet->innerRadius));
+  program->setUniform("scaleDepth", planet->rayleighScaleDepth);
+  program->setUniform("scaleOverScaleDepth",
+      (1.0f / (planet->outerRadius - planet->innerRadius)) / planet->rayleighScaleDepth);
+  program->setUniform("innerRadius", planet->innerRadius);
+  program->setUniform("innerRadius2", planet->innerRadius * planet->innerRadius);
+  program->setUniform("outerRadius", planet->outerRadius);
+  program->setUniform("outerRadius2", planet->outerRadius * planet->outerRadius);
+}
+
 void PlanetElement::setAtmoUniforms(ShaderProgram * program) {
   updateWaveLength(program);
 
@@ -77,24 +91,17 @@ void PlanetElement::setAtmoUniforms(ShaderProgram * program) {
   float mie4Pi = mie * 4.0f * M_PI;
   float sun = 20.0f; // Sun brightness constant
   float g = -0.990f; // The Mie phase asymmetry factor
-  float rayleighScaleDepth = 0.25f;
+
   //    float mieScaleDepth = 0.1f;
 
   program->use();
   program->setUniform("lightPosition", lightDirection);
-  program->setUniform("innerRadius", planet->innerRadius);
-  program->setUniform("innerRadius2", planet->innerRadius * planet->innerRadius);
-  program->setUniform("outerRadius", planet->outerRadius);
-  program->setUniform("outerRadius2", planet->outerRadius * planet->outerRadius);
+
   program->setUniform("rayleighSun", rayleigh * sun);
   program->setUniform("mieSun", mie * sun);
   program->setUniform("rayleigh4Pi", rayleigh4Pi);
   program->setUniform("mie4Pi", mie4Pi);
-  program->setUniform("invSphereDistance",
-      1.0f / (planet->outerRadius - planet->innerRadius));
-  program->setUniform("scaleDepth", rayleighScaleDepth);
-  program->setUniform("scaleOverScaleDepth",
-      (1.0f / (planet->outerRadius - planet->innerRadius)) / rayleighScaleDepth);
+
   program->setUniform("g", g);
   program->setUniform("g2", g * g);
   program->setUniform("useRayleigh", planet->useRayleigh);
@@ -110,9 +117,11 @@ void  PlanetElement::checkMaterialToggle(){
     node->setMaterial(fromSpace);
     updateWaveLength();
     updateUseAttenuation();
+    updateSize();
   } else {
     node->setMaterial(fromAtmosphere);
     updateWaveLength();
     updateUseAttenuation();
+    updateSize();
   }
 }
