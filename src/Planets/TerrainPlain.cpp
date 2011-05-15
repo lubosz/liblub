@@ -28,12 +28,14 @@ void TerrainPlain::init(){
     initMaterials("Atmo/Ground", attributes);
 //  Texture * earthMap = new TextureFile("earthmap1k.jpg",
 //      "planet");
-    Texture * earthMap = new TextureFile("Planets/Mars.jpg",
-        "planet");
+    Texture * planetTex = new TextureFile("Planets/Mars.jpg", "planet");
+    fromAtmosphere->addTexture(planetTex);
+    fromSpace->addTexture(planetTex);
 
-    fromAtmosphere->addTexture(earthMap);
-    fromSpace->addTexture(earthMap);
-  Mesh * innerSphere = Geometry::sphere(attributes, planet->innerRadius, 100, 50);
+    Texture * diffuse = new TextureFile("ground.jpg", "diffuse");
+    fromAtmosphere->addTexture(diffuse);
+    fromSpace->addTexture(diffuse);
+  Mesh * innerSphere = Geometry::sphere(attributes, planet->innerRadius, 800, 400);
   node = new Node("ground", planet->position, planet->getSize(), innerSphere, fromAtmosphere);
   node->setRotation(QVector3D(-90, 0, 0));
  }

@@ -33,7 +33,9 @@ Planet::~Planet() {
 
 void Planet::setScaleDepth(double scale){
   rayleighScaleDepth = scale;
-  updateSize();
+  foreach(PlanetElement * element, elements)
+    element->updateSize();
+  atmoSphere->updateSize();
 }
 
 void Planet::setInnerRadius(double radius){

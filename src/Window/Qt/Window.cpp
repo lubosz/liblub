@@ -79,7 +79,7 @@ void QtWindow::keyPressEvent(QKeyEvent *e) {
 }
 
 void QtWindow::executeKeys() {
-  float inputSpeed = .1;
+  float inputSpeed = .01;
   foreach(int key, pressedKeys) {
       if (key == Qt::Key_W)
         SceneData::Instance().getCurrentCamera()->forwardDirection(inputSpeed);

@@ -2,6 +2,12 @@
 
 {% block linkage %}
 uniform float time; // Used for texture animation
+uniform float cameraHeight2;
+uniform float innerRadius2;
+uniform float cameraHeight;
+uniform float innerRadius;
+uniform sampler2D diffuse;
+uniform sampler2D planet;
 in vec2 uv;
 in vec3 normal;
 in vec3 color1;
@@ -160,13 +166,42 @@ float pnoise(vec3 P, vec3 rep) {
 float normalNoise(vec3 normal, float time) {
   return pnoise(vec3(normal.xy,time*0.8),vec3(0)) + pnoise(vec3(normal.yz*0.8,time),vec3(0));
 }
+
+vec4 getColorForAltitude(float altitude){
+	if (altitude < 4){
+		return vec4(1,0,0,1);
+	} else if (altitude < 16) {
+		return vec4(1,1,0,1);
+	} else if (altitude < 36) {
+		return vec4(1,0,1,1);
+	} else if (altitude < 64) {
+		return vec4(0,1,1,1);
+	} else if (altitude < 100) {
+		return vec4(0,1,0,1);
+	} else {
+		return vec4(0,0,1,1);
+	}
+}
 {% endblock %}
 
 {% block main %}
-//  float n = cnoise(10*vec3(uv*5,time/20.0));
-//  float nalt = cnoise(10*vec3(uv*2,time/20.0));
+  //float n = cnoise(10*vec3(uv*5,time/20.0));
+  //float nalt = cnoise(10*vec3(uv*2,time/20.0));
+/*
+	float altitude = cameraHeight2 - innerRadius2;
+	vec4 colorSamplePre = getColorForAltitude(altitude-4);
+	vec4 colorSample = getColorForAltitude(altitude);
+	vec4 colorSamplePost = getColorForAltitude(altitude+4);
+	
+	fragColor = mix(colorSamplePre,colorSample, 0.5);
+	fragColor = mix(fragColor,colorSamplePost, 0.3);
+*/
+
+	//fragColor = vec4(1)* foo;
+
   float noiseor = normalNoise(normal*8,time/5.0);
   noiseor += normalNoise(normal*3,time/10.0);
+  noiseor += normalNoise(normal*30,time/5.0);
 
   //fragColor = vec4(0.5 + 0.5 * vec3(n, n, n), 1.0);
   //vec4 red = vec4(0);

@@ -32,7 +32,7 @@ uniform float scaleOverScaleDepth;	// scale / scaleDepth
 
 uniform bool attenuation;
 
-const int samplesi = 10;
+const int samplesi = 100;
 const float samplesf = float(samplesi);
 
 // The scale equation calculated by Vernier's Graphical Analysis

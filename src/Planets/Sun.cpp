@@ -11,6 +11,7 @@
 #include "Material/Materials.h"
 #include "Mesh/Geometry.h"
 #include "Planet.h"
+#include "Material/Textures.h"
 
 Sun::Sun(Planet * planet) {
   this->planet = planet;
@@ -25,7 +26,10 @@ void Sun::init(){
 
   initMaterials("Atmo/Sun", attributes);
 
-  node = new Node("sun", planet->position, planet->getSize(), Geometry::sphere(attributes, planet->innerRadius, 100, 50), fromAtmosphere);
+  Texture * mars = new TextureFile("Planets/Mars.jpg","planet");
+  fromAtmosphere->addTexture(mars);
+  fromSpace->addTexture(mars);
+  node = new Node("sun", planet->position, planet->getSize(), Geometry::sphere(attributes, planet->innerRadius, 800, 400), fromAtmosphere);
 //  node->setRotation(QVector3D(-90,0,180));
 }
 void Sun::draw(){
