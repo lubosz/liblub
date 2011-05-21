@@ -2,6 +2,8 @@ cmake_minimum_required(VERSION 2.8)
 project(liblub)
 
 #Set Options
+OPTION(WITH_Qt "Use Qt" ON)
+OPTION(WITH_XCB "Use XCB (X11)" OFF)
 OPTION(WITH_SFML "Use SFML 2" OFF)
 OPTION(WITH_SDL "Use SDL 1.3" OFF)
 OPTION(SDL_LOCAL "SDL Local" OFF)
@@ -130,15 +132,17 @@ foreach(SOURCE_DIR ${SOURCE_DIRS})
 endforeach(SOURCE_DIR)
 
 #choose window lib
-IF(WITH_SDL)
+if(WITH_SDL)
     SET(WINDOW_TYPE SDL)
 elseif(WITH_SFML)
     SET(WINDOW_TYPE SFML)
+elseif(WITH_Qt)
+    SET(WINDOW_TYPE Qt)
+elseif(WITH_XCB)
+    SET(WINDOW_TYPE XCB)
 else()
-  SET(WINDOW_TYPE XCB)
+    message(FATAL_ERROR "You need to choose a window lib.")
 endif()
-
-SET(WINDOW_TYPE Qt)
 
 ADD_DEFINITIONS(-DWITH_${WINDOW_TYPE})
 file(GLOB_RECURSE GLOB_RESULT ${SRC_DIR}/${SOURCE_DIR}/Window/${WINDOW_TYPE}/*.cpp)
@@ -149,33 +153,35 @@ add_library(lub ${SOURCES})
 
 #ADD_DEFINITIONS(-DUSE_FREEIMAGE)
 
-#link
-target_link_libraries(lub ${OPENGL_LIB}
-
-#freeimageplus 
-${QT_LIBRARIES} 
-${Grantlee_CORE_LIBRARIES}
-assimp
-#/home/bmonkey/Desktop/Assimp32.dll
-#/usr/i486-mingw32/lib/libassimp.dll
-#GLEW
+#libs to link
+set(LIBS
+    ${OPENGL_LIB}
+    ${QT_LIBRARIES}
+    #freeimageplus
+    ${Grantlee_CORE_LIBRARIES}
+    assimp
+    #/home/bmonkey/Desktop/Assimp32.dll
+    #/usr/i486-mingw32/lib/libassimp.dll
+    #GLEW
 )
 if(LIBLUB_WINDOWS)
-target_link_libraries(lub glew32)
+    list(APPEND LIBS glew32)
 endif()
-
 IF(WITH_SDL)
     if(SDL_LOCAL)
         #set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -L${SDL_DIR}/build/.libs")
-	    target_link_libraries(lub ${SDL_DIR}/build/.libs/libSDL.a)
+	    list(APPEND LIBS ${SDL_DIR}/build/.libs/libSDL.a)
     else()
-		target_link_libraries(lub SDL)
+		list(APPEND LIBS SDL)
 	endif()
 ELSEIF(WITH_SFML)
-	target_link_libraries(lub sfml-graphics)
+	list(APPEND LIBS sfml-graphics)
 ELSEIF(WITH_XCB)
-	target_link_libraries(lub X11-xcb xcb-keysyms)
+	list(APPEND LIBS X11-xcb xcb-keysyms)
 ENDIF()
+
+#link
+target_link_libraries(lub ${LIBS})
 
 #build examples
 file(GLOB_RECURSE EXAMPLES ${APP_DIR}/*.cpp)
