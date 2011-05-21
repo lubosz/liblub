@@ -71,9 +71,9 @@ qt4_wrap_cpp (MOC_OUTFILES ${MOC_INFILES})
 
 #check for opengl3 headers
 function(download_gl_header GL_HEADER)
-    IF(NOT EXISTS src/Renderer/GL3/${GL_HEADER})
+    IF(NOT EXISTS ${CMAKE_SOURCE_DIR}/src/Renderer/GL3/${GL_HEADER})
 		execute_process(
-			WORKING_DIRECTORY src/Renderer/GL3
+			WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/src/Renderer/GL3
 			COMMAND wget http://www.opengl.org/registry/api/${GL_HEADER}
 		)
 	ENDIF()
@@ -84,7 +84,7 @@ IF(EXISTS /usr/include/GL3 AND NOT LIBLUB_WINDOWS)
 ELSE()
 	message("No OpenGL 3 Headers found in /usr! Using local ones")
 	IF(NOT EXISTS src/Renderer/GL3)
-		execute_process(COMMAND mkdir src/Renderer/GL3)
+		execute_process(COMMAND mkdir -p ${CMAKE_SOURCE_DIR}/src/Renderer/GL3)
 	ENDIF()
 	SET(GL_HEADERS gl3.h glext.h glxext.h)
 	foreach(GL_HEADER ${GL_HEADERS})
