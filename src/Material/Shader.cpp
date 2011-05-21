@@ -10,6 +10,7 @@
 #include <QtCore>
 #include <string>
 #include <vector>
+#include <fstream>
 #include "System/Logger.h"
 #include "System/Config.h"
 #include "System/TemplateEngine.h"
@@ -87,40 +88,29 @@ void Shader::compile() {
 /* A simple function that will read a file
  * into an allocated char pointer buffer */
 char* Shader::readFile(string filePath) {
-    FILE *file;
-    char *buffer;
-    int64_t fileSize;
-
-    file = fopen(filePath.c_str(), "r"); /* Open file for reading */
-    if (!file)
+    // Open
+    std::ifstream f(filePath.c_str(), std::ios::binary);
+    if (!f.is_open())
         LogFatal << "File not found:" << filePath;
 
-    // obtain file size:
-    fseek(file, 0, SEEK_END); /* Seek to the end of the file */
-    fileSize = ftell(file); /* Find out how many bytes into the file we are */
-    rewind(file); /* Go back to the beginning of the file */
+    // Obtain file size
+    f.seekg(0, std::ios::end); // Seek to end
+    size_t size = f.tellg(); // Tell byte count
+    f.seekg(0); // Seek back to start
 
-    /* Allocate a buffer for the entire
-     * length of the file plus a null terminator */
-    buffer = reinterpret_cast<char*>(malloc(sizeof(buffer) * fileSize));
-    if (!buffer) {
-        fputs("Memory error", stderr);
-        exit(2);
+    // Allocate buffer
+    char* buffer = NULL;
+    try {
+        buffer = new char[size+1]; // +1 for terminating null
+    } catch (...) {
+        LogFatal << "Memory allocation failed when reading file:" << filePath;
     }
 
-    /* Read the contents of the file in to the buffer */
-    fread(buffer, fileSize, 1, file);
+    // Read
+    if (!f.read(buffer, size))
+        LogFatal << "File reading error:" << filePath;
 
-    /*
-     // TODO(bmonkey): Occurs every time
-     if (result != fileSize){
-     cout << "File:" << filePath << "\n";
-     fputs ("Reading error",stderr); exit (3);
-     }
-     */
-
-    fclose(file); /* Close the file */
-    buffer[fileSize] = 0; /* Null terminator */
+    buffer[size] = '\0'; // Null terminator
 
     return buffer; /* Return the buffer */
 }
