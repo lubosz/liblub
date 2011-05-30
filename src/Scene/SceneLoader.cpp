@@ -144,14 +144,14 @@ void SceneLoader::appendTexture(const QDomElement & textureNode) {
     } else if (textureNode.tagName() == "TextureCube") {
         texture = new CubeTextureFile(textureNode.attribute(
                 "url").toStdString(), name);
-    }
+    } else texture = NULL;
     SceneData::Instance().textures.insert(name, texture);
 }
 
 void SceneLoader::appendMesh(const QDomElement & meshNode) {
     string name = meshNode.attribute("name").toStdString();
     LogDebug << "Mesh name:" << name;
-    Mesh *mesh;
+    Mesh *mesh = NULL;
 
     if (meshNode.tagName() == "File") {
         string meshUrl = meshNode.attribute("url").toStdString();
