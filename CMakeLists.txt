@@ -2,13 +2,15 @@ cmake_minimum_required(VERSION 2.8)
 project(liblub)
 
 #Set Options
-OPTION(WITH_SFML "Use SFML 2" OFF)
-OPTION(WITH_SDL "Use SDL 1.3" OFF)
-OPTION(SDL_LOCAL "SDL Local" OFF)
-OPTION(RELEASE "Release" OFF)
-OPTION(USE_FBO "Use Framebuffer Objects" ON)
-OPTION(CHECKSTYLE "Check Style" OFF)
-OPTION(BUILD_TESTS "Build Tests" OFF)
+option(WITH_Qt "Use Qt window/input backend" ON)
+option(WITH_XCB "Use XCB (X11) window/input backend" OFF)
+option(WITH_SFML "Use SFML 2 window/input backend" OFF)
+option(WITH_SDL "Use SDL 1.3 window/input backend" OFF)
+option(SDL_LOCAL "SDL Local" OFF)
+option(RELEASE "Release" OFF)
+option(USE_FBO "Use Framebuffer Objects" ON)
+option(CHECKSTYLE "Check Style" OFF)
+option(BUILD_TESTS "Build Tests" OFF)
 
 
 
@@ -16,7 +18,7 @@ if(USE_FBO)
     ADD_DEFINITIONS(-DUSE_FBO)
 endif()
 
-SET(SDL_DIR "" CACHE PATH "SDL Local DIR")
+set(SDL_DIR "" CACHE PATH "SDL Local DIR")
 
 set(LIBRARY_OUTPUT_PATH ${CMAKE_SOURCE_DIR}/lib)
 set(EXECUTABLE_OUTPUT_PATH ${CMAKE_SOURCE_DIR}/bin)
@@ -25,11 +27,11 @@ set(SRC_DIR ${CMAKE_SOURCE_DIR}/src)
 set(APP_DIR ${CMAKE_SOURCE_DIR}/apps)
 set(TEST_DIR ${CMAKE_SOURCE_DIR}/tests)
 #Optimization / Debug
-IF(RELEASE)
+if(RELEASE)
     set(CMAKE_CXX_FLAGS "-O3 -msse4 -mssse3") #Optimized
-ELSE()
+else()
     set(CMAKE_CXX_FLAGS "-O0 -g3") #Debug
-ENDIF()
+endif()
 
 #Set c++0x
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++0x")
@@ -47,13 +49,13 @@ endif()
 
 
 #check for qt
-FIND_PACKAGE(Qt4 REQUIRED)
+find_package(Qt4 REQUIRED)
 find_package(Grantlee REQUIRED)
 set(QT_USE_QTXML true)
 set(QT_USE_QTUITOOLS true)
 #set(QT_USE_QTOPENGL false)
 set(QT_USE_QTOPENGL true)
-INCLUDE(${QT_USE_FILE})
+include(${QT_USE_FILE})
 find_package(OpenGL)
 if(NOT OPENGL_FOUND)
 	message("ERROR: OpenGL not found")
@@ -71,40 +73,40 @@ qt4_wrap_cpp (MOC_OUTFILES ${MOC_INFILES})
 
 #check for opengl3 headers
 function(download_gl_header GL_HEADER)
-    IF(NOT EXISTS src/Renderer/GL3/${GL_HEADER})
-		execute_process(
-			WORKING_DIRECTORY src/Renderer/GL3
-			COMMAND wget http://www.opengl.org/registry/api/${GL_HEADER}
-		)
-	ENDIF()
+    if(NOT EXISTS ${CMAKE_SOURCE_DIR}/src/Renderer/GL3/${GL_HEADER})
+        execute_process(
+            WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/src/Renderer/GL3
+            COMMAND wget http://www.opengl.org/registry/api/${GL_HEADER}
+    )
+    endif()
 endfunction(download_gl_header)
 
-IF(EXISTS /usr/include/GL3 AND NOT LIBLUB_WINDOWS)
+if(EXISTS /usr/include/GL3 AND NOT LIBLUB_WINDOWS)
 	message("OpenGL 3 Headers in /usr/include")
-ELSE()
+else()
 	message("No OpenGL 3 Headers found in /usr! Using local ones")
-	IF(NOT EXISTS src/Renderer/GL3)
-		execute_process(COMMAND mkdir src/Renderer/GL3)
-	ENDIF()
-	SET(GL_HEADERS gl3.h glext.h glxext.h)
+	if(NOT EXISTS src/Renderer/GL3)
+		execute_process(COMMAND mkdir -p ${CMAKE_SOURCE_DIR}/src/Renderer/GL3)
+	endif()
+	set(GL_HEADERS gl3.h glext.h glxext.h)
 	foreach(GL_HEADER ${GL_HEADERS})
 		    download_gl_header(${GL_HEADER})
     endforeach(GL_HEADER)
 
 	include_directories(src/Renderer/)
-ENDIF()
+endif()
 
 
 #Check for nvidia libGL in ubuntu
-IF(EXISTS "/usr/lib/nvidia-current/libGL.so")
+if(EXISTS "/usr/lib/nvidia-current/libGL.so")
 	message("Taking Ubuntu Nvidia libGL")
 	SET(OPENGL_LIB /usr/lib/nvidia-current/libGL.so)
-ELSE()
+else()
 	message("Taking system libGL")
 	#SET(OPENGL_LIB GL)
 	#set(OPENGL_LIB opengl32)
 	set(OPENGL_LIB ${OPENGL_LIBRARY})
-ENDIF() 
+endif()
 
 include_directories(
 	src
@@ -130,17 +132,19 @@ foreach(SOURCE_DIR ${SOURCE_DIRS})
 endforeach(SOURCE_DIR)
 
 #choose window lib
-IF(WITH_SDL)
+if(WITH_SDL)
     SET(WINDOW_TYPE SDL)
 elseif(WITH_SFML)
     SET(WINDOW_TYPE SFML)
+elseif(WITH_Qt)
+    SET(WINDOW_TYPE Qt)
+elseif(WITH_XCB)
+    SET(WINDOW_TYPE XCB)
 else()
-  SET(WINDOW_TYPE XCB)
+    message(FATAL_ERROR "You need to choose a window lib.")
 endif()
 
-SET(WINDOW_TYPE Qt)
-
-ADD_DEFINITIONS(-DWITH_${WINDOW_TYPE})
+add_definitions(-DWITH_${WINDOW_TYPE})
 file(GLOB_RECURSE GLOB_RESULT ${SRC_DIR}/${SOURCE_DIR}/Window/${WINDOW_TYPE}/*.cpp)
 
 set(SOURCES ${SOURCES} ${GLOB_RESULT})
@@ -149,33 +153,35 @@ add_library(lub ${SOURCES})
 
 #ADD_DEFINITIONS(-DUSE_FREEIMAGE)
 
-#link
-target_link_libraries(lub ${OPENGL_LIB}
-
-#freeimageplus 
-${QT_LIBRARIES} 
-${Grantlee_CORE_LIBRARIES}
-assimp
-#/home/bmonkey/Desktop/Assimp32.dll
-#/usr/i486-mingw32/lib/libassimp.dll
-#GLEW
+#libs to link
+set(LIBS
+    ${OPENGL_LIB}
+    ${QT_LIBRARIES}
+    #freeimageplus
+    ${Grantlee_CORE_LIBRARIES}
+    assimp
+    #/home/bmonkey/Desktop/Assimp32.dll
+    #/usr/i486-mingw32/lib/libassimp.dll
+    #GLEW
 )
 if(LIBLUB_WINDOWS)
-target_link_libraries(lub glew32)
+    list(APPEND LIBS glew32)
+endif()
+if(WITH_SDL)
+	if(SDL_LOCAL)
+		#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -L${SDL_DIR}/build/.libs")
+		list(APPEND LIBS ${SDL_DIR}/build/.libs/libSDL.a)
+	else()
+		list(APPEND LIBS SDL)
+	endif()
+elseif(WITH_SFML)
+	list(APPEND LIBS sfml-graphics)
+elseif(WITH_XCB)
+	list(APPEND LIBS X11-xcb xcb-keysyms)
 endif()
 
-IF(WITH_SDL)
-    if(SDL_LOCAL)
-        #set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -L${SDL_DIR}/build/.libs")
-	    target_link_libraries(lub ${SDL_DIR}/build/.libs/libSDL.a)
-    else()
-		target_link_libraries(lub SDL)
-	endif()
-ELSEIF(WITH_SFML)
-	target_link_libraries(lub sfml-graphics)
-ELSEIF(WITH_XCB)
-	target_link_libraries(lub X11-xcb xcb-keysyms)
-ENDIF()
+#link
+target_link_libraries(lub ${LIBS})
 
 #build examples
 file(GLOB_RECURSE EXAMPLES ${APP_DIR}/*.cpp)
@@ -192,19 +198,19 @@ endforeach(EXAMPLE_PATH)
 if(BUILD_TESTS)
     file(GLOB_RECURSE TESTS ${TEST_DIR}/*.cpp)
     foreach(TEST_PATH ${TESTS})
-        STRING(REGEX REPLACE "\\.cpp" "" TEST_NAME "${TEST_PATH}")
-        STRING(REGEX REPLACE "^.*/([^/]*)\$" "\\1" TEST_NAME "${TEST_NAME}")
+        string(REGEX REPLACE "\\.cpp" "" TEST_NAME "${TEST_PATH}")
+        string(REGEX REPLACE "^.*/([^/]*)\$" "\\1" TEST_NAME "${TEST_NAME}")
         add_executable(${TEST_NAME} "${TEST_PATH}")
         target_link_libraries(${TEST_NAME} lub cppunit)
     endforeach(TEST_PATH)
 endif()
 
 #check code stlye
-IF(EXISTS "/usr/bin/python2")
-    SET(PYTHON_VER "python2")
-ELSE()
-    SET(PYTHON_VER "python")
-ENDIF()
+if(EXISTS "/usr/bin/python2")
+    set(PYTHON_VER "python2")
+else()
+    set(PYTHON_VER "python")
+endif()
 
 if(CHECKSTYLE)
     file(GLOB GLOB_RESULT include/*.h)

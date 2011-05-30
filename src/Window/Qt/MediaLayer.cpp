@@ -14,6 +14,7 @@
 #include "System/Timer.h"
 
 MediaLayer::MediaLayer() {
+  LogError << "Qt backend for MediaLayer is stub";
   fullscreen = false;
   grab = false;
   quit = false;
