@@ -30,7 +30,7 @@ void Sun::init(){
   fromAtmosphere->addTexture(mars);
   fromSpace->addTexture(mars);
   node = new Node("sun", planet->position, planet->getSize(), Geometry::sphere(attributes, planet->innerRadius, 800, 400), fromAtmosphere);
-//  node->setRotation(QVector3D(-90,0,180));
+  node->setRotation(QVector3D(-90,0,180));
 }
 void Sun::draw(){
   checkMaterialToggle();

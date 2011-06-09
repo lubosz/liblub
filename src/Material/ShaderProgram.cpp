@@ -15,9 +15,8 @@ using std::stringstream;
 
 ShaderProgram::ShaderProgram() {
   attribCount = 0;
-    /* Assign our program handle a "name" */
-    handle = glCreateProgram();
-    LogDebug << "Creating Program #" << handle;
+  handle = glCreateProgram();
+  LogDebug << "Creating Program #" << handle;
 }
 
 ShaderProgram::~ShaderProgram() {

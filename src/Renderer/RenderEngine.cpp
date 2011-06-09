@@ -99,14 +99,11 @@ void RenderEngine::clear() {
 
 void RenderEngine::checkVersion() {
     GLint maxTex1, maxTex2, MajorVersion, MinorVersion, numext, pointSize, uniformSize;
-
     LogInfo << "OpenGL" << glGetString(GL_VERSION);
-
 
     glGetIntegerv(GL_MAJOR_VERSION, &MajorVersion);
     glGetIntegerv(GL_MINOR_VERSION, &MinorVersion);
     LogInfo << "Version" << MajorVersion << "." << MinorVersion;
-
     LogInfo << "GLSL" << glGetString(GL_SHADING_LANGUAGE_VERSION);
 
     glGetIntegerv(GL_POINT_SIZE, &pointSize);
@@ -144,5 +141,6 @@ void RenderEngine::checkVersion() {
     //  LogInfo << glGetStringi(GL_EXTENSIONS,i);
     //  Logger::Instance().log("DEBUG","GL_EXTENSIONS");
     // }
+    glError;
 }
 

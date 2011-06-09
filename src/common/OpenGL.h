@@ -7,22 +7,27 @@
 
 #pragma once
 
+#ifdef USE_GLEW
+# include <GL/glew.h>
+#endif
+
 #ifdef WIN32
 //#define GL3_PROTOTYPES 1
 //# include <GL3/gl3.h>
-# include <GL/glew.h>
+//# include <wingdi.h>
+//# include <GL/gl.h>
+//# include <GL/glext.h>
 # include <GL/wglew.h>
 //#include <QtOpenGL>
-//# include <GL/glext.h>
 # define glfGetProcAddress wglGetProcAddress
 #include "WinGL.h"
 #else
-//# include <GL/glew.h>
 #define GL3_PROTOTYPES 1
 # define GL_GLEXT_PROTOTYPES 1
 # include <GL3/gl3.h>
 # include <GL3/glext.h>
 #endif
+
 
 
 #include <System/Logger.h>
@@ -31,6 +36,8 @@
 class OpenGL {
 public:
   static void checkGlError(const char* file, int line) {
+//    glDeleteShader = (PFNGLDELETESHADERPROC)wglGetProcAddress("glDeleteShader");
+
     GLenum err(glGetError());
 
     while (err != GL_NO_ERROR) {

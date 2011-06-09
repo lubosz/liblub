@@ -21,6 +21,10 @@ GLWidget::GLWidget(QWidget *parent) :
   QGLFormat fmt;
   fmt.setVersion(4,1);
   QGLFormat::setDefaultFormat(fmt);
+
+
+
+
   usePostprocessing = true;
   useWireframe = false;
   //   wavelength[0] = 0.650f; // 650 nm for red
@@ -30,7 +34,7 @@ GLWidget::GLWidget(QWidget *parent) :
 //  planets.push_back(new Planet("Sun",11,11.55, Planet::sun, {0.650f,1,0},{0,0,500},1));
 //    planets.push_back(new Planet(11,11.55, Planet::terrainTess, {0.150f, 0.870f,0.175f},{-10,0,0},1));
 //    planets.push_back(new Planet(11,11.55, Planet::terrainPlain, {0.650f, 0.570f,0.475f},{0,0,0},1));
-  focusedPlanet = new Planet("Earth", 11,11.55, Planet::terrainPlain, {0.650f, 0.570f,0.475f},{0,0,0},1);
+  focusedPlanet = new Planet("Earth", 11,11.55, Planet::sun, {0.650f, 0.570f,0.475f},{0,0,0},1);
   planets.push_back(focusedPlanet);
 //  timerId = startTimer(0);
 
@@ -64,6 +68,15 @@ QSize GLWidget::sizeHint() const {
 }
 
 void GLWidget::initializeGL() {
+#ifdef USE_GLEW
+  GLenum err = glewInit();
+  if (err != GLEW_OK) {
+    /* Problem: glewInit failed, something is seriously wrong. */
+    fprintf(stderr, "Error: %s\n", glewGetErrorString(err));
+  }
+  fprintf(stdout, "Status: Using GLEW %s\n", glewGetString(GLEW_VERSION));
+#endif
+
 //  SceneLoader * sceneLoader = new SceneLoader("planets.xml");
 //  sceneLoader->load();
   initCamAndLight();
@@ -71,7 +84,6 @@ void GLWidget::initializeGL() {
   foreach(Planet * planet, planets)
       planet->init();
   initPostProcessing();
-
 }
 
 void GLWidget::paintGL() {

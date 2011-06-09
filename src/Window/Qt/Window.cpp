@@ -35,7 +35,7 @@ QtWindow::QtWindow() {
   sideLayout->addWidget(checkBox);
 
   FloatEditorWidget* exposure = new FloatEditorWidget("Exposure",SLOT(setExposure(double)), 2.0, 0, 10, glWidget);
-  connect(exposure, SIGNAL(updateGL()), glWidget, SIGNAL(updateGL()));
+  connect(exposure, SIGNAL(updateGL()), glWidget, SLOT(updateGL()));
   sideLayout->addWidget(exposure);
 
   QCheckBox *checkBox2 = new QCheckBox();
@@ -79,7 +79,7 @@ void QtWindow::keyPressEvent(QKeyEvent *e) {
 }
 
 void QtWindow::executeKeys() {
-  float inputSpeed = .01;
+  float inputSpeed = .1;
   foreach(int key, pressedKeys) {
       if (key == Qt::Key_W)
         SceneData::Instance().getCurrentCamera()->forwardDirection(inputSpeed);

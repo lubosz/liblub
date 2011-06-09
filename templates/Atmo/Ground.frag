@@ -27,6 +27,6 @@ uniform sampler2D planet;
 	/*
 	float wholePlanetFactor = clamp((cameraHeight - innerRadius - 1)/10.0,0.0,1.0);
 	fragColor = mix(fragColor, texture(planet,uv), wholePlanetFactor);
-	fragColor = vec4(color1,1) + texture(planet, uv) * vec4(color2,1);
 	*/
+	fragColor = vec4(color1,1) + texture(planet, uv) * vec4(color2,1);
 {% endblock %}

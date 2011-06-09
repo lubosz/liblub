@@ -1,6 +1,9 @@
 #ifndef GLWIDGET_H
 #define GLWIDGET_H
 
+#ifdef USE_GLEW
+# include <GL/glew.h>
+#endif
 #include <QGLWidget>
 #include "Renderer/FrameBuffer.h"
 #include "Scene/Light.h"

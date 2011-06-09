@@ -8,7 +8,8 @@
 #ifndef WINGL_H_
 #define WINGL_H_
   inline void initWinGL()  {
-// Load OpenGL 3.0 functions
+    // Load OpenGL 3.0 functions
+
 glBindBufferBase = (PFNGLBINDBUFFERBASEPROC)glfGetProcAddress("glBindBufferBase");
 glBindFragDataLocation = (PFNGLBINDFRAGDATALOCATIONPROC)glfGetProcAddress("glBindFragDataLocation");
 glGenerateMipmap = (PFNGLGENERATEMIPMAPPROC)glfGetProcAddress("glGenerateMipmap");

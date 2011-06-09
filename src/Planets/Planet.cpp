@@ -60,7 +60,7 @@ void Planet::updateSize(){
 
 void Planet::init() {
   elements.push_back(makePlanetElement());
-  elements.push_back(new PlaneMoon(this));
+//  elements.push_back(new PlaneMoon(this));
 
   atmoSphere = new Atmosphere(this);
   foreach(PlanetElement * element, elements)

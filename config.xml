@@ -8,7 +8,7 @@
 		<String name="meshDir" value="media/meshes/" />
 		<String name="templateDir" value="templates/" />
 		<String name="suffixes" value="_RT, _LF, _DN,_UP, _FR, _BK" />
-		<Float name="backgroundColor" value="0.0,0.0,0.0" />
+		<Float name="backgroundColor" value="1.0,1.0,1.0" />
 		<Float name="FPS_INTERVAL" value="1.0" />
 		<Int name="GLcontext" value="4,1" />
 		<Int name="maxBuffers" value="6" />

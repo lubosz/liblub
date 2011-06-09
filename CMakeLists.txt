@@ -10,7 +10,9 @@ OPTION(USE_FBO "Use Framebuffer Objects" ON)
 OPTION(CHECKSTYLE "Check Style" OFF)
 OPTION(BUILD_TESTS "Build Tests" OFF)
 
-
+if(USE_GLEW)
+ADD_DEFINITIONS(-DUSE_GLEW)
+endif()
 
 if(USE_FBO)
     ADD_DEFINITIONS(-DUSE_FBO)
@@ -160,8 +162,13 @@ assimp
 #/usr/i486-mingw32/lib/libassimp.dll
 #GLEW
 )
-if(LIBLUB_WINDOWS)
-target_link_libraries(lub glew32)
+
+if(USE_GLEW)
+    if(LIBLUB_WINDOWS)
+        target_link_libraries(lub glew32)
+    else()
+        target_link_libraries(lub GLEW)
+    endif()
 endif()
 
 IF(WITH_SDL)
