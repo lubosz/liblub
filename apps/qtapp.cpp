@@ -16,6 +16,7 @@
     You should have received a copy of the GNU General Public License
     along with liblub.  If not, see <http://www.gnu.org/licenses/>.
 */
+#ifdef WITH_Qt
 #include <GL/glew.h>
 #include <string>
 #include <QApplication>
@@ -54,3 +55,9 @@ int main(int argc, char *argv[]) {
   return app.exec();
 }
 
+#else // WITH_QT
+int main(int argc, char *argv[]) {
+  (void)argc; (void)argv;
+  return 1;
+}
+#endif

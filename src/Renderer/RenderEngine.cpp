@@ -12,6 +12,16 @@
 #include "System/Logger.h"
 #include "System/Config.h"
 
+namespace {
+    // Behaves nicely if glGetString returns null
+    std::string glGetStringSafe(GLenum name) {
+        const char* str = reinterpret_cast<const char*>(glGetString(name));
+        if (!str) return "null";
+        else return str;
+    }
+}
+
+
 RenderEngine::RenderEngine()
 :
     useFBO(false), lightView(false), wire(false), frameCount(0) {
@@ -99,19 +109,21 @@ void RenderEngine::clear() {
 
 void RenderEngine::checkVersion() {
     GLint maxTex1, maxTex2, MajorVersion, MinorVersion, numext, pointSize, uniformSize;
-    LogInfo << "OpenGL" << glGetString(GL_VERSION);
+
+    LogInfo << "OpenGL" << glGetStringSafe(GL_VERSION);
 
     glGetIntegerv(GL_MAJOR_VERSION, &MajorVersion);
     glGetIntegerv(GL_MINOR_VERSION, &MinorVersion);
     LogInfo << "Version" << MajorVersion << "." << MinorVersion;
-    LogInfo << "GLSL" << glGetString(GL_SHADING_LANGUAGE_VERSION);
+
+    LogInfo << "GLSL" << glGetStringSafe(GL_SHADING_LANGUAGE_VERSION);
 
     glGetIntegerv(GL_POINT_SIZE, &pointSize);
     LogInfo << "Point Size" << pointSize;
 
     LogInfo << "Hardware"
-            << glGetString(GL_VENDOR) << " - "
-            << glGetString(GL_RENDERER);
+            << glGetStringSafe(GL_VENDOR) << " - "
+            << glGetStringSafe(GL_RENDERER);
 
     glGetIntegerv(GL_MAX_VERTEX_TEXTURE_IMAGE_UNITS, &maxTex1);
     glGetIntegerv(GL_MAX_TEXTURE_IMAGE_UNITS, &maxTex2);
