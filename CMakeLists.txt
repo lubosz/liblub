@@ -26,7 +26,6 @@ set(LIBRARY_OUTPUT_PATH ${CMAKE_SOURCE_DIR}/lib)
 set(EXECUTABLE_OUTPUT_PATH ${CMAKE_SOURCE_DIR}/bin)
 
 set(SRC_DIR ${CMAKE_SOURCE_DIR}/src)
-set(APP_DIR ${CMAKE_SOURCE_DIR}/apps)
 set(TEST_DIR ${CMAKE_SOURCE_DIR}/tests)
 #Optimization / Debug
 if(RELEASE)
@@ -186,16 +185,7 @@ endif()
 #link
 target_link_libraries(lub ${LIBS})
 
-#build examples
-file(GLOB_RECURSE EXAMPLES ${APP_DIR}/*.cpp)
-
-foreach(EXAMPLE_PATH ${EXAMPLES})
-    STRING(REGEX REPLACE "\\.cpp" "" EXAMPLE_NAME "${EXAMPLE_PATH}")
-    STRING(REGEX REPLACE "^.*/([^/]*)\$" "\\1" EXAMPLE_NAME "${EXAMPLE_NAME}")
-    add_executable(${EXAMPLE_NAME} "${EXAMPLE_PATH}")
-    target_link_libraries(${EXAMPLE_NAME} lub)
-endforeach(EXAMPLE_PATH)
-
+ADD_SUBDIRECTORY(apps)
 
 #build tests
 if(BUILD_TESTS)
