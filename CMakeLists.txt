@@ -117,10 +117,10 @@ include_directories(
 	    ${SDL_DIR}/include
 	else()
 	   if(LIBLUB_WINDOWS)
-	   /usr/i486-mingw32/include/SDL
-	    else()
-	   /usr/include/SDL/
-	    endif()
+	      /usr/i486-mingw32/include/SDL
+	   else()
+	      /usr/include/SDL/
+	   endif()
 	endif()
 )
 
@@ -153,19 +153,14 @@ set(SOURCES ${SOURCES} ${GLOB_RESULT})
 set(SOURCES ${SOURCES} ${MOC_OUTFILES})
 add_library(lub ${SOURCES})
 
-#ADD_DEFINITIONS(-DUSE_FREEIMAGE)
-
 #libs to link
 set(LIBS
     ${OPENGL_LIB}
     ${QT_LIBRARIES}
-    #freeimageplus
     ${Grantlee_CORE_LIBRARIES}
     assimp
-    #/home/bmonkey/Desktop/Assimp32.dll
-    #/usr/i486-mingw32/lib/libassimp.dll
-    #GLEW
 )
+
 if(LIBLUB_WINDOWS)
     list(APPEND LIBS glew32)
 endif()
@@ -186,17 +181,7 @@ endif()
 target_link_libraries(lub ${LIBS})
 
 ADD_SUBDIRECTORY(apps)
-
-#build tests
-if(BUILD_TESTS)
-    file(GLOB_RECURSE TESTS ${TEST_DIR}/*.cpp)
-    foreach(TEST_PATH ${TESTS})
-        string(REGEX REPLACE "\\.cpp" "" TEST_NAME "${TEST_PATH}")
-        string(REGEX REPLACE "^.*/([^/]*)\$" "\\1" TEST_NAME "${TEST_NAME}")
-        add_executable(${TEST_NAME} "${TEST_PATH}")
-        target_link_libraries(${TEST_NAME} lub cppunit)
-    endforeach(TEST_PATH)
-endif()
+ADD_SUBDIRECTORY(tests)
 
 #check code stlye
 if(EXISTS "/usr/bin/python2")
