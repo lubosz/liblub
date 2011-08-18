@@ -1,12 +1,12 @@
 # liblub
 
-An OpenGL 3.3 Core Framework.
+An OpenGL 4 and 3.3 Core Framework.
 
 ## Dependencies
 
 You need the following packages on Ubuntu. (other distros similar)
 
-`$ sudo aptitude install build-essential cmake libqt4-dev libfreeimage-dev libboost-dev`
+`$ sudo aptitude install build-essential cmake libqt4-dev libgrantlee-dev libboost-dev`
 
 You also need assimp (i.e. from git).
 
