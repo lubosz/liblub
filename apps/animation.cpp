@@ -46,9 +46,9 @@ class LoadApp: public Application {
     Node * sponge = SceneGraph::Instance().getNode("menger sponge");
     sponge->rotation += QVector3D(0.1,0.2,0);
     sponge->update();
-    if(Timer::Instance().secoundsPassed >= 5) {
-      MediaLayer::Instance().quit = true;
-    }
+//    if(Timer::Instance().secoundsPassed >= 5) {
+//      MediaLayer::Instance().quit = true;
+//    }
 //    SceneData::Instance().getCurrentCamera()->position += QVector3D(.1,0,0);
   }
 };
