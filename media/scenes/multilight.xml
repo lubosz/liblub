@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <liblub>
 	<Programs>
-	<!-- 
 		<Program name="multilight">
 			 <Shader url="Color/multilight" />
 			<Uniform value="0, 0, 0, 0" name="ambientSceneColor" />
@@ -9,10 +8,6 @@
 			<Uniform value="0.8, 0.8, 0.8,1.0" name="specularMaterialColor" />
 			<Uniform value="4.3" name="shininess" />
 		</Program>
-	 -->
-			<!-- 
-			 <Template url="Post/MultiTarget" />
-			 -->
 		<Program name="CubeMap">
 			<Shader url="Texture/cubemapSky" />
 		</Program>
@@ -53,8 +48,6 @@
 		<Object name="monkey" mesh="monkey" material="white" scale="2.0" position="-5,0,-5" />
 		<Object name="radio" mesh="radio" material="white" scale="0.5" position="-5,0,5" />
 		<Object name="Plane" mesh="plane" material="white" scale="20" position="0,-5,0" receive_shadows="true" cast_shadows="false" />
-		<!-- 
 		<Object name="sky" mesh="sphere" material="CubeMap" scale="800" position="0, 0, 0" />
-		 -->
 	</Scene>
 </liblub>
