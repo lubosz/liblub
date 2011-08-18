@@ -17,7 +17,6 @@
     along with liblub.  If not, see <http://www.gnu.org/licenses/>.
 */
 #ifdef WITH_Qt
-#include <GL/glew.h>
 #include <string>
 #include <QApplication>
 #include <QPainter>
@@ -38,6 +37,7 @@
 
 int main(int argc, char *argv[]) {
 #if LIBLUB_WINDOWS
+#include <GL/glew.h>
   initWinGL();
 #endif
   QApplication app(argc, argv);
