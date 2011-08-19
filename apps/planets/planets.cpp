@@ -31,9 +31,9 @@
 #include "Material/ProcTextures.h"
 #include "Material/Textures.h"
 #include "Material/ShaderProgram.h"
-#include "Planets/Planet.h"
-#include "Window/Qt/Window.h"
-#include "Window/Qt/glWidget.h"
+#include "Planet.h"
+#include "Window.h"
+#include "glWidget.h"
 
 int main(int argc, char *argv[]) {
 #if LIBLUB_WINDOWS

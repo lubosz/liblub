@@ -8,7 +8,7 @@
 #include "Renderer/FrameBuffer.h"
 #include "Scene/Light.h"
 #include "Scene/Camera.h"
-#include "Planets/Planet.h"
+#include "Planet.h"
 
 class GLWidget: public QGLWidget {
   Q_OBJECT

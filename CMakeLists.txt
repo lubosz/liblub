@@ -69,16 +69,6 @@ if(NOT OPENGL_FOUND)
 	message("ERROR: OpenGL not found")
 endif(NOT OPENGL_FOUND)
 
-#moc qt stuff
-set(MOC_INFILES 
-    src/Window/Qt/Window.h 
-    src/Window/Qt/glWidget.h 
-    src/Planets/Planet.h 
-    src/Window/Qt/PlanetWidget.h
-    src/Window/Qt/FloatEditorWidget.h
-)
-qt4_wrap_cpp (MOC_OUTFILES ${MOC_INFILES})
-
 #check for opengl3 headers
 function(download_gl_header GL_HEADER)
     if(NOT EXISTS ${CMAKE_SOURCE_DIR}/src/Renderer/GL3/${GL_HEADER})
@@ -132,7 +122,7 @@ include_directories(
 
 #Add liblub sources
 set(SOURCE_DIRS
-        Renderer Material Mesh Scene System Planets
+        Renderer Material Mesh Scene System
 )
 foreach(SOURCE_DIR ${SOURCE_DIRS})
     file(GLOB_RECURSE GLOB_RESULT ${SRC_DIR}/${SOURCE_DIR}/*.cpp)
@@ -178,7 +168,6 @@ file(GLOB_RECURSE GLOB_RESULT ${SRC_DIR}/Window/*.h)
 set(WINDOW_CODE ${WINDOW_CODE} ${GLOB_RESULT})
 
 set(SOURCES ${SOURCES} ${WINDOW_CODE})
-set(SOURCES ${SOURCES} ${MOC_OUTFILES})
 add_library(lub ${SOURCES})
 
 #libs to link
