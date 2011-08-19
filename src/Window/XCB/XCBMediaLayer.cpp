@@ -10,7 +10,6 @@
 #include "Scene/Camera.h"
 #include "Scene/SceneData.h"
 #include "System/Config.h"
-#include "System/Logger.h"
 #include "System/GUI.h"
 #include "System/Timer.h"
 #include "XCBMediaLayer.h"
@@ -32,7 +31,6 @@ XCBMediaLayer::XCBMediaLayer() {
 }
 
 void XCBMediaLayer::init(string title) {
-  LogInfo << "Initializing XCB";
 
   programTile = title;
 
@@ -187,11 +185,9 @@ void XCBMediaLayer::createWindow() {
 
   drawable = glxwindow;
 
-  LogInfo << "Making Context Current";
   /* make OpenGL context current */
   if (!glXMakeContextCurrent(display, drawable, drawable, context))
     LogError <<  "glXMakeContextCurrent failed";
-  LogInfo<< "Context activated";
 
   // Set swap interval
   PFNGLXSWAPINTERVALSGIPROC
