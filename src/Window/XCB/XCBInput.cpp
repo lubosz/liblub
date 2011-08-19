@@ -105,29 +105,7 @@ void XCBInput::eventLoop() {
 }
 
 void XCBInput::checkKey(xcb_keysym_t pressedKey) {
-
-//		uvmoveprog =
-//						SceneGraph::Instance().getNode("uvmovenode")
-//						->getMaterial()->shaderProgram;
     switch (pressedKey) {
-      case XK_i:
-        SceneData::Instance().getProgram("uvmove")->translateUniformf(0,{0,inputSpeed/10.0f});
-        break;
-      case XK_j:
-        SceneData::Instance().getProgram("uvmove")->translateUniformf(0,{-inputSpeed/10.0f,0});
-        break;
-      case XK_k:
-        SceneData::Instance().getProgram("uvmove")->translateUniformf(0,{0,-inputSpeed/10.0f});
-        break;
-      case XK_l:
-        SceneData::Instance().getProgram("uvmove")->translateUniformf(0,{inputSpeed/10.0f,0});
-        break;
-      case XK_u:
-        SceneData::Instance().getProgram("uvmove")->translateUniformf(1,{inputSpeed/10.0f});
-        break;
-      case XK_o:
-        SceneData::Instance().getProgram("uvmove")->translateUniformf(1,{-inputSpeed/10.0f});
-        break;
         case XK_w:
             SceneData::Instance().getCurrentCamera()->forwardDirection(inputSpeed);
             break;
