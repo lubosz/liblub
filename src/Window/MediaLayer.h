@@ -16,6 +16,7 @@ class MediaLayer {
 public:
 	friend class Input;
 	friend class XCBInput;
+	friend class SDLInput;
 
 	Input * input;
   bool quit;

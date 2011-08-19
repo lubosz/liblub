@@ -5,35 +5,33 @@
  *      Author: bmonkey
  */
 
-#include "Input.h"
-#include "Camera.h"
-#include "MediaLayer.h"
-#include "RenderEngine.h"
+#include "SFMLInput.h"
+#include "SFMLMediaLayer.h"
 
-Input::Input() {
-
+SFMLInput::SFMLInput(SFMLMediaLayer * mediaLayer) {
+  this->mediaLayer = mediaLayer;
 }
 
-Input::~Input() {
+SFMLInput::~SFMLInput() {
 	// TODO Auto-generated destructor stub
 }
 
-void Input::eventLoop(){
+void SFMLInput::eventLoop(){
     // Process events
-    sf::Event event;
-    while (MediaLayer::Instance().window->GetEvent(event))
-    {
-        // Close window : exit
-        if (event.Type == sf::Event::Closed)
-        	MediaLayer::Instance().quit = true;
-
-        // Escape key : exit
-        if ((event.Type == sf::Event::KeyPressed) && (event.Key.Code == sf::Key::Escape))
-        	MediaLayer::Instance().quit = true;
+//    sf::Event event;
+//    while (mediaLayer->window->GetEvent(event))
+//    {
+//        // Close window : exit
+//        if (event.Type == sf::Event::Closed)
+//          mediaLayer->quit = true;
+//
+//        // Escape key : exit
+//        if ((event.Type == sf::Event::KeyPressed) && (event.Key.Code == sf::Key::Escape))
+//          mediaLayer->quit = true;
 /*
         // Adjust the viewport when the window is resized
         if (event.Type == sf::Event::Resized)
             glViewport(0, 0, event.Size.Width, event.Size.Height);
 */
-    }
+//    }
 }

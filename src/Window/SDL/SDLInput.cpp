@@ -10,21 +10,24 @@
 #include "Window/MediaLayer.h"
 #include "Renderer/RenderEngine.h"
 #include "System/Logger.h"
+#include "SDLInput.h"
+#include "SDLMediaLayer.h"
 
-Input::Input() {
+SDLInput::SDLInput(SDLMediaLayer * mediaLayer) {
   // TODO(bmonkey): Hardcoded values => xml
   inputSpeed = .01;
   mouseSensitivity = .1;
+  this->mediaLayer = mediaLayer;
 }
 
-Input::~Input() {
+SDLInput::~SDLInput() {
 	// TODO Auto-generated destructor stub
 }
 
-void Input::eventLoop(){
+void SDLInput::eventLoop(){
 	keystate = SDL_GetKeyboardState(NULL);
 	if ( keystate[SDL_SCANCODE_RETURN] ) printf("<RETURN> is pressed.\n");
-	if ( keystate[SDL_SCANCODE_ESCAPE] ) MediaLayer::Instance().shutdown();
+	if ( keystate[SDL_SCANCODE_ESCAPE] ) mediaLayer->shutdown();
 	if ( keystate[SDL_SCANCODE_W] ) SceneData::Instance().getCurrentCamera()->forwardDirection(inputSpeed);
 	if ( keystate[SDL_SCANCODE_A] ) SceneData::Instance().getCurrentCamera()->leftDirection(inputSpeed);
 	if ( keystate[SDL_SCANCODE_S] ) SceneData::Instance().getCurrentCamera()->backwardDirection(inputSpeed);
@@ -44,7 +47,7 @@ void Input::eventLoop(){
 				switch ( event.key.keysym.sym ) {
 
 						case 'f':
-							MediaLayer::Instance().toggleFullScreen();
+						  mediaLayer->toggleFullScreen();
 							break;
 
 						case 't':
@@ -52,7 +55,7 @@ void Input::eventLoop(){
 							break;
 
 						case 'g':
-							MediaLayer::Instance().toggleMouseGrab();
+						  mediaLayer->toggleMouseGrab();
 							break;
 
 						default:
@@ -66,7 +69,7 @@ void Input::eventLoop(){
             break;
 
          case SDL_QUIT:
-        	MediaLayer::Instance().shutdown();
+           mediaLayer->shutdown();
             break;
 
          case SDL_MOUSEWHEEL:

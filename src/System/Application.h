@@ -46,22 +46,22 @@ class Application {
 	  if (type == windowXCB) {
 #ifdef WITH_XCB
 	    mediaLayer = new XCBMediaLayer();
-	    LogInfo << "Using XCB Media Layer.";
+	    LogInfo << "Using XCB for Input and Window";
 #endif
 	  } else if (type == windowQt) {
 #ifdef WITH_Qt
 	    mediaLayer = new QtMediaLayer();
-	    LogInfo << "Using Qt Media Layer.";
+	    LogInfo << "Using Qt for Input and Window";
 #endif
 	  } else if (type == windowSFML) {
 #ifdef WITH_SFML
 	    mediaLayer = new SFMLMediaLayer();
-	    LogInfo << "Using SFML Media Layer.";
+	    LogInfo << "Using SFML for Input and Window";
 #endif
 	  } else if (type == windowSDL) {
 #ifdef WITH_SDL
 	    mediaLayer = new SDLMediaLayer();
-	    LogInfo << "Using SDL Media Layer.";
+	    LogInfo << "Using SDL for Input and Window";
 #endif
 	  }
 	}
@@ -71,8 +71,8 @@ class Application {
 	  run(windowXCB);
 #elif WITH_SDL
     run(windowSDL);
-//#elif WITH_SFML
-//    run(windowSFML);
+#elif WITH_SFML
+    run(windowSFML);
 //#elif WITH_Qt
 //    run(windowQt);
 #else

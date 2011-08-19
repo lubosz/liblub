@@ -140,12 +140,17 @@ foreach(SOURCE_DIR ${SOURCE_DIRS})
 endforeach(SOURCE_DIR)
 
 # choose window lib
-
 if(WITH_SDL)
+	if(SDL_LOCAL)
+		list(APPEND LIBS ${SDL_DIR}/build/.libs/libSDL.a)
+	else()
+		list(APPEND LIBS SDL)
+	endif()
     set(WINDOW_TYPES ${WINDOW_TYPES} SDL)
 endif()
 
 if(WITH_SFML)
+	list(APPEND LIBS sfml-graphics)
     set(WINDOW_TYPES ${WINDOW_TYPES} SFML)
 endif()
 
@@ -154,6 +159,7 @@ if(WITH_Qt)
 endif()
 
 if(WITH_XCB)
+	list(APPEND LIBS X11-xcb xcb-keysyms)
     set(WINDOW_TYPES ${WINDOW_TYPES} XCB)
 endif()
 
@@ -176,7 +182,7 @@ set(SOURCES ${SOURCES} ${MOC_OUTFILES})
 add_library(lub ${SOURCES})
 
 #libs to link
-set(LIBS
+list(APPEND LIBS
     ${OPENGL_LIB}
     ${QT_LIBRARIES}
     ${Grantlee_CORE_LIBRARIES}
@@ -185,18 +191,6 @@ set(LIBS
 
 if(LIBLUB_WINDOWS)
     list(APPEND LIBS glew32)
-endif()
-if(WITH_SDL)
-	if(SDL_LOCAL)
-		#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -L${SDL_DIR}/build/.libs")
-		list(APPEND LIBS ${SDL_DIR}/build/.libs/libSDL.a)
-	else()
-		list(APPEND LIBS SDL)
-	endif()
-elseif(WITH_SFML)
-	list(APPEND LIBS sfml-graphics)
-elseif(WITH_XCB)
-	list(APPEND LIBS X11-xcb xcb-keysyms)
 endif()
 
 #link

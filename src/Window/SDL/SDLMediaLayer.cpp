@@ -5,17 +5,18 @@
  *      Author: bmonkey
  */
 
+#include "SDLMediaLayer.h"
 #include <iostream>
 #include <sstream>
-#include "Window/MediaLayer.h"
 #include "Scene/SceneData.h"
 #include "System/Logger.h"
 #include "System/Config.h"
 #include "System/Timer.h"
+#include "SDLInput.h"
 
 using std::stringstream;
 
-MediaLayer::MediaLayer() {
+SDLMediaLayer::SDLMediaLayer() {
 
 	//FPS Stuff
 	fps_lasttime = 0; //the last recorded time.
@@ -25,10 +26,10 @@ MediaLayer::MediaLayer() {
 	grab = false;
 
 	quit = false;
-	input = new Input();
+	input = (Input*) new SDLInput(this);
 }
 
-void MediaLayer::init(string title) {
+void SDLMediaLayer::init(string title) {
 	programTile = title;
 
     /* Create our window, opengl context, etc... */
@@ -60,9 +61,7 @@ void MediaLayer::init(string title) {
 
     //cout << "WIDTH/HEIGHT "<< info->current_w << " " << info->current_h << "\n";
 	LogDebug << "WIDTH/HEIGHT "<< width << " " << height << "\n";
-	SceneData::Instance().getCurrentCamera()->setAspect(
-      float(MediaLayer::Instance().width)
-          / float(MediaLayer::Instance().height));
+	SceneData::Instance().getCurrentCamera()->setAspect(float(width)/ float(height));
     /* Create our window centered at 512x512 resolution */
     mainWindow = SDL_CreateWindow(
 				title.c_str(),
@@ -97,14 +96,14 @@ void MediaLayer::init(string title) {
 
 }
 
-MediaLayer::~MediaLayer() {
+SDLMediaLayer::~SDLMediaLayer() {
     /* Delete our opengl context, destroy our window, and shutdown SDL */
     SDL_GL_DeleteContext(mainContext);
     SDL_DestroyWindow(mainWindow);
     SDL_Quit();
 }
 
-void MediaLayer::swapBuffers(){
+void SDLMediaLayer::swapBuffers(){
     /* Swap our buffers to make our changes visible */
     SDL_GL_SwapWindow(mainWindow);
 
@@ -112,7 +111,7 @@ void MediaLayer::swapBuffers(){
     //SDL_Delay(33);
 }
 
-void MediaLayer::toggleFullScreen(){
+void SDLMediaLayer::toggleFullScreen(){
 	if(fullscreen){
 		printf("Fullscreen Off\n");
 		if(SDL_SetWindowFullscreen(mainWindow, SDL_FALSE)!=0){
@@ -129,7 +128,7 @@ void MediaLayer::toggleFullScreen(){
 
 }
 
-void MediaLayer::toggleMouseGrab(){
+void SDLMediaLayer::toggleMouseGrab(){
 	if (grab){
 		SDL_SetWindowGrab(mainWindow, SDL_FALSE);
 //		SDL_WM_GrabInput(SDL_GRAB_OFF);
@@ -145,7 +144,7 @@ void MediaLayer::toggleMouseGrab(){
 	}
 }
 
-void MediaLayer::renderFrame(){
+void SDLMediaLayer::renderFrame(){
   Timer::Instance().frame();
 
 //    while (!quit) {
@@ -164,4 +163,8 @@ void MediaLayer::renderFrame(){
         SDL_SetWindowTitle(mainWindow, windowTitle.str().c_str());
 
 //    }
+}
+
+void SDLMediaLayer::mouseLook(int x, int y) {
+
 }
