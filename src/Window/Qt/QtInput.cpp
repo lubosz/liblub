@@ -5,21 +5,17 @@
  *      Author: bmonkey
  */
 
-#include "Window/Input.h"
-#include "Scene/SceneData.h"
-#include "Window/MediaLayer.h"
-#include "Renderer/RenderEngine.h"
-#include "System/Logger.h"
+#include "QtInput.h"
 
-Input::Input() {
+QtInput::QtInput() {
   // TODO(bmonkey): Hardcoded values => xml
   inputSpeed = .01;
   mouseSensitivity = .1;
 }
 
-Input::~Input() {
+QtInput::~QtInput() {
 	// TODO Auto-generated destructor stub
 }
 
-void Input::eventLoop(){
+void QtInput::eventLoop(){
 }

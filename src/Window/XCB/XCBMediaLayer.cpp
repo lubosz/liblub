@@ -17,7 +17,7 @@
 
 using std::stringstream;
 
-MediaLayer::MediaLayer() {
+XCBMediaLayer::XCBMediaLayer() {
   fullscreen = false;
   grab = false;
   quit = false;
@@ -30,7 +30,7 @@ MediaLayer::MediaLayer() {
   createBlankCursor();
 }
 
-void MediaLayer::init(string title) {
+void XCBMediaLayer::init(string title) {
   programTile = title;
 
 
@@ -50,7 +50,7 @@ void MediaLayer::init(string title) {
           static_cast<float>(MediaLayer::Instance().height));
 }
 
-MediaLayer::~MediaLayer() {
+XCBMediaLayer::~MediaLayer() {
     /* Cleanup */
     glXDestroyWindow(display, glxwindow);
     xcb_destroy_window(connection, window);
@@ -58,7 +58,7 @@ MediaLayer::~MediaLayer() {
     XCloseDisplay(display);
 }
 
-void MediaLayer::createBlankCursor() {
+void XCBMediaLayer::createBlankCursor() {
   cursor = xcb_generate_id(connection);
   xcb_pixmap_t pix = xcb_generate_id(connection);
 
@@ -66,7 +66,7 @@ void MediaLayer::createBlankCursor() {
   xcb_create_cursor(connection, cursor, pix, pix, 0, 0, 0, 0, 0, 0, 1, 1);
 }
 
-void MediaLayer::initScreen() {
+void XCBMediaLayer::initScreen() {
     /* Open Xlib Display */
     display = XOpenDisplay(0);
     if (!display) LogError << "Can't open display";
@@ -93,7 +93,7 @@ void MediaLayer::initScreen() {
   height = screen->height_in_pixels;
 }
 
-void MediaLayer::initFrameBuffer() {
+void XCBMediaLayer::initFrameBuffer() {
     /* Query framebuffer configurations */
     GLXFBConfig *fb_configs = 0;
     int num_fb_configs = 0;
@@ -103,7 +103,7 @@ void MediaLayer::initFrameBuffer() {
     fb_config = fb_configs[0];
 }
 
-void MediaLayer::createGLContext() {
+void XCBMediaLayer::createGLContext() {
   /* Initialize window and OpenGL context */
   visualID = 0;
 
@@ -135,7 +135,7 @@ void MediaLayer::createGLContext() {
   if (!context) LogError << "glXCreateNewContext failed";
 }
 
-void MediaLayer::createColorMap() {
+void XCBMediaLayer::createColorMap() {
   /* Create XID's for colormap and window */
   colormap = xcb_generate_id(connection);
   window = xcb_generate_id(connection);
@@ -149,7 +149,7 @@ void MediaLayer::createColorMap() {
       visualID);
 }
 
-void MediaLayer::createWindow() {
+void XCBMediaLayer::createWindow() {
   eventmask =
       XCB_EVENT_MASK_KEY_PRESS |
       XCB_EVENT_MASK_POINTER_MOTION |
@@ -201,7 +201,7 @@ void MediaLayer::createWindow() {
   setWindowTitle(programTile);
 }
 
-void MediaLayer::swapBuffers() {
+void XCBMediaLayer::swapBuffers() {
   glXSwapBuffers(display, drawable);
 }
 /*
@@ -251,12 +251,12 @@ static void
 
 }
 */
-xcb_intern_atom_cookie_t MediaLayer::getCookieForAtom(string state_name) {
+xcb_intern_atom_cookie_t XCBMediaLayer::getCookieForAtom(string state_name) {
   return xcb_intern_atom(
     connection, 0, state_name.length(), state_name.c_str());
 }
 
-xcb_atom_t MediaLayer::getReplyAtomFromCookie(xcb_intern_atom_cookie_t cookie) {
+xcb_atom_t XCBMediaLayer::getReplyAtomFromCookie(xcb_intern_atom_cookie_t cookie) {
   xcb_generic_error_t * error;
   xcb_intern_atom_reply_t *reply =
           xcb_intern_atom_reply(connection, cookie, &error);
@@ -266,7 +266,7 @@ xcb_atom_t MediaLayer::getReplyAtomFromCookie(xcb_intern_atom_cookie_t cookie) {
   return reply->atom;
 }
 
-void MediaLayer::toggleFullScreen() {
+void XCBMediaLayer::toggleFullScreen() {
   if (fullscreen) {
     LogInfo << "Fullscreen off";
   } else {
@@ -304,7 +304,7 @@ void MediaLayer::toggleFullScreen() {
       (const char *) &ev);
 }
 
-void MediaLayer::renderFrame() {
+void XCBMediaLayer::renderFrame() {
   Timer::Instance().frame();
 
   // TODO(bmonkey): should be per secound, and not per frame (breaks mouse input)
@@ -316,7 +316,7 @@ void MediaLayer::renderFrame() {
   swapBuffers();
 }
 
-void MediaLayer::setWindowTitle(string title) {
+void XCBMediaLayer::setWindowTitle(string title) {
     xcb_change_property(
       connection,
       XCB_PROP_MODE_REPLACE,
@@ -328,7 +328,7 @@ void MediaLayer::setWindowTitle(string title) {
     title.c_str());
 }
 
-void MediaLayer::toggleMouseGrab() {
+void XCBMediaLayer::toggleMouseGrab() {
   if (!grab) {
     // hide cursor
     uint32_t value_list = cursor;
@@ -351,7 +351,7 @@ void MediaLayer::toggleMouseGrab() {
   }
 }
 
-void MediaLayer::mouseLook(int x, int y) {
+void XCBMediaLayer::mouseLook(int x, int y) {
   unsigned halfWidth = width/2;
   unsigned halfHeight = height/2;
 

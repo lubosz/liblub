@@ -10,7 +10,7 @@
 #include "MediaLayer.h"
 #include "Camera.h"
 
-MediaLayer::MediaLayer() {
+SFMLMediaLayer::SFMLMediaLayer() {
 
 	//FPS Stuff
 	/*
@@ -28,7 +28,7 @@ MediaLayer::MediaLayer() {
 
 }
 
-void MediaLayer::init(string title) {
+void SFMLMediaLayer::init(string title) {
 	programTile = title;
 	//sf::RenderWindow window(sf::VideoMode(800, 600), title);
    
@@ -45,22 +45,22 @@ void MediaLayer::init(string title) {
 
 }
 
-MediaLayer::~MediaLayer() {
+SFMLMediaLayer::~SFMLMediaLayer() {
    
 }
 
 /* A simple function that prints a message, the error code returned by SDL, and quits the application */
-void MediaLayer::error(string msg)
+void SFMLMediaLayer::error(string msg)
 {
     printf("%s: \n", msg.c_str());
     exit(1);
 }
 
-void MediaLayer::swapBuffers(){
+void SFMLMediaLayer::swapBuffers(){
     window->Display();
 }
 
-void MediaLayer::toggleFullScreen(){
+void SFMLMediaLayer::toggleFullScreen(){
 	if(fullscreen){
 		printf("Fullscreen Off\n");
 
@@ -73,7 +73,7 @@ void MediaLayer::toggleFullScreen(){
 
 }
 
-void MediaLayer::toggleMouseGrab(){
+void SFMLMediaLayer::toggleMouseGrab(){
 	if (grab){
 
 		cout << "Grab Off\n";
@@ -85,7 +85,7 @@ void MediaLayer::toggleMouseGrab(){
 	}
 }
 
-void MediaLayer::renderLoop(){
+void SFMLMediaLayer::renderLoop(){
     while (!quit) {
         /* process pending events */
     	input->eventLoop();
