@@ -5,6 +5,7 @@
  *  Created on: Oct 4, 2010
  */
 
+#include "Renderer/RenderSequence.h"
 #include "Window/MediaLayer.h"
 #include "System/Logger.h"
 
