@@ -6,6 +6,7 @@ searchstring = "find media/textures/ | grep '\.' | sed 's/media\/textures\/// '"
 
 texture_count = {}
 cube_maps = {}
+unused_textures = []
 
 for texture in os.popen(searchstring).readlines():
   texture_name = texture.strip()
@@ -24,4 +25,18 @@ for cube_map in cube_maps:
 
 sorted_textures = sorted(texture_count.items(), key=operator.itemgetter(1))
 for texture, value in reversed(sorted_textures):
-  print (value, texture)
+  if value == 0:
+    unused_textures.append(texture)
+  else:
+    pass    
+    #print (value, texture)
+    
+sorted_unused = sorted(unused_textures)
+for texture in sorted_unused:
+  if not "/" in texture:
+    print (texture)
+    
+for texture in sorted_unused:
+  if "/" in texture:
+    print (texture)
+print(len(unused_textures), "/" , len(sorted_textures), "textures unused.")
