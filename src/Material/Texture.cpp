@@ -54,6 +54,8 @@ void Texture::loadFile(const string & path) {
 void Texture::loadFile(GLenum target, const string & path) {
   QImage * image = new QImage();
   image->load(QString::fromStdString(path));
+  if(image->isNull())
+    LogFatal << path << "does not exist";
 
   //Qt loads image with wrong pixel order
   *image = image->mirrored(false, true);
