@@ -3,7 +3,13 @@ project(liblub)
 
 #Set Options
 option(WITH_Qt "Use Qt window/input backend" ON)
+
+if(LIBLUB_WINDOWS)
 option(WITH_XCB "Use XCB (X11) window/input backend" OFF)
+else()
+option(WITH_XCB "Use XCB (X11) window/input backend" ON)
+endif()
+
 option(WITH_SFML "Use SFML 2 window/input backend" OFF)
 option(WITH_SDL "Use SDL 1.3 window/input backend" OFF)
 option(SDL_LOCAL "SDL Local" OFF)
