@@ -21,7 +21,7 @@ colors = {
 'clear':              '\033[0m',
 }
 def grepCount(search_string):
-    grepstring = "grep %s * -IR" % search_string
+    grepstring = "grep '%s' * -IR" % search_string
     return len(os.popen(grepstring).readlines())
 
 def sort(item_dict):
@@ -59,63 +59,65 @@ class AssetPack:
             self.unused.append(item)
         else:
             self.used[item] = value
+            
+    def printAll(self, name):
+      self.type = name
+      self.printTitle()
+      self.printUsed()
+      self.printUnused()
+      self.printStats()
 
 class TexturePack(AssetPack):
   
   def __init__(self):
       AssetPack.__init__(self)
-      self.type = "textures"
-      self.printTitle()
       self.search()
       self.getSorted()
-      self.printUsed()
-      self.printUnused()
-      self.printStats()
+      self.printAll("textures")
       
   def search(self):
-      searchstring = "find media/textures/ | grep '\.' | sed 's/media\/textures\/// '"
-
-      """
-for dirname, dirnames, filenames in os.walk('media/meshes'):
-    for subdirname in dirnames:
-        print os.path.join(dirname, subdirname)
-    for filename in filenames:
-        print os.path.join(dirname, filename)
-      """
-
-      self.cube_maps = {}
-      for texture in os.popen(searchstring).readlines():
-        texture_name = texture.strip()
-        if texture_name.find("cubemaps"):
-          self.search_result[texture_name] = grepCount(texture_name)
-        else:
-          self.cube_maps[texture_name.split("_")[0]] = 1
-    
-      for cube_map in self.cube_maps:
+      textures = []
+      cube_maps = {}
+      for dirname, dirnames, filenames in os.walk('media/textures'):
+          for filename in filenames:
+              texture = os.path.join(dirname, filename).replace("media/textures/","")
+              if texture.find("cubemaps"):
+                self.search_result[texture] = grepCount(texture)
+              else:
+                cube_maps[texture.split("_")[0]] = 1
+      
+      for cube_map in cube_maps:
         self.search_result[cube_map] = grepCount(cube_map)
-
 
 class MeshPack(AssetPack):
   
   def __init__(self):
       AssetPack.__init__(self)
-      self.type = "meshes"
-      self.printTitle()
       self.search()
       self.getSorted()
-      self.printUsed()
-      self.printUnused()
-      self.printStats()
+      self.printAll("meshes")
       
   def search(self):
       for dirname, dirnames, filenames in os.walk('media/meshes'):
           for filename in filenames:
               self.search_result[filename] = grepCount(filename)
+
+class ShaderPack(AssetPack):
+  
+  def __init__(self):
+      AssetPack.__init__(self)
+      self.search()
+      self.getSorted()
+      self.printAll("shaders")
       
-  def printStuff(self):
-      for mesh in unused_meshes:
-        print (mesh)
-
-
+  def search(self):
+      for dirname, dirnames, filenames in os.walk('media/shaders'):
+          for filename in filenames:
+              shaderpath = dirname + "/" + filename
+              shaderpath = shaderpath.replace("media/shaders/","")
+              self.search_result[shaderpath.replace(".vert","").replace(".frag","")] = 0
+      for result in self.search_result:
+        self.search_result[result] =  grepCount(result)
 TexturePack()
 MeshPack()
+ShaderPack()
