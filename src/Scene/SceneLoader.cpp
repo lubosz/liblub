@@ -160,28 +160,7 @@ void SceneLoader::appendMesh(const QDomElement & meshNode) {
         attributes.push_back("tangent");
         attributes.push_back("bitangent");
         attributes.push_back("uv");
-
-        if (meshNode.hasAttribute("drawType")) {
-            GLint drawType = GL_TRIANGLES;
-            string drawTypeString =
-                    meshNode.attribute("drawType").toStdString();
-
-            if (drawTypeString == "PATCHES")
-                drawType = GL_PATCHES;
-            else if (drawTypeString == "POINTS")
-                drawType = GL_POINTS;
-            else if (drawTypeString == "TRIANGLE_STRIP")
-                drawType = GL_TRIANGLE_STRIP;
-            else if (drawTypeString == "TRIANGLES")
-                drawType = GL_TRIANGLES;
-            else if (drawTypeString == "LINES")
-                drawType = GL_LINES;
-
             mesh = MeshLoader::load(attributes, meshUrl);
-            mesh->setDrawType(drawType);
-        } else {
-            mesh = MeshLoader::load(attributes, meshUrl);
-        }
     } else if (meshNode.tagName() == "Procedural") {
         if (meshNode.attribute("type") == "Sponge") {
           QList<string> attributes;
@@ -200,13 +179,66 @@ void SceneLoader::appendMesh(const QDomElement & meshNode) {
                     meshNode.attribute("density").toFloat(),
                     meshNode.attribute("randomness").toFloat(),
                     meshNode.attribute("colorIntensity").toFloat());
+        } else if (meshNode.attribute("type") == "Tetrahedron") {
+          QList<string> attributes;
+          attributes.push_back("color");
+            mesh = Geometry::tetrahedron(attributes);
+        } else if (meshNode.attribute("type") == "Cube") {
+          QList<string> attributes;
+          attributes.push_back("color");
+            mesh = Geometry::cube(attributes);
+        } else if (meshNode.attribute("type") == "Plane") {
+          QList<string> attributes;
+          attributes.push_back("color");
+            mesh = Geometry::plane(
+                attributes,
+                QRectF(
+                    meshNode.attribute("left").toFloat(),
+                    meshNode.attribute("top").toFloat(),
+                    meshNode.attribute("width").toFloat(),
+                    meshNode.attribute("height").toFloat()));
+        } else if (meshNode.attribute("type") == "Sphere") {
+          QList<string> attributes;
+          attributes.push_back("color");
+            mesh = Geometry::sphere(
+                attributes,
+                    meshNode.attribute("radius").toFloat(),
+                    meshNode.attribute("slices").toInt(),
+                    meshNode.attribute("stacks").toInt());
+        } else if (meshNode.attribute("type") == "Icosahedron") {
+          QList<string> attributes;
+          attributes.push_back("color");
+            mesh = Geometry::icosahedron(attributes);
         } else if (meshNode.attribute("type") == "Spiral") {
           QList<string> attributes;
           attributes.push_back("color");
             mesh = Geometry::spiral(
                 attributes,
                     meshNode.attribute("resolution").toFloat());
+        } else {
+          QList<string> attributes;
+          attributes.push_back("color");
+            mesh = Geometry::cube(attributes);
+          LogError << "Unknown Mesh Type" << meshNode.attribute("type").toStdString();
         }
+
+    }
+    if (meshNode.hasAttribute("drawType")) {
+      GLint drawType = GL_TRIANGLES;
+      string drawTypeString = meshNode.attribute("drawType").toStdString();
+
+      if (drawTypeString == "PATCHES")
+        drawType = GL_PATCHES;
+      else if (drawTypeString == "POINTS")
+        drawType = GL_POINTS;
+      else if (drawTypeString == "TRIANGLE_STRIP")
+        drawType = GL_TRIANGLE_STRIP;
+      else if (drawTypeString == "TRIANGLES")
+        drawType = GL_TRIANGLES;
+      else if (drawTypeString == "LINES")
+        drawType = GL_LINES;
+
+      mesh->setDrawType(drawType);
     }
 
     SceneData::Instance().meshes.insert(name, mesh);
