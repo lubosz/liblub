@@ -73,7 +73,7 @@
 		</Material>
 	</Materials>
 	<Meshes>
-		<File name="clipmapmesh" url="clipmapb.blend" />
+		<File name="clipmapmesh" url="plane-high.blend" />
 		<File name="sphere" url="earth.obj" drawType="LINES" />
 		<File name="skymesh" url="earth.obj" />
 		<File name="plane" url="plane.blend" />
