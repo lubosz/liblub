@@ -362,14 +362,21 @@ void SceneLoader::load() {
 }
 
 void SceneLoader::load(const QString & fileName) {
-    QFile file(QString(Config::Instance().value<string> ("sceneDir").c_str())
-            + fileName);
+  QString filepath = QString(Config::Instance().value<string>("sceneDir").c_str())
+                + fileName;
+    QFile file(filepath);
+
+    if (!file.exists())
+      LogFatal << filepath.toStdString() << "does not exist.";
 
     QString errorStr;
     int errorLine;
     int errorColumn;
     QDomDocument domDocument;
     domDocument.setContent(&file, true, &errorStr, &errorLine, &errorColumn);
+
+    if(errorStr != "")
+      LogFatal << errorStr.toStdString();
 
     sceneXML = domDocument.documentElement();
 

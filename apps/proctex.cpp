@@ -36,9 +36,7 @@ class LoadApp: public Application {
    RenderPass * defaultPass;
    ShaderProgram * perlinNoise;
 
-  explicit LoadApp(string sceneName) {
-    QString sceneFile = QString::fromStdString(sceneName + ".xml");
-    sceneLoader = new SceneLoader(sceneFile);
+  explicit LoadApp() {
   }
 
   ~LoadApp() {}
@@ -46,7 +44,6 @@ class LoadApp: public Application {
 
 
   void scene() {
-    sceneLoader->load();
     defaultPass = new LightTogglePass();
 //    QImage * image = ProcTextures::makeGlow(QSize(1000,2000),40.0f, 0.1f);
 //
@@ -81,6 +78,6 @@ class LoadApp: public Application {
 
 int main(int argc, char *argv[]) {
   QApplication app(argc, argv);
-  LoadApp("proctex").run();
+  LoadApp().run();
 }
 

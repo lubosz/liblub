@@ -66,9 +66,6 @@ class LoadApp: public Application {
     zoomOut->getShaderProgram()->use();
     zoomOut->getShaderProgram()->setUniform("scaleUv", 100.0f);
 
-    Light * light = new Light(QVector3D(-2.5, 21.5, -5.2), QVector3D(1, -5, 0));
-    SceneData::Instance().addLight("foolight", light);
-
     GUI::Instance().init();
   }
   void renderFrame(){

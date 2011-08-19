@@ -138,7 +138,9 @@ Camera * SceneData::getCurrentCamera() {
 
 Light * SceneData::getShadowLight() {
   if(!shadowLight) {
-    LogError << "No Shadow Light";
+    LogWarning << "Adding default shadow light";
+    Light * light = new Light(QVector3D(-2.5, 21.5, -5.2), QVector3D(1, -5, 0));
+    shadowLight = light;
   }
 
   return shadowLight;
