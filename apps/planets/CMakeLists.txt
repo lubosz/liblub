@@ -5,14 +5,13 @@ file(GLOB_RECURSE CPP_FILES *.cpp)
 
 #moc qt stuff
 set(MOC_INFILES 
-    src/Window/Qt/Window.h 
-    src/Window/Qt/glWidget.h 
-    src/Planets/Planet.h 
-    src/Window/Qt/PlanetWidget.h
-    src/Window/Qt/FloatEditorWidget.h
+    Window.h 
+    glWidget.h 
+    Planet.h 
+    PlanetWidget.h
+    FloatEditorWidget.h
 )
 
-qt4_wrap_cpp (MOC_OUTFILES ${MOC_INFILES})
-
-add_executable(planets ${OC_OUTFILES} ${CPP_FILES})
+qt4_wrap_cpp(MOC_OUTFILES ${MOC_INFILES})
+add_executable(planets ${CPP_FILES} ${MOC_OUTFILES})
 target_link_libraries(planets lub)

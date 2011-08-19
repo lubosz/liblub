@@ -94,7 +94,6 @@ else()
 	include_directories(src/Renderer/)
 endif()
 
-
 #Check for nvidia libGL in ubuntu
 if(EXISTS "/usr/lib/nvidia-current/libGL.so")
 	message("Taking Ubuntu Nvidia libGL")
@@ -106,18 +105,20 @@ else()
 	set(OPENGL_LIB ${OPENGL_LIBRARY})
 endif()
 
+if(SDL_LOCAL)
+	   set(SDL_INCLUDES ${SDL_DIR}/include)
+else()
+	   if(LIBLUB_WINDOWS)
+	      set(SDL_INCLUDES /usr/i486-mingw32/include/SDL)
+	   else()
+	      set(SDL_INCLUDES /usr/include/SDL/)
+	   endif()
+endif()
+
 include_directories(
 	src
-	${QT_INCLUDES}	
-	if(SDL_LOCAL)
-	    ${SDL_DIR}/include
-	else()
-	   if(LIBLUB_WINDOWS)
-	      /usr/i486-mingw32/include/SDL
-	   else()
-	      /usr/include/SDL/
-	   endif()
-	endif()
+	${QT_INCLUDES}
+	${SDL_INCLUDES}
 )
 
 #Add liblub sources
