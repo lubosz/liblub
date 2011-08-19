@@ -75,6 +75,7 @@ class TesselationApp: public Application {
     Texture * noise = new TextureFile("terrain-noise-blur.jpg","noise");
     terrainMat->addTexture(groundTexture);
     terrainMat->addTexture(noise);
+    RenderEngine::Instance().setWire(true);
   }
   void renderFrame() {
       int maxTess = 30;
