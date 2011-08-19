@@ -50,6 +50,20 @@ Run the scenes from the root directory.
 
 `$ ./bin/sponge`
 
+View XML nice.xml scene file from media/scenes/.
+
+`$ ./bin/load nice`
+
+
+### Interesting config options
+
+You can set a few options in in the config.xml file.
+
+The OpenGL context version can be set
+<Int name="GLcontext" value="4,1" />
+
+VSync can be turned off
+<Int name="Vsync" value="0" />
 
 ### Fullscreen Mode with XCB in GNOME
 
