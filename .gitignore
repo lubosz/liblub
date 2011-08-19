@@ -1,5 +1,6 @@
 .cproject
 .project
+.pydevproject
 doc/screens
 media/meshes/dragon*.ply
 bin/
