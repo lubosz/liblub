@@ -1,0 +1,27 @@
+#!/usr/bin/python
+
+import sys, os, operator
+
+searchstring = "find media/textures/ | grep '\.' | sed 's/media\/textures\/// '"
+
+texture_count = {}
+cube_maps = {}
+
+for texture in os.popen(searchstring).readlines():
+  texture_name = texture.strip()
+  if texture_name.find("cubemaps"):
+    grepstring = "grep %s * -IR" % texture_name
+    grepresult = os.popen(grepstring).readlines()
+    texture_count[texture_name] = len(grepresult)
+  else:
+    cube_maps[texture_name.split("_")[0]] = 1
+
+for cube_map in cube_maps:
+  grepstring = "grep %s * -IR" % cube_map
+  grepresult = os.popen(grepstring).readlines()
+  texture_count[cube_map] = len(grepresult)
+
+
+sorted_textures = sorted(texture_count.items(), key=operator.itemgetter(1))
+for texture, value in reversed(sorted_textures):
+  print (value, texture)
