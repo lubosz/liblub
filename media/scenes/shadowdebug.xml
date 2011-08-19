@@ -27,7 +27,7 @@
 		<Material name="white" program="Ubershader">
 		</Material>
 	</Materials>
-	<Scene name="PCF Shadow Mapping">
+	<Scene name="Shadow Bug :D">
 		<Light position ="-9.1, 20.5, 3.5" direction="1,-2,-5" mesh="sphere" name="shadowlight" />
 		<Object name="cube1" mesh="cube" material="white" scale="1.0" position="3,-2,-9" />
 		<Object name="cube2" mesh="cube" material="white" scale="1.0" position="3,-2,-5" />

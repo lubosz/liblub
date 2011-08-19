@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<liblub>
+	<Programs>
+		<Program name="stars">
+			<Shader url="Particle/stars" />
+		</Program>
+	</Programs>
+	<Meshes>
+		<Procedural name="sponge" type="Sponge" recursion="2" />
+		<Procedural name="stars" type="Stars" resolution="10" density="1" randomness="0" colorIntensity="20" />
+		<Procedural name="tetrahedron" type="Tetrahedron" recursion="2" />
+		<Procedural name="cube" type="Cube" recursion="2" />
+		<Procedural name="plane" type="Plane" left="0" top="0" width="2" height="2" />
+		<Procedural name="sphere" type="Sphere" radius="1" slices="25" stacks="25" />
+		<Procedural name="icosahedron" type="Icosahedron" drawType="TRIANGLES" />
+		<Procedural name="spiral" type="Spiral" resolution="5000" density="1" randomness="0" />
+	</Meshes>
+	<Materials>
+		<Material name="stars" program="stars" />
+	</Materials>
+	<Scene name="Procedural Geometry">
+		<Light position ="0.3, 6.6, -3.3" direction="1,-5,-1" />
+		<Object name="sponge" mesh="sponge" material="stars" scale="1.0" position="5, 5, -10" />
+		<Object name="stars" mesh="stars" material="stars" scale="0.2" position="0, 0, -10" />
+		<Object name="tetrahedron" mesh="tetrahedron" material="stars" scale="1.0" position="0, 5, -10" />
+		<Object name="cube" mesh="cube" material="stars" scale="1.0" position="-5, 5, -10" />
+		<Object name="plane" mesh="plane" material="stars" scale="1.0" position="5, -5, -10" />
+		<Object name="sphere" mesh="sphere" material="stars" scale="1.0" position="-5, -5, -10" />
+		<Object name="icosahedron"  mesh="icosahedron" material="stars" scale="1.0" position="-5, 0, -10" />
+		<Object name="spiral" mesh="spiral" material="stars" scale="0.01" position="0, -5, -10" />
+	</Scene>
+</liblub>
