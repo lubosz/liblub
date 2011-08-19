@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 function error {
   echo "ERROR $1 could not be run"
