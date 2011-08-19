@@ -24,7 +24,7 @@
 		</Material>
 	</Materials>
 	<Meshes>
-		<File name="cube" url="plane.obj" />
+		<File name="cube" url="cube.obj" />
 	</Meshes>
 	<Scene name="Cone Step Mapping">
 		<Light position ="0.3, 6.6, -3.3" direction="1,-5,-1" />
