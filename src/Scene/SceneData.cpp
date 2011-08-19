@@ -137,15 +137,9 @@ Camera * SceneData::getCurrentCamera() {
 }
 
 Light * SceneData::getShadowLight() {
-//  if(!shadowLight) {
-//    if(lights.size() > 0) {
-//      shadowLight = lights[0];
-//    } else {
-//      Light * light = new Light(QVector3D(), QVector3D(0,-1,0));
-//      shadowLight = light;
-//      lights.insert("light",light);
-//    }
-//  }
+  if(!shadowLight) {
+    LogError << "No Shadow Light";
+  }
 
   return shadowLight;
 }

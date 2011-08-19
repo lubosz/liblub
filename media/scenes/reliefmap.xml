@@ -11,22 +11,23 @@
 			<Uniform value="0.2" name="depth" />
 		</Program>
 	</Programs>
-	<Textures>	
+	<Textures>
 		<Texture name="reliefColor" url="bump/tile1.jpg" />
 		<Texture name="reliefMap" url="bump/tile1.png" />
 	</Textures>
 	<Meshes>
 		<File name="cube" url="cube.obj" />
-		<File name="sphere" url="earth.obj" drawType="LINES" />
+		<File name="blendcube" url="cube.blend" />
 	</Meshes>
 	<Materials>
-      <Material name="relief" program="Relief">
-        <Layer sampler="colortex" texture="reliefColor" />
-        <Layer sampler="reliefMap" texture="reliefMap" />
-			</Material>
+		<Material name="relief" program="Relief">
+			<Layer sampler="colortex" texture="reliefColor" />
+			<Layer sampler="reliefMap" texture="reliefMap" />
+		</Material>
 	</Materials>
 	<Scene name="Relief Mapping">
-		<Light position ="-9.1, 20.5, 3.5" direction="1,-5,-1" mesh="sphere" />
+		<Light position ="-9.1, 20.5, 3.5" direction="1,-5,-1" />
+		<Object name="uvmovenode" mesh="blendcube" material="relief" scale="1.0" position="3,-2,-9" />
 		<Object name="bump" mesh="cube" material="relief" scale="1.0" position="3,-2,-5" />
 	</Scene>
 </liblub>

@@ -36,48 +36,29 @@ class LoadApp: public Application {
    RenderPass * defaultPass;
    ShaderProgram * perlinNoise;
 
-  explicit LoadApp(string sceneName) {
-    QString sceneFile = QString::fromStdString(sceneName + ".xml");
-    sceneLoader = new SceneLoader(sceneFile);
+  explicit LoadApp() {
   }
 
   ~LoadApp() {}
 
-
-
   void scene() {
-    sceneLoader->load();
     defaultPass = new LightTogglePass();
-//    QImage * image = ProcTextures::makeGlow(QSize(1000,2000),40.0f, 0.1f);
-//
-//    Texture * textTexture = TextureFactory::Instance().load(image,"myTexture");
-//
-//    Material * material = new EmptyMat();
-//
-//    material->shaderProgram = SceneData::Instance().shaderPrograms.value("Texture");
-//    material->addTexture(textTexture);
 
     QList<string> attributes;
     attributes.push_back("uv");
-//    attributes.push_back("normal");
 
-//    Material * material = new Simple("Noise/perlin",attributes);
     Material * zoomIn = new Simple("Texture/texture",attributes);
     Material * zoomOut = new Simple("Texture/texture",attributes);
     Texture * groundTexture = new TextureFile("terrain/mud.jpg","diffuse");
     zoomIn->addTexture(groundTexture);
     zoomOut->addTexture(groundTexture);
-//    perlinNoise = material->getShaderProgram();
-
 
     Node * plane = new Node("Plane", { 10,8,-3 }, 10, Geometry::plane(attributes, QRectF(-1,-1,2,2)), zoomIn);
     Node * plane2 = new Node("Plane", { -10,8,-3 }, 10, Geometry::plane(attributes, QRectF(-1,-1,2,2)), zoomOut);
-//    plane->transparent = true;
     plane->setRotation(QVector3D(-90,0,180));
     plane2->setRotation(QVector3D(-90,0,180));
     SceneGraph::Instance().addNode(plane);
     SceneGraph::Instance().addNode(plane2);
-
 
     zoomIn->getShaderProgram()->use();
     zoomIn->getShaderProgram()->setUniform("scaleUv", 0.01f);
@@ -85,19 +66,19 @@ class LoadApp: public Application {
     zoomOut->getShaderProgram()->use();
     zoomOut->getShaderProgram()->setUniform("scaleUv", 100.0f);
 
+    Light * light = new Light(QVector3D(-2.5, 21.5, -5.2), QVector3D(1, -5, 0));
+    SceneData::Instance().addLight("foolight", light);
+
     GUI::Instance().init();
   }
   void renderFrame(){
     defaultPass->render();
-//    float time = float(Timer::Instance().secoundsPassed) + float(Timer::Instance().nanosecoundsPassed)/1000000000.0;
-//    perlinNoise->use();
-//    perlinNoise->setUniform("time", time);
   }
 };
 
 int main(int argc, char *argv[]) {
   QApplication app(argc, argv);
-  LoadApp("proctex").run();
+  LoadApp().run();
   return 0;
 }
 

@@ -10,7 +10,7 @@
 			<Uniform value="1.0" name="csm_gain" />
 			<Uniform value="0.1" name="csm_offset" />
 			<Uniform value="1.0" name="linearAttenuation" />
-			<Uniformi value="10" name="conesteps" />
+			<Uniformi value="1" name="conesteps" />
 		</Program>
 	</Programs>
 	<Textures>
@@ -24,10 +24,10 @@
 		</Material>
 	</Materials>
 	<Meshes>
-		<File name="cube" url="cube.obj" />
+		<File name="cube" url="plane.obj" />
 	</Meshes>
 	<Scene name="Cone Step Mapping">
 		<Light position ="0.3, 6.6, -3.3" direction="1,-5,-1" />
-		<Object name="cube" mesh="cube" material="ConeStepMap" scale="1.0" position="0, -3, -2" />
+		<Object name="cube" mesh="cube" material="ConeStepMap" scale="1.0" position="0, 0, -5" />
 	</Scene>
 </liblub>
