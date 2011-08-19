@@ -4,6 +4,7 @@
 		<Programs>
 		<Program name="Texture">
 			<Shader url="Texture/texture" />
+			<Uniform value="1.0" name="scaleUv" />
 		</Program>
 	</Programs>
 	<Textures>
@@ -11,7 +12,7 @@
 		<Texture name="plane-occlusion" url="sphere_ao.png" />
 		<Texture name="Mars-normal" url="Planets/Mars-normal.png" />
 		<Texture name="TychoSkymap" url="Planets/TychoSkymap.jpg" />
-		<Texture name="waves" url="ocean/waves2.dds" />
+		<Texture name="waves" url="ocean/waves.png" />
 		<TextureCube name="morning" url="cubemaps/morning" />
 	</Textures>
 	<Materials>
@@ -25,7 +26,7 @@
 			<Layer sampler="NormalMap" texture="waves" />
 		</Material>
 		<Material name="universedome" program="Texture">
-			<Layer sampler="myTexture" texture="TychoSkymap" />
+			<Layer sampler="diffuse" texture="TychoSkymap" />
 		</Material>
 	</Materials>
 	<Meshes>
