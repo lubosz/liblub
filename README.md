@@ -6,7 +6,7 @@ An OpenGL 4 and 3.3 Core Framework.
 
 You need the following packages on Ubuntu.
 
-`$ sudo aptitude install build-essential cmake libqt4-dev libqt4-opengl-dev libgrantlee-dev libboost-dev`
+`$ sudo apt-get install build-essential cmake libqt4-dev libqt4-opengl-dev libgrantlee-dev libboost-dev libx11-xcb-dev libxcb-keysyms1-dev`
 
 You also need assimp (i.e. from git).
 
@@ -16,10 +16,6 @@ You also need assimp (i.e. from git).
 
 You can choose between SDL and XCB window creation. XCB will only work with X11 :)
 SDL is optional, found in the CMake options.
-
-#### For XCB:
-
-`$ sudo aptitude install libx11-xcb-dev libxcb-keysyms1-dev`
 
 #### For SDL:
 
@@ -43,17 +39,22 @@ and put them into the local liblub include directory.
 `$ make`
 
 ## Run
+
+Run all all apps from bin and scenes from media/scenes
+`$ scripts/runAllScenes.sh`
+
+### Apps
  
-### Scenes
+Running the applications from the bin directory.
+`$ scripts/runAll.sh`
 
-Run the scenes from the root directory.
-
+Or just a specific one
 `$ ./bin/sponge`
 
+### Scenes
+
 View XML nice.xml scene file from media/scenes/.
-
 `$ ./bin/load nice`
-
 
 ### Interesting config options
 
