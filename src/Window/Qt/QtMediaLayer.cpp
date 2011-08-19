@@ -16,7 +16,6 @@ QtMediaLayer::QtMediaLayer() {
   fullscreen = false;
   grab = false;
   quit = false;
-  input = new Input();
 }
 
 void QtMediaLayer::init(string title) {
@@ -24,6 +23,10 @@ void QtMediaLayer::init(string title) {
 }
 
 QtMediaLayer::~QtMediaLayer() {
+}
+
+void QtMediaLayer::mouseLook(int x, int y) {
+
 }
 
 void QtMediaLayer::swapBuffers(){

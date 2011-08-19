@@ -25,8 +25,7 @@ Timer::~Timer() {
 }
 
 
-void Timer::frame() {
-
+void Timer::tick() {
 #ifndef LIBLUB_WINDOWS
   timespec now;
   clock_gettime(CLOCK_MONOTONIC, &now);
@@ -39,18 +38,33 @@ void Timer::frame() {
   ticks = SDL_GetTicks();
 #endif
   fps_frames++;
+}
 
-  //check input every 1/100 secound
-    if (input_lasttime < ticks - 10) {
-      input_lasttime = ticks;
-      MediaLayer::Instance().input->eventLoop();
-      GUI::Instance().update();
-    }
-
+void Timer::checkFPS() {
    //reset fps counter every secound
   if (fps_lasttime < ticks - 1000) {
     fps_lasttime = ticks;
     fps_current = fps_frames;
     fps_frames = 0;
   }
+}
+
+void Timer::frame(Input * input) {
+  tick();
+  //check input every 1/100 secound
+  if (input_lasttime < ticks - 10) {
+    input_lasttime = ticks;
+    input->eventLoop();
+    GUI::Instance().update();
+  }
+  checkFPS();
+}
+
+void Timer::frame() {
+  tick();
+  if (input_lasttime < ticks - 10) {
+    input_lasttime = ticks;
+    GUI::Instance().update();
+  }
+  checkFPS();
 }

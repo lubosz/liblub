@@ -25,6 +25,7 @@ class SceneData : public Singleton<SceneData> {
 public:
   string name;
   QVector3D backgroundColor;
+  unsigned width, height;
 
   QMap<string, ShaderProgram*> shaderPrograms;
   QMap<string, Texture*> textures;
@@ -48,6 +49,9 @@ public:
   void updateLightBuffer();
   void initLightBuffer(const string& shaderName, const string& bufferName);
   void initLightBuffer(ShaderProgram * shader, const string& bufferName);
+
+  void setResolution(unsigned width, unsigned height);
+
 
   Camera * getCurrentCamera();
   Light * getShadowLight();

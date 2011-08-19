@@ -87,6 +87,11 @@ Material* SceneData::getMaterial(const string & name) {
   }
 }
 
+void SceneData::setResolution(unsigned width, unsigned height) {
+  this->height = height;
+  this->width = width;
+}
+
 void SceneData::addLight(const string & name, Light* light) {
   string lightName = name;
   if (name == "" || lights.count(name) > 0) {

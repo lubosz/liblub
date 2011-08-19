@@ -8,11 +8,12 @@
 #include "Renderer/RenderSequence.h"
 #include "Window/MediaLayer.h"
 #include "System/Logger.h"
+#include "Scene/SceneData.h"
 
 RenderSequence::RenderSequence() {
 #ifdef USE_FBO
-    unsigned width = MediaLayer::Instance().width;
-    unsigned height = MediaLayer::Instance().height;
+    unsigned width = SceneData::Instance().width;
+    unsigned height = SceneData::Instance().height;
 
 //    TODO: Hardcoded shadow map size
 //    width = 4096;

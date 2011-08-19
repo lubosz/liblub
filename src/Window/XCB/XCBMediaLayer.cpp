@@ -7,13 +7,14 @@
 #include <sstream>
 #include <string>
 #include <vector>
-#include "Window/MediaLayer.h"
 #include "Scene/Camera.h"
 #include "Scene/SceneData.h"
 #include "System/Config.h"
 #include "System/Logger.h"
 #include "System/GUI.h"
 #include "System/Timer.h"
+#include "XCBMediaLayer.h"
+#include "XCBInput.h"
 
 using std::stringstream;
 
@@ -31,10 +32,12 @@ XCBMediaLayer::XCBMediaLayer() {
 }
 
 void XCBMediaLayer::init(string title) {
+  LogInfo << "Initializing XCB";
+
   programTile = title;
 
 
-  input = new Input(connection);
+  input = new XCBInput(connection, this);
 
   // Toggle mouse at init
   unsigned halfWidth = width/2;
@@ -45,12 +48,14 @@ void XCBMediaLayer::init(string title) {
               display, None, window, 0, 0,
               width, height, halfWidth, halfHeight);
 
+  SceneData::Instance().setResolution(width, height);
+
   SceneData::Instance().getCurrentCamera()->setAspect(
-          static_cast<float>(MediaLayer::Instance().width)/
-          static_cast<float>(MediaLayer::Instance().height));
+          static_cast<float>(width)/
+          static_cast<float>(height));
 }
 
-XCBMediaLayer::~MediaLayer() {
+XCBMediaLayer::~XCBMediaLayer() {
     /* Cleanup */
     glXDestroyWindow(display, glxwindow);
     xcb_destroy_window(connection, window);
@@ -305,7 +310,7 @@ void XCBMediaLayer::toggleFullScreen() {
 }
 
 void XCBMediaLayer::renderFrame() {
-  Timer::Instance().frame();
+  Timer::Instance().frame(input);
 
   // TODO(bmonkey): should be per secound, and not per frame (breaks mouse input)
   stringstream windowTitle;

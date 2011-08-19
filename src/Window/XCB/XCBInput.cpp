@@ -4,14 +4,18 @@
  *
  *  Created on: Sep 28, 2010
  */
+#include "XCBInput.h"
+#include <X11/keysym.h>
 #include <list>
 #include "Scene/Camera.h"
 #include "Window/MediaLayer.h"
 #include "Material/Uniform.h"
 #include "Scene/SceneData.h"
 #include "System/Logger.h"
+#include "Renderer/RenderEngine.h"
+#include "XCBMediaLayer.h"
 
-Input::Input(xcb_connection_t *connection) {
+XCBInput::XCBInput(xcb_connection_t *connection, XCBMediaLayer * mediaLayer) {
   this->connection = connection;
   syms = xcb_key_symbols_alloc(connection);
   pressedKeys = QList<xcb_keysym_t>();
@@ -19,13 +23,14 @@ Input::Input(xcb_connection_t *connection) {
   // TODO(bmonkey): Hardcoded values => xml
   inputSpeed = .01;
   mouseSensitivity = .1;
+  this->mediaLayer = mediaLayer;
 }
 
-Input::~Input() {
+XCBInput::~XCBInput() {
   // TODO(bmonkey): Auto-generated destructor stub
 }
 
-void Input::eventLoop() {
+void XCBInput::eventLoop() {
   xcb_keysym_t pressedKey;
   xcb_generic_event_t *event;
   xcb_motion_notify_event_t *motion;
@@ -36,7 +41,7 @@ void Input::eventLoop() {
     switch (event->response_type & ~0x80) {
         case XCB_MOTION_NOTIFY:
             motion = reinterpret_cast<xcb_motion_notify_event_t *>(event);
-            MediaLayer::Instance().mouseLook(motion->event_x, motion->event_y);
+            mediaLayer->mouseLook(motion->event_x, motion->event_y);
             break;
 
         case XCB_KEY_RELEASE:
@@ -59,13 +64,13 @@ void Input::eventLoop() {
 
             switch (pressedKey) {
                 case XK_Escape:
-                    MediaLayer::Instance().shutdown();
+                  mediaLayer->shutdown();
                     break;
                 case XK_m:
-                    MediaLayer::Instance().toggleMouseGrab();
+                  mediaLayer->toggleMouseGrab();
                     break;
                 case XK_f:
-                    MediaLayer::Instance().toggleFullScreen();
+                  mediaLayer->toggleFullScreen();
                     break;
                 case XK_p:
                     RenderEngine::Instance().toggleFBO();
@@ -99,7 +104,7 @@ void Input::eventLoop() {
     }
 }
 
-void Input::checkKey(xcb_keysym_t pressedKey) {
+void XCBInput::checkKey(xcb_keysym_t pressedKey) {
 
 //		uvmoveprog =
 //						SceneGraph::Instance().getNode("uvmovenode")

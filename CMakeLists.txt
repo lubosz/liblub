@@ -139,23 +139,39 @@ foreach(SOURCE_DIR ${SOURCE_DIRS})
     set(SOURCES ${SOURCES} ${GLOB_RESULT})
 endforeach(SOURCE_DIR)
 
-#choose window lib
+# choose window lib
+
 if(WITH_SDL)
-    SET(WINDOW_TYPE SDL)
-elseif(WITH_SFML)
-    SET(WINDOW_TYPE SFML)
-elseif(WITH_Qt)
-    SET(WINDOW_TYPE Qt)
-elseif(WITH_XCB)
-    SET(WINDOW_TYPE XCB)
+    set(WINDOW_TYPES ${WINDOW_TYPES} SDL)
+endif()
+
+if(WITH_SFML)
+    set(WINDOW_TYPES ${WINDOW_TYPES} SFML)
+endif()
+
+if(WITH_Qt)
+    set(WINDOW_TYPES ${WINDOW_TYPES} Qt)
+endif()
+
+if(WITH_XCB)
+    set(WINDOW_TYPES ${WINDOW_TYPES} XCB)
+endif()
+
+foreach(WINDOW_TYPE ${WINDOW_TYPES})
+    add_definitions(-DWITH_${WINDOW_TYPE})
+    file(GLOB_RECURSE GLOB_RESULT ${SRC_DIR}/Window/${WINDOW_TYPE}/*.cpp)
+    set(WINDOW_CODE ${WINDOW_CODE} ${GLOB_RESULT})
+endforeach()
+
+if(WINDOW_CODE)
 else()
     message(FATAL_ERROR "You need to choose a window lib.")
 endif()
 
-add_definitions(-DWITH_${WINDOW_TYPE})
-file(GLOB_RECURSE GLOB_RESULT ${SRC_DIR}/${SOURCE_DIR}/Window/${WINDOW_TYPE}/*.cpp)
+file(GLOB_RECURSE GLOB_RESULT ${SRC_DIR}/Window/*.h)
+set(WINDOW_CODE ${WINDOW_CODE} ${GLOB_RESULT})
 
-set(SOURCES ${SOURCES} ${GLOB_RESULT})
+set(SOURCES ${SOURCES} ${WINDOW_CODE})
 set(SOURCES ${SOURCES} ${MOC_OUTFILES})
 add_library(lub ${SOURCES})
 

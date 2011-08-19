@@ -10,6 +10,7 @@
 #include "Window/MediaLayer.h"
 
 class QtMediaLayer : public MediaLayer {
+
  private:
 	void toggleFullScreen();
 	void toggleMouseGrab();

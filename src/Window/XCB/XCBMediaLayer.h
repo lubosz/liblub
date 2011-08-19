@@ -9,7 +9,6 @@
 
 // Include first OpenGL then Qt then Xlib / GLX!
 #include "Renderer/RenderEngine.h"
-#include "Window/Input.h"
 
 // Needed for GL3 Context Creation
 #define GLX_GLXEXT_PROTOTYPES 1
@@ -23,8 +22,9 @@
 #include "Window/MediaLayer.h"
 class XCBMediaLayer: public MediaLayer {
 
-private:
+  friend class XCBInput;
 
+private:
   int visualID;
   int default_screen;
 
@@ -60,10 +60,9 @@ private:
   void toggleMouseGrab();
   void mouseLook(int x, int y);
 
+public:
   XCBMediaLayer();
   ~XCBMediaLayer();
-
-public:
   void init(string title);
   void swapBuffers();
   void renderFrame();

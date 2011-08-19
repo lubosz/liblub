@@ -10,7 +10,5 @@
 class Input {
  public:
   float inputSpeed, mouseSensitivity;
-  Input(){};
-	virtual ~Input(){};
-	void eventLoop(){};
+	virtual void eventLoop() = 0;
 };

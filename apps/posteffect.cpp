@@ -69,8 +69,8 @@ class TesselationApp: public Application {
     groundNode = new Node("ground", { 0, 0, 0 }, 1, innerSphere,
         textureMaterial);
 
-    unsigned width = MediaLayer::Instance().width;
-    unsigned height = MediaLayer::Instance().height;
+    unsigned width = SceneData::Instance().width;
+    unsigned height = SceneData::Instance().height;
 
     fbo = new FrameBuffer(width, height);
     targetTexture = new ColorTexture(width, height,

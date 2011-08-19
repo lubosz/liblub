@@ -11,6 +11,7 @@
 #include <time.h>
 
 #include "common/Singleton.h"
+#include "Window/Input.h"
 
 class Timer : public Singleton<Timer>{
 public:
@@ -26,7 +27,11 @@ public:
 #endif
   Timer();
   virtual ~Timer();
+  void frame(Input * input);
   void frame();
+private:
+  void checkFPS();
+  void tick();
 };
 
 #endif /* TIMER_H_ */

@@ -46,8 +46,8 @@ void ShadowPass::cleanUp() {
     glPolygonOffset(0.0, 0.0);
     glCullFace(GL_BACK);
     glDisable(GL_CULL_FACE);
-        glViewport(0, 0, MediaLayer::Instance().width,
-                MediaLayer::Instance().height);
+        glViewport(0, 0, SceneData::Instance().width,
+            SceneData::Instance().height);
 }
 
 DepthPass::DepthPass(FrameBuffer * fbo) {
@@ -75,8 +75,8 @@ void DepthPass::draw() {
 
 void DepthPass::cleanUp() {
     fbo->unBind();
-    glViewport(0, 0, MediaLayer::Instance().width,
-                MediaLayer::Instance().height);
+    glViewport(0, 0, SceneData::Instance().width,
+        SceneData::Instance().height);
 }
 
 FilterPass::FilterPass(FrameBuffer * fbo) {
@@ -139,8 +139,8 @@ void FBODebugPass::prepare() {
 }
 
 void FBODebugPass::draw() {
-  glViewport(0, 0, MediaLayer::Instance().width,
-          MediaLayer::Instance().height);
+  glViewport(0, 0, SceneData::Instance().width,
+      SceneData::Instance().height);
   Material* material = SceneData::Instance().getMaterial("debugFBO");
 //  foreach (Texture * texture, material->textures){
 //    printf("Texture! %s\n", texture->name.c_str());

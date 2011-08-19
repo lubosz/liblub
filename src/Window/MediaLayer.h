@@ -8,37 +8,28 @@
 #pragma once
 
 #include <string>
-#include "common/Singleton.h"
 #include "Input.h"
 
 using std::string;
 
-class MediaLayer : public Singleton<MediaLayer> {
+class MediaLayer {
 public:
+	friend class Input;
+	friend class XCBInput;
+
 	Input * input;
   bool quit;
-
-  friend class Singleton<MediaLayer>;
-	friend class Input;
-
 	bool fullscreen;
 	bool grab;
-
-
 	string programTile;
-
-	void toggleFullScreen(){};
-	void toggleMouseGrab(){};
-	void mouseLook(int x, int y){};
-
-	MediaLayer(){};
-	~MediaLayer(){};
-
- public:
 	unsigned width, height;
-	void init(string title){};
-	void swapBuffers(){};
-	void renderFrame(){};
+
+	virtual void toggleFullScreen() = 0;
+	virtual void toggleMouseGrab() = 0;
+	virtual void mouseLook(int x, int y) = 0;
+	virtual void init(string title) = 0;
+	virtual void swapBuffers() = 0;
+	virtual void renderFrame() = 0;
 
  protected:
 	void shutdown() {

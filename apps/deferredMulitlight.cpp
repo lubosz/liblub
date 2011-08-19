@@ -52,8 +52,8 @@ class DefferedLightApp: public Application {
 
   void initPostProcessing(){
     if(useHDR){
-      unsigned width = MediaLayer::Instance().width;
-      unsigned height = MediaLayer::Instance().height;
+      unsigned width = SceneData::Instance().width;
+      unsigned height = SceneData::Instance().height;
 
       fbo = new FrameBuffer(width, height);
       Texture * positionTexture = new ColorTexture(width, height, "positionTexture");
