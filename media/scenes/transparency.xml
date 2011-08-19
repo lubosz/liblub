@@ -8,27 +8,20 @@
 		</Program>
 		<Program name="Texture">
 			<Shader url="Texture/texture" />
+			<Uniform value="1.0" name="scaleUv" />
 		</Program>
 	</Programs>
 	<Textures>
 		<TextureCube name="sky" url="cubemaps/sky" />
 		<Texture name="cloudTex" url="particle/cloudsprite.png" />
-		<!--
-		<Texture name="cloudTexOp" url="particle/cloud.jpg" />
-		-->
 	</Textures>
 	<Materials>
 		<Material name="CubeMap" program="CubeMap">
 			<Layer sampler="EnvMap" texture="sky" />
 		</Material>
 		<Material name="cloudMat" program="Texture">
-			<Layer sampler="myTexture" texture="cloudTex" />
+			<Layer sampler="diffuse" texture="cloudTex" />
 		</Material>
-		<!--
-		<Material name="cloudMatOp" program="Texture">
-			<Layer sampler="myTexture" texture="cloudTexOp" />
-		</Material>
-		-->
 	</Materials>
 	<Meshes>
 		<File name="sphere" url="earth.obj" drawType="LINES" />
@@ -42,10 +35,5 @@
 		<Object name="Cloud2" mesh="cloud" material="cloudMat" scale="20" position="-20, -40, 10" transparent="true" rotation="10,30,5" />
 		<Object name="Cloud3" mesh="cloud" material="cloudMat" scale="50" position="-50, -80, 30" transparent="true" rotation="5,10,10" />
 		<Object name="Cloud3" mesh="cloud" material="cloudMat" scale="39" position="-10, -60, 20" transparent="true" rotation="5,60,10" />
-		<!--
-		<Object name="Cloud2" mesh="cloud" material="cloudMatOp" scale="20" position="20, -20, 0" />
-		<ObjectPlane size="10" step="3" mesh="cloud" materials="cloudMat" />
-		-->
-		
 	</Scene>
 </liblub>

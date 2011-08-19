@@ -108,16 +108,11 @@ void SceneGraph::drawNodes(DirectionNode * viewPoint) {
       foreach(qreal transparentKey, transparentKeys) {
         Node * node = transparentNodes[transparentKey];
         node->setView(viewPoint);
-//        setShadowCoords(node, viewPoint);
-//        SceneData::Instance().getShadowLight()->bindShaderUpdate(
-//            node->getMaterial()->getShaderProgram());
         node->draw();
       }
       glDisable(GL_BLEND);
     }
     glError;
-
-
     GUI::Instance().draw();
 }
 
