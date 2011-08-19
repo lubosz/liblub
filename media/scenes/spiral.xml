@@ -6,7 +6,7 @@
 		</Program>
 	</Programs>
 	<Meshes>
-		<Procedural name="Spiral" type="Spiral" resolution="500000" density="1" randomness="0" />
+		<Procedural name="Spiral" type="Spiral" resolution="5000" density="1" randomness="0" />
 	</Meshes>
 	<Materials>
 		<Material name="stars" program="stars" />

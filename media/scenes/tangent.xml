@@ -17,7 +17,7 @@
 	</Textures>
 	<Meshes>
 		<File name="cube" url="cube.obj" />
-		<File name="blendcube" url="cube2.blend" />
+		<File name="blendcube" url="cube.blend" />
 	</Meshes>
 	<Materials>
 		<Material name="relief" program="Relief">
