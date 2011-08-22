@@ -304,8 +304,13 @@ string FrameBuffer::convertInternalFormatToString(GLenum format) {
     case GL_RGBA16:
         formatName = "GL_RGBA16";
         break;
+    case GL_DEPTH_COMPONENT32F:
+      formatName = "GL_DEPTH_COMPONENT32F";
+      break;
     default:
-        formatName = "Unknown Format";
+        stringstream ss;
+        ss << format;
+        formatName = "Unknown Format " + ss.str();
     }
 
     return formatName;
