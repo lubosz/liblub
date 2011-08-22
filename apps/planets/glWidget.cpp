@@ -88,7 +88,6 @@ void GLWidget::initializeGL() {
 
 void GLWidget::paintGL() {
 //  RenderEngine::Instance().clear();
-  Timer::Instance().frame();
   startPass();
   RenderEngine::Instance().clear();
   drawPlanets();

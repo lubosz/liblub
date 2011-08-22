@@ -10,61 +10,53 @@
 #include "Window/MediaLayer.h"
 
 Timer::Timer() {
-  fps_lasttime = 0;  // the last recorded time.
-  fps_frames = 0;  // frames passed since the last recorded fps.
-  input_lasttime = 0;
-  secoundsPassed = 0;
-  nanosecoundsPassed = 0;
-#ifndef LIBLUB_WINDOWS
-  clock_gettime(CLOCK_MONOTONIC, &start);
-#endif
+  clock_gettime(CLOCK_MONOTONIC, &startTime);
 }
 
 Timer::~Timer() {
   // TODO Auto-generated destructor stub
 }
 
-
-void Timer::tick() {
 #ifndef LIBLUB_WINDOWS
+const int BILLION = 1000000000; // 10^9
+
+/* Returns a timespec representing the elapsed time between
+ * start and end.
+ * Assumption: end is bigger (later) than start. */
+timespec Timer::elapsed(timespec &start, timespec &end) {
+    timespec result;
+    if(end.tv_nsec < start.tv_nsec) { // borrow from tv_sec
+        result.tv_sec = (end.tv_sec - 1) - start.tv_sec;
+        result.tv_nsec = (end.tv_nsec + BILLION) - start.tv_nsec;
+    } else {
+        result.tv_sec = end.tv_sec - start.tv_sec;
+        result.tv_nsec = end.tv_nsec - start.tv_nsec;
+    }
+    return result;
+}
+
+void Timer::updateFPS() {
   timespec now;
   clock_gettime(CLOCK_MONOTONIC, &now);
+  frameTime = elapsed(lastTime, now);
+  lastTime = now;
+}
 
-  secoundsPassed = now.tv_sec - start.tv_sec;
-  nanosecoundsPassed = now.tv_nsec;
+float Timer::getFPS() {
+  float fps = BILLION / float(frameTime.tv_nsec);
+}
 
-  ticks = now.tv_sec * 1000 + now.tv_nsec / 1000000;
-#elif WITH_SDL
-  ticks = SDL_GetTicks();
+float Timer::getSPF() {
+  float ms = float(frameTime.tv_nsec) / 1000000.0;
+}
 #endif
-  fps_frames++;
+
+void Timer::printFPS() {
+  LogInfo << "FPS" << getFPS() << "," << getSPF() << "ms per Frame";
 }
 
-void Timer::checkFPS() {
-   //reset fps counter every secound
-  if (fps_lasttime < ticks - 1000) {
-    fps_lasttime = ticks;
-    fps_current = fps_frames;
-    fps_frames = 0;
-  }
-}
-
-void Timer::frame(Input * input) {
-  tick();
-  //check input every 1/100 secound
-  if (input_lasttime < ticks - 10) {
-    input_lasttime = ticks;
-    input->eventLoop();
-    GUI::Instance().update();
-  }
-  checkFPS();
-}
-
-void Timer::frame() {
-  tick();
-  if (input_lasttime < ticks - 10) {
-    input_lasttime = ticks;
-    GUI::Instance().update();
-  }
-  checkFPS();
+float Timer::getTime() {
+  timespec now;
+  clock_gettime(CLOCK_MONOTONIC, &now);
+  return (float(now.tv_sec) + float(now.tv_nsec)/float(BILLION));
 }

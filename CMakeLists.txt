@@ -126,9 +126,21 @@ set(SOURCE_DIRS
         Renderer Material Mesh Scene System
 )
 foreach(SOURCE_DIR ${SOURCE_DIRS})
+    #cpps
     file(GLOB_RECURSE GLOB_RESULT ${SRC_DIR}/${SOURCE_DIR}/*.cpp)
     set(SOURCES ${SOURCES} ${GLOB_RESULT})
+    #headers
+    file(GLOB_RECURSE GLOB_RESULT ${SRC_DIR}/${SOURCE_DIR}/*.h)
+    set(SOURCES ${SOURCES} ${GLOB_RESULT})
 endforeach(SOURCE_DIR)
+
+#moc qt stuff
+set(LIBLUB_MOC_INFILES 
+    src/System/Application.h
+    src/Window/Input.h
+)
+qt4_wrap_cpp(LIBLUB_MOC_OUTFILES ${LIBLUB_MOC_INFILES})
+set(SOURCES ${SOURCES} ${LIBLUB_MOC_OUTFILES})
 
 # choose window lib
 if(WITH_SDL)
@@ -152,6 +164,9 @@ endif()
 if(WITH_XCB)
 	list(APPEND LIBS X11-xcb xcb-keysyms)
     set(WINDOW_TYPES ${WINDOW_TYPES} XCB)
+    set(XCB_MOC_INFILES src/Window/XCB/XCBInput.h)
+    qt4_wrap_cpp(XCB_MOC_OUTFILES ${XCB_MOC_INFILES})
+    set(SOURCES ${SOURCES} ${XCB_MOC_OUTFILES})
 endif()
 
 foreach(WINDOW_TYPE ${WINDOW_TYPES})

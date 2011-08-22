@@ -94,7 +94,6 @@ int WINAPI WinMain(HINSTANCE inst,HINSTANCE prev,LPSTR cmd,int show) {
 }
 #else
 int main(int argc, char *argv[]) {
-  QApplication app(argc, argv);
   LoadApp("multilight").run();
   return 0;
 }

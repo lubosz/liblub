@@ -70,14 +70,12 @@ class LoadApp: public Application {
   }
   void renderFrame(){
     defaultPass->render();
-    float time = float(Timer::Instance().secoundsPassed) + float(Timer::Instance().nanosecoundsPassed)/1000000000.0;
     perlinNoise->use();
-    perlinNoise->setUniform("time", time);
+    perlinNoise->setUniform("time", Timer::Instance().getTime());
   }
 };
 
 int main(int argc, char *argv[]) {
-  QApplication app(argc, argv);
   LoadApp().run();
 }
 

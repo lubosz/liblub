@@ -26,7 +26,6 @@ QtMediaLayer::~QtMediaLayer() {
 }
 
 void QtMediaLayer::mouseLook(int x, int y) {
-
 }
 
 void QtMediaLayer::swapBuffers(){
@@ -38,7 +37,5 @@ void QtMediaLayer::toggleFullScreen(){
 void QtMediaLayer::toggleMouseGrab(){
 }
 
-void QtMediaLayer::renderFrame(){
-  Timer::Instance().frame();
-  swapBuffers();
+void QtMediaLayer::updateWindowTitle(){
 }

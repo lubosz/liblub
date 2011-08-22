@@ -64,7 +64,7 @@ void XCBInput::eventLoop() {
 
             switch (pressedKey) {
                 case XK_Escape:
-                  mediaLayer->shutdown();
+                    emit shutdown();
                     break;
                 case XK_m:
                   mediaLayer->toggleMouseGrab();

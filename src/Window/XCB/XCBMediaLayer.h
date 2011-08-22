@@ -52,6 +52,7 @@ private:
   void initFrameBuffer();
   void createColorMap();
   void createBlankCursor();
+  void updateWindowTitle();
 
   xcb_intern_atom_cookie_t getCookieForAtom(string state_name);
   xcb_atom_t getReplyAtomFromCookie(xcb_intern_atom_cookie_t cookie);

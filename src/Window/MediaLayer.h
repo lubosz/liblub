@@ -30,7 +30,7 @@ public:
 	virtual void mouseLook(int x, int y) = 0;
 	virtual void init(string title) = 0;
 	virtual void swapBuffers() = 0;
-	virtual void renderFrame() = 0;
+	virtual void updateWindowTitle() = 0;
 
  protected:
 	void shutdown() {

@@ -21,5 +21,5 @@ class QtMediaLayer : public MediaLayer {
 	~QtMediaLayer();
 	void init(string title);
 	void swapBuffers();
-	void renderFrame();
+	void updateWindowTitle();
 };

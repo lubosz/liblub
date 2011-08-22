@@ -29,6 +29,7 @@ class LoadApp: public Application {
 
   RenderSequence * shadowSequence;
   explicit LoadApp(string sceneName) {
+    fontOverlay = true;
     QString sceneFile = QString::fromStdString(sceneName + ".xml");
     sceneLoader = new SceneLoader(sceneFile);
   }
@@ -53,7 +54,6 @@ int WINAPI WinMain(HINSTANCE inst,HINSTANCE prev,LPSTR cmd,int show) {
 }
 #else
 int main(int argc, char *argv[]) {
-  QApplication app(argc, argv);
   if (argc == 2) {
     LoadApp(argv[1]).run();
   } else {

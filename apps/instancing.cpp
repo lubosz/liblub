@@ -42,6 +42,7 @@ class LoadApp: public Application {
 
 
   explicit LoadApp() {
+    setFontOverlay(true);
   }
 
   ~LoadApp() {}
@@ -66,7 +67,6 @@ class LoadApp: public Application {
     material->addTexture(texture);
 
     initPositionBuffer();
-
 //    for (int x = 0; x < 20; x++){
 //      for (int y = 0; y < 20; y++){
 //        for (int z = 0; z < 10; z++){
@@ -136,7 +136,6 @@ class LoadApp: public Application {
 };
 
 int main(int argc, char *argv[]) {
-  QApplication app(argc, argv);
   LoadApp().run();
   return 0;
 }

@@ -7,7 +7,10 @@
 
 #pragma once
 
-class Input {
+#include <qobject.h>
+
+class Input : public QObject {
+  Q_OBJECT
  public:
   float inputSpeed, mouseSensitivity;
 	virtual void eventLoop() = 0;

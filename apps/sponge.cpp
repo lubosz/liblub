@@ -27,6 +27,7 @@ class Sponge : public Application {
   RenderSequence * shadowSequence;
   Sponge() {
     SceneData::Instance().name = "Sponge";
+    fontOverlay = true;
   }
 
   void scene() {
@@ -77,6 +78,5 @@ class Sponge : public Application {
 };
 
 int main(int argc, char *argv[]) {
-  QApplication app(argc, argv);
   Sponge().run();
 }

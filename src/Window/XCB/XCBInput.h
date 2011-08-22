@@ -15,11 +15,16 @@
 class XCBMediaLayer;
 
 class XCBInput : public Input {
+ Q_OBJECT
 public:
 
   explicit XCBInput(xcb_connection_t *connection, XCBMediaLayer * mediaLayer);
   virtual ~XCBInput();
   void eventLoop();
+
+  signals:
+  void shutdown();
+
 private:
 
 #ifdef XCBEVENTS
@@ -45,4 +50,5 @@ private:
   XCBMediaLayer * mediaLayer;
 
   void checkKey(xcb_keysym_t pressedKey);
+
 };

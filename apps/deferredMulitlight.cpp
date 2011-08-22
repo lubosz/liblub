@@ -42,6 +42,7 @@ class DefferedLightApp: public Application {
   DefferedLightApp() {
     sceneLoader = new SceneLoader("multilight.xml");
     useHDR = true;
+    fontOverlay = true;
   }
 
   ~DefferedLightApp() {}
@@ -150,7 +151,6 @@ class DefferedLightApp: public Application {
 };
 
 int main(int argc, char *argv[]) {
-  QApplication app(argc, argv);
   DefferedLightApp().run();
   return 0;
 }

@@ -14,24 +14,22 @@
 #include "Window/Input.h"
 
 class Timer : public Singleton<Timer>{
-public:
-  unsigned fps_current;  // the current FPS.
-  unsigned fps_lasttime;  // the last recorded time.
-  unsigned input_lasttime;  // the last recorded time.
-  unsigned fps_frames;  // frames passed since the last recorded fps.
-  unsigned ticks;
-  unsigned secoundsPassed;
-  unsigned nanosecoundsPassed;
+private:
 #ifndef LIBLUB_WINDOWS
-  timespec start;
+  timespec startTime, lastTime, frameTime;
+  timespec elapsed(timespec &start, timespec &end);
+#else
+  //TODO: Qt Timer for Win
 #endif
+
+public:
   Timer();
   virtual ~Timer();
-  void frame(Input * input);
-  void frame();
-private:
-  void checkFPS();
-  void tick();
+  void updateFPS();
+  void printFPS();
+  float getFPS();
+  float getSPF();
+  float getTime();
 };
 
 #endif /* TIMER_H_ */

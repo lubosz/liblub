@@ -29,15 +29,6 @@ GUI::GUI() {
   material = new Simple("Texture/font",attributes);
 
   node = new Node("GUI", { 0, 0, 0 }, 1, Geometry::plane(attributes, QRectF(0.5,0,0.5,1)), material);
-//      plane->transparent = true;
-//      plane->setRotation(QVector3D(-90,0,180));
-//      plane->setName("font");
-
-
-
-  //    Material * material = new PhongColor(QVector3D(1, 1, 1));
-  //    Node * plane = new Node("Plane", { 0, 0, 0 }, 2, MeshFactory::load(
-  //        "plane.blend"), material);
   screenSize = QSize(480,600);
   textBox = QRectF(0,0,screenSize.width(), screenSize.height());
   image = new QImage(screenSize, QImage::Format_ARGB32);
@@ -48,10 +39,8 @@ GUI::GUI() {
   blackPainter.fillRect ( textBox, Qt::black );
   blackPainter.end();
 
-
   clear();
-   drawBox = QRectF(50,200,screenSize.width()-100, screenSize.height()-100);
-//  fontPainter.end();
+  drawBox = QRectF(50,200,screenSize.width()-100, screenSize.height()-100);
 }
 
 GUI::~GUI() {
@@ -60,7 +49,6 @@ GUI::~GUI() {
 void GUI::init() {
   addText("ascene", SceneData::Instance().name);
   addText("fps", "FPS");
-//  GUI::Instance().addText("zoom", "Zoom");
   addText("cam", "Cam");
   addText("time", "Time");
   render();
@@ -70,18 +58,15 @@ void GUI::init() {
 
 void GUI::update() {
   std::stringstream fps, cam, zoom, time;
-//    windowTitle << programTile << " - FPS: " << fps_current;
-  fps << "FPS: " << Timer::Instance().fps_current;
-  time << "Time: " << Timer::Instance().secoundsPassed << "." << Timer::Instance().nanosecoundsPassed;
+  fps << "FPS: " << Timer::Instance().getFPS();
+  time << "ms: " << Timer::Instance().getSPF();
   updateText("fps",fps.str());
   cam << "\nCam:\n" << SceneData::Instance().getCurrentCamera()->position.x()
       <<"\n " << SceneData::Instance().getCurrentCamera()->position.y()
       <<"\n " << SceneData::Instance().getCurrentCamera()->position.z();
-//  zoom << "\nZoom:\n";
   updateText("fps",fps.str());
   updateText("cam",cam.str());
   updateText("time",time.str().substr (0,12));
-//  updateText("zoom",zoom.str());
   clear();
   render();
   texture->bind();
@@ -90,30 +75,21 @@ void GUI::update() {
 
 void GUI::clear() {
   image->setAlphaChannel(black);
-  //clean image
-//  QPainter cleanPainter(image);
-//  fontPainter.fillRect ( textBox, Qt::white );
-//  fontPainter.end();
-//
-//
-//  image->setAlphaChannel(black);
 }
 
 void GUI::render() {
   QPainter fontPainter(image);
   //draw font
-//  fontPainter.begin(image);
-   fontPainter.setRenderHint(QPainter::Antialiasing, true);
-    fontPainter.setRenderHint(QPainter::TextAntialiasing, true);
-    fontPainter.setRenderHint(QPainter::SmoothPixmapTransform, true);
-    fontPainter.setFont(QFont("Ubuntu", 24));
-    fontPainter.setLayoutDirection(Qt::RightToLeft);
-    fontPainter.setPen(Qt::white);
-//  fontPainter.drawRect(drawBox);
+  fontPainter.setRenderHint(QPainter::Antialiasing, true);
+  fontPainter.setRenderHint(QPainter::TextAntialiasing, true);
+  fontPainter.setRenderHint(QPainter::SmoothPixmapTransform, true);
+  fontPainter.setFont(QFont("Ubuntu", 24));
+  fontPainter.setLayoutDirection(Qt::RightToLeft);
+  fontPainter.setPen(Qt::white);
 
   string text;
   foreach(string line, textLines) {
-    text += line +"\n";
+    text += line + "\n";
   }
 
   fontPainter.drawText(drawBox, Qt::AlignLeft, QString::fromStdString(text));

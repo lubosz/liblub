@@ -6,6 +6,7 @@
  */
 
 #pragma once
+#include <QApplication>
 
 #ifdef WITH_SFML
 #include "Window/SFML/SFMLMediaLayer.h"
@@ -33,65 +34,30 @@
 
 enum MediaLayerType { windowXCB, windowQt, windowSFML, windowSDL };
 
-class Application {
+class Application : public QApplication {
+
+  Q_OBJECT
+
  public:
+	SceneLoader * sceneLoader;
+	MediaLayer * mediaLayer;
+	int argc;
+
+  Application() :QApplication(argc,0){ }
 	virtual ~Application() {}
 	virtual void scene() = 0;
 	virtual void renderFrame() = 0;
 
-	SceneLoader * sceneLoader;
-	MediaLayer * mediaLayer;
+	void chooseMediaLayer(MediaLayerType type);
+	void run();
+	void run(MediaLayerType type);
+	void setFontOverlay(bool fontOverlay);
+public slots:
+	void updateFont();
+	void draw();
+	void eventLoop();
 
-	void chooseMediaLayer(MediaLayerType type) {
-	  if (type == windowXCB) {
-#ifdef WITH_XCB
-	    mediaLayer = new XCBMediaLayer();
-	    LogInfo << "Using XCB for Input and Window";
-#endif
-	  } else if (type == windowQt) {
-#ifdef WITH_Qt
-	    mediaLayer = new QtMediaLayer();
-	    LogInfo << "Using Qt for Input and Window";
-#endif
-	  } else if (type == windowSFML) {
-#ifdef WITH_SFML
-	    mediaLayer = new SFMLMediaLayer();
-	    LogInfo << "Using SFML for Input and Window";
-#endif
-	  } else if (type == windowSDL) {
-#ifdef WITH_SDL
-	    mediaLayer = new SDLMediaLayer();
-	    LogInfo << "Using SDL for Input and Window";
-#endif
-	  }
-	}
-
-	void run() {
-#if WITH_XCB
-	  run(windowXCB);
-#elif WITH_SDL
-    run(windowSDL);
-#elif WITH_SFML
-    run(windowSFML);
-//#elif WITH_Qt
-//    run(windowQt);
-#else
-    LogError << "No Media Layer compiled.";
-#endif
-	}
-
-	void run(MediaLayerType type) {
-		Config::Instance().load("config.xml");
-	  chooseMediaLayer(type);
-	  string sceneName = SceneData::Instance().name;
-	  LogDebug << "Initializing Media Layer";
-		mediaLayer->init(sceneName);
-		scene();
-		GUI::Instance().init();
-    while (!mediaLayer->quit) {
-      mediaLayer->renderFrame();
-      renderFrame();
-     }
-	}
+protected:
+	bool fontOverlay;
 };
 

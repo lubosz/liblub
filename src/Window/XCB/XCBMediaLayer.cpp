@@ -305,15 +305,16 @@ void XCBMediaLayer::toggleFullScreen() {
       (const char *) &ev);
 }
 
-void XCBMediaLayer::renderFrame() {
-  Timer::Instance().frame(input);
-
+void XCBMediaLayer::updateWindowTitle() {
   // TODO(bmonkey): should be per secound, and not per frame (breaks mouse input)
   stringstream windowTitle;
   //windowTitle << programTile << " - FPS: " << fps_current;
-  windowTitle << "FPS: " << Timer::Instance().fps_current;
+  windowTitle << "FPS: " << Timer::Instance().getFPS();
   setWindowTitle(windowTitle.str());
+}
 
+void XCBMediaLayer::renderFrame() {
+  updateWindowTitle();
   swapBuffers();
 }
 
