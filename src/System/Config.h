@@ -43,5 +43,7 @@ class Config : public Singleton<Config>, public XmlReader {
 
 
 	bool isEnabled(string value);
+ private:
+	bool initialized;
 };
 

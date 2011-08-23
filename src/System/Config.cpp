@@ -13,12 +13,17 @@
 #include "System/Config.h"
 #include "System/Logger.h"
 
-Config::Config():XmlReader() {}
+Config::Config():XmlReader() {
+  initialized = false;
+}
 
 Config::~Config() {}
 
 template<typename T>
 vector<T> Config::getValues(string name, const vector<ConfigOption<T>> & config) {
+    if (!initialized)
+      LogFatal << "The config file was not initialized yet.";
+
     foreach(ConfigOption<T> configOption, config) {
             if (configOption.name == name)
                 return configOption.optionVec;
@@ -72,6 +77,7 @@ void Config::load(const QString & fileName) {
         }
         document = document.nextSiblingElement();
     }
+    initialized = true;
 }
 
 void Config::appendOption(const QDomElement & optionNode) {
