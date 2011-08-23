@@ -17,14 +17,6 @@ class ShadowPass : public RenderPass {
 	void cleanUp();
 };
 
-class DepthPass : public RenderPass {
- public:
-  explicit DepthPass(FrameBuffer * fbo);
-  void prepare();
-  void draw();
-  void cleanUp();
-};
-
 class FilterPass : public RenderPass {
  public:
   explicit FilterPass(FrameBuffer * fbo);
@@ -49,3 +41,13 @@ class FBODebugPass : public RenderPass {
   void draw();
   void cleanUp(){};
 };
+
+class WritePass : public RenderPass {
+ public:
+  WritePass(FrameBuffer * fbo, Texture * texture, Material * material);
+  WritePass(FrameBuffer * fbo, Texture * texture, Material * material, bool useColorBuffer);
+  void prepare();
+  void draw();
+  void cleanUp();
+};
+

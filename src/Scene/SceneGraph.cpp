@@ -116,6 +116,10 @@ void SceneGraph::drawNodes(DirectionNode * viewPoint) {
     GUI::Instance().draw();
 }
 
+void SceneGraph::drawCasters(Material * material) {
+  drawCasters(material, SceneData::Instance().getCurrentCamera());
+}
+
 void SceneGraph::drawCasters(Material * material, DirectionNode * viewPoint) {
     foreach(Node * node, sceneNodes) {
         if (node->getCastShadows()) {

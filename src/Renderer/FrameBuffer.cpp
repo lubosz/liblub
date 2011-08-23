@@ -57,12 +57,14 @@ FrameBuffer::FrameBuffer(GLuint width, GLuint height) {
 
 void FrameBuffer::checkAndFinish() {
     // check FBO status
+  glBindFramebuffer(GL_FRAMEBUFFER, fboId);
     printFramebufferInfo();
-    LogDebug << checkFramebufferStatus();
+    checkFramebufferStatus();
     unBind();
 }
 
 void FrameBuffer::attachTexture(GLenum attachmentPoint, Texture * texture) {
+  glBindFramebuffer(GL_FRAMEBUFFER, fboId);
     // attach a texture to FBO color attachement point
     glFramebufferTexture2D(GL_FRAMEBUFFER, attachmentPoint, GL_TEXTURE_2D,
             texture->getHandle(), 0);
@@ -307,37 +309,39 @@ string FrameBuffer::convertInternalFormatToString(GLenum format) {
     case GL_DEPTH_COMPONENT32F:
       formatName = "GL_DEPTH_COMPONENT32F";
       break;
+    case GL_RGBA32F:
+      formatName = "GL_RGBA32F";
+      break;
     default:
-        stringstream ss;
-        ss << format;
-        formatName = "Unknown Format " + ss.str();
+        formatName = "Unknown Format";
+        LogWarning << "Unknown Texture Format" << ("0x"+QString::number(format, 16)).toStdString();
     }
 
     return formatName;
 }
 
-string FrameBuffer::checkFramebufferStatus() {
-    GLenum status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
-    switch (status) {
+void FrameBuffer::checkFramebufferStatus() {
+  GLenum status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
+  switch (status) {
     case GL_FRAMEBUFFER_COMPLETE:
-        return "Framebuffer complete.";
-
+      LogDebug << "Framebuffer complete.";
+      break;
     case GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT:
-        return "[ERROR] Framebuffer incomplete: Attachment is NOT complete.";
-
+      LogError << "Framebuffer incomplete: Attachment is NOT complete.";
+      break;
     case GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT:
-        return "[ERROR] Framebuffer incomplete: No image is attached to FBO.";
-
+      LogError << "Framebuffer incomplete: No image is attached to FBO.";
+      break;
     case GL_FRAMEBUFFER_INCOMPLETE_DRAW_BUFFER:
-        return "[ERROR] Framebuffer incomplete: Draw buffer.";
-
+      LogError << "Framebuffer incomplete: Draw buffer.";
+      break;
     case GL_FRAMEBUFFER_INCOMPLETE_READ_BUFFER:
-        return "[ERROR] Framebuffer incomplete: Read buffer.";
-
+      LogError << "Framebuffer incomplete: Read buffer.";
+      break;
     case GL_FRAMEBUFFER_UNSUPPORTED:
-        return "[ERROR] Unsupported by FBO implementation.";
-
+      LogError << "Unsupported by FBO implementation.";
+      break;
     default:
-        return "[ERROR] Unknow error.";
-    }
+      LogError << "Unknow FBO error.";
+  }
 }

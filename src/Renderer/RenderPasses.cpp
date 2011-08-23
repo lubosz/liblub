@@ -49,31 +49,35 @@ void ShadowPass::cleanUp() {
         glViewport(0, 0, SceneData::Instance().width,
             SceneData::Instance().height);
 }
-
-DepthPass::DepthPass(FrameBuffer * fbo) {
-    this->fbo = fbo;
-    targetTexture = new DepthTexture(fbo->width,
-            fbo->height, "shadowMap");
-    fbo->attachTexture(GL_DEPTH_ATTACHMENT, targetTexture);
-    fbo->disableColorBuffer();
-
-    material = new DepthMaterial();
+WritePass::WritePass(FrameBuffer * fbo, Texture * texture, Material * material) {
+ WritePass(fbo, texture, material, true);
 }
 
-void DepthPass::prepare() {
+
+WritePass::WritePass(FrameBuffer * fbo, Texture * texture, Material * material, bool useColorBuffer) {
+    this->fbo = fbo;
+    this->material = material;
+    targetTexture = texture;
+    if (!useColorBuffer) {
+      fbo->attachTexture(GL_DEPTH_ATTACHMENT, targetTexture);
+      fbo->disableColorBuffer();
+    } else {
+      fbo->attachTexture(GL_COLOR_ATTACHMENT0, targetTexture);
+    }
+}
+
+void WritePass::prepare() {
     fbo->bind();
     RenderEngine::Instance().clear();
-    // In the case we render the shadowmap to a higher resolution,
-    // the viewport must be modified accordingly.
     fbo->updateRenderView();
     material->activate();
 }
 
-void DepthPass::draw() {
-    SceneGraph::Instance().drawCasters(material,SceneData::Instance().getCurrentCamera());
+void WritePass::draw() {
+    SceneGraph::Instance().drawCasters(material);
 }
 
-void DepthPass::cleanUp() {
+void WritePass::cleanUp() {
     fbo->unBind();
     glViewport(0, 0, SceneData::Instance().width,
         SceneData::Instance().height);

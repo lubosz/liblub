@@ -22,17 +22,6 @@ class Minimal : public Material {
 	void uniforms() {}
 };
 
-class DepthMaterial : public Material {
-  public:
-  DepthMaterial() {
-    init();
-    shaderProgram->attachShader("Common/depth.vert", GL_VERTEX_SHADER, false);
-    shaderProgram->attachShader("Common/depth.frag", GL_FRAGMENT_SHADER, false);
-    done(QList<string>());
-  }
-  void uniforms() {}
-};
-
 class Simple : public Material {
  public:
     Simple(string shaders, const QList<string> & attributes) {

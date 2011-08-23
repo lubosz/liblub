@@ -22,13 +22,6 @@ DepthTexture::DepthTexture(GLuint width, GLuint height, string name) {
     bind();
     LogDebug << "Creating FBO Depth texture #" << handle << " " << name;
 
-    /*
-     Shadowmap
-     GL_LINEAR does not make sense for depth texture.
-     However, next tutorial shows usage of GL_LINEAR and PCF
-
-     */
-
     filterMinMag(GL_NEAREST, GL_NEAREST);
 
     // Specifies the texture comparison mode for currently bound depth textures.

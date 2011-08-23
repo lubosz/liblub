@@ -36,5 +36,5 @@ class FrameBuffer {
 	string getTextureParameters(GLuint id);
 	string getRenderbufferParameters(GLuint id);
 	string convertInternalFormatToString(GLenum format);
-	string checkFramebufferStatus();
+	void checkFramebufferStatus();
 };
