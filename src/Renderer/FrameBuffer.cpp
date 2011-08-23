@@ -55,19 +55,19 @@ FrameBuffer::FrameBuffer(GLuint width, GLuint height) {
     glError;
 }
 
-void FrameBuffer::checkAndFinish() {
-    // check FBO status
-  glBindFramebuffer(GL_FRAMEBUFFER, fboId);
-    printFramebufferInfo();
-    checkFramebufferStatus();
-    unBind();
+void FrameBuffer::check() {
+  // check FBO status
+  bind();
+  printFramebufferInfo();
+  checkFramebufferStatus();
+  unBind();
 }
 
 void FrameBuffer::attachTexture(GLenum attachmentPoint, Texture * texture) {
-  glBindFramebuffer(GL_FRAMEBUFFER, fboId);
-    // attach a texture to FBO color attachement point
-    glFramebufferTexture2D(GL_FRAMEBUFFER, attachmentPoint, GL_TEXTURE_2D,
-            texture->getHandle(), 0);
+  bind();
+  // attach a texture to FBO color attachement point
+  glFramebufferTexture2D(GL_FRAMEBUFFER, attachmentPoint, GL_TEXTURE_2D,
+      texture->getHandle(), 0);
 }
 
 void FrameBuffer::disableColorBuffer() {
@@ -79,18 +79,24 @@ void FrameBuffer::disableColorBuffer() {
 }
 
 void FrameBuffer::bind() {
-    // set the rendering destination to FBO
-    glBindFramebuffer(GL_FRAMEBUFFER, fboId);
+  glBindFramebuffer(GL_FRAMEBUFFER, fboId);
+}
 
-    // Set the render target
-    // glDrawBuffer(GL_COLOR_ATTACHMENT0);
-    glError;
+void FrameBuffer::setDrawBuffer(GLenum buffer) {
+  // Set the render target
+  bind();
+  glDrawBuffer(buffer);
+  glError;
+}
+
+void FrameBuffer::setDrawBuffers(vector<GLenum>& buffers) {
+  bind();
+  glDrawBuffers(buffers.size(), buffers.data());
 }
 
 void FrameBuffer::setDrawBuffers(unsigned count) {
-  // set the rendering destination to FBO
   // Multiple render targets
-  glBindFramebuffer(GL_FRAMEBUFFER, fboId);
+  bind();
 
   vector<GLenum> buffers;
   for (int i = 0; i < count; i++) {

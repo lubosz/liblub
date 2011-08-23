@@ -37,7 +37,7 @@ RenderSequence::RenderSequence() {
 //    renderPasses.push_back(new FilterPass(fbo));
 
 #ifdef USE_FBO
-    fbo->checkAndFinish();
+    fbo->check();
 #endif
 }
 

@@ -17,13 +17,15 @@ class FrameBuffer {
 	virtual ~FrameBuffer();
     void bind();
     void setDrawBuffers(unsigned count);
+    void setDrawBuffers(vector<GLenum>& buffers);
+    void setDrawBuffer(GLenum buffer);
     void unBind();
     void draw(Material * material);
     void updateRenderView();
 
 	unsigned width, height;
 
-	void checkAndFinish();
+	void check();
 	void attachTexture(GLenum attachmentPoint, Texture * texture);
 	void disableColorBuffer();
  private:

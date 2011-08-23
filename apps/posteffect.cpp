@@ -80,7 +80,7 @@ class TesselationApp: public Application {
     postMaterial = new Template("Post/HDR", attributes);
     postMaterial->addTexture(targetTexture);
     postMaterial->shaderProgram->setUniform("exposure", 2.0f);
-    fbo->checkAndFinish();
+    fbo->check();
 
   }
   void renderFrame() {

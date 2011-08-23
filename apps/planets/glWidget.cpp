@@ -142,7 +142,7 @@ void GLWidget::mouseMoveEvent(QMouseEvent *event) {
   fbo = new FrameBuffer(width, height);
   Texture * targetTexture = new ColorTexture(width, height, "targetTexture");
   fbo->attachTexture(GL_COLOR_ATTACHMENT0, targetTexture);
-  fbo->checkAndFinish();
+  fbo->check();
 
   HDR = new Template("Post/HDR", QList<string> () << "uv");
   HDR->addTexture(targetTexture);

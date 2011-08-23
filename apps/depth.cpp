@@ -48,7 +48,7 @@ class DepthBufferExample: public Application {
 
     fbo->attachTexture(GL_DEPTH_ATTACHMENT, targetTexture);
     fbo->disableColorBuffer();
-    fbo->checkAndFinish();
+    fbo->check();
 
     QList<string> attributes;
     attributes.push_back("uv");

@@ -65,7 +65,7 @@ class DefferedLightApp: public Application {
       multiLightMat->addTexture(tangentTexture);
       multiLightMat->addTexture(normalTextureTexture);
       multiLightMat->addTexture(envTexture);
-      fbo->checkAndFinish();
+      fbo->check();
     }
   }
 
