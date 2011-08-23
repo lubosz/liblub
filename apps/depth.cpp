@@ -20,47 +20,59 @@
 #include "System/Application.h"
 #include "Material/Textures.h"
 
-class SSAOApp: public Application {
+class DepthBufferExample: public Application {
  public:
 
-   RenderPass * defaultPass;
-   Material * debugfbo;
+   Material * debugfbo, * depthMaterial;
+   FrameBuffer * fbo;
+   unsigned width, height;
 
-  explicit SSAOApp() {
+  explicit DepthBufferExample() {
     fontOverlay = false;
     sceneLoader = new SceneLoader("nice.xml");
   }
 
-  ~SSAOApp() {}
+  ~DepthBufferExample() {}
 
   void scene() {
     sceneLoader->load();
-    SceneData::Instance().name = "SSAO";
-    unsigned width = SceneData::Instance().width;
-    unsigned height = SceneData::Instance().height;
-    FrameBuffer * fbo = new FrameBuffer(width, height);
 
-//    Texture * targetTexture = new DepthTexture(width, height, "shadowMap");
-    Texture * targetTexture = new ColorTexture(width, height, "shadowMap");
+    SceneData::Instance().name = "Depth Buffer";
+
+    width = SceneData::Instance().width;
+    height = SceneData::Instance().height;
+
+    Texture * targetTexture = new DepthTexture(width, height, "result");
+
+    fbo = new FrameBuffer(width, height);
+
+    fbo->attachTexture(GL_DEPTH_ATTACHMENT, targetTexture);
+    fbo->disableColorBuffer();
+    fbo->checkAndFinish();
 
     QList<string> attributes;
     attributes.push_back("uv");
 
     debugfbo = new Simple("Texture/debugfbo",attributes);
-//    debugfbo = new Simple("Post/ssao",attributes);
+    debugfbo->addTexture(targetTexture);
+
     Material * depthMaterial = new Simple("Common/depth",QList<string>());
-    defaultPass = new WritePass(fbo, targetTexture, depthMaterial, true);
-    debugfbo->addTexture(defaultPass->targetTexture);
-    fbo->checkAndFinish();
+
   }
   void renderFrame(){
     RenderEngine::Instance().clear();
-    defaultPass->render();
-    defaultPass->fbo->draw(debugfbo);
+    fbo->bind();
+    RenderEngine::Instance().clear();
+    fbo->updateRenderView();
+    depthMaterial->activate();
+    SceneGraph::Instance().drawCasters(depthMaterial);
+    fbo->unBind();
+    glViewport(0, 0, width, height);
+    fbo->draw(debugfbo);
   }
 };
 
 int main(int argc, char *argv[]) {
-  SSAOApp().run();
+  DepthBufferExample().run();
 }
 
