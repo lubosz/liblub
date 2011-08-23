@@ -50,6 +50,16 @@ void Application::updateFont() {
   gui->update();
 }
 
+// reimplemented from QApplication so we can throw exceptions in slots
+bool Application::notify(QObject * receiver, QEvent * event) {
+  try {
+    return QApplication::notify(receiver, event);
+  } catch(std::exception& e) {
+    LogFatal << "Exception thrown:" << e.what();
+  }
+  return false;
+}
+
 void Application::draw() {
     renderFrame();
     if (fontOverlay)

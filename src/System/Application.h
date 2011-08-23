@@ -53,6 +53,9 @@ class Application : public QApplication {
 	void run();
 	void run(MediaLayerType type);
 	void setFontOverlay(bool fontOverlay);
+
+  virtual bool notify(QObject * receiver, QEvent * event);
+
 public slots:
 	void updateFont();
 	void draw();
