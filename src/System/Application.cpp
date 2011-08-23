@@ -47,13 +47,13 @@ void Application::run() {
 }
 
 void Application::updateFont() {
-  GUI::Instance().update();
+  gui->update();
 }
 
 void Application::draw() {
     renderFrame();
     if (fontOverlay)
-      GUI::Instance().draw();
+      gui->draw();
     mediaLayer->swapBuffers();
     //TODO: Mouse Input is buggy when title is updated less often
     mediaLayer->updateWindowTitle();
@@ -73,7 +73,8 @@ void Application::run(MediaLayerType type) {
   connect(mediaLayer->input, SIGNAL(shutdown()), this, SLOT(quit()));
 
   if (fontOverlay) {
-    GUI::Instance().init();
+    gui = new GUI();
+    gui->init();
     QTimer *fontTimer = new QTimer(this);
     connect(fontTimer, SIGNAL(timeout()), this, SLOT(updateFont()));
     fontTimer->start(1000);

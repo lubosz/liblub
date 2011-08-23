@@ -117,7 +117,6 @@ void SceneGraph::drawNodes(DirectionNode * viewPoint) {
       glDisable(GL_BLEND);
     }
     glError;
-    GUI::Instance().draw();
 }
 
 void SceneGraph::drawCasters(Material * material, DirectionNode * viewPoint) {

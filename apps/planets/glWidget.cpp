@@ -80,7 +80,8 @@ void GLWidget::initializeGL() {
 //  SceneLoader * sceneLoader = new SceneLoader("planets.xml");
 //  sceneLoader->load();
   initCamAndLight();
-  GUI::Instance().init();
+  gui = new GUI();
+  gui->init();
   foreach(Planet * planet, planets)
       planet->init();
   initPostProcessing();
@@ -93,7 +94,7 @@ void GLWidget::paintGL() {
   drawPlanets();
 //  SceneGraph::Instance().drawNodes(SceneData::Instance().getCurrentCamera());
   endPass();
-  GUI::Instance().draw();
+  gui->draw();
   glError;
 
 }

@@ -15,7 +15,7 @@
 #include <QPainter>
 using std::string;
 
-class GUI : public Singleton<GUI> {
+class GUI {
 public:
   QMap<string,string> textLines;
   QImage * image;

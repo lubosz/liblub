@@ -65,8 +65,6 @@ class LoadApp: public Application {
 
     zoomOut->getShaderProgram()->use();
     zoomOut->getShaderProgram()->setUniform("scaleUv", 100.0f);
-
-    GUI::Instance().init();
   }
   void renderFrame(){
     defaultPass->render();

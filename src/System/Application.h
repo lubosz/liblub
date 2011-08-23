@@ -39,6 +39,7 @@ class Application : public QApplication {
   Q_OBJECT
 
  public:
+  GUI * gui;
 	SceneLoader * sceneLoader;
 	MediaLayer * mediaLayer;
 	int argc;
