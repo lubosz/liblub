@@ -23,8 +23,8 @@
 class SSAOExample: public Application {
  public:
 
-   Material * debugfbo, * depthMaterial;
-   FrameBuffer * fbo;
+   Material * aoMaterial, * gatherPassMaterial, *blur_horizontal,  *blur_vertical;
+   FrameBuffer * fbo, *colorFbo, *aoFbo, *blurHFbo;
    QSize res;
 
   explicit SSAOExample() {
@@ -41,20 +41,49 @@ class SSAOExample: public Application {
 
     res = SceneData::Instance().getResolution();
 
-    Texture * targetTexture = new ColorTexture(res, "result");
+    //PASS 1 Gather
+    Texture * normalTexture = new ColorTexture(res, "normal");
+    Texture * depthTexture = new DepthTexture(res, "depth");
 
     fbo = new FrameBuffer(res);
-
-    fbo->attachTexture(GL_COLOR_ATTACHMENT0, targetTexture);
+    fbo->attachTexture(GL_COLOR_ATTACHMENT0, normalTexture);
+    fbo->attachTexture(GL_DEPTH_ATTACHMENT, depthTexture);
     fbo->check();
+
+    gatherPassMaterial = new Simple("AO/gather",QList<string>() << "normal");
+
+    GLuint program = gatherPassMaterial->getShaderProgram()->getHandle();
+    glBindFragDataLocation(program, 0, "normal");
+    glBindFragDataLocation(program, 1, "depth");
+
+    //PASS 2 AO
+    Texture * aoTexture = new ColorTexture(res, "ao");
+    Texture * noise = new TextureFile("noise.png", "noise");
+
+    aoFbo = new FrameBuffer(res);
+    aoFbo->attachTexture(GL_COLOR_ATTACHMENT0, aoTexture);
+    aoFbo->check();
 
     QList<string> attributes;
     attributes.push_back("uv");
+    aoMaterial = new Simple("AO/ssao",attributes);
+    aoMaterial->addTexture(normalTexture);
+    aoMaterial->addTexture(depthTexture);
+    aoMaterial->addTexture(noise);
 
-    debugfbo = new Simple("Texture/debugfbo",attributes);
-    debugfbo->addTexture(targetTexture);
+    //PASS 3 BlurH
+    Texture * blurHTexture = new ColorTexture(res, "blurH");
 
-    depthMaterial = new Simple("Common/depth",QList<string>());
+    blurHFbo = new FrameBuffer(res);
+    blurHFbo->attachTexture(GL_COLOR_ATTACHMENT0, blurHTexture);
+    blurHFbo->check();
+
+    blur_horizontal = new Simple("AO/blur_horizontal", attributes);
+    blur_horizontal->addTexture(aoTexture);
+
+    //PASS 4 BlurV
+    blur_vertical = new Simple("AO/blur_vertical", attributes);
+    blur_vertical->addTexture(blurHTexture);
 
   }
   void renderFrame(){
@@ -62,11 +91,26 @@ class SSAOExample: public Application {
     fbo->bind();
     RenderEngine::Instance().clear();
     fbo->updateRenderView();
-    depthMaterial->activate();
-    SceneGraph::Instance().drawCasters(depthMaterial);
+    gatherPassMaterial->activate();
+    SceneGraph::Instance().drawCasters(gatherPassMaterial);
     fbo->unBind();
+
+    RenderEngine::Instance().clear();
+    aoFbo->bind();
+    RenderEngine::Instance().clear();
+    aoFbo->updateRenderView();
+    fbo->draw(aoMaterial);
+    aoFbo->unBind();
+
+    RenderEngine::Instance().clear();
+    blurHFbo->bind();
+    RenderEngine::Instance().clear();
+    blurHFbo->updateRenderView();
+    fbo->draw(blur_horizontal);
+    blurHFbo->unBind();
+
     RenderEngine::Instance().updateViewport(res);
-    fbo->draw(debugfbo);
+    fbo->draw(blur_vertical);
   }
 };
 
