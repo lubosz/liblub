@@ -1,4 +1,4 @@
-#version 410 core
+#version 330 core
 
 in vec3 in_Vertex;
 in vec2 in_Uv;
