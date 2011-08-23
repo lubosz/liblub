@@ -38,7 +38,6 @@ class DepthBufferExample: public Application {
     sceneLoader->load();
 
     SceneData::Instance().name = "Depth Buffer";
-
     width = SceneData::Instance().width;
     height = SceneData::Instance().height;
 
@@ -56,8 +55,7 @@ class DepthBufferExample: public Application {
     debugfbo = new Simple("Texture/debugfbo",attributes);
     debugfbo->addTexture(targetTexture);
 
-    Material * depthMaterial = new Simple("Common/depth",QList<string>());
-
+    depthMaterial = new Simple("Common/depth",QList<string>());
   }
   void renderFrame(){
     RenderEngine::Instance().clear();
