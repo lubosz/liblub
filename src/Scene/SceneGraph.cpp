@@ -80,6 +80,10 @@ void SceneGraph::setShadowCoords(Node * node, DirectionNode * viewPoint) {
         "camViewToShadowMapMatrix", camViewToShadowMapMatrix);
 }
 
+void SceneGraph::drawNodes() {
+  drawNodes(SceneData::Instance().getCurrentCamera());
+}
+
 void SceneGraph::drawNodes(DirectionNode * viewPoint) {
   QMap <qreal, Node*> transparentNodes;
 
@@ -113,7 +117,6 @@ void SceneGraph::drawNodes(DirectionNode * viewPoint) {
       glDisable(GL_BLEND);
     }
     glError;
-    GUI::Instance().draw();
 }
 
 void SceneGraph::drawCasters(Material * material) {

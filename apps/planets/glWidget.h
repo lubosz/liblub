@@ -9,6 +9,7 @@
 #include "Scene/Light.h"
 #include "Scene/Camera.h"
 #include "Planet.h"
+#include "System/GUI.h"
 
 class GLWidget: public QGLWidget {
   Q_OBJECT
@@ -22,6 +23,7 @@ public:
   QSize viewSize;
   Planet* focusedPlanet;
   vector<Planet*> planets;
+  GUI* gui;
 
 protected:
   void initializeGL();

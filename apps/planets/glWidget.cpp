@@ -22,9 +22,6 @@ GLWidget::GLWidget(QWidget *parent) :
   fmt.setVersion(4,1);
   QGLFormat::setDefaultFormat(fmt);
 
-
-
-
   usePostprocessing = true;
   useWireframe = false;
   //   wavelength[0] = 0.650f; // 650 nm for red
@@ -80,7 +77,8 @@ void GLWidget::initializeGL() {
 //  SceneLoader * sceneLoader = new SceneLoader("planets.xml");
 //  sceneLoader->load();
   initCamAndLight();
-  GUI::Instance().init();
+  gui = new GUI();
+  gui->init();
   foreach(Planet * planet, planets)
       planet->init();
   initPostProcessing();
@@ -93,7 +91,7 @@ void GLWidget::paintGL() {
   drawPlanets();
 //  SceneGraph::Instance().drawNodes(SceneData::Instance().getCurrentCamera());
   endPass();
-  GUI::Instance().draw();
+  gui->draw();
   glError;
 
 }

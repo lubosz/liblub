@@ -68,8 +68,8 @@ class TesselationApp: public Application {
     groundNode->setRotation(QVector3D(90,0,0));
     glError;
 
-    GUI::Instance().addText("tess", "Tess");
-    GUI::Instance().addText("dist", "Dist");
+    gui->addText("tess", "Tess");
+    gui->addText("dist", "Dist");
 
     Texture * groundTexture = new TextureFile("terrain/mud.jpg","diffuse");
     Texture * noise = new TextureFile("terrain-noise-blur.jpg","noise");
@@ -84,11 +84,11 @@ class TesselationApp: public Application {
 
       std::stringstream tess;
       tess << "Tess " << int(scale);
-      GUI::Instance().updateText("tess",tess.str());
+      gui->updateText("tess",tess.str());
 
       std::stringstream dist;
       dist << "Dist " << camera->position.length();
-      GUI::Instance().updateText("dist",dist.str());
+      gui->updateText("dist",dist.str());
 
     if (scale > 1){
       terrainMat->getShaderProgram()->use();
@@ -102,7 +102,6 @@ class TesselationApp: public Application {
     glError;
     glPatchParameteri(GL_PATCH_VERTICES, 3);
     groundNode->draw();
-    GUI::Instance().draw();
     glError;
   }
 };

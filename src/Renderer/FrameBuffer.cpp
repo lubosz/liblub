@@ -87,20 +87,16 @@ void FrameBuffer::bind() {
     glError;
 }
 
-void FrameBuffer::bindMulti() {
+void FrameBuffer::setDrawBuffers(unsigned count) {
   // set the rendering destination to FBO
+  // Multiple render targets
   glBindFramebuffer(GL_FRAMEBUFFER, fboId);
 
-  // Multiple render targets
-//  GLenum buffers[] = {
-//      GL_COLOR_ATTACHMENT0_EXT,
-//      GL_COLOR_ATTACHMENT1_EXT,
-//      GL_COLOR_ATTACHMENT2_EXT,
-//      GL_COLOR_ATTACHMENT3_EXT,
-//      GL_COLOR_ATTACHMENT4_EXT,
-//      GL_COLOR_ATTACHMENT5_EXT
-//  };
-//  glDrawBuffers(6, buffers);
+  vector<GLenum> buffers;
+  for (int i = 0; i < count; i++) {
+    buffers.push_back(GL_COLOR_ATTACHMENT0_EXT+i);
+  }
+  glDrawBuffers(count, buffers.data());
 
   glError;
 }
