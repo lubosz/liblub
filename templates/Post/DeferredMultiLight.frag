@@ -56,8 +56,9 @@ float saturate(float input) {
 	*/
 			
 
-	//fragColor = texture(normalTexture, uv);
+	fragColor = texture(normalTexture, uv);
 
+/*
 	vec4 diffuseColor = vec4(0);
 	vec4 specularColor = vec4(0);
 	vec4 normal = texture(normalTexture, uv);
@@ -98,5 +99,5 @@ float saturate(float input) {
     specularColor = i * lightSources[1].specular * specularPower / distance; 
     
     fragColor = i * vec4(1);
-
+*/
 {% endblock %}

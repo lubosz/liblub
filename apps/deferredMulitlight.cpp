@@ -53,6 +53,7 @@ class DefferedLightApp: public Application {
       fbo->attachTexture(GL_COLOR_ATTACHMENT3, tangentTexture);
       fbo->attachTexture(GL_COLOR_ATTACHMENT4, normalTextureTexture);
       fbo->attachTexture(GL_COLOR_ATTACHMENT5, envTexture);
+      fbo->setDrawBuffers(6);
 
       QList<string> attributes;
       attributes.push_back("uv");
@@ -70,7 +71,7 @@ class DefferedLightApp: public Application {
 
   void startPass(){
     if(useHDR) {
-      fbo->bindMulti();
+      fbo->bind();
       fbo->updateRenderView();
     }
   }
@@ -116,10 +117,10 @@ class DefferedLightApp: public Application {
   }
 
   void renderFrame(){
-//    startPass();
+    startPass();
     RenderEngine::Instance().clear();
     SceneGraph::Instance().drawNodes();
-//    endPass();
+    endPass();
     glError;
   }
 };
