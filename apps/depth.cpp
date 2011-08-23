@@ -28,7 +28,7 @@ class DepthBufferExample: public Application {
    QSize res;
 
   explicit DepthBufferExample() {
-    fontOverlay = false;
+    fontOverlay = true;
     sceneLoader = new SceneLoader("nice.xml");
   }
 
@@ -61,11 +61,9 @@ class DepthBufferExample: public Application {
     RenderEngine::Instance().clear();
     fbo->bind();
     RenderEngine::Instance().clear();
-    fbo->updateRenderView();
     depthMaterial->activate();
     SceneGraph::Instance().drawCasters(depthMaterial);
     fbo->unBind();
-    RenderEngine::Instance().updateViewport(res);
     fbo->draw(debugfbo);
   }
 };

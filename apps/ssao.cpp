@@ -20,47 +20,57 @@
 #include "System/Application.h"
 #include "Material/Textures.h"
 
-class SSAOApp: public Application {
+class SSAOExample: public Application {
  public:
 
-   RenderPass * defaultPass;
-   Material * debugfbo;
+   Material * debugfbo, * depthMaterial;
+   FrameBuffer * fbo;
+   QSize res;
 
-  explicit SSAOApp() {
+  explicit SSAOExample() {
     fontOverlay = false;
     sceneLoader = new SceneLoader("nice.xml");
   }
 
-  ~SSAOApp() {}
+  ~SSAOExample() {}
 
   void scene() {
     sceneLoader->load();
-    SceneData::Instance().name = "SSAO";
-    unsigned width = SceneData::Instance().width;
-    unsigned height = SceneData::Instance().height;
-    FrameBuffer * fbo = new FrameBuffer(width, height);
 
-//    Texture * targetTexture = new DepthTexture(width, height, "shadowMap");
-    Texture * targetTexture = new ColorTexture(width, height, "shadowMap");
+    SceneData::Instance().name = "SSAO";
+
+    res = SceneData::Instance().getResolution();
+
+    Texture * targetTexture = new ColorTexture(res, "result");
+
+    fbo = new FrameBuffer(res);
+
+    fbo->attachTexture(GL_COLOR_ATTACHMENT0, targetTexture);
+    fbo->check();
 
     QList<string> attributes;
     attributes.push_back("uv");
 
     debugfbo = new Simple("Texture/debugfbo",attributes);
-//    debugfbo = new Simple("Post/ssao",attributes);
-    Material * depthMaterial = new Simple("Common/depth",QList<string>());
-    defaultPass = new WritePass(fbo, targetTexture, depthMaterial, true);
-    debugfbo->addTexture(defaultPass->targetTexture);
-    fbo->checkAndFinish();
+    debugfbo->addTexture(targetTexture);
+
+    depthMaterial = new Simple("Common/depth",QList<string>());
+
   }
   void renderFrame(){
     RenderEngine::Instance().clear();
-    defaultPass->render();
-    defaultPass->fbo->draw(debugfbo);
+    fbo->bind();
+    RenderEngine::Instance().clear();
+    fbo->updateRenderView();
+    depthMaterial->activate();
+    SceneGraph::Instance().drawCasters(depthMaterial);
+    fbo->unBind();
+    RenderEngine::Instance().updateViewport(res);
+    fbo->draw(debugfbo);
   }
 };
 
 int main(int argc, char *argv[]) {
-  SSAOApp().run();
+  SSAOExample().run();
 }
 
