@@ -22,9 +22,6 @@ GLWidget::GLWidget(QWidget *parent) :
   fmt.setVersion(4,1);
   QGLFormat::setDefaultFormat(fmt);
 
-
-
-
   usePostprocessing = true;
   useWireframe = false;
   //   wavelength[0] = 0.650f; // 650 nm for red

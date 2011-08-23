@@ -16,40 +16,23 @@
     You should have received a copy of the GNU General Public License
     along with liblub.  If not, see <http://www.gnu.org/licenses/>.
 */
-#include <string>
-#include <QApplication>
-#include "System/TemplateEngine.h"
+
 #include "System/Application.h"
-#include "Scene/SceneLoader.h"
-#include "Scene/SceneData.h"
-#include "System/Logger.h"
-#include "System/Timer.h"
-#include "Mesh/Geometry.h"
-#include "Mesh/MeshLoader.h"
-#include "Material/ProcTextures.h"
 #include "Material/Textures.h"
-#include "Material/ShaderProgram.h"
 
 class DefferedLightApp: public Application {
  public:
-  Material *HDR;
+  Material * multiLightMat;
   bool useHDR;
-//  Camera* camera;
-//  Light * light;
-  FrameBuffer *fbo;
-//  RenderSequence * shadowSequence;
+  FrameBuffer * fbo;
 
   DefferedLightApp() {
     sceneLoader = new SceneLoader("multilight.xml");
     useHDR = true;
-    fontOverlay = true;
+    fontOverlay = false;
   }
 
   ~DefferedLightApp() {}
-
-  void initDumpMaterial() {
-
-  }
 
   void initPostProcessing(){
     if(useHDR){
@@ -74,22 +57,18 @@ class DefferedLightApp: public Application {
       QList<string> attributes;
       attributes.push_back("uv");
 
-      HDR = new Template("Post/DeferredMultiLight",attributes);
-      HDR->addTexture(positionTexture);
-      HDR->addTexture(normalTexture);
-      HDR->addTexture(diffuseTexture);
-      HDR->addTexture(tangentTexture);
-      HDR->addTexture(normalTextureTexture);
-      HDR->addTexture(envTexture);
-//      HDR->shaderProgram->setUniform("exposure", 2.0f);
+      multiLightMat = new Template("Post/DeferredMultiLight",attributes);
+      multiLightMat->addTexture(positionTexture);
+      multiLightMat->addTexture(normalTexture);
+      multiLightMat->addTexture(diffuseTexture);
+      multiLightMat->addTexture(tangentTexture);
+      multiLightMat->addTexture(normalTextureTexture);
+      multiLightMat->addTexture(envTexture);
       fbo->checkAndFinish();
     }
   }
 
   void startPass(){
-
-//    useHDR = !RenderEngine::Instance().wire;
-
     if(useHDR) {
       fbo->bindMulti();
       fbo->updateRenderView();
@@ -100,10 +79,10 @@ class DefferedLightApp: public Application {
     if(useHDR){
       fbo->unBind();
       RenderEngine::Instance().clear();
-      HDR->activateTextures();
-      HDR->getShaderProgram()->use();
-      HDR->getShaderProgram()->setUniform("camPosition", SceneData::Instance().getCurrentCamera()->position.toVector4D());
-      fbo->draw(HDR);
+      multiLightMat->activateTextures();
+      multiLightMat->getShaderProgram()->use();
+      multiLightMat->getShaderProgram()->setUniform("camPosition", SceneData::Instance().getCurrentCamera()->position.toVector4D());
+      fbo->draw(multiLightMat);
     }
   }
 
@@ -128,24 +107,19 @@ class DefferedLightApp: public Application {
     fistPass->name = programname;
     SceneData::Instance().addProgram(programname,fistPass);
 
-
-
     sceneLoader->load();
-//    Material * multilightMat = SceneData::Instance().getMaterial("white");
 
     //    multilightMat->addTexture(shadowSequence->renderPasses[0]->targetTexture);
 
     initPostProcessing();
-    SceneData::Instance().initLightBuffer(HDR->getShaderProgram(),
-        "LightSourceBuffer");
+    SceneData::Instance().initLightBuffer(multiLightMat->getShaderProgram(), "LightSourceBuffer");
   }
 
   void renderFrame(){
-    startPass();
+//    startPass();
     RenderEngine::Instance().clear();
-    SceneGraph::Instance().drawNodes(SceneData::Instance().getCurrentCamera());
-    endPass();
-    GUI::Instance().draw();
+    SceneGraph::Instance().drawNodes();
+//    endPass();
     glError;
   }
 };
