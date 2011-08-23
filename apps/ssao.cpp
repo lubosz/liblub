@@ -87,28 +87,26 @@ class SSAOExample: public Application {
 
   }
   void renderFrame(){
-    RenderEngine::Instance().clear();
     fbo->bind();
     RenderEngine::Instance().clear();
-    fbo->updateRenderView();
+    RenderEngine::Instance().updateViewport(res);
     gatherPassMaterial->activate();
     SceneGraph::Instance().drawCasters(gatherPassMaterial);
     fbo->unBind();
 
-    RenderEngine::Instance().clear();
     aoFbo->bind();
     RenderEngine::Instance().clear();
-    aoFbo->updateRenderView();
+    RenderEngine::Instance().updateViewport(res);
     fbo->draw(aoMaterial);
     aoFbo->unBind();
 
-    RenderEngine::Instance().clear();
     blurHFbo->bind();
     RenderEngine::Instance().clear();
-    blurHFbo->updateRenderView();
+    RenderEngine::Instance().updateViewport(res);
     fbo->draw(blur_horizontal);
     blurHFbo->unBind();
 
+    RenderEngine::Instance().clear();
     RenderEngine::Instance().updateViewport(res);
     fbo->draw(blur_vertical);
   }
