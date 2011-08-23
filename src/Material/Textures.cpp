@@ -15,30 +15,30 @@
 #include <QDebug>
 #include "Renderer/RenderEngine.h"
 
-DepthTexture::DepthTexture(GLuint width, GLuint height, string name) {
+DepthTexture::DepthTexture(QSize& res, string name) {
   this->name = name;
 
-    glGenTextures(1, &handle);
-    bind();
-    LogDebug << "Creating FBO Depth texture #" << handle << " " << name;
+  glGenTextures(1, &handle);
+  bind();
+  LogDebug << "Creating FBO Depth texture #" << handle << " " << name;
 
-    filterMinMag(GL_NEAREST, GL_NEAREST);
+  filterMinMag(GL_NEAREST, GL_NEAREST);
 
-    // Specifies the texture comparison mode for currently bound depth textures.
-    // That is, a texture whose internal format is GL_DEPTH_COMPONENT_*
-    glTexParameteri(target, GL_TEXTURE_COMPARE_MODE, GL_NONE);
+  // Specifies the texture comparison mode for currently bound depth textures.
+  // That is, a texture whose internal format is GL_DEPTH_COMPONENT_*
+  glTexParameteri(target, GL_TEXTURE_COMPARE_MODE, GL_NONE);
 
-    // shadowmap
-    // No need to force GL_DEPTH_COMPONENT24,
-    // drivers usually give you the max precision if available
-    glTexImage2D(target, 0, GL_DEPTH_COMPONENT32F, width, height, 0,
-        GL_DEPTH_COMPONENT, GL_FLOAT, 0);
+  // shadowmap
+  // No need to force GL_DEPTH_COMPONENT24,
+  // drivers usually give you the max precision if available
+  glTexImage2D(target, 0, GL_DEPTH_COMPONENT32F, res.width(), res.height(), 0,
+      GL_DEPTH_COMPONENT, GL_FLOAT, 0);
 
-    unbind();
-	glError;
+  unbind();
+  glError;
 }
 
-ShadowTexture::ShadowTexture(GLuint width, GLuint height, string name) {
+ShadowTexture::ShadowTexture(QSize& res, string name) {
   this->name = name;
 
     glGenTextures(1, &handle);
@@ -75,14 +75,14 @@ ShadowTexture::ShadowTexture(GLuint width, GLuint height, string name) {
     // shadowmap
     // No need to force GL_DEPTH_COMPONENT24,
     // drivers usually give you the max precision if available
-    glTexImage2D(target, 0, GL_DEPTH_COMPONENT32F, width, height, 0,
+    glTexImage2D(target, 0, GL_DEPTH_COMPONENT32F, res.width(), res.height(), 0,
         GL_DEPTH_COMPONENT, GL_FLOAT, 0);
 
     unbind();
   glError;
 }
 
-ColorTexture::ColorTexture(GLuint width, GLuint height, string name) {
+ColorTexture::ColorTexture(QSize& res, string name) {
   this->name = name;
 
   glGenTextures(1, &handle);
@@ -110,7 +110,7 @@ ColorTexture::ColorTexture(GLuint width, GLuint height, string name) {
   glTexParameteri(target, GL_TEXTURE_COMPARE_MODE, GL_NONE);
 
 //  glTexImage2D(target, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0);
-  glTexImage2D(target, 0, GL_RGBA32F, width, height, 0, GL_RGBA, GL_FLOAT, 0);
+  glTexImage2D(target, 0, GL_RGBA32F, res.width(), res.height(), 0, GL_RGBA, GL_FLOAT, 0);
   unbind();
 }
 

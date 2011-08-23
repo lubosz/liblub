@@ -18,8 +18,8 @@ RenderSequence::RenderSequence() {
 //    TODO: Hardcoded shadow map size
 //    width = 4096;
 //    height = 4096;
-
-    fbo = new FrameBuffer(width, height);
+    QSize res = SceneData::Instance().getResolution();
+    fbo = new FrameBuffer(res);
 
     // pass1Mat = new ShadowMapPhongPCFAmbient(width, height);
     // pass1Mat = new FBOMaterial(width, height);

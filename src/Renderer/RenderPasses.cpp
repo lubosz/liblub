@@ -14,8 +14,7 @@
 
 ShadowPass::ShadowPass(FrameBuffer * fbo) {
     this->fbo = fbo;
-    targetTexture = new ShadowTexture(fbo->width,
-            fbo->height, "shadowMap");
+    targetTexture = new ShadowTexture(fbo->res, "shadowMap");
     fbo->attachTexture(GL_DEPTH_ATTACHMENT, targetTexture);
     fbo->disableColorBuffer();
 
@@ -85,8 +84,8 @@ void WritePass::cleanUp() {
 
 FilterPass::FilterPass(FrameBuffer * fbo) {
     this->fbo = fbo;
-    targetTexture = new DepthTexture(fbo->width,
-            fbo->height, "shadowMap");
+    QSize res = SceneData::Instance().getResolution();
+    targetTexture = new DepthTexture(res, "shadowMap");
     fbo->attachTexture(GL_DEPTH_ATTACHMENT, targetTexture);
     fbo->disableColorBuffer();
 

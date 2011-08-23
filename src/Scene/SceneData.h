@@ -52,6 +52,7 @@ public:
 
   void setResolution(unsigned width, unsigned height);
 
+  QSize getResolution();
 
   Camera * getCurrentCamera();
   Light * getShadowLight();

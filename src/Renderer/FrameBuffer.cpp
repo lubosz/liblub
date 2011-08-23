@@ -15,13 +15,10 @@
 
 using std::stringstream;
 
-FrameBuffer::FrameBuffer(GLuint width, GLuint height) {
+FrameBuffer::FrameBuffer(QSize& res) : res(res) {
     glError;
     // Gen texture for fbo
     // create a texture object
-    this->width = width;
-    this->height = height;
-
     QList<string> attributes;
     attributes.push_back("uv");
 
@@ -42,7 +39,7 @@ FrameBuffer::FrameBuffer(GLuint width, GLuint height) {
 
     glGenRenderbuffers(1, &rboId);
     glBindRenderbuffer(GL_RENDERBUFFER, rboId);
-    glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, width, height);
+    glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, res.width(), res.height());
     glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, fboId);
     glBindRenderbuffer(GL_RENDERBUFFER, 0);
 
@@ -113,7 +110,7 @@ void FrameBuffer::unBind() {
 }
 
 void FrameBuffer::updateRenderView() {
-    glViewport(0, 0, width, height);
+    glViewport(0, 0, res.width(), res.height());
 }
 
 void FrameBuffer::draw(Material * material) {

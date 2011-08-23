@@ -11,17 +11,17 @@
 
 class DepthTexture : public Texture {
  public:
-	DepthTexture(GLuint width, GLuint height, string name);
+	DepthTexture(QSize& res, string name);
 };
 
 class ShadowTexture : public Texture {
  public:
-  ShadowTexture(GLuint width, GLuint height, string name);
+  ShadowTexture(QSize& res, string name);
 };
 
 class ColorTexture : public Texture {
  public:
-	ColorTexture(GLuint width, GLuint height, string name);
+	ColorTexture(QSize& res, string name);
 };
 
 class TextureFile : public Texture {

@@ -25,6 +25,7 @@ class RenderEngine : public Singleton<RenderEngine> {
 	void clear();
 	void toggleLightView();
 	void setClearColor(const QVector3D & backgroundColor);
+	void updateViewport(QSize& size);
 
  private:
 	friend class Singleton<RenderEngine>;

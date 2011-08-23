@@ -156,3 +156,7 @@ void RenderEngine::checkVersion() {
     glError;
 }
 
+void RenderEngine::updateViewport(QSize& size){
+  glViewport(0, 0, size.width(), size.height());
+}
+

@@ -137,10 +137,10 @@ void GLWidget::mouseMoveEvent(QMouseEvent *event) {
  }
 
  void GLWidget::initPostProcessing() {
-  unsigned width = 1920;
-  unsigned height = 1200;
-  fbo = new FrameBuffer(width, height);
-  Texture * targetTexture = new ColorTexture(width, height, "targetTexture");
+  //TODO: Hardcoded res
+  QSize res(1920, 1200);
+  fbo = new FrameBuffer(res);
+  Texture * targetTexture = new ColorTexture(res, "targetTexture");
   fbo->attachTexture(GL_COLOR_ATTACHMENT0, targetTexture);
   fbo->check();
 

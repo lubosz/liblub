@@ -13,7 +13,7 @@
 
 class FrameBuffer {
  public:
-	FrameBuffer(GLuint width, GLuint height);
+	FrameBuffer(QSize& res);
 	virtual ~FrameBuffer();
     void bind();
     void setDrawBuffers(unsigned count);
@@ -23,7 +23,7 @@ class FrameBuffer {
     void draw(Material * material);
     void updateRenderView();
 
-	unsigned width, height;
+	QSize res;
 
 	void check();
 	void attachTexture(GLenum attachmentPoint, Texture * texture);

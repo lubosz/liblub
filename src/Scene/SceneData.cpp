@@ -92,6 +92,10 @@ void SceneData::setResolution(unsigned width, unsigned height) {
   this->width = width;
 }
 
+QSize SceneData::getResolution() {
+  return QSize(width, height);
+}
+
 void SceneData::addLight(const string & name, Light* light) {
   string lightName = name;
   if (name == "" || lights.count(name) > 0) {

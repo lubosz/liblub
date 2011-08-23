@@ -25,7 +25,7 @@ class DepthBufferExample: public Application {
 
    Material * debugfbo, * depthMaterial;
    FrameBuffer * fbo;
-   unsigned width, height;
+   QSize res;
 
   explicit DepthBufferExample() {
     fontOverlay = false;
@@ -37,13 +37,13 @@ class DepthBufferExample: public Application {
   void scene() {
     sceneLoader->load();
 
+    res = SceneData::Instance().getResolution();
+
     SceneData::Instance().name = "Depth Buffer";
-    width = SceneData::Instance().width;
-    height = SceneData::Instance().height;
 
-    Texture * targetTexture = new DepthTexture(width, height, "result");
+    Texture * targetTexture = new DepthTexture(res, "result");
 
-    fbo = new FrameBuffer(width, height);
+    fbo = new FrameBuffer(res);
 
     fbo->attachTexture(GL_DEPTH_ATTACHMENT, targetTexture);
     fbo->disableColorBuffer();
@@ -65,7 +65,7 @@ class DepthBufferExample: public Application {
     depthMaterial->activate();
     SceneGraph::Instance().drawCasters(depthMaterial);
     fbo->unBind();
-    glViewport(0, 0, width, height);
+    RenderEngine::Instance().updateViewport(res);
     fbo->draw(debugfbo);
   }
 };

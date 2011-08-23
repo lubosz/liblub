@@ -25,6 +25,7 @@ class DefferedLightApp: public Application {
   Material * multiLightMat;
   bool useHDR;
   FrameBuffer * fbo;
+  QSize res;
 
   DefferedLightApp() {
     sceneLoader = new SceneLoader("multilight.xml");
@@ -36,16 +37,15 @@ class DefferedLightApp: public Application {
 
   void initPostProcessing(){
     if(useHDR){
-      unsigned width = SceneData::Instance().width;
-      unsigned height = SceneData::Instance().height;
+      res = SceneData::Instance().getResolution();
 
-      fbo = new FrameBuffer(width, height);
-      Texture * positionTexture = new ColorTexture(width, height, "positionTexture");
-      Texture * normalTexture = new ColorTexture(width, height, "normalTexture");
-      Texture * diffuseTexture = new ColorTexture(width, height, "diffuseTexture");
-      Texture * tangentTexture = new ColorTexture(width, height, "tangentTexture");
-      Texture * normalTextureTexture = new ColorTexture(width, height, "normalTextureTexture");
-      Texture * envTexture = new ColorTexture(width, height, "envTexture");
+      fbo = new FrameBuffer(res);
+      Texture * positionTexture = new ColorTexture(res, "positionTexture");
+      Texture * normalTexture = new ColorTexture(res, "normalTexture");
+      Texture * diffuseTexture = new ColorTexture(res, "diffuseTexture");
+      Texture * tangentTexture = new ColorTexture(res, "tangentTexture");
+      Texture * normalTextureTexture = new ColorTexture(res, "normalTextureTexture");
+      Texture * envTexture = new ColorTexture(res, "envTexture");
 
       fbo->attachTexture(GL_COLOR_ATTACHMENT0, positionTexture);
       fbo->attachTexture(GL_COLOR_ATTACHMENT1, normalTexture);

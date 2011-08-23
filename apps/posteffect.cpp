@@ -69,12 +69,10 @@ class TesselationApp: public Application {
     groundNode = new Node("ground", { 0, 0, 0 }, 1, innerSphere,
         textureMaterial);
 
-    unsigned width = SceneData::Instance().width;
-    unsigned height = SceneData::Instance().height;
+    QSize res = SceneData::Instance().getResolution();
 
-    fbo = new FrameBuffer(width, height);
-    targetTexture = new ColorTexture(width, height,
-        "targetTexture");
+    fbo = new FrameBuffer(res);
+    targetTexture = new ColorTexture(res, "targetTexture");
     fbo->attachTexture(GL_COLOR_ATTACHMENT0, targetTexture);
 
     postMaterial = new Template("Post/HDR", attributes);
