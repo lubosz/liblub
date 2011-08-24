@@ -159,16 +159,13 @@ class DefferedLightApp: public Application {
   }
 
   void scene() {
-
-
     QList<string> attributes = QList<string> () << "uv";
     fullPlane = Geometry::plane(attributes, QRectF(-1,-1,2,2));
 
     plane1 = Geometry::plane(attributes, QRectF(-1,-1,1,1));
-    plane2 = Geometry::plane(attributes, QRectF(0,0,1,1));
-    plane3 = Geometry::plane(attributes, QRectF(0,-1,1,1));
-    plane4 = Geometry::plane(attributes, QRectF(-1,0,1,1));
-
+    plane2 = Geometry::plane(attributes, QRectF(0.5,-1,0.5,0.5));
+    plane3 = Geometry::plane(attributes, QRectF(0.5,-0.5,0.5,0.5));
+    plane4 = Geometry::plane(attributes, QRectF(0.5,0,0.5,0.5));
 
     sceneLoader->load();
     res = SceneData::Instance().getResolution();
@@ -209,10 +206,10 @@ class DefferedLightApp: public Application {
     blurVFbo->unBind();
 
     RenderEngine::Instance().clear();
-    drawOnPlane(multiLightMat, plane1);
     drawOnPlane(blur_vertical, plane2);
     drawOnPlane(debugMaterial, plane3);
     drawOnPlane(debugMaterial2, plane4);
+    drawOnPlane(multiLightMat, fullPlane);
   }
 };
 

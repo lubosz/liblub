@@ -10,7 +10,7 @@ uniform float totStrength = 1.38;
 uniform float strength = 0.07;
 uniform float offset = 18.0;
 uniform float falloff = 0.000002;
-uniform float rad = 0.006;
+uniform float rad = 0.106;
 
 uniform sampler2D normalTarget;
 uniform sampler2D depthTarget;
