@@ -19,12 +19,19 @@
 
 #include "System/Application.h"
 #include "Material/Textures.h"
+#include "Mesh/Geometry.h"
 
 class DefferedLightApp: public Application {
  public:
-  Material * multiLightMat, *gatherMat;
-  FrameBuffer * fbo;
+  Material * multiLightMat, *gatherMat, *aoMaterial, *blur_horizontal,
+      *blur_vertical;
+  FrameBuffer * fbo, *aoFbo, *blurHFbo, *blurVFbo;
   QSize res;
+
+  Texture * positionTarget, *normalTarget, *diffuseTarget, *tangentTarget,
+      *normalMapTarget, *envTarget, *depthTarget,* finalAOTarget;
+
+  Mesh * fullPlane, *plane1, *plane2, *plane3, *plane4;
 
   DefferedLightApp() {
     sceneLoader = new SceneLoader("multilight.xml");
@@ -33,19 +40,54 @@ class DefferedLightApp: public Application {
 
   ~DefferedLightApp() {}
 
-  void scene() {
-    sceneLoader->load();
-    res = SceneData::Instance().getResolution();
+  void initAOPass() {
+    //PASS 2 AO
+    Texture * aoTexture = new ColorTexture(res, "ao");
+    Texture * noise = new TextureFile("noise.png", "noise");
 
+    aoFbo = new FrameBuffer(res);
+    aoFbo->attachTexture(GL_COLOR_ATTACHMENT0, aoTexture);
+    aoFbo->check();
+
+    QList<string> attributes;
+    attributes.push_back("uv");
+    aoMaterial = new Simple("AO/ssao", attributes);
+    aoMaterial->addTexture(normalTarget);
+    aoMaterial->addTexture(depthTarget);
+    aoMaterial->addTexture(noise);
+
+    //PASS 3 BlurH
+    Texture * blurHTexture = new ColorTexture(res, "blurH");
+
+    blurHFbo = new FrameBuffer(res);
+    blurHFbo->attachTexture(GL_COLOR_ATTACHMENT0, blurHTexture);
+    blurHFbo->check();
+
+    blur_horizontal = new Simple("AO/blur_horizontal", attributes);
+    blur_horizontal->addTexture(aoTexture);
+
+    //PASS 4 BlurV
+    finalAOTarget = new ColorTexture(res, "finalAOTarget");
+
+    blurVFbo = new FrameBuffer(res);
+    blurVFbo->attachTexture(GL_COLOR_ATTACHMENT0, finalAOTarget);
+    blurVFbo->check();
+
+
+    blur_vertical = new Simple("AO/blur_vertical", attributes);
+    blur_vertical->addTexture(blurHTexture);
+  }
+
+  void initGatherPass() {
     // Pass 1 Gather FBO
     fbo = new FrameBuffer(res);
-    Texture * positionTarget = new ColorTexture(res, "positionTarget");
-    Texture * normalTarget = new ColorTexture(res, "normalTarget");
-    Texture * diffuseTarget = new ColorTexture(res, "diffuseTarget");
-    Texture * tangentTarget = new ColorTexture(res, "tangentTarget");
-    Texture * normalMapTarget = new ColorTexture(res, "normalMapTarget");
-    Texture * envTarget = new ColorTexture(res, "envTarget");
-    Texture * depthTarget = new DepthTexture(res, "depthTarget");
+    positionTarget = new ColorTexture(res, "positionTarget");
+    normalTarget = new ColorTexture(res, "normalTarget");
+    diffuseTarget = new ColorTexture(res, "diffuseTarget");
+    tangentTarget = new ColorTexture(res, "tangentTarget");
+    normalMapTarget = new ColorTexture(res, "normalMapTarget");
+    envTarget = new ColorTexture(res, "envTarget");
+    depthTarget = new DepthTexture(res, "depthTarget");
 
     fbo->attachTexture(GL_COLOR_ATTACHMENT0, positionTarget);
     fbo->attachTexture(GL_COLOR_ATTACHMENT1, normalTarget);
@@ -71,9 +113,11 @@ class DefferedLightApp: public Application {
     glBindFragDataLocation(program, 6, "depthTarget");
 
     // Pass 1 Gather Textures
-    Texture * diffuseTexture = SceneData::Instance().getTexture("masonry-wall-texture");
+    Texture * diffuseTexture = SceneData::Instance().getTexture(
+        "masonry-wall-texture");
     diffuseTexture->name = "diffuseTexture";
-    Texture * normalTexture = SceneData::Instance().getTexture("masonry-wall-normal-map");
+    Texture * normalTexture = SceneData::Instance().getTexture(
+        "masonry-wall-normal-map");
     normalTexture->name = "normalTexture";
     Texture * envMap = SceneData::Instance().getTexture("sky");
     envMap->name = "envMap";
@@ -84,7 +128,9 @@ class DefferedLightApp: public Application {
 
     gatherMat->activateTextures();
     gatherMat->samplerUniforms();
+  }
 
+  void initShadingPass() {
     // Pass 2 Deffered Light Shader
     QList<string> attributes = QList<string> () << "uv";
     multiLightMat = new Template("Post/DeferredMultiLight",attributes);
@@ -94,7 +140,7 @@ class DefferedLightApp: public Application {
     multiLightMat->addTexture(tangentTarget);
     multiLightMat->addTexture(normalMapTarget);
     multiLightMat->addTexture(envTarget);
-    multiLightMat->addTexture(depthTarget);
+    multiLightMat->addTexture(finalAOTarget);
 
     // Pass 2 Register To SceneData
     string programname = "multilight";
@@ -105,16 +151,58 @@ class DefferedLightApp: public Application {
     SceneData::Instance().initLightBuffer(multiLightMat->getShaderProgram(), "LightSourceBuffer");
   }
 
+  void drawOnPlane(Material * material, Mesh *plane) {
+    material->getShaderProgram()->use();
+    material->getShaderProgram()->setUniform("MVPMatrix",QMatrix4x4());
+    material->activate();
+    plane->draw();
+  }
+
+  void scene() {
+
+    QList<string> attributes = QList<string> () << "uv";
+    fullPlane = Geometry::plane(attributes, QRectF(-1,-1,2,2));
+
+    plane1 = Geometry::plane(attributes, QRectF(-1,-1,1,1));
+    plane2 = Geometry::plane(attributes, QRectF(0,0,1,1));
+    plane3 = Geometry::plane(attributes, QRectF(0,-1,1,1));
+    plane4 = Geometry::plane(attributes, QRectF(-1,0,1,1));
+
+    sceneLoader->load();
+    res = SceneData::Instance().getResolution();
+    initGatherPass();
+    initAOPass();
+    initShadingPass();
+  }
+
   void renderFrame(){
     fbo->bind();
     fbo->updateRenderView();
     RenderEngine::Instance().clear();
     SceneGraph::Instance().drawCasters(gatherMat);
     fbo->unBind();
+
+    aoFbo->bind();
     RenderEngine::Instance().clear();
+    RenderEngine::Instance().updateViewport(res);
+    drawOnPlane(aoMaterial, fullPlane);
+    aoFbo->unBind();
 
-    fbo->draw(multiLightMat);
+    blurHFbo->bind();
+    RenderEngine::Instance().clear();
+    RenderEngine::Instance().updateViewport(res);
+    drawOnPlane(blur_horizontal, fullPlane);
+    blurHFbo->unBind();
 
+    blurVFbo->bind();
+    RenderEngine::Instance().clear();
+    RenderEngine::Instance().updateViewport(res);
+    drawOnPlane(blur_vertical, fullPlane);
+    blurVFbo->unBind();
+
+    RenderEngine::Instance().clear();
+    drawOnPlane(multiLightMat, plane1);
+    drawOnPlane(blur_vertical, plane2);
 
 //    RenderEngine::Instance().clear();
 //    SceneGraph::Instance().drawNodes();

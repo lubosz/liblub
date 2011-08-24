@@ -12,9 +12,8 @@ uniform float offset = 18.0;
 uniform float falloff = 0.000002;
 uniform float rad = 0.006;
 
-uniform sampler2D color;
-uniform sampler2D normal;
-uniform sampler2D depth;
+uniform sampler2D normalTarget;
+uniform sampler2D depthTarget;
 uniform sampler2D noise;
 
 in vec2 uv;
@@ -37,9 +36,9 @@ void main() {
    // grab a normal for reflecting the sample rays later on
    vec3 fres = normalize((texture(noise,uv*offset).xyz*2.0) - vec3(1.0));
  
-   vec4 currentPixelSample = texture(normal,uv);
+   vec4 currentPixelSample = texture(normalTarget,uv);
  
-   float currentPixelDepth = texture(depth, uv).r;
+   float currentPixelDepth = texture(depthTarget, uv).r;
  
    // current fragment coords in screen space
    vec3 ep = vec3(uv.xy,currentPixelDepth);
@@ -61,9 +60,9 @@ void main() {
  
     // get the depth of the occluder fragment
     vec2 vuLookup = ep.xy + sign(dot(ray,norm) )*ray.xy;
-    occluderFragment = texture(normal,vuLookup);
+    occluderFragment = texture(normalTarget,vuLookup);
     // if depthDifference is negative = occluder is behind current fragment
-    depthDifference = currentPixelDepth-texture(depth,vuLookup).r;
+    depthDifference = currentPixelDepth-texture(depthTarget,vuLookup).r;
  
     // calculate the difference between the normals as a weight
  	// the falloff equation, starts at falloff and is kind of 1/x^2 falling

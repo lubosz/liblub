@@ -29,6 +29,6 @@ uniform samplerCube envMap;
 	normalMapTarget = texture(normalTexture, uv);
 	vec3 reflectDir = reflect(-positionView.xyz, normalView);
 	envTarget = texture(envMap, reflectDir);
-	gl_FragDepth = positionView.z/20;
+	//gl_FragDepth = positionView.z/20;
 	//depthTarget = positionView.z/20;
 {% endblock %}
