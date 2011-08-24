@@ -39,7 +39,7 @@ class DepthOfFieldExample: public Application
    explicit DepthOfFieldExample()
    {
 	  fontOverlay = true;
-	  sceneLoader = new SceneLoader("nice.xml");
+	  sceneLoader = new SceneLoader("terrain.xml");
    }
 
   ~DepthOfFieldExample() {}
@@ -53,10 +53,12 @@ class DepthOfFieldExample: public Application
 
     Texture* pDepthTexture = new DepthTexture(res, "depth_map"); // debug? => "result"
     Texture* pColorTexture = new ColorTexture(res, "color_map");
+    //Texture* pColorTextureS = new ColorTexture(res, "color_map_small");
 
     // fbo color
     pFBOColor = new FrameBuffer(res);
     pFBOColor->attachTexture(GL_COLOR_ATTACHMENT0, pColorTexture);
+    //pFBOColor->attachTexture(GL_COLOR_ATTACHMENT1, pColorTextureS);
     pFBOColor->check();
 
     // fbo depth
@@ -106,10 +108,38 @@ class DepthOfFieldExample: public Application
 	pFBOColor->unBind();
 
 	// post processing
+	//pDOFShader->getShaderProgram()->setUniform("PMatrix", SceneData::Instance()..getCurrentCamera()->getProjection());
 	pDOFShader->getShaderProgram()->use();
 	pDOFShader->getShaderProgram()->setUniform("pixel_width", 1.f / res.width());
 	pDOFShader->getShaderProgram()->setUniform("pixel_height", 1.f / res.height());
 
+	//pDOFShader->getShaderProgram()->setUniform("VMatrix", QMatrix4x4());
+	pDOFShader->getShaderProgram()->setUniform("VMatrix", SceneData::Instance().getCurrentCamera()->getView());
+	pDOFShader->getShaderProgram()->setUniform("PMatrix", SceneData::Instance().getCurrentCamera()->getProjection());
+	pDOFShader->getShaderProgram()->setUniform("VPIMatrix", (SceneData::Instance().getCurrentCamera()->getProjection() * SceneData::Instance().getCurrentCamera()->getView()).inverted());
+
+	/*TODO MVP-Inverse should be a uniform (now calculated)
+	QMatrix4x4 tempMatrix = viewPoint->getView() * modelMatrix;
+	    shaderProgram->setUniform("MMatrix", modelMatrix);
+	    shaderProgram->setUniform("MVMatrix", tempMatrix);
+	    shaderProgram->setUniform("NormalMatrix", tempMatrix.normalMatrix());
+	    tempMatrix = viewPoint->getProjection() * tempMatrix;
+	    shaderProgram->setUniform("MVPMatrix", tempMatrix);
+	pDOFShader->getShaderProgram()->setUniform("MVPIMatrix", SceneData::Instance().getCurrentCamera()->projectionMatrix);
+	*/
+
+
+	// pass 1
+/*
+	for(int i = 0; i < 8; i++)
+	{
+		pFBOColor->bind();
+		pFBOColor->draw(pDOFShader);
+		pFBOColor->unBind();
+	}
+*/
+
+	// final pass
 	pFBOColor->draw(pDOFShader);
 
   }
