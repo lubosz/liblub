@@ -121,6 +121,17 @@ Light* SceneData::getLight(const string & name) {
   }
 }
 
+
+Texture* SceneData::getTexture(const string & name) {
+  Texture * texture = textures[name];
+  if (texture) {
+    return texture;
+  } else {
+    LogWarning <<  "Texture not found" << name;
+    return new Texture();
+  }
+}
+
 void SceneData::setBackgroundColor(const QVector3D backgroundColor) {
   this->backgroundColor = backgroundColor;
   RenderEngine::Instance().setClearColor(backgroundColor);
