@@ -17,6 +17,7 @@ uniform sampler2D diffuseTarget;
 uniform sampler2D tangentTarget;
 uniform sampler2D normalMapTarget;
 uniform sampler2D envTarget;
+uniform sampler2D depthTarget;
 uniform LightSourceBuffer {
 	LightSource lightSources[5];
 };
@@ -35,7 +36,6 @@ float saturate(float input) {
 
 {% block main %}
 	fragColor = vec4(0);
-
 	for(int i = 0; i < 5 ; i++) {
 		vec4 lightDirection = lightSources[i].position - texture(positionTarget, uv);
 		vec4 L = normalize(lightDirection);	
@@ -53,9 +53,8 @@ float saturate(float input) {
 		//fragColor = R;
 	}
 	fragColor *= texture(diffuseTarget, uv)* texture(envTarget, uv);
-			
 
-	//fragColor = texture(normalMapTarget, uv);
+	//fragColor = texture(envTarget, uv);
 
 /*
 	vec4 diffuseColor = vec4(0);

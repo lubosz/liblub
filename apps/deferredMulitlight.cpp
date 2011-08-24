@@ -45,6 +45,7 @@ class DefferedLightApp: public Application {
     Texture * tangentTarget = new ColorTexture(res, "tangentTarget");
     Texture * normalMapTarget = new ColorTexture(res, "normalMapTarget");
     Texture * envTarget = new ColorTexture(res, "envTarget");
+    Texture * depthTarget = new DepthTexture(res, "depthTarget");
 
     fbo->attachTexture(GL_COLOR_ATTACHMENT0, positionTarget);
     fbo->attachTexture(GL_COLOR_ATTACHMENT1, normalTarget);
@@ -53,6 +54,7 @@ class DefferedLightApp: public Application {
     fbo->attachTexture(GL_COLOR_ATTACHMENT4, normalMapTarget);
     fbo->attachTexture(GL_COLOR_ATTACHMENT5, envTarget);
     fbo->setDrawBuffers(6);
+    fbo->attachTexture(GL_DEPTH_ATTACHMENT, depthTarget);
     fbo->check();
 
     // Pass 1 Gather Shader
@@ -66,6 +68,7 @@ class DefferedLightApp: public Application {
     glBindFragDataLocation(program, 3, "tangentTarget");
     glBindFragDataLocation(program, 4, "normalMapTarget");
     glBindFragDataLocation(program, 5, "envTarget");
+    glBindFragDataLocation(program, 6, "depthTarget");
 
     // Pass 1 Gather Textures
     Texture * diffuseTexture = SceneData::Instance().getTexture("masonry-wall-texture");
@@ -91,6 +94,7 @@ class DefferedLightApp: public Application {
     multiLightMat->addTexture(tangentTarget);
     multiLightMat->addTexture(normalMapTarget);
     multiLightMat->addTexture(envTarget);
+    multiLightMat->addTexture(depthTarget);
 
     // Pass 2 Register To SceneData
     string programname = "multilight";
@@ -110,6 +114,10 @@ class DefferedLightApp: public Application {
     RenderEngine::Instance().clear();
 
     fbo->draw(multiLightMat);
+
+
+//    RenderEngine::Instance().clear();
+//    SceneGraph::Instance().drawNodes();
   }
 };
 

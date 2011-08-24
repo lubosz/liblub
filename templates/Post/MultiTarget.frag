@@ -11,6 +11,7 @@ out vec4 diffuseTarget;
 out vec4 tangentTarget;
 out vec4 normalMapTarget;
 out vec4 envTarget;
+//out float depthTarget;
 {% endblock %}
 
 {% block uniforms %}
@@ -28,4 +29,6 @@ uniform samplerCube envMap;
 	normalMapTarget = texture(normalTexture, uv);
 	vec3 reflectDir = reflect(-positionView.xyz, normalView);
 	envTarget = texture(envMap, reflectDir);
+	gl_FragDepth = positionView.z/20;
+	//depthTarget = positionView.z/20;
 {% endblock %}
