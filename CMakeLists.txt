@@ -211,18 +211,11 @@ else()
     set(PYTHON_VER "python")
 endif()
 
-if(CHECKSTYLE)
-    file(GLOB GLOB_RESULT include/*.h)
-    set(INCLUDES ${INCLUDES} ${GLOB_RESULT})
-    file(GLOB GLOB_RESULT include/common/*.h)
-    set(INCLUDES ${INCLUDES} ${GLOB_RESULT})
-    
-    set(IGNORE "-build/header_guard,-readability/streams")
+set(IGNORE "-build/header_guard,-readability/streams")
 
-    add_custom_target(CHECK_STYLE ALL
-        COMMAND ${PYTHON_VER} scripts/cpplint.py --filter=${IGNORE} ${SOURCES} ${INCLUDES} ${EXAMPLES}
-    )
-endif()
+add_custom_target(style
+    COMMAND ${PYTHON_VER} scripts/cpplint.py --filter=${IGNORE} ${SOURCES}
+)
 
 add_custom_target(remake
 	#clean and compile with 1 thread per core
