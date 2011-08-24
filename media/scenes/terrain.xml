@@ -77,10 +77,10 @@
 		<File name="sphere" url="earth.obj" drawType="LINES" />
 		<File name="skymesh" url="earth.obj" />
 		<File name="plane" url="plane.blend" />
-		<Procedural name="sponge" type="Sponge" recursion="3" />
+		<!--<Procedural name="sponge" type="Sponge" recursion="3" />-->
 	</Meshes>
-	<Scene name="terrain">
-		<Object name="menger sponge" mesh="sponge" material="PhongColorMat" scale="5.0" position="10, 30, -10" />
+	<Scene name="terrain" backgroundColor="0.4,0.8,1">
+		<!--<Object name="menger sponge" mesh="sponge" material="PhongColorMat" scale="5.0" position="10, 30, -10" />-->
 		<Light name="mylight" position ="0.3, 100.6, -3.3" direction="1,-5,-1" mesh="sphere" />
 		<Object name="sky" mesh="skymesh" material="CubeMap" scale="800" position="0, 0, 0" />
 		<Object name="ocean" mesh="plane" material="Ocean" scale="100" position="0,-5.5,0" />

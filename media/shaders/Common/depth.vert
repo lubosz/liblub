@@ -4,10 +4,9 @@ in vec3 in_Vertex;
 out vec4 viewPosition;
 
 uniform mat4 MVPMatrix;
-uniform mat4 MVMatrix;
+//uniform mat4 MVMatrix;
 
 void main(){	
 	viewPosition = MVPMatrix * vec4(in_Vertex,1);
-	//viewPosition = vec4(in_Vertex,1);
 	gl_Position = MVPMatrix * vec4(in_Vertex,1);
 }

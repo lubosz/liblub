@@ -1,23 +1,45 @@
 #version 330 core
 
+uniform mat4 VPIMatrix;
+uniform mat4 VMatrix;
+uniform mat4 PMatrix;
+uniform mat4 MVMatrix;
+
 uniform sampler2D color_map;
 uniform sampler2D depth_map;
 
 uniform float pixel_width;
 uniform float pixel_height;
 
+
 float NearPlane = 1;
-float FocusPlane = 10;
-float FarPlane = 100;
+float FocusPlane = 2;
+float FarPlane = 50;
 
-float MaxCOCRadius;
-
+float GaussMask3x3[9] = float[]
+( 
+	0.066666667, 0.133333333, 0.066666667,
+	0.133333333, 0.200000000, 0.133333333,
+	0.066666667, 0.133333333, 0.066666667
+);
+float GaussMask5x5[25] = float[]
+( 
+	0.003021148, 0.012084592, 0.021148036, 0.012084592, 0.003021148,
+	0.012084592, 0.060422961, 0.099697885, 0.060422961,	0.012084592,
+	0.021148036, 0.099697885, 0.166163142, 0.099697885, 0.021148036,
+	0.012084592, 0.060422961, 0.099697885, 0.060422961, 0.012084592,
+	0.003021148, 0.012084592, 0.021148036, 0.012084592, 0.003021148
+);
+//float cutoff = 40;
 
 /*
+float NearPlane = 1.f/50;
+float FocusPlane = 5.f/50;
+float FarPlane = 50.f/50;
 */
-vec2 maxCoC = vec2(5.0,10.0);
-float radiusScale = 0.5;
 
+float tA = FarPlane / (FarPlane - NearPlane);
+float tB = (-FarPlane * NearPlane) / (FarPlane - NearPlane);
 
 vec2 even[8] = vec2[](
 	vec2( 0, 1),
@@ -47,106 +69,50 @@ out vec4 fragColor;
 
 void main()
 {
-/*
-	vec4 finalColor;
-
-	float discRadius, discRadiusLow, centerDepth;
-
-	finalColor = texture(color_map, uv);
-	centerDepth = texture(depth_map, uv);
-
-	discRadius = abs(centerDepth * maxCoC.y - maxCoC.x);
-	discRadiusLow = discRadius * radiusScale;
-
-	finalColor = vec4(0.0,0.0,0.0,0.0);
-
-	for(int i = 0; i < 8; i++){
-
-		//vec2 coordLow = coords + (pixelSizeLow * poisson[i] * discRadiusLow);
-		vec2 coordHigh = coords + (pixel_height * poisson[i] * discRadius);
-
-		//vec4 tapLow = texture2D(textureSmall, coordLow);
-		vec4 tapHigh = texture(color_map, coordHigh);
-		
-
-		float tapBlur = abs(texture(depth_map, coordHigh) * 2.0 - 1.0);
-		vec4 tap = mix(tapHigh,tapLow,tapBlur);
-
-		//tap.a = (tap.a >= centerDepth) ? 1.0 : abs(tap.a * 2.0 - 1.0);
-
-		finalColor.rgb += tap.rgb * tap.a;
-		//finalColor.a += tap.a;
-
-	}
-
-	return finalColor/finalColor.a;
-*/
 
 	fragColor = texture(color_map, uv);
-	float depth = texture(depth_map, uv).r;
+	float depth = texture(depth_map, uv).r; 
 	
-	// circle of confusion (radius)
+	// compute world position (including z-value)
+	vec4 vp = vec4(uv.x * 2 -1, (1 - uv.y) * 2 -1, depth, 1); // viewport position of current pixel
+	//float z = PMatrix[3].z/(gl_FragCoord.z * -2.0 + 1.0 - PMatrix[2].z); //D / (F * -2 + 1 - C) = V
+	vec4 d = VPIMatrix * vp;
+	vec4 wp = d / d.w; // world position
+	//float z = vec4(VMatrix * wp).b;
+	float ldepth = tB / (depth - tA); // linear depth
 	
-	//float coc_r  = abs(FocusPlane * FarPlane - NearPlane);
-	float coc_r = abs(depth - NearPlane);//1000*depth;// * g_MaxCOCRadius / 4;
-
-	// circle of confusion (diameter)
-	//float coc_d = 
+	float intensity = 0;
+	if(ldepth > FocusPlane) intensity = (ldepth - FocusPlane) / (FarPlane - FocusPlane); //[0..1];
+	//else intensity = 10 * (FocusPlane - ldepth) / (FocusPlane - NearPlane); //[0..1];
+	float radius = intensity * 3;
+	vec4 sum = vec4(0);
 	
-	
-	
-	fragColor = vec4(depth);
-	
-	/*	
-	for(int i = 0; i < 8; i++)
+	if(intensity > 0.1)
 	{
-		vec2 offset = poisson[i];
-		offset.x *= pixel_width;
-		offset.y *= pixel_height;
-
-		vec4 fetch = texture(color_map, uv + offset * coc_r);
-		fragColor = mix(fragColor, fetch, 0.125);
-	}
-	*/
+		// Gauss
+		fragColor = vec4(0);
+		for(int x = 0; x < 3; x++)
+		{
+			for(int y = 0; y < 3; y++)
+			{
+				vec2 coord = uv;
+				coord.x += (x - 1) * pixel_width * radius;
+				coord.y += (y - 1) * pixel_height * radius;
+				fragColor += texture(color_map, coord) * GaussMask3x3[y*3+x];
+			}
+		}
+		//fragColor = mix(fragColor, sum, intensity);
+		
+		// poisson
+		for(int i = 0; i < 8; i++)
+		{
+			vec2 offset = poisson[i];
+			offset.x *= pixel_width;
+			offset.y *= pixel_height;
+			vec2 coord = uv + offset * intensity * 6;
+	
+			vec4 fetch = texture(color_map, coord);
+			fragColor = mix(fragColor, fetch, 0.125);
+		}
+	}	
 }
-
-/*
-vec2 maxCoC = vec2(5.0,10.0);
-float radiusScale = 0.5;
-
-
-vec2 pixelSizeHigh, pixelSizeLow;
-float depth;
-
-vec4 dof(vec2 coords){
-
-
-
-}
-
-void main(){
-
-	pixelSizeHigh[0] = 1.0/float(windowwidth);
-	pixelSizeHigh[1] = 1.0/float(windowheight);
-
-	pixelSizeLow[0] = 1.0/float(windowwidth/2);
-	pixelSizeLow[1] = 1.0/float(windowheight/2);
-
-	//this won't work etiher on older graphics cards
-	// but I don't know how to fix it
-	// poisson-distributed positions
-	poisson = vec2[8](
-	vec2( 0.0, 0.0),
-	vec2( 0.527837,-0.085868),
-	vec2(-0.040088, 0.536087),
-	vec2(-0.670445,-0.179949),
-	vec2(-0.419418,-0.616039),
-	vec2( 0.440453,-0.639399),
-	vec2(-0.757088, 0.349334),
-	vec2( 0.574619, 0.685879)
-	);
-
-	gl_FragColor = dof(gl_TexCoord[0].xy);
-
-}
-*/
