@@ -33,13 +33,14 @@ float saturate(float input) {
 {% endblock %}
 
 {% block main %}
-	fragColor = texture(finalAOTarget, uv);
+	float ambient = texture(finalAOTarget, uv).r;
+	fragColor = vec4(ambient);
 	for(int i = 0; i < 5 ; i++) {
 		vec4 lightDirection = lightSources[i].position - texture(positionTarget, uv);
 		vec4 L = normalize(lightDirection);	
 		vec4 N = normalize(texture(normalTarget, uv));
 		float lambertTerm = max( dot(N,L), 0.0);
-		fragColor += lambertTerm * lightSources[i].diffuse;
+		fragColor += lambertTerm * lightSources[i].diffuse * ambient;
 		
 		vec4 viewDirection = camPosition - texture(positionTarget, uv);
 		vec4 E = normalize(-viewDirection);
@@ -47,11 +48,11 @@ float saturate(float input) {
 
 		float specular = pow( max(dot(R, E), 0.0), shininess );
 		//fragColor = lambertTerm * vec4(1);
-		fragColor += specular * vec4(1);
+		fragColor += specular * vec4(1) * ambient;
 		//fragColor = R;
 	}
 	//fragColor *= texture(diffuseTarget, uv)* texture(envTarget, uv);
-	fragColor *= texture(diffuseTarget, uv);
+	fragColor *= texture(diffuseTarget, uv) * ambient;
 	
 	//fragColor = texture(finalAOTarget, uv);
 {% endblock %}
