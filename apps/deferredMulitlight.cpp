@@ -22,106 +22,94 @@
 
 class DefferedLightApp: public Application {
  public:
-  Material * multiLightMat;
-  bool useHDR;
+  Material * multiLightMat, *gatherMat;
   FrameBuffer * fbo;
   QSize res;
 
   DefferedLightApp() {
     sceneLoader = new SceneLoader("multilight.xml");
-    useHDR = true;
     fontOverlay = false;
   }
 
   ~DefferedLightApp() {}
 
-  void initPostProcessing(){
-    if(useHDR){
-      res = SceneData::Instance().getResolution();
-
-      fbo = new FrameBuffer(res);
-      Texture * positionTexture = new ColorTexture(res, "positionTexture");
-      Texture * normalTexture = new ColorTexture(res, "normalTexture");
-      Texture * diffuseTexture = new ColorTexture(res, "diffuseTexture");
-      Texture * tangentTexture = new ColorTexture(res, "tangentTexture");
-      Texture * normalTextureTexture = new ColorTexture(res, "normalTextureTexture");
-      Texture * envTexture = new ColorTexture(res, "envTexture");
-
-      fbo->attachTexture(GL_COLOR_ATTACHMENT0, positionTexture);
-      fbo->attachTexture(GL_COLOR_ATTACHMENT1, normalTexture);
-      fbo->attachTexture(GL_COLOR_ATTACHMENT2, diffuseTexture);
-      fbo->attachTexture(GL_COLOR_ATTACHMENT3, tangentTexture);
-      fbo->attachTexture(GL_COLOR_ATTACHMENT4, normalTextureTexture);
-      fbo->attachTexture(GL_COLOR_ATTACHMENT5, envTexture);
-      fbo->setDrawBuffers(6);
-
-      QList<string> attributes;
-      attributes.push_back("uv");
-
-      multiLightMat = new Template("Post/DeferredMultiLight",attributes);
-      multiLightMat->addTexture(positionTexture);
-      multiLightMat->addTexture(normalTexture);
-      multiLightMat->addTexture(diffuseTexture);
-      multiLightMat->addTexture(tangentTexture);
-      multiLightMat->addTexture(normalTextureTexture);
-      multiLightMat->addTexture(envTexture);
-      fbo->check();
-    }
-  }
-
-  void startPass(){
-    if(useHDR) {
-      fbo->bind();
-      fbo->updateRenderView();
-    }
-  }
-
-  void endPass(){
-    if(useHDR){
-      fbo->unBind();
-      RenderEngine::Instance().clear();
-      multiLightMat->activateTextures();
-      multiLightMat->getShaderProgram()->use();
-      multiLightMat->getShaderProgram()->setUniform("camPosition", SceneData::Instance().getCurrentCamera()->position.toVector4D());
-      fbo->draw(multiLightMat);
-    }
-  }
-
   void scene() {
-    ShaderProgram * fistPass = new ShaderProgram();
-    fistPass->attachVertFrag("Post/MultiTarget", true);
-    GLuint multiTargetProgram = fistPass->getHandle();
-    glBindFragDataLocation(multiTargetProgram, 0, "fragColor");
-    glBindFragDataLocation(multiTargetProgram, 1, "normalColor");
-    glBindFragDataLocation(multiTargetProgram, 2, "diffuseColor");
-    glBindFragDataLocation(multiTargetProgram, 3, "tangentColor");
-    glBindFragDataLocation(multiTargetProgram, 4, "normalTextureColor");
-    glBindFragDataLocation(multiTargetProgram, 5, "envColor");
-    string programname = "multilight";
-
-    QList<string> attributes;
-    attributes.push_back("uv");
-    attributes.push_back("normal");
-    attributes.push_back("tangent");
-
-    fistPass->init(attributes);
-    fistPass->name = programname;
-    SceneData::Instance().addProgram(programname,fistPass);
-
     sceneLoader->load();
+    res = SceneData::Instance().getResolution();
 
-    //    multilightMat->addTexture(shadowSequence->renderPasses[0]->targetTexture);
+    // Pass 1 Gather FBO
+    fbo = new FrameBuffer(res);
+    Texture * positionTarget = new ColorTexture(res, "positionTarget");
+    Texture * normalTarget = new ColorTexture(res, "normalTarget");
+    Texture * diffuseTarget = new ColorTexture(res, "diffuseTarget");
+    Texture * tangentTarget = new ColorTexture(res, "tangentTarget");
+    Texture * normalMapTarget = new ColorTexture(res, "normalMapTarget");
+    Texture * envTarget = new ColorTexture(res, "envTarget");
 
-    initPostProcessing();
+    fbo->attachTexture(GL_COLOR_ATTACHMENT0, positionTarget);
+    fbo->attachTexture(GL_COLOR_ATTACHMENT1, normalTarget);
+    fbo->attachTexture(GL_COLOR_ATTACHMENT2, diffuseTarget);
+    fbo->attachTexture(GL_COLOR_ATTACHMENT3, tangentTarget);
+    fbo->attachTexture(GL_COLOR_ATTACHMENT4, normalMapTarget);
+    fbo->attachTexture(GL_COLOR_ATTACHMENT5, envTarget);
+    fbo->setDrawBuffers(6);
+    fbo->check();
+
+    // Pass 1 Gather Shader
+    QList<string> attributes2 =
+        QList<string> () << "uv" << "normal" << "tangent";
+    gatherMat = new Template("Post/MultiTarget", attributes2);
+    GLuint program = gatherMat->getShaderProgram()->getHandle();
+    glBindFragDataLocation(program, 0, "positionTarget");
+    glBindFragDataLocation(program, 1, "normalTarget");
+    glBindFragDataLocation(program, 2, "diffuseTarget");
+    glBindFragDataLocation(program, 3, "tangentTarget");
+    glBindFragDataLocation(program, 4, "normalMapTarget");
+    glBindFragDataLocation(program, 5, "envTarget");
+
+    // Pass 1 Gather Textures
+    Texture * diffuseTexture = SceneData::Instance().getTexture("masonry-wall-texture");
+    diffuseTexture->name = "diffuseTexture";
+    Texture * normalTexture = SceneData::Instance().getTexture("masonry-wall-normal-map");
+    normalTexture->name = "normalTexture";
+    Texture * envMap = SceneData::Instance().getTexture("sky");
+    envMap->name = "envMap";
+
+    gatherMat->addTexture(diffuseTexture);
+    gatherMat->addTexture(normalTexture);
+    gatherMat->addTexture(envMap);
+
+    gatherMat->activateTextures();
+    gatherMat->samplerUniforms();
+
+    // Pass 2 Deffered Light Shader
+    QList<string> attributes = QList<string> () << "uv";
+    multiLightMat = new Template("Post/DeferredMultiLight",attributes);
+    multiLightMat->addTexture(positionTarget);
+    multiLightMat->addTexture(normalTarget);
+    multiLightMat->addTexture(diffuseTarget);
+    multiLightMat->addTexture(tangentTarget);
+    multiLightMat->addTexture(normalMapTarget);
+    multiLightMat->addTexture(envTarget);
+
+    // Pass 2 Register To SceneData
+    string programname = "multilight";
+    gatherMat->getShaderProgram()->name = programname;
+    SceneData::Instance().addProgram(programname,gatherMat->getShaderProgram());
+
+    // Pass 2 Init Light Uniform Buffer
     SceneData::Instance().initLightBuffer(multiLightMat->getShaderProgram(), "LightSourceBuffer");
   }
 
   void renderFrame(){
-    startPass();
+    fbo->bind();
+    fbo->updateRenderView();
     RenderEngine::Instance().clear();
-    SceneGraph::Instance().drawNodes();
-    endPass();
-    glError;
+    SceneGraph::Instance().drawCasters(gatherMat);
+    fbo->unBind();
+    RenderEngine::Instance().clear();
+
+    fbo->draw(multiLightMat);
   }
 };
 

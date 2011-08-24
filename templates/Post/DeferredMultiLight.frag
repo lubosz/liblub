@@ -11,12 +11,12 @@ struct LightSource {
 {% endblock %}
 
 {% block uniforms %}
-uniform sampler2D positionTexture;
-uniform sampler2D normalTexture;
-uniform sampler2D diffuseTexture;
-uniform sampler2D tangentTexture;
-uniform sampler2D normalTextureTexture;
-uniform sampler2D envTexture;
+uniform sampler2D positionTarget;
+uniform sampler2D normalTarget;
+uniform sampler2D diffuseTarget;
+uniform sampler2D tangentTarget;
+uniform sampler2D normalMapTarget;
+uniform sampler2D envTarget;
 uniform LightSourceBuffer {
 	LightSource lightSources[5];
 };
@@ -35,40 +35,39 @@ float saturate(float input) {
 
 {% block main %}
 	fragColor = vec4(0);
-	/*
+
 	for(int i = 0; i < 5 ; i++) {
-		vec4 lightDirection = lightSources[i].position - texture(positionTexture, uv);
+		vec4 lightDirection = lightSources[i].position - texture(positionTarget, uv);
 		vec4 L = normalize(lightDirection);	
-		vec4 N = normalize(texture(normalTexture, uv));
+		vec4 N = normalize(texture(normalTarget, uv));
 		float lambertTerm = max( dot(N,L), 0.0);
-		//fragColor += lambertTerm * lightSources[i].diffuse;
+		fragColor += lambertTerm * lightSources[i].diffuse;
 		
-		vec4 viewDirection = camPosition - texture(positionTexture, uv);
+		vec4 viewDirection = camPosition - texture(positionTarget, uv);
 		vec4 E = normalize(-viewDirection);
 		vec4 R = reflect(-L, N);
 
 		float specular = pow( max(dot(R, E), 0.0), shininess );
-		//fragColor = lambertTerm * vec4(1);
+		fragColor = lambertTerm * vec4(1);
 		fragColor += specular * vec4(1);
 		//fragColor = R;
 	}
-	//fragColor *= texture(diffuseTexture, uv)* texture(envTexture, uv);
-	*/
+	fragColor *= texture(diffuseTarget, uv)* texture(envTarget, uv);
 			
 
-	fragColor = texture(normalTexture, uv);
+	//fragColor = texture(normalMapTarget, uv);
 
 /*
 	vec4 diffuseColor = vec4(0);
 	vec4 specularColor = vec4(0);
-	vec4 normal = texture(normalTexture, uv);
+	vec4 normal = texture(normalTarget, uv);
 	float diffusePower = 1.0;
 	float specularPower = 1.0;
 	int specularHardness = 32;
 
     // FIND THE VECTOR BETWEEN THE 3D POSITION IN SPACE OF THE SURFACE
-    vec4 lightDirection = lightSources[1].position - texture(positionTexture, uv);
-    vec4 viewDirection = camPosition - texture(positionTexture, uv);
+    vec4 lightDirection = lightSources[1].position - texture(positionTarget, uv);
+    vec4 viewDirection = camPosition - texture(positionTarget, uv);
 
     // GET THE DISTANCE OF THIS VECTOR
     float distance = length(lightDirection); 
