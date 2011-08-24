@@ -7,35 +7,35 @@
 
 #pragma once
 
-#include "ShaderProgram.h"
-#include "Texture.h"
-
-
-// using namespace std;
+#include <vector>
+#include <string>
+#include "Material/ShaderProgram.h"
+#include "Material/Texture.h"
 
 class Material {
  public:
-    virtual ~Material() {}
-    ShaderProgram *getShaderProgram();
-	void activate();
-	void samplerUniforms();
-	void addTexture(Texture * texture);
-	void done(const QList<string> & attributes);
+  virtual ~Material() {
+  }
+  ShaderProgram *getShaderProgram();
+  void activate();
+  void samplerUniforms();
+  void addTexture(Texture * texture);
+  void done(const QList<string> & attributes);
 
-	vector<Texture*> textures;
+  vector<Texture*> textures;
 
-	ShaderProgram * shaderProgram;
-	void init();
-	void activateTextures();
+  ShaderProgram * shaderProgram;
+  void init();
+  void activateTextures();
  protected:
-	QVector4D diffuseColor;
+  QVector4D diffuseColor;
 
-	void addTexture(string file, string name);
-	void addTextureCube(string file, string name);
+  void addTexture(string file, string name);
+  void addTextureCube(string file, string name);
 
  private:
-	virtual void uniforms() = 0;
-	void defaultAttribs();
+  virtual void uniforms() = 0;
+  void defaultAttribs();
 };
 
 

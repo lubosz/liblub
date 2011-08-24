@@ -11,16 +11,16 @@
 #include <math.h>
 
 class ProcTextures {
-public:
+ public:
   ProcTextures();
   virtual ~ProcTextures();
 
   static QImage * makeGradientPhun(QSize size) {
     QImage * image = new QImage(size, QImage::Format_ARGB32);
-    for(int x = 0; x < image->width(); x++) {
-      for(int y = 0; y < image->height(); y++) {
-        QRgb color = qRgba(x, y,0, x+y);
-        image->setPixel(x,y,color);
+    for (int x = 0; x < image->width(); x++) {
+      for (int y = 0; y < image->height(); y++) {
+        QRgb color = qRgba(x, y, 0, x + y);
+        image->setPixel(x, y, color);
       }
     }
 
@@ -28,7 +28,6 @@ public:
   }
 
   static QImage * makeGlow(QSize size, float exposure, float radius) {
-
     QImage * image = new QImage(size, QImage::Format_ARGB32);
 
     for (int y = 0; y < size.height(); y++) {
@@ -38,8 +37,7 @@ public:
         float distance = std::max(0.0f, (float)sqrt(fX * fX + fY * fY) - radius);
         float intensity = exp(-exposure * distance);
         unsigned char color = (unsigned char) (intensity * 192 + 0.5f);
-//        image->setPixel(x,y,qRgba(255, 255,255, color));
-        image->setPixel(x,y,qRgba(color, color,color, color));
+        image->setPixel(x, y, qRgba(color, color, color, color));
       }
     }
     return image;
