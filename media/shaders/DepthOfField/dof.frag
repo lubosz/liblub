@@ -75,11 +75,14 @@ void main()
 	
 	// compute world position (including z-value)
 	vec4 vp = vec4(uv.x * 2 -1, (1 - uv.y) * 2 -1, depth, 1); // viewport position of current pixel
-	//float z = PMatrix[3].z/(gl_FragCoord.z * -2.0 + 1.0 - PMatrix[2].z); //D / (F * -2 + 1 - C) = V
+	
 	vec4 d = VPIMatrix * vp;
 	vec4 wp = d / d.w; // world position
-	//float z = vec4(VMatrix * wp).b;
+	
 	float ldepth = tB / (depth - tA); // linear depth
+	
+	//float z = PMatrix[3].z/(gl_FragCoord.z * -2.0 + 1.0 - PMatrix[2].z); //D / (F * -2 + 1 - C) = V
+	//float z = vec4(VMatrix * wp).b;
 	
 	float intensity = 0;
 	if(ldepth > FocusPlane) intensity = (ldepth - FocusPlane) / (FarPlane - FocusPlane); //[0..1];
