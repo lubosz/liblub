@@ -68,7 +68,7 @@ class DepthBufferExample: public Application {
   }
 };
 
-int main(int argc, char *argv[]) {
+int main() {
 	DepthBufferExample().run();
 }
 

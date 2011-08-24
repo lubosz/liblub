@@ -96,7 +96,7 @@ void FrameBuffer::setDrawBuffers(unsigned count) {
   bind();
 
   vector<GLenum> buffers;
-  for (int i = 0; i < count; i++) {
+  for (unsigned i = 0; i < count; i++) {
     buffers.push_back(GL_COLOR_ATTACHMENT0_EXT+i);
   }
   glDrawBuffers(count, buffers.data());

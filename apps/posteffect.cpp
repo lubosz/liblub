@@ -107,7 +107,7 @@ class TesselationApp: public Application {
 };
 
 
-int main(int argc, char *argv[]) {
+int main() {
   TesselationApp().run();
   return 0;
 }

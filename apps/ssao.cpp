@@ -112,7 +112,7 @@ class SSAOExample: public Application {
   }
 };
 
-int main(int argc, char *argv[]) {
+int main() {
   SSAOExample().run();
 }
 

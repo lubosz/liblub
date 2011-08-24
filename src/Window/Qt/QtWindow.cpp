@@ -26,6 +26,7 @@ QtWindow::~QtWindow() {
 }
 
 void QtWindow::mouseLook(int x, int y) {
+  LogDebug << x << y;
 }
 
 void QtWindow::swapBuffers(){

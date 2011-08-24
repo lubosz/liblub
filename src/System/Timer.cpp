@@ -43,11 +43,11 @@ void Timer::updateFPS() {
 }
 
 float Timer::getFPS() {
-  float fps = BILLION / float(frameTime.tv_nsec);
+  return BILLION / float(frameTime.tv_nsec);
 }
 
 float Timer::getSPF() {
-  float ms = float(frameTime.tv_nsec) / 1000000.0;
+  return float(frameTime.tv_nsec) / 1000000.0;
 }
 #endif
 

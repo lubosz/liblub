@@ -213,7 +213,7 @@ class DefferedLightApp: public Application {
   }
 };
 
-int main(int argc, char *argv[]) {
+int main() {
   DefferedLightApp().run();
   return 0;
 }

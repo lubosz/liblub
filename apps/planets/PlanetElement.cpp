@@ -19,9 +19,9 @@ PlanetElement::~PlanetElement() {
 }
 
 void PlanetElement::initMaterials(string name, const QList<string> & attributes){
-  TemplateEngine::Instance().c.insert("fromSpace", false);
+  TemplateEngine::Instance().c.insert("fromSpace", QVariant(false));
   fromAtmosphere = new Template(name,attributes);
-  TemplateEngine::Instance().c.insert("fromSpace", true);
+  TemplateEngine::Instance().c.insert("fromSpace", QVariant(true));
   fromSpace = new Template(name,attributes);
   setAtmoUniforms(fromAtmosphere->getShaderProgram());
   setAtmoUniforms(fromSpace->getShaderProgram());

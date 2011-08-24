@@ -77,6 +77,6 @@ class Sponge : public Application {
   }
 };
 
-int main(int argc, char *argv[]) {
+int main() {
   Sponge().run();
 }

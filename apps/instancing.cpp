@@ -135,7 +135,7 @@ class LoadApp: public Application {
   }
 };
 
-int main(int argc, char *argv[]) {
+int main() {
   LoadApp().run();
   return 0;
 }

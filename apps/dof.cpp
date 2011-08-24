@@ -145,7 +145,7 @@ class DepthOfFieldExample: public Application
   }
 };
 
-int main(int argc, char *argv[]) {
+int main() {
 	DepthOfFieldExample().run();
 }
 

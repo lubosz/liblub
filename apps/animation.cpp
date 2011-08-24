@@ -62,7 +62,7 @@ int WINAPI WinMain(HINSTANCE inst,HINSTANCE prev,LPSTR cmd,int show) {
   return 0;
 }
 #else
-int main(int argc, char *argv[]) {
+int main() {
   LoadApp("nice").run();
 }
 #endif

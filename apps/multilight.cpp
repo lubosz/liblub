@@ -93,7 +93,7 @@ int WINAPI WinMain(HINSTANCE inst,HINSTANCE prev,LPSTR cmd,int show) {
   return 0;
 }
 #else
-int main(int argc, char *argv[]) {
+int main() {
   LoadApp("multilight").run();
   return 0;
 }
