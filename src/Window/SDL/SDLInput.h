@@ -12,18 +12,18 @@
 #include "SDL_compat.h"
 #include "Window/Input.h"
 
-class SDLMediaLayer;
+class SDLWindow;
 
 class SDLInput: Input {
 public:
 
-  SDLInput(SDLMediaLayer * mediaLayer);
+  SDLInput(SDLWindow * mediaLayer);
   virtual ~SDLInput();
   void eventLoop();
 private:
 
   Uint8 *keystate;
-  SDLMediaLayer * mediaLayer;
+  SDLWindow * mediaLayer;
   SDL_Event event;
 
 };

@@ -1,13 +1,13 @@
 #include <QtGui>
 #include <QUiLoader>
 #include "glWidget.h"
-#include "Window.h"
+#include "PlanetWindow.h"
 #include "Scene/SceneData.h"
 #include "System/Config.h"
 #include "PlanetWidget.h"
 #include "FloatEditorWidget.h"
 
-QtWindow::QtWindow() {
+PlanetWindow::PlanetWindow() {
   glWidget = new GLWidget;
   Config::Instance().load("config.xml");
 //  QUiLoader uiLoader;
@@ -63,13 +63,13 @@ QtWindow::QtWindow() {
   setMaximumSize(QSize(1920, 1200));
 }
 
-PlanetWidget * QtWindow::focusPlanet(){
+PlanetWidget * PlanetWindow::focusPlanet(){
   PlanetWidget * planetWidget = new PlanetWidget(glWidget->focusedPlanet);
   connect(planetWidget, SIGNAL(updateGL(void)), glWidget, SLOT(updateGL(void)));
   return planetWidget;
 }
 
-void QtWindow::keyPressEvent(QKeyEvent *e) {
+void PlanetWindow::keyPressEvent(QKeyEvent *e) {
   if (e->key() == Qt::Key_Escape)
     close();
   else
@@ -78,7 +78,7 @@ void QtWindow::keyPressEvent(QKeyEvent *e) {
   executeKeys();
 }
 
-void QtWindow::executeKeys() {
+void PlanetWindow::executeKeys() {
   float inputSpeed = .1;
   foreach(int key, pressedKeys) {
       if (key == Qt::Key_W)
@@ -93,7 +93,7 @@ void QtWindow::executeKeys() {
   glWidget->updateGL();
 }
 
-void QtWindow::keyReleaseEvent(QKeyEvent *e) {
+void PlanetWindow::keyReleaseEvent(QKeyEvent *e) {
   pressedKeys.removeAll(e->key());
 }
 

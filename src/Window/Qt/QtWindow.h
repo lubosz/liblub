@@ -7,9 +7,9 @@
 
 #pragma once
 
-#include "Window/MediaLayer.h"
+#include "Window/Window.h"
 
-class QtMediaLayer : public MediaLayer {
+class QtWindow : public LL::Window {
 
  private:
 	void toggleFullScreen();
@@ -17,8 +17,8 @@ class QtMediaLayer : public MediaLayer {
 	void mouseLook(int x, int y);
 
  public:
-	QtMediaLayer();
-	~QtMediaLayer();
+	QtWindow();
+	~QtWindow();
 	void init(string title);
 	void swapBuffers();
 	void updateWindowTitle();

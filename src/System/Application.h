@@ -9,19 +9,19 @@
 #include <QApplication>
 
 #ifdef WITH_SFML
-#include "Window/SFML/SFMLMediaLayer.h"
+#include "Window/SFML/SFMLWindow.h"
 #endif
 
 #ifdef WITH_Qt
-#include "Window/Qt/QtMediaLayer.h"
+#include "Window/Qt/QtWindow.h"
 #endif
 
 #ifdef WITH_XCB
-#include "Window/XCB/XCBMediaLayer.h"
+#include "Window/XCB/XCBWindow.h"
 #endif
 
 #ifdef WITH_SDL
-#include "Window/SDL/SDLMediaLayer.h"
+#include "Window/SDL/SDLWindow.h"
 #endif
 
 #include "Material/Materials.h"
@@ -32,7 +32,7 @@
 #include "System/GUI.h"
 
 
-enum MediaLayerType { windowXCB, windowQt, windowSFML, windowSDL };
+enum WindowType { windowXCB, windowQt, windowSFML, windowSDL };
 
 class Application : public QApplication {
 
@@ -41,7 +41,7 @@ class Application : public QApplication {
  public:
   GUI * gui;
 	SceneLoader * sceneLoader;
-	MediaLayer * mediaLayer;
+	LL::Window * window;
 	int argc;
 
   Application() :QApplication(argc,0){ }
@@ -49,9 +49,9 @@ class Application : public QApplication {
 	virtual void scene() = 0;
 	virtual void renderFrame() = 0;
 
-	void chooseMediaLayer(MediaLayerType type);
+	void chooseMediaLayer(WindowType type);
 	void run();
-	void run(MediaLayerType type);
+	void run(WindowType type);
 	void setFontOverlay(bool fontOverlay);
 
   virtual bool notify(QObject * receiver, QEvent * event);

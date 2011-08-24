@@ -12,9 +12,9 @@
 #include "Window/Input.h"
 
 #include <SFML/Graphics.hpp>
-#include "Window/MediaLayer.h"
+#include "Window/Window.h"
 
-class SFMLMediaLayer: public MediaLayer {
+class SFMLWindow: public LL::Window {
 public:
 
   sf::Window * window;
@@ -24,9 +24,10 @@ public:
   void toggleMouseGrab();
   void mouseLook(int x, int y);
 
-  SFMLMediaLayer();
-  ~SFMLMediaLayer();
+  SFMLWindow();
+  ~SFMLWindow();
   void init(string title);
   void swapBuffers();
   void renderFrame();
+  void updateWindowTitle() {}
 };

@@ -8,14 +8,14 @@
 #include <X11/keysym.h>
 #include <list>
 #include "Scene/Camera.h"
-#include "Window/MediaLayer.h"
+#include "Window/Window.h"
 #include "Material/Uniform.h"
 #include "Scene/SceneData.h"
 #include "System/Logger.h"
 #include "Renderer/RenderEngine.h"
-#include "XCBMediaLayer.h"
+#include "XCBWindow.h"
 
-XCBInput::XCBInput(xcb_connection_t *connection, XCBMediaLayer * mediaLayer) {
+XCBInput::XCBInput(xcb_connection_t *connection, XCBWindow * mediaLayer) {
   this->connection = connection;
   syms = xcb_key_symbols_alloc(connection);
   pressedKeys = QList<xcb_keysym_t>();

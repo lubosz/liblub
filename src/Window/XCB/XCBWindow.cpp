@@ -12,12 +12,12 @@
 #include "System/Config.h"
 #include "System/GUI.h"
 #include "System/Timer.h"
-#include "XCBMediaLayer.h"
+#include "XCBWindow.h"
 #include "XCBInput.h"
 
 using std::stringstream;
 
-XCBMediaLayer::XCBMediaLayer() {
+XCBWindow::XCBWindow() {
   fullscreen = false;
   grab = false;
   quit = false;
@@ -30,7 +30,7 @@ XCBMediaLayer::XCBMediaLayer() {
   createBlankCursor();
 }
 
-void XCBMediaLayer::init(string title) {
+void XCBWindow::init(string title) {
 
   programTile = title;
 
@@ -53,7 +53,7 @@ void XCBMediaLayer::init(string title) {
           static_cast<float>(height));
 }
 
-XCBMediaLayer::~XCBMediaLayer() {
+XCBWindow::~XCBWindow() {
     /* Cleanup */
     glXDestroyWindow(display, glxwindow);
     xcb_destroy_window(connection, window);
@@ -61,7 +61,7 @@ XCBMediaLayer::~XCBMediaLayer() {
     XCloseDisplay(display);
 }
 
-void XCBMediaLayer::createBlankCursor() {
+void XCBWindow::createBlankCursor() {
   cursor = xcb_generate_id(connection);
   xcb_pixmap_t pix = xcb_generate_id(connection);
 
@@ -69,7 +69,7 @@ void XCBMediaLayer::createBlankCursor() {
   xcb_create_cursor(connection, cursor, pix, pix, 0, 0, 0, 0, 0, 0, 1, 1);
 }
 
-void XCBMediaLayer::initScreen() {
+void XCBWindow::initScreen() {
     /* Open Xlib Display */
     display = XOpenDisplay(0);
     if (!display) LogError << "Can't open display";
@@ -96,7 +96,7 @@ void XCBMediaLayer::initScreen() {
   height = screen->height_in_pixels;
 }
 
-void XCBMediaLayer::initFrameBuffer() {
+void XCBWindow::initFrameBuffer() {
     /* Query framebuffer configurations */
     GLXFBConfig *fb_configs = 0;
     int num_fb_configs = 0;
@@ -106,7 +106,7 @@ void XCBMediaLayer::initFrameBuffer() {
     fb_config = fb_configs[0];
 }
 
-void XCBMediaLayer::createGLContext() {
+void XCBWindow::createGLContext() {
   /* Initialize window and OpenGL context */
   visualID = 0;
 
@@ -138,7 +138,7 @@ void XCBMediaLayer::createGLContext() {
   if (!context) LogError << "glXCreateNewContext failed";
 }
 
-void XCBMediaLayer::createColorMap() {
+void XCBWindow::createColorMap() {
   /* Create XID's for colormap and window */
   colormap = xcb_generate_id(connection);
   window = xcb_generate_id(connection);
@@ -152,7 +152,7 @@ void XCBMediaLayer::createColorMap() {
       visualID);
 }
 
-void XCBMediaLayer::createWindow() {
+void XCBWindow::createWindow() {
   eventmask =
       XCB_EVENT_MASK_KEY_PRESS |
       XCB_EVENT_MASK_POINTER_MOTION |
@@ -202,7 +202,7 @@ void XCBMediaLayer::createWindow() {
   setWindowTitle(programTile);
 }
 
-void XCBMediaLayer::swapBuffers() {
+void XCBWindow::swapBuffers() {
   glXSwapBuffers(display, drawable);
 }
 /*
@@ -252,12 +252,12 @@ static void
 
 }
 */
-xcb_intern_atom_cookie_t XCBMediaLayer::getCookieForAtom(string state_name) {
+xcb_intern_atom_cookie_t XCBWindow::getCookieForAtom(string state_name) {
   return xcb_intern_atom(
     connection, 0, state_name.length(), state_name.c_str());
 }
 
-xcb_atom_t XCBMediaLayer::getReplyAtomFromCookie(xcb_intern_atom_cookie_t cookie) {
+xcb_atom_t XCBWindow::getReplyAtomFromCookie(xcb_intern_atom_cookie_t cookie) {
   xcb_generic_error_t * error;
   xcb_intern_atom_reply_t *reply =
           xcb_intern_atom_reply(connection, cookie, &error);
@@ -267,7 +267,7 @@ xcb_atom_t XCBMediaLayer::getReplyAtomFromCookie(xcb_intern_atom_cookie_t cookie
   return reply->atom;
 }
 
-void XCBMediaLayer::toggleFullScreen() {
+void XCBWindow::toggleFullScreen() {
   if (fullscreen) {
     LogInfo << "Fullscreen off";
   } else {
@@ -305,7 +305,7 @@ void XCBMediaLayer::toggleFullScreen() {
       (const char *) &ev);
 }
 
-void XCBMediaLayer::updateWindowTitle() {
+void XCBWindow::updateWindowTitle() {
   // TODO(bmonkey): should be per secound, and not per frame (breaks mouse input)
   stringstream windowTitle;
   //windowTitle << programTile << " - FPS: " << fps_current;
@@ -313,12 +313,12 @@ void XCBMediaLayer::updateWindowTitle() {
   setWindowTitle(windowTitle.str());
 }
 
-void XCBMediaLayer::renderFrame() {
+void XCBWindow::renderFrame() {
   updateWindowTitle();
   swapBuffers();
 }
 
-void XCBMediaLayer::setWindowTitle(string title) {
+void XCBWindow::setWindowTitle(string title) {
     xcb_change_property(
       connection,
       XCB_PROP_MODE_REPLACE,
@@ -330,7 +330,7 @@ void XCBMediaLayer::setWindowTitle(string title) {
     title.c_str());
 }
 
-void XCBMediaLayer::toggleMouseGrab() {
+void XCBWindow::toggleMouseGrab() {
   if (!grab) {
     // hide cursor
     uint32_t value_list = cursor;
@@ -353,7 +353,7 @@ void XCBMediaLayer::toggleMouseGrab() {
   }
 }
 
-void XCBMediaLayer::mouseLook(int x, int y) {
+void XCBWindow::mouseLook(int x, int y) {
   unsigned halfWidth = width/2;
   unsigned halfHeight = height/2;
 

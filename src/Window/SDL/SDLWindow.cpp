@@ -16,7 +16,7 @@
 
 using std::stringstream;
 
-SDLMediaLayer::SDLMediaLayer() {
+SDLWindow::SDLWindow() {
 
 	//FPS Stuff
 	fps_lasttime = 0; //the last recorded time.
@@ -29,7 +29,7 @@ SDLMediaLayer::SDLMediaLayer() {
 	input = (Input*) new SDLInput(this);
 }
 
-void SDLMediaLayer::init(string title) {
+void SDLWindow::init(string title) {
 	programTile = title;
 
     /* Create our window, opengl context, etc... */
@@ -96,14 +96,14 @@ void SDLMediaLayer::init(string title) {
 
 }
 
-SDLMediaLayer::~SDLMediaLayer() {
+SDLWindow::~SDLWindow() {
     /* Delete our opengl context, destroy our window, and shutdown SDL */
     SDL_GL_DeleteContext(mainContext);
     SDL_DestroyWindow(mainWindow);
     SDL_Quit();
 }
 
-void SDLMediaLayer::swapBuffers(){
+void SDLWindow::swapBuffers(){
     /* Swap our buffers to make our changes visible */
     SDL_GL_SwapWindow(mainWindow);
 
@@ -111,7 +111,7 @@ void SDLMediaLayer::swapBuffers(){
     //SDL_Delay(33);
 }
 
-void SDLMediaLayer::toggleFullScreen(){
+void SDLWindow::toggleFullScreen(){
 	if(fullscreen){
 		printf("Fullscreen Off\n");
 		if(SDL_SetWindowFullscreen(mainWindow, SDL_FALSE)!=0){
@@ -128,7 +128,7 @@ void SDLMediaLayer::toggleFullScreen(){
 
 }
 
-void SDLMediaLayer::toggleMouseGrab(){
+void SDLWindow::toggleMouseGrab(){
 	if (grab){
 		SDL_SetWindowGrab(mainWindow, SDL_FALSE);
 //		SDL_WM_GrabInput(SDL_GRAB_OFF);
@@ -144,7 +144,7 @@ void SDLMediaLayer::toggleMouseGrab(){
 	}
 }
 
-void SDLMediaLayer::renderFrame(){
+void SDLWindow::renderFrame(){
   Timer::Instance().frame();
 
 //    while (!quit) {
@@ -165,6 +165,6 @@ void SDLMediaLayer::renderFrame(){
 //    }
 }
 
-void SDLMediaLayer::mouseLook(int x, int y) {
+void SDLWindow::mouseLook(int x, int y) {
 
 }

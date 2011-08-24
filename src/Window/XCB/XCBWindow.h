@@ -19,8 +19,8 @@
 
 #include <xcb/xcb.h>
 
-#include "Window/MediaLayer.h"
-class XCBMediaLayer: public MediaLayer {
+#include "Window/Window.h"
+class XCBWindow: public LL::Window {
 
   friend class XCBInput;
 
@@ -62,8 +62,8 @@ private:
   void mouseLook(int x, int y);
 
 public:
-  XCBMediaLayer();
-  ~XCBMediaLayer();
+  XCBWindow();
+  ~XCBWindow();
   void init(string title);
   void swapBuffers();
   void renderFrame();

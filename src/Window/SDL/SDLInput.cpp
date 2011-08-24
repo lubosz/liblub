@@ -13,7 +13,7 @@
 #include "SDLInput.h"
 #include "SDLMediaLayer.h"
 
-SDLInput::SDLInput(SDLMediaLayer * mediaLayer) {
+SDLInput::SDLInput(SDLWindow * mediaLayer) {
   // TODO(bmonkey): Hardcoded values => xml
   inputSpeed = .01;
   mouseSensitivity = .1;

@@ -6,7 +6,7 @@
  */
 
 #include "Renderer/RenderSequence.h"
-#include "Window/MediaLayer.h"
+#include "Window/Window.h"
 #include "System/Logger.h"
 #include "Scene/SceneData.h"
 

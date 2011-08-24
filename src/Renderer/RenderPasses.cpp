@@ -5,7 +5,7 @@
  *  Created on: Oct 5, 2010
  */
 
-#include "Window/MediaLayer.h"
+#include "Window/Window.h"
 #include "Scene/Camera.h"
 #include "Material/Textures.h"
 #include "Scene/SceneData.h"

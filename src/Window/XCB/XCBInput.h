@@ -12,13 +12,13 @@
 #include <xcb/xcb_keysyms.h>
 #include "Window/Input.h"
 
-class XCBMediaLayer;
+class XCBWindow;
 
 class XCBInput : public Input {
  Q_OBJECT
 public:
 
-  explicit XCBInput(xcb_connection_t *connection, XCBMediaLayer * mediaLayer);
+  explicit XCBInput(xcb_connection_t *connection, XCBWindow * mediaLayer);
   virtual ~XCBInput();
   void eventLoop();
 
@@ -47,7 +47,7 @@ private:
   xcb_keysym_t pressedKey;
 
   QList<xcb_keysym_t> pressedKeys;
-  XCBMediaLayer * mediaLayer;
+  XCBWindow * mediaLayer;
 
   void checkKey(xcb_keysym_t pressedKey);
 

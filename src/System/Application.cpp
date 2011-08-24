@@ -8,25 +8,25 @@
 #include "Application.h"
 #include "Timer.h"
 
-void Application::chooseMediaLayer(MediaLayerType type) {
+void Application::chooseMediaLayer(WindowType type) {
   if (type == windowXCB) {
 #ifdef WITH_XCB
-    mediaLayer = new XCBMediaLayer();
+    window = new XCBWindow();
     LogInfo << "Using XCB for Input and Window";
 #endif
   } else if (type == windowQt) {
 #ifdef WITH_Qt
-    mediaLayer = new QtMediaLayer();
+    window = new QtWindow();
     LogInfo << "Using Qt for Input and Window";
 #endif
   } else if (type == windowSFML) {
 #ifdef WITH_SFML
-    mediaLayer = new SFMLMediaLayer();
+    window = new SFMLWindow();
     LogInfo << "Using SFML for Input and Window";
 #endif
   } else if (type == windowSDL) {
 #ifdef WITH_SDL
-    mediaLayer = new SDLMediaLayer();
+    window = new SDLWindow();
     LogInfo << "Using SDL for Input and Window";
 #endif
   }
@@ -64,23 +64,23 @@ void Application::draw() {
     renderFrame();
     if (fontOverlay)
       gui->draw();
-    mediaLayer->swapBuffers();
+    window->swapBuffers();
     //TODO: Mouse Input is buggy when title is updated less often
-    mediaLayer->updateWindowTitle();
+    window->updateWindowTitle();
     Timer::Instance().updateFPS();
 }
 
 void Application::eventLoop() {
-  mediaLayer->input->eventLoop();
+  window->input->eventLoop();
 }
 
-void Application::run(MediaLayerType type) {
+void Application::run(WindowType type) {
   Config::Instance().load("config.xml");
   chooseMediaLayer(type);
-  mediaLayer->init(SceneData::Instance().name);
+  window->init(SceneData::Instance().name);
   scene();
 
-  connect(mediaLayer->input, SIGNAL(shutdown()), this, SLOT(quit()));
+  connect(window->input, SIGNAL(shutdown()), this, SLOT(quit()));
 
   if (fontOverlay) {
     gui = new GUI();

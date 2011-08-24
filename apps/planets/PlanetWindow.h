@@ -5,11 +5,11 @@
 class GLWidget;
 class PlanetWidget;
 
-class QtWindow: public QWidget {
+class PlanetWindow: public QWidget {
   Q_OBJECT
 
 public:
-  QtWindow();
+  PlanetWindow();
 
 protected:
   void keyPressEvent(QKeyEvent *event);

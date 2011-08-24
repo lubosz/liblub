@@ -11,7 +11,7 @@
 #include "SFMLInput.h"
 #include "System/Config.h"
 
-SFMLMediaLayer::SFMLMediaLayer() {
+SFMLWindow::SFMLWindow() {
 
   //FPS Stuff
   /*
@@ -24,7 +24,7 @@ SFMLMediaLayer::SFMLMediaLayer() {
   input = (Input*) new SFMLInput(this);
 }
 
-void SFMLMediaLayer::init(string title) {
+void SFMLWindow::init(string title) {
   programTile = title;
   //sf::RenderWindow window(sf::VideoMode(800, 600), title);
   sf::ContextSettings settings;
@@ -41,14 +41,14 @@ void SFMLMediaLayer::init(string title) {
       title, sf::Style::Fullscreen, settings);
 }
 
-SFMLMediaLayer::~SFMLMediaLayer() {
+SFMLWindow::~SFMLWindow() {
 }
 
-void SFMLMediaLayer::swapBuffers() {
+void SFMLWindow::swapBuffers() {
   window->Display();
 }
 
-void SFMLMediaLayer::toggleFullScreen() {
+void SFMLWindow::toggleFullScreen() {
   if (fullscreen) {
     printf("Fullscreen Off\n");
 
@@ -61,12 +61,12 @@ void SFMLMediaLayer::toggleFullScreen() {
 
 }
 
-void SFMLMediaLayer::toggleMouseGrab() {
+void SFMLWindow::toggleMouseGrab() {
 
 }
-void SFMLMediaLayer::mouseLook(int x, int y) {
+void SFMLWindow::mouseLook(int x, int y) {
 
 }
-void SFMLMediaLayer::renderFrame() {
+void SFMLWindow::renderFrame() {
 
 }

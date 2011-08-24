@@ -18,7 +18,7 @@
 #include "Material/Textures.h"
 #include "Scene/SceneData.h"
 #include "Mesh/Geometry.h"
-#include "Window/MediaLayer.h"
+#include "Window/Window.h"
 #include "System/Logger.h"
 #include "System/Timer.h"
 

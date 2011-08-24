@@ -32,7 +32,7 @@
 #include "Material/Textures.h"
 #include "Material/ShaderProgram.h"
 #include "Planet.h"
-#include "Window.h"
+#include "PlanetWindow.h"
 #include "glWidget.h"
 
 int main(int argc, char *argv[]) {
@@ -42,7 +42,7 @@ int main(int argc, char *argv[]) {
 #endif
   QApplication app(argc, argv);
 
-  QtWindow window;
+  PlanetWindow window;
   window.resize(QSize(1920,1200));
   //  int desktopArea = QApplication::desktop()->width()
   //      * QApplication::desktop()->height();

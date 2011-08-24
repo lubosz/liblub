@@ -8,7 +8,7 @@
 #include "SFMLInput.h"
 #include "SFMLMediaLayer.h"
 
-SFMLInput::SFMLInput(SFMLMediaLayer * mediaLayer) {
+SFMLInput::SFMLInput(SFMLWindow * mediaLayer) {
   this->mediaLayer = mediaLayer;
 }
 

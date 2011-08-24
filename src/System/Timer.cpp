@@ -7,7 +7,7 @@
 
 #include "System/Timer.h"
 #include "System/GUI.h"
-#include "Window/MediaLayer.h"
+#include "Window/Window.h"
 
 Timer::Timer() {
   clock_gettime(CLOCK_MONOTONIC, &startTime);

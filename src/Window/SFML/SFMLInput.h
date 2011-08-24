@@ -9,12 +9,12 @@
 
 #include "Window/Input.h"
 
-class SFMLMediaLayer;
+class SFMLWindow;
 
 class SFMLInput: Input {
 public:
-  SFMLMediaLayer * mediaLayer;
-  SFMLInput(SFMLMediaLayer * mediaLayer);
+  SFMLWindow * mediaLayer;
+  SFMLInput(SFMLWindow * mediaLayer);
   virtual ~SFMLInput();
   void eventLoop();
 

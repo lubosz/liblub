@@ -10,11 +10,11 @@
 #define SDL_NO_COMPAT
 #include "SDL.h"
 
-#include "Window/MediaLayer.h"
+#include "Window/Window.h"
 #include "Renderer/RenderEngine.h"
 #include "Window/Input.h"
 
-class SDLMediaLayer: public MediaLayer {
+class SDLWindow: public LL::Window {
 
 private:
 
@@ -27,12 +27,13 @@ private:
   SDL_DisplayMode fsmode;
 
 public:
-  SDLMediaLayer();
-  ~SDLMediaLayer();
+  SDLWindow();
+  ~SDLWindow();
   void toggleFullScreen();
   void toggleMouseGrab();
   void mouseLook(int x, int y);
   void init(string title);
   void swapBuffers();
   void renderFrame();
+  void updateWindowTitle() {}
 };
