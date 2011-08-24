@@ -50,7 +50,8 @@ float saturate(float input) {
 		fragColor += specular * vec4(1);
 		//fragColor = R;
 	}
-	fragColor *= texture(diffuseTarget, uv)* texture(envTarget, uv);
+	//fragColor *= texture(diffuseTarget, uv)* texture(envTarget, uv);
+	fragColor *= texture(diffuseTarget, uv);
 	
 	//fragColor = texture(finalAOTarget, uv);
 {% endblock %}

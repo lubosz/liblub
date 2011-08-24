@@ -24,7 +24,7 @@
 class DefferedLightApp: public Application {
  public:
   Material * multiLightMat, *gatherMat, *aoMaterial, *blur_horizontal,
-      *blur_vertical;
+      *blur_vertical, *debugMaterial, *debugMaterial2;
   FrameBuffer * fbo, *aoFbo, *blurHFbo, *blurVFbo;
   QSize res;
 
@@ -160,6 +160,7 @@ class DefferedLightApp: public Application {
 
   void scene() {
 
+
     QList<string> attributes = QList<string> () << "uv";
     fullPlane = Geometry::plane(attributes, QRectF(-1,-1,2,2));
 
@@ -168,11 +169,18 @@ class DefferedLightApp: public Application {
     plane3 = Geometry::plane(attributes, QRectF(0,-1,1,1));
     plane4 = Geometry::plane(attributes, QRectF(-1,0,1,1));
 
+
     sceneLoader->load();
     res = SceneData::Instance().getResolution();
     initGatherPass();
     initAOPass();
     initShadingPass();
+
+    debugMaterial = new Simple("Texture/debugfbo", attributes);
+    debugMaterial->addTexture(normalTarget);
+
+    debugMaterial2 = new Simple("Texture/debugfbo2", attributes);
+    debugMaterial2->addTexture(diffuseTarget);
   }
 
   void renderFrame(){
@@ -203,9 +211,8 @@ class DefferedLightApp: public Application {
     RenderEngine::Instance().clear();
     drawOnPlane(multiLightMat, plane1);
     drawOnPlane(blur_vertical, plane2);
-
-//    RenderEngine::Instance().clear();
-//    SceneGraph::Instance().drawNodes();
+    drawOnPlane(debugMaterial, plane3);
+    drawOnPlane(debugMaterial2, plane4);
   }
 };
 
