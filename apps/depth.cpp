@@ -26,6 +26,7 @@ class DepthBufferExample: public Application {
    Material * debugfbo, * depthMaterial;
    FrameBuffer * fbo;
    QSize res;
+   SceneLoader *sceneLoader;
 
   explicit DepthBufferExample() {
     fontOverlay = true;

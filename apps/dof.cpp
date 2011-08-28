@@ -23,6 +23,7 @@
 class DepthOfFieldExample: public Application
 {
  public:
+  SceneLoader *sceneLoader;
 
 	Material* pDebugDepthFBOMaterial;
 	Material* pDebugColorFBOMaterial;

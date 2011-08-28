@@ -26,6 +26,7 @@ class SSAOExample: public Application {
    Material * aoMaterial, * gatherPassMaterial, *blur_horizontal,  *blur_vertical;
    FrameBuffer * fbo, *colorFbo, *aoFbo, *blurHFbo;
    QSize res;
+   SceneLoader *sceneLoader;
 
   explicit SSAOExample() {
     fontOverlay = false;

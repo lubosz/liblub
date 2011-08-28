@@ -40,7 +40,6 @@ class Application : public QApplication {
 
  public:
   GUI * gui;
-	SceneLoader * sceneLoader;
 	LL::Window * window;
 	int argc;
 

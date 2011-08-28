@@ -33,6 +33,8 @@ class DefferedLightApp: public Application {
 
   Mesh * fullPlane, *plane1, *plane2, *plane3, *plane4;
 
+  SceneLoader *sceneLoader;
+
   DefferedLightApp() {
     sceneLoader = new SceneLoader("multilight.xml");
     fontOverlay = false;

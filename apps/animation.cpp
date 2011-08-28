@@ -29,6 +29,8 @@
 class LoadApp: public Application {
  public:
 
+  SceneLoader *sceneLoader;
+
   RenderSequence * shadowSequence;
   explicit LoadApp(string sceneName) {
     QString sceneFile = QString::fromStdString(sceneName + ".xml");
