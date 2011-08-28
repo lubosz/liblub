@@ -32,7 +32,7 @@ class LoadApp: public Application {
   SceneLoader *sceneLoader;
 
   RenderSequence * shadowSequence;
-  explicit LoadApp(string sceneName) {
+  LoadApp(int argc, char *argv[], string sceneName) : Application(argc,argv) {
     QString sceneFile = QString::fromStdString(sceneName + ".xml");
     sceneLoader = new SceneLoader(sceneFile);
   }
@@ -64,8 +64,8 @@ int WINAPI WinMain(HINSTANCE inst,HINSTANCE prev,LPSTR cmd,int show) {
   return 0;
 }
 #else
-int main() {
-  LoadApp("nice").run();
+int main(int argc, char *argv[]) {
+  LoadApp(argc, argv, "nice").run();
 }
 #endif
 

@@ -28,7 +28,7 @@ class SSAOExample: public Application {
    QSize res;
    SceneLoader *sceneLoader;
 
-  explicit SSAOExample() {
+  explicit SSAOExample(int argc, char *argv[]) : Application(argc,argv) {
     fontOverlay = false;
     sceneLoader = new SceneLoader("nice.xml");
   }
@@ -113,7 +113,7 @@ class SSAOExample: public Application {
   }
 };
 
-int main() {
-  SSAOExample().run();
+int main(int argc, char *argv[]) {
+  SSAOExample(argc,argv).run();
 }
 

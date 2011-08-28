@@ -37,18 +37,15 @@ class DepthOfFieldExample: public Application
 
 	QSize res;
 
-   explicit DepthOfFieldExample()
-   {
+	DepthOfFieldExample(int argc, char *argv[]) : Application(argc,argv) {
 	  fontOverlay = true;
 	  sceneLoader = new SceneLoader("terrain.xml");
-   }
+  }
 
   ~DepthOfFieldExample() {}
 
-  void scene()
-  {
+void scene() {
     sceneLoader->load();
-
     res = SceneData::Instance().getResolution();
     SceneData::Instance().name = "Depth Buffer";
 
@@ -146,7 +143,7 @@ class DepthOfFieldExample: public Application
   }
 };
 
-int main() {
-	DepthOfFieldExample().run();
+int main(int argc, char *argv[]) {
+	DepthOfFieldExample(argc,argv).run();
 }
 

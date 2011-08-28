@@ -25,7 +25,7 @@
 class Sponge : public Application {
  public:
   RenderSequence * shadowSequence;
-  Sponge() {
+  Sponge(int argc, char *argv[]) : Application(argc,argv) {
     SceneData::Instance().name = "Sponge";
     fontOverlay = true;
   }
@@ -77,6 +77,6 @@ class Sponge : public Application {
   }
 };
 
-int main() {
-  Sponge().run();
+int main(int argc, char *argv[]) {
+  Sponge(argc,argv).run();
 }

@@ -28,7 +28,7 @@ class DepthBufferExample: public Application {
    QSize res;
    SceneLoader *sceneLoader;
 
-  explicit DepthBufferExample() {
+  DepthBufferExample(int argc, char *argv[]) : Application(argc,argv) {
     fontOverlay = true;
     sceneLoader = new SceneLoader("nice.xml");
   }
@@ -69,7 +69,7 @@ class DepthBufferExample: public Application {
   }
 };
 
-int main() {
-	DepthBufferExample().run();
+int main(int argc, char *argv[]) {
+	DepthBufferExample(argc,argv).run();
 }
 

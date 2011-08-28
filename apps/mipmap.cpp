@@ -36,7 +36,7 @@ class LoadApp: public Application {
    RenderPass * defaultPass;
    ShaderProgram * perlinNoise;
 
-  explicit LoadApp() {
+  explicit LoadApp(int argc, char *argv[]) : Application(argc,argv) {
   }
 
   ~LoadApp() {}
@@ -71,8 +71,8 @@ class LoadApp: public Application {
   }
 };
 
-int main() {
-  LoadApp().run();
+int main(int argc, char *argv[]) {
+  LoadApp(argc,argv).run();
   return 0;
 }
 

@@ -29,7 +29,7 @@ class TesselationApp: public Application {
   Camera * camera;
   Material *terrainMat;
 
-  explicit TesselationApp() {
+  explicit TesselationApp(int argc, char *argv[]) : Application(argc,argv) {
   }
 
   ~TesselationApp() {}
@@ -107,7 +107,7 @@ class TesselationApp: public Application {
 };
 
 
-int main() {
-  TesselationApp().run();
+int main(int argc, char *argv[]) {
+  TesselationApp(argc,argv).run();
 }
 

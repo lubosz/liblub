@@ -29,8 +29,11 @@ class LoadApp: public Application {
   SceneLoader *sceneLoader;
 
   RenderSequence * shadowSequence;
-  explicit LoadApp(string sceneName) {
+  LoadApp(int argc, char *argv[]) : Application(argc,argv) {
+    if (argc != 2)
+      LogFatal << "NO SCENE SPECIFIED. Try; ./load test";
     fontOverlay = true;
+    string sceneName = argv[1];
     QString sceneFile = QString::fromStdString(sceneName + ".xml");
     sceneLoader = new SceneLoader(sceneFile);
   }
@@ -55,12 +58,7 @@ int WINAPI WinMain(HINSTANCE inst,HINSTANCE prev,LPSTR cmd,int show) {
 }
 #else
 int main(int argc, char *argv[]) {
-  if (argc == 2) {
-    LoadApp(argv[1]).run();
-  } else {
-    LogError << "NO SCENE SPECIFIED. Try; ./load test";
-  }
-  return 0;
+    LoadApp(argc,argv).run();
 }
 #endif
 

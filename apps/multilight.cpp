@@ -31,7 +31,7 @@ class LoadApp: public Application {
   RenderSequence * shadowSequence;
   SceneLoader *sceneLoader;
 
-  explicit LoadApp(string sceneName) {
+  explicit LoadApp(int argc, char *argv[], string sceneName) : Application(argc,argv) {
     QString sceneFile = QString::fromStdString(sceneName + ".xml");
     sceneLoader = new SceneLoader(sceneFile);
   }
@@ -94,8 +94,8 @@ int WINAPI WinMain(HINSTANCE inst,HINSTANCE prev,LPSTR cmd,int show) {
   return 0;
 }
 #else
-int main() {
-  LoadApp("multilight").run();
+int main(int argc, char *argv[]) {
+  LoadApp(argc,argv, "multilight").run();
   return 0;
 }
 #endif

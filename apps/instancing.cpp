@@ -41,7 +41,7 @@ class LoadApp: public Application {
   vector<QVector4D> positionBufferData;
 
 
-  explicit LoadApp() {
+  LoadApp(int argc, char *argv[]) : Application(argc,argv) {
     setFontOverlay(true);
   }
 
@@ -135,8 +135,8 @@ class LoadApp: public Application {
   }
 };
 
-int main() {
-  LoadApp().run();
+int main(int argc, char *argv[]) {
+  LoadApp(argc,argv).run();
   return 0;
 }
 

@@ -8,6 +8,10 @@
 #include "Application.h"
 #include "Timer.h"
 
+Application::Application(int &argc, char **argv) : QApplication(argc,argv){
+
+}
+
 void Application::chooseMediaLayer(WindowType type) {
   if (type == windowXCB) {
 #ifdef WITH_XCB

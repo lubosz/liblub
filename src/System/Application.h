@@ -41,9 +41,8 @@ class Application : public QApplication {
  public:
   GUI * gui;
 	LL::Window * window;
-	int argc;
 
-  Application() :QApplication(argc,0){ }
+  Application(int &argc, char **argv);
 	virtual ~Application() {}
 	virtual void scene() = 0;
 	virtual void renderFrame() = 0;

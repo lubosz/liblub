@@ -35,7 +35,7 @@ class DefferedLightApp: public Application {
 
   SceneLoader *sceneLoader;
 
-  DefferedLightApp() {
+  DefferedLightApp(int argc, char *argv[]) : Application(argc,argv) {
     sceneLoader = new SceneLoader("multilight.xml");
     fontOverlay = false;
   }
@@ -215,8 +215,8 @@ class DefferedLightApp: public Application {
   }
 };
 
-int main() {
-  DefferedLightApp().run();
+int main(int argc, char *argv[]) {
+  DefferedLightApp(argc,argv).run();
   return 0;
 }
 
