@@ -9,7 +9,7 @@
 
 #include "Window/Input.h"
 
-class QtInput: Input {
+class QtInput: public Input {
 public:
   QtInput();
   virtual ~QtInput();

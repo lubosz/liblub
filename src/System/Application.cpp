@@ -33,17 +33,21 @@ void Application::chooseMediaLayer(WindowType type) {
 }
 
 void Application::run() {
+
+  run(windowQt);
+  /*
 #if WITH_XCB
   run(windowXCB);
 #elif WITH_SDL
   run(windowSDL);
 #elif WITH_SFML
   run(windowSFML);
-  //#elif WITH_Qt
-  //    run(windowQt);
+#elif WITH_Qt
+  run(windowQt);
 #else
   LogError << "No Media Layer compiled.";
 #endif
+   */
 }
 
 void Application::updateFont() {
@@ -71,16 +75,17 @@ void Application::draw() {
 }
 
 void Application::eventLoop() {
-  window->input->eventLoop();
+  window->getInput()->eventLoop();
 }
 
 void Application::run(WindowType type) {
   Config::Instance().load("config.xml");
   chooseMediaLayer(type);
   window->init(SceneData::Instance().name);
+
   scene();
 
-  connect(window->input, SIGNAL(shutdown()), this, SLOT(quit()));
+  connect(window->getInput(), SIGNAL(shutdown()), this, SLOT(quit()));
 
   if (fontOverlay) {
     gui = new GUI();

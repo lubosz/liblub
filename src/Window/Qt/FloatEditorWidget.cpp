@@ -11,7 +11,6 @@
 #include <QLabel>
 #include <QDoubleSpinBox>
 #include <QSlider>
-#include "Planet.h"
 
 FloatEditorWidget::FloatEditorWidget(QString name, const char *targetSlot, float value, float from, float to, QObject* targetObject) {
   QVBoxLayout *sliderLayout = new QVBoxLayout(this);

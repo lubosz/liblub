@@ -5,11 +5,8 @@ file(GLOB_RECURSE CPP_FILES *.cpp)
 
 #moc qt stuff
 set(PLANETS_MOC_INFILES 
-    PlanetWindow.h 
-    glWidget.h 
     Planet.h 
     PlanetWidget.h
-    FloatEditorWidget.h
     PlanetsApp.h
 )
 

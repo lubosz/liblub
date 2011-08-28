@@ -7,6 +7,14 @@
 
 #include "PlanetsApp.h"
 
+#include "Scene/SceneData.h"
+#include "Material/Textures.h"
+#include "Material/Materials.h"
+#include "System/Config.h"
+#include "System/GUI.h"
+#include "Renderer/RenderEngine.h"
+#include "Window/Qt/FloatEditorWidget.h"
+
 PlanetsApp::PlanetsApp(int &argc, char **argv) :
   QApplication(argc, argv) {
   Config::Instance().load("config.xml");
@@ -18,25 +26,23 @@ PlanetsApp::PlanetsApp(int &argc, char **argv) :
       { 0.650f, 0.570f, 0.475f }, { 0, 0, 0 }, 1);
   planets.push_back(focusedPlanet);
 
-  window = new PlanetWindow();
+  window = new QtWindow();
   window->setWindowTitle("Planets Demo");
   window->setMaximumSize(QSize(1920, 1200));
   window->resize(QSize(1920, 1200));
 
   glWidget = new GLWidget;
   glWidget->setFocus();
-  glWidget->setApp(this);
 
   initWidgets(window->mainLayout);
   LogDebug << "Showing window!";
   window->show();
   RenderEngine::Instance();
   scene();
-  QTimer *drawTimer = new QTimer(this);
-//  connect(drawTimer, SIGNAL(timeout()), glWidget, SLOT(updateGL()));
+  drawTimer = new QTimer(this);
+  connect(drawTimer, SIGNAL(timeout()), glWidget, SLOT(updateGL()));
   connect(window, SIGNAL(draw(void)), glWidget, SLOT(updateGL()));
   connect(glWidget, SIGNAL(draw()), this, SLOT(draw()));
-  drawTimer->start(0);
   exec();
 }
 PlanetsApp::~PlanetsApp() {
@@ -199,9 +205,9 @@ void PlanetsApp::drawPlanets() {
 }
 
 void PlanetsApp::setLazy(bool lazy){
-//  if(lazy){
-//      killTimer(timerId);
-//  }else{
-//      timerId = startTimer(0);
-//  }
+  if(lazy){
+    drawTimer->stop();
+  }else{
+    drawTimer->start(0);
+  }
 }

@@ -14,4 +14,6 @@ class Input : public QObject {
  public:
   float inputSpeed, mouseSensitivity;
 	virtual void eventLoop() = 0;
+ signals:
+  void shutdown();
 };

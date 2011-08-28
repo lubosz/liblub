@@ -16,7 +16,7 @@
 #include <QListWidgetItem>
 #include <QGroupBox>
 #include "Planet.h"
-#include "FloatEditorWidget.h"
+#include "Window/Qt/FloatEditorWidget.h"
 
 PlanetWidget::PlanetWidget(Planet* planet) {
   if(planet == NULL)

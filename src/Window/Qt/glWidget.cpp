@@ -1,16 +1,6 @@
 #include <QtGui>
-#include <math.h>
-
 #include "glWidget.h"
-#include "System/GUI.h"
-#include "Scene/SceneLoader.h"
 #include "Scene/SceneData.h"
-#include "Material/Materials.h"
-#include "Material/Textures.h"
-#include "Renderer/RenderEngine.h"
-#include "System/Timer.h"
-#include "Mesh/Geometry.h"
-#include "PlanetsApp.h"
 
 #ifndef GL_MULTISAMPLE
 #define GL_MULTISAMPLE  0x809D
@@ -37,10 +27,6 @@ QSize GLWidget::sizeHint() const {
 
 void GLWidget::paintGL() {
   emit draw();
-}
-
-void GLWidget::setApp(PlanetsApp * app){
-  this->app = app;
 }
 
 void GLWidget::resizeGL(int width, int height) {

@@ -9,17 +9,19 @@
 
 #include <string>
 #include "Input.h"
+#include "System/Logger.h"
 
 using std::string;
 
 namespace LL {
   class Window {
-  public:
+
     friend class Input;
     friend class XCBInput;
     friend class SDLInput;
 
-    Input * input;
+  public:
+
     bool quit;
     bool fullscreen;
     bool grab;
@@ -33,7 +35,14 @@ namespace LL {
     virtual void swapBuffers() = 0;
     virtual void updateWindowTitle() = 0;
 
-   protected:
+    Input * getInput() {
+      if(!input)
+        LogFatal << "Input not initialized.";
+      return input;
+    }
+
+  protected:
+    Input * input;
     void shutdown() {
       quit = true;
     }

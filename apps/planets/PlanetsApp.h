@@ -8,27 +8,18 @@
 #ifndef PLANETSAPP_H_
 #define PLANETSAPP_H_
 
-#include <string>
 #include <QApplication>
-#include <QPainter>
 #include <QtGui>
-#include <QtCore>
-#include "System/TemplateEngine.h"
-#include "System/Application.h"
-#include "Scene/SceneLoader.h"
-#include "Scene/SceneData.h"
-#include "System/Logger.h"
-#include "System/Timer.h"
-#include "Mesh/Geometry.h"
-#include "Mesh/MeshLoader.h"
-#include "Material/ProcTextures.h"
-#include "Material/Textures.h"
-#include "Material/ShaderProgram.h"
+
+#include "Window/Qt/QtWindow.h"
+#include "Window/Qt/glWidget.h"
 #include "Planet.h"
-#include "PlanetWindow.h"
 #include "PlanetWidget.h"
-#include "FloatEditorWidget.h"
-#include "glWidget.h"
+
+class FrameBuffer;
+class GUI;
+class Camera;
+class Light;
 
 class PlanetsApp: public QApplication {
 
@@ -45,7 +36,8 @@ public:
   Camera* camera;
   Light * light;
   FrameBuffer *fbo;
-  PlanetWindow * window;
+  QtWindow * window;
+  QTimer *drawTimer;
 
   PlanetsApp(int &argc, char **argv);
   ~PlanetsApp();

@@ -159,8 +159,14 @@ endif()
 
 if(WITH_Qt)
     set(WINDOW_TYPES ${WINDOW_TYPES} Qt)
+    set(QT_MOC_INFILES 
+        src/Window/Qt/QtWindow.h
+        src/Window/Qt/glWidget.h 
+        src/Window/Qt/FloatEditorWidget.h
+    )
+    qt4_wrap_cpp(QT_MOC_OUTFILES ${QT_MOC_INFILES})
+    set(SOURCES ${SOURCES} ${QT_MOC_OUTFILES})
 endif()
-
 if(WITH_XCB)
 	list(APPEND LIBS X11-xcb xcb-keysyms)
     set(WINDOW_TYPES ${WINDOW_TYPES} XCB)

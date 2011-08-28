@@ -22,9 +22,6 @@ public:
   virtual ~XCBInput();
   void eventLoop();
 
-  signals:
-  void shutdown();
-
 private:
 
 #ifdef XCBEVENTS
