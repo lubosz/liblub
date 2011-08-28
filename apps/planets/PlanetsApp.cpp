@@ -82,7 +82,6 @@ void PlanetsApp::initCamAndLight() {
 }
 
 void PlanetsApp::initWidgets(QHBoxLayout * mainLayout) {
-  mainLayout->addWidget(glWidget);
   QVBoxLayout *sideLayout = new QVBoxLayout;
   mainLayout->addLayout(sideLayout);
 

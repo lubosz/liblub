@@ -12,7 +12,7 @@
 #include "System/GUI.h"
 #include "Renderer/RenderEngine.h"
 
-QtApplication::QtApplication(int &argc, char **argv) :
+QtApplication::QtApplication(int & argc, char ** argv) :
   QApplication(argc, argv) {
   Config::Instance().load("config.xml");
 }
@@ -22,12 +22,15 @@ QtApplication::~QtApplication() {
 
 void QtApplication::run() {
   window = new QtWindow();
+  //TODO hardcoded sizes
   window->setMaximumSize(QSize(1920, 1200));
   window->resize(QSize(1920, 1200));
+  SceneData::Instance().setResolution(1920,1200);
 
   glWidget = new GLWidget;
   glWidget->setFocus();
 
+  window->mainLayout->addWidget(glWidget);
   initWidgets(window->mainLayout);
   window->show();
   RenderEngine::Instance();

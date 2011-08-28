@@ -19,7 +19,6 @@
 #define BUFFERSIZE 2000
 
 #include <string>
-#include <QApplication>
 #include "System/Application.h"
 #include "System/GUI.h"
 #include "Scene/SceneLoader.h"
@@ -30,7 +29,7 @@
 #include "Mesh/Geometry.h"
 #include "Material/Textures.h"
 
-class LoadApp: public Application {
+class InstancingApp: public Application {
  public:
   Material * material;
   Node * node;
@@ -41,11 +40,11 @@ class LoadApp: public Application {
   vector<QVector4D> positionBufferData;
 
 
-  LoadApp(int argc, char *argv[]) : Application(argc,argv) {
+  InstancingApp(int argc, char *argv[]) : Application(argc,argv) {
     setFontOverlay(true);
   }
 
-  ~LoadApp() {}
+  ~InstancingApp() {}
 
   void scene() {
     QList<string> attributes;
@@ -136,7 +135,7 @@ class LoadApp: public Application {
 };
 
 int main(int argc, char *argv[]) {
-  LoadApp(argc,argv).run();
-  return 0;
+  InstancingApp app(argc,argv);
+  app.run();
 }
 

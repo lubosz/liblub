@@ -1,55 +1,49 @@
 /*
-    Copyright © 2010 Lubosz Sarnecki
+ Copyright © 2010 Lubosz Sarnecki
 
-    This file is part of liblub.
+ This file is part of liblub.
 
-    liblub is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
+ liblub is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
 
-    liblub is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
+ liblub is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
 
-    You should have received a copy of the GNU General Public License
-    along with liblub.  If not, see <http://www.gnu.org/licenses/>.
-*/
-#include <QApplication>
-#include "System/Application.h"
+ You should have received a copy of the GNU General Public License
+ along with liblub.  If not, see <http://www.gnu.org/licenses/>.
+ */
+#include "sponge.h"
 #include "Mesh/MengerSponge.h"
 #include "Scene/SceneData.h"
 #include "Mesh/Geometry.h"
 
-class Sponge : public Application {
- public:
-  RenderSequence * shadowSequence;
-  Sponge(int argc, char *argv[]) : Application(argc,argv) {
-    SceneData::Instance().name = "Sponge";
-    fontOverlay = true;
-  }
+Sponge::Sponge(int argc, char *argv[]) :
+  QtApplication(argc, argv) {
+  SceneData::Instance().name = "Sponge";
+}
 
-  void scene() {
-    shadowSequence = new RenderSequence();
-
-    Material * material = new EmptyMat();
-    material->init();
-#ifdef USE_FBO
-    material->addTexture(shadowSequence->renderPasses[0]->targetTexture);
-#endif
-    vector<string> flags = {
-        "receiveShadows",
-        "useSpotLight",
-        "usePCF"
-    };
-    material->shaderProgram->attachVertFrag("Color/PhongColor", flags);
-    QList<string> attributes;
-    attributes.push_back("uv");
-    attributes.push_back("normal");
-    attributes.push_back("tangent");
-    material->done(attributes);
-    material->shaderProgram->setUniform("ambientSceneColor",QVector4D(0.1, 0.1, 0.1, 1.0));
+void Sponge::scene() {
+//  window->setWindowTitle("Sponge");
+  shadowSequence = new RenderSequence();
+  Material * material = new EmptyMat();
+  material->init();
+  material->addTexture(shadowSequence->renderPasses[0]->targetTexture);
+  vector < string > flags = {
+    "receiveShadows",
+    "useSpotLight",
+    "usePCF"
+  };
+  material->shaderProgram->attachVertFrag("Color/PhongColor", flags);
+  QList<string> attributes;
+  attributes.push_back("uv");
+  attributes.push_back("normal");
+  attributes.push_back("tangent");
+  material->done(attributes);
+  material->shaderProgram->setUniform("ambientSceneColor",QVector4D(0.1, 0.1,0.1, 1.0));
     material->shaderProgram->setUniform("diffuseMaterialColor",QVector4D(1,1,1,1));
     material->shaderProgram->setUniform("specularMaterialColor",
             QVector4D(0.8, 0.8, 0.8, 1.0));
@@ -72,11 +66,14 @@ class Sponge : public Application {
 
     SceneData::Instance().addLight("foolight", new Light(QVector3D(-2.5, 21.5, -5.2), QVector3D(1, -5, 0)));
   }
-  void renderFrame(){
-    shadowSequence->render();
-  }
-};
+void Sponge::renderFrame() {
+  shadowSequence->render();
+}
+
+void Sponge::initWidgets(QHBoxLayout * mainLayout) {
+  LogDebug << mainLayout;
+}
 
 int main(int argc, char *argv[]) {
-  Sponge(argc,argv).run();
+  Sponge(argc, argv).run();
 }

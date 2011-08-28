@@ -93,6 +93,8 @@ void SceneData::setResolution(unsigned width, unsigned height) {
 }
 
 QSize SceneData::getResolution() {
+  if(width == 0|| height == 0)
+    LogFatal << "No Window Resulution!";
   return QSize(width, height);
 }
 

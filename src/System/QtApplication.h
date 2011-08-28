@@ -27,7 +27,7 @@ public:
 
   void run();
 
-  QtApplication(int &argc, char **argv);
+  QtApplication(int & argc, char ** argv);
   ~QtApplication();
 
   virtual void renderFrame() = 0;

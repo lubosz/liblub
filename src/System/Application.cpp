@@ -8,8 +8,11 @@
 #include "Application.h"
 #include "Timer.h"
 
-Application::Application(int &argc, char **argv) : QApplication(argc,argv){
-
+Application::Application(int argc, char ** argv) {
+  LogInfo << argc << argv[0];
+  argcount = argc;
+  argvalues = argv;
+  app = new QApplication(argcount,argvalues, false);
 }
 
 void Application::chooseMediaLayer(WindowType type) {
@@ -37,9 +40,8 @@ void Application::chooseMediaLayer(WindowType type) {
 }
 
 void Application::run() {
+  Config::Instance().load("config.xml");
 
-  run(windowQt);
-  /*
 #if WITH_XCB
   run(windowXCB);
 #elif WITH_SDL
@@ -51,21 +53,10 @@ void Application::run() {
 #else
   LogError << "No Media Layer compiled.";
 #endif
-   */
 }
 
 void Application::updateFont() {
   gui->update();
-}
-
-// reimplemented from QApplication so we can throw exceptions in slots
-bool Application::notify(QObject * receiver, QEvent * event) {
-  try {
-    return QApplication::notify(receiver, event);
-  } catch(std::exception& e) {
-    LogFatal << "Exception thrown:" << e.what();
-  }
-  return false;
 }
 
 void Application::draw() {
@@ -83,13 +74,19 @@ void Application::eventLoop() {
 }
 
 void Application::run(WindowType type) {
-  Config::Instance().load("config.xml");
+  // Qt requires at least one argument.
+  if (app->arguments().length() < 1) {
+    LogWarning << "Oh noez, no argz. Better append foo.";
+    app->arguments().push_back("foo");
+  }
+  LogInfo << app->arguments().at(0).toStdString();
+
   chooseMediaLayer(type);
   window->init(SceneData::Instance().name);
 
   scene();
 
-  connect(window->getInput(), SIGNAL(shutdown()), this, SLOT(quit()));
+  connect(window->getInput(), SIGNAL(shutdown()), app, SLOT(quit()));
 
   if (fontOverlay) {
     gui = new GUI();
@@ -106,7 +103,7 @@ void Application::run(WindowType type) {
   QTimer *eventTimer = new QTimer(this);
   connect(eventTimer, SIGNAL(timeout()), this, SLOT(eventLoop()));
   eventTimer->start(0);
-  exec();
+  app->exec();
 }
 
 void Application::setFontOverlay(bool fontOverlay) {

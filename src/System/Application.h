@@ -31,18 +31,20 @@
 #include "System/Config.h"
 #include "System/GUI.h"
 
-
 enum WindowType { windowXCB, windowQt, windowSFML, windowSDL };
 
-class Application : public QApplication {
+class Application : public QObject{
 
   Q_OBJECT
 
  public:
   GUI * gui;
 	LL::Window * window;
+  int argcount;
+  char ** argvalues;
+	QApplication * app;
 
-  Application(int &argc, char **argv);
+  Application(int argc, char ** argv);
 	virtual ~Application() {}
 	virtual void scene() = 0;
 	virtual void renderFrame() = 0;
@@ -51,8 +53,6 @@ class Application : public QApplication {
 	void run();
 	void run(WindowType type);
 	void setFontOverlay(bool fontOverlay);
-
-  virtual bool notify(QObject * receiver, QEvent * event);
 
 public slots:
 	void updateFont();
