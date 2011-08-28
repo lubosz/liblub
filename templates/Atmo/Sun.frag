@@ -50,15 +50,17 @@ float multiSampleNoise(vec3 uvw, float time) {
 {% endblock %}
 
 {% block main %}
+
+	float timeControl = time/10.0;
  	vec3 uvw = position + 0.1*
 	vec3(
-		snoise(position + vec3(0.0, 0.0, time/20.0)),
-    	snoise(position + vec3(43.0, 17.0, time/20.0)),
- 		snoise(position + vec3(-17.0, -43.0, time/20.0))
+		snoise(position + vec3(0.0, 0.0, timeControl)),
+    	snoise(position + vec3(43.0, 17.0, timeControl)),
+ 		snoise(position + vec3(-17.0, -43.0, timeControl))
  	);
   //vec3 uvw = position;	
 	
-	float n = multiSampleNoise(uvw, time/20.0);
+	float n = multiSampleNoise(uvw, timeControl);
 	fragColor = vec4(vec3(1.0, 0.5, 0.0) + vec3(n, n, n), 1.0);
 //	fragColor = vec4(n,n,n,1);
   fragColor = vec4(color1,1) + fragColor * vec4(color2,1);
