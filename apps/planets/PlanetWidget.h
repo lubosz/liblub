@@ -29,7 +29,7 @@ public:
       QList<const char*> targets, QStringList names);
 
 signals:
-    void updateGL();
+    void draw();
 };
 
 #endif /* PLANETWIDGET_H_ */

@@ -4,22 +4,26 @@
 
 class GLWidget;
 class PlanetWidget;
+class QHBoxLayout;
 
 class PlanetWindow: public QWidget {
   Q_OBJECT
 
 public:
   PlanetWindow();
+  QHBoxLayout *mainLayout;
 
 protected:
   void keyPressEvent(QKeyEvent *event);
   void keyReleaseEvent(QKeyEvent *e);
   void executeKeys();
-  PlanetWidget *  focusPlanet();
 
 private:
-  GLWidget *glWidget;
   QList<int> pressedKeys;
+
+signals:
+  void draw();
+
 };
 
 #endif

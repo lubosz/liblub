@@ -10,6 +10,7 @@ set(PLANETS_MOC_INFILES
     Planet.h 
     PlanetWidget.h
     FloatEditorWidget.h
+    PlanetsApp.h
 )
 
 qt4_wrap_cpp(PLANETS_MOC_OUTFILES ${PLANETS_MOC_INFILES})

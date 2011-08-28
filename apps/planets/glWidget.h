@@ -11,6 +11,8 @@
 #include "Planet.h"
 #include "System/GUI.h"
 
+class PlanetsApp;
+
 class GLWidget: public QGLWidget {
   Q_OBJECT
 
@@ -18,44 +20,22 @@ public:
   GLWidget(QWidget *parent = 0);
   ~GLWidget();
 
+  PlanetsApp * app;
+
   QSize minimumSizeHint() const;
   QSize sizeHint() const;
   QSize viewSize;
-  Planet* focusedPlanet;
-  vector<Planet*> planets;
-  GUI* gui;
+  void paintGL();
+  void setApp(PlanetsApp * app);
 
 protected:
-  void initializeGL();
-  void paintGL();
   void resizeGL(int width, int height);
   void mousePressEvent(QMouseEvent *event);
   void mouseMoveEvent(QMouseEvent *event);
+  QPoint lastMousePosition;
 
-private:
-  QPoint lastPos;
-  Material *HDR;
-  bool usePostprocessing;
-  bool useWireframe;
-  Camera* camera;
-  Light * light;
-  FrameBuffer *fbo;
-
-  void timerEvent(QTimerEvent *) { update(); }
-  int timerId;
-
-
-  void initCamAndLight();
-  void initPostProcessing();
-  void updatePostProcessing();
-  void startPass();
-  void endPass();
-  void drawPlanets();
-public slots:
-  void setExposure(double exposure);
-  void setLazy(bool lazy);
-  void setWireframe(bool wire);
-  void setPostprocessing(bool post);
+signals:
+  void draw();
 };
 
 #endif

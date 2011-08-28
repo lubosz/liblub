@@ -8,65 +8,8 @@
 #include "FloatEditorWidget.h"
 
 PlanetWindow::PlanetWindow() {
-  glWidget = new GLWidget;
-  Config::Instance().load("config.xml");
-//  QUiLoader uiLoader;
-//  QFile uiFile("scripts/valueChanger.ui");
-//  QWidget *valueChanger = uiLoader.load(&uiFile);
-//  mainLayout->addWidget(valueChanger);
-
-  QHBoxLayout *mainLayout = new QHBoxLayout;
-  mainLayout->addWidget(glWidget);
-
-  QVBoxLayout *sideLayout = new QVBoxLayout;
-  mainLayout->addLayout(sideLayout);
-
-  QListWidget * planetList = new QListWidget();
-
-  foreach(Planet * planet , glWidget->planets){
-    QListWidgetItem * planetItem = new QListWidgetItem(planetList);
-    planetItem->setText(planet->name);
-  }
-  QCheckBox *checkBox = new QCheckBox();
-  checkBox->setText("Postprocessing");
-  checkBox->setChecked(true);
-  connect(checkBox, SIGNAL(clicked(bool)), glWidget, SLOT(setPostprocessing(bool)));
-  connect(checkBox, SIGNAL(clicked(bool)), glWidget, SLOT(updateGL()));
-  sideLayout->addWidget(checkBox);
-
-  FloatEditorWidget* exposure = new FloatEditorWidget("Exposure",SLOT(setExposure(double)), 2.0, 0, 10, glWidget);
-  connect(exposure, SIGNAL(updateGL()), glWidget, SLOT(updateGL()));
-  sideLayout->addWidget(exposure);
-
-  QCheckBox *checkBox2 = new QCheckBox();
-  checkBox2->setText("Wireframe");
-  checkBox2->setChecked(false);
-  connect(checkBox2, SIGNAL(clicked(bool)), glWidget, SLOT(setWireframe(bool)));
-  connect(checkBox2, SIGNAL(clicked(bool)), glWidget, SLOT(updateGL()));
-  sideLayout->addWidget(checkBox2);
-
-  QCheckBox *checkBox3 = new QCheckBox();
-  checkBox3->setText("Lazy Rendering");
-  checkBox3->setChecked(true);
-  connect(checkBox3, SIGNAL(clicked(bool)), glWidget, SLOT(setLazy(bool)));
-  connect(checkBox3, SIGNAL(clicked(bool)), glWidget, SLOT(updateGL()));
-  sideLayout->addWidget(checkBox3);
-
-//  sideLayout->addWidget(planetList);
-  sideLayout->addWidget(focusPlanet());
-
-
+  mainLayout = new QHBoxLayout;
   setLayout(mainLayout);
-
-  setWindowTitle(tr("Planets Demo"));
-  glWidget->setFocus();
-  setMaximumSize(QSize(1920, 1200));
-}
-
-PlanetWidget * PlanetWindow::focusPlanet(){
-  PlanetWidget * planetWidget = new PlanetWidget(glWidget->focusedPlanet);
-  connect(planetWidget, SIGNAL(updateGL(void)), glWidget, SLOT(updateGL(void)));
-  return planetWidget;
 }
 
 void PlanetWindow::keyPressEvent(QKeyEvent *e) {
@@ -90,7 +33,7 @@ void PlanetWindow::executeKeys() {
       if (key == Qt::Key_D)
         SceneData::Instance().getCurrentCamera()->rightDirection(inputSpeed);
   }
-  glWidget->updateGL();
+  emit draw();
 }
 
 void PlanetWindow::keyReleaseEvent(QKeyEvent *e) {

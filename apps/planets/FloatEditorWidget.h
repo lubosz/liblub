@@ -26,7 +26,7 @@ public slots:
   void updateFromSpinBox(double value);
 
 signals:
-  void updateGL();
+  void draw();
 };
 
 #endif /* FLOATEDITORWIDGET_H_ */

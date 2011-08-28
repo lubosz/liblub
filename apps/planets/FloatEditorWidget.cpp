@@ -35,12 +35,12 @@ FloatEditorWidget::FloatEditorWidget(QString name, const char *targetSlot, float
 
 void FloatEditorWidget::updateFromSlider(int value) {
   spinBox->setValue(double(value)/100.0);
-  emit updateGL();
+  emit draw();
 }
 
 void FloatEditorWidget::updateFromSpinBox(double value) {
   slider->setValue(int(value * 100));
-  emit updateGL();
+  emit draw();
 }
 
 FloatEditorWidget::~FloatEditorWidget() {
