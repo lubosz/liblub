@@ -8,7 +8,6 @@
 #ifndef PLANETSAPP_H_
 #define PLANETSAPP_H_
 
-#include <QApplication>
 #include <QtGui>
 
 #include "Window/Qt/QtWindow.h"
@@ -16,28 +15,26 @@
 #include "Planet.h"
 #include "PlanetWidget.h"
 
+#include "System/QtApplication.h"
+
 class FrameBuffer;
 class GUI;
 class Camera;
 class Light;
 
-class PlanetsApp: public QApplication {
+class PlanetsApp: public QtApplication {
 
 Q_OBJECT
 
 public:
   vector<Planet*> planets;
-  GLWidget *glWidget;
   Planet* focusedPlanet;
-  GUI* gui;
   Material *HDR;
   bool usePostprocessing;
   bool useWireframe;
   Camera* camera;
   Light * light;
   FrameBuffer *fbo;
-  QtWindow * window;
-  QTimer *drawTimer;
 
   PlanetsApp(int &argc, char **argv);
   ~PlanetsApp();
@@ -50,10 +47,9 @@ public:
   void drawPlanets();
   void startPass();
   void endPass();
+  void renderFrame();
 
 public slots:
-  void draw();
-  void setLazy(bool lazy);
   void setExposure(double exposure);
   void setWireframe(bool wire);
   void setPostprocessing(bool post);

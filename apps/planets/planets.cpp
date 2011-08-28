@@ -21,5 +21,5 @@
 
 int main(int argc, char *argv[]) {
   PlanetsApp planetsApp(argc, argv);
-//  planetsApp.exec();
+  planetsApp.run();
 }

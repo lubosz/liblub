@@ -16,8 +16,7 @@
 #include "Window/Qt/FloatEditorWidget.h"
 
 PlanetsApp::PlanetsApp(int &argc, char **argv) :
-  QApplication(argc, argv) {
-  Config::Instance().load("config.xml");
+  QtApplication(argc, argv) {
 
   usePostprocessing = true;
   useWireframe = false;
@@ -25,26 +24,8 @@ PlanetsApp::PlanetsApp(int &argc, char **argv) :
   focusedPlanet = new Planet("Earth", 11, 11.55, Planet::sun,
       { 0.650f, 0.570f, 0.475f }, { 0, 0, 0 }, 1);
   planets.push_back(focusedPlanet);
-
-  window = new QtWindow();
-  window->setWindowTitle("Planets Demo");
-  window->setMaximumSize(QSize(1920, 1200));
-  window->resize(QSize(1920, 1200));
-
-  glWidget = new GLWidget;
-  glWidget->setFocus();
-
-  initWidgets(window->mainLayout);
-  LogDebug << "Showing window!";
-  window->show();
-  RenderEngine::Instance();
-  scene();
-  drawTimer = new QTimer(this);
-  connect(drawTimer, SIGNAL(timeout()), glWidget, SLOT(updateGL()));
-  connect(window, SIGNAL(draw(void)), glWidget, SLOT(updateGL()));
-  connect(glWidget, SIGNAL(draw()), this, SLOT(draw()));
-  exec();
 }
+
 PlanetsApp::~PlanetsApp() {
 }
 
@@ -71,22 +52,18 @@ void PlanetsApp::setExposure(double exposure) {
 }
 
 void PlanetsApp::scene() {
-  RenderEngine::Instance();
+  window->setWindowTitle("Planets Demo");
   initCamAndLight();
-  gui = new GUI();
-  gui->init();
   foreach(Planet * planet, planets)
       planet->init();
   initPostProcessing();
 }
 
-void PlanetsApp::draw() {
+void PlanetsApp::renderFrame() {
   startPass();
   RenderEngine::Instance().clear();
   drawPlanets();
   endPass();
-  gui->draw();
-  glError;
 }
 
 void PlanetsApp::initCamAndLight() {
@@ -202,12 +179,4 @@ void PlanetsApp::drawPlanets() {
   glFrontFace(GL_CCW);
   glDisable(GL_CULL_FACE);
   glDisable(GL_DEPTH_TEST);
-}
-
-void PlanetsApp::setLazy(bool lazy){
-  if(lazy){
-    drawTimer->stop();
-  }else{
-    drawTimer->start(0);
-  }
 }
