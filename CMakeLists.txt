@@ -10,11 +10,7 @@ else()
 option(WITH_XCB "Use XCB (X11) window/input backend" ON)
 endif()
 
-option(WITH_SFML "Use SFML 2 window/input backend" OFF)
-option(WITH_SDL "Use SDL 1.3 window/input backend" OFF)
-option(SDL_LOCAL "SDL Local" OFF)
 option(RELEASE "Release" OFF)
-option(USE_FBO "Use Framebuffer Objects" ON)
 option(CHECKSTYLE "Check Style" OFF)
 option(BUILD_TESTS "Build Tests" OFF)
 
@@ -25,8 +21,6 @@ endif()
 if(USE_FBO)
     ADD_DEFINITIONS(-DUSE_FBO)
 endif()
-
-set(SDL_DIR "" CACHE PATH "SDL Local DIR")
 
 set(LIBRARY_OUTPUT_PATH ${CMAKE_SOURCE_DIR}/lib)
 set(EXECUTABLE_OUTPUT_PATH ${CMAKE_SOURCE_DIR}/bin)
@@ -61,7 +55,6 @@ find_package(Qt4 REQUIRED)
 find_package(Grantlee REQUIRED)
 set(QT_USE_QTXML true)
 set(QT_USE_QTUITOOLS true)
-#set(QT_USE_QTOPENGL false)
 set(QT_USE_QTOPENGL true)
 include(${QT_USE_FILE})
 find_package(OpenGL)
@@ -105,20 +98,9 @@ else()
 	set(OPENGL_LIB ${OPENGL_LIBRARY})
 endif()
 
-if(SDL_LOCAL)
-	   set(SDL_INCLUDES ${SDL_DIR}/include)
-else()
-	   if(LIBLUB_WINDOWS)
-	      set(SDL_INCLUDES /usr/i486-mingw32/include/SDL)
-	   else()
-	      set(SDL_INCLUDES /usr/include/SDL/)
-	   endif()
-endif()
-
 include_directories(
 	src
 	${QT_INCLUDES}
-	${SDL_INCLUDES}
 )
 
 #Add liblub sources
@@ -140,21 +122,6 @@ set(LIBLUB_MOC_INFILES
 )
 qt4_wrap_cpp(LIBLUB_MOC_OUTFILES ${LIBLUB_MOC_INFILES})
 set(SOURCES ${SOURCES} ${LIBLUB_MOC_OUTFILES})
-
-# choose window lib
-if(WITH_SDL)
-	if(SDL_LOCAL)
-		list(APPEND LIBS ${SDL_DIR}/build/.libs/libSDL.a)
-	else()
-		list(APPEND LIBS SDL)
-	endif()
-    set(WINDOW_TYPES ${WINDOW_TYPES} SDL)
-endif()
-
-if(WITH_SFML)
-	list(APPEND LIBS sfml-graphics)
-    set(WINDOW_TYPES ${WINDOW_TYPES} SFML)
-endif()
 
 if(WITH_Qt)
     set(WINDOW_TYPES ${WINDOW_TYPES} Qt)
