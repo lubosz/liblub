@@ -59,6 +59,9 @@ public:
   Light * getShadowLight();
   Light * getMoveLight();
 
+  void setCurrentCamera(Camera * camera);
+  void addCamera(Camera * camera);
+
   struct LightSource {
     QVector4D position;
     QVector4D diffuse;
@@ -67,11 +70,11 @@ public:
   };
 
 private:
+  Camera *currentCamera;
   bool useMultiLights;
   LightSource lightBufferData[10];
   UniformBuffer * lightBuffer;
   GLint lightBufferSize;
-  Camera *currentCamera;
   Light *shadowLight, *moveLight;
 };
 

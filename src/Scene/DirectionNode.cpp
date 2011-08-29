@@ -19,6 +19,7 @@ DirectionNode::DirectionNode(){
   fov = 70.0;
   nearClip = 0.1;
   farClip = 1000.0;
+  updatePerspective();
 }
 
 DirectionNode::~DirectionNode(){

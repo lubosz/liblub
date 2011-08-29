@@ -67,6 +67,27 @@ void SceneData::addProgram(string & name, ShaderProgram* program) {
   shaderPrograms.insert(name, program);
 }
 
+void SceneData::setCurrentCamera(Camera * camera) {
+  this->currentCamera = camera;
+  addCamera(camera);
+}
+
+void SceneData::addCamera(Camera * camera) {
+  bool isInCameras = false;
+
+  foreach(Camera* cam, cameras) {
+    if (cam == camera)
+      isInCameras = true;
+  }
+
+  if (!isInCameras) {
+    QString camname = "camera" + QString::number(cameras.size() + 1);
+    cameras.insert(camname.toStdString(), camera);
+    LogDebug << "Adding " << camname.toStdString();
+
+  }
+}
+
 ShaderProgram* SceneData::getProgram(const string & name) {
   ShaderProgram * program = shaderPrograms[name];
   if (program) {
