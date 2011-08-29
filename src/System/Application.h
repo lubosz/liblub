@@ -9,7 +9,7 @@
 #define COMMONAPPLICATION_H_
 
 
-#ifdef DEFAULT_Qt
+#ifdef LIBLUB_WINDOWS
 #include "Window/Qt/QtApplication.h"
 typedef QtApplication Application;
 #else

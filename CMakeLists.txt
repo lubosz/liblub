@@ -4,18 +4,15 @@ project(liblub)
 #Set Options
 option(WITH_Qt "Use Qt window/input backend" ON)
 
-if(LIBLUB_WINDOWS)
-option(WITH_XCB "Use XCB (X11) window/input backend" OFF)
-else()
 option(WITH_XCB "Use XCB (X11) window/input backend" ON)
-endif()
 
 option(RELEASE "Release" OFF)
 option(CHECKSTYLE "Check Style" OFF)
 option(BUILD_TESTS "Build Tests" OFF)
 
-if(USE_GLEW)
-ADD_DEFINITIONS(-DUSE_GLEW)
+if(LIBLUB_WINDOWS)
+    set(WITH_XCB 0)
+    ADD_DEFINITIONS(-DUSE_GLEW)
 endif()
 
 if(USE_FBO)

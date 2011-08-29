@@ -7,6 +7,7 @@
 
 #pragma once
 
+#include "common/OpenGL.h"
 #include <QApplication>
 #include <QtGui>
 #include "Window/Qt/QtWindow.h"

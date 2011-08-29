@@ -16,8 +16,7 @@
     You should have received a copy of the GNU General Public License
     along with liblub.  If not, see <http://www.gnu.org/licenses/>.
 */
-#define GL3_PROTOTYPES 1
-#include "GL3/gl3.h"
+#include "common/OpenGL.h"
 #include "System/Application.h"
 #include "Material/Textures.h"
 #include "Renderer/FrameBuffer.h"

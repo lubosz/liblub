@@ -13,7 +13,7 @@
 
 using std::vector;
 using std::string;
-
+typedef char GLchar;
 class Shader {
  public:
 	Shader(string fileName, GLenum type, bool useTemplate);

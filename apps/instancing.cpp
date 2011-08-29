@@ -17,8 +17,7 @@
     along with liblub.  If not, see <http://www.gnu.org/licenses/>.
 */
 #define BUFFERSIZE 2000
-#define GL3_PROTOTYPES 1
-#include "GL3/gl3.h"
+#include "common/OpenGL.h"
 #include <string>
 #include "System/Application.h"
 #include "System/GUI.h"

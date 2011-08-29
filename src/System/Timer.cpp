@@ -10,7 +10,9 @@
 #include "Window/Window.h"
 
 Timer::Timer() {
+#ifndef LIBLUB_WINDOWS
   clock_gettime(CLOCK_MONOTONIC, &startTime);
+#endif
 }
 
 Timer::~Timer() {
@@ -49,6 +51,19 @@ float Timer::getFPS() {
 float Timer::getSPF() {
   return float(frameTime.tv_nsec) / 1000000.0;
 }
+#else
+
+void Timer::updateFPS() {
+}
+
+float Timer::getFPS() {
+  return 0;
+}
+
+float Timer::getSPF() {
+  return 0;
+}
+
 #endif
 
 void Timer::printFPS() {
@@ -56,7 +71,9 @@ void Timer::printFPS() {
 }
 
 float Timer::getTime() {
+#ifndef LIBLUB_WINDOWS
   timespec now;
   clock_gettime(CLOCK_MONOTONIC, &now);
   return (float(now.tv_sec) + float(now.tv_nsec)/float(BILLION));
+#endif
 }

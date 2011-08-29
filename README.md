@@ -34,7 +34,15 @@ and put them into the local liblub include directory.
 
 ## Compile
 
+### Linux
+
 `$ cmake .`
+
+`$ make`
+
+### Windows
+
+`cmake . -DLIBLUB_WINDOWS=1 -DCMAKE_TOOLCHAIN_FILE=scripts/mingw-toolchain.cmake`
 
 `$ make`
 

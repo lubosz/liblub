@@ -33,6 +33,15 @@ void QtApplication::run() {
   window->mainLayout->addWidget(glWidget);
   initWidgets(window->mainLayout);
   window->show();
+#ifdef LIBLUB_WINDOWS
+  GLenum err = glewInit();
+  if (GLEW_OK != err) {
+    /* Problem: glewInit failed, something is seriously wrong. */
+    LogError << "GLEW Init:" <<glewGetErrorString(err);
+  }
+  LogInfo << "Using GLEW" << glewGetString(GLEW_VERSION);
+  initWinGL();
+#endif
   RenderEngine::Instance();
   gui = new GUI();
   gui->init();

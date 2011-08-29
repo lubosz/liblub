@@ -8,8 +8,6 @@
 using std::cerr;
 using std::cout;
 
-#define BASH_COLOR 1
-
 Logger::LogLevel Logger::logLevel = Logger::Debug;
 
 struct LogSetting {
@@ -73,11 +71,11 @@ void Logger::writeInfo(const char* longFile, int line, Logger::LogLevel level) {
 
 void Logger::log(int mode, int color, const string & level,
     const string & file, int line) {
-#if BASH_COLOR
+#if LIBLUB_WINDOWS
+  cout<<"["<< level << "]  "<<file<<":"<<line<<"  ";
+#else
   cout<<"[\e["<< mode <<";"<< color <<"m" << level << "\e[m]  "
       <<"\e[0;35m"<<file<<"\e[m:\e[0;33m"<<line<<"\e[m"<<"  ";
-#else
-  cout<<"["<< level << "]  "<<file<<":"<<line<<"  ";
 #endif
 }
 

@@ -91,17 +91,7 @@ class LoadApp: public Application {
   void initWidgets(QHBoxLayout * mainLayout) {}
 };
 
-#ifdef LIBLUB_WINDOWS
-#include <windows.h>
-int WINAPI WinMain(HINSTANCE inst,HINSTANCE prev,LPSTR cmd,int show) {
-  LogDebug << "WINMAIN STUFF" << inst << prev << cmd << show;
-  QApplication app();
-  LoadApp("multilight").run();
-  return 0;
-}
-#else
 int main(int argc, char *argv[]) {
   LoadApp(argc,argv, "multilight").run();
   return 0;
 }
-#endif
