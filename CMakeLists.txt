@@ -3,20 +3,29 @@ project(liblub)
 
 #Set Options
 option(WITH_Qt "Use Qt window/input backend" ON)
-
 option(WITH_XCB "Use XCB (X11) window/input backend" ON)
 
 option(RELEASE "Release" OFF)
 option(CHECKSTYLE "Check Style" OFF)
 option(BUILD_TESTS "Build Tests" OFF)
 
+option(USE_QT_WINDOWS "Use Qt Windows For All Apps" OFF)
+option(USE_GLEW "Use Qt Windows For All Apps" OFF)
+
 if(LIBLUB_WINDOWS)
     set(WITH_XCB 0)
+    set(USE_GLEW 1)
+    set(USE_QT_WINDOWS 1)
+endif()
+
+if(USE_GLEW)
+    message("GLEW only works with Qt window backend")
+    set(USE_QT_WINDOWS 1)
     ADD_DEFINITIONS(-DUSE_GLEW)
 endif()
 
-if(USE_FBO)
-    ADD_DEFINITIONS(-DUSE_FBO)
+if(USE_QT_WINDOWS)
+    ADD_DEFINITIONS(-DUSE_QT_WINDOWS)
 endif()
 
 set(LIBRARY_OUTPUT_PATH ${CMAKE_SOURCE_DIR}/lib)
@@ -167,8 +176,13 @@ list(APPEND LIBS
     assimp
 )
 
-if(LIBLUB_WINDOWS)
-    list(APPEND LIBS glew32)
+
+if(USE_GLEW)
+    if(LIBLUB_WINDOWS)
+        list(APPEND LIBS glew32)
+    else()
+        list(APPEND LIBS GLEW)
+    endif()
 endif()
 
 #link

@@ -47,9 +47,14 @@ https://github.com/downloads/lubosz/liblub/liblub-i486-mingw32.tar.7z
 
 To build:
 
-`cmake . -DLIBLUB_WINDOWS=1 -DCMAKE_TOOLCHAIN_FILE=scripts/mingw-toolchain.cmake`
+
+`$ cmake . -DLIBLUB_WINDOWS=1 -DCMAKE_TOOLCHAIN_FILE=scripts/mingw-toolchain.cmake`
 
 `$ make`
+
+If you have run CMake before, do
+
+`$ rm CMakeCache.txt`
 
 ## Run
 

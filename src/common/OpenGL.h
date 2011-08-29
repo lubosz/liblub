@@ -11,14 +11,8 @@
 # include <GL/glew.h>
 #endif
 
-#ifdef WIN32
-//#define GL3_PROTOTYPES 1
-//# include <GL3/gl3.h>
-//# include <wingdi.h>
-//# include <GL/gl.h>
-//# include <GL/glext.h>
+#ifdef LIBLUB_WINDOWS
 # include <GL/wglew.h>
-//#include <QtOpenGL>
 # define glfGetProcAddress wglGetProcAddress
 #include "WinGL.h"
 #else
