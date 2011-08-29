@@ -11,6 +11,8 @@
 #include "Scene/SceneData.h"
 #include "Scene/SceneGraph.h"
 #include "Material/Materials.h"
+#include "Mesh/Geometry.h"
+#include "System/TemplateEngine.h"
 
 ShadowPass::ShadowPass(FrameBuffer * fbo) {
     this->fbo = fbo;
@@ -150,3 +152,79 @@ void FBODebugPass::draw() {
 //  }
   fbo->draw(material);
 }
+
+
+//new render passes
+
+  void DrawThing::drawOnPlane(Material * material, Mesh *plane) {
+    material->getShaderProgram()->use();
+    material->getShaderProgram()->setUniform("MVPMatrix", QMatrix4x4());
+    material->activate();
+    plane->draw();
+  }
+
+  DrawPass::DrawPass(QSize res) {
+    this->res = res;
+  }
+
+
+  OutPass::OutPass(QSize res) : DrawPass(res) {
+  }
+
+  void OutPass::draw() {
+    fbo->bind();
+    RenderEngine::Instance().clear();
+    RenderEngine::Instance().updateViewport(res);
+    SceneGraph::Instance().drawNodes(material);
+    fbo->unBind();
+  }
+
+  InOutPass::InOutPass(QSize res) : OutPass(res) {
+    QList<string> attributes;
+    attributes.push_back("uv");
+    fullPlane = Geometry::plane(attributes, QRectF(-1, -1, 2, 2));
+  }
+
+  void InOutPass::draw() {
+    fbo->bind();
+    RenderEngine::Instance().clear();
+    RenderEngine::Instance().updateViewport(res);
+    drawOnPlane(material, fullPlane);
+    fbo->unBind();
+  }
+
+  DebugPlane::DebugPlane(QRectF rect, Texture * target){
+    QList<string> attributes = QList<string> () << "uv";
+    plane = Geometry::plane(attributes, rect);
+    material = initDebugMaterial(target);
+  }
+
+  Material * DebugPlane::initDebugMaterial(Texture * target) {
+    QList<string> attributes = QList<string> () << "uv";
+    TemplateEngine::Instance().c.insert("samplerName", QString::fromStdString(target->name));
+    Material * debugMaterial = new Template("Post/Debug", attributes);
+    debugMaterial->addTexture(target);
+    return debugMaterial;
+  }
+
+  void DebugPlane::draw(){
+    drawOnPlane(material, plane);
+  }
+
+  SinkPass::SinkPass(QSize res) : DrawPass(res){
+    QList<string> attributes = QList<string> () << "uv";
+    fullPlane = Geometry::plane(attributes, QRectF(-1, -1, 2, 2));
+  }
+  void SinkPass::debugTarget(QRectF rect, Texture * target) {
+    debugPlanes.push_back(new DebugPlane(rect, target));
+  }
+
+  void SinkPass::draw() {
+    RenderEngine::Instance().clear();
+    foreach(DebugPlane *plane, debugPlanes) {
+      plane->draw();
+    }
+    drawOnPlane(material, fullPlane);
+  }
+
+

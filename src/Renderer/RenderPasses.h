@@ -9,6 +9,8 @@
 
 #include "RenderPass.h"
 
+
+//TODO: deprecated
 class ShadowPass : public RenderPass {
  public:
 	explicit ShadowPass(FrameBuffer * fbo);
@@ -51,3 +53,48 @@ class WritePass : public RenderPass {
   void cleanUp();
 };
 
+class DrawThing {
+public:
+  virtual void draw() = 0;
+  static void drawOnPlane(Material * material, Mesh *plane);
+};
+
+class DrawPass : public DrawThing{
+public:
+  QSize res;
+  explicit DrawPass(QSize res);
+};
+
+class OutPass : public DrawPass {
+public:
+  Material *material;
+  FrameBuffer * fbo;
+  explicit OutPass(QSize res);
+  void draw();
+};
+
+class InOutPass : public OutPass {
+public:
+  Mesh * fullPlane;
+  explicit InOutPass(QSize res);
+  void draw();
+};
+
+class DebugPlane : public DrawThing{
+public:
+  Material * material;
+  Mesh * plane;
+  DebugPlane(QRectF rect, Texture * target);
+  Material * initDebugMaterial(Texture * target);
+  void draw();
+};
+
+class SinkPass : public DrawPass {
+public:
+  Material * material;
+  Mesh * fullPlane;
+  vector<DebugPlane*> debugPlanes;
+  SinkPass(QSize res);
+  void debugTarget(QRectF rect, Texture * target);
+  void draw();
+};

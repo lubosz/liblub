@@ -25,42 +25,36 @@
 #include "Scene/SceneLoader.h"
 #include "Material/Materials.h"
 #include "Scene/SceneData.h"
+#include "Renderer/RenderPasses.h"
 
-class GoodRenderPass {
+class SourcePass : public OutPass{
 public:
-  QSize res;
-  explicit GoodRenderPass(QSize res) {
-    this->res = res;
-  }
-  virtual void draw() = 0;
-
-  static void drawOnPlane(Material * material, Mesh *plane) {
-    material->getShaderProgram()->use();
-    material->getShaderProgram()->setUniform("MVPMatrix", QMatrix4x4());
-    material->activate();
-    plane->draw();
-  }
-};
-
-class GatherPass : public GoodRenderPass{
-public:
-  Material *gatherMat;
-  FrameBuffer * fbo;
   Texture * positionTarget, *normalTarget, *diffuseTarget, *tangentTarget,
       *normalMapTarget, *envTarget, *depthTarget;
 
-  explicit GatherPass(QSize res) : GoodRenderPass(res) {}
-  void init() {
-    // Pass 1 Gather FBO
-    fbo = new FrameBuffer(res);
-    positionTarget = new ColorTexture(res, "positionTarget");
-    normalTarget = new ColorTexture(res, "normalTarget");
-    diffuseTarget = new ColorTexture(res, "diffuseTarget");
-    tangentTarget = new ColorTexture(res, "tangentTarget");
-    normalMapTarget = new ColorTexture(res, "normalMapTarget");
-    envTarget = new ColorTexture(res, "envTarget");
-    depthTarget = new DepthTexture(res, "depthTarget");
+  explicit SourcePass(QSize res) : OutPass(res) {
+    initTargets();
+    initFBO();
+    initShader();
+    initSamplers();
+  }
 
+  void initShader() {
+    QList<string> attributes2 = QList<string> () << "uv" << "normal"
+        << "tangent";
+    material = new Template("Post/MultiTarget", attributes2);
+    GLuint program = material->getShaderProgram()->getHandle();
+    glBindFragDataLocation(program, 0, "positionTarget");
+    glBindFragDataLocation(program, 1, "normalTarget");
+    glBindFragDataLocation(program, 2, "diffuseTarget");
+    glBindFragDataLocation(program, 3, "tangentTarget");
+    glBindFragDataLocation(program, 4, "normalMapTarget");
+    glBindFragDataLocation(program, 5, "envTarget");
+    glBindFragDataLocation(program, 6, "depthTarget");
+  }
+
+  void initFBO() {
+    fbo = new FrameBuffer(res);
     fbo->attachTexture(GL_COLOR_ATTACHMENT0, positionTarget);
     fbo->attachTexture(GL_COLOR_ATTACHMENT1, normalTarget);
     fbo->attachTexture(GL_COLOR_ATTACHMENT2, diffuseTarget);
@@ -70,21 +64,9 @@ public:
     fbo->setDrawBuffers(6);
     fbo->attachTexture(GL_DEPTH_ATTACHMENT, depthTarget);
     fbo->check();
+  }
 
-    // Pass 1 Gather Shader
-    QList<string> attributes2 = QList<string> () << "uv" << "normal"
-        << "tangent";
-    gatherMat = new Template("Post/MultiTarget", attributes2);
-    GLuint program = gatherMat->getShaderProgram()->getHandle();
-    glBindFragDataLocation(program, 0, "positionTarget");
-    glBindFragDataLocation(program, 1, "normalTarget");
-    glBindFragDataLocation(program, 2, "diffuseTarget");
-    glBindFragDataLocation(program, 3, "tangentTarget");
-    glBindFragDataLocation(program, 4, "normalMapTarget");
-    glBindFragDataLocation(program, 5, "envTarget");
-    glBindFragDataLocation(program, 6, "depthTarget");
-
-    // Pass 1 Gather Textures
+  void initSamplers() {
     Texture * diffuseTexture = SceneData::Instance().getTexture(
         "masonry-wall-texture");
     diffuseTexture->name = "diffuseTexture";
@@ -94,194 +76,113 @@ public:
     Texture * envMap = SceneData::Instance().getTexture("sky");
     envMap->name = "envMap";
 
-    gatherMat->addTexture(diffuseTexture);
-    gatherMat->addTexture(normalTexture);
-    gatherMat->addTexture(envMap);
+    material->addTexture(diffuseTexture);
+    material->addTexture(normalTexture);
+    material->addTexture(envMap);
 
-    gatherMat->activateTextures();
-    gatherMat->samplerUniforms();
+    material->activateTextures();
+    material->samplerUniforms();
   }
-  void draw() {
-    fbo->bind();
-    RenderEngine::Instance().clear();
-    RenderEngine::Instance().updateViewport(res);
-    SceneGraph::Instance().drawNodes(gatherMat);
-    fbo->unBind();
+
+  void initTargets() {
+    positionTarget = new ColorTexture(res, "positionTarget");
+    normalTarget = new ColorTexture(res, "normalTarget");
+    diffuseTarget = new ColorTexture(res, "diffuseTarget");
+    tangentTarget = new ColorTexture(res, "tangentTarget");
+    normalMapTarget = new ColorTexture(res, "normalMapTarget");
+    envTarget = new ColorTexture(res, "envTarget");
+    depthTarget = new DepthTexture(res, "depthTarget");
   }
 };
 
-class AOPass : public GoodRenderPass{
+class AOPass: public InOutPass {
 public:
-  Material *aoMaterial;
-  FrameBuffer *aoFbo;
-  Mesh * fullPlane;
-  Texture * aoTexture;
-  explicit AOPass(QSize res) : GoodRenderPass(res) {
-    QList<string> attributes;
-    attributes.push_back("uv");
-    fullPlane = Geometry::plane(attributes, QRectF(-1, -1, 2, 2));
-  }
 
-  void init(Texture * normalTarget, Texture *depthTarget) {
+  Texture * aoTexture;
+  explicit AOPass(QSize res, Texture * normalTarget, Texture *depthTarget) :
+    InOutPass(res) {
     aoTexture = new ColorTexture(res, "ao");
     Texture * noise = new TextureFile("noise.png", "noise");
 
-    aoFbo = new FrameBuffer(res);
-    aoFbo->attachTexture(GL_COLOR_ATTACHMENT0, aoTexture);
-    aoFbo->check();
+    fbo = new FrameBuffer(res);
+    fbo->attachTexture(GL_COLOR_ATTACHMENT0, aoTexture);
+    fbo->check();
 
     QList<string> attributes;
     attributes.push_back("uv");
-    aoMaterial = new Simple("AO/ssao", attributes);
-    aoMaterial->addTexture(normalTarget);
-    aoMaterial->addTexture(depthTarget);
-    aoMaterial->addTexture(noise);
-  }
-
-  void draw() {
-    aoFbo->bind();
-    RenderEngine::Instance().clear();
-    RenderEngine::Instance().updateViewport(res);
-    drawOnPlane(aoMaterial, fullPlane);
-    aoFbo->unBind();
+    material = new Simple("AO/ssao", attributes);
+    material->addTexture(normalTarget);
+    material->addTexture(depthTarget);
+    material->addTexture(noise);
   }
 };
 
-class BlurHPass : public GoodRenderPass{
+class BlurHPass : public InOutPass{
 public:
-  Material *blur_horizontal;
-  FrameBuffer *blurHFbo;
-  Mesh * fullPlane;
   Texture * blurHTexture;
-  explicit BlurHPass(QSize res) : GoodRenderPass(res) {
-    QList<string> attributes;
-    attributes.push_back("uv");
-    fullPlane = Geometry::plane(attributes, QRectF(-1, -1, 2, 2));
-  }
-
-  void init(Texture * aoTexture) {
+  explicit BlurHPass(QSize res, Texture * aoTexture) : InOutPass(res) {
     blurHTexture = new ColorTexture(res, "blurH");
 
-    blurHFbo = new FrameBuffer(res);
-    blurHFbo->attachTexture(GL_COLOR_ATTACHMENT0, blurHTexture);
-    blurHFbo->check();
+    fbo = new FrameBuffer(res);
+    fbo->attachTexture(GL_COLOR_ATTACHMENT0, blurHTexture);
+    fbo->check();
 
     QList<string> attributes;
     attributes.push_back("uv");
-    blur_horizontal = new Simple("AO/blur_horizontal", attributes);
-    blur_horizontal->addTexture(aoTexture);
-  }
-
-  void draw() {
-    blurHFbo->bind();
-    RenderEngine::Instance().clear();
-    RenderEngine::Instance().updateViewport(res);
-    drawOnPlane(blur_horizontal, fullPlane);
-    blurHFbo->unBind();
+    material = new Simple("AO/blur_horizontal", attributes);
+    material->addTexture(aoTexture);
   }
 };
 
-class BlurVPass : public GoodRenderPass{
+class BlurVPass : public InOutPass{
 public:
-  Material *blur_vertical;
-  FrameBuffer *blurVFbo;
-  Mesh * fullPlane;
   Texture * finalAOTarget;
-  explicit BlurVPass(QSize res) : GoodRenderPass(res) {
-    QList<string> attributes;
-    attributes.push_back("uv");
-    fullPlane = Geometry::plane(attributes, QRectF(-1, -1, 2, 2));
-  }
-
-  void init(Texture * blurHTexture) {
+  explicit BlurVPass(QSize res, Texture * blurHTexture) : InOutPass(res) {
     finalAOTarget = new ColorTexture(res, "finalAOTarget");
 
-    blurVFbo = new FrameBuffer(res);
-    blurVFbo->attachTexture(GL_COLOR_ATTACHMENT0, finalAOTarget);
-    blurVFbo->check();
+    fbo = new FrameBuffer(res);
+    fbo->attachTexture(GL_COLOR_ATTACHMENT0, finalAOTarget);
+    fbo->check();
 
     QList<string> attributes;
     attributes.push_back("uv");
-    blur_vertical = new Simple("AO/blur_vertical", attributes);
-    blur_vertical->addTexture(blurHTexture);
-  }
-
-  void draw() {
-    blurVFbo->bind();
-    RenderEngine::Instance().clear();
-    RenderEngine::Instance().updateViewport(res);
-    drawOnPlane(blur_vertical, fullPlane);
-    blurVFbo->unBind();
+    material = new Simple("AO/blur_vertical", attributes);
+    material->addTexture(blurHTexture);
   }
 };
 
-class ShadingPass : public GoodRenderPass{
+class ShadingPass : public SinkPass {
 public:
-  Material * multiLightMat, *debugMaterial, *debugMaterial2;
-  Mesh * fullPlane, *plane1, *plane2, *plane3, *plane4;
 
-  explicit ShadingPass(QSize res) : GoodRenderPass(res) {}
-
-  void initRenderPlanes() {
-    QList<string> attributes = QList<string> () << "uv";
-    fullPlane = Geometry::plane(attributes, QRectF(-1, -1, 2, 2));
-
-    plane1 = Geometry::plane(attributes, QRectF(-1, -1, 1, 1));
-    plane2 = Geometry::plane(attributes, QRectF(0.5, -1, 0.5, 0.5));
-    plane3 = Geometry::plane(attributes, QRectF(0.5, -0.5, 0.5, 0.5));
-    plane4 = Geometry::plane(attributes, QRectF(0.5, 0, 0.5, 0.5));
-  }
-
-  void init(Texture * positionTarget, Texture *normalTarget,
+  explicit ShadingPass(QSize res, Texture * positionTarget, Texture *normalTarget,
       Texture *diffuseTarget, Texture *tangentTarget, Texture *normalMapTarget,
-      Texture *envTarget, Texture *finalAOTarget) {
+      Texture *envTarget, Texture *finalAOTarget) : SinkPass(res) {
 
-    initRenderPlanes();
     // Deffered Light Shader
     QList<string> attributes = QList<string> () << "uv";
-    multiLightMat = new Template("Post/DeferredMultiLight", attributes);
-    multiLightMat->addTexture(positionTarget);
-    multiLightMat->addTexture(normalTarget);
-    multiLightMat->addTexture(diffuseTarget);
-    multiLightMat->addTexture(tangentTarget);
-    multiLightMat->addTexture(normalMapTarget);
-    multiLightMat->addTexture(envTarget);
-    multiLightMat->addTexture(finalAOTarget);
+    material = new Template("Post/DeferredMultiLight", attributes);
+    material->addTexture(positionTarget);
+    material->addTexture(normalTarget);
+    material->addTexture(diffuseTarget);
+    material->addTexture(tangentTarget);
+    material->addTexture(normalMapTarget);
+    material->addTexture(envTarget);
+    material->addTexture(finalAOTarget);
 
     // Init Light Uniform Buffer
-    SceneData::Instance().initLightBuffer(multiLightMat->getShaderProgram(),
+    SceneData::Instance().initLightBuffer(material->getShaderProgram(),
         "LightSourceBuffer");
-    initDebugMaterials(normalTarget, diffuseTarget);
-  }
 
-  void initDebugMaterials(Texture * target1, Texture *target2) {
-    QList<string> attributes = QList<string> () << "uv";
-    debugMaterial = new Simple("Texture/debugfbo", attributes);
-    debugMaterial->addTexture(target1);
-
-    debugMaterial2 = new Simple("Texture/debugfbo2", attributes);
-    debugMaterial2->addTexture(target2);
-  }
-
-  void draw() {
-    RenderEngine::Instance().clear();
-    //    drawOnPlane(blur_vertical, plane2);
-    drawOnPlane(debugMaterial, plane3);
-    drawOnPlane(debugMaterial2, plane4);
-    drawOnPlane(multiLightMat, fullPlane);
+    debugTarget(QRectF(0.5, -1, 0.5, 0.5), normalTarget);
+    debugTarget(QRectF(0.5, -0.5, 0.5, 0.5), diffuseTarget);
+    debugTarget(QRectF(0.5, 0, 0.5, 0.5), finalAOTarget);
   }
 };
 
 class DeferredLightApp: public Application {
 public:
-
   SceneLoader *sceneLoader;
-
-  GatherPass * gatherPass;
-  ShadingPass * shadingPass;
-  AOPass * aoPass;
-  BlurHPass * blurHPass;
-  BlurVPass * blurVPass;
+  vector<DrawPass*> drawPasses;
 
   DeferredLightApp(int argc, char *argv[]) :
     Application(argc, argv) {
@@ -293,38 +194,38 @@ public:
   }
 
   void scene() {
-
-    Camera * myCam = new Camera();
-    SceneData::Instance().setCurrentCamera(myCam);
-
     sceneLoader->load();
     QSize res = SceneData::Instance().getResolution();
-    gatherPass = new GatherPass(res);
-    shadingPass = new ShadingPass(res);
-    aoPass = new AOPass(res);
-    blurHPass = new BlurHPass(res);
-    blurVPass = new BlurVPass(res);
 
-    gatherPass->init();
+    SourcePass * gatherPass;
+    gatherPass = new SourcePass(res);
+    drawPasses.push_back(gatherPass);
 
-    aoPass->init(gatherPass->normalTarget, gatherPass->depthTarget);
+    AOPass * aoPass;
+    aoPass = new AOPass(res, gatherPass->normalTarget, gatherPass->depthTarget);
+    drawPasses.push_back(aoPass);
 
-    blurHPass->init(aoPass->aoTexture);
-    blurVPass->init(blurHPass->blurHTexture);
+    BlurHPass * blurHPass;
+    blurHPass = new BlurHPass(res, aoPass->aoTexture);
+    drawPasses.push_back(blurHPass);
 
-    shadingPass->init(gatherPass->positionTarget, gatherPass->normalTarget,
-        gatherPass->diffuseTarget, gatherPass->tangentTarget,
-        gatherPass->normalMapTarget, gatherPass->envTarget,
-        blurVPass->finalAOTarget);
+    BlurVPass * blurVPass;
+    blurVPass = new BlurVPass(res, blurHPass->blurHTexture);
+    drawPasses.push_back(blurVPass);
+
+    ShadingPass * shadingPass;
+    shadingPass = new ShadingPass(res, gatherPass->positionTarget,
+        gatherPass->normalTarget, gatherPass->diffuseTarget,
+        gatherPass->tangentTarget, gatherPass->normalMapTarget,
+        gatherPass->envTarget, blurVPass->finalAOTarget);
+    drawPasses.push_back(shadingPass);
   }
 
   void renderFrame() {
-    gatherPass->draw();
-    aoPass->draw();
-    blurHPass->draw();
-    blurVPass->draw();
-    shadingPass->draw();
+    foreach(DrawPass * pass, drawPasses)
+        pass->draw();
   }
+
   void initWidgets(QHBoxLayout * mainLayout) {
   }
 };

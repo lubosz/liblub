@@ -7,6 +7,7 @@
 
 #include "System/TemplateEngine.h"
 #include "System/Config.h"
+#include "System/Logger.h"
 #include <QDebug>
 #include <iostream>
 
@@ -55,6 +56,8 @@ QString TemplateEngine::render(const string& file) {
     return QString();
   }
   content.replace("\n\n", "\n");
+
+//  LogDebug << content.toStdString();
 
   return content;
 }
