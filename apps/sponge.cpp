@@ -22,7 +22,7 @@
 #include "Mesh/Geometry.h"
 
 Sponge::Sponge(int argc, char *argv[]) :
-  QtApplication(argc, argv) {
+  Application(argc, argv) {
   SceneData::Instance().name = "Sponge";
 }
 

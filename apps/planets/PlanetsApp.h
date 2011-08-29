@@ -12,10 +12,10 @@
 
 #include "Window/Qt/QtWindow.h"
 #include "Window/Qt/glWidget.h"
+#include "Window/Qt/QtApplication.h"
 #include "Planet.h"
 #include "PlanetWidget.h"
 
-#include "System/QtApplication.h"
 
 class FrameBuffer;
 class GUI;

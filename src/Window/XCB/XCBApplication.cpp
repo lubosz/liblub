@@ -1,65 +1,25 @@
 /*
  * Copyright © 2010 Lubosz Sarnecki
- * Application.cpp
+ * XCBApplication.cpp
  *
  *  Created on: Aug 21, 2011
  */
 
-#include "Application.h"
-#include "Timer.h"
+#include "XCBApplication.h"
+#include "System/Timer.h"
 
-Application::Application(int argc, char ** argv) {
+XCBApplication::XCBApplication(int argc, char ** argv) {
   LogInfo << argc << argv[0];
   argcount = argc;
   argvalues = argv;
   app = new QApplication(argcount,argvalues, false);
 }
 
-void Application::chooseMediaLayer(WindowType type) {
-  if (type == windowXCB) {
-#ifdef WITH_XCB
-    window = new XCBWindow();
-    LogInfo << "Using XCB for Input and Window";
-#endif
-  } else if (type == windowQt) {
-#ifdef WITH_Qt
-    window = new QtWindow();
-    LogInfo << "Using Qt for Input and Window";
-#endif
-  } else if (type == windowSFML) {
-#ifdef WITH_SFML
-    window = new SFMLWindow();
-    LogInfo << "Using SFML for Input and Window";
-#endif
-  } else if (type == windowSDL) {
-#ifdef WITH_SDL
-    window = new SDLWindow();
-    LogInfo << "Using SDL for Input and Window";
-#endif
-  }
-}
-
-void Application::run() {
-  Config::Instance().load("config.xml");
-
-#if WITH_XCB
-  run(windowXCB);
-#elif WITH_SDL
-  run(windowSDL);
-#elif WITH_SFML
-  run(windowSFML);
-#elif WITH_Qt
-  run(windowQt);
-#else
-  LogError << "No Media Layer compiled.";
-#endif
-}
-
-void Application::updateFont() {
+void XCBApplication::updateFont() {
   gui->update();
 }
 
-void Application::draw() {
+void XCBApplication::draw() {
     renderFrame();
     if (fontOverlay)
       gui->draw();
@@ -69,11 +29,12 @@ void Application::draw() {
     Timer::Instance().updateFPS();
 }
 
-void Application::eventLoop() {
+void XCBApplication::eventLoop() {
   window->getInput()->eventLoop();
 }
 
-void Application::run(WindowType type) {
+void XCBApplication::run() {
+  Config::Instance().load("config.xml");
   // Qt requires at least one argument.
   if (app->arguments().length() < 1) {
     LogWarning << "Oh noez, no argz. Better append foo.";
@@ -81,7 +42,7 @@ void Application::run(WindowType type) {
   }
   LogInfo << app->arguments().at(0).toStdString();
 
-  chooseMediaLayer(type);
+  window = new XCBWindow();
   window->init(SceneData::Instance().name);
 
   scene();
@@ -106,7 +67,7 @@ void Application::run(WindowType type) {
   app->exec();
 }
 
-void Application::setFontOverlay(bool fontOverlay) {
+void XCBApplication::setFontOverlay(bool fontOverlay) {
   this->fontOverlay = fontOverlay;
 }
 

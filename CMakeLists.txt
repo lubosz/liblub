@@ -136,7 +136,6 @@ endforeach(SOURCE_DIR)
 
 #moc qt stuff
 set(LIBLUB_MOC_INFILES 
-    src/System/Application.h
     src/Window/Input.h
 )
 qt4_wrap_cpp(LIBLUB_MOC_OUTFILES ${LIBLUB_MOC_INFILES})
@@ -163,7 +162,7 @@ if(WITH_Qt)
         src/Window/Qt/QtWindow.h
         src/Window/Qt/glWidget.h 
         src/Window/Qt/FloatEditorWidget.h
-        src/System/QtApplication.h
+        src/Window/Qt/QtApplication.h
     )
     qt4_wrap_cpp(QT_MOC_OUTFILES ${QT_MOC_INFILES})
     set(SOURCES ${SOURCES} ${QT_MOC_OUTFILES})
@@ -171,7 +170,10 @@ endif()
 if(WITH_XCB)
 	list(APPEND LIBS X11-xcb xcb-keysyms)
     set(WINDOW_TYPES ${WINDOW_TYPES} XCB)
-    set(XCB_MOC_INFILES src/Window/XCB/XCBInput.h)
+    set(XCB_MOC_INFILES 
+        src/Window/XCB/XCBInput.h
+        src/Window/XCB/XCBApplication.h
+    )
     qt4_wrap_cpp(XCB_MOC_OUTFILES ${XCB_MOC_INFILES})
     set(SOURCES ${SOURCES} ${XCB_MOC_OUTFILES})
 endif()

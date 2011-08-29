@@ -21,10 +21,12 @@
 #include "System/Application.h"
 #include "System/GUI.h"
 #include "Scene/SceneLoader.h"
+#include "Scene/SceneGraph.h"
 #include "Scene/SceneData.h"
 #include "System/Logger.h"
 #include "System/Timer.h"
 #include "Scene/Node.h"
+#include "Renderer/RenderSequence.h"
 
 class LoadApp: public Application {
  public:
