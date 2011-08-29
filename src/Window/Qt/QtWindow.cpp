@@ -14,7 +14,6 @@
 #include "Scene/SceneData.h"
 
 QtWindow::QtWindow() {
-  LogError << "Qt backend for MediaLayer is stub";
   fullscreen = false;
   grab = false;
   quit = false;

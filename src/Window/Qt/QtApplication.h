@@ -15,7 +15,7 @@
 #include "System/GUI.h"
 
 
-class QtApplication: public QApplication {
+class QtApplication: public QObject {
 
 Q_OBJECT
 
@@ -25,6 +25,9 @@ public:
   QtWindow * window;
   QTimer *drawTimer;
   bool fontOverlay;
+  QApplication * app;
+  int myargc;
+  char ** myargv;
 
   void run();
 

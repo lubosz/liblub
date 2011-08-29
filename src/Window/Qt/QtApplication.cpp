@@ -12,15 +12,23 @@
 #include "System/GUI.h"
 #include "Renderer/RenderEngine.h"
 
-QtApplication::QtApplication(int & argc, char ** argv) :
-  QApplication(argc, argv) {
+QtApplication::QtApplication(int & argc, char ** argv) {
   Config::Instance().load("config.xml");
+  // Cache args over App execution time
+  myargc = argc;
+  myargv = argv;
+  app = new QApplication(myargc, myargv);
 }
 
 QtApplication::~QtApplication() {
 }
 
 void QtApplication::run() {
+  // Qt requires at least one argument.
+  if (app->arguments().length() < 1) {
+    LogFatal << "No args for QtApplication.";
+  }
+
   window = new QtWindow();
   //TODO hardcoded sizes
   window->setMaximumSize(QSize(1920, 1200));
@@ -50,7 +58,7 @@ void QtApplication::run() {
   connect(drawTimer, SIGNAL(timeout()), glWidget, SLOT(updateGL()));
   connect(window, SIGNAL(draw(void)), glWidget, SLOT(updateGL()));
   connect(glWidget, SIGNAL(draw()), this, SLOT(draw()));
-  exec();
+  app->exec();
 }
 
 void QtApplication::draw() {
