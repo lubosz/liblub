@@ -19,6 +19,11 @@
 
 #include "System/Application.h"
 #include "Material/Textures.h"
+#include "Renderer/RenderEngine.h"
+#include "Renderer/FrameBuffer.h"
+#include "Scene/SceneLoader.h"
+#include "Material/Materials.h"
+#include "Scene/SceneData.h"
 
 class DepthBufferExample: public Application {
  public:
@@ -67,6 +72,7 @@ class DepthBufferExample: public Application {
     fbo->unBind();
     fbo->draw(debugfbo);
   }
+  void initWidgets(QHBoxLayout * mainLayout) {}
 };
 
 int main(int argc, char *argv[]) {

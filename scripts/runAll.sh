@@ -2,7 +2,7 @@
 
 function error {
   echo "ERROR $1 could not be run"
-  exit
+  #exit
 }
 
 

@@ -21,13 +21,16 @@
 #include "System/Application.h"
 #include "System/GUI.h"
 #include "Scene/SceneLoader.h"
+#include "Scene/SceneGraph.h"
 #include "Scene/SceneData.h"
 #include "System/Logger.h"
 #include "System/Timer.h"
 #include <QPainter>
 #include <math.h>
 #include "Material/ProcTextures.h"
+#include "Material/Materials.h"
 #include "Mesh/Geometry.h"
+#include "Renderer/RenderPasses.h"
 
 
 class LoadApp: public Application {
@@ -40,8 +43,6 @@ class LoadApp: public Application {
   }
 
   ~LoadApp() {}
-
-
 
   void scene() {
     defaultPass = new LightTogglePass();
@@ -72,6 +73,7 @@ class LoadApp: public Application {
     perlinNoise->use();
     perlinNoise->setUniform("time", Timer::Instance().getTime());
   }
+  void initWidgets(QHBoxLayout * mainLayout) {}
 };
 
 int main(int argc, char *argv[]) {

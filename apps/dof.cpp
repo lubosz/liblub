@@ -19,6 +19,11 @@
 
 #include "System/Application.h"
 #include "Material/Textures.h"
+#include "Renderer/RenderEngine.h"
+#include "Renderer/FrameBuffer.h"
+#include "Scene/SceneLoader.h"
+#include "Material/Materials.h"
+#include "Scene/SceneData.h"
 
 class DepthOfFieldExample: public Application
 {
@@ -141,6 +146,7 @@ void scene() {
 	pFBOColor->draw(pDOFShader);
 
   }
+  void initWidgets(QHBoxLayout * mainLayout) {}
 };
 
 int main(int argc, char *argv[]) {

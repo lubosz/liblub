@@ -16,12 +16,18 @@
     You should have received a copy of the GNU General Public License
     along with liblub.  If not, see <http://www.gnu.org/licenses/>.
 */
+#define GL3_PROTOTYPES 1
+#include "GL3/gl3.h"
 #include <QApplication>
 #include "System/Application.h"
 #include "System/Logger.h"
 #include "Mesh/Geometry.h"
 #include "Mesh/MeshLoader.h"
 #include "Material/Textures.h"
+#include "Scene/Camera.h"
+#include "Scene/Light.h"
+#include "Scene/SceneData.h"
+#include "Material/Materials.h"
 
 class TesselationApp: public Application {
  public:
@@ -104,6 +110,7 @@ class TesselationApp: public Application {
     groundNode->draw();
     glError;
   }
+  void initWidgets(QHBoxLayout * mainLayout) {}
 };
 
 

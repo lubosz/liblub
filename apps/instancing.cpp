@@ -17,7 +17,8 @@
     along with liblub.  If not, see <http://www.gnu.org/licenses/>.
 */
 #define BUFFERSIZE 2000
-
+#define GL3_PROTOTYPES 1
+#include "GL3/gl3.h"
 #include <string>
 #include "System/Application.h"
 #include "System/GUI.h"
@@ -28,6 +29,11 @@
 #include "Scene/Node.h"
 #include "Mesh/Geometry.h"
 #include "Material/Textures.h"
+#include "Renderer/RenderEngine.h"
+#include "Renderer/FrameBuffer.h"
+#include "Scene/SceneLoader.h"
+#include "Material/Materials.h"
+#include "Scene/SceneData.h"
 
 class InstancingApp: public Application {
  public:
@@ -41,7 +47,6 @@ class InstancingApp: public Application {
 
 
   InstancingApp(int argc, char *argv[]) : Application(argc,argv) {
-    setFontOverlay(true);
   }
 
   ~InstancingApp() {}
@@ -132,6 +137,7 @@ class InstancingApp: public Application {
     material->getShaderProgram()->bindUniformBuffer("positions",0,positionBuffer->getHandle());
     glError;
   }
+  void initWidgets(QHBoxLayout * mainLayout) {}
 };
 
 int main(int argc, char *argv[]) {

@@ -9,11 +9,10 @@
 
 #include <QApplication>
 #include <QtGui>
-
 #include "Window/Qt/QtWindow.h"
 #include "Window/Qt/glWidget.h"
+#include "System/GUI.h"
 
-class GUI;
 
 class QtApplication: public QApplication {
 
@@ -24,6 +23,7 @@ public:
   GUI* gui;
   QtWindow * window;
   QTimer *drawTimer;
+  bool fontOverlay;
 
   void run();
 

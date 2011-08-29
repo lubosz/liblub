@@ -44,12 +44,12 @@ void Sponge::scene() {
   attributes.push_back("tangent");
   material->done(attributes);
   material->shaderProgram->setUniform("ambientSceneColor",QVector4D(0.1, 0.1,0.1, 1.0));
-    material->shaderProgram->setUniform("diffuseMaterialColor",QVector4D(1,1,1,1));
-    material->shaderProgram->setUniform("specularMaterialColor",
+  material->shaderProgram->setUniform("diffuseMaterialColor",QVector4D(1,1,1,1));
+  material->shaderProgram->setUniform("specularMaterialColor",
             QVector4D(0.8, 0.8, 0.8, 1.0));
-    material->shaderProgram->setUniform("shininess",4.3f);
-    material->shaderProgram->setUniform("yPixelOffset",1.0f/1200);
-    material->shaderProgram->setUniform("xPixelOffset",1.0f/1920);
+  material->shaderProgram->setUniform("shininess",4.3f);
+  material->shaderProgram->setUniform("yPixelOffset",1.0f/1200);
+  material->shaderProgram->setUniform("xPixelOffset",1.0f/1920);
 
     for (int i = 0; i < 5; i++) {
       MengerSponge * sponge = new MengerSponge(attributes, i);
@@ -65,7 +65,8 @@ void Sponge::scene() {
     SceneGraph::Instance().addNode(plane);
 
     SceneData::Instance().addLight("foolight", new Light(QVector3D(-2.5, 21.5, -5.2), QVector3D(1, -5, 0)));
-  }
+}
+
 void Sponge::renderFrame() {
   shadowSequence->render();
 }

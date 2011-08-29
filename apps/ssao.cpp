@@ -16,9 +16,14 @@
     You should have received a copy of the GNU General Public License
     along with liblub.  If not, see <http://www.gnu.org/licenses/>.
 */
-
+#define GL3_PROTOTYPES 1
+#include "GL3/gl3.h"
 #include "System/Application.h"
 #include "Material/Textures.h"
+#include "Renderer/FrameBuffer.h"
+#include "Scene/SceneLoader.h"
+#include "Scene/SceneData.h"
+#include "Material/Materials.h"
 
 class SSAOExample: public Application {
  public:
@@ -111,6 +116,7 @@ class SSAOExample: public Application {
     RenderEngine::Instance().updateViewport(res);
     fbo->draw(blur_vertical);
   }
+  void initWidgets(QHBoxLayout * mainLayout) {}
 };
 
 int main(int argc, char *argv[]) {

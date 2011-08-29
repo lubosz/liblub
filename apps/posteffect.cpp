@@ -30,6 +30,11 @@
 #include "Material/ProcTextures.h"
 #include "Material/Textures.h"
 #include "Material/ShaderProgram.h"
+#include "Renderer/RenderEngine.h"
+#include "Renderer/FrameBuffer.h"
+#include "Scene/SceneLoader.h"
+#include "Material/Materials.h"
+#include "Scene/SceneData.h"
 
 const bool post = true;
 
@@ -104,6 +109,7 @@ class TesselationApp: public Application {
       glError;
     }
   }
+  void initWidgets(QHBoxLayout * mainLayout) {}
 };
 
 

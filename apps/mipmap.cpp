@@ -29,6 +29,11 @@
 #include "Material/ProcTextures.h"
 #include "Material/Textures.h"
 #include "Mesh/Geometry.h"
+#include "Renderer/RenderEngine.h"
+#include "Renderer/FrameBuffer.h"
+#include "Scene/SceneLoader.h"
+#include "Material/Materials.h"
+#include "Scene/SceneData.h"
 
 class LoadApp: public Application {
  public:
@@ -69,6 +74,7 @@ class LoadApp: public Application {
   void renderFrame(){
     defaultPass->render();
   }
+  void initWidgets(QHBoxLayout * mainLayout) {}
 };
 
 int main(int argc, char *argv[]) {

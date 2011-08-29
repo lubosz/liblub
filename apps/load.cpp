@@ -23,6 +23,11 @@
 #include "Scene/SceneLoader.h"
 #include "Scene/SceneData.h"
 #include "System/Logger.h"
+#include "Renderer/RenderEngine.h"
+#include "Renderer/FrameBuffer.h"
+#include "Scene/SceneLoader.h"
+#include "Material/Materials.h"
+#include "Scene/SceneData.h"
 
 class LoadApp: public Application {
  public:
@@ -47,6 +52,7 @@ class LoadApp: public Application {
   void renderFrame(){
     shadowSequence->render();
   }
+  void initWidgets(QHBoxLayout * mainLayout) {}
 };
 #ifdef LIBLUB_WINDOWS
 #include <windows.h>

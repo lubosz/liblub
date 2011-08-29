@@ -16,10 +16,16 @@
     You should have received a copy of the GNU General Public License
     along with liblub.  If not, see <http://www.gnu.org/licenses/>.
 */
-
+#define GL3_PROTOTYPES 1
+#include "GL3/gl3.h"
 #include "System/Application.h"
 #include "Material/Textures.h"
 #include "Mesh/Geometry.h"
+#include "Renderer/RenderEngine.h"
+#include "Renderer/FrameBuffer.h"
+#include "Scene/SceneLoader.h"
+#include "Material/Materials.h"
+#include "Scene/SceneData.h"
 
 class DefferedLightApp: public Application {
  public:
@@ -213,6 +219,7 @@ class DefferedLightApp: public Application {
     drawOnPlane(debugMaterial2, plane4);
     drawOnPlane(multiLightMat, fullPlane);
   }
+  void initWidgets(QHBoxLayout * mainLayout) {}
 };
 
 int main(int argc, char *argv[]) {

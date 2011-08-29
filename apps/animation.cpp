@@ -16,27 +16,19 @@
     You should have received a copy of the GNU General Public License
     along with liblub.  If not, see <http://www.gnu.org/licenses/>.
 */
-#include <string>
-#include <QApplication>
-#include "System/Application.h"
-#include "System/GUI.h"
 #include "Scene/SceneLoader.h"
 #include "Scene/SceneGraph.h"
-#include "Scene/SceneData.h"
-#include "System/Logger.h"
-#include "System/Timer.h"
-#include "Scene/Node.h"
 #include "Renderer/RenderSequence.h"
+#include "System/Application.h"
 
 class LoadApp: public Application {
  public:
 
   SceneLoader *sceneLoader;
-
   RenderSequence * shadowSequence;
-  LoadApp(int argc, char *argv[], string sceneName) : Application(argc,argv) {
-    QString sceneFile = QString::fromStdString(sceneName + ".xml");
-    sceneLoader = new SceneLoader(sceneFile);
+
+  LoadApp(int argc, char *argv[]) : Application(argc,argv) {
+    sceneLoader = new SceneLoader("nice.xml");
   }
 
   ~LoadApp() {}
@@ -50,24 +42,11 @@ class LoadApp: public Application {
     Node * sponge = SceneGraph::Instance().getNode("menger sponge");
     sponge->rotation += QVector3D(0.1,0.2,0);
     sponge->update();
-//    if(Timer::Instance().secoundsPassed >= 5) {
-//      MediaLayer::Instance().quit = true;
-//    }
-//    SceneData::Instance().getCurrentCamera()->position += QVector3D(.1,0,0);
   }
+  void initWidgets(QHBoxLayout * mainLayout) {}
 };
 
-#ifdef LIBLUB_WINDOWS
-#include <windows.h>
-int WINAPI WinMain(HINSTANCE inst,HINSTANCE prev,LPSTR cmd,int show) {
-  LogDebug << "WINMAIN STUFF" << inst << prev << cmd << show;
-  QApplication app();
-  LoadApp("nice").run();
-  return 0;
-}
-#else
 int main(int argc, char *argv[]) {
-  LoadApp(argc, argv, "nice").run();
+  LoadApp(argc, argv).run();
 }
-#endif
 
