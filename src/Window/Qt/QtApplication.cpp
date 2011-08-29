@@ -64,7 +64,7 @@ void QtApplication::run() {
   }
   LogInfo << "Using GLEW" << glewGetString(GLEW_VERSION);
 #ifdef USE_WINDOWS
-  initWinGL();
+//  initWinGL();
 #endif
 #endif
   RenderEngine::Instance();

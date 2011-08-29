@@ -119,6 +119,18 @@ void SceneGraph::drawNodes(DirectionNode * viewPoint) {
     glError;
 }
 
+void SceneGraph::drawNodes(Material * material) {
+  drawCasters(material, SceneData::Instance().getCurrentCamera());
+}
+
+void SceneGraph::drawNodes(Material * material, DirectionNode * viewPoint) {
+    foreach(Node * node, sceneNodes) {
+          node->setView(material->getShaderProgram(), viewPoint);
+          node->mesh->draw();
+    }
+    glError;
+}
+
 void SceneGraph::drawCasters(Material * material) {
   drawCasters(material, SceneData::Instance().getCurrentCamera());
 }
@@ -132,6 +144,7 @@ void SceneGraph::drawCasters(Material * material, DirectionNode * viewPoint) {
     }
     glError;
 }
+
 
 void SceneGraph::meshCube(const QList<string> & attributes, string file, float cubeSize, float step,
         Material * material) {
