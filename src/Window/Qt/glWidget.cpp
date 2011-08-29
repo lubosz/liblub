@@ -6,12 +6,9 @@
 #define GL_MULTISAMPLE  0x809D
 #endif
 
-GLWidget::GLWidget(QWidget *parent) :
-  QGLWidget(QGLFormat(QGL::SampleBuffers), parent) {
-  LogDebug << "Initializing Qt GL Context";
-  QGLFormat fmt;
-  fmt.setVersion(4,1);
-  QGLFormat::setDefaultFormat(fmt);
+GLWidget::GLWidget(const QGLFormat & format, QWidget *parent) :
+  QGLWidget(format, parent) {
+  LogDebug << "Initializing Qt GL Wiget";
 }
 
 GLWidget::~GLWidget() {

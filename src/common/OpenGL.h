@@ -63,7 +63,7 @@ public:
         error = "Unknown error";
         break;
       }
-      Logger(file, line, Logger::Fatal) << "GL_" << error;
+      Logger(file, line, Logger::Error) << "GL_" << error;
     }
   }
 };

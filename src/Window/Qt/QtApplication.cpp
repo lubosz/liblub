@@ -30,13 +30,28 @@ void QtApplication::run() {
   }
 
   window = new QtWindow();
+
   //TODO hardcoded sizes
   window->setMaximumSize(QSize(1920, 1200));
   window->resize(QSize(1920, 1200));
   SceneData::Instance().setResolution(1920,1200);
 
-  glWidget = new GLWidget;
+// TODO: Qt Makes errors when context version is specified
+//  QGLFormat fmt = QGLFormat::defaultFormat();
+//  vector<int> glContext = Config::Instance().values<int>("GLcontext");
+//  fmt.setVersion(glContext[0], glContext[1]);
+//  fmt.setVersion(3, 3);
+//  fmt.setSwapInterval(0);
+//  QGLFormat::OpenGL_Version_3_3;
+//  LogInfo << "Supported GL Versions" << QGLFormat::openGLVersionFlags ();
+
+  QGLFormat fmt;
+  fmt.setDoubleBuffer(true);
+  fmt.setProfile(QGLFormat::CoreProfile);
+  glWidget = new GLWidget(fmt, NULL);
   glWidget->setFocus();
+  if(!glWidget->isValid())
+    LogFatal << "GL Widget Invalid";
 
   window->mainLayout->addWidget(glWidget);
   initWidgets(window->mainLayout);

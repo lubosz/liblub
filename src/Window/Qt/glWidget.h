@@ -8,7 +8,7 @@ class GLWidget: public QGLWidget {
   Q_OBJECT
 
 public:
-  GLWidget(QWidget *parent = 0);
+  GLWidget(const QGLFormat & format, QWidget *parent);
   ~GLWidget();
 
   QSize minimumSizeHint() const;
