@@ -68,7 +68,7 @@ float lookup( vec2 offSet,vec4 shadowTexCoord){
 	shadow /= 32.0;
 	*/
 	
-	shadowTarget = vec4(1,0,0,1) * shadow;
+	shadowTarget = vec4(1) * shadow;
 	//gl_FragDepth = positionView.z/20;
 	//depthTarget = positionView.z/20;
 {% endblock %}

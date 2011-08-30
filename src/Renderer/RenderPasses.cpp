@@ -201,6 +201,47 @@ void FBODebugPass::draw() {
     fbo->check();
   }
 
+  ShadowCastPass::ShadowCastPass(QSize res, vector<Texture*> &targets, Material * material, DirectionNode* view)
+  : SourcePass(res, targets, material) {
+    offsetFactor = 2;
+    offsetUnits = 0;
+    offsetMode = GL_POLYGON_OFFSET_FILL;
+    this->view = view;
+    fbo->disableColorBuffer();
+  }
+
+  void ShadowCastPass::draw() {
+    fbo->bind();
+    RenderEngine::Instance().clear();
+    RenderEngine::Instance().updateViewport(res);
+    glEnable(GL_CULL_FACE);
+    glCullFace(GL_FRONT);
+    glEnable(GL_POLYGON_OFFSET_FILL);
+    glPolygonOffset(offsetFactor, offsetUnits);
+    SceneGraph::Instance().drawCasters(material, view);
+    glPolygonOffset(0.0, 0.0);
+    glCullFace(GL_BACK);
+    glDisable(GL_CULL_FACE);
+    fbo->unBind();
+  }
+
+  void ShadowCastPass::setOffsetFactor(GLfloat factor) {
+    offsetFactor = factor;
+  }
+  void ShadowCastPass::setOffsetUnits(GLfloat units) {
+    offsetUnits = units;
+  }
+  void ShadowCastPass::setOffsetMode(GLenum offsetMode) {
+    this->offsetMode = offsetMode;
+  }
+
+  void ShadowReceivePass::draw() {
+    fbo->bind();
+    RenderEngine::Instance().clear();
+    RenderEngine::Instance().updateViewport(res);
+    SceneGraph::Instance().drawReceivers(material);
+    fbo->unBind();
+  }
 
   ShadowCastPass::ShadowCastPass(QSize res, vector<Texture*> &targets, Material * material, DirectionNode* view)
   : SourcePass(res, targets, material) {
@@ -234,6 +275,8 @@ void FBODebugPass::draw() {
     this->sources = sources;
     fullPlane = Geometry::plane(QList<string> () << "uv", QRectF(-1, -1, 2, 2));
     material->addTextures(sources);
+    material->activateTextures();
+    material->samplerUniforms();
   }
 
   Texture* InOutPass::getSource(string target) {

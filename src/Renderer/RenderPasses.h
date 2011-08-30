@@ -65,16 +65,6 @@ public:
   QSize res;
   Material * material;
   explicit DrawPass(QSize res);
-
-  void addTexture(Texture* texture) {
-    material->addTexture(texture);
-  }
-
-  void addTextures(vector<Texture*> textures) {
-    material->addTextures(textures);
-    material->activateTextures();
-    material->samplerUniforms();
-  }
 };
 
 class SourcePass : public DrawPass {
@@ -92,8 +82,14 @@ public:
 class ShadowCastPass : public SourcePass {
 public:
   DirectionNode * view;
+  GLfloat offsetFactor;
+  GLfloat offsetUnits;
+  GLenum offsetMode;
   ShadowCastPass(QSize res, vector<Texture*> &targets, Material * material, DirectionNode* view);
   void draw();
+  void setOffsetFactor(GLfloat factor);
+  void setOffsetUnits(GLfloat units);
+  void setOffsetMode(GLenum offsetMode);
 };
 
 class InOutPass : public SourcePass {
