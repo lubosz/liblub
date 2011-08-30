@@ -201,7 +201,7 @@ void FBODebugPass::draw() {
     fbo->check();
   }
 
-  ShadowCastPass::ShadowCastPass(QSize res, vector<Texture*> &targets, Material * material, DirectionNode* view)
+  ShadowCastPass::ShadowCastPass(QSize res, vector<Texture*> &targets, Material * material, Light* view)
   : SourcePass(res, targets, material) {
     offsetFactor = 2;
     offsetUnits = 0;

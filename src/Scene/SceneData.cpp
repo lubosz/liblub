@@ -190,6 +190,10 @@ Light * SceneData::getShadowLight() {
   return shadowLight;
 }
 
+void SceneData::setShadowLight(Light * light) {
+  shadowLight = light;
+}
+
 Light * SceneData::getMoveLight() {
 //  if(!moveLight) {
 //    if(lights.size() > 0) {

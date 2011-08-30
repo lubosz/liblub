@@ -1,3 +1,4 @@
+#define LIGHTS 5
 {% extends "base.frag" %}
 
 {% block linkage %}
@@ -20,12 +21,18 @@ out vec4 shadowTarget;
 uniform sampler2D diffuseTexture;
 uniform sampler2D normalTexture;
 uniform samplerCube envMap;
-uniform sampler2DShadow {{shadowDepthSource}};
-uniform mat4 camViewToShadowMapMatrix; //bias*perspLight*viewLight*(viewCam⁻1)
+//uniform sampler2DShadow {{shadowDepthSource}};
+
+{% for shadowSampler in shadowSamplers %}
+uniform sampler2DShadow {{shadowSampler}};
+uniform mat4 camViewToShadowMapMatrix{{shadowSampler}}; //bias*perspLight*viewLight*(viewCam⁻1)
+{% endfor %}
+
 {% endblock %}
 
 
 {% block functions %}
+/*
 float xPixelOffset = 1.0/1366.0;
 float yPixelOffset = 1.0/768.0;
 
@@ -41,6 +48,7 @@ float lookup( vec2 offSet,vec4 shadowTexCoord){
 		) 
 	);
 }
+*/
 {% endblock %}
 
 {% block main %}
@@ -52,10 +60,17 @@ float lookup( vec2 offSet,vec4 shadowTexCoord){
 	vec3 reflectDir = reflect(-positionView.xyz, normalView);
 	envTarget = texture(envMap, reflectDir);
 	
-	//shadow	
-	vec4 shadowTexCoord = camViewToShadowMapMatrix * positionView;
-	float shadow = textureProj({{shadowDepthSource}}, shadowTexCoord);
+	//shadow
+	shadowTarget = vec4(1);
+	vec4 shadowTexCoord;
+	float shadowSum = 0;
+{% for shadowSampler in shadowSamplers %}
+	shadowTexCoord = camViewToShadowMapMatrix{{shadowSampler}} * positionView;
+	shadowSum += textureProj({{shadowSampler}}, shadowTexCoord);
+{% endfor %}
 	
+	shadowTarget*= shadowSum/5.0;
+
 	/*
 	// 8x8 kernel PCF
 	vec4 shadowTexCoord = camViewToShadowMapMatrix * positionView;
@@ -67,8 +82,6 @@ float lookup( vec2 offSet,vec4 shadowTexCoord){
 				
 	shadow /= 32.0;
 	*/
-	
-	shadowTarget = vec4(1) * shadow;
 	//gl_FragDepth = positionView.z/20;
 	//depthTarget = positionView.z/20;
 {% endblock %}

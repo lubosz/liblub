@@ -58,6 +58,7 @@ public:
 
   Camera * getCurrentCamera();
   Light * getShadowLight();
+  void setShadowLight(Light * light);
   Light * getMoveLight();
 
   void setCurrentCamera(Camera * camera);
