@@ -7,7 +7,7 @@ find_package(Qt4 REQUIRED)
 file(GLOB EXAMPLES *.cpp)
 
 set(MOC_APPS 
-    foo
+    deferred
 )
 
 set(SOURCES ${SOURCES} ${LIBLUB_MOC_OUTFILES})

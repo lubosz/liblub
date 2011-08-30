@@ -20,7 +20,7 @@ out vec4 shadowTarget;
 uniform sampler2D diffuseTexture;
 uniform sampler2D normalTexture;
 uniform samplerCube envMap;
-uniform sampler2DShadow shadowDepthSource;
+uniform sampler2DShadow {{shadowDepthSource}};
 uniform mat4 camViewToShadowMapMatrix; //bias*perspLight*viewLight*(viewCam⁻1)
 {% endblock %}
 
@@ -31,7 +31,7 @@ float yPixelOffset = 1.0/768.0;
 
 float lookup( vec2 offSet,vec4 shadowTexCoord){
 	// Values are multiplied by ShadowCoord.w because shadow2DProj does a W division for us.
-	return textureProj(shadowDepthSource, 
+	return textureProj( {{shadowDepthSource}}, 
 		shadowTexCoord 
 		+ vec4(
 			offSet.x * xPixelOffset * shadowTexCoord.w, 
@@ -54,7 +54,7 @@ float lookup( vec2 offSet,vec4 shadowTexCoord){
 	
 	//shadow	
 	vec4 shadowTexCoord = camViewToShadowMapMatrix * positionView;
-	float shadow = textureProj(shadowDepthSource, shadowTexCoord);
+	float shadow = textureProj({{shadowDepthSource}}, shadowTexCoord);
 	
 	/*
 	// 8x8 kernel PCF

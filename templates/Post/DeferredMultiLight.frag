@@ -18,7 +18,7 @@ uniform sampler2D tangentTarget;
 uniform sampler2D normalMapTarget;
 uniform sampler2D envTarget;
 uniform sampler2D finalAOTarget;
-uniform sampler2D shadowTarget;
+//uniform sampler2D shadowTarget;
 
 uniform LightSourceBuffer {
 	LightSource lightSources[5];
@@ -54,7 +54,7 @@ float saturate(float input) {
 		//fragColor = R;
 	}
 	//fragColor *= texture(diffuseTarget, uv)* texture(envTarget, uv);
-	fragColor *= texture(diffuseTarget, uv) * ambient;
+	fragColor *= texture(diffuseTarget, uv) * ambient;// * texture(shadowTarget, uv).x;
 	
 	//fragColor = texture(finalAOTarget, uv);
 {% endblock %}
