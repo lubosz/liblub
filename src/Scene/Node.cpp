@@ -98,15 +98,19 @@ void Node::setShadowCoords(DirectionNode * viewPoint) {
 }
 
 void Node::setShadowCoords(ShaderProgram * shaderProgram, DirectionNode * viewPoint){
-  //TODO: Multiple lights
+  unsigned countLights = 0;
+  foreach(Light * light, SceneData::Instance().lights) {
+    string name = "camViewToShadowMapMatrixshadowDepthSource" + QString::number(countLights).toStdString();
+
     QMatrix4x4 camViewToShadowMapMatrix = SceneGraph::Instance().bias
-            * SceneData::Instance().getShadowLight()->getProjection()
-            * SceneData::Instance().getShadowLight()->getView()
+            * light->getProjection()
+            * light->getView()
             * viewPoint->getView().inverted();
 
     shaderProgram->use();
-    shaderProgram->setUniform(
-        "camViewToShadowMapMatrix", camViewToShadowMapMatrix);
+    shaderProgram->setUniform(name, camViewToShadowMapMatrix);
+    countLights++;
+  }
 }
 
 void Node::setCastShadows(bool castShadows) {

@@ -46,6 +46,7 @@
 
     unsigned countLights = 0;
     foreach(Light * light, SceneData::Instance().lights) {
+//      string name = "shadowDepthSource[" + QString::number(countLights).toStdString() + "]";
       string name = "shadowDepthSource" + QString::number(countLights).toStdString();
       vector<Texture*> shadowTargets = {
           new ShadowTexture(res, name)
@@ -62,8 +63,8 @@
     // source pass
     //
 
-    ShadowCastPass * shadowCastPass = shadowCastPasses[2];
-    Texture * shadowTarget = shadowCastPass->getTarget("shadowDepthSource2");
+    ShadowCastPass * shadowCastPass = shadowCastPasses[3];
+    Texture * shadowTarget = shadowCastPass->getTarget("shadowDepthSource3");
     SceneData::Instance().setShadowLight(shadowCastPass->view);
 
     vector<Texture*> shadowReceiveTargets = {
@@ -79,11 +80,24 @@
 
 
     vector<Texture*> shadowReceiveSources = {
-      shadowTarget,
-      SceneData::Instance().getTexture("masonry-wall-texture","diffuseTexture"),
       SceneData::Instance().getTexture("masonry-wall-normal-map","normalTexture"),
+      SceneData::Instance().getTexture("masonry-wall-texture","diffuseTexture"),
       SceneData::Instance().getTexture("sky", "envMap")
     };
+
+
+    foreach(ShadowCastPass * shadowCastPass, shadowCastPasses) {
+      shadowReceiveSources.push_back(shadowCastPass->targets[0]);
+    }
+
+    QStringList shadowSamplers;
+    foreach(ShadowCastPass * shadowCastPass, shadowCastPasses) {
+      shadowSamplers <<
+          QString::fromStdString(shadowCastPass->targets[0]->name);
+    }
+
+    TemplateEngine::Instance().c.insert("shadowSamplers", shadowSamplers);
+
 
     TemplateEngine::Instance().c.insert(
         "shadowDepthSource",

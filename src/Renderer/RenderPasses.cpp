@@ -201,7 +201,7 @@ void FBODebugPass::draw() {
     fbo->check();
   }
 
-  ShadowCastPass::ShadowCastPass(QSize res, vector<Texture*> &targets, Material * material, DirectionNode* view)
+  ShadowCastPass::ShadowCastPass(QSize res, vector<Texture*> &targets, Material * material, Light* view)
   : SourcePass(res, targets, material) {
     offsetFactor = 2;
     offsetUnits = 0;
@@ -233,34 +233,6 @@ void FBODebugPass::draw() {
   }
   void ShadowCastPass::setOffsetMode(GLenum offsetMode) {
     this->offsetMode = offsetMode;
-  }
-
-  void ShadowReceivePass::draw() {
-    fbo->bind();
-    RenderEngine::Instance().clear();
-    RenderEngine::Instance().updateViewport(res);
-    SceneGraph::Instance().drawReceivers(material);
-    fbo->unBind();
-  }
-
-  ShadowCastPass::ShadowCastPass(QSize res, vector<Texture*> &targets, Material * material, DirectionNode* view)
-  : SourcePass(res, targets, material) {
-    this->view = view;
-    fbo->disableColorBuffer();
-  }
-
-  void ShadowCastPass::draw() {
-    fbo->bind();
-    RenderEngine::Instance().clear();
-    RenderEngine::Instance().updateViewport(res);
-    material->activate();
-    glEnable(GL_CULL_FACE);
-    glCullFace(GL_FRONT);
-    SceneGraph::Instance().drawCasters(material, view);
-    fbo->unBind();
-    glPolygonOffset(0.0, 0.0);
-    glCullFace(GL_BACK);
-    glDisable(GL_CULL_FACE);
   }
 
   void ShadowReceivePass::draw() {

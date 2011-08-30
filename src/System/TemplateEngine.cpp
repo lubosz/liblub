@@ -57,7 +57,7 @@ QString TemplateEngine::render(const string& file) {
   }
   content.replace("\n\n", "\n");
 
-//  LogDebug << content.toStdString();
+  LogDebug << content.toStdString();
 
   return content;
 }

@@ -8,7 +8,7 @@
 #pragma once
 
 #include "RenderPass.h"
-#include "Scene/DirectionNode.h"
+#include "Scene/Light.h"
 
 
 //TODO: deprecated
@@ -81,11 +81,11 @@ public:
 
 class ShadowCastPass : public SourcePass {
 public:
-  DirectionNode * view;
+  Light* view;
   GLfloat offsetFactor;
   GLfloat offsetUnits;
   GLenum offsetMode;
-  ShadowCastPass(QSize res, vector<Texture*> &targets, Material * material, DirectionNode* view);
+  ShadowCastPass(QSize res, vector<Texture*> &targets, Material * material, Light* view);
   void draw();
   void setOffsetFactor(GLfloat factor);
   void setOffsetUnits(GLfloat units);
