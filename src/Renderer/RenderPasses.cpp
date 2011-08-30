@@ -205,14 +205,21 @@ void FBODebugPass::draw() {
   ShadowCastPass::ShadowCastPass(QSize res, vector<Texture*> &targets, Material * material, DirectionNode* view)
   : SourcePass(res, targets, material) {
     this->view = view;
+    fbo->disableColorBuffer();
   }
 
   void ShadowCastPass::draw() {
     fbo->bind();
     RenderEngine::Instance().clear();
     RenderEngine::Instance().updateViewport(res);
+    material->activate();
+    glEnable(GL_CULL_FACE);
+    glCullFace(GL_FRONT);
     SceneGraph::Instance().drawCasters(material, view);
     fbo->unBind();
+    glPolygonOffset(0.0, 0.0);
+    glCullFace(GL_BACK);
+    glDisable(GL_CULL_FACE);
   }
 
   void ShadowReceivePass::draw() {

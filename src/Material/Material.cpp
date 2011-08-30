@@ -51,7 +51,8 @@ void Material::activateTextures() {
 void Material::initRenderTargets(vector<Texture*> &targets){
   GLuint program = shaderProgram->getHandle();
   for(unsigned i = 0; i < targets.size(); i++){
-    glBindFragDataLocation(program, i, targets[i]->name.c_str());
+    if(!targets[i]->isDepth)
+      glBindFragDataLocation(program, i, targets[i]->name.c_str());
   }
 }
 

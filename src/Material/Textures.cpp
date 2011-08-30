@@ -16,6 +16,7 @@
 #include "Renderer/RenderEngine.h"
 
 DepthTexture::DepthTexture(QSize& res, string name) {
+  glError;
   this->name = name;
   isDepth = true;
   glGenTextures(1, &handle);
@@ -83,6 +84,7 @@ ShadowTexture::ShadowTexture(QSize& res, string name) {
 }
 
 ColorTexture::ColorTexture(QSize& res, string name) {
+  glError;
   this->name = name;
 
   glGenTextures(1, &handle);
@@ -112,6 +114,7 @@ ColorTexture::ColorTexture(QSize& res, string name) {
 //  glTexImage2D(target, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0);
   glTexImage2D(target, 0, GL_RGBA32F, res.width(), res.height(), 0, GL_RGBA, GL_FLOAT, 0);
   unbind();
+  glError;
 }
 
 TextureFile::TextureFile(string filename, string name) {

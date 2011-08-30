@@ -93,6 +93,22 @@ bool Node::getCastShadows() const {
     return castShadows;
 }
 
+void Node::setShadowCoords(DirectionNode * viewPoint) {
+    setShadowCoords(material->getShaderProgram(), viewPoint);
+}
+
+void Node::setShadowCoords(ShaderProgram * shaderProgram, DirectionNode * viewPoint){
+  //TODO: Multiple lights
+    QMatrix4x4 camViewToShadowMapMatrix = SceneGraph::Instance().bias
+            * SceneData::Instance().getShadowLight()->getProjection()
+            * SceneData::Instance().getShadowLight()->getView()
+            * viewPoint->getView().inverted();
+
+    shaderProgram->use();
+    shaderProgram->setUniform(
+        "camViewToShadowMapMatrix", camViewToShadowMapMatrix);
+}
+
 void Node::setCastShadows(bool castShadows) {
     this->castShadows = castShadows;
 }

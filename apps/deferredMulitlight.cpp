@@ -59,7 +59,6 @@ public:
         res, shadowTargets, new Minimal(), SceneData::Instance().getShadowLight()
     );
     drawPasses.push_back(shadowPass);
-
     //
     // source pass
     //
@@ -139,7 +138,7 @@ public:
     shadingPass->debugTarget(QRectF(0.5, -1, 0.5, 0.5),
         sourcePass->getTarget("normalTarget"));
     shadingPass->debugTarget(QRectF(0.5, -0.5, 0.5, 0.5),
-        //sourcePass->getTarget("diffuseTarget")
+//        sourcePass->getTarget("diffuseTarget")
         sourcePass->getTarget("shadowTarget")
     );
     shadingPass->debugTarget(QRectF(0.5, 0, 0.5, 0.5),

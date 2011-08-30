@@ -100,6 +100,7 @@ void FrameBuffer::attachTextures(vector<Texture*> &textures) {
 
 
 void FrameBuffer::disableColorBuffer() {
+  bind();
     // disable color buffer if you don't attach any color buffer image,
     // for example, rendering depth buffer only to a texture.
     // Otherwise, glCheckFramebufferStatusEXT will not be complete.

@@ -69,16 +69,6 @@ void SceneGraph::setPosition(string nodeName, const QVector3D& position) {
 //  Logger::Instance().log("Print Matrix");
 //}
 
-void SceneGraph::setShadowCoords(Node * node, DirectionNode * viewPoint) {
-  //TODO: Multiple lights
-    QMatrix4x4 camViewToShadowMapMatrix = bias
-            * SceneData::Instance().getShadowLight()->getProjection()
-            * SceneData::Instance().getShadowLight()->getView()
-            * viewPoint->getView().inverted();
-
-    node->getMaterial()->getShaderProgram()->setUniform(
-        "camViewToShadowMapMatrix", camViewToShadowMapMatrix);
-}
 
 void SceneGraph::drawNodes() {
   drawNodes(SceneData::Instance().getCurrentCamera());
@@ -96,7 +86,7 @@ void SceneGraph::drawNodes(DirectionNode * viewPoint) {
     foreach(Node * node, sceneNodes) {
         if(!node->transparent) {
           node->setView(viewPoint);
-          setShadowCoords(node, viewPoint);
+          node->setShadowCoords(viewPoint);
           SceneData::Instance().getShadowLight()->bindShaderUpdate(node->getMaterial()->getShaderProgram());
           node->draw();
         } else {
@@ -120,7 +110,7 @@ void SceneGraph::drawNodes(DirectionNode * viewPoint) {
 }
 
 void SceneGraph::drawNodes(Material * material) {
-  drawCasters(material, SceneData::Instance().getCurrentCamera());
+  drawNodes(material, SceneData::Instance().getCurrentCamera());
 }
 
 void SceneGraph::drawNodes(Material * material, DirectionNode * viewPoint) {
@@ -135,7 +125,7 @@ void SceneGraph::drawReceivers(Material * material) {
   DirectionNode * view = SceneData::Instance().getCurrentCamera();
   foreach(Node * node, sceneNodes) {
         node->setView(material->getShaderProgram(), view);
-        setShadowCoords(node, view);
+        node->setShadowCoords(material->getShaderProgram(),view);
         node->mesh->draw();
   }
   glError;

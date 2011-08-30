@@ -6,6 +6,8 @@ precision highp float;
 
 {% block header %}{% endblock %}
 
+{% block functions %}{% endblock %}
+
 void main() { 
 {% block main %}{% endblock %}
 }
