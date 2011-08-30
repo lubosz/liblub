@@ -175,6 +175,7 @@ void FBODebugPass::draw() {
       material->initRenderTargets(targets);
   }
 
+
   void SourcePass::draw() {
     fbo->bind();
     RenderEngine::Instance().clear();
@@ -200,6 +201,27 @@ void FBODebugPass::draw() {
     fbo->check();
   }
 
+
+  ShadowCastPass::ShadowCastPass(QSize res, vector<Texture*> &targets, Material * material, DirectionNode* view)
+  : SourcePass(res, targets, material) {
+    this->view = view;
+  }
+
+  void ShadowCastPass::draw() {
+    fbo->bind();
+    RenderEngine::Instance().clear();
+    RenderEngine::Instance().updateViewport(res);
+    SceneGraph::Instance().drawCasters(material, view);
+    fbo->unBind();
+  }
+
+  void ShadowReceivePass::draw() {
+    fbo->bind();
+    RenderEngine::Instance().clear();
+    RenderEngine::Instance().updateViewport(res);
+    SceneGraph::Instance().drawReceivers(material);
+    fbo->unBind();
+  }
 
   InOutPass::InOutPass(QSize res, vector<Texture*> &sources, vector<Texture*> &targets, Material * material) : SourcePass(res, targets, material) {
     this->sources = sources;

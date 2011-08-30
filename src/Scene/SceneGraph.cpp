@@ -131,6 +131,16 @@ void SceneGraph::drawNodes(Material * material, DirectionNode * viewPoint) {
     glError;
 }
 
+void SceneGraph::drawReceivers(Material * material) {
+  DirectionNode * view = SceneData::Instance().getCurrentCamera();
+  foreach(Node * node, sceneNodes) {
+        node->setView(material->getShaderProgram(), view);
+        setShadowCoords(node, view);
+        node->mesh->draw();
+  }
+  glError;
+}
+
 void SceneGraph::drawCasters(Material * material) {
   drawCasters(material, SceneData::Instance().getCurrentCamera());
 }

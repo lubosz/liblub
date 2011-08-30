@@ -8,6 +8,7 @@
 #pragma once
 
 #include "RenderPass.h"
+#include "Scene/DirectionNode.h"
 
 
 //TODO: deprecated
@@ -80,11 +81,26 @@ class SourcePass : public DrawPass {
 public:
   vector<Texture*> targets;
   FrameBuffer * fbo;
-  explicit SourcePass(QSize res, vector<Texture*> &targets, Material * material);
+  SourcePass(QSize res, vector<Texture*> &targets, Material * material);
   void initFBO();
   void draw();
   Texture* getTarget(string target);
+};
 
+class ShadowReceivePass : public SourcePass {
+public:
+  ShadowReceivePass(QSize res, vector<Texture*> &targets, Material * material) : SourcePass(res, targets, material) {
+
+  }
+  void draw();
+};
+
+
+class ShadowCastPass : public SourcePass {
+public:
+  DirectionNode * view;
+  ShadowCastPass(QSize res, vector<Texture*> &targets, Material * material, DirectionNode* view);
+  void draw();
 };
 
 class InOutPass : public SourcePass {

@@ -18,6 +18,8 @@ uniform sampler2D tangentTarget;
 uniform sampler2D normalMapTarget;
 uniform sampler2D envTarget;
 uniform sampler2D finalAOTarget;
+uniform sampler2D shadowTarget;
+
 uniform LightSourceBuffer {
 	LightSource lightSources[5];
 };

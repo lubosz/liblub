@@ -14,6 +14,7 @@ class SceneGraph: public Singleton<SceneGraph> {
 	void updateLight();
 	void drawCasters(Material * material);
 	void drawCasters(Material * material, DirectionNode * viewPoint);
+	void drawReceivers(Material * material);
 	void drawNodes();
   void drawNodes(Material * material);
   void drawNodes(Material * material, DirectionNode * viewPoint);

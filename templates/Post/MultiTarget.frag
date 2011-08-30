@@ -11,6 +11,8 @@ out vec4 diffuseTarget;
 out vec4 tangentTarget;
 out vec4 normalMapTarget;
 out vec4 envTarget;
+out vec4 shadowTarget;
+
 //out float depthTarget;
 {% endblock %}
 
@@ -18,6 +20,8 @@ out vec4 envTarget;
 uniform sampler2D diffuseTexture;
 uniform sampler2D normalTexture;
 uniform samplerCube envMap;
+uniform sampler2DShadow shadowDepthSource;
+uniform mat4 camViewToShadowMapMatrix; //bias*perspLight*viewLight*(viewCam⁻1)
 {% endblock %}
 
 
