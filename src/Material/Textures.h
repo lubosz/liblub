@@ -35,24 +35,7 @@ class TextureQImage : public Texture {
   TextureQImage(QImage * image, string name);
 };
 
-
-class SplatTexture : public Texture {
- public:
-	SplatTexture(string name, int resolution);
-	/**
-	* EvalHermite(float pA, float pB, float vA, float vB, float u)
-	* @brief Evaluates Hermite basis functions for the specified coefficients.
-	*/
-	inline float evalHermite(float pA, float pB, float vA, float vB, float u);
-	unsigned char* createGaussianMap(int N);
-};
-
 class CubeTextureFile : public Texture {
  public:
 	CubeTextureFile(string filename, string name);
 };
-
-
-
-
-
