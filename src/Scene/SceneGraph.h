@@ -14,6 +14,7 @@ class SceneGraph: public Singleton<SceneGraph> {
 	void updateLight();
 	void drawCasters(Material * material);
 	void drawCasters(Material * material, DirectionNode * viewPoint);
+	void drawReceivers(Material * material);
 	void drawNodes();
   void drawNodes(Material * material);
   void drawNodes(Material * material, DirectionNode * viewPoint);
@@ -35,11 +36,11 @@ class SceneGraph: public Singleton<SceneGraph> {
 	void setPosition(string nodeName, const QVector3D& position);
 
 	QMap<string, Node*> sceneNodes;
+	QMatrix4x4 bias;
  private:
 	friend class Singleton<SceneGraph>;
 
 //	vector<Node*> sceneNodes;
-	QMatrix4x4 bias;
 
     SceneGraph();
 
@@ -53,6 +54,4 @@ class SceneGraph: public Singleton<SceneGraph> {
 	    const QList<string> & attributes,
 	        string file, float cubeSize, float step, vector<Material*> materials
 	);
-
-	void setShadowCoords(Node * node, DirectionNode * viewPoint);
 };

@@ -44,6 +44,8 @@ class Node {
   void draw();
   void setView(DirectionNode * viewPoint);
   void setView(ShaderProgram * shaderProgram, DirectionNode * viewPoint);
+  void setShadowCoords(DirectionNode * viewPoint);
+  void setShadowCoords(ShaderProgram * shaderProgram, DirectionNode * viewPoint);
   string getName() const;
   const QVector3D getPosition();
   const QVector3D getRotation();

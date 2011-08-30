@@ -8,6 +8,7 @@
 #pragma once
 
 #include "RenderPass.h"
+#include "Scene/DirectionNode.h"
 
 
 //TODO: deprecated
@@ -64,27 +65,31 @@ public:
   QSize res;
   Material * material;
   explicit DrawPass(QSize res);
-
-  void addTexture(Texture* texture) {
-    material->addTexture(texture);
-  }
-
-  void addTextures(vector<Texture*> textures) {
-    material->addTextures(textures);
-    material->activateTextures();
-    material->samplerUniforms();
-  }
 };
 
 class SourcePass : public DrawPass {
 public:
   vector<Texture*> targets;
   FrameBuffer * fbo;
-  explicit SourcePass(QSize res, vector<Texture*> &targets, Material * material);
+  SourcePass(QSize res, vector<Texture*> &targets, Material * material);
   void initFBO();
   void draw();
   Texture* getTarget(string target);
+};
 
+
+
+class ShadowCastPass : public SourcePass {
+public:
+  DirectionNode * view;
+  GLfloat offsetFactor;
+  GLfloat offsetUnits;
+  GLenum offsetMode;
+  ShadowCastPass(QSize res, vector<Texture*> &targets, Material * material, DirectionNode* view);
+  void draw();
+  void setOffsetFactor(GLfloat factor);
+  void setOffsetUnits(GLfloat units);
+  void setOffsetMode(GLenum offsetMode);
 };
 
 class InOutPass : public SourcePass {
@@ -93,6 +98,14 @@ public:
   vector<Texture*> sources;
   Texture* getSource(string target);
   InOutPass(QSize res, vector<Texture*> &sources, vector<Texture*> &targets, Material * material);
+  void draw();
+};
+
+class ShadowReceivePass : public InOutPass {
+public:
+  ShadowReceivePass(QSize res, vector<Texture*> &sources, vector<Texture*> &targets, Material * material) : InOutPass(res, sources, targets, material) {
+
+  }
   void draw();
 };
 

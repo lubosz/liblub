@@ -22,6 +22,6 @@ uniform mat3 NormalMatrix;
 	normalView = in_Normal;
 	//normalmapping
 	tangentView = normalize(NormalMatrix * in_Tangent); 
-	positionView = MVPMatrix * position;
+	positionView = MVMatrix * position;
 	gl_Position = MVPMatrix * position;
 {% endblock %}

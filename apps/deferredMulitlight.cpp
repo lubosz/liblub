@@ -49,6 +49,17 @@ public:
     QSize res = SceneData::Instance().getResolution();
 
     //
+    // shadow pass
+    //
+
+    vector<Texture*> shadowTargets = {
+        new ShadowTexture(res, "shadowDepthSource")
+    };
+    SourcePass * shadowPass = new ShadowCastPass(
+        res, shadowTargets, new Minimal(), SceneData::Instance().getShadowLight()
+    );
+    drawPasses.push_back(shadowPass);
+    //
     // source pass
     //
 
@@ -59,17 +70,23 @@ public:
         new ColorTexture(res, "tangentTarget"),
         new ColorTexture(res, "normalMapTarget"),
         new ColorTexture(res, "envTarget"),
+        new ColorTexture(res, "shadowTarget"),
         new DepthTexture(res, "depthTarget")
+    };
+
+    vector<Texture*> sourceSources = {
+        shadowPass->getTarget("shadowDepthSource")
     };
 
     vector<Texture*> sourceTextures = {
       SceneData::Instance().getTexture("masonry-wall-texture","diffuseTexture"),
       SceneData::Instance().getTexture("masonry-wall-normal-map","normalTexture"),
-      SceneData::Instance().getTexture("sky", "envMap")
+      SceneData::Instance().getTexture("sky", "envMap"),
     };
 
-    SourcePass * sourcePass = new SourcePass(
+    SourcePass * sourcePass = new ShadowReceivePass(
         res,
+        sourceSources,
         sourceTargets,
         new Template("Post/MultiTarget",
             QList<string> () << "uv" << "normal" << "tangent"));
@@ -117,16 +134,20 @@ public:
         sourcePass->getTarget("tangentTarget"),
         sourcePass->getTarget("normalMapTarget"),
         sourcePass->getTarget("envTarget"),
-        blurVPass->getTarget("finalAOTarget")
+        blurVPass->getTarget("finalAOTarget"),
+        sourcePass->getTarget("shadowTarget")
     };
     SinkPass * shadingPass = shadingPass = new SinkPass(res, shadingSources,
         new Template("Post/DeferredMultiLight", uv));
     shadingPass->debugTarget(QRectF(0.5, -1, 0.5, 0.5),
         sourcePass->getTarget("normalTarget"));
     shadingPass->debugTarget(QRectF(0.5, -0.5, 0.5, 0.5),
-        sourcePass->getTarget("diffuseTarget"));
+//        sourcePass->getTarget("diffuseTarget")
+        sourcePass->getTarget("shadowTarget")
+    );
     shadingPass->debugTarget(QRectF(0.5, 0, 0.5, 0.5),
-        blurVPass->getTarget("finalAOTarget"));
+        blurVPass->getTarget("finalAOTarget")
+     );
 
     // Init Light Uniform Buffer
     SceneData::Instance().initLightBuffer(
