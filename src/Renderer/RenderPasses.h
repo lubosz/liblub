@@ -87,13 +87,6 @@ public:
   Texture* getTarget(string target);
 };
 
-class ShadowReceivePass : public SourcePass {
-public:
-  ShadowReceivePass(QSize res, vector<Texture*> &targets, Material * material) : SourcePass(res, targets, material) {
-
-  }
-  void draw();
-};
 
 
 class ShadowCastPass : public SourcePass {
@@ -109,6 +102,14 @@ public:
   vector<Texture*> sources;
   Texture* getSource(string target);
   InOutPass(QSize res, vector<Texture*> &sources, vector<Texture*> &targets, Material * material);
+  void draw();
+};
+
+class ShadowReceivePass : public InOutPass {
+public:
+  ShadowReceivePass(QSize res, vector<Texture*> &sources, vector<Texture*> &targets, Material * material) : InOutPass(res, sources, targets, material) {
+
+  }
   void draw();
 };
 

@@ -74,15 +74,19 @@ public:
         new DepthTexture(res, "depthTarget")
     };
 
+    vector<Texture*> sourceSources = {
+        shadowPass->getTarget("shadowDepthSource")
+    };
+
     vector<Texture*> sourceTextures = {
       SceneData::Instance().getTexture("masonry-wall-texture","diffuseTexture"),
       SceneData::Instance().getTexture("masonry-wall-normal-map","normalTexture"),
       SceneData::Instance().getTexture("sky", "envMap"),
-      shadowPass->getTarget("shadowDepthSource")
     };
 
     SourcePass * sourcePass = new ShadowReceivePass(
         res,
+        sourceSources,
         sourceTargets,
         new Template("Post/MultiTarget",
             QList<string> () << "uv" << "normal" << "tangent"));
