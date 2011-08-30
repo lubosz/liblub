@@ -11,7 +11,6 @@ out vec4 normalTarget;
 out vec4 diffuseTarget;
 out vec4 tangentTarget;
 out vec4 normalMapTarget;
-out vec4 envTarget;
 out vec4 shadowTarget;
 
 //out float depthTarget;
@@ -20,7 +19,6 @@ out vec4 shadowTarget;
 {% block uniforms %}
 uniform sampler2D diffuseTexture;
 uniform sampler2D normalTexture;
-uniform samplerCube envMap;
 //uniform sampler2DShadow {{shadowDepthSource}};
 
 {% for shadowSampler in shadowSamplers %}
@@ -56,9 +54,7 @@ float lookup( vec2 offSet,vec4 shadowTexCoord){
 	normalTarget = vec4(normalView,1);
 	tangentTarget =  vec4(tangentView,1);
 	diffuseTarget = texture(diffuseTexture, uv*5);
-	normalMapTarget = texture(normalTexture, uv);
-	vec3 reflectDir = reflect(-positionView.xyz, normalView);
-	envTarget = texture(envMap, reflectDir);
+	normalMapTarget = texture(normalTexture, uv*5);
 	
 	//shadow
 	shadowTarget = vec4(1);

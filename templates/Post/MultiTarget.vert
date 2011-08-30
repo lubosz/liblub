@@ -19,7 +19,7 @@ uniform mat3 NormalMatrix;
 	uv = in_Uv;
     vec4 position = vec4(in_Vertex,1);
 	//normalView = normalize(NormalMatrix * in_Normal);
-	normalView = in_Normal;
+	normalView = normalize(NormalMatrix * in_Normal);
 	//normalmapping
 	tangentView = normalize(NormalMatrix * in_Tangent); 
 	positionView = MVMatrix * position;

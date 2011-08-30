@@ -25,6 +25,7 @@
 		<File name="sphere" url="earth.obj" />
 		<File name="plane" url="plane.obj" />
 		<File name="light" url="earth.obj" drawType="LINES" />
+		<Procedural name="sponge" type="Sponge" recursion="2" />
 	</Meshes>
 	<Materials>
 		<Material name="CubeMap" program="CubeMap">
@@ -43,7 +44,10 @@
 		<Light name="myotherlight2" position ="6, 20, 10" direction="-1,-5,1" mesh="light" diffuse="0.7,0,0.5" />
 		<Light name="myotherlight3" position ="9, 25, 9" direction="-1,-5,1" mesh="light" diffuse="0.3,0.6,0" />
 		<Object name="cube" mesh="cube" material="white" scale="2.0" position="5,0,5" />
+		<!-- 
 		<Object name="cube2" mesh="cubeblend" material="white" scale="2.0" position="5,0,10" />
+		 -->
+		 <Object name="cube2" mesh="cube" material="white" scale="2.0" position="5,0,10" />
 		<Object name="sphere" mesh="sphere" material="white" scale="2.0" position="5,0,-5" />
 		<Object name="monkey" mesh="monkey" material="white" scale="2.0" position="-5,0,-5" />
 		<Object name="radio" mesh="radio" material="white" scale="0.5" position="-5,0,5" />
