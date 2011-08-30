@@ -73,7 +73,6 @@
         new ColorTexture(res, "diffuseTarget"),
         new ColorTexture(res, "tangentTarget"),
         new ColorTexture(res, "normalMapTarget"),
-        new ColorTexture(res, "envTarget"),
         new ColorTexture(res, "shadowTarget"),
         new DepthTexture(res, "depthTarget")
     };
@@ -82,7 +81,6 @@
     vector<Texture*> shadowReceiveSources = {
       SceneData::Instance().getTexture("masonry-wall-normal-map","normalTexture"),
       SceneData::Instance().getTexture("masonry-wall-texture","diffuseTexture"),
-      SceneData::Instance().getTexture("sky", "envMap")
     };
 
 
@@ -171,28 +169,60 @@
         shadowReceivePass->getTarget("diffuseTarget"),
         shadowReceivePass->getTarget("tangentTarget"),
         shadowReceivePass->getTarget("normalMapTarget"),
-        shadowReceivePass->getTarget("envTarget"),
         blurVPass->getTarget("finalAOTarget"),
+        SceneData::Instance().getTexture("sky", "envMap")
 //        shadowReceivePass->getTarget("shadowTarget")
     };
-    SinkPass * shadingPass = shadingPass = new SinkPass(res, shadingSources,
+
+    vector<Texture*> shadingTargets = {
+        new ColorTexture(res, "finalTarget"),
+        new ColorTexture(res, "finalSpecularTarget"),
+        new ColorTexture(res, "finalDiffuseTarget"),
+        new ColorTexture(res, "envTarget")
+    };
+
+    InOutPass * shadingPass = shadingPass = new InOutPass(res, shadingSources, shadingTargets,
         new Template("Post/DeferredMultiLight", uv));
+    drawPasses.push_back(shadingPass);
+
+    vector<Texture*> sinkSources = {};
+    SinkPass * sinkPass = new SinkPass(res, sinkSources, new Minimal());
 
     // debug planes
-    shadingPass->debugTarget(QRectF(0.5, -1, 0.5, 0.5),
+    sinkPass->debugTarget(QRectF(0.5, -1, 0.5, 0.5),
         aoPass->getTarget("ao"));
-    shadingPass->debugTarget(QRectF(0.5, -0.5, 0.5, 0.5),
+    sinkPass->debugTarget(QRectF(0.5, -0.5, 0.5, 0.5),
         shadowReceivePass->getTarget("shadowTarget")
     );
-    shadingPass->debugTarget(QRectF(0.5, 0, 0.5, 0.5),
+    sinkPass->debugTarget(QRectF(0.5, 0, 0.5, 0.5),
         blurVPass->getTarget("finalAOTarget")
      );
 
+    sinkPass->debugTarget(QRectF(-1, 0, 0.5, 0.5),
+        shadowReceivePass->getTarget("normalTarget")
+     );
+
+    sinkPass->debugTarget(QRectF(-1, -0.5, 0.5, 0.5),
+        shadingPass->getTarget("envTarget")
+     );
+
+
+    sinkPass->debugTarget(QRectF(-1, -1, 0.5, 0.5),
+        shadingPass->getTarget("finalSpecularTarget")
+     );
+    sinkPass->debugTarget(QRectF(-1, 0.5, 0.5, 0.5),
+        shadingPass->getTarget("finalDiffuseTarget")
+     );
+
+    sinkPass->debugTarget(QRectF(-1, -1, 2, 2),
+        shadingPass->getTarget("finalTarget")
+     );
+
+    drawPasses.push_back(sinkPass);
     // Init Light Uniform Buffer
     SceneData::Instance().initLightBuffer(
         shadingPass->material->getShaderProgram(), "LightSourceBuffer");
 
-    drawPasses.push_back(shadingPass);
   }
 
   void DeferredLightApp::renderFrame() {
