@@ -62,21 +62,37 @@ public:
 class DrawPass : public DrawThing{
 public:
   QSize res;
+  Material * material;
   explicit DrawPass(QSize res);
+
+  void addTexture(Texture* texture) {
+    material->addTexture(texture);
+  }
+
+  void addTextures(vector<Texture*> textures) {
+    material->addTextures(textures);
+    material->activateTextures();
+    material->samplerUniforms();
+  }
 };
 
-class OutPass : public DrawPass {
+class SourcePass : public DrawPass {
 public:
-  Material *material;
+  vector<Texture*> targets;
   FrameBuffer * fbo;
-  explicit OutPass(QSize res);
+  explicit SourcePass(QSize res, vector<Texture*> &targets, Material * material);
+  void initFBO();
   void draw();
+  Texture* getTarget(string target);
+
 };
 
-class InOutPass : public OutPass {
+class InOutPass : public SourcePass {
 public:
   Mesh * fullPlane;
-  explicit InOutPass(QSize res);
+  vector<Texture*> sources;
+  Texture* getSource(string target);
+  InOutPass(QSize res, vector<Texture*> &sources, vector<Texture*> &targets, Material * material);
   void draw();
 };
 
@@ -91,10 +107,9 @@ public:
 
 class SinkPass : public DrawPass {
 public:
-  Material * material;
   Mesh * fullPlane;
   vector<DebugPlane*> debugPlanes;
-  SinkPass(QSize res);
+  SinkPass(QSize res, vector<Texture*> &targets, Material * material);
   void debugTarget(QRectF rect, Texture * target);
   void draw();
 };

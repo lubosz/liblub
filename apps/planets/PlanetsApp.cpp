@@ -121,7 +121,7 @@ void PlanetsApp::initPostProcessing() {
   QSize res(1920, 1200);
   fbo = new FrameBuffer(res);
   Texture * targetTexture = new ColorTexture(res, "targetTexture");
-  fbo->attachTexture(GL_COLOR_ATTACHMENT0, targetTexture);
+  fbo->attachTexture(targetTexture);
   fbo->check();
 
   HDR = new Template("Post/HDR", QList<string> () << "uv");

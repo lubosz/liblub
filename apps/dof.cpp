@@ -60,13 +60,13 @@ void scene() {
 
     // fbo color
     pFBOColor = new FrameBuffer(res);
-    pFBOColor->attachTexture(GL_COLOR_ATTACHMENT0, pColorTexture);
+    pFBOColor->attachTexture(pColorTexture);
     //pFBOColor->attachTexture(GL_COLOR_ATTACHMENT1, pColorTextureS);
     pFBOColor->check();
 
     // fbo depth
     pFBODepth = new FrameBuffer(res);
-    pFBODepth->attachTexture(GL_DEPTH_ATTACHMENT, pDepthTexture);
+    pFBODepth->attachDepthTexture(pDepthTexture);
     pFBODepth->disableColorBuffer();
     pFBODepth->check();
 

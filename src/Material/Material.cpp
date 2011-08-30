@@ -19,6 +19,11 @@ void Material::addTexture(Texture * texture) {
     textures.push_back(texture);
 }
 
+void Material::addTextures(vector<Texture *> &addTextures) {
+  foreach(Texture * texture, addTextures)
+    textures.push_back(texture);
+}
+
 void Material::addTexture(string file, string name) {
     textures.push_back(new TextureFile(file, name));
 }
@@ -41,6 +46,13 @@ void Material::activateTextures() {
             texture->bind();
         }
     glError;
+}
+
+void Material::initRenderTargets(vector<Texture*> &targets){
+  GLuint program = shaderProgram->getHandle();
+  for(unsigned i = 0; i < targets.size(); i++){
+    glBindFragDataLocation(program, i, targets[i]->name.c_str());
+  }
 }
 
 void Material::samplerUniforms() {

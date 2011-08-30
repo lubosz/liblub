@@ -51,8 +51,8 @@ class SSAOExample: public Application {
     Texture * depthTexture = new DepthTexture(res, "depth");
 
     fbo = new FrameBuffer(res);
-    fbo->attachTexture(GL_COLOR_ATTACHMENT0, normalTexture);
-    fbo->attachTexture(GL_DEPTH_ATTACHMENT, depthTexture);
+    fbo->attachTexture(normalTexture);
+    fbo->attachDepthTexture(depthTexture);
     fbo->check();
 
     gatherPassMaterial = new Simple("AO/gather",QList<string>() << "normal");
@@ -66,7 +66,7 @@ class SSAOExample: public Application {
     Texture * noise = new TextureFile("noise.png", "noise");
 
     aoFbo = new FrameBuffer(res);
-    aoFbo->attachTexture(GL_COLOR_ATTACHMENT0, aoTexture);
+    aoFbo->attachTexture(aoTexture);
     aoFbo->check();
 
     QList<string> attributes;
@@ -80,7 +80,7 @@ class SSAOExample: public Application {
     Texture * blurHTexture = new ColorTexture(res, "blurH");
 
     blurHFbo = new FrameBuffer(res);
-    blurHFbo->attachTexture(GL_COLOR_ATTACHMENT0, blurHTexture);
+    blurHFbo->attachTexture(blurHTexture);
     blurHFbo->check();
 
     blur_horizontal = new Simple("AO/blur_horizontal", attributes);

@@ -17,7 +17,7 @@
 
 DepthTexture::DepthTexture(QSize& res, string name) {
   this->name = name;
-
+  isDepth = true;
   glGenTextures(1, &handle);
   bind();
   LogDebug << "Creating FBO Depth texture #" << handle << " " << name;
@@ -40,7 +40,7 @@ DepthTexture::DepthTexture(QSize& res, string name) {
 
 ShadowTexture::ShadowTexture(QSize& res, string name) {
   this->name = name;
-
+  isDepth = true;
     glGenTextures(1, &handle);
     bind();
     LogDebug << "Creating FBO Shadow texture #" << handle << " " << name;

@@ -26,11 +26,14 @@ class FrameBuffer {
 	QSize res;
 
 	void check();
-	void attachTexture(GLenum attachmentPoint, Texture * texture);
+	void attachTexture(Texture * texture);
+	void attachDepthTexture(Texture * texture);
+	void attachTextures(vector<Texture*> &textures);
 	void disableColorBuffer();
  private:
 	GLuint fboId;                       // ID of FBO
 	GLuint rboId;                       // ID of Renderbuffer object
+	GLuint attachmentPoint;
 
 	Mesh * renderPlane;
 

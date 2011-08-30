@@ -17,7 +17,7 @@
 ShadowPass::ShadowPass(FrameBuffer * fbo) {
     this->fbo = fbo;
     targetTexture = new ShadowTexture(fbo->res, "shadowMap");
-    fbo->attachTexture(GL_DEPTH_ATTACHMENT, targetTexture);
+    fbo->attachDepthTexture(targetTexture);
     fbo->disableColorBuffer();
 
     material = new Minimal();
@@ -60,10 +60,10 @@ WritePass::WritePass(FrameBuffer * fbo, Texture * texture, Material * material, 
     this->material = material;
     targetTexture = texture;
     if (!useColorBuffer) {
-      fbo->attachTexture(GL_DEPTH_ATTACHMENT, targetTexture);
+      fbo->attachDepthTexture(targetTexture);
       fbo->disableColorBuffer();
     } else {
-      fbo->attachTexture(GL_COLOR_ATTACHMENT0, targetTexture);
+      fbo->attachTexture(targetTexture);
     }
 }
 
@@ -88,7 +88,7 @@ FilterPass::FilterPass(FrameBuffer * fbo) {
     this->fbo = fbo;
     QSize res = SceneData::Instance().getResolution();
     targetTexture = new DepthTexture(res, "shadowMap");
-    fbo->attachTexture(GL_DEPTH_ATTACHMENT, targetTexture);
+    fbo->attachDepthTexture(targetTexture);
     fbo->disableColorBuffer();
 
     material = new Minimal();
@@ -167,11 +167,15 @@ void FBODebugPass::draw() {
     this->res = res;
   }
 
-
-  OutPass::OutPass(QSize res) : DrawPass(res) {
+  SourcePass::SourcePass(QSize res, vector<Texture*> &targets, Material * material) : DrawPass(res) {
+    this->targets = targets;
+    this->material = material;
+    initFBO();
+    if(targets.size() > 1)
+      material->initRenderTargets(targets);
   }
 
-  void OutPass::draw() {
+  void SourcePass::draw() {
     fbo->bind();
     RenderEngine::Instance().clear();
     RenderEngine::Instance().updateViewport(res);
@@ -179,11 +183,41 @@ void FBODebugPass::draw() {
     fbo->unBind();
   }
 
-  InOutPass::InOutPass(QSize res) : OutPass(res) {
-    QList<string> attributes;
-    attributes.push_back("uv");
-    fullPlane = Geometry::plane(attributes, QRectF(-1, -1, 2, 2));
+  Texture* SourcePass::getTarget(string target) {
+    foreach (Texture * texture, targets) {
+        if (texture->name == "")
+          LogFatal << "No Texture Name!";
+        if (texture->name == target) {
+          return texture;
+        }
+    }
+    LogFatal << "Texture Not Found" << target;
   }
+
+  void SourcePass::initFBO() {
+    fbo = new FrameBuffer(res);
+    fbo->attachTextures(targets);
+    fbo->check();
+  }
+
+
+  InOutPass::InOutPass(QSize res, vector<Texture*> &sources, vector<Texture*> &targets, Material * material) : SourcePass(res, targets, material) {
+    this->sources = sources;
+    fullPlane = Geometry::plane(QList<string> () << "uv", QRectF(-1, -1, 2, 2));
+    material->addTextures(sources);
+  }
+
+  Texture* InOutPass::getSource(string target) {
+    foreach (Texture * texture, sources) {
+        if (texture->name == "")
+          LogFatal << "No Texture Name!";
+        if (texture->name == target) {
+          return texture;
+        }
+    }
+    LogFatal << "Texture Not Found" << target;
+  }
+
 
   void InOutPass::draw() {
     fbo->bind();
@@ -194,15 +228,13 @@ void FBODebugPass::draw() {
   }
 
   DebugPlane::DebugPlane(QRectF rect, Texture * target){
-    QList<string> attributes = QList<string> () << "uv";
-    plane = Geometry::plane(attributes, rect);
+    plane = Geometry::plane(QList<string> () << "uv", rect);
     material = initDebugMaterial(target);
   }
 
   Material * DebugPlane::initDebugMaterial(Texture * target) {
-    QList<string> attributes = QList<string> () << "uv";
     TemplateEngine::Instance().c.insert("samplerName", QString::fromStdString(target->name));
-    Material * debugMaterial = new Template("Post/Debug", attributes);
+    Material * debugMaterial = new Template("Post/Debug", QList<string> () << "uv");
     debugMaterial->addTexture(target);
     return debugMaterial;
   }
@@ -211,10 +243,12 @@ void FBODebugPass::draw() {
     drawOnPlane(material, plane);
   }
 
-  SinkPass::SinkPass(QSize res) : DrawPass(res){
-    QList<string> attributes = QList<string> () << "uv";
-    fullPlane = Geometry::plane(attributes, QRectF(-1, -1, 2, 2));
+  SinkPass::SinkPass(QSize res, vector<Texture*> &targets, Material * material) : DrawPass(res){
+    fullPlane = Geometry::plane(QList<string> () << "uv", QRectF(-1, -1, 2, 2));
+    this->material = material;
+    material->addTextures(targets);
   }
+
   void SinkPass::debugTarget(QRectF rect, Texture * target) {
     debugPlanes.push_back(new DebugPlane(rect, target));
   }

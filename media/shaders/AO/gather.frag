@@ -3,8 +3,8 @@
 in vec4 viewPosition;
 in vec3 viewNormal;
 
-out vec4 normal;
-out vec4 depth;
+out vec4 normalTarget;
+out vec4 depthTarget;
 
 void main(void) {
     normal = vec4(viewNormal, 1);

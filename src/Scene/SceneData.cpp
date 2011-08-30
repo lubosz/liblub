@@ -155,6 +155,12 @@ Texture* SceneData::getTexture(const string & name) {
   }
 }
 
+Texture* SceneData::getTexture(const string & name, const string & as){
+  Texture * texture = getTexture(name);
+  texture->name = as;
+  return texture;
+}
+
 void SceneData::setBackgroundColor(const QVector3D backgroundColor) {
   this->backgroundColor = backgroundColor;
   RenderEngine::Instance().setClearColor(backgroundColor);

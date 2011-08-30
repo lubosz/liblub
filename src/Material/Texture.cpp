@@ -14,6 +14,7 @@
 #include "Renderer/RenderEngine.h"
 
 Texture::Texture()  {
+  isDepth = false;
   target = GL_TEXTURE_2D;
   glId = TextureFactory::Instance().getNextId();
 }

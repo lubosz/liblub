@@ -51,7 +51,7 @@ class DepthBufferExample: public Application {
 
     fbo = new FrameBuffer(res);
 
-    fbo->attachTexture(GL_DEPTH_ATTACHMENT, targetTexture);
+    fbo->attachDepthTexture(targetTexture);
     fbo->disableColorBuffer();
     fbo->check();
 

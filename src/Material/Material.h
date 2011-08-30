@@ -20,12 +20,14 @@ class Material {
   void activate();
   void samplerUniforms();
   void addTexture(Texture * texture);
+  void addTextures(vector<Texture *> &addTextures);
   void done(const QList<string> & attributes);
 
   vector<Texture*> textures;
 
   ShaderProgram * shaderProgram;
   void init();
+  void initRenderTargets(vector<Texture*> &targets);
   void activateTextures();
  protected:
   QVector4D diffuseColor;

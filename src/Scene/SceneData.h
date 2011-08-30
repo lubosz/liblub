@@ -46,6 +46,7 @@ public:
   void addLight(const string & name, Light * light);
   Light* getLight(const string & name);
   Texture* getTexture(const string & name);
+  Texture* getTexture(const string & name, const string & as);
 
   void updateLightBuffer();
   void initLightBuffer(const string& shaderName, const string& bufferName);

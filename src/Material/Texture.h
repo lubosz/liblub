@@ -23,6 +23,7 @@ class Texture {
   GLuint getHandle() const;
 	virtual ~Texture();
 	string name;
+	bool isDepth;
  protected:
 	GLuint handle;
 	GLenum glId;

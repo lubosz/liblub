@@ -16,6 +16,7 @@
 using std::stringstream;
 
 FrameBuffer::FrameBuffer(QSize& res) : res(res) {
+  attachmentPoint = GL_COLOR_ATTACHMENT0;
     glError;
     // Gen texture for fbo
     // create a texture object
@@ -60,12 +61,43 @@ void FrameBuffer::check() {
   unBind();
 }
 
-void FrameBuffer::attachTexture(GLenum attachmentPoint, Texture * texture) {
+void FrameBuffer::attachTexture(Texture * texture) {
   bind();
   // attach a texture to FBO color attachement point
   glFramebufferTexture2D(GL_FRAMEBUFFER, attachmentPoint, GL_TEXTURE_2D,
       texture->getHandle(), 0);
+  attachmentPoint++;
 }
+
+void FrameBuffer::attachDepthTexture(Texture * texture) {
+  bind();
+  // attach a texture to FBO color attachement point
+  glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D,
+      texture->getHandle(), 0);
+}
+
+
+void FrameBuffer::attachTextures(vector<Texture*> &textures) {
+  if (textures.size() == 0)
+    LogFatal << "No Textures";
+  unsigned colorTextures = 0;
+  foreach(Texture* texture, textures) {
+    if(!texture->isDepth){
+      attachTexture(texture);
+      colorTextures++;
+      LogDebug << "Initializing texture" << texture->name;
+    }
+  }
+  setDrawBuffers(colorTextures);
+
+  foreach(Texture* texture, textures) {
+    if(texture->isDepth){
+      attachDepthTexture(texture);
+      LogDebug << "Initializing depth texture" << texture->name;
+    }
+  }
+}
+
 
 void FrameBuffer::disableColorBuffer() {
     // disable color buffer if you don't attach any color buffer image,

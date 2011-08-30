@@ -78,7 +78,7 @@ class TesselationApp: public Application {
 
     fbo = new FrameBuffer(res);
     targetTexture = new ColorTexture(res, "targetTexture");
-    fbo->attachTexture(GL_COLOR_ATTACHMENT0, targetTexture);
+    fbo->attachTexture(targetTexture);
 
     postMaterial = new Template("Post/HDR", attributes);
     postMaterial->addTexture(targetTexture);
