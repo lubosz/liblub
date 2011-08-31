@@ -21,9 +21,13 @@ XCBInput::XCBInput(xcb_connection_t *connection, XCBWindow * mediaLayer) {
   pressedKeys = QList<xcb_keysym_t>();
 
   // TODO(bmonkey): Hardcoded values => xml
-  inputSpeed = .01;
+  inputSpeed = .03;
   mouseSensitivity = .1;
   this->mediaLayer = mediaLayer;
+
+  eventTimer = new QTimer(this);
+  connect(eventTimer, SIGNAL(timeout()), this, SLOT(eventLoop()));
+  eventTimer->start(0);
 }
 
 XCBInput::~XCBInput() {
@@ -52,7 +56,7 @@ void XCBInput::eventLoop() {
 
             switch (pressedKey) {
             case XK_Shift_L:
-              inputSpeed = .01;
+              inputSpeed = .03;
                           break;
 
             }
@@ -82,7 +86,7 @@ void XCBInput::eventLoop() {
                     RenderEngine::Instance().toggleWire();
                     break;
                 case XK_Shift_L:
-                    inputSpeed = .1;
+                    inputSpeed = .2;
                 	break;
                 	
                 default:

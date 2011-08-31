@@ -29,10 +29,6 @@ void XCBApplication::draw() {
     Timer::Instance().updateFPS();
 }
 
-void XCBApplication::eventLoop() {
-  window->getInput()->eventLoop();
-}
-
 void XCBApplication::run() {
   Config::Instance().load("config.xml");
   // Qt requires at least one argument.
@@ -61,9 +57,6 @@ void XCBApplication::run() {
   connect(drawTimer, SIGNAL(timeout()), this, SLOT(draw()));
   drawTimer->start(0);
 
-  QTimer *eventTimer = new QTimer(this);
-  connect(eventTimer, SIGNAL(timeout()), this, SLOT(eventLoop()));
-  eventTimer->start(0);
   app->exec();
 }
 

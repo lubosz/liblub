@@ -37,7 +37,6 @@ class XCBApplication : public QObject{
 public slots:
 	void updateFont();
 	void draw();
-	void eventLoop();
 
 protected:
 	bool fontOverlay;
