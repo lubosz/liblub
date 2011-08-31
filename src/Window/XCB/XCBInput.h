@@ -8,6 +8,7 @@
 #pragma once
 
 #include <QList>
+#include <QTimer>
 #include "Material/ShaderProgram.h"
 #include <xcb/xcb_keysyms.h>
 #include "Window/Input.h"
@@ -20,6 +21,7 @@ public:
 
   explicit XCBInput(xcb_connection_t *connection, XCBWindow * mediaLayer);
   virtual ~XCBInput();
+public slots:
   void eventLoop();
 
 private:
@@ -39,7 +41,7 @@ private:
 #endif
 
   xcb_connection_t *connection;
-
+  QTimer *eventTimer;
   xcb_key_symbols_t *syms;
   xcb_keysym_t pressedKey;
 
