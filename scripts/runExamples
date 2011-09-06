@@ -1,0 +1,21 @@
+#!/usr/bin/python
+#coding: UTF-8
+import os, subprocess
+
+blacklist_demos = ["depth", "ssao", "load", "posteffect", "multilight", "tesselation"]
+blacklist_scenes = ["ash", "common", "csm", "multilight", "nice", "terrain", "ocean"]
+
+def getFiles(path):
+  files = os.listdir(path)
+  files.sort()
+  return files
+
+for demo in getFiles("bin"):
+  if demo not in blacklist_demos:
+    print("Running %s demo" % demo)
+    subprocess.call(['bin/%s'% demo])
+    
+for scene in getFiles("media/scenes"):
+  scene = scene.replace(".xml", "")
+  if scene not in blacklist_scenes:
+      subprocess.call(['bin/load', scene])
