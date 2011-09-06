@@ -162,7 +162,7 @@ void PlanetsApp::drawPlanets() {
   QMap<qreal, Atmosphere*> atmoSpheres;
 
   foreach(Planet * planet, planets) {
-      QVector3D distance = planet->atmoSphere->node->position
+      QVector3D distance = planet->atmoSphere->node->getPosition()
           - SceneData::Instance().getCurrentCamera()->position;
       atmoSpheres.insert(distance.length(), planet->atmoSphere);
   }

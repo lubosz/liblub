@@ -10,50 +10,78 @@
 #include "Mesh/Mesh.h"
 #include "Material/Material.h"
 #include "Scene/DirectionNode.h"
+#include <QObject>
+#include <QVariant>
+#include <QMetaType>
 
-class Node {
- private:
-	string name;
- public:
-	QVector3D position, rotation;
- private:
-	float size;
-	Node * parent;
-	Material * material;
-	QMatrix4x4 modelMatrix;
-	bool castShadows, receiveShadows;
+class Node: public QObject {
+  Q_OBJECT
+  Q_PROPERTY(float size READ size WRITE setSize)
+  Q_PROPERTY(float rotationX READ rotationX WRITE setRotationX)
+  Q_PROPERTY(float rotationY READ rotationY WRITE setRotationY)
+  Q_PROPERTY(float rotationZ READ rotationZ WRITE setRotationZ)
+  Q_PROPERTY(float positionX READ positionX WRITE setPositionX)
+  Q_PROPERTY(float positionY READ positionY WRITE setPositionY)
+  Q_PROPERTY(float positionZ READ positionZ WRITE setPositionZ)
 
- public:
-	Node() {};
-	Node(
-	        string name, const QVector3D& position,
-	        float size, Mesh * mesh, Material * material
-	);
-	virtual ~Node();
+private:
+  string name;
+  Node * parent;
+  Material * material;
+  QMatrix4x4 modelMatrix;
+  bool castShadows, receiveShadows;
+  float m_size;
+  QVector3D position, rotation;
 
-	bool transparent;
-	Mesh * mesh;
+public:
+  bool transparent;
+  Mesh * mesh;
+
+  Node() {
+  } ;
+  Node(string name, const QVector3D& position, float size, Mesh * mesh,
+      Material * material);
+
+  virtual ~Node();
+
+  void draw();
+  void update();
+
+  float size() const;
+  float rotationX() const;
+  float rotationY() const;
+  float rotationZ() const;
+  float positionX() const;
+  float positionY() const;
+  float positionZ() const;
   bool getCastShadows() const;
-  void setCastShadows(bool castShadows);
   bool getReceiveShadows() const;
+  string getName() const;
+  QVector3D getPosition() const;
+  QVector3D getRotation() const;
+  Material *getMaterial() const;
+  QVector3D getCenter();
+
+  void setCastShadows(bool castShadows);
   void setReceiveShadows(bool receiveShadows);
-  void setSize(float size);
   void setMesh(Mesh *mesh);
   void setPosition(const QVector3D& position);
   void setRotation(const QVector3D& rotation);
-  void draw();
   void setView(DirectionNode * viewPoint);
   void setView(ShaderProgram * shaderProgram, DirectionNode * viewPoint);
   void setShadowCoords(DirectionNode * viewPoint);
-  static void setShadowCoords(ShaderProgram * shaderProgram, DirectionNode * viewPoint);
-  string getName() const;
-  const QVector3D getPosition();
-  const QVector3D getRotation();
   void setName(string name);
-  Material *getMaterial() const;
   void setMaterial(Material *material);
-  float getSize() const;
-  void update();
-  QVector3D getCenter();
+  static void setShadowCoords(ShaderProgram * shaderProgram,
+      DirectionNode * viewPoint);
+
+public slots:
+  void setSize(float size);
+  void setRotationX(float rotation);
+  void setRotationY(float rotation);
+  void setRotationZ(float rotation);
+  void setPositionX(float position);
+  void setPositionY(float position);
+  void setPositionZ(float position);
 };
 

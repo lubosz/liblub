@@ -15,7 +15,7 @@
 Node::Node(string name, const QVector3D& position, float size,
     Mesh * mesh, Material * material)
 :
-        name(name), position(position), size(size), material(material),
+        name(name), position(position), m_size(size), material(material),
          modelMatrix(QMatrix4x4()), castShadows(true),
         receiveShadows(false), mesh(mesh) {
     update();
@@ -23,6 +23,9 @@ Node::Node(string name, const QVector3D& position, float size,
     rotation = QVector3D();
 }
 
+Node::~Node() {
+    // TODO(bmonkey): Auto-generated destructor stub
+}
 void Node::setMesh(Mesh *mesh) {
     this->mesh = mesh;
 }
@@ -40,12 +43,10 @@ void Node::setRotation(const QVector3D& rotation) {
 string Node::getName() const {
     return name;
 }
-
-const QVector3D Node::getPosition() {
+ QVector3D Node::getPosition() const {
     return position;
 }
-
-const QVector3D Node::getRotation(){
+ QVector3D Node::getRotation() const {
   return rotation;
 }
 
@@ -57,8 +58,8 @@ Material *Node::getMaterial() const {
     return material;
 }
 
-float Node::getSize() const {
-    return size;
+float Node::size() const {
+    return m_size;
 }
 
 void Node::setMaterial(Material *material) {
@@ -67,19 +68,15 @@ void Node::setMaterial(Material *material) {
 
 void Node::draw() {
     material->activate();
-
     mesh->draw();
 //    mesh->boundingBox->draw();
 }
 
 void Node::setSize(float size) {
-    this->size = size;
+    m_size = size;
     update();
 }
 
-Node::~Node() {
-    // TODO(bmonkey): Auto-generated destructor stub
-}
 
 bool Node::getReceiveShadows() const {
     return receiveShadows;
@@ -120,7 +117,7 @@ void Node::setCastShadows(bool castShadows) {
 void Node::update() {
     modelMatrix.setToIdentity();
     modelMatrix.translate(position);
-    modelMatrix.scale(size);
+    modelMatrix.scale(size());
     modelMatrix.rotate(rotation.x(), QVector3D(1,0,0));
     modelMatrix.rotate(rotation.y(), QVector3D(0,1,0));
     modelMatrix.rotate(rotation.z(), QVector3D(0,0,1));
@@ -147,5 +144,54 @@ void Node::setView(DirectionNode * viewPoint) {
 }
 
 QVector3D Node::getCenter() {
-  return position + mesh->boundingBox->getCenter() * size;
+  return position + mesh->boundingBox->getCenter() * size();
 }
+
+void Node::setRotationX(float rotation) {
+  this->rotation.setX(rotation);
+  update();
+}
+void Node::setRotationY(float rotation) {
+  this->rotation.setY(rotation);
+  update();
+}
+void Node::setRotationZ(float rotation) {
+  this->rotation.setZ(rotation);
+  update();
+}
+
+float Node::rotationX() const {
+  return rotation.x();
+}
+float Node::rotationY() const {
+  return rotation.y();
+}
+float Node::rotationZ() const {
+  return rotation.z();
+}
+
+
+
+void Node::setPositionX(float position) {
+  this->position.setX(position);
+  update();
+}
+void Node::setPositionY(float position) {
+  this->position.setY(position);
+  update();
+}
+void Node::setPositionZ(float position) {
+  this->position.setZ(position);
+  update();
+}
+
+float Node::positionX() const {
+  return position.x();
+}
+float Node::positionY() const {
+  return position.y();
+}
+float Node::positionZ() const {
+  return position.z();
+}
+
