@@ -65,6 +65,7 @@ void XCBInput::eventLoop() {
         case XCB_KEY_PRESS:
             kp = reinterpret_cast<xcb_key_press_event_t *>(event);
             pressedKey = xcb_key_symbols_get_keysym(syms, kp->detail, 0);
+            Camera * cam;
 
             switch (pressedKey) {
                 case XK_Escape:
@@ -77,7 +78,10 @@ void XCBInput::eventLoop() {
                   mediaLayer->toggleFullScreen();
                     break;
                 case XK_p:
-                    RenderEngine::Instance().toggleFBO();
+                    cam = SceneData::Instance().getCurrentCamera();
+                    LogInfo << "Cam Pos" << cam->position.x() << cam->position.y() << cam->position.z();
+                    LogInfo << "Cam Dir" << cam->direction.x() << cam->direction.y() << cam->direction.z();
+                    LogInfo << "Cam YPR" << cam->yaw << cam->pitch << cam->roll;
                     break;
                 case XK_c:
                     RenderEngine::Instance().toggleLightView();
