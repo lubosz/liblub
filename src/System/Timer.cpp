@@ -20,7 +20,8 @@ Timer::~Timer() {
 }
 
 #ifndef LIBLUB_WINDOWS
-const int BILLION = 1000000000; // 10^9
+const float BILLION = 1000000000; // 10^9
+const float MILLION = 1000000;
 
 /* Returns a timespec representing the elapsed time between
  * start and end.
@@ -49,7 +50,7 @@ float Timer::getFPS() {
 }
 
 float Timer::getSPF() {
-  return float(frameTime.tv_nsec) / 1000000.0;
+  return float(frameTime.tv_nsec) / MILLION;
 }
 #else
 
@@ -74,6 +75,6 @@ float Timer::getTime() {
 #ifndef LIBLUB_WINDOWS
   timespec now;
   clock_gettime(CLOCK_MONOTONIC, &now);
-  return (float(now.tv_sec) + float(now.tv_nsec)/float(BILLION));
+  return (float(now.tv_sec) + float(now.tv_nsec)/BILLION);
 #endif
 }

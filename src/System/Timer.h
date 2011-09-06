@@ -17,7 +17,7 @@ class Timer : public Singleton<Timer>{
 private:
 #ifndef LIBLUB_WINDOWS
   timespec startTime, lastTime, frameTime;
-  timespec elapsed(timespec &start, timespec &end);
+  static timespec elapsed(timespec &start, timespec &end);
 #else
   //TODO: Qt Timer for Win
 #endif
