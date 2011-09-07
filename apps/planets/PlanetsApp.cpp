@@ -73,8 +73,8 @@ void PlanetsApp::initCamAndLight() {
   light = new Light(QVector3D(0, 0, 1000), QVector3D(1, -5, 0));
   SceneData::Instance().addLight("sunlight", light);
 
-  camera->yaw = 2.9;
-  camera->pitch = 176.6;
+  camera->rotation.setX(2.9);
+  camera->rotation.setY(176.6);
   camera->update();
   camera->updateView();
   camera->updateRotation();

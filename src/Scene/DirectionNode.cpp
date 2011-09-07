@@ -9,9 +9,7 @@
 
 DirectionNode::DirectionNode(){
   projectionMatrix = QMatrix4x4();
-  rotation = QMatrix4x4();
   viewMatrix = QMatrix4x4();
-  yaw = 0, pitch = 0, roll = 0;
 
   // TODO(bmonkey): Hardcoded values => xml
   aspect = 1920.0 / 1200.0;
@@ -26,14 +24,6 @@ DirectionNode::~DirectionNode(){
 
 }
 
-QVector3D DirectionNode::getDirection() const {
-    return direction;
-}
-
-QVector3D DirectionNode::getPosition() const {
-    return position;
-}
-
 QMatrix4x4 DirectionNode::getProjection() const {
     return projectionMatrix;
 }
@@ -43,18 +33,10 @@ QMatrix4x4 DirectionNode::getView() const {
 }
 
 // TODO(bmonkey): This shouldn't be needed.
-QMatrix4x4 DirectionNode::getViewNoTranslation() const {
+QMatrix4x4 DirectionNode::getViewNoTranslation() {
     QMatrix4x4 viewMatrixNoTranslation;
-    viewMatrixNoTranslation.lookAt(QVector3D(0, 0, 0), direction, up);
+    viewMatrixNoTranslation.lookAt(QVector3D(0, 0, 0), direction(), up);
     return viewMatrixNoTranslation;
-}
-
-void DirectionNode::setPosition(const QVector3D & position) {
-    this->position = position;
-}
-
-void DirectionNode::setDirection(const QVector3D & direction) {
-    this->direction = direction;
 }
 
 /* Generate a perspective view matrix using a field of view angle fov,
@@ -66,7 +48,7 @@ void DirectionNode::updatePerspective() {
 
 void DirectionNode::updateView() {
     viewMatrix.setToIdentity();
-    viewMatrix.lookAt(position, direction + position, up);
+    viewMatrix.lookAt(position, direction() + position, up);
 }
 
 void DirectionNode::setParams(qreal fov, qreal near, qreal far) {
@@ -84,28 +66,24 @@ void DirectionNode::setAspect(qreal aspect) {
 
 
 void DirectionNode::forwardDirection(qreal distance) {
-  QVector3D front = direction;
-  front.normalize();
-  position += distance*front;
+  position += distance*direction();
   updateView();
 }
 
 void DirectionNode::backwardDirection(qreal distance) {
-  QVector3D front = direction;
-  front.normalize();
-  position -= distance*front;
+  position -= distance*direction();
   updateView();
 }
 
 void DirectionNode::leftDirection(qreal distance) {
-  QVector3D side = QVector3D::crossProduct(direction, up);
+  QVector3D side = QVector3D::crossProduct(direction(), up);
   side.normalize();
   position -= distance * side;
   updateView();
 }
 
 void DirectionNode::rightDirection(qreal distance) {
-  QVector3D side = QVector3D::crossProduct(direction, up);
+  QVector3D side = QVector3D::crossProduct(direction(), up);
   side.normalize();
   position += distance * side;
   updateView();

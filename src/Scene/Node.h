@@ -9,12 +9,14 @@
 
 #include "Mesh/Mesh.h"
 #include "Material/Material.h"
-#include "Scene/DirectionNode.h"
 #include <QObject>
 #include <QVariant>
 #include <QMetaType>
 
+class DirectionNode;
+
 class Node: public QObject {
+
   Q_OBJECT
   Q_PROPERTY(float size READ size WRITE setSize)
   Q_PROPERTY(float rotationX READ rotationX WRITE setRotationX)
@@ -31,11 +33,12 @@ private:
   QMatrix4x4 modelMatrix;
   bool castShadows, receiveShadows;
   float m_size;
-  QVector3D position, rotation;
 
 public:
+  QVector3D position, rotation;
   bool transparent;
   Mesh * mesh;
+  QMatrix4x4 rotationMatrix;
 
   Node() {
   } ;
@@ -46,6 +49,7 @@ public:
 
   void draw();
   void update();
+  void updateRotation();
 
   float size() const;
   float rotationX() const;
@@ -61,7 +65,9 @@ public:
   QVector3D getRotation() const;
   Material *getMaterial() const;
   QVector3D getCenter();
+  QVector3D direction();
 
+  void setDirection(const QVector3D & direction);
   void setCastShadows(bool castShadows);
   void setReceiveShadows(bool receiveShadows);
   void setMesh(Mesh *mesh);

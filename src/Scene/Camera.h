@@ -15,8 +15,6 @@ class Camera: public DirectionNode {
  public:
     Camera();
     ~Camera();
-
-	void updateRotation();
 	void update();
 	void setMouseLook(int mouseXrel, int mouseYrel, qreal mouseSensitivity);
 	void setMouseZoom(int wheelX, int wheelY);

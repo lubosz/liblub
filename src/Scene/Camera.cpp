@@ -11,9 +11,7 @@
 #include "System/Logger.h"
 
 Camera::Camera() {
-  direction = QVector3D(0, 0, -1);
-  position = QVector3D();
-  defaultDirection = direction;
+  update();
 }
 
 Camera::~Camera() {
@@ -21,28 +19,19 @@ Camera::~Camera() {
 }
 
 void Camera::setMouseLook(int mouseXrel, int mouseYrel, qreal mouseSensitivity) {
-  pitch -= mouseSensitivity * mouseXrel;
-  yaw -= mouseSensitivity * mouseYrel;
-  if (yaw > 89) yaw = 89;
-  if (yaw < -89) yaw = -89;
-
-  updateRotation();
+  rotation.setX(rotation.x() - mouseSensitivity * mouseYrel);
+  rotation.setY(rotation.y() + mouseSensitivity * mouseXrel);
+  if (rotation.x() > 89) rotation.setX(89);
+  if (rotation.x() < -89) rotation.setX(-89);
+  update();
 }
 
 void Camera::setMouseZoom(int wheelX, int wheelY) {
   LogDebug << "\t" << wheelX << "\t" << wheelY;
 }
 
-void Camera::updateRotation() {
-  rotation.setToIdentity();
-  rotation.rotate(pitch, 0, 1, 0);
-  rotation.rotate(yaw, 1, 0, 0);
-  direction = rotation * defaultDirection;
-  direction.normalize();
-  updateView();
-}
-
 void Camera::update() {
+  updateRotation();
   updateView();
 }
 
@@ -50,8 +39,6 @@ void Camera::setUniforms(ShaderProgram * program, const QVector3D fromPosition){
   program->use();
   program->setUniform("cameraPosition", position-fromPosition);
   QVector3D cameraDistance = fromPosition - position;
-  //LogDebug << fromPosition.x();
-//  QVector3D cameraDistance = position;
   program->setUniform("cameraHeight", (float)cameraDistance.length());
   program->setUniform("cameraHeight2", float(cameraDistance.length()*cameraDistance.length()));
 }

@@ -18,9 +18,9 @@ Node::Node(string name, const QVector3D& position, float size,
         name(name), position(position), m_size(size), material(material),
          modelMatrix(QMatrix4x4()), castShadows(true),
         receiveShadows(false), mesh(mesh) {
-    update();
     transparent = false;
     rotation = QVector3D();
+    update();
 }
 
 Node::~Node() {
@@ -77,7 +77,6 @@ void Node::setSize(float size) {
     update();
 }
 
-
 bool Node::getReceiveShadows() const {
     return receiveShadows;
 }
@@ -118,15 +117,11 @@ void Node::update() {
     modelMatrix.setToIdentity();
     modelMatrix.translate(position);
     modelMatrix.scale(size());
-    modelMatrix.rotate(rotation.x(), QVector3D(1,0,0));
-    modelMatrix.rotate(rotation.y(), QVector3D(0,1,0));
-    modelMatrix.rotate(rotation.z(), QVector3D(0,0,1));
+    updateRotation();
 }
 
 void Node::setView(
         ShaderProgram * shaderProgram, DirectionNode * viewPoint) {
-    glError;
-//    printf("Binding Node %s\n", name.c_str());
     shaderProgram->use();
 
     QMatrix4x4 tempMatrix = viewPoint->getView() * modelMatrix;
@@ -170,8 +165,6 @@ float Node::rotationZ() const {
   return rotation.z();
 }
 
-
-
 void Node::setPositionX(float position) {
   this->position.setX(position);
   update();
@@ -195,3 +188,22 @@ float Node::positionZ() const {
   return position.z();
 }
 
+void Node::updateRotation() {
+  rotationMatrix.setToIdentity();
+  rotationMatrix.rotate(rotation.x(), QVector3D(1,0,0));
+  rotationMatrix.rotate(rotation.y(), QVector3D(0,1,0));
+  rotationMatrix.rotate(rotation.z(), QVector3D(0,0,1));
+  modelMatrix = modelMatrix * rotationMatrix;
+}
+
+QVector3D Node::direction() {
+  // 3. row of the rotation matrix  is the unit vector
+  // describing the direction in which you are facing.
+  QVector3D direction = rotationMatrix.row(2).toVector3D();
+  return direction;
+}
+
+void Node::setDirection(const QVector3D & direction) {
+  rotationMatrix.setToIdentity();
+  rotationMatrix.lookAt(QVector3D(), -direction, up);
+}

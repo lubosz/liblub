@@ -19,11 +19,10 @@ Light::Light() {
 
 Light::Light(const QVector3D& position, const QVector3D & direction) {
   this->position = position;
-  this->direction = direction;
-  defaultDirection = direction;
   diffuse = QVector4D(1,1,1,1);
   specular = QVector4D(1,1,1,1);
   updatePerspective();
+  setDirection(direction);
   update();
 }
 
@@ -34,14 +33,11 @@ Light::~Light() {
 void Light::bindShaderUpdate(ShaderProgram * shaderProgram) {
     QVector4D lightPositionView = SceneData::Instance().getCurrentCamera()->getView() * position;
     shaderProgram->setUniform("lightPositionView",lightPositionView);
-//
 //    shaderProgram->setUniform(position, "lightPositionWorld");
-
 //    QVector3D directionView = SceneData::Instance().getCurrentCamera()->getView() * direction;
 //    shaderProgram->setUniform(directionView, "spotDirection");
-//
     QVector3D spotDirectionView = SceneData::Instance().getCurrentCamera()->getViewNoTranslation()
-            * direction;
+            * direction();
 //    spotDirectionView.normalize();
     shaderProgram->setUniform("spotDirectionView", spotDirectionView);
     glError;
@@ -52,10 +48,10 @@ void Light::bindShaderUpdateLight(ShaderProgram * shaderProgram) {
 
     shaderProgram->setUniform("lightPositionView", lightPositionView);
 
-    QVector3D directionView = getView() * direction;
+    QVector3D directionView = getView() * direction();
     shaderProgram->setUniform("spotDirection", directionView);
 
-    QVector3D spotDirectionView = getViewNoTranslation() * direction;
+    QVector3D spotDirectionView = getViewNoTranslation() * direction();
     spotDirectionView.normalize();
     shaderProgram->setUniform("spotDirectionView", spotDirectionView);
 }
@@ -65,7 +61,6 @@ void Light::bindShaderInit(ShaderProgram * shaderProgram) {
 
     //TODO: Hardcoded light stuff
     shaderProgram->setUniform("lightColor",QVector4D(1.0, 1.0, 1.0, 1.0));
-
 
     // attenuation
     glUniform1f(glGetUniformLocation(program, "constantAttenuation"), 0);
@@ -78,9 +73,5 @@ void Light::bindShaderInit(ShaderProgram * shaderProgram) {
 }
 
 void Light::update() {
-  //TODO: Multiple lights
-    SceneGraph::Instance().setPosition("Light", position);
-    LogDebug << position.x() << " " << position.y() << " "
-            << position.z();
     updateView();
 }

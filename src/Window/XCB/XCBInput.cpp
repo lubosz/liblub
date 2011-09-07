@@ -80,8 +80,8 @@ void XCBInput::eventLoop() {
                 case XK_p:
                     cam = SceneData::Instance().getCurrentCamera();
                     LogInfo << "Cam Pos" << cam->position.x() << cam->position.y() << cam->position.z();
-                    LogInfo << "Cam Dir" << cam->direction.x() << cam->direction.y() << cam->direction.z();
-                    LogInfo << "Cam YPR" << cam->yaw << cam->pitch << cam->roll;
+                    LogInfo << "Cam Dir" << cam->direction().x() << cam->direction().y() << cam->direction().z();
+                    LogInfo << "Cam YPR" << cam->rotation.x() << cam->rotation.y() << cam->rotation.z();
                     break;
                 case XK_c:
                     RenderEngine::Instance().toggleLightView();

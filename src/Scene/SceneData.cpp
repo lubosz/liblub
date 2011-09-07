@@ -45,7 +45,7 @@ void SceneData::initLightBuffer(ShaderProgram * shader, const string& bufferName
     lightBufferData[lightIndex].position = light->position;
     lightBufferData[lightIndex].diffuse = light->diffuse;
     lightBufferData[lightIndex].specular = light->specular;
-    lightBufferData[lightIndex].direction = light->direction;
+    lightBufferData[lightIndex].direction = light->direction();
 
     printf("Found Light %s\n", lights.key(light).c_str());
     qDebug() << lightBufferData[lightIndex].diffuse;
