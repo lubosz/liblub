@@ -12,14 +12,13 @@
 #include "Scene/SceneData.h"
 #include "Renderer/RenderEngine.h"
 
-Node::Node(string name, const QVector3D& position, float size,
-    Mesh * mesh, Material * material)
-:
-        name(name), position(position), m_size(size), material(material),
-         modelMatrix(QMatrix4x4()), castShadows(true),
-        receiveShadows(false), mesh(mesh) {
+Node::Node(string name, const QVector3D& position, float size, Mesh * mesh,
+        Material * material) :
+    name(name), position(position), m_size(size), material(material),
+            modelMatrix(QMatrix4x4()), castShadows(true),
+            receiveShadows(false), mesh(mesh) {
     transparent = false;
-    rotation = QVector3D();
+    eulerRotationCache = QVector3D();
     update();
 }
 
@@ -36,7 +35,10 @@ void Node::setPosition(const QVector3D& position) {
 }
 
 void Node::setRotation(const QVector3D& rotation) {
-    this->rotation = rotation;
+    eulerRotationCache = rotation;
+    setRotationX(rotation.x());
+    setRotationX(rotation.y());
+    setRotationX(rotation.z());
     update();
 }
 
@@ -45,9 +47,6 @@ string Node::getName() const {
 }
  QVector3D Node::getPosition() const {
     return position;
-}
- QVector3D Node::getRotation() const {
-  return rotation;
 }
 
 void Node::setName(string name) {
@@ -117,7 +116,7 @@ void Node::update() {
     modelMatrix.setToIdentity();
     modelMatrix.translate(position);
     modelMatrix.scale(size());
-    updateRotation();
+    modelMatrix = modelMatrix * rotationMatrix;
 }
 
 void Node::setView(
@@ -139,71 +138,71 @@ void Node::setView(DirectionNode * viewPoint) {
 }
 
 QVector3D Node::getCenter() {
-  return position + mesh->boundingBox->getCenter() * size();
+    return position + mesh->boundingBox->getCenter() * size();
 }
 
 void Node::setRotationX(float rotation) {
-  this->rotation.setX(rotation);
-  update();
+    eulerRotationCache.setX(rotation);
+    updateRotationFromEuler();
 }
 void Node::setRotationY(float rotation) {
-  this->rotation.setY(rotation);
-  update();
+    eulerRotationCache.setY(rotation);
+    updateRotationFromEuler();
 }
 void Node::setRotationZ(float rotation) {
-  this->rotation.setZ(rotation);
-  update();
+    eulerRotationCache.setZ(rotation);
+    updateRotationFromEuler();
 }
 
-float Node::rotationX() const {
-  return rotation.x();
-}
-float Node::rotationY() const {
-  return rotation.y();
-}
-float Node::rotationZ() const {
-  return rotation.z();
+void Node::updateRotationFromEuler() {
+    rotationMatrix.setToIdentity();
+    rotationMatrix.rotate(eulerRotationCache.x(), QVector3D(1, 0, 0));
+    rotationMatrix.rotate(eulerRotationCache.y(), QVector3D(0, 1, 0));
+    rotationMatrix.rotate(eulerRotationCache.z(), QVector3D(0, 0, 1));
+    update();
 }
 
 void Node::setPositionX(float position) {
-  this->position.setX(position);
-  update();
+    this->position.setX(position);
+    update();
 }
 void Node::setPositionY(float position) {
-  this->position.setY(position);
-  update();
+    this->position.setY(position);
+    update();
 }
 void Node::setPositionZ(float position) {
-  this->position.setZ(position);
-  update();
+    this->position.setZ(position);
+    update();
 }
 
 float Node::positionX() const {
-  return position.x();
+    return position.x();
 }
 float Node::positionY() const {
-  return position.y();
+    return position.y();
 }
 float Node::positionZ() const {
-  return position.z();
+    return position.z();
 }
 
-void Node::updateRotation() {
-  rotationMatrix.setToIdentity();
-  rotationMatrix.rotate(rotation.x(), QVector3D(1,0,0));
-  rotationMatrix.rotate(rotation.y(), QVector3D(0,1,0));
-  rotationMatrix.rotate(rotation.z(), QVector3D(0,0,1));
-  modelMatrix = modelMatrix * rotationMatrix;
+float Node::rotationX() const {
+    return eulerRotationCache.x();
+}
+float Node::rotationY() const {
+    return eulerRotationCache.y();
+}
+float Node::rotationZ() const {
+    return eulerRotationCache.z();
 }
 
 QVector3D Node::direction() {
-  // 3. row of the rotation matrix  is the unit vector
-  // describing the direction in which you are facing.
-  QVector3D direction = rotationMatrix.row(2).toVector3D();
-  return direction;
+    // 3. row of the rotation matrix  is the unit vector
+    // describing the direction in which you are facing.
+    QVector3D direction = rotationMatrix.row(2).toVector3D();
+    return direction;
 }
 
 void Node::setDirection(const QVector3D & direction) {
-  rotationMatrix.setToIdentity();
-  rotationMatrix.lookAt(QVector3D(), -direction, up);
+    rotationMatrix.setToIdentity();
+    rotationMatrix.lookAt(QVector3D(), -direction, up);
 }

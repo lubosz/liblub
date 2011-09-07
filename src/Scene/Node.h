@@ -33,9 +33,10 @@ private:
   QMatrix4x4 modelMatrix;
   bool castShadows, receiveShadows;
   float m_size;
+  QVector3D eulerRotationCache;
 
 public:
-  QVector3D position, rotation;
+  QVector3D position;
   bool transparent;
   Mesh * mesh;
   QMatrix4x4 rotationMatrix;
@@ -49,7 +50,7 @@ public:
 
   void draw();
   void update();
-  void updateRotation();
+  void updateRotationFromEuler();
 
   float size() const;
   float rotationX() const;
@@ -62,7 +63,6 @@ public:
   bool getReceiveShadows() const;
   string getName() const;
   QVector3D getPosition() const;
-  QVector3D getRotation() const;
   Material *getMaterial() const;
   QVector3D getCenter();
   QVector3D direction();

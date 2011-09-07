@@ -69,16 +69,11 @@ void PlanetsApp::renderFrame() {
 void PlanetsApp::initCamAndLight() {
   camera = SceneData::Instance().getCurrentCamera();
   camera->setPosition(QVector3D(0, 11.1, -0.85));
-  camera->update();
   light = new Light(QVector3D(0, 0, 1000), QVector3D(1, -5, 0));
   SceneData::Instance().addLight("sunlight", light);
 
-  camera->rotation.setX(2.9);
-  camera->rotation.setY(176.6);
-  camera->update();
-  camera->updateView();
-  camera->updateRotation();
-  camera->updatePerspective();
+  camera->setRotationX(2.9);
+  camera->setRotationY(176.6);
 }
 
 void PlanetsApp::initWidgets(QHBoxLayout * mainLayout) {

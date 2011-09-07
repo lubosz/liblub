@@ -11,6 +11,7 @@
 #include "System/Logger.h"
 
 Camera::Camera() {
+  setDirection(QVector3D(0,0,-1));
   update();
 }
 
@@ -19,10 +20,16 @@ Camera::~Camera() {
 }
 
 void Camera::setMouseLook(int mouseXrel, int mouseYrel, qreal mouseSensitivity) {
-  rotation.setX(rotation.x() - mouseSensitivity * mouseYrel);
-  rotation.setY(rotation.y() + mouseSensitivity * mouseXrel);
-  if (rotation.x() > 89) rotation.setX(89);
-  if (rotation.x() < -89) rotation.setX(-89);
+  rotationMatrix.rotate(mouseSensitivity * mouseXrel, QVector3D(0,1,0));
+
+  QVector3D dir = direction();
+  qreal upAngle = QVector3D::dotProduct(up, dir);
+
+  // Don't damage rotation matrix when looking straigt up and down
+  if((upAngle > -0.99 || mouseYrel < 0)
+     && (upAngle < 0.99 || mouseYrel > 0)) {
+    rotationMatrix.rotate(mouseSensitivity * mouseYrel, QVector3D::crossProduct(dir, up));
+  }
   update();
 }
 
@@ -31,8 +38,8 @@ void Camera::setMouseZoom(int wheelX, int wheelY) {
 }
 
 void Camera::update() {
-  updateRotation();
   updateView();
+  updatePerspective();
 }
 
 void Camera::setUniforms(ShaderProgram * program, const QVector3D fromPosition){
