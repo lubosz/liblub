@@ -27,19 +27,19 @@ class Node: public QObject {
   Q_PROPERTY(float positionZ READ positionZ WRITE setPositionZ)
 
 private:
-  string name;
-  Node * parent;
-  Material * material;
-  QMatrix4x4 modelMatrix;
   bool castShadows, receiveShadows;
   float m_size;
+  string name;
   QVector3D eulerRotationCache;
+  QMatrix4x4 modelMatrix;
+  Node * parent;
+  Material * material;
 
 public:
-  QVector3D position;
   bool transparent;
-  Mesh * mesh;
+  QVector3D position;
   QMatrix4x4 rotationMatrix;
+  Mesh * mesh;
 
   Node() {
   } ;

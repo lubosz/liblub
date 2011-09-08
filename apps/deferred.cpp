@@ -181,7 +181,7 @@
         new ColorTexture(res, "envTarget")
     };
 
-    InOutPass * shadingPass = shadingPass = new InOutPass(res, shadingSources, shadingTargets,
+    InOutPass * shadingPass = new InOutPass(res, shadingSources, shadingTargets,
         new Template("Post/DeferredMultiLight", uv));
     drawPasses.push_back(shadingPass);
 

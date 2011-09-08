@@ -193,6 +193,7 @@ void FBODebugPass::draw() {
         }
     }
     LogFatal << "Texture Not Found" << target;
+    return new Texture();
   }
 
   void SourcePass::initFBO() {
@@ -260,6 +261,7 @@ void FBODebugPass::draw() {
         }
     }
     LogFatal << "Texture Not Found" << target;
+    return new Texture();
   }
 
 

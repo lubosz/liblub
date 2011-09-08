@@ -52,6 +52,7 @@ void PlanetsApp::setExposure(double exposure) {
 }
 
 void PlanetsApp::scene() {
+    initWidgets(window->mainLayout);
   window->setWindowTitle("Planets Demo");
   initCamAndLight();
   foreach(Planet * planet, planets)

@@ -74,7 +74,6 @@ class LoadApp: public Application {
   void renderFrame(){
     defaultPass->render();
   }
-  void initWidgets(QHBoxLayout * mainLayout) {}
 };
 
 int main(int argc, char *argv[]) {

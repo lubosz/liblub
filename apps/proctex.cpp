@@ -73,7 +73,6 @@ class LoadApp: public Application {
     perlinNoise->use();
     perlinNoise->setUniform("time", Timer::Instance().getTime());
   }
-  void initWidgets(QHBoxLayout * mainLayout) {}
 };
 
 int main(int argc, char *argv[]) {

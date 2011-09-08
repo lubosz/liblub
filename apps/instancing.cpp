@@ -136,7 +136,6 @@ class InstancingApp: public Application {
     material->getShaderProgram()->bindUniformBuffer("positions",0,positionBuffer->getHandle());
     glError;
   }
-  void initWidgets(QHBoxLayout * mainLayout) {}
 };
 
 int main(int argc, char *argv[]) {

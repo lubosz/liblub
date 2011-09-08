@@ -14,11 +14,10 @@
 
 Node::Node(string name, const QVector3D& position, float size, Mesh * mesh,
         Material * material) :
-    name(name), position(position), m_size(size), material(material),
-            modelMatrix(QMatrix4x4()), castShadows(true),
-            receiveShadows(false), mesh(mesh) {
-    transparent = false;
-    eulerRotationCache = QVector3D();
+    castShadows(true), receiveShadows(false), m_size(size), name(name),
+            eulerRotationCache(QVector3D()), modelMatrix(QMatrix4x4()),
+            material(material), transparent(false), position(position),
+            rotationMatrix(QMatrix4x4()), mesh(mesh) {
     update();
 }
 

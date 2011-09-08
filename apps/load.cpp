@@ -52,7 +52,6 @@ class LoadApp: public Application {
   void renderFrame(){
     shadowSequence->render();
   }
-  void initWidgets(QHBoxLayout * mainLayout) {}
 };
 
 int main(int argc, char *argv[]) {

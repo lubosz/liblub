@@ -109,7 +109,6 @@ class TesselationApp: public Application {
     groundNode->draw();
     glError;
   }
-  void initWidgets(QHBoxLayout * mainLayout) {}
 };
 
 

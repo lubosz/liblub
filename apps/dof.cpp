@@ -146,7 +146,6 @@ void scene() {
 	pFBOColor->draw(pDOFShader);
 
   }
-  void initWidgets(QHBoxLayout * mainLayout) {}
 };
 
 int main(int argc, char *argv[]) {

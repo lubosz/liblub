@@ -36,7 +36,6 @@ public:
 
   virtual void renderFrame() = 0;
   virtual void scene() = 0;
-  virtual void initWidgets(QHBoxLayout * mainLayout) = 0;
 
 public slots:
   void draw();
