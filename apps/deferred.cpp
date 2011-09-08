@@ -46,13 +46,10 @@
 
     unsigned countLights = 0;
     foreach(Light * light, SceneData::Instance().lights) {
-//      string name = "shadowDepthSource[" + QString::number(countLights).toStdString() + "]";
       string name = "shadowDepthSource" + QString::number(countLights).toStdString();
-      vector<Texture*> shadowTargets = {
-          new ShadowTexture(res, name)
-      };
+      vector<Texture*> shadowSources = {new ShadowTexture(res, name)};
       ShadowCastPass * shadowCastPass = new ShadowCastPass(
-          res, shadowTargets, new Minimal(), light
+          res, shadowSources, new Minimal(), light
       );
       shadowCastPasses.push_back(shadowCastPass);
       drawPasses.push_back(shadowCastPass);
@@ -62,10 +59,6 @@
     //
     // source pass
     //
-
-    ShadowCastPass * shadowCastPass = shadowCastPasses[3];
-    Texture * shadowTarget = shadowCastPass->getTarget("shadowDepthSource3");
-    SceneData::Instance().setShadowLight(shadowCastPass->view);
 
     vector<Texture*> shadowReceiveTargets = {
         new ColorTexture(res, "positionTarget"),
@@ -77,16 +70,16 @@
         new DepthTexture(res, "depthTarget")
     };
 
-
     vector<Texture*> shadowReceiveSources = {
       SceneData::Instance().getTexture("masonry-wall-normal-map","normalTexture"),
       SceneData::Instance().getTexture("masonry-wall-texture","diffuseTexture"),
     };
 
-
     foreach(ShadowCastPass * shadowCastPass, shadowCastPasses) {
       shadowReceiveSources.push_back(shadowCastPass->targets[0]);
     }
+
+    // set sampler "array" via template engine
 
     QStringList shadowSamplers;
     foreach(ShadowCastPass * shadowCastPass, shadowCastPasses) {
@@ -95,12 +88,6 @@
     }
 
     TemplateEngine::Instance().c.insert("shadowSamplers", shadowSamplers);
-
-
-    TemplateEngine::Instance().c.insert(
-        "shadowDepthSource",
-        QString::fromStdString(shadowTarget->name)
-    );
 
     SourcePass * shadowReceivePass = new ShadowReceivePass(
         res,
@@ -141,7 +128,6 @@
         new Template("Post/Merge", uv));
     drawPasses.push_back(mergePass);
 
-
     vector<Texture*> blurHSources = {
         mergePass->getTarget("merge"),
     };
@@ -171,7 +157,6 @@
         shadowReceivePass->getTarget("normalMapTarget"),
         blurVPass->getTarget("finalAOTarget"),
         SceneData::Instance().getTexture("sky", "envMap")
-//        shadowReceivePass->getTarget("shadowTarget")
     };
 
     vector<Texture*> shadingTargets = {
@@ -216,7 +201,6 @@
     // Init Light Uniform Buffer
     SceneData::Instance().initLightBuffer(
         shadingPass->material->getShaderProgram(), "LightSourceBuffer");
-
   }
 
   void DeferredLightApp::renderFrame() {

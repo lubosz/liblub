@@ -66,7 +66,7 @@ void scene() {
 
     // fbo depth
     pFBODepth = new FrameBuffer(res);
-    pFBODepth->attachDepthTexture(pDepthTexture);
+    pFBODepth->attachTexture(pDepthTexture);
     pFBODepth->disableColorBuffer();
     pFBODepth->check();
 

@@ -62,40 +62,30 @@ void FrameBuffer::check() {
 }
 
 void FrameBuffer::attachTexture(Texture * texture) {
-  bind();
-  // attach a texture to FBO color attachement point
-  glFramebufferTexture2D(GL_FRAMEBUFFER, attachmentPoint, GL_TEXTURE_2D,
-      texture->getHandle(), 0);
-  attachmentPoint++;
+    bind();
+    if (!texture->isDepth) {
+        LogDebug << "Attaching color texture" << texture->name;
+        // attach a texture to FBO color attachement point
+        glFramebufferTexture2D(GL_FRAMEBUFFER, attachmentPoint, GL_TEXTURE_2D,
+                texture->getHandle(), 0);
+        attachmentPoint++;
+    } else {
+        LogDebug << "Attaching depth texture" << texture->name;
+        glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT,
+                GL_TEXTURE_2D, texture->getHandle(), 0);
+    }
 }
-
-void FrameBuffer::attachDepthTexture(Texture * texture) {
-  bind();
-  // attach a texture to FBO color attachement point
-  glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D,
-      texture->getHandle(), 0);
-}
-
 
 void FrameBuffer::attachTextures(vector<Texture*> &textures) {
   if (textures.size() == 0)
     LogFatal << "No Textures";
   unsigned colorTextures = 0;
   foreach(Texture* texture, textures) {
-    if(!texture->isDepth){
-      attachTexture(texture);
+    attachTexture(texture);
+    if(!texture->isDepth)
       colorTextures++;
-      LogDebug << "Initializing texture" << texture->name;
-    }
   }
   setDrawBuffers(colorTextures);
-
-  foreach(Texture* texture, textures) {
-    if(texture->isDepth){
-      attachDepthTexture(texture);
-      LogDebug << "Initializing depth texture" << texture->name;
-    }
-  }
 }
 
 

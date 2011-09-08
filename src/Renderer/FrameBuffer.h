@@ -27,7 +27,6 @@ class FrameBuffer {
 
 	void check();
 	void attachTexture(Texture * texture);
-	void attachDepthTexture(Texture * texture);
 	void attachTextures(vector<Texture*> &textures);
 	void disableColorBuffer();
  private:
