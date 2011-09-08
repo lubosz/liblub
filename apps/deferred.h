@@ -31,7 +31,7 @@ class DeferredLightApp: public Application {
   Q_OBJECT
 public:
   SceneLoader *sceneLoader;
-  vector<DrawPass*> drawPasses;
+  vector<DrawThing*> drawPasses;
   vector<ShadowCastPass*> shadowCastPasses;
 
   DeferredLightApp(int argc, char *argv[]);

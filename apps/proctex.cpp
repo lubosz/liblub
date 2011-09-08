@@ -36,7 +36,6 @@
 class LoadApp: public Application {
  public:
 
-   RenderPass * defaultPass;
    ShaderProgram * perlinNoise;
 
   explicit LoadApp(int argc, char *argv[]) : Application(argc,argv) {
@@ -45,7 +44,6 @@ class LoadApp: public Application {
   ~LoadApp() {}
 
   void scene() {
-    defaultPass = new LightTogglePass();
 //    QImage * image = ProcTextures::makeGlow(QSize(1000,2000),40.0f, 0.1f);
 //
 //    Texture * textTexture = TextureFactory::Instance().load(image,"myTexture");
@@ -69,9 +67,9 @@ class LoadApp: public Application {
     SceneGraph::Instance().addNode(plane);
   }
   void renderFrame(){
-    defaultPass->render();
     perlinNoise->use();
     perlinNoise->setUniform("time", Timer::Instance().getTime());
+    OnePass::draw();
   }
 };
 

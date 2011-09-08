@@ -7,52 +7,8 @@
 
 #pragma once
 
-#include "RenderPass.h"
 #include "Scene/Light.h"
-
-
-//TODO: deprecated
-class ShadowPass : public RenderPass {
- public:
-	explicit ShadowPass(FrameBuffer * fbo);
-	void prepare();
-	void draw();
-	void cleanUp();
-};
-
-class FilterPass : public RenderPass {
- public:
-  explicit FilterPass(FrameBuffer * fbo);
-	void prepare();
-	void draw() {};
-	void draw(Material * material);
-	void cleanUp();
-};
-
-class LightTogglePass : public RenderPass {
- public:
-	LightTogglePass();
-	void prepare();
-	void draw();
-	void cleanUp(){};
-};
-
-class FBODebugPass : public RenderPass {
- public:
-  explicit FBODebugPass(FrameBuffer * fbo);
-  void prepare();
-  void draw();
-  void cleanUp(){};
-};
-
-class WritePass : public RenderPass {
- public:
-  WritePass(FrameBuffer * fbo, Texture * texture, Material * material);
-  WritePass(FrameBuffer * fbo, Texture * texture, Material * material, bool useColorBuffer);
-  void prepare();
-  void draw();
-  void cleanUp();
-};
+#include "Renderer/FrameBuffer.h"
 
 class DrawThing {
 public:
@@ -67,6 +23,11 @@ public:
   explicit DrawPass(QSize res);
 };
 
+class OnePass {
+public:
+  static void draw();
+};
+
 class SourcePass : public DrawPass {
 public:
   vector<Texture*> targets;
@@ -76,8 +37,6 @@ public:
   void draw();
   Texture* getTarget(string target);
 };
-
-
 
 class ShadowCastPass : public SourcePass {
 public:
@@ -118,11 +77,10 @@ public:
   void draw();
 };
 
-class SinkPass : public DrawPass {
+class SinkPass : public DrawThing {
 public:
-  Mesh * fullPlane;
   vector<DebugPlane*> debugPlanes;
-  SinkPass(QSize res, vector<Texture*> &targets, Material * material);
+  SinkPass();
   void debugTarget(QRectF rect, Texture * target);
   void draw();
 };

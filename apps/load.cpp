@@ -25,6 +25,7 @@
 #include "System/Logger.h"
 #include "Renderer/RenderEngine.h"
 #include "Renderer/FrameBuffer.h"
+#include "Renderer/RenderPasses.h"
 #include "Scene/SceneLoader.h"
 #include "Material/Materials.h"
 #include "Scene/SceneData.h"
@@ -33,7 +34,6 @@ class LoadApp: public Application {
  public:
   SceneLoader *sceneLoader;
 
-  RenderSequence * shadowSequence;
   LoadApp(int argc, char *argv[]) : Application(argc,argv) {
     if (argc != 2)
       LogFatal << "NO SCENE SPECIFIED. Try; ./load test";
@@ -47,10 +47,9 @@ class LoadApp: public Application {
 
   void scene() {
     sceneLoader->load();
-    shadowSequence = new RenderSequence();
   }
   void renderFrame(){
-    shadowSequence->render();
+      OnePass::draw();
   }
 };
 

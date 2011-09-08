@@ -9,16 +9,12 @@
 
 #include "Scene/SceneGraph.h"
 #include "common/Singleton.h"
-#include "Renderer/RenderSequence.h"
-
-class RenderSequence;
 
 class RenderEngine : public Singleton<RenderEngine> {
  public:
 	bool useFBO;
 	bool lightView;
 	bool wire;
-//	void display();
 	void toggleFBO();
 	void toggleWire();
 	void setWire(bool wire);

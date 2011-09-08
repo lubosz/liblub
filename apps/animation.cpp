@@ -18,7 +18,7 @@
  */
 #include "Scene/SceneLoader.h"
 #include "Scene/SceneGraph.h"
-#include "Renderer/RenderSequence.h"
+#include "Renderer/RenderPasses.h"
 #include "System/Application.h"
 #include <QVariantAnimation>
 
@@ -26,7 +26,6 @@ class AnimationApp: public Application {
 public:
 
   SceneLoader *sceneLoader;
-  RenderSequence * shadowSequence;
 
   AnimationApp(int argc, char *argv[]) :
     Application(argc, argv) {
@@ -35,12 +34,10 @@ public:
 
   ~AnimationApp() {
     delete sceneLoader;
-    delete shadowSequence;
   }
 
   void scene() {
     sceneLoader->load();
-    shadowSequence = new RenderSequence();
 
     Node * sponge = SceneGraph::Instance().getNode("menger sponge");
     QPropertyAnimation * spongeSize = new QPropertyAnimation(sponge, "size");
@@ -101,7 +98,7 @@ public:
     spongeRotation->start();
   }
   void renderFrame() {
-    shadowSequence->render();
+      OnePass::draw();
   }
 };
 

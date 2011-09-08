@@ -16,7 +16,6 @@
     You should have received a copy of the GNU General Public License
     along with liblub.  If not, see <http://www.gnu.org/licenses/>.
 */
-#include <QHBoxLayout>
 #include "System/Application.h"
 #include "Mesh/MengerSponge.h"
 #include "Scene/SceneData.h"
@@ -24,9 +23,7 @@
 
 class Sponge : public Application {
  public:
-  RenderSequence * shadowSequence;
   Sponge(int argc, char *argv[]);
   void scene();
   void renderFrame();
-  void initWidgets(QHBoxLayout * mainLayout);
 };

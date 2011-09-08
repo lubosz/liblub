@@ -14,6 +14,7 @@
 #include "System/GUI.h"
 #include "Renderer/RenderEngine.h"
 #include "Window/Qt/FloatEditorWidget.h"
+#include "Renderer/FrameBuffer.h"
 
 PlanetsApp::PlanetsApp(int &argc, char **argv) :
   QtApplication(argc, argv) {

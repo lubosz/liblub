@@ -185,8 +185,7 @@
         new Template("Post/DeferredMultiLight", uv));
     drawPasses.push_back(shadingPass);
 
-    vector<Texture*> sinkSources = {};
-    SinkPass * sinkPass = new SinkPass(res, sinkSources, new Minimal());
+    SinkPass * sinkPass = new SinkPass();
 
     // debug planes
     sinkPass->debugTarget(QRectF(0.5, -1, 0.5, 0.5),
@@ -197,23 +196,18 @@
     sinkPass->debugTarget(QRectF(0.5, 0, 0.5, 0.5),
         blurVPass->getTarget("finalAOTarget")
      );
-
     sinkPass->debugTarget(QRectF(-1, 0, 0.5, 0.5),
         shadowReceivePass->getTarget("normalTarget")
      );
-
     sinkPass->debugTarget(QRectF(-1, -0.5, 0.5, 0.5),
         shadingPass->getTarget("envTarget")
      );
-
-
     sinkPass->debugTarget(QRectF(-1, -1, 0.5, 0.5),
         shadingPass->getTarget("finalSpecularTarget")
      );
     sinkPass->debugTarget(QRectF(-1, 0.5, 0.5, 0.5),
         shadingPass->getTarget("finalDiffuseTarget")
      );
-
     sinkPass->debugTarget(QRectF(-1, -1, 2, 2),
         shadingPass->getTarget("finalTarget")
      );
@@ -226,7 +220,7 @@
   }
 
   void DeferredLightApp::renderFrame() {
-    foreach(DrawPass * pass, drawPasses)
+    foreach(DrawThing * pass, drawPasses)
         pass->draw();
   }
 

@@ -34,11 +34,11 @@
 #include "Scene/SceneLoader.h"
 #include "Material/Materials.h"
 #include "Scene/SceneData.h"
+#include "Renderer/RenderPasses.h"
 
 class LoadApp: public Application {
  public:
 
-   RenderPass * defaultPass;
    ShaderProgram * perlinNoise;
 
   explicit LoadApp(int argc, char *argv[]) : Application(argc,argv) {
@@ -47,8 +47,6 @@ class LoadApp: public Application {
   ~LoadApp() {}
 
   void scene() {
-    defaultPass = new LightTogglePass();
-
     QList<string> attributes;
     attributes.push_back("uv");
 
@@ -72,7 +70,7 @@ class LoadApp: public Application {
     zoomOut->getShaderProgram()->setUniform("scaleUv", 100.0f);
   }
   void renderFrame(){
-    defaultPass->render();
+      OnePass::draw();
   }
 };
 

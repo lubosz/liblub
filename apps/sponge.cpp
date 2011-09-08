@@ -20,6 +20,7 @@
 #include "Mesh/MengerSponge.h"
 #include "Scene/SceneData.h"
 #include "Mesh/Geometry.h"
+#include "Renderer/RenderPasses.h"
 
 Sponge::Sponge(int argc, char *argv[]) :
   Application(argc, argv) {
@@ -28,10 +29,9 @@ Sponge::Sponge(int argc, char *argv[]) :
 
 void Sponge::scene() {
 //  window->setWindowTitle("Sponge");
-  shadowSequence = new RenderSequence();
   Material * material = new EmptyMat();
   material->init();
-  material->addTexture(shadowSequence->renderPasses[0]->targetTexture);
+//  material->addTexture(shadowSequence->renderPasses[0]->targetTexture);
   vector < string > flags = {
     "receiveShadows",
     "useSpotLight",
@@ -68,11 +68,7 @@ void Sponge::scene() {
 }
 
 void Sponge::renderFrame() {
-  shadowSequence->render();
-}
-
-void Sponge::initWidgets(QHBoxLayout * mainLayout) {
-  LogDebug << mainLayout;
+  OnePass::draw();
 }
 
 int main(int argc, char *argv[]) {
