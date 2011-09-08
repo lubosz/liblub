@@ -36,8 +36,8 @@ void Node::setPosition(const QVector3D& position) {
 void Node::setRotation(const QVector3D& rotation) {
     eulerRotationCache = rotation;
     setRotationX(rotation.x());
-    setRotationX(rotation.y());
-    setRotationX(rotation.z());
+    setRotationY(rotation.y());
+    setRotationZ(rotation.z());
     update();
 }
 
