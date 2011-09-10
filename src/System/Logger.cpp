@@ -17,6 +17,14 @@ struct LogSetting {
 
 const LogSetting blackList[] = {
   { "Timer.cpp", Logger::Warning },
+  { "TemplateEngine.cpp", Logger::Warning },
+  { "Shader.cpp", Logger::Warning },
+  { "Config.cpp", Logger::Warning },
+  { "ShaderProgram.cpp", Logger::Warning },
+  { "Mesh.cpp", Logger::Warning },
+  { "XCBApplication.cpp", Logger::Warning },
+  { "SceneGraph.cpp", Logger::Warning },
+  { "SceneLoader.cpp", Logger::Warning },
 };
 
 Logger::Logger(const std::string& file, int line, Logger::LogLevel level) {

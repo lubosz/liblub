@@ -120,6 +120,7 @@ QSize SceneData::getResolution() {
 }
 
 void SceneData::addLight(const string & name, Light* light) {
+  light->setName(name);
   string lightName = name;
   if (name == "" || lights.count(name) > 0) {
     QString idString = QString::number(lights.size() + 1);

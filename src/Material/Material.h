@@ -28,6 +28,8 @@ class Material {
   ShaderProgram * shaderProgram;
   void init();
   void initRenderTargets(vector<Texture*> &targets);
+  void activateAndBindTextures();
+  void bindTextures();
   void activateTextures();
  protected:
   QVector4D diffuseColor;

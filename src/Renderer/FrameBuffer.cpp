@@ -150,11 +150,8 @@ FrameBuffer::~FrameBuffer() {
 }
 
 void FrameBuffer::printFramebufferInfo() {
-    // print max # of colorbuffers supported by FBO
     int colorBufferCount = 0;
     glGetIntegerv(GL_MAX_COLOR_ATTACHMENTS, &colorBufferCount);
-    LogDebug << "Max Number of Color Buffer Attachment Points: "
-            << colorBufferCount;
 
     int objectType;
     int objectId;

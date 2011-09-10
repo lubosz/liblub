@@ -40,9 +40,23 @@ void Material::done(const QList<string> & attributes) {
     glError;
 }
 
+void Material::activateAndBindTextures() {
+    foreach(Texture* texture, textures) {
+            texture->activate();
+            texture->bind();
+        }
+    glError;
+}
+
 void Material::activateTextures() {
     foreach(Texture* texture, textures) {
             texture->activate();
+        }
+    glError;
+}
+
+void Material::bindTextures() {
+    foreach(Texture* texture, textures) {
             texture->bind();
         }
     glError;
@@ -65,7 +79,7 @@ void Material::samplerUniforms() {
 void Material::activate() {
     // TODO(bmonkey): check performance (rebinding textures for shared programs)
     samplerUniforms();
-    activateTextures();
+    activateAndBindTextures();
     glError;
 }
 

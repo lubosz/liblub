@@ -44,7 +44,7 @@ public:
   GLfloat offsetFactor;
   GLfloat offsetUnits;
   GLenum offsetMode;
-  ShadowCastPass(QSize res, vector<Texture*> &targets, Material * material, Light* view);
+  ShadowCastPass(QSize res, vector<Texture*> &targets, Light* view);
   void draw();
   void setOffsetFactor(GLfloat factor);
   void setOffsetUnits(GLfloat units);

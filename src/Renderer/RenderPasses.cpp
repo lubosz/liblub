@@ -17,8 +17,8 @@
 
   void DrawThing::drawOnPlane(Material * material, Mesh *plane) {
     material->getShaderProgram()->use();
+    material->activateAndBindTextures();
     material->getShaderProgram()->setUniform("MVPMatrix", QMatrix4x4());
-    material->activate();
     plane->draw();
   }
 
@@ -65,8 +65,8 @@
     fbo->check();
   }
 
-  ShadowCastPass::ShadowCastPass(QSize res, vector<Texture*> &targets, Material * material, Light* view)
-  : SourcePass(res, targets, material) {
+  ShadowCastPass::ShadowCastPass(QSize res, vector<Texture*> &targets, Light* view)
+  : SourcePass(res, targets, new Minimal()) {
     offsetFactor = 2;
     offsetUnits = 0;
     offsetMode = GL_POLYGON_OFFSET_FILL;
@@ -101,6 +101,8 @@
 
   void ShadowReceivePass::draw() {
     fbo->bind();
+    material->activateTextures();
+    material->bindTextures();
     RenderEngine::Instance().clear();
     RenderEngine::Instance().updateViewport(res);
     SceneGraph::Instance().drawReceivers(material);
@@ -111,8 +113,8 @@
     this->sources = sources;
     fullPlane = Geometry::plane(QList<string> () << "uv", QRectF(-1, -1, 2, 2));
     material->addTextures(sources);
-    material->activateTextures();
     material->samplerUniforms();
+    material->activateAndBindTextures();
   }
 
   Texture* InOutPass::getSource(string target) {
@@ -145,6 +147,7 @@
     TemplateEngine::Instance().c.insert("samplerName", QString::fromStdString(target->name));
     Material * debugMaterial = new Template("Post/Debug", QList<string> () << "uv");
     debugMaterial->addTexture(target);
+    debugMaterial->activate();
     return debugMaterial;
   }
 

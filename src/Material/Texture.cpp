@@ -44,7 +44,9 @@ void Texture::uniform(GLuint program) {
     GLint texLoc = glGetUniformLocation(program, name.c_str());
     // TODO(bmonkey): -1 vs glId - GL_TEXTURE0
 //    glUniform1i(texLoc, glId - GL_TEXTURE0);
+//    glUniform1i(texLoc, handle-1);
     glUniform1i(texLoc, handle-1);
+    LogDebug << name << ": Setting Sampler Uniform in Program" << program << "Handle: "<< handle-1;
     glError;
 }
 
@@ -58,7 +60,7 @@ void Texture::loadFile(GLenum target, const string & path) {
   if(image->isNull())
     LogFatal << path << "does not exist";
 
-  //Qt loads image with wrong pixel order
+  //TODO: Qt loads image with wrong pixel order
   *image = image->mirrored(false, true);
   loadQImage(target, image);
 }

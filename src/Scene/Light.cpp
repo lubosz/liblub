@@ -44,14 +44,15 @@ void Light::bindShaderUpdate(ShaderProgram * shaderProgram) {
 }
 
 void Light::bindShaderUpdateLight(ShaderProgram * shaderProgram) {
-    QVector4D lightPositionView = getView() * position;
+    shaderProgram->use();
+    QVector4D lightPositionView = SceneData::Instance().getCurrentCamera()->getView() * position;
 
     shaderProgram->setUniform("lightPositionView", lightPositionView);
 
-    QVector3D directionView = getView() * direction();
+    QVector3D directionView = SceneData::Instance().getCurrentCamera()->getView() * direction();
     shaderProgram->setUniform("spotDirection", directionView);
 
-    QVector3D spotDirectionView = getViewNoTranslation() * direction();
+    QVector3D spotDirectionView = SceneData::Instance().getCurrentCamera()->getViewNoTranslation() * direction();
     spotDirectionView.normalize();
     shaderProgram->setUniform("spotDirectionView", spotDirectionView);
 }

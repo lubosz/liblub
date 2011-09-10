@@ -144,6 +144,12 @@ void RenderEngine::checkVersion() {
     glGetIntegerv(GL_MAX_UNIFORM_BLOCK_SIZE, &uniformSize);
     LogInfo << "GL_MAX_UNIFORM_BLOCK_SIZE" << uniformSize;
 
+    // print max # of colorbuffers supported by FBO
+    int colorBufferCount = 0;
+    glGetIntegerv(GL_MAX_COLOR_ATTACHMENTS, &colorBufferCount);
+    LogDebug << "Max Number of Color Buffer Attachment Points: "
+            << colorBufferCount;
+
 //    GLfloat floatvalue;
 //    glGetFloatv(GL_DEPTH_BIAS, &floatvalue);
 //    LogInfo << floatvalue;
