@@ -17,7 +17,7 @@ class Material {
   virtual ~Material() {
   }
   ShaderProgram *getShaderProgram();
-  void activate();
+//  void activate();
   void samplerUniforms();
   void addTexture(Texture * texture);
   void addTextures(vector<Texture *> &addTextures);

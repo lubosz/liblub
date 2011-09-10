@@ -76,12 +76,12 @@ void Material::samplerUniforms() {
         }
 }
 
-void Material::activate() {
-    // TODO(bmonkey): check performance (rebinding textures for shared programs)
-    samplerUniforms();
-    activateAndBindTextures();
-    glError;
-}
+//void Material::activate() {
+//    // TODO(bmonkey): check performance (rebinding textures for shared programs)
+//    samplerUniforms();
+//    activateAndBindTextures();
+//    glError;
+//}
 
 ShaderProgram *Material::getShaderProgram() {
     return shaderProgram;

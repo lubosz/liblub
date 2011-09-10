@@ -54,6 +54,7 @@ void GUI::init() {
   render();
   texture = new TextureQImage(image,"myTexture");
   material->addTexture(texture);
+  material->samplerUniforms();
 }
 
 void GUI::update() {

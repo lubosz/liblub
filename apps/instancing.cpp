@@ -92,7 +92,7 @@ class InstancingApp: public Application {
   void renderFrame(){
     RenderEngine::Instance().clear();
     node->setView(SceneData::Instance().getCurrentCamera());
-    material->activate();
+    material->activateAndBindTextures();
     cube->draw(4000);
 //    SceneGraph::Instance().drawNodes(SceneData::Instance().getCurrentCamera());
   }
@@ -110,7 +110,7 @@ class InstancingApp: public Application {
       &positionBufferSize
     );
 
-    printf("Position Uniform Buffer Size %d\n", positionBufferSize);
+    LogDebug << "Position Uniform Buffer Size" << positionBufferSize;
 
     unsigned i = 0;
     for (int x = 0; x < 63; x++){

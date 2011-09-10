@@ -147,7 +147,8 @@
     TemplateEngine::Instance().c.insert("samplerName", QString::fromStdString(target->name));
     Material * debugMaterial = new Template("Post/Debug", QList<string> () << "uv");
     debugMaterial->addTexture(target);
-    debugMaterial->activate();
+    debugMaterial->samplerUniforms();
+    debugMaterial->activateAndBindTextures();
     return debugMaterial;
   }
 

@@ -90,6 +90,7 @@ void scene() {
 	pDOFShader = new Simple("DepthOfField/dof", attributes);
 	pDOFShader->addTexture(pColorTexture);
 	pDOFShader->addTexture(pDepthTexture);
+	pDOFShader->samplerUniforms();
   }
   void renderFrame()
   {
@@ -97,11 +98,10 @@ void scene() {
     RenderEngine::Instance().clear();
     pFBODepth->bind();
     RenderEngine::Instance().clear();
-    pDepthMaterial->activate();
+    pDepthMaterial->activateAndBindTextures();
     RenderEngine::Instance().updateViewport(res);
-    SceneGraph::Instance().drawCasters(pDepthMaterial);
+    SceneGraph::Instance().drawNodes(pDepthMaterial);
     pFBODepth->unBind();
-    //pFBODepth->draw(pDebugDepthFBOMaterial);
 
     // create color texture
     RenderEngine::Instance().clear();

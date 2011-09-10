@@ -74,8 +74,10 @@ void PlanetsApp::initCamAndLight() {
   light = new Light(QVector3D(0, 0, 1000), QVector3D(1, -5, 0));
   SceneData::Instance().addLight("sunlight", light);
 
+  //TODO: Cam does not update
   camera->setRotationX(2.9);
   camera->setRotationY(176.6);
+  camera->update();
 }
 
 void PlanetsApp::initWidgets(QHBoxLayout * mainLayout) {
@@ -124,6 +126,7 @@ void PlanetsApp::initPostProcessing() {
   HDR = new Template("Post/HDR", QList<string> () << "uv");
   HDR->addTexture(targetTexture);
   HDR->shaderProgram->setUniform("exposure", 2.0f);
+  HDR->samplerUniforms();
 }
 
 void PlanetsApp::startPass() {

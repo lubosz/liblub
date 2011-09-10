@@ -65,7 +65,8 @@ void Node::setMaterial(Material *material) {
 }
 
 void Node::draw() {
-    material->activate();
+//    material->activate();
+    material->activateAndBindTextures();
     mesh->draw();
 //    mesh->boundingBox->draw();
 }
