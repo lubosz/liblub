@@ -31,7 +31,6 @@ Sponge::Sponge(int argc, char *argv[]) :
 void Sponge::initPasses() {
     Light * light = new Light(QVector3D(-9, 32, 11.5), QVector3D(1,-5,-1));
     SceneData::Instance().addLight("foolight", light);
-    SceneData::Instance().addLight("barlight", new Light(QVector3D(9, 20, -11.5), QVector3D(-1,-5,1)));
     QSize res = SceneData::Instance().getResolution();
     vector<Texture*> shadowTargets = { new ShadowTexture(res, "shadowMap") };
     ShadowCastPass * shadowCastPass = new ShadowCastPass(res, shadowTargets, light);
@@ -46,7 +45,6 @@ void Sponge::initPasses() {
     };
 
     initMaterial();
-//    material->addTexture(shadowCastPass->getTarget("shadowMap"));
 
     SourcePass * shadowReceivePass = new ShadowReceivePass(res,
             shadowReceiveSources, shadowReceiveTargets, material);
@@ -61,7 +59,6 @@ void Sponge::initPasses() {
 }
 
 void Sponge::initMaterial() {
-    //  window->setWindowTitle("Sponge");
     material = new EmptyMat();
     material->init();
     vector < string > flags = {
@@ -110,13 +107,9 @@ void Sponge::scene() {
     plane->setReceiveShadows(true);
     plane->setCastShadows(false);
     SceneGraph::Instance().addNode(plane);
-
-
 }
 
 void Sponge::renderFrame() {
-//  OnePass::draw();
-//
     foreach(DrawThing * pass, drawPasses)
         pass->draw();
 }

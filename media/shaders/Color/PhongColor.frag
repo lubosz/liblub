@@ -207,16 +207,7 @@ void main(){
 	}
 	
 #ifdef receiveShadows
-	//finalColor *= shadow;
-	vec4 shadowTexCoord2 = camViewToShadowMapMatrixshadowDepthSource0 * positionView;
-	float shadow2 = textureProj(shadowMap, shadowTexCoord2);
-	finalColor = vec4(shadow2);
-	/*
-	finalColor = vec4(shadow);
-	*/
+	finalColor *= shadow;
 #endif
-
-//set opaque
-	//finalColor.w = 1.0;
 } 
 
