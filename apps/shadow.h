@@ -33,9 +33,4 @@ public:
 
   void scene();
   void renderFrame();
-
-  void initWidgets(QHBoxLayout * mainLayout);
-public slots:
-  void setOffSetFactor(double factor);
-  void setOffSetUnits(double units);
 };
