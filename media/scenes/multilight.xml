@@ -1,17 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <liblub>
-	<Programs>
-		<Program name="multilight">
-			 <Shader url="Color/multilight" />
-			<Uniform value="0, 0, 0, 0" name="ambientSceneColor" />
-			<Uniform value="1.0, 1.0, 1.0, 1.0" name="diffuseMaterialColor" />
-			<Uniform value="0.8, 0.8, 0.8,1.0" name="specularMaterialColor" />
-			<Uniform value="4.3" name="shininess" />
-		</Program>
-		<Program name="CubeMap">
-			<Shader url="Texture/cubemapSky" />
-		</Program>
-	</Programs>
 	<Textures>
 		<Texture name="masonry-wall-texture" url="bump/masonry-wall-texture.jpg" />
 		<Texture name="masonry-wall-normal-map" url="bump/masonry-wall-normal-map.jpg" />
@@ -19,7 +7,6 @@
 	</Textures>
 	<Meshes>
 		<File name="cube" url="cube2.obj" />
-		<File name="cubeblend" url="cube.blend" />
 		<File name="radio" url="radio.blend" />
 		<File name="monkey" url="monkey.blend" />
 		<File name="sphere" url="earth.obj" />
@@ -27,33 +14,19 @@
 		<File name="light" url="earth.obj" drawType="LINES" />
 		<Procedural name="sponge" type="Sponge" recursion="2" />
 	</Meshes>
-	<Materials>
-		<Material name="CubeMap" program="CubeMap">
-			<Layer sampler="EnvMap" texture="sky" />
-		</Material>
-		<Material name="white" program="multilight">
-			<Layer sampler="diffuseTexture" texture="masonry-wall-texture" />
-			<Layer sampler="normalTexture" texture="masonry-wall-normal-map" />
-			<Layer sampler="envMap" texture="sky" />
-		</Material>
-	</Materials>
 	<Scene name="Multilights">
 		<Light name="mylight" position ="-9, 32, 11.5" direction="1,-5,-1" mesh="light" diffuse="0,0,1" />
+		<!-- 
+		 -->
 		<Light name="myotherlight" position ="9, 32, -11.5" direction="-1,-5,1" mesh="light" diffuse="1,0,0" />
 		<Light name="myotherlight1" position ="-5, 16, -2" direction="-1,-5,1" mesh="light" diffuse="0,0.5,0" />
 		<Light name="myotherlight2" position ="6, 20, 10" direction="-1,-5,1" mesh="light" diffuse="0.7,0,0.5" />
 		<Light name="myotherlight3" position ="9, 25, 9" direction="-1,-5,1" mesh="light" diffuse="0.3,0.6,0" />
-		<Object name="cube" mesh="cube" material="white" scale="2.0" position="5,0,5" />
-		<!-- 
-		<Object name="cube2" mesh="cubeblend" material="white" scale="2.0" position="5,0,10" />
-		 -->
-		 <Object name="cube2" mesh="cube" material="white" scale="2.0" position="5,0,10" />
-		<Object name="sphere" mesh="sphere" material="white" scale="2.0" position="5,0,-5" />
-		<Object name="monkey" mesh="monkey" material="white" scale="2.0" position="-5,0,-5" />
-		<Object name="radio" mesh="radio" material="white" scale="0.5" position="-5,0,5" />
-		<Object name="Plane" mesh="plane" material="white" scale="20" position="0,-5,0" />
-		<!-- 
-		<Object name="sky" mesh="sphere" material="CubeMap" scale="800" position="0, 0, 0" />
-		 -->
+		<Object name="cube" mesh="cube" scale="2.0" position="5,0,5" />
+		<Object name="cube2" mesh="cube" scale="2.0" position="5,0,10" />
+		<Object name="sphere" mesh="sphere" scale="2.0" position="5,0,-5" />
+		<Object name="monkey" mesh="monkey" scale="2.0" position="-5,0,-5" />
+		<Object name="radio" mesh="radio" scale="0.5" position="-5,0,5" />
+		<Object name="Plane" mesh="plane" scale="20" position="0,-5,0" />
 	</Scene>
 </liblub>
