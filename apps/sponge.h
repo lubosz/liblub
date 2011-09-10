@@ -20,10 +20,18 @@
 #include "Mesh/MengerSponge.h"
 #include "Scene/SceneData.h"
 #include "Mesh/Geometry.h"
+#include "Renderer/RenderPasses.h"
 
 class Sponge : public Application {
  public:
+  Material * material;
+  vector<DrawThing*> drawPasses;
+  QList<string> attributes;
+
   Sponge(int argc, char *argv[]);
+
   void scene();
   void renderFrame();
+  void initPasses();
+  void initMaterial();
 };

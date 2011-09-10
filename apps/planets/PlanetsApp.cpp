@@ -138,7 +138,7 @@ void PlanetsApp::endPass() {
     fbo->unBind();
     RenderEngine::Instance().updateViewport(glWidget->viewSize);
     RenderEngine::Instance().clear();
-    HDR->activateTextures();
+    HDR->activateAndBindTextures();
     HDR->getShaderProgram()->use();
     fbo->draw(HDR);
   }

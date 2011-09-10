@@ -67,7 +67,6 @@
         new ColorTexture(res, "tangentTarget"),
         new ColorTexture(res, "normalMapTarget"),
         new ColorTexture(res, "shadowTarget"),
-        new DepthTexture(res, "depthTarget")
     };
 
     vector<Texture*> shadowReceiveSources = {
@@ -98,162 +97,19 @@
             QList<string> () << "uv" << "normal" << "tangent"));
     drawPasses.push_back(shadowReceivePass);
 
-    //
-    // ao passes
-    //
-
-    vector<Texture*> aoSources = {
-        shadowReceivePass->getTarget("normalTarget"),
-        shadowReceivePass->getTarget("depthTarget"),
-        new TextureFile("noise.png", "noise"),
-    };
-    vector<Texture*> aoTargets = {
-        new ColorTexture(res, "ao")
-    };
-    InOutPass * aoPass = new InOutPass(res, aoSources, aoTargets,
-        new Simple("AO/ssao", uv));
-    drawPasses.push_back(aoPass);
-
-
-    vector<Texture*> mergeSources = {
-        aoPass->getTarget("ao"),
-        shadowReceivePass->getTarget("shadowTarget"),
-    };
-    vector<Texture*> mergeTargets = {
-        new ColorTexture(res, "merge")
-    };
-
-    TemplateEngine::Instance().c.insert("source1", QString::fromStdString(aoPass->getTarget("ao")->name));
-    TemplateEngine::Instance().c.insert("source2", QString::fromStdString(shadowReceivePass->getTarget("shadowTarget")->name));
-    InOutPass * mergePass = new InOutPass(res, mergeSources, mergeTargets,
-        new Template("Post/Merge", uv));
-    drawPasses.push_back(mergePass);
-
-    vector<Texture*> blurHSources = {
-        mergePass->getTarget("merge"),
-    };
-    vector<Texture*> blurHTargets = {
-        new ColorTexture(res, "blurH")
-    };
-    InOutPass * blurHPass = new InOutPass(res, blurHSources, blurHTargets,
-        new Simple("AO/blur_horizontal", uv));
-    drawPasses.push_back(blurHPass);
-
-    vector<Texture*> blurVTargets = {
-        new ColorTexture(res, "finalAOTarget")
-    };
-    InOutPass * blurVPass = new InOutPass(res, blurHTargets, blurVTargets,
-        new Simple("AO/blur_vertical", uv));
-    drawPasses.push_back(blurVPass);
-
-    //
-    // shading pass
-    //
-
-    vector<Texture*> shadingSources = {
-        shadowReceivePass->getTarget("positionTarget"),
-        shadowReceivePass->getTarget("normalTarget"),
-        shadowReceivePass->getTarget("diffuseTarget"),
-        shadowReceivePass->getTarget("tangentTarget"),
-        shadowReceivePass->getTarget("normalMapTarget"),
-        blurVPass->getTarget("finalAOTarget"),
-        SceneData::Instance().getTexture("sky", "envMap")
-    };
-
-    vector<Texture*> shadingTargets = {
-        new ColorTexture(res, "finalTarget"),
-        new ColorTexture(res, "finalSpecularTarget"),
-        new ColorTexture(res, "finalDiffuseTarget"),
-        new ColorTexture(res, "envTarget")
-    };
-
-    TemplateEngine::Instance().c.insert("lightCount", SceneData::Instance().lights.size());
-    InOutPass * shadingPass = new InOutPass(res, shadingSources, shadingTargets,
-        new Template("Post/DeferredMultiLight", uv));
-    drawPasses.push_back(shadingPass);
 
     SinkPass * sinkPass = new SinkPass();
 
-    // debug planes
-//    sinkPass->debugTarget(QRectF(0.5, -1, 0.5, 0.5),
-//        aoPass->getTarget("ao"));
     sinkPass->debugTarget(QRectF(-1, -1, 2, 2),
         shadowReceivePass->getTarget("shadowTarget")
     );
-//    sinkPass->debugTarget(QRectF(0.5, 0, 0.5, 0.5),
-//        blurVPass->getTarget("finalAOTarget")
-//     );
-//    sinkPass->debugTarget(QRectF(-1, 0, 0.5, 0.5),
-//        shadowReceivePass->getTarget("normalTarget")
-//     );
-//    sinkPass->debugTarget(QRectF(-1, -0.5, 0.5, 0.5),
-//        shadingPass->getTarget("envTarget")
-////            shadowCastPasses[0]->targets[0]
-//     );
-//    sinkPass->debugTarget(QRectF(-1, -1, 0.5, 0.5),
-//        shadingPass->getTarget("finalSpecularTarget")
-//     );
-//    sinkPass->debugTarget(QRectF(-1, 0.5, 0.5, 0.5),
-//        shadingPass->getTarget("finalDiffuseTarget")
-//     );
-//    sinkPass->debugTarget(QRectF(-1, -1, 2, 2),
-//        shadingPass->getTarget("finalTarget")
-//     );
-
     drawPasses.push_back(sinkPass);
-    // Init Light Uniform Buffer
-    SceneData::Instance().initLightBuffer(
-        shadingPass->material->getShaderProgram(), "LightSourceBuffer");
   }
 
   void ShadowApp::renderFrame() {
     foreach(DrawThing * pass, drawPasses)
         pass->draw();
   }
-
-  void ShadowApp::setOffSetFactor(double factor) {
-    foreach(ShadowCastPass* shadowCastPass, shadowCastPasses)
-        shadowCastPass->setOffsetFactor(factor);
-  }
-
-  void ShadowApp::setOffSetUnits(double units) {
-    foreach(ShadowCastPass* shadowCastPass, shadowCastPasses)
-        shadowCastPass->setOffsetUnits(units);
-  }
-#ifdef USE_QT_WINDOWS
-  void ShadowApp::initWidgets(QHBoxLayout * mainLayout) {
-    QVBoxLayout *sideLayout = new QVBoxLayout;
-    mainLayout->addLayout(sideLayout);
-
-    QCheckBox *postBox = new QCheckBox();
-    postBox->setText("Postprocessing");
-    postBox->setChecked(true);
-    //      connect(postBox, SIGNAL(clicked(bool)), this, SLOT(setPostprocessing(bool)));
-    sideLayout->addWidget(postBox);
-
-    FloatEditorWidget* factor = new FloatEditorWidget("Offset Factor",
-        SLOT(setOffSetFactor(double)), 2.0, -25, 25, this);
-    connect(factor, SIGNAL(draw()), glWidget, SLOT(updateGL()));
-    sideLayout->addWidget(factor);
-
-    FloatEditorWidget* units = new FloatEditorWidget("Offset Units",
-        SLOT(setOffSetUnits(double)), 0, -1000, 1000, this);
-    connect(units, SIGNAL(draw()), glWidget, SLOT(updateGL()));
-    sideLayout->addWidget(units);
-
-    QCheckBox *wireFrameBox = new QCheckBox();
-    wireFrameBox->setText("Wireframe");
-    wireFrameBox->setChecked(false);
-    //      connect(wireFrameBox, SIGNAL(clicked(bool)), this, SLOT(setWireframe(bool)));
-    sideLayout->addWidget(wireFrameBox);
-
-    QCheckBox *lazyBox = new QCheckBox();
-    lazyBox->setText("Lazy Rendering");
-    lazyBox->setChecked(true);
-    connect(lazyBox, SIGNAL(clicked(bool)), this, SLOT(setLazy(bool)));
-    sideLayout->addWidget(lazyBox);
-  }
-#endif
 
 int main(int argc, char *argv[]) {
   ShadowApp(argc, argv).run();
