@@ -20,16 +20,16 @@
 #include "Scene/SceneLoader.h"
 #include "Renderer/RenderPasses.h"
 
-class DeferredLightApp: public Application {
+class ShadowApp: public Application {
   Q_OBJECT
 public:
   SceneLoader *sceneLoader;
   vector<DrawThing*> drawPasses;
   vector<ShadowCastPass*> shadowCastPasses;
 
-  DeferredLightApp(int argc, char *argv[]);
+  ShadowApp(int argc, char *argv[]);
 
-  ~DeferredLightApp();
+  ~ShadowApp();
 
   void scene();
   void renderFrame();

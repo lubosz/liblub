@@ -17,23 +17,23 @@
  along with liblub.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include <QtGui>
-#include "deferred.h"
+#include "shadow.h"
 #include "Material/Textures.h"
 #include "Window/Qt/FloatEditorWidget.h"
 #include "Material/Materials.h"
 #include "Scene/SceneData.h"
 #include "System/TemplateEngine.h"
 
-  DeferredLightApp::DeferredLightApp(int argc, char *argv[]) :
+  ShadowApp::ShadowApp(int argc, char *argv[]) :
     Application(argc, argv) {
     sceneLoader = new SceneLoader("multilight.xml");
     fontOverlay = false;
   }
 
-  DeferredLightApp::~DeferredLightApp() {
+  ShadowApp::~ShadowApp() {
   }
 
-  void DeferredLightApp::scene() {
+  void ShadowApp::scene() {
 
     QList<string> uv = QList<string> () << "uv";
 
@@ -88,6 +88,7 @@
     }
 
     TemplateEngine::Instance().c.insert("shadowSamplers", shadowSamplers);
+
 
     SourcePass * shadowReceivePass = new ShadowReceivePass(
         res,
@@ -174,29 +175,30 @@
     SinkPass * sinkPass = new SinkPass();
 
     // debug planes
-    sinkPass->debugTarget(QRectF(0.5, -1, 0.5, 0.5),
-        aoPass->getTarget("ao"));
-    sinkPass->debugTarget(QRectF(0.5, -0.5, 0.5, 0.5),
+//    sinkPass->debugTarget(QRectF(0.5, -1, 0.5, 0.5),
+//        aoPass->getTarget("ao"));
+    sinkPass->debugTarget(QRectF(-1, -1, 2, 2),
         shadowReceivePass->getTarget("shadowTarget")
     );
-    sinkPass->debugTarget(QRectF(0.5, 0, 0.5, 0.5),
-        blurVPass->getTarget("finalAOTarget")
-     );
-    sinkPass->debugTarget(QRectF(-1, 0, 0.5, 0.5),
-        shadowReceivePass->getTarget("normalTarget")
-     );
-    sinkPass->debugTarget(QRectF(-1, -0.5, 0.5, 0.5),
-        shadingPass->getTarget("envTarget")
-     );
-    sinkPass->debugTarget(QRectF(-1, -1, 0.5, 0.5),
-        shadingPass->getTarget("finalSpecularTarget")
-     );
-    sinkPass->debugTarget(QRectF(-1, 0.5, 0.5, 0.5),
-        shadingPass->getTarget("finalDiffuseTarget")
-     );
-    sinkPass->debugTarget(QRectF(-1, -1, 2, 2),
-        shadingPass->getTarget("finalTarget")
-     );
+//    sinkPass->debugTarget(QRectF(0.5, 0, 0.5, 0.5),
+//        blurVPass->getTarget("finalAOTarget")
+//     );
+//    sinkPass->debugTarget(QRectF(-1, 0, 0.5, 0.5),
+//        shadowReceivePass->getTarget("normalTarget")
+//     );
+//    sinkPass->debugTarget(QRectF(-1, -0.5, 0.5, 0.5),
+//        shadingPass->getTarget("envTarget")
+////            shadowCastPasses[0]->targets[0]
+//     );
+//    sinkPass->debugTarget(QRectF(-1, -1, 0.5, 0.5),
+//        shadingPass->getTarget("finalSpecularTarget")
+//     );
+//    sinkPass->debugTarget(QRectF(-1, 0.5, 0.5, 0.5),
+//        shadingPass->getTarget("finalDiffuseTarget")
+//     );
+//    sinkPass->debugTarget(QRectF(-1, -1, 2, 2),
+//        shadingPass->getTarget("finalTarget")
+//     );
 
     drawPasses.push_back(sinkPass);
     // Init Light Uniform Buffer
@@ -204,22 +206,22 @@
         shadingPass->material->getShaderProgram(), "LightSourceBuffer");
   }
 
-  void DeferredLightApp::renderFrame() {
+  void ShadowApp::renderFrame() {
     foreach(DrawThing * pass, drawPasses)
         pass->draw();
   }
 
-  void DeferredLightApp::setOffSetFactor(double factor) {
+  void ShadowApp::setOffSetFactor(double factor) {
     foreach(ShadowCastPass* shadowCastPass, shadowCastPasses)
         shadowCastPass->setOffsetFactor(factor);
   }
 
-  void DeferredLightApp::setOffSetUnits(double units) {
+  void ShadowApp::setOffSetUnits(double units) {
     foreach(ShadowCastPass* shadowCastPass, shadowCastPasses)
         shadowCastPass->setOffsetUnits(units);
   }
 #ifdef USE_QT_WINDOWS
-  void DeferredLightApp::initWidgets(QHBoxLayout * mainLayout) {
+  void ShadowApp::initWidgets(QHBoxLayout * mainLayout) {
     QVBoxLayout *sideLayout = new QVBoxLayout;
     mainLayout->addLayout(sideLayout);
 
@@ -254,7 +256,7 @@
 #endif
 
 int main(int argc, char *argv[]) {
-  DeferredLightApp(argc, argv).run();
+  ShadowApp(argc, argv).run();
   return 0;
 }
 

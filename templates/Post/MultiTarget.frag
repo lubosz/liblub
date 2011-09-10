@@ -1,4 +1,3 @@
-#define LIGHTS 5
 {% extends "base.frag" %}
 
 {% block linkage %}
@@ -23,7 +22,8 @@ uniform sampler2D normalTexture;
 
 {% for shadowSampler in shadowSamplers %}
 uniform sampler2DShadow {{shadowSampler}};
-uniform mat4 camViewToShadowMapMatrix{{shadowSampler}}; //bias*perspLight*viewLight*(viewCam⁻1)
+//bias*perspLight*viewLight*(viewCam^-1)
+uniform mat4 camViewToShadowMapMatrix{{shadowSampler}};
 {% endfor %}
 
 {% endblock %}

@@ -1,6 +1,7 @@
 {% extends "base.frag" %}
 
 {% block linkage %}
+#define LIGHTS {{ lightCount }}
 in vec2 uv;
 struct LightSource {
 	vec4 position;
@@ -26,7 +27,7 @@ uniform samplerCube envMap;
 //uniform sampler2D shadowTarget;
 
 uniform LightSourceBuffer {
-	LightSource lightSources[5];
+	LightSource lightSources[LIGHTS];
 };
 
 uniform vec4 camPosition;
@@ -64,7 +65,7 @@ float saturate(float input) {
 	finalSpecularTarget = vec4(0);
 	finalDiffuseTarget = vec4(0);
 	
-	for(int i = 0; i < 5 ; i++) {
+	for(int i = 0; i < LIGHTS ; i++) {
 		vec4 lightDirection = lightSources[i].position - position;
 		//normalmapping
 		vec3 lightVec = normalize(vec3(
