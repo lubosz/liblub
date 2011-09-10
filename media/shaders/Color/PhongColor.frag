@@ -43,7 +43,7 @@ uniform vec3 spotDirectionView;
 
 #ifdef receiveShadows
 uniform sampler2DShadow shadowMap;
-uniform mat4 camViewToShadowMapMatrix; //bias*perspLight*viewLight*(viewCam⁻1)
+uniform mat4 camViewToShadowMapMatrixshadowDepthSource0; //bias*perspLight*viewLight*(viewCam⁻1)
 #endif
 
 #ifdef usePCF
@@ -132,7 +132,7 @@ void main(){
 
 #ifdef usePCF
 // 8x8 kernel PCF
-	vec4 shadowTexCoord = camViewToShadowMapMatrix * positionView;
+	vec4 shadowTexCoord = camViewToShadowMapMatrixshadowDepthSource0 * positionView;
 	float shadow = 0;	
 	float x,y;
 	for (y = -3.5 ; y <=3.5 ; y+=1.0)
@@ -143,7 +143,7 @@ void main(){
 	shadow += 0.2;
 #else
 	#ifdef receiveShadows
-		vec4 shadowTexCoord = camViewToShadowMapMatrix * positionView;
+		vec4 shadowTexCoord = camViewToShadowMapMatrixshadowDepthSource0 * positionView;
 		float shadow = textureProj(shadowMap, shadowTexCoord);
 	#endif	
 #endif
@@ -207,10 +207,16 @@ void main(){
 	}
 	
 #ifdef receiveShadows
-	finalColor *= shadow;
+	//finalColor *= shadow;
+	vec4 shadowTexCoord2 = camViewToShadowMapMatrixshadowDepthSource0 * positionView;
+	float shadow2 = textureProj(shadowMap, shadowTexCoord2);
+	finalColor = vec4(shadow2);
+	/*
+	finalColor = vec4(shadow);
+	*/
 #endif
 
 //set opaque
-	finalColor.w = 1.0;
+	//finalColor.w = 1.0;
 } 
 
