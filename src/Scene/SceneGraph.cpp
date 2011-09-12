@@ -93,7 +93,7 @@ void SceneGraph::drawNodes(Material * material) {
 void SceneGraph::drawNodes(Material * material, DirectionNode * viewPoint) {
     foreach(Node * node, sceneNodes) {
           node->setView(material->getShaderProgram(), viewPoint);
-          node->mesh->draw();
+          node->draw(material);
     }
     glError;
 }
@@ -103,7 +103,7 @@ void SceneGraph::drawReceivers(Material * material) {
   Node::setShadowCoords(material->getShaderProgram(),camView);
   foreach(Node * node, sceneNodes) {
     node->setView(material->getShaderProgram(), camView );
-    node->mesh->draw();
+    node->draw(material);
   }
   glError;
 }

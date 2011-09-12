@@ -33,22 +33,28 @@ private:
   QVector3D eulerRotationCache;
   QMatrix4x4 modelMatrix;
   Node * parent;
-  Material * material;
 
 public:
+  Material * material;
   bool transparent;
   QVector3D position;
   QMatrix4x4 rotationMatrix;
   Mesh * mesh;
 
   Node() {
+      this->material = nullptr;
+      position = QVector3D();
+      m_size = 1.0f;
+      mesh = nullptr;
   } ;
+
   Node(string name, const QVector3D& position, float size, Mesh * mesh,
       Material * material);
 
   virtual ~Node();
 
-  void draw();
+  virtual void draw();
+  virtual void draw(Material * material);
   void update();
   void updateRotationFromEuler();
 

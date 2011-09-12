@@ -11,6 +11,7 @@
 #include "System/Logger.h"
 #include "Scene/SceneData.h"
 #include "Renderer/RenderEngine.h"
+#include <cassert>
 
 Node::Node(string name, const QVector3D& position, float size, Mesh * mesh,
         Material * material) :
@@ -65,10 +66,13 @@ void Node::setMaterial(Material *material) {
 }
 
 void Node::draw() {
-//    material->activate();
+    assert(material);
+    draw(material);
+}
+
+void Node::draw(Material * material) {
     material->activateAndBindTextures();
     mesh->draw();
-//    mesh->boundingBox->draw();
 }
 
 void Node::setSize(float size) {
