@@ -121,11 +121,13 @@ void ShaderProgram::bindVertexAttributes(const QList<string> & attributes) {
   if(attributes.contains("normal"))
     bindAttrib("in_Normal");
 
-  if(attributes.contains("tangent")) {
+  if(attributes.contains("tangent"))
     bindAttrib("in_Tangent");
+
+  if(attributes.contains("bitangent"))
     bindAttrib("in_Bitangent");
-  }
-  if(attributes.contains("uv"))
+
+ if(attributes.contains("uv"))
     bindAttrib("in_Uv");
 }
 
