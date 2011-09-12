@@ -169,6 +169,9 @@ void ShaderProgram::init(const QList<string> & attributes) {
 void ShaderProgram::use() {
   glError;
   glUseProgram(handle);
+//  foreach(UniformBuffer* buffer, uniformBuffers) {
+//      bindUniformBuffer(buffer->getName(),0,buffer->getHandle());
+//  }
   glError;
 }
 

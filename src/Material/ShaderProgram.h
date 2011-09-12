@@ -13,6 +13,7 @@
 #include "common/Qt3D.h"
 #include "Material/Shader.h"
 #include "Material/Uniform.h"
+#include "Material/UniformBuffer.h"
 
 using std::string;
 
@@ -42,6 +43,7 @@ class ShaderProgram {
 	string name;
 	vector<Uniform<float> > uniforms;
 	vector<Uniform<int> > uniformsi;
+	vector<UniformBuffer> uniformBuffers;
 	void setUniform(string name, int value);
 	void setUniform(string name, float value);
 	void setUniform(string name, const QMatrix3x3 & matrix);

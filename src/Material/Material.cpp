@@ -13,6 +13,7 @@
 void Material::init() {
     diffuseColor = QVector4D();
     shaderProgram = new ShaderProgram();
+    textures = vector<Texture*>();
 }
 
 void Material::addTexture(Texture * texture) {
