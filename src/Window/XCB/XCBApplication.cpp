@@ -33,10 +33,8 @@ void XCBApplication::run() {
   Config::Instance().load("config.xml");
   // Qt requires at least one argument.
   if (app->arguments().length() < 1) {
-    LogWarning << "Oh noez, no argz. Better append foo.";
-    app->arguments().push_back("foo");
+    LogError << "no args in qt app.";
   }
-  LogInfo << app->arguments().at(0).toStdString();
 
   window = new XCBWindow();
   window->init(SceneData::Instance().name);
