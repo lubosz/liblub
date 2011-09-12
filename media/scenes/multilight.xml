@@ -6,22 +6,31 @@
 		<TextureCube name="sky" url="cubemaps/sky" />
 	</Textures>
 	<Meshes>
-		<File name="cube" url="cube2.obj" />
 		<File name="radio" url="radio.blend" />
 		<File name="monkey" url="monkey.blend" />
 		<File name="sphere" url="earth.obj" />
+		<File name="cube" url="cube.obj" />
 		<File name="plane" url="plane.obj" />
-		<File name="light" url="earth.obj" drawType="LINES" />
+	<!--
 		<Procedural name="sponge" type="Sponge" recursion="2" />
+		<Procedural name="proccube" type="Cube" />
+		<Procedural name="Tetrahedron" type="Tetrahedron" />
+	-->
+		<File name="light" url="earth.obj" drawType="LINES" />
+		
 	</Meshes>
 	<Scene name="Multilights">
 		<Light name="mylight" position ="-9, 32, 11.5" direction="1,-5,-1" mesh="light" diffuse="0,0,1" />
-		<!-- 
-		 -->
 		<Light name="myotherlight" position ="9, 32, -11.5" direction="-1,-5,1" mesh="light" diffuse="1,0,0" />
 		<Light name="myotherlight1" position ="-5, 16, -2" direction="-1,-5,1" mesh="light" diffuse="0,0.5,0" />
 		<Light name="myotherlight2" position ="6, 20, 10" direction="-1,-5,1" mesh="light" diffuse="0.7,0,0.5" />
 		<Light name="myotherlight3" position ="9, 25, 9" direction="-1,-5,1" mesh="light" diffuse="0.3,0.6,0" />
+		<!-- 
+		<Object name="sponge" mesh="sponge" scale="2.0" position="5,0,5" />
+		<Object name="cube" mesh="proccube" scale="2.0" position="-5,0,5" />
+		<Object name="cube2" mesh="cube" scale="2.0" position="-5,0,-5" />
+		<Object name="Tetrahedron" mesh="Tetrahedron" scale="2.0" position="5,0,-5" />
+		 -->
 		<Object name="cube" mesh="cube" scale="2.0" position="5,0,5" />
 		<Object name="cube2" mesh="cube" scale="2.0" position="5,0,10" />
 		<Object name="sphere" mesh="sphere" scale="2.0" position="5,0,-5" />
