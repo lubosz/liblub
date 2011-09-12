@@ -8,7 +8,5 @@ in vec3 viewNormal;
 out vec4 fragColor;
 
 void main(void) {
-    //fragColor = vec4(viewNormal,1.0);
-    //fragColor = texture(diffuse, uv);
-    fragColor = vec4(uv,1,1.0);
+    fragColor = texture(diffuse, uv);
 }

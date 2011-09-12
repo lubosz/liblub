@@ -95,6 +95,7 @@
     }
 
     void InstancedSponge::draw(Material * material) {
+        material->activateAndBindTextures();
         foreach (UniformBuffer * buffer, positionBuffers){
                     buffer->bind();
                     material->getShaderProgram()->bindUniformBuffer("positions", 0,
