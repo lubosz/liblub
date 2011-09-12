@@ -48,10 +48,6 @@ public:
   Texture* getTexture(const string & name);
   Texture* getTexture(const string & name, const string & as);
 
-  void updateLightBuffer();
-  void initLightBuffer(const string& shaderName, const string& bufferName);
-  void initLightBuffer(ShaderProgram * shader, const string& bufferName);
-
   void setResolution(unsigned width, unsigned height);
 
   QSize getResolution();
@@ -64,19 +60,8 @@ public:
   void setCurrentCamera(Camera * camera);
   void addCamera(Camera * camera);
 
-  struct LightSource {
-    QVector4D position;
-    QVector4D diffuse;
-    QVector4D specular;
-    QVector4D direction;
-  };
-
 private:
   Camera *currentCamera;
-  bool useMultiLights;
-  LightSource lightBufferData[10];
-  UniformBuffer * lightBuffer;
-  GLint lightBufferSize;
   Light *shadowLight, *moveLight;
 };
 

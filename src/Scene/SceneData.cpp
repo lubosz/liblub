@@ -12,51 +12,10 @@
 
 SceneData::SceneData() {
   lights = QMap<string, Light*>();
-  useMultiLights = false;
 }
 
 SceneData::~SceneData() {
   // TODO Auto-generated destructor stub
-}
-void SceneData::initLightBuffer(const string& shaderName, const string& bufferName) {
-  ShaderProgram * shader = SceneData::Instance().getProgram(shaderName);
-  initLightBuffer(shader, bufferName);
-}
-
-void SceneData::initLightBuffer(ShaderProgram * shader, const string& bufferName) {
-  lightBuffer = new UniformBuffer();
-  SceneData::Instance().lightBuffer->bind();
-
-  GLuint uniBlockIndex = glGetUniformBlockIndex(shader->getHandle(), bufferName.c_str());
-  glGetActiveUniformBlockiv(
-    shader->getHandle(),
-    uniBlockIndex,
-    GL_UNIFORM_BLOCK_DATA_SIZE,
-    &lightBufferSize
-  );
-
-  printf("Light Uniform Buffer Size %d\n", lightBufferSize);
-
-
-  unsigned lightIndex = 0;
-  foreach(Light* light, lights){
-
-//    lightBufferData[lightIndex].position = getCurrentCamera()->getView() * light->position;
-    lightBufferData[lightIndex].position = light->position;
-    lightBufferData[lightIndex].diffuse = light->diffuse;
-    lightBufferData[lightIndex].specular = light->specular;
-    lightBufferData[lightIndex].direction = light->direction();
-
-    printf("Found Light %s\n", lights.key(light).c_str());
-    qDebug() << lightBufferData[lightIndex].diffuse;
-
-    lightIndex++;
-    glError;
-  }
-  lightBuffer->write(lightBufferData, lightBufferSize);
-
-  shader->bindUniformBuffer(bufferName,0,lightBuffer->getHandle());
-  useMultiLights = true;
 }
 
 void SceneData::addProgram(string & name, ShaderProgram* program) {
@@ -213,14 +172,4 @@ Light * SceneData::getMoveLight() {
 //  }
 
   return moveLight;
-}
-
-void SceneData::updateLightBuffer() {
-  if(!useMultiLights) return;
-  unsigned lightIndex = 0;
-  foreach(Light* light, lights) {
-      lightBufferData[lightIndex].position = getCurrentCamera()->getView() * light->position;
-      lightIndex++;
-  }
-  lightBuffer->write(lightBufferData, lightBufferSize);
 }
