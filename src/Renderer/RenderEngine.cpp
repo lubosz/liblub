@@ -147,7 +147,7 @@ void RenderEngine::checkVersion() {
     // print max # of colorbuffers supported by FBO
     int colorBufferCount = 0;
     glGetIntegerv(GL_MAX_COLOR_ATTACHMENTS, &colorBufferCount);
-    LogDebug << "Max Number of Color Buffer Attachment Points: "
+    LogInfo << "Max Number of Color Buffer Attachment Points: "
             << colorBufferCount;
 
 //    GLfloat floatvalue;

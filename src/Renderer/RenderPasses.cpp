@@ -78,14 +78,12 @@
     fbo->bind();
     RenderEngine::Instance().clear();
     RenderEngine::Instance().updateViewport(res);
-    glEnable(GL_CULL_FACE);
     glCullFace(GL_FRONT);
     glEnable(GL_POLYGON_OFFSET_FILL);
     glPolygonOffset(offsetFactor, offsetUnits);
     SceneGraph::Instance().drawCasters(material, view);
     glPolygonOffset(0.0, 0.0);
     glCullFace(GL_BACK);
-    glDisable(GL_CULL_FACE);
     fbo->unBind();
   }
 
