@@ -25,6 +25,8 @@ const LogSetting blackList[] = {
   { "XCBApplication.cpp", Logger::Warning },
   { "SceneGraph.cpp", Logger::Warning },
   { "SceneLoader.cpp", Logger::Warning },
+  { "Textures.cpp", Logger::Warning },
+  { "Texture.cpp", Logger::Warning },
 };
 
 Logger::Logger(const std::string& file, int line, Logger::LogLevel level) {
