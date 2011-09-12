@@ -27,13 +27,25 @@ public:
   vector<DrawThing*> drawPasses;
   vector<ShadowCastPass*> shadowCastPasses;
 
+  struct LightSource {
+    QVector4D position;
+    QVector4D diffuse;
+    QVector4D specular;
+    QVector4D direction;
+  };
+
+  LightSource lightBufferData[10];
+  UniformBuffer * lightBuffer;
+  GLint lightBufferSize;
+
   DeferredLightApp(int argc, char *argv[]);
 
   ~DeferredLightApp();
 
   void scene();
   void renderFrame();
-
+  void initLightBuffer(const string& shaderName, const string& bufferName);
+  void initLightBuffer(ShaderProgram * shader, const string& bufferName);
   void initWidgets(QHBoxLayout * mainLayout);
 public slots:
   void setOffSetFactor(double factor);

@@ -87,6 +87,7 @@
     }
 
     TemplateEngine::Instance().c.insert("shadowSamplers", shadowSamplers);
+    TemplateEngine::Instance().c.insert("shadowSamplerSize", shadowSamplers.size());
 
 
     SourcePass * shadowReceivePass = new ShadowReceivePass(

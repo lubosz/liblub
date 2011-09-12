@@ -3,7 +3,6 @@
 //precision highp float;
 
 in vec4 vpos;
-in vec3 binormal;
 in vec3 normal;
 in vec3 tangent;
 in vec2 texcoord;
@@ -65,6 +64,8 @@ void main(){
 	vec2 dp,ds,uv; 
 	float d;
 	
+	vec3 binormal = -cross(normal,tangent);
+
 	// ray intersect in view direction
 	p = vpos.xyz; // pixel position in eye space
 	v = normalize(p); // view vector in eye space
@@ -126,5 +127,4 @@ void main(){
 	
 	fragColor.xyz+=att*(c.xyz*diffuse.xyz*diff+specular.xyz*pow(spec,specular.w));
 	fragColor.w=1.0;
-
 }

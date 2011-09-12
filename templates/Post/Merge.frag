@@ -14,5 +14,5 @@ in vec2 uv;
 	vec4 value1 = texture({{ source1 }}, uv);
 	vec4 value2 = texture({{ source2 }}, uv);
 	//fragColor = ratio * texture({{ source1 }}, uv) + (1-ratio) * texture({{ source2 }}, uv);
-	fragColor =  (value1* value2) + value2*0.2; 
+	fragColor =  (value1* value2); 
 {% endblock %}

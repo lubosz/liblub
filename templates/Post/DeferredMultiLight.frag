@@ -103,7 +103,8 @@ float saturate(float input) {
 		
 		
 	}
-	finalTarget = (finalDiffuseTarget + finalSpecularTarget) * ambient;
+	finalDiffuseTarget = (finalDiffuseTarget + finalSpecularTarget) * ambient;
+	finalTarget = (finalSpecularTarget + ambient);
 	//fragColor *= texture(diffuseTarget, uv)* texture(envTarget, uv);
 	//fragColor *= 1-ambient;// * texture(shadowTarget, uv).x;
 	//fragColor = vec4(foo/5);

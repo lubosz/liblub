@@ -16,8 +16,6 @@
     You should have received a copy of the GNU General Public License
     along with liblub.  If not, see <http://www.gnu.org/licenses/>.
 */
-#define BUFFERSIZE 2000
-#include "common/OpenGL.h"
 #include <string>
 #include "System/Application.h"
 #include "System/GUI.h"
@@ -33,17 +31,13 @@
 #include "Scene/SceneLoader.h"
 #include "Material/Materials.h"
 #include "Scene/SceneData.h"
+#include "Scene/InstancedSponge.h"
+#include "System/TemplateEngine.h"
+#include "Renderer/RenderPasses.h"
 
 class InstancingApp: public Application {
  public:
   Material * material;
-  Node * node;
-  Mesh * cube;
-  UniformBuffer * positionBuffer;
-  GLint positionBufferSize;
-
-  vector<QVector4D> positionBufferData;
-
 
   InstancingApp(int argc, char *argv[]) : Application(argc,argv) {
   }
@@ -51,91 +45,43 @@ class InstancingApp: public Application {
   ~InstancingApp() {}
 
   void scene() {
+    glEnable(GL_CULL_FACE);
+    glCullFace(GL_BACK);
     QList<string> attributes;
-//    attributes.push_back("color");
-//    attributes.push_back("normal");
+    attributes.push_back("normal");
     attributes.push_back("uv");
-//    attributes.push_back("tangent");
 
-    material = new Simple("Stuff/instancing",attributes);
-    cube = Geometry::cube(attributes);
-//    cube = MeshLoader::load(attributes, "monkey.obj");
-    cube->setDrawType(GL_TRIANGLES);
-    node = new Node("cube", {0,0,-5}, 1, cube, material);
+    InstancedSponge *sponge = new InstancedSponge(4, attributes);
 
+    TemplateEngine::Instance().c.insert("positionElements", QVariant::fromValue(sponge->positionBufferDataSize));
+    material = new Template("instancing",attributes);
+    sponge->initBuffers(material);
 
     Texture * texture = new TextureFile("diamond.png", "diffuse");
     texture->bind();
     texture->filterMinMag(GL_LINEAR_MIPMAP_LINEAR, GL_NEAREST);
     material->addTexture(texture);
 
-    initPositionBuffer();
-//    for (int x = 0; x < 20; x++){
-//      for (int y = 0; y < 20; y++){
-//        for (int z = 0; z < 10; z++){
-//      SceneGraph::Instance().addNode(new Node("", QVector3D(3*x, 3*y, 3*z), 1, cube, material));
-//        }
-//      }
-//    }
-    /*
-    SceneData::Instance().addLight("foolight", new Light(QVector3D(-2.5, 21.5, -5.2), QVector3D(1, -5, 0)));
-
-
-    for (int x = 0; x < 63; x++){
-      for (int y = 0; y < 63; y++){
-        SceneGraph::Instance().addNode(new Node("", QVector3D(2*x, 2*((x+y)%5), 2*y), 1, cube, material));
-      }
-    }
-*/
-
+    SceneGraph::Instance().addNode(sponge);
   }
+
   void renderFrame(){
-    RenderEngine::Instance().clear();
-    node->setView(SceneData::Instance().getCurrentCamera());
-    material->activateAndBindTextures();
-    cube->draw(4000);
-//    SceneGraph::Instance().drawNodes(SceneData::Instance().getCurrentCamera());
+    OnePass::draw();
   }
 
-
-  void initPositionBuffer() {
-    positionBuffer = new UniformBuffer();
-    positionBuffer->bind();
-
-    GLuint uniBlockIndex = glGetUniformBlockIndex(material->getShaderProgram()->getHandle(), "positions");
-    glGetActiveUniformBlockiv(
-      material->getShaderProgram()->getHandle(),
-      uniBlockIndex,
-      GL_UNIFORM_BLOCK_DATA_SIZE,
-      &positionBufferSize
-    );
-
-    LogDebug << "Position Uniform Buffer Size" << positionBufferSize;
-
-    unsigned i = 0;
-    for (int x = 0; x < 63; x++){
-      for (int y = 0; y < 63; y++){
-//        for (int z = 0; z < 10; z++){
-//          positionBufferData[i] = QVector3D(2*x, 2*y, 2*z);
-//          positionBufferData.push_back(QVector4D(3*x, 3*y, 3*z,1));
-        positionBufferData.push_back(QVector4D(2*x, 2*((x+y)%5), 2*y,1));
-//          positionBufferData[i].diffuse = QVector4D();
-          i++;
-//        }
-      }
+  vector<QVector4D> * initPositionData(QVector3D translation) {
+        vector<QVector4D> * positionBufferData = new vector<QVector4D> ();
+        for (int x = 0; x < 16; x++) {
+            for (int y = 0; y < 16; y++) {
+                for (int z = 0; z < 16; z++) {
+                    positionBufferData->push_back(
+                            QVector4D(3 * x, 3 * y, 3 * z, 1)
+                                    + translation.toVector4D());
+                }
+            }
+        }
+        return positionBufferData;
     }
-
-
-    LogDebug << "Position Array Size" << positionBufferData.size();
-
-//    for (int i = 0; i < 2000; i++) {
-//      positionBufferData[i].position = QVector4D(2*i, 0, -5, 1);
-//      positionBufferData[i].diffuse = QVector4D();
-//    }
-    positionBuffer->write(positionBufferData.data(), positionBufferSize);
-    material->getShaderProgram()->bindUniformBuffer("positions",0,positionBuffer->getHandle());
-    glError;
-  }
 };
 
 int main(int argc, char *argv[]) {

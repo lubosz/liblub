@@ -53,8 +53,9 @@ float lookup( vec2 offSet,vec4 shadowTexCoord){
 	positionTarget = positionView;
 	normalTarget = vec4(normalView,1);
 	tangentTarget =  vec4(tangentView,1);
-	diffuseTarget = texture(diffuseTexture, uv*5);
-	normalMapTarget = texture(normalTexture, uv*5);
+	diffuseTarget = texture(diffuseTexture, uv);
+	//diffuseTarget = vec4(uv,1,1);
+	normalMapTarget = texture(normalTexture, uv);
 	
 	//shadow
 	shadowTarget = vec4(1);
@@ -65,7 +66,7 @@ float lookup( vec2 offSet,vec4 shadowTexCoord){
 	shadowSum += textureProj({{shadowSampler}}, shadowTexCoord);
 {% endfor %}
 	
-	shadowTarget*= shadowSum/5.0;
+	shadowTarget*= shadowSum/{{shadowSamplerSize}}.0;
 
 	/*
 	// 8x8 kernel PCF

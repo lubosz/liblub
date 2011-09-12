@@ -23,6 +23,7 @@
 #include "Material/Materials.h"
 #include "Scene/SceneData.h"
 #include "System/TemplateEngine.h"
+#include "Scene/InstancedSponge.h"
 
   DeferredLightApp::DeferredLightApp(int argc, char *argv[]) :
     Application(argc, argv) {
@@ -34,11 +35,16 @@
   }
 
   void DeferredLightApp::scene() {
-
+      glEnable(GL_CULL_FACE);
+      glCullFace(GL_BACK);
     QList<string> uv = QList<string> () << "uv";
 
     sceneLoader->load();
     QSize res = SceneData::Instance().getResolution();
+
+    SceneData::Instance().getCurrentCamera()->setPosition(QVector3D(-1.43765, 0.130675, -1.20157));
+    SceneData::Instance().getCurrentCamera()->setDirection(QVector3D(0.741701, -0.0836778, 0.66549));
+    SceneData::Instance().getCurrentCamera()->update();
 
     //
     // shadow passes
@@ -87,14 +93,23 @@
           QString::fromStdString(shadowCastPass->targets[0]->name);
     }
 
+    QList<string> tangent = QList<string> () << "uv" << "normal" << "tangent";
+    InstancedSponge *sponge = new InstancedSponge(2, tangent);
+
     TemplateEngine::Instance().c.insert("shadowSamplers", shadowSamplers);
+    TemplateEngine::Instance().c.insert("shadowSamplerSize", shadowSamplers.size());
+    TemplateEngine::Instance().c.insert("positionElements", QVariant::fromValue(sponge->positionBufferDataSize));
+    TemplateEngine::Instance().c.insert("isInstanced", true);
+    Material * gatherMaterial = new Template("Post/MultiTarget",tangent);
+
 
     SourcePass * shadowReceivePass = new ShadowReceivePass(
-        res,
-        shadowReceiveSources,
-        shadowReceiveTargets,
-        new Template("Post/MultiTarget",
-            QList<string> () << "uv" << "normal" << "tangent"));
+        res,shadowReceiveSources,
+        shadowReceiveTargets,gatherMaterial);
+
+    sponge->initBuffers(gatherMaterial);
+  SceneGraph::Instance().addNode(sponge);
+
     drawPasses.push_back(shadowReceivePass);
 
     //
@@ -172,7 +187,8 @@
     drawPasses.push_back(shadingPass);
 
     SinkPass * sinkPass = new SinkPass();
-
+/*
+     */
     // debug planes
     sinkPass->debugTarget(QRectF(0.5, -1, 0.5, 0.5),
         aoPass->getTarget("ao"));
@@ -200,8 +216,7 @@
 
     drawPasses.push_back(sinkPass);
     // Init Light Uniform Buffer
-    SceneData::Instance().initLightBuffer(
-        shadingPass->material->getShaderProgram(), "LightSourceBuffer");
+    initLightBuffer(shadingPass->material->getShaderProgram(), "LightSourceBuffer");
   }
 
   void DeferredLightApp::renderFrame() {
@@ -253,8 +268,46 @@
   }
 #endif
 
+void DeferredLightApp::initLightBuffer(const string& shaderName, const string& bufferName) {
+  ShaderProgram * shader = SceneData::Instance().getProgram(shaderName);
+  initLightBuffer(shader, bufferName);
+}
+
+void DeferredLightApp::initLightBuffer(ShaderProgram * shader, const string& bufferName) {
+  lightBuffer = new UniformBuffer();
+  lightBuffer->bind();
+
+  GLuint uniBlockIndex = glGetUniformBlockIndex(shader->getHandle(), bufferName.c_str());
+  glGetActiveUniformBlockiv(
+    shader->getHandle(),
+    uniBlockIndex,
+    GL_UNIFORM_BLOCK_DATA_SIZE,
+    &lightBufferSize
+  );
+
+  LogDebug << "Light Uniform Buffer Size" << lightBufferSize;
+
+  unsigned lightIndex = 0;
+  foreach(Light* light, SceneData::Instance().lights){
+
+    lightBufferData[lightIndex].position = light->position;
+    lightBufferData[lightIndex].diffuse = light->diffuse;
+    lightBufferData[lightIndex].specular = light->specular;
+    lightBufferData[lightIndex].direction = light->direction();
+
+    LogDebug << "Found Light" << SceneData::Instance().lights.key(light);
+    qDebug() << lightBufferData[lightIndex].diffuse;
+
+    lightIndex++;
+    glError;
+  }
+  lightBuffer->write(lightBufferData, lightBufferSize);
+
+//  shader->uniformBuffers.push_back(lightBuffer);
+  shader->bindUniformBuffer(bufferName,1,lightBuffer->getHandle());
+}
+
 int main(int argc, char *argv[]) {
   DeferredLightApp(argc, argv).run();
   return 0;
 }
-
