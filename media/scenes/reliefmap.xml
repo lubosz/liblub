@@ -17,7 +17,6 @@
 	</Textures>
 	<Meshes>
 		<File name="cube" url="cube.obj" />
-		<File name="blendcube" url="cube.blend" />
 	</Meshes>
 	<Materials>
 		<Material name="relief" program="Relief">
@@ -27,7 +26,6 @@
 	</Materials>
 	<Scene name="Relief Mapping">
 		<Light position ="-9.1, 20.5, 3.5" direction="1,-5,-1" />
-		<Object name="uvmovenode" mesh="blendcube" material="relief" scale="1.0" position="3,-2,-9" />
 		<Object name="bump" mesh="cube" material="relief" scale="1.0" position="3,-2,-5" />
 	</Scene>
 </liblub>
