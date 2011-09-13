@@ -5,12 +5,17 @@ in vec4 positionView;
 in vec3 normalView;
 in vec3 tangentView;
 in vec2 uv;
+in vec3 reflection;
+in vec4 positionWorld;
+in vec4 normalWorld;
+in vec4 tangentWorld;
 out vec4 positionTarget;
 out vec4 normalTarget;
 out vec4 diffuseTarget;
 out vec4 tangentTarget;
 out vec4 normalMapTarget;
 out vec4 shadowTarget;
+out vec4 reflectionTarget;
 
 //out float depthTarget;
 {% endblock %}
@@ -18,6 +23,7 @@ out vec4 shadowTarget;
 {% block uniforms %}
 uniform sampler2D diffuseTexture;
 uniform sampler2D normalTexture;
+uniform samplerCube envMap;
 //uniform sampler2DShadow {{shadowDepthSource}};
 
 {% for shadowSampler in shadowSamplers %}
@@ -50,9 +56,12 @@ float lookup( vec2 offSet,vec4 shadowTexCoord){
 {% endblock %}
 
 {% block main %}
-	positionTarget = positionView;
-	normalTarget = vec4(normalView,1);
-	tangentTarget =  vec4(tangentView,1);
+	//positionTarget = positionView;
+	positionTarget = positionWorld;
+	//normalTarget = vec4(normalView,1);
+	normalTarget = normalWorld;
+	tangentTarget = tangentWorld;
+	//vec4(tangentView,1);
 	diffuseTarget = texture(diffuseTexture, uv);
 	//diffuseTarget = vec4(uv,1,1);
 	normalMapTarget = texture(normalTexture, uv);
@@ -67,6 +76,8 @@ float lookup( vec2 offSet,vec4 shadowTexCoord){
 {% endfor %}
 	
 	shadowTarget*= shadowSum/{{shadowSamplerSize}}.0;
+
+	reflectionTarget = texture(envMap, reflection);
 
 	/*
 	// 8x8 kernel PCF

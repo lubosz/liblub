@@ -73,12 +73,14 @@
         new ColorTexture(res, "tangentTarget"),
         new ColorTexture(res, "normalMapTarget"),
         new ColorTexture(res, "shadowTarget"),
-        new DepthTexture(res, "depthTarget")
+        new DepthTexture(res, "depthTarget"),
+        new ColorTexture(res, "reflectionTarget")
     };
 
     vector<Texture*> shadowReceiveSources = {
       SceneData::Instance().getTexture("masonry-wall-normal-map","normalTexture"),
       SceneData::Instance().getTexture("masonry-wall-texture","diffuseTexture"),
+      SceneData::Instance().getTexture("sky", "envMap")
     };
 
     foreach(ShadowCastPass * shadowCastPass, shadowCastPasses) {
@@ -171,7 +173,8 @@
         shadowReceivePass->getTarget("tangentTarget"),
         shadowReceivePass->getTarget("normalMapTarget"),
         blurVPass->getTarget("finalAOTarget"),
-        SceneData::Instance().getTexture("sky", "envMap")
+        shadowReceivePass->getTarget("reflectionTarget"),
+//        SceneData::Instance().getTexture("sky", "envMap")
     };
 
     vector<Texture*> shadingTargets = {

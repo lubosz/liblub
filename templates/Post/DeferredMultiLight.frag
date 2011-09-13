@@ -23,14 +23,16 @@ uniform sampler2D diffuseTarget;
 uniform sampler2D tangentTarget;
 uniform sampler2D normalMapTarget;
 uniform sampler2D finalAOTarget;
-uniform samplerCube envMap;
+uniform sampler2D reflectionTarget;
+//uniform samplerCube envMap;
+uniform mat4 inverseView;
 //uniform sampler2D shadowTarget;
 
 uniform LightSourceBuffer {
 	LightSource lightSources[LIGHTS];
 };
 
-uniform vec4 camPosition;
+uniform vec4 camPositionWorld;
 
 const int shininess = 32;
 //const int shininess = 1;
@@ -47,19 +49,23 @@ float saturate(float input) {
 	vec4 tangent = texture(tangentTarget, uv);
 	vec3 binormal = cross(tangent.xyz, normal.xyz);
 	vec4 diffuse = texture(diffuseTarget, uv);
+	vec4 reflectionColor = texture(reflectionTarget, uv);
 	
 	//normalmapping
+	vec4 viewDirection = camPositionWorld-position;
 	vec3 eyeVec = vec3(
-		dot(-position.xyz, tangent.xyz),
-		dot(-position.xyz, binormal.xyz),
-		dot(-position.xyz, normal.xyz)
+		dot(viewDirection.xyz, tangent.xyz),
+		dot(viewDirection.xyz, binormal),
+		dot(viewDirection.xyz, normal.xyz)
 	);
 	vec3 bump = normalize( texture(normalMapTarget, uv).xyz * 2.0 - 1.0);
 	//endnormalmapping
 
 	//env
-	vec3 reflectDir = reflect(-position.xyz, normal.xyz);
-	envTarget = texture(envMap, reflectDir);
+	//vec4 reflectDir = reflect(-position,normalize(normal));
+	//reflectDir = inverseView * reflectDir;
+	//envTarget = texture(envMap, reflectDir.xyz);
+    envTarget = reflectionColor;
 
 	float ambient = texture(finalAOTarget, uv).r;
 	finalSpecularTarget = vec4(0);
@@ -103,8 +109,9 @@ float saturate(float input) {
 		
 		
 	}
-	finalDiffuseTarget = (finalDiffuseTarget + finalSpecularTarget) * ambient;
-	finalTarget = (finalSpecularTarget + ambient);
+	finalDiffuseTarget = finalDiffuseTarget;
+	finalTarget = (finalDiffuseTarget + finalSpecularTarget) * ambient;
+	//finalTarget = (finalSpecularTarget + ambient);
 	//fragColor *= texture(diffuseTarget, uv)* texture(envTarget, uv);
 	//fragColor *= 1-ambient;// * texture(shadowTarget, uv).x;
 	//fragColor = vec4(foo/5);

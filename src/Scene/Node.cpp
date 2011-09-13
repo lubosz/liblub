@@ -134,6 +134,8 @@ void Node::setView(
     tempMatrix = viewPoint->getProjection() * tempMatrix;
     shaderProgram->setUniform("MVPMatrix", tempMatrix);
 
+    shaderProgram->setUniform("camPositionWorld",SceneData::Instance().getCurrentCamera()->getPosition().toVector4D());
+
     glError;
 }
 
