@@ -16,6 +16,3 @@ QtInput::QtInput() {
 QtInput::~QtInput() {
 	// TODO Auto-generated destructor stub
 }
-
-void QtInput::eventLoop(){
-}

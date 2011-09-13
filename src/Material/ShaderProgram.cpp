@@ -225,6 +225,10 @@ void ShaderProgram::setUniform(string name, float value) {
   glUniform1f(glGetUniformLocation(handle, name.c_str()), value);
 }
 
+void ShaderProgram::setUniform(string name, qreal value) {
+    setUniform(name, static_cast<float>(value));
+}
+
 void ShaderProgram::setUniform(string name, int value) {
   glUniform1i(glGetUniformLocation(handle, name.c_str()), value);
 }

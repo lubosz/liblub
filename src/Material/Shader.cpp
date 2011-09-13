@@ -40,13 +40,12 @@ Shader::Shader(string fileName, GLenum type, const vector<string> & defines) {
 
 Shader::~Shader() {
   glDeleteShader(shader);
-  free(source);
 }
 
 
 void Shader::loadSource() {
   /* Read our shaders into the appropriate buffers */
-  source = readFile(Config::Instance().value<string>("shaderDir") + fileName);
+    const GLchar *source = readFile(Config::Instance().value<string>("shaderDir") + fileName);
 
     /* Assign our handles a "name" to new shader objects */
     shader = glCreateShader(type);
@@ -62,18 +61,18 @@ void Shader::loadSource() {
       const GLchar *sources[2] = { defineString.c_str(), source };
       glShaderSource(shader, 2, sources, NULL);
     } else {
-      glShaderSource(shader, 1,  (const GLchar**)&source, NULL);
+      glShaderSource(shader, 1, &source, NULL);
     }
 }
 
 void Shader::loadTemplate() {
   string shaderSource = TemplateEngine::Instance().render(fileName).toStdString();
 //  printf("%s:\n\n %s\n", fileName.c_str(), shaderSource.c_str());
-  source = const_cast<GLchar *>(shaderSource.c_str());
   /* Assign our handles a "name" to new shader objects */
   shader = glCreateShader(type);
   /* Set rendered template string as source */
-  glShaderSource(shader, 1,  (const GLchar**)&source, NULL);
+  const GLchar *source = shaderSource.c_str();
+  glShaderSource(shader, 1,  &source, NULL);
 }
 
 void Shader::compile() {

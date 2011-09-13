@@ -54,7 +54,7 @@ public:
 
   virtual ~Node();
 
-  virtual void draw();
+  void draw();
   virtual void draw(Material * material);
   void update();
   void updateRotationFromEuler();

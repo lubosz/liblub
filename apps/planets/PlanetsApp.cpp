@@ -46,9 +46,9 @@ void PlanetsApp::setPostprocessing(bool post) {
   glWidget->updateGL();
 }
 
-void PlanetsApp::setExposure(double exposure) {
+void PlanetsApp::setExposure(float exposure) {
   HDR->shaderProgram->use();
-  HDR->shaderProgram->setUniform("exposure", (float) exposure);
+  HDR->shaderProgram->setUniform("exposure", exposure);
   glWidget->updateGL();
 }
 

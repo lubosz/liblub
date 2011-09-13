@@ -32,11 +32,11 @@ class ProcTextures {
 
     for (int y = 0; y < size.height(); y++) {
       for (int x = 0; x < size.width(); x++) {
-        float fX = ((size.width() - 1) * 0.5f - x) / (float) (size.width() - 1);
-        float fY = ((size.height() - 1) * 0.5f - y) / (float) (size.height() - 1);
-        float distance = std::max(0.0f, (float)sqrt(fX * fX + fY * fY) - radius);
+        float fX = ((size.width() - 1) * 0.5f - x) / static_cast<float> (size.width() - 1);
+        float fY = ((size.height() - 1) * 0.5f - y) / static_cast<float> (size.height() - 1);
+        float distance = std::max(0.0, sqrt(fX * fX + fY * fY) - radius);
         float intensity = exp(-exposure * distance);
-        unsigned char color = (unsigned char) (intensity * 192 + 0.5f);
+        unsigned char color = intensity * 192 + 0.5f;
         image->setPixel(x, y, qRgba(color, color, color, color));
       }
     }

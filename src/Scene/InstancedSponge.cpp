@@ -109,9 +109,9 @@
         if(positions.size() <= 4096) {
             positionBuffers.push_back(initPositionBuffer(&positions));
         } else {
-            for(int currentBuffer = 0; currentBuffer < bufferCount; currentBuffer++){
+            for(unsigned currentBuffer = 0; currentBuffer < bufferCount; currentBuffer++){
                 vector<QVector4D> * foo = new vector<QVector4D>();
-                for(int currentPos = 0; currentPos < positionBufferDataSize; currentPos++){
+                for(unsigned currentPos = 0; currentPos < positionBufferDataSize; currentPos++){
                     foo->push_back(positions.back());
                     positions.pop_back();
                 }

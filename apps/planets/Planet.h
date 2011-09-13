@@ -55,7 +55,7 @@ private:
 public slots:
   void setInnerRadius(double radius);
   void setOuterRadius(double radius);
-  void setType(int type);
+  void setType(PlanetType type);
   void setScaleDepth(double scale);
   void setRed(double red);
   void setGreen(double red);

@@ -46,6 +46,7 @@ class ShaderProgram {
 	vector<UniformBuffer> uniformBuffers;
 	void setUniform(string name, int value);
 	void setUniform(string name, float value);
+	void setUniform(string name, qreal value);
 	void setUniform(string name, const QMatrix3x3 & matrix);
 	void setUniform(string name, const QMatrix4x4 & matrix);
 	void setUniform(string name, const QVector2D & vector);

@@ -50,7 +50,7 @@ public:
   void renderFrame();
 
 public slots:
-  void setExposure(double exposure);
+  void setExposure(float exposure);
   void setWireframe(bool wire);
   void setPostprocessing(bool post);
 };

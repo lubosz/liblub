@@ -46,7 +46,8 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++0x")
 #Warnings
 if(WARNINGS)
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Werror -Wextra -Woverloaded-virtual -Wuninitialized")
-#  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Winline -Wformat=2 -Weffc++ -Wold-style-cast")
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wold-style-cast -isystem /usr/include/QtCore")
+  #set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Weffc++ -Wold-style-cast -Winline ")
 # support ISO C++ standard (remove GNU extensions)
 #  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -ansi")
 # warnings for strict ISO C and ISO C++

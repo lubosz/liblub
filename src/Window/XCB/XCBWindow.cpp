@@ -69,13 +69,13 @@ void XCBWindow::createBlankCursor() {
   xcb_create_cursor(connection, cursor, pix, pix, 0, 0, 0, 0, 0, 0, 1, 1);
 }
 
+#include <typeinfo>
 void XCBWindow::initScreen() {
     /* Open Xlib Display */
     display = XOpenDisplay(0);
     if (!display) LogError << "Can't open display";
 
-    default_screen = DefaultScreen(display);
-
+    default_screen = (reinterpret_cast<_XPrivDisplay>(display))->default_screen;
     /* Get the XCB connection from the display */
     connection = XGetXCBConnection(display);
     if (!connection) LogError << "Can't get xcb connection from display";
@@ -124,10 +124,13 @@ void XCBWindow::createGLContext() {
   };
 
   /* Get a pointer to the context creation function for GL 3.0 */
-  PFNGLXCREATECONTEXTATTRIBSARBPROC
-      glXCreateContextAttribs =
-          (PFNGLXCREATECONTEXTATTRIBSARBPROC) glXGetProcAddress(
-              reinterpret_cast<GLubyte const *>("glXCreateContextAttribsARB"));
+
+  const GLubyte *procname =
+          reinterpret_cast<const GLubyte*>("glXCreateContextAttribsARB");
+
+  PFNGLXCREATECONTEXTATTRIBSARBPROC glXCreateContextAttribs =
+              reinterpret_cast<PFNGLXCREATECONTEXTATTRIBSARBPROC>
+              (glXGetProcAddress(procname));
   if (!glXCreateContextAttribs) {
     printf("GL 3.x is not supported");
   }
@@ -192,8 +195,8 @@ void XCBWindow::createWindow() {
   // Set swap interval
   PFNGLXSWAPINTERVALSGIPROC
     glXSwapInterval =
-          (PFNGLXSWAPINTERVALSGIPROC) glXGetProcAddress(
-                  reinterpret_cast<GLubyte const *>("glXSwapIntervalSGI"));
+          reinterpret_cast<PFNGLXSWAPINTERVALSGIPROC> (glXGetProcAddress(
+                  reinterpret_cast<GLubyte const *>("glXSwapIntervalSGI")));
   if (!glXSwapInterval) {
     LogWarning << "VSync is not supported";
   } else {
@@ -302,7 +305,7 @@ void XCBWindow::toggleFullScreen() {
       1,
       window,
       XCB_EVENT_MASK_SUBSTRUCTURE_REDIRECT | XCB_EVENT_MASK_SUBSTRUCTURE_NOTIFY,
-      (const char *) &ev);
+      reinterpret_cast<const char*>(&ev));
 }
 
 void XCBWindow::updateWindowTitle() {

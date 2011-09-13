@@ -82,7 +82,7 @@ void Mesh::addBuffer(const vector<GLfloat> &content, unsigned size, string name)
 
   /* Specify that our coordinate data is going
    * into attribute index bufferCount, and contains three floats per vertex */
-  glVertexAttribPointer((GLuint) bufferCount, size, GL_FLOAT, GL_FALSE, 0, 0);
+  glVertexAttribPointer(bufferCount, size, GL_FLOAT, GL_FALSE, 0, 0);
 
   /* Enable attribute index 0 as being used */
   glEnableVertexAttribArray(bufferCount);

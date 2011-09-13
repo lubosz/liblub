@@ -15,10 +15,10 @@ Mesh * Geometry::plane(const QList<string> & attributes, const QRectF &plane) {
     Mesh * mesh = new Mesh(attributes);
 
     mesh->buffers["position"] = {
-        (float)plane.left(), (float)plane.top(), -1.0,
-        (float)plane.right(), (float)plane.top(), -1.0,
-        (float)plane.right(), (float)plane.bottom(), -1.0,
-        (float)plane.left(), (float)plane.bottom(), -1.0
+        static_cast<float>(plane.left()), static_cast<float>(plane.top()), -1.0,
+        static_cast<float>(plane.right()), static_cast<float>(plane.top()), -1.0,
+        static_cast<float>(plane.right()), static_cast<float>(plane.bottom()), -1.0,
+        static_cast<float>(plane.left()), static_cast<float>(plane.bottom()), -1.0
     };
     mesh->buffers["uv"] = {
             0.0, 0.0,
@@ -501,7 +501,7 @@ Mesh * Geometry::sphere(const QList<string> & attributes, GLdouble radius, GLint
                 costemp3);
         if (orientationOutside) {
           if (useTextureCoords) {
-            middleStrip->vertex("uv",1 - (float) i / slices, 1 - (float) (j + 1) / stacks);
+            middleStrip->vertex("uv",1 - static_cast<float> (i) / slices, 1 - static_cast<float> (j + 1) / stacks);
           }
           middleStrip->vertex("position",sintemp2 * sinCache1a[i], sintemp2 * cosCache1a[i],
               zHigh);
@@ -519,7 +519,7 @@ Mesh * Geometry::sphere(const QList<string> & attributes, GLdouble radius, GLint
         }
         if (orientationOutside) {
           if (useTextureCoords) {
-            middleStrip->vertex("uv",1 - (float) i / slices, 1 - (float) j / stacks);
+            middleStrip->vertex("uv",1 - static_cast<float>(i) / slices, 1 - static_cast<float>(j) / stacks);
           }
           middleStrip->vertex("position",sintemp1 * sinCache1a[i], sintemp1 * cosCache1a[i], zLow);
         } else {

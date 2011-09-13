@@ -21,10 +21,6 @@ class Shader {
 	GLuint getReference() const;
 	virtual ~Shader();
  private:
-	/* These pointers will receive the contents of our shader source code files */
-	GLchar *source;
-
-	/* These are handles used to reference the shaders */
 	GLuint shader;
 
 	GLenum type;

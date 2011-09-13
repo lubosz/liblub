@@ -14,16 +14,8 @@
 #include "Scene/SceneData.h"
 
 QtWindow::QtWindow() {
-  fullscreen = false;
-  grab = false;
-  quit = false;
-  input = new QtInput();
   mainLayout = new QHBoxLayout;
   setLayout(mainLayout);
-}
-
-void QtWindow::init(string title) {
-  programTile = title;
 }
 
 QtWindow::~QtWindow() {
@@ -31,18 +23,6 @@ QtWindow::~QtWindow() {
 
 void QtWindow::mouseLook(int x, int y) {
   LogDebug << x << y;
-}
-
-void QtWindow::swapBuffers(){
-}
-
-void QtWindow::toggleFullScreen(){
-}
-
-void QtWindow::toggleMouseGrab(){
-}
-
-void QtWindow::updateWindowTitle(){
 }
 
 void QtWindow::keyPressEvent(QKeyEvent *e) {

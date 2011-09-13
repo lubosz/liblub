@@ -13,5 +13,4 @@ class QtInput: public Input {
 public:
   QtInput();
   virtual ~QtInput();
-  void eventLoop();
 };

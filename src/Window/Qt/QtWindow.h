@@ -12,15 +12,12 @@
 
 class QHBoxLayout;
 
-class QtWindow: public QWidget, public LL::Window {
+class QtWindow: public QWidget {
   Q_OBJECT
 
 public:
   QtWindow();
   ~QtWindow();
-  void init(string title);
-  void swapBuffers();
-  void updateWindowTitle();
   QHBoxLayout *mainLayout;
 signals:
   void draw();
