@@ -271,11 +271,6 @@
   }
 #endif
 
-void DeferredLightApp::initLightBuffer(const string& shaderName, const string& bufferName) {
-  ShaderProgram * shader = SceneData::Instance().getProgram(shaderName);
-  initLightBuffer(shader, bufferName);
-}
-
 void DeferredLightApp::initLightBuffer(ShaderProgram * shader, const string& bufferName) {
   lightBuffer = new UniformBuffer();
   lightBuffer->bind();

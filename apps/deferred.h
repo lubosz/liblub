@@ -44,7 +44,6 @@ public:
 
   void scene();
   void renderFrame();
-  void initLightBuffer(const string& shaderName, const string& bufferName);
   void initLightBuffer(ShaderProgram * shader, const string& bufferName);
   void initWidgets(QHBoxLayout * mainLayout);
 public slots:
