@@ -67,11 +67,13 @@
         new ColorTexture(res, "tangentTarget"),
         new ColorTexture(res, "normalMapTarget"),
         new ColorTexture(res, "shadowTarget"),
+        new ColorTexture(res, "reflectionTarget")
     };
 
     vector<Texture*> shadowReceiveSources = {
       SceneData::Instance().getTexture("masonry-wall-normal-map","normalTexture"),
       SceneData::Instance().getTexture("masonry-wall-texture","diffuseTexture"),
+      SceneData::Instance().getTexture("sky", "envMap")
     };
 
     foreach(ShadowCastPass * shadowCastPass, shadowCastPasses) {
