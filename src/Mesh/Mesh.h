@@ -39,6 +39,7 @@ class Mesh {
 	virtual ~Mesh();
 	void vertex(string type, GLfloat x, GLfloat y, GLfloat z);
 	void vertex(string type, GLfloat x, GLfloat y);
+	void append(const string bufferName, vector<GLfloat> & vertices);
 
  private:
 	GLuint vao;

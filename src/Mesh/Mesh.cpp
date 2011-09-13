@@ -154,3 +154,13 @@ void Mesh::vertex(string type, GLfloat x, GLfloat y) {
   buffers[type].push_back(x);
   buffers[type].push_back(y);
 }
+
+void Mesh::append(const string bufferName, vector<GLfloat> & vertices){
+    if (buffers.contains(bufferName)) {
+    buffers[bufferName].insert(
+            buffers[bufferName].end(), vertices.begin(), vertices.end());
+    } else {
+        LogError << "Buffer not found" << bufferName;
+    }
+}
+

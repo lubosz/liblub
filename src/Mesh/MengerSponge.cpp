@@ -109,8 +109,7 @@ void MengerSponge::addCube(const vector<float> & position, float size) {
       -size + position[0], size + position[1], -size + position[2]
   };
 
-  mesh->buffers["position"].insert(
-      mesh->buffers["position"].end(), vertices.begin(), vertices.end());
+  mesh->append("position", vertices);
 
 //  vector<GLfloat> uvCoords = {
 //      1.0, 0.0,
@@ -123,8 +122,8 @@ void MengerSponge::addCube(const vector<float> & position, float size) {
 //      0.0, 1.0
 //  };
 //
-//  oneMeshUVCoords.insert(
-//          oneMeshUVCoords.end(), uvCoords.begin(), uvCoords.end());
+//  mesh->buffers["uv"].insert(
+//          mesh->buffers["uv"].end(), uvCoords.begin(), uvCoords.end());
 //
 //  vector<GLfloat> normals = {
 //      1.0, -1.0, -1.0,
