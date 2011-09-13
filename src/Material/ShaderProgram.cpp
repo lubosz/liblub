@@ -32,7 +32,7 @@ void ShaderProgram::printProgramInfoLog() {
   int infologLen = 0;
   glGetProgramiv(handle, GL_INFO_LOG_LENGTH, &infologLen);
   if (infologLen > 1) {
-    GLchar * infoLog = reinterpret_cast<GLchar*>(malloc(infologLen));
+    GLchar * infoLog = new GLchar[infologLen];
     if (infoLog == NULL) {
       LogError << "Could not allocate InfoLog buffer";
     }
