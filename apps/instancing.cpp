@@ -24,6 +24,7 @@
 #include "System/Logger.h"
 #include "System/Timer.h"
 #include "Scene/Node.h"
+#include "Scene/TreeSponge.h"
 #include "Mesh/Geometry.h"
 #include "Material/Textures.h"
 #include "Renderer/RenderEngine.h"
@@ -34,6 +35,7 @@
 #include "Scene/InstancedSponge.h"
 #include "System/TemplateEngine.h"
 #include "Renderer/RenderPasses.h"
+#include "Mesh/MengerSponge.h"
 
 class InstancingApp: public Application {
  public:
@@ -45,27 +47,37 @@ class InstancingApp: public Application {
   ~InstancingApp() {}
 
   void scene() {
-    glEnable(GL_CULL_FACE);
-    glCullFace(GL_BACK);
+//      glEnable(GL_BLEND);
+//    glEnable(GL_CULL_FACE);
+//    glCullFace(GL_BACK);
+      glDepthFunc(GL_LESS);
     QList<string> attributes;
-    attributes.push_back("normal");
+//    attributes.push_back("normal");
     attributes.push_back("uv");
-
-    InstancedSponge *sponge = new InstancedSponge(4, attributes);
-
-    TemplateEngine::Instance().c.insert("positionElements", QVariant::fromValue(sponge->positionBufferDataSize));
+//
+//    InstancedSponge *sponge = new InstancedSponge(5, attributes);
+//    TemplateEngine::Instance().c.insert("positionElements", QVariant::fromValue(sponge->positionBufferDataSize));
+//    TemplateEngine::Instance().c.insert("useInstancing", true);
     material = new Template("instancing",attributes);
-    sponge->initBuffers(material);
+//    sponge->initBuffers(material);
 
     Texture * texture = new TextureFile("diamond.png", "diffuse");
     texture->bind();
     texture->filterMinMag(GL_LINEAR_MIPMAP_LINEAR, GL_NEAREST);
     material->addTexture(texture);
 
+
+//    MengerSponge * meshSponge = new MengerSponge(attributes, 5);
+//    Node * sponge = new Node("sponge", { 0,0,0 }, 1, meshSponge->getMesh(), material);
+
+    TreeSponge * sponge = new TreeSponge(5, attributes);
+    sponge->setMaterial(material);
+
     SceneGraph::Instance().addNode(sponge);
   }
 
   void renderFrame(){
+      glEnable(GL_BLEND);
     OnePass::draw();
   }
 
