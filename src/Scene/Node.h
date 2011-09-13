@@ -17,6 +17,7 @@ class DirectionNode;
 
 class Node: public QObject {
 
+    friend class TreeSponge;
   Q_OBJECT
   Q_PROPERTY(float size READ size WRITE setSize)
   Q_PROPERTY(float rotationX READ rotationX WRITE setRotationX)

@@ -131,8 +131,8 @@
           glGetActiveUniformBlockiv(material->getShaderProgram()->getHandle(),
                   uniBlockIndex, GL_UNIFORM_BLOCK_DATA_SIZE, &positionBufferSize);
 
-          LogDebug << "Position Uniform Buffer Size" << positionBufferSize;
-          LogDebug << "Position Array Size" << positionBufferData->size();
+//          LogDebug << "Position Uniform Buffer Size" << positionBufferSize;
+//          LogDebug << "Position Array Size" << positionBufferData->size();
 
           positionBuffer->write(positionBufferData->data(), positionBufferSize);
 
