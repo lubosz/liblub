@@ -23,98 +23,66 @@ uniform sampler2D diffuseTarget;
 uniform sampler2D tangentTarget;
 uniform sampler2D normalMapTarget;
 uniform sampler2D finalAOTarget;
-uniform sampler2D reflectionTarget;
-//uniform samplerCube envMap;
-uniform mat4 inverseView;
-//uniform sampler2D shadowTarget;
+uniform samplerCube envMap;
 
 uniform LightSourceBuffer {
 	LightSource lightSources[LIGHTS];
 };
 
-uniform vec4 camPositionWorld;
+uniform vec3 camPositionWorld;
 
-const int shininess = 32;
+const int shininess = 1;
 //const int shininess = 1;
-
-float saturate(float input) {
-	return clamp(input, 0.0, 1.0); 
-}
 
 {% endblock %}
 
 {% block main %}
-	vec4 position = texture(positionTarget, uv);
-	vec4 normal = texture(normalTarget, uv);
-	vec4 tangent = texture(tangentTarget, uv);
-	vec3 binormal = cross(tangent.xyz, normal.xyz);
+	vec3 position = texture(positionTarget, uv).xyz;
+	vec3 normal = normalize(texture(normalTarget, uv).xyz);
+	vec3 tangent = normalize(texture(tangentTarget, uv).xyz);
+	vec3 binormal = normalize(cross(tangent, normal));
 	vec4 diffuse = texture(diffuseTarget, uv);
-	vec4 reflectionColor = texture(reflectionTarget, uv);
-	
-	//normalmapping
-	vec4 viewDirection = camPositionWorld-position;
-	vec3 eyeVec = vec3(
-		dot(viewDirection.xyz, tangent.xyz),
-		dot(viewDirection.xyz, binormal),
-		dot(viewDirection.xyz, normal.xyz)
-	);
-	vec3 bump = normalize( texture(normalMapTarget, uv).xyz * 2.0 - 1.0);
-	//endnormalmapping
 
-	//env
-	//vec4 reflectDir = reflect(-position,normalize(normal));
-	//reflectDir = inverseView * reflectDir;
-	//envTarget = texture(envMap, reflectDir.xyz);
-    envTarget = reflectionColor;
+	vec3 viewDirection = normalize(position - camPositionWorld);
+	vec3 viewDirectionTS = normalize(vec3(
+		dot(viewDirection, tangent),
+		dot(viewDirection, binormal),
+		dot(viewDirection, normal)
+	));
+	vec3 normalMap = 
+	normalize( texture(normalMapTarget, uv).xyz * 2.0 - 1.0);
+	//normalize(texture(normalMapTarget, uv).xyz);
 
-	float ambient = texture(finalAOTarget, uv).r;
 	finalSpecularTarget = vec4(0);
 	finalDiffuseTarget = vec4(0);
 	
-	for(int i = 0; i < LIGHTS ; i++) {
-		vec4 lightDirection = lightSources[i].position - position;
-		//normalmapping
-		vec3 lightVec = normalize(vec3(
-			dot(lightDirection.xyz, tangent.xyz),
-			dot(lightDirection.xyz, binormal.xyz),
-			dot(lightDirection.xyz, normal.xyz)
-		));
-		float diffuseBump = max( dot(lightVec, bump), 0.0 );
+        //vec3 reflectView = reflect(viewDirection, normal);
+        //envTarget = texture(envMap, -reflectView);
+        vec3 reflectView = reflect(viewDirectionTS, normalMap);
+        envTarget = texture(envMap, reflectView);
 
-		//endnormalmapping
-		vec4 L = normalize(lightDirection);	
-		vec4 N = normalize(normal);
-		float lambertTerm = max( dot(N,L), 0.0);
-		finalDiffuseTarget += diffuse * lambertTerm * lightSources[i].diffuse * diffuseBump;
-		
-		//vec4 viewDirection = camPosition - position;
-		//vec4 E = normalize(-viewDirection);
-		//vec4 R = reflect(-L, N);
-
-		//float specular = pow( max(dot(R, E), 0.0), shininess );
-				float specular = pow(clamp(dot(
-								reflect(-lightVec, bump), 
-								normalize(eyeVec)
-							), 
-							0.0, 
-							1.0
-						), shininess );
-		
-		
-		//fragColor = lambertTerm * vec4(1);
-		finalSpecularTarget += ((lightSources[i].diffuse + envTarget) / 2) *  specular;
-		//fragColor = R;
-				
-		
-		
-		
-	}
-	finalDiffuseTarget = finalDiffuseTarget;
-	finalTarget = (finalDiffuseTarget + finalSpecularTarget) * ambient;
-	//finalTarget = (finalSpecularTarget + ambient);
-	//fragColor *= texture(diffuseTarget, uv)* texture(envTarget, uv);
-	//fragColor *= 1-ambient;// * texture(shadowTarget, uv).x;
-	//fragColor = vec4(foo/5);
+		float ambient = texture(finalAOTarget, uv).r;
 	
-	//fragColor = texture(finalAOTarget, uv);
+	   for(int i = 0; i < LIGHTS ; i++) {
+			vec3 lightDirection = normalize(position - lightSources[i].position.xyz);
+			vec3 lightDirectionTS = normalize(vec3(
+				dot(lightDirection, tangent),
+				dot(lightDirection, binormal),
+				dot(lightDirection, normal)
+			));
+			float lambertTermBump = max( dot(normalMap,-lightDirectionTS), 0.0 );
+			//float lambertTerm = max( dot(vec4(normal,0),vec4(-lightDirection,0)), 0.0);
+		    finalDiffuseTarget += diffuse * lambertTermBump * lightSources[i].diffuse;
+	
+			//vec3 reflectLight = reflect(lightDirection, normal);
+			//float specular = max(dot(reflectLight, -viewDirection), 0.0);
+			
+			vec3 reflectLight = reflect(lightDirectionTS, normalMap);
+			float specular = max(dot(reflectLight, -viewDirectionTS ), 0.0);
+			
+			specular = pow( specular, shininess );
+			
+			finalSpecularTarget += lightSources[i].diffuse *  specular;
+	   }
+	  finalTarget = (finalDiffuseTarget + finalSpecularTarget + envTarget / 3.0)*ambient;
 {% endblock %}
