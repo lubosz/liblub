@@ -3,6 +3,7 @@
 {% block linkage %}
 in vec3 in_Normal;
 in vec3 in_Tangent;
+in vec3 in_Bitangent;
 in vec2 in_Uv;
 
 out vec4 positionView;
@@ -11,6 +12,7 @@ out vec2 uv;
 out vec4 positionWorld;
 out vec4 normalWorld;
 out vec4 tangentWorld;
+out vec4 binormalWorld;
 
 uniform mat4 MMatrix;
 uniform mat4 MVMatrix;
@@ -39,4 +41,5 @@ uniform positions {
 	positionWorld = MMatrix * position;
 	normalWorld = normalize(MMatrix * vec4(in_Normal,0));
 	tangentWorld = normalize(MMatrix * vec4(in_Tangent,0)); 
+	binormalWorld = normalize(MMatrix * vec4(in_Bitangent, 0));
 {% endblock %}

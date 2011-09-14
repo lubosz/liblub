@@ -72,6 +72,7 @@
         new ColorTexture(res, "normalTarget"),
         //new ColorTexture(res, "diffuseTarget"),
         new ColorTexture(res, "tangentTarget"),
+        new ColorTexture(res, "binormalTarget"),
         //new ColorTexture(res, "normalMapTarget"),
         new ColorTexture(res, "shadowTarget"),
         new DepthTexture(res, "depthTarget"),
@@ -95,7 +96,7 @@
           QString::fromStdString(shadowCastPass->targets[0]->name);
     }
 
-    QList<string> tangent = QList<string> () << "uv" << "normal" << "tangent";
+    QList<string> tangent = QList<string> () << "uv" << "normal" << "tangent" << "bitangent";
 //    InstancedSponge *sponge = new InstancedSponge(2, tangent);
 
     TemplateEngine::Instance().c.insert("shadowSamplers", shadowSamplers);
@@ -171,6 +172,7 @@
         shadowReceivePass->getTarget("normalTarget"),
         //shadowReceivePass->getTarget("diffuseTarget"),
         shadowReceivePass->getTarget("tangentTarget"),
+        shadowReceivePass->getTarget("binormalTarget"),
         //shadowReceivePass->getTarget("normalMapTarget"),
         blurVPass->getTarget("finalAOTarget"),
         SceneData::Instance().getTexture("sky", "envMap"),
@@ -187,6 +189,7 @@
     };
 
     TemplateEngine::Instance().c.insert("lightCount", SceneData::Instance().lights.size());
+    TemplateEngine::Instance().c.insert("paralaxMap", true);
     InOutPass * shadingPass = new InOutPass(res, shadingSources, shadingTargets,
         new Template("Post/DeferredMultiLight", uv));
     drawPasses.push_back(shadingPass);

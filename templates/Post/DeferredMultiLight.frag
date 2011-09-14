@@ -21,6 +21,7 @@ uniform sampler2D positionTarget;
 uniform sampler2D normalTarget;
 //uniform sampler2D diffuseTarget;
 uniform sampler2D tangentTarget;
+uniform sampler2D binormalTarget;
 //uniform sampler2D normalMapTarget;
 uniform sampler2D finalAOTarget;
 uniform samplerCube envMap;
@@ -44,7 +45,8 @@ const int shininess = 1;
 	vec3 position = texture(positionTarget, uv).xyz;
 	vec3 normal = normalize(texture(normalTarget, uv).xyz);
 	vec3 tangent = normalize(texture(tangentTarget, uv).xyz);
-	vec3 binormal = cross(tangent, normal);
+	//vec3 binormal = cross(tangent, normal);
+	vec3 binormal = normalize(texture(binormalTarget, uv).xyz);
 
 	vec3 viewDirection = normalize(position - camPositionWorld);
 	vec3 viewDirectionTS = normalize(vec3(
@@ -100,4 +102,7 @@ const int shininess = 1;
 	   }
 	  finalTarget = (finalDiffuseTarget + finalSpecularTarget + envTarget / 3.0)*ambient;
 	  //finalTarget = vec4(height);
+	  //finalDiffuseTarget = vec4(binormal,1);
+	  //finalSpecularTarget = vec4(tangent,1);
+	  //finalTarget = texture(uvTarget, uv);
 {% endblock %}

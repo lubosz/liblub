@@ -7,10 +7,12 @@ in vec2 uv;
 in vec4 positionWorld;
 in vec4 normalWorld;
 in vec4 tangentWorld;
+in vec4 binormalWorld;
 out vec4 positionTarget;
 out vec4 normalTarget;
 //out vec4 diffuseTarget;
 out vec4 tangentTarget;
+out vec4 binormalTarget;
 //out vec4 normalMapTarget;
 out vec4 shadowTarget;
 out vec4 uvTarget;
@@ -54,9 +56,9 @@ float lookup( vec2 offSet,vec4 shadowTexCoord){
 	positionTarget = positionWorld;
 	normalTarget = normalWorld;
 	tangentTarget = tangentWorld;
+	binormalTarget = binormalWorld;
 	//diffuseTarget = texture(diffuseTexture, uv);
 	//normalMapTarget = texture(normalTexture, uv);
-	uvTarget = vec4(uv,0,0);
 	
 	//shadow
 	shadowTarget = vec4(1);
@@ -68,6 +70,7 @@ float lookup( vec2 offSet,vec4 shadowTexCoord){
 {% endfor %}
 	
 	shadowTarget*= shadowSum/{{shadowSamplerSize}}.0;
+	uvTarget = vec4(uv,0,0);
 
 	/*
 	// 8x8 kernel PCF

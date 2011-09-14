@@ -84,6 +84,7 @@ void SceneLoader::appendProgram(const QDomElement & programNode) {
     attributes.push_back("uv");
     attributes.push_back("normal");
     attributes.push_back("tangent");
+    attributes.push_back("bitangent");
 
     program->init(attributes);
     program->name = name;
@@ -158,7 +159,7 @@ void SceneLoader::appendMesh(const QDomElement & meshNode) {
         QList<string> attributes;
         attributes.push_back("normal");
         attributes.push_back("tangent");
-//        attributes.push_back("bitangent");
+        attributes.push_back("bitangent");
         attributes.push_back("uv");
             mesh = MeshLoader::load(attributes, meshUrl);
     } else if (meshNode.tagName() == "Procedural") {
