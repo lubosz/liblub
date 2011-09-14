@@ -35,8 +35,9 @@
   }
 
   void DeferredLightApp::scene() {
-      glEnable(GL_CULL_FACE);
-      glCullFace(GL_BACK);
+//      glEnable(GL_CULL_FACE);
+//      glCullFace(GL_BACK);
+      glDepthFunc(GL_LEQUAL);
     QList<string> uv = QList<string> () << "uv";
 
     sceneLoader->load();
@@ -74,13 +75,11 @@
         new ColorTexture(res, "normalMapTarget"),
         new ColorTexture(res, "shadowTarget"),
         new DepthTexture(res, "depthTarget"),
-        new ColorTexture(res, "reflectionTarget")
     };
 
     vector<Texture*> shadowReceiveSources = {
       SceneData::Instance().getTexture("masonry-wall-normal-map","normalTexture"),
       SceneData::Instance().getTexture("masonry-wall-texture","diffuseTexture"),
-      SceneData::Instance().getTexture("sky", "envMap")
     };
 
     foreach(ShadowCastPass * shadowCastPass, shadowCastPasses) {
@@ -96,12 +95,12 @@
     }
 
     QList<string> tangent = QList<string> () << "uv" << "normal" << "tangent";
-    InstancedSponge *sponge = new InstancedSponge(2, tangent);
+//    InstancedSponge *sponge = new InstancedSponge(2, tangent);
 
     TemplateEngine::Instance().c.insert("shadowSamplers", shadowSamplers);
     TemplateEngine::Instance().c.insert("shadowSamplerSize", shadowSamplers.size());
-    TemplateEngine::Instance().c.insert("positionElements", QVariant::fromValue(sponge->positionBufferDataSize));
-    TemplateEngine::Instance().c.insert("isInstanced", true);
+//    TemplateEngine::Instance().c.insert("positionElements", QVariant::fromValue(sponge->positionBufferDataSize));
+//    TemplateEngine::Instance().c.insert("isInstanced", true);
     Material * gatherMaterial = new Template("Post/MultiTarget",tangent);
 
 
@@ -109,8 +108,8 @@
         res,shadowReceiveSources,
         shadowReceiveTargets,gatherMaterial);
 
-    sponge->initBuffers(gatherMaterial);
-  SceneGraph::Instance().addNode(sponge);
+//    sponge->initBuffers(gatherMaterial);
+//  SceneGraph::Instance().addNode(sponge);
 
     drawPasses.push_back(shadowReceivePass);
 
@@ -173,8 +172,7 @@
         shadowReceivePass->getTarget("tangentTarget"),
         shadowReceivePass->getTarget("normalMapTarget"),
         blurVPass->getTarget("finalAOTarget"),
-        shadowReceivePass->getTarget("reflectionTarget"),
-//        SceneData::Instance().getTexture("sky", "envMap")
+        SceneData::Instance().getTexture("sky", "envMap")
     };
 
     vector<Texture*> shadingTargets = {
@@ -190,9 +188,11 @@
     drawPasses.push_back(shadingPass);
 
     SinkPass * sinkPass = new SinkPass();
-/*
-     */
+
     // debug planes
+    sinkPass->debugTarget(QRectF(-1, -1, 2, 2),
+        shadingPass->getTarget("finalTarget")
+     );
     sinkPass->debugTarget(QRectF(0.5, -1, 0.5, 0.5),
         aoPass->getTarget("ao"));
     sinkPass->debugTarget(QRectF(0.5, -0.5, 0.5, 0.5),
@@ -212,9 +212,6 @@
      );
     sinkPass->debugTarget(QRectF(-1, 0.5, 0.5, 0.5),
         shadingPass->getTarget("finalDiffuseTarget")
-     );
-    sinkPass->debugTarget(QRectF(-1, -1, 2, 2),
-        shadingPass->getTarget("finalTarget")
      );
 
     drawPasses.push_back(sinkPass);
@@ -302,7 +299,7 @@ void DeferredLightApp::initLightBuffer(ShaderProgram * shader, const string& buf
   lightBuffer->write(lightBufferData, lightBufferSize);
 
 //  shader->uniformBuffers.push_back(lightBuffer);
-  shader->bindUniformBuffer(bufferName,1,lightBuffer->getHandle());
+  shader->bindUniformBuffer(bufferName,0,lightBuffer->getHandle());
 }
 
 int main(int argc, char *argv[]) {
