@@ -1,130 +1,134 @@
 #version 330 core
 
-//precision highp float;
+in vec4 positionWS;
+in vec3 normalWS;
+in vec3 tangentWS;
+in vec3 binormalWS;
+in vec2 uv;
 
-in vec4 vpos;
-in vec3 normal;
-in vec3 tangent;
-in vec2 texcoord;
+uniform sampler2D normalTexture;
+uniform sampler2D diffuseTexture;
+uniform vec3 lightPositionWS;
+uniform vec4 ambientColor;
+uniform vec4 diffuseColor;
+uniform vec4 specularColor;
+uniform vec3 camPositionWorld;
 
-uniform sampler2D reliefMap;	// rm texture map
-uniform sampler2D colortex;		// color texture map
-uniform vec4 lightPositionView;	// light position in view space
-uniform vec4 ambient;			// ambient color
-uniform vec4 diffuse;			// diffuse color
-uniform vec4 specular;			// specular color
-uniform vec2 planes;			// near and far planes info
-uniform float tile;				// tile factor
-uniform float depth;			// scale factor for height-field depth
+// tile factor
+uniform float tile;
+// scale factor for height-field depth
+uniform float depth;
 
-//const int linearSearchSteps = 10;
-//const int binarySearchSteps = 5;
 const int linearSearchSteps = 20;
 const int binarySearchSteps = 10;
 
 out vec4 fragColor;
 
-float saturate(float value){
-	return clamp(value, 0.0, 1.0);
+float saturate(float value) {
+    return clamp(value, 0.0, 1.0);
 }
 
-float ray_intersect_rm(vec2 dp, vec2 ds){
-
-	float depthStep=1.0/linearSearchSteps;
-	float size=depthStep; // current size of search window
-	float depth=0.0; // current depth position
-	// best match found (starts with last position 1.0)
-	float bestDepth=1.0;
-	// search from front to back for first point inside the object
-	for ( int i=0; i< linearSearchSteps-1;i++){
-		depth+=size;
-		vec4 t=texture(reliefMap,dp+ds*depth);
-		if (bestDepth>0.996) // if no depth found yet
-			if (depth >= t.w)
-				bestDepth=depth; // store bestDepth
-	}
-	depth = bestDepth;
-	// search around first point (depth) for closest match
-	for ( int i=0; i < binarySearchSteps; i++) {
-		size*=0.5;
-		vec4 t=texture(reliefMap,dp+ds*depth);
-		if (depth >= t.w) {
-			bestDepth = depth;
-			depth -= 2*size;
-		}
-		depth+=size;
-	}
-	return bestDepth;
+vec3 dot3(vec3 vector, vec3 t, vec3 b, vec3 n) {
+    return normalize(vec3(
+                dot(vector, t),
+                dot(vector, b),
+                dot(vector, n)
+    ));
 }
 
-void main(){
+float rayIntersect(vec2 uvSearchPosition, vec2 uvSearchSize) {
+    float depthStep = 1.0 / linearSearchSteps;
+    // current size of search window
+    float size = depthStep; 
+    // current depth position
+    float depthPosition = 0.0; 
+    // best match found (starts with last position 1.0)
+    float bestDepth = 1.0;
+    // search from front to back for first point inside the object
+    for (int i = 0; i < linearSearchSteps - 1; i++) {
+        depthPosition += size;
+        float textureDepth = texture(normalTexture, uvSearchPosition + uvSearchSize * depthPosition).w;
+        // if no depth found yet
+        if (bestDepth > 0.996) 
+            if (depthPosition >= textureDepth)
+                // store bestDepth
+                bestDepth = depthPosition; 
+    }
+    depthPosition = bestDepth;
+    // search around first point (depthPosition) for closest match
+    for (int i = 0; i < binarySearchSteps; i++) {
+        size *= 0.5;
+        float textureDepth = texture(normalTexture, uvSearchPosition + uvSearchSize * depthPosition).w;
+        if (depthPosition >= textureDepth) {
+            bestDepth = depthPosition;
+            depthPosition -= 2 * size;
+        }
+        depthPosition += size;
+    }
+    return bestDepth;
+}
 
-	vec4 t,c; 
-	vec3 p,v,l,s; 
-	vec2 dp,ds,uv; 
-	float d;
-	
-	vec3 binormal = -cross(normal,tangent);
+bool checkShadow(vec2 uvSearchPosition, vec2 uvSearchSize, vec3 lightDirectionTS, float intersectDistance) {
+    // ray intersect in light direction
+    // update position in texture space
+    vec2 pos = uvSearchPosition + uvSearchSize * intersectDistance; 
+    // light direction in texture space
+    uvSearchSize = lightDirectionTS.xy * depth / lightDirectionTS.z;
+    // entry point for light ray in texture space
+    pos -= uvSearchSize * intersectDistance; 
+    // get intresection distance from light ray
+    float intersectDistanceLight = rayIntersect(pos, uvSearchSize);
+    // if pixel in shadow
+    return intersectDistanceLight < intersectDistance - 0.05;
+}
 
-	// ray intersect in view direction
-	p = vpos.xyz; // pixel position in eye space
-	v = normalize(p); // view vector in eye space
-	// view vector in tangent space
-	s = 
-	normalize(
-		vec3(
-			dot(v, tangent),
-			dot(v, -binormal),
-			dot(v, normal)
-		)
-	);
-	// size and start position of search in texture space
-	//ds = s.xy*depth/s.z;
-	ds = s.xy*depth;
-	dp = texcoord*tile;
-	
-	// get intersection distance
-	d = ray_intersect_rm(dp,ds);
-	// get normal and color at intersection point
-	uv=dp+ds*d;
-	//uv = ds;
-	//uv = dp*d;
-	t=texture(reliefMap,uv);
-	c=texture(colortex,uv);
-	
-	t.xyz=t.xyz*2.0-1.0; // expand normal to eye space
-	t.xyz=normalize(t.x*tangent+t.y*binormal+t.z*normal);
-	// compute light direction
-	p += v*d*s.z;
-	l=normalize(p-lightPositionView.xyz);
-	
-	#ifdef RM_DEPTHCORRECT
-		// planes.x=-far/(far-near); planes.y =-far*near/(far-near);
-		float depth=((planes.x*p.z+planes.y)/-p.z);
-	#endif
-	
-	// compute diffuse and specular terms
-	float att=saturate(dot(-l,normal));
-	float diff=saturate(dot(-l,t.xyz));
-	float spec=saturate(dot(normalize(-l-v),t.xyz));
-	
-	//fragColor = c;
-	fragColor = ambient * c;
-	
-	#ifdef RM_SHADOWS
-		// ray intersect in light direction
-		dp+= ds*d; // update position in texture space
-		// light direction in texture space
-		s = normalize(vec3(dot(l,tangent.xyz),
-		dot(l,binormal.xyz),dot(normal,-l)));
-		ds = s.xy*depth/s.z;
-		dp-= ds*d; // entry point for light ray in texture space
-		// get intresection distance from light ray
-		float dl = ray_intersect_rm(dp,ds.xy);
-		if (dl<d-0.05) // if pixel in shadow
-			{ diff*=dot(ambient.xyz,vec3(1.0,1.0,1.0))*0.3333; spec=0; }
-	#endif
-	
-	fragColor.xyz+=att*(c.xyz*diffuse.xyz*diff+specular.xyz*pow(spec,specular.w));
-	fragColor.w=1.0;
+void main() {
+    // compute light direction
+    vec3 lightDirectionWS = normalize(positionWS.xyz - lightPositionWS);
+    // view vector in world space
+    vec3 camDirectionWS = normalize(positionWS.xyz - camPositionWorld);
+    // view vector in tangent space
+    vec3 camDirectionTS = dot3(camDirectionWS, tangentWS, binormalWS, normalWS);
+    vec3 lightDirectionTS = dot3(lightDirectionWS, tangentWS, binormalWS, normalWS);
+
+    // ray intersect in view direction
+    // size and start position of search in texture space
+    vec2 uvSearchSize = camDirectionTS.xy * depth;
+    vec2 uvSearchPosition = uv * tile;
+
+    // get intersection distance
+    float intersectDistance = rayIntersect(uvSearchPosition, uvSearchSize);
+
+    bool pixelInShadow = checkShadow(uvSearchPosition, uvSearchSize, 
+        lightDirectionTS, intersectDistance);
+
+    // get normal and color at intersection point
+    vec2 uv2 = uvSearchPosition + uvSearchSize * intersectDistance;
+    vec3 normalTS = texture(normalTexture, uv2).xyz;
+    vec4 diffuseTextureColor = texture(diffuseTexture, uv2);
+
+    // expand normal
+    normalTS = normalTS * 2.0 - 1.0;
+
+    // compute diffuse and specular terms
+    float diffuseTerm = saturate(dot(normalTS,-lightDirectionTS));
+
+    vec3 reflectLight = reflect(lightDirectionTS, normalTS);
+    float specularTerm = saturate(dot(reflectLight, -camDirectionTS));
+    specularTerm = pow(specularTerm, specularColor.w);
+
+    if (pixelInShadow) {
+        diffuseTerm *= dot(ambientColor, vec4(1)) * 0.3333;
+        specularTerm = 0;
+    }
+    // apply shininess
+
+    vec4 finalSpecular = specularColor * specularTerm;
+    vec4 finalDiffuse = diffuseTextureColor * diffuseColor * diffuseTerm;
+
+    float attenuation = saturate(dot(-lightDirectionWS, normalWS));
+    attenuation = 1;
+
+    fragColor = ambientColor * diffuseTextureColor;
+    fragColor = attenuation * (finalDiffuse + finalSpecular);
 }

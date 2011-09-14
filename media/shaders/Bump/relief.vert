@@ -7,19 +7,22 @@ in vec3 in_Normal;
 in vec3 in_Tangent;
 in vec2 in_Uv;
 
-out vec4 vpos;
-out vec3 normal;
-out vec3 tangent;
-out vec2 texcoord;
+out vec4 positionWS;
+out vec3 normalWS;
+out vec3 tangentWS;
+out vec3 binormalWS;
+out vec2 uv;
 
+uniform mat4 MMatrix;
 uniform mat4 MVMatrix;
 uniform mat4 MVPMatrix;
 uniform mat3 NormalMatrix;
 
 void main(){
-	vpos = MVMatrix * vec4(in_Vertex,1);
-	normal = normalize(NormalMatrix * in_Normal);
-	tangent = normalize(NormalMatrix * in_Tangent); 
-	texcoord = in_Uv;
+	positionWS = MMatrix * vec4(in_Vertex,1);
+	normalWS = normalize((MMatrix * vec4(in_Normal,0)).xyz);
+	tangentWS = normalize((MMatrix * vec4(in_Tangent,0)).xyz);
+	binormalWS = cross(normalWS, tangentWS);
+	uv = in_Uv;
 	gl_Position = MVPMatrix * vec4(in_Vertex,1);
 }

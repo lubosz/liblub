@@ -71,14 +71,14 @@ const int shininess = 1;
 	vec4 diffuse = texture(diffuseTexture, uv2);
 	finalSpecularTarget = vec4(0);
 	finalDiffuseTarget = vec4(0);
-	
+
         //vec3 reflectView = reflect(viewDirection, normal);
         //envTarget = texture(envMap, -reflectView);
         vec3 reflectView = reflect(viewDirectionTS, normalTS);
         envTarget = texture(envMap, reflectView);
 
 		float ambient = texture(finalAOTarget, uv).r;
-	
+
 	   for(int i = 0; i < LIGHTS ; i++) {
 			vec3 lightDirection = normalize(position - lightSources[i].position.xyz);
 			vec3 lightDirectionTS = normalize(vec3(
