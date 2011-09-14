@@ -21,11 +21,11 @@
 	</Meshes>
 	<Scene name="Multilights">
 		<Light name="mylight" position ="-9, 32, 11.5" direction="1,-5,-1" mesh="light" diffuse="0,0,1" />
-		<Light name="myotherlight" position ="9, 32, -11.5" direction="-1,-5,1" mesh="light" diffuse="1,0,0" />
 		<Light name="myotherlight1" position ="-5, 16, -2" direction="-1,-5,1" mesh="light" diffuse="0,0.5,0" />
 		<Light name="myotherlight2" position ="6, 20, 10" direction="-1,-5,1" mesh="light" diffuse="0.7,0,0.5" />
 		<Light name="myotherlight3" position ="9, 25, 9" direction="-1,-5,1" mesh="light" diffuse="0.3,0.6,0" />
 		<!-- 
+		<Light name="myotherlight" position ="9, 32, -11.5" direction="-1,-5,1" mesh="light" diffuse="1,0,0" />
 		<Object name="sponge" mesh="sponge" scale="2.0" position="5,0,5" />
 		<Object name="cube" mesh="proccube" scale="2.0" position="-5,0,5" />
 		<Object name="cube2" mesh="cube" scale="2.0" position="-5,0,-5" />
@@ -37,5 +37,8 @@
 		<Object name="monkey" mesh="monkey" scale="2.0" position="-5,0,-5" />
 		<Object name="radio" mesh="radio" scale="0.5" position="-5,0,5" />
 		<Object name="Plane" mesh="plane" scale="20" position="0,-5,0" />
+		<!-- 
+		<Object name="sky" mesh="sphere" scale="100.0" position="0,0,0" />
+		 -->
 	</Scene>
 </liblub>

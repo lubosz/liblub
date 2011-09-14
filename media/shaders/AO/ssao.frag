@@ -1,8 +1,5 @@
 #version 330 core
 
-//#define SAMPLES 10 // 10 is good
-//const float invSamples = 1.0/10.0;
-
 #define SAMPLES 10 // 10 is good
 const float invSamples = -1.38/10.0;
 
@@ -71,5 +68,4 @@ void main() {
  
    // output the result
    fragColor = vec4(1.0+bl*invSamples);
- 
 }
