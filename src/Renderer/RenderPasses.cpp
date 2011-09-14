@@ -132,6 +132,8 @@
     fbo->bind();
     RenderEngine::Instance().clear();
     RenderEngine::Instance().updateViewport(res);
+    material->getShaderProgram()->use();
+    material->getShaderProgram()->setUniform("camPositionWorld",SceneData::Instance().getCurrentCamera()->getPosition());
     drawOnPlane(material, fullPlane);
     fbo->unBind();
   }
