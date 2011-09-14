@@ -25,19 +25,15 @@ DepthTexture::DepthTexture(QSize& res, string name) {
 
   filterMinMag(GL_NEAREST, GL_NEAREST);
 
-  // Specifies the texture comparison mode for currently bound depth textures.
-  // That is, a texture whose internal format is GL_DEPTH_COMPONENT_*
-  glTexParameteri(target, GL_TEXTURE_COMPARE_MODE,
-          GL_COMPARE_REF_TO_TEXTURE
-   );
-
-  // Specifies the texture comparison mode for currently bound depth textures.
-  // That is, a texture whose internal format is GL_DEPTH_COMPONENT_*
+//  glTexParameteri(target, GL_TEXTURE_COMPARE_MODE, GL_COMPARE_REF_TO_TEXTURE);
+//  glTexParameteri(target,GL_TEXTURE_COMPARE_FUNC, GL_NOTEQUAL);
+//  glTexParameteri(target,GL_TEXTURE_COMPARE_FUNC, GL_LEQUAL);
   glTexParameteri(target, GL_TEXTURE_COMPARE_MODE, GL_NONE);
 
   // No need to force GL_DEPTH_COMPONENT24,
+  //GL_DEPTH_COMPONENT32F
   // drivers usually give you the max precision if available
-  glTexImage2D(target, 0, GL_DEPTH_COMPONENT32F, res.width(), res.height(), 0,
+  glTexImage2D(target, 0, GL_DEPTH_COMPONENT, res.width(), res.height(), 0,
       GL_DEPTH_COMPONENT, GL_FLOAT, 0);
 
   unbind();
@@ -57,15 +53,7 @@ ShadowTexture::ShadowTexture(QSize& res, string name) {
      */
     filterMinMag(GL_LINEAR, GL_LINEAR);
 
-    // Specifies the texture comparison mode for currently bound depth textures.
-    // That is, a texture whose internal format is GL_DEPTH_COMPONENT_*
-    glTexParameteri(target, GL_TEXTURE_COMPARE_MODE,
-            GL_COMPARE_REF_TO_TEXTURE
-     );
-
-//    // Specifies the comparison operator used when GL_TEXTURE_COMPARE_MODE is
-//    // set to GL_COMPARE_REF_TO_TEXTURE
-//    glTexParameteri(target, GL_TEXTURE_COMPARE_FUNC, GL_LEQUAL);
+    glTexParameteri(target, GL_TEXTURE_COMPARE_MODE, GL_COMPARE_REF_TO_TEXTURE);
 //
 //    glTexParameteri(target, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
 //    glTexParameteri(target, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
@@ -80,11 +68,8 @@ ShadowTexture::ShadowTexture(QSize& res, string name) {
     glTexParameteri(target, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
     glTexParameteri(target, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
 
-    // No need to force GL_DEPTH_COMPONENT24,
-    // drivers usually give you the max precision if available
     glTexImage2D(target, 0, GL_DEPTH_COMPONENT32F, res.width(), res.height(), 0,
         GL_DEPTH_COMPONENT, GL_FLOAT, 0);
-
     unbind();
   glError;
 }
