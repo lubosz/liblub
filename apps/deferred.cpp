@@ -70,16 +70,17 @@
     vector<Texture*> shadowReceiveTargets = {
         new ColorTexture(res, "positionTarget"),
         new ColorTexture(res, "normalTarget"),
-        new ColorTexture(res, "diffuseTarget"),
+        //new ColorTexture(res, "diffuseTarget"),
         new ColorTexture(res, "tangentTarget"),
-        new ColorTexture(res, "normalMapTarget"),
+        //new ColorTexture(res, "normalMapTarget"),
         new ColorTexture(res, "shadowTarget"),
         new DepthTexture(res, "depthTarget"),
+        new ColorTexture(res, "uvTarget"),
     };
 
     vector<Texture*> shadowReceiveSources = {
-      SceneData::Instance().getTexture("masonry-wall-normal-map","normalTexture"),
-      SceneData::Instance().getTexture("masonry-wall-texture","diffuseTexture"),
+//      SceneData::Instance().getTexture("masonry-wall-normal-map","normalTexture"),
+//      SceneData::Instance().getTexture("masonry-wall-texture","diffuseTexture"),
     };
 
     foreach(ShadowCastPass * shadowCastPass, shadowCastPasses) {
@@ -168,11 +169,14 @@
     vector<Texture*> shadingSources = {
         shadowReceivePass->getTarget("positionTarget"),
         shadowReceivePass->getTarget("normalTarget"),
-        shadowReceivePass->getTarget("diffuseTarget"),
+        //shadowReceivePass->getTarget("diffuseTarget"),
         shadowReceivePass->getTarget("tangentTarget"),
-        shadowReceivePass->getTarget("normalMapTarget"),
+        //shadowReceivePass->getTarget("normalMapTarget"),
         blurVPass->getTarget("finalAOTarget"),
-        SceneData::Instance().getTexture("sky", "envMap")
+        SceneData::Instance().getTexture("sky", "envMap"),
+        shadowReceivePass->getTarget("uvTarget"),
+        SceneData::Instance().getTexture("masonry-wall-normal-map","normalTexture"),
+        SceneData::Instance().getTexture("masonry-wall-texture","diffuseTexture"),
     };
 
     vector<Texture*> shadingTargets = {

@@ -19,11 +19,14 @@ out vec4 envTarget;
 {% block uniforms %}
 uniform sampler2D positionTarget;
 uniform sampler2D normalTarget;
-uniform sampler2D diffuseTarget;
+//uniform sampler2D diffuseTarget;
 uniform sampler2D tangentTarget;
-uniform sampler2D normalMapTarget;
+//uniform sampler2D normalMapTarget;
 uniform sampler2D finalAOTarget;
 uniform samplerCube envMap;
+uniform sampler2D uvTarget;
+uniform sampler2D diffuseTexture;
+uniform sampler2D normalTexture;
 
 uniform LightSourceBuffer {
 	LightSource lightSources[LIGHTS];
@@ -37,11 +40,11 @@ const int shininess = 1;
 {% endblock %}
 
 {% block main %}
+    vec2 uvModel = texture(uvTarget, uv).xy;
 	vec3 position = texture(positionTarget, uv).xyz;
 	vec3 normal = normalize(texture(normalTarget, uv).xyz);
 	vec3 tangent = normalize(texture(tangentTarget, uv).xyz);
-	vec3 binormal = normalize(cross(tangent, normal));
-	vec4 diffuse = texture(diffuseTarget, uv);
+	vec3 binormal = cross(tangent, normal);
 
 	vec3 viewDirection = normalize(position - camPositionWorld);
 	vec3 viewDirectionTS = normalize(vec3(
@@ -49,16 +52,27 @@ const int shininess = 1;
 		dot(viewDirection, binormal),
 		dot(viewDirection, normal)
 	));
-	vec3 normalMap = 
-	normalize( texture(normalMapTarget, uv).xyz * 2.0 - 1.0);
-	//normalize(texture(normalMapTarget, uv).xyz);
-
+	
+	vec4 normalMap = texture(normalTexture, uvModel);
+	vec3 normalTS = normalize( normalMap.xyz * 2.0 - 1.0);
+	
+	{% if paralaxMap %}
+	float height = normalMap.w;
+	float uvTrans = max( dot(normalTS,viewDirectionTS), 0.0 ) * height;
+    vec2 uv2 = uvModel + vec2(uvTrans);
+    normalMap = texture(normalTexture, uv2);
+    normalTS = normalize( normalMap.xyz * 2.0 - 1.0);
+    //height = normalMap.w;
+    {% else %}
+    vec2 uv2 = uvModel;
+    {% endif %}
+	vec4 diffuse = texture(diffuseTexture, uv2);
 	finalSpecularTarget = vec4(0);
 	finalDiffuseTarget = vec4(0);
 	
         //vec3 reflectView = reflect(viewDirection, normal);
         //envTarget = texture(envMap, -reflectView);
-        vec3 reflectView = reflect(viewDirectionTS, normalMap);
+        vec3 reflectView = reflect(viewDirectionTS, normalTS);
         envTarget = texture(envMap, reflectView);
 
 		float ambient = texture(finalAOTarget, uv).r;
@@ -70,14 +84,14 @@ const int shininess = 1;
 				dot(lightDirection, binormal),
 				dot(lightDirection, normal)
 			));
-			float lambertTermBump = max( dot(normalMap,-lightDirectionTS), 0.0 );
+			float lambertTermBump = max( dot(normalTS,-lightDirectionTS), 0.0 );
 			//float lambertTerm = max( dot(vec4(normal,0),vec4(-lightDirection,0)), 0.0);
 		    finalDiffuseTarget += diffuse * lambertTermBump * lightSources[i].diffuse;
 	
 			//vec3 reflectLight = reflect(lightDirection, normal);
 			//float specular = max(dot(reflectLight, -viewDirection), 0.0);
 			
-			vec3 reflectLight = reflect(lightDirectionTS, normalMap);
+			vec3 reflectLight = reflect(lightDirectionTS, normalTS);
 			float specular = max(dot(reflectLight, -viewDirectionTS ), 0.0);
 			
 			specular = pow( specular, shininess );
@@ -85,4 +99,5 @@ const int shininess = 1;
 			finalSpecularTarget += lightSources[i].diffuse *  specular;
 	   }
 	  finalTarget = (finalDiffuseTarget + finalSpecularTarget + envTarget / 3.0)*ambient;
+	  //finalTarget = vec4(height);
 {% endblock %}

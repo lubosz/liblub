@@ -9,16 +9,17 @@ in vec4 normalWorld;
 in vec4 tangentWorld;
 out vec4 positionTarget;
 out vec4 normalTarget;
-out vec4 diffuseTarget;
+//out vec4 diffuseTarget;
 out vec4 tangentTarget;
-out vec4 normalMapTarget;
+//out vec4 normalMapTarget;
 out vec4 shadowTarget;
+out vec4 uvTarget;
 {% endblock %}
 
 {% block uniforms %}
-uniform sampler2D diffuseTexture;
-uniform sampler2D normalTexture;
-uniform samplerCube envMap;
+//uniform sampler2D diffuseTexture;
+//uniform sampler2D normalTexture;
+//uniform samplerCube envMap;
 
 {% for shadowSampler in shadowSamplers %}
 uniform sampler2DShadow {{shadowSampler}};
@@ -53,8 +54,9 @@ float lookup( vec2 offSet,vec4 shadowTexCoord){
 	positionTarget = positionWorld;
 	normalTarget = normalWorld;
 	tangentTarget = tangentWorld;
-	diffuseTarget = texture(diffuseTexture, uv);
-	normalMapTarget = texture(normalTexture, uv);
+	//diffuseTarget = texture(diffuseTexture, uv);
+	//normalMapTarget = texture(normalTexture, uv);
+	uvTarget = vec4(uv,0,0);
 	
 	//shadow
 	shadowTarget = vec4(1);
