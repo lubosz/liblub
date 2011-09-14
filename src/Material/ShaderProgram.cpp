@@ -40,6 +40,18 @@ void ShaderProgram::printProgramInfoLog() {
     glGetProgramInfoLog(handle, infologLen, &charsWritten, infoLog);
     string shaderlog = infoLog;
     free(infoLog);
+    foreach(Shader * shader, shaders) {
+        LogError << "======" << shader->fileName;
+        QString shaderSource = QString::fromStdString(shader->shaderSource);
+        QStringList shaderSourceLines = shaderSource.split("\n");
+        unsigned lineNumber = 0;
+        foreach(QString line, shaderSourceLines){
+//            if(!line.contains("#", Qt::CaseInsensitive)) {
+                LogError << lineNumber << line.toStdString();
+                lineNumber++;
+//            }
+        }
+    }
     LogFatal << "Program Log"<< shaderlog;
   } else {
     LogDebug << "Program compiled";

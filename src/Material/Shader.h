@@ -20,17 +20,17 @@ class Shader {
 	Shader(string fileName, GLenum type, const vector<string> & defines);
 	GLuint getReference() const;
 	virtual ~Shader();
+	string shaderSource;
+	string fileName;
  private:
 	GLuint shader;
 
 	GLenum type;
-	string fileName;
 
 	vector<string> defines;
 
-	char* readFile(string filePath);
+	string readFile(string filePath);
 	void printShaderInfoLog(GLuint shader);
-
 	void loadSource();
 	void loadTemplate();
 	void compile();

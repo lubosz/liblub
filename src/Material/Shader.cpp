@@ -16,6 +16,12 @@
 #include "System/TemplateEngine.h"
 #include "Renderer/RenderEngine.h"
 
+#include <fstream>
+#include <streambuf>
+
+using std::ifstream;
+using std::istreambuf_iterator;
+
 Shader::Shader(string fileName, GLenum type, bool useTemplate) {
   LogDebug << "Creating Shader" << fileName;
   this->fileName = fileName;
@@ -45,7 +51,7 @@ Shader::~Shader() {
 
 void Shader::loadSource() {
   /* Read our shaders into the appropriate buffers */
-    const GLchar *source = readFile(Config::Instance().value<string>("shaderDir") + fileName);
+    shaderSource = readFile(Config::Instance().value<string>("shaderDir") + fileName);
 
     /* Assign our handles a "name" to new shader objects */
     shader = glCreateShader(type);
@@ -58,15 +64,16 @@ void Shader::loadSource() {
         defineString += "#define " + define + "\n";
         LogDebug << "Shader Flags" << define;
       }
-      const GLchar *sources[2] = { defineString.c_str(), source };
+      const GLchar *sources[2] = { defineString.c_str(), shaderSource.c_str() };
       glShaderSource(shader, 2, sources, NULL);
     } else {
+        const GLchar *source = shaderSource.c_str();
       glShaderSource(shader, 1, &source, NULL);
     }
 }
 
 void Shader::loadTemplate() {
-  string shaderSource = TemplateEngine::Instance().render(fileName).toStdString();
+  shaderSource = TemplateEngine::Instance().render(fileName).toStdString();
 //  printf("%s:\n\n %s\n", fileName.c_str(), shaderSource.c_str());
   /* Assign our handles a "name" to new shader objects */
   shader = glCreateShader(type);
@@ -84,34 +91,21 @@ void Shader::compile() {
   glError;
 }
 
-/* A simple function that will read a file
- * into an allocated char pointer buffer */
-char* Shader::readFile(string filePath) {
-    // Open
-    std::ifstream f(filePath.c_str(), std::ios::binary);
-    if (!f.is_open())
-        LogFatal << "File not found:" << filePath;
-
-    // Obtain file size
-    f.seekg(0, std::ios::end); // Seek to end
-    size_t size = f.tellg(); // Tell byte count
-    f.seekg(0); // Seek back to start
-
-    // Allocate buffer
-    char* buffer = NULL;
+string Shader::readFile(string filePath) {
+    string source;
     try {
-        buffer = new char[size+1]; // +1 for terminating null
+        ifstream t(filePath);
+        source = string((istreambuf_iterator<char> (t)),
+                istreambuf_iterator<char> ());
     } catch (...) {
-        LogFatal << "Memory allocation failed when reading file:" << filePath;
+        LogFatal << "Could Not Load File:" << filePath;
     }
 
-    // Read
-    if (!f.read(buffer, size))
-        LogFatal << "File reading error:" << filePath;
+    if(source == ""){
+        LogFatal << "Empty Shader file" << filePath;
+    }
 
-    buffer[size] = '\0'; // Null terminator
-
-    return buffer; /* Return the buffer */
+    return source;
 }
 
 void Shader::printShaderInfoLog(GLuint shader) {
