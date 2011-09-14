@@ -11,7 +11,7 @@
 
 TreeSponge::TreeSponge(unsigned recursion, QList<string>& attributes) {
     maxRecursion = recursion;
-    minRecursion = 1;
+    minRecursion = 0;
     mesh = MeshLoader::load(attributes, "cube.obj");
     setCastShadows(false);
 }
@@ -45,7 +45,8 @@ void TreeSponge::makeSponge(unsigned recursion, const QVector3D & cubePosition,
         recursion -= 1;
         size /= 3.0f;
 
-        if (recursion > 2 && recursion < maxRecursion - 1) {
+        //if (recursion > 2 && recursion < maxRecursion - 1) {
+        if(0) {
             drawAllChildrenSorted(recursion, cubePosition, size);
         } else {
             drawAllChildren(recursion, cubePosition, size);
