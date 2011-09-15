@@ -18,7 +18,7 @@ out vec4 envTarget;
 
 {% block uniforms %}
 uniform sampler2D positionTarget;
-uniform sampler2D normalTarget;dfdf
+uniform sampler2D normalTarget;
 //uniform sampler2D diffuseTarget;
 uniform sampler2D tangentTarget;
 uniform sampler2D binormalTarget;
@@ -35,9 +35,9 @@ uniform LightSourceBuffer {
 
 uniform vec3 camPositionWorld;
 
-const int shininess = 1;
+const int shininess = 32;
 //const int shininess = 1;
-
+{% include "ashikhmin.glsl" %}
 {% endblock %}
 
 {% block main %}
@@ -47,6 +47,8 @@ const int shininess = 1;
 	vec3 tangent = normalize(texture(tangentTarget, uv).xyz);
 	//vec3 binormal = cross(tangent, normal);
 	vec3 binormal = normalize(texture(binormalTarget, uv).xyz);
+	
+	mat3 tbn = mat3(tangent, binormal, normal);
 
 	vec3 viewDirectionWS = normalize(position - camPositionWorld);
 	vec3 viewDirectionTS = normalize(vec3(
@@ -70,6 +72,7 @@ const int shininess = 1;
 	vec4 diffuse = texture(diffuseTexture, uv2);
 	finalSpecularTarget = vec4(0);
 	finalDiffuseTarget = vec4(0);
+	finalTarget = vec4(0);
 
     //vec3 reflectView = reflect(viewDirectionWS, normal);
     //envTarget = texture(envMap, -reflectView);
@@ -99,10 +102,11 @@ const int shininess = 1;
 	   specular = pow( specular, shininess );
 			
 	   finalSpecularTarget += lightSources[i].diffuse *  specular;
+	   //finalTarget += AshikhminShirley(lightDirectionWS, viewDirectionWS, normal, diffuse, tbn);
     }
 	finalTarget = (finalDiffuseTarget + finalSpecularTarget + envTarget / 3.0)*ambient;
 	//finalTarget = vec4(height);
-	finalDiffuseTarget = diffuse;
-	finalSpecularTarget = vec4(normalTS,1);
+	//finalDiffuseTarget = diffuse;
+	//finalSpecularTarget = vec4(normalTS,1);
 	//finalTarget = texture(uvTarget, uv);
 {% endblock %}
