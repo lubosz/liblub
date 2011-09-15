@@ -189,7 +189,7 @@
     };
 
     TemplateEngine::Instance().c.insert("lightCount", SceneData::Instance().lights.size());
-    TemplateEngine::Instance().c.insert("paralaxMap", true);
+//    TemplateEngine::Instance().c.insert("paralaxMap", true);
     InOutPass * shadingPass = new InOutPass(res, shadingSources, shadingTargets,
         new Template("Post/DeferredMultiLight", uv));
     drawPasses.push_back(shadingPass);
