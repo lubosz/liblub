@@ -11,7 +11,6 @@
 #include "Material/Textures.h"
 
 void Material::init() {
-    diffuseColor = QVector4D();
     shaderProgram = new ShaderProgram();
     textures = vector<Texture*>();
 }
@@ -30,15 +29,6 @@ void Material::addTexture(string file, string name) {
 }
 void Material::addTextureCube(string file, string name) {
     textures.push_back(new CubeTextureFile(file, name));
-}
-
-void Material::done(const QList<string> & attributes) {
-    // TODO(bmonkey): deprecated, materials defined in xml
-    shaderProgram->init(attributes);
-    uniforms();
-    samplerUniforms();
-
-    glError;
 }
 
 void Material::activateAndBindTextures() {
@@ -76,13 +66,6 @@ void Material::samplerUniforms() {
             texture->uniform(shaderProgram->getHandle());
         }
 }
-
-//void Material::activate() {
-//    // TODO(bmonkey): check performance (rebinding textures for shared programs)
-//    samplerUniforms();
-//    activateAndBindTextures();
-//    glError;
-//}
 
 ShaderProgram *Material::getShaderProgram() {
     return shaderProgram;

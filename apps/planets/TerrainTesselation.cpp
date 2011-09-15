@@ -43,7 +43,7 @@ void TerrainTesselation::init(){
    Texture * noise = new TextureFile("terrain-noise-blur.jpg","noise");
    terrainMat->addTexture(groundTexture);
    terrainMat->addTexture(noise);
-   terrainMat->done(attributes);
+   terrainMat->getShaderProgram()->init(attributes);
 
    terrainMat->getShaderProgram()->setUniform("TessLevelInner",1.0f);
    terrainMat->getShaderProgram()->setUniform("TessLevelOuter",1.0f);

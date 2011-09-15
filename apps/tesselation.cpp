@@ -52,7 +52,7 @@ class TesselationApp: public Application {
     terrainMat->getShaderProgram()->attachShader("Tesselation/Tesselation.cont",GL_TESS_CONTROL_SHADER,true);
     terrainMat->getShaderProgram()->attachShader("Tesselation/Tesselation.geom",GL_GEOMETRY_SHADER,true);
     terrainMat->getShaderProgram()->attachShader("Tesselation/Tesselation.frag",GL_FRAGMENT_SHADER,true);
-    terrainMat->done(attributes);
+    terrainMat->getShaderProgram()->init(attributes);
 
     terrainMat->getShaderProgram()->setUniform("TessLevelInner",1.0f);
     terrainMat->getShaderProgram()->setUniform("TessLevelOuter",1.0f);

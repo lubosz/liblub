@@ -18,9 +18,7 @@ class Minimal: public Material {
     init();
     shaderProgram->attachShader("Common/minimal.vert", GL_VERTEX_SHADER, false);
     QList<string> attributes;
-    done(attributes);
-  }
-  void uniforms() {
+    shaderProgram->init(attributes);
   }
 };
 
@@ -29,9 +27,8 @@ class Simple: public Material {
   Simple(string shaders, const QList<string> & attributes) {
     init();
     shaderProgram->attachVertFrag(shaders, false);
-    done(attributes);
-  }
-  void uniforms() {
+    shaderProgram->init(attributes);
+    samplerUniforms();
   }
 };
 
@@ -40,17 +37,14 @@ class Template: public Material {
   Template(string shaders, const QList<string> & attributes) {
     init();
     shaderProgram->attachVertFrag(shaders, true);
-    done(attributes);
-  }
-  void uniforms() {
+    shaderProgram->init(attributes);
+    samplerUniforms();
   }
 };
 
 class EmptyMat: public Material {
  public:
   EmptyMat() {
-  }
-  void uniforms() {
   }
 };
 

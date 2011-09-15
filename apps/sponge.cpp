@@ -69,7 +69,7 @@ void Sponge::initMaterial() {
 
     ShaderProgram * shaderProgram = material->getShaderProgram();
     shaderProgram->attachVertFrag("Color/PhongColor", flags);
-    material->done(attributes);
+    material->getShaderProgram()->init(attributes);
     glError;
     shaderProgram->setUniform("ambientSceneColor",QVector4D(0.1, 0.1,0.1, 1.0));
     glError;

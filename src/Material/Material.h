@@ -19,7 +19,6 @@ class Material {
   void samplerUniforms();
   void addTexture(Texture * texture);
   void addTextures(vector<Texture *> &addTextures);
-  void done(const QList<string> & attributes);
 
   vector<Texture*> textures;
 
@@ -30,13 +29,11 @@ class Material {
   void bindTextures();
   void activateTextures();
  protected:
-  QVector4D diffuseColor;
 
   void addTexture(string file, string name);
   void addTextureCube(string file, string name);
 
  private:
-  virtual void uniforms() = 0;
   void defaultAttribs();
 };
 
