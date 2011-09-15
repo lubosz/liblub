@@ -11,8 +11,8 @@ float BaseRefl = 0.7, A = 0;
 * Illumination function
 */
 vec4 specularColor = vec4(0.5);
-uint specularU = 10;
-uint specularV = 10;
+int specularU = 10;
+int specularV = 10;
 const float pi8 = 8 * 3.14159265358979323846264;
 
 vec4 fresnelSchlick(vec3 k, vec3 h) {
@@ -20,9 +20,8 @@ vec4 fresnelSchlick(vec3 k, vec3 h) {
 }
 
 vec4 ashikhminSpecular(vec3 normal, vec3 h) {
-    float fac1 = sqrt((specularU + 1) * (specularV + 1)) / pi8;
-    float shit = 1;
-    float fac2 = pow(dot(normal, h), shit);
+    float fac1 = sqrt(float((specularU + 1) * (specularV + 1))) / pi8;
+    float fac2 = pow(dot(normal, h), 1);
     return specularColor;
 }
 
