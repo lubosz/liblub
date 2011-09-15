@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <liblub>
 	<Textures>
-		<Texture name="masonry-wall-texture" url="bump/tile1.jpg" />
-		<Texture name="masonry-wall-normal-map" url="bump/tile1.png" />
+		<Texture name="masonry-wall-texture" url="bump/rockbump.jpg" />
+		<Texture name="masonry-wall-normal-map" url="bump/rockbump.png" />
 		<TextureCube name="sky" url="cubemaps/sky" />
 	</Textures>
 	<Meshes>
