@@ -10,7 +10,7 @@
 UniformBuffer::UniformBuffer() {
   target = GL_UNIFORM_BUFFER;
   glGenBuffers(1, &handle);
-  dynamic = true;
+  dynamic = false;
 }
 
 UniformBuffer::~UniformBuffer() {
