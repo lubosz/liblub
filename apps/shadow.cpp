@@ -61,13 +61,13 @@
     //
 
     vector<Texture*> shadowReceiveTargets = {
-        new ColorTexture(res, "positionTarget"),
-        new ColorTexture(res, "normalTarget"),
-        new ColorTexture(res, "diffuseTarget"),
-        new ColorTexture(res, "tangentTarget"),
-        new ColorTexture(res, "normalMapTarget"),
-        new ColorTexture(res, "shadowTarget"),
-        new ColorTexture(res, "reflectionTarget")
+            new ColorTexture(res, "positionTarget"),
+            new ColorTexture(res, "normalTarget"),
+            new ColorTexture(res, "tangentTarget"),
+            new ColorTexture(res, "binormalTarget"),
+            new ColorTexture(res, "shadowTarget"),
+            new DepthTexture(res, "depthTarget"),
+            new ColorTexture(res, "uvTarget"),
     };
 
     vector<Texture*> shadowReceiveSources = {
