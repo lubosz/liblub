@@ -14,14 +14,12 @@ You also need assimp (i.e. from git).
 
 ### Window and Context Creation
 
-You can choose between SDL and XCB window creation. XCB will only work with X11 :)
+You can choose between Qt and XCB window creation. XCB will only work with X11 :)
 SDL is optional, found in the CMake options.
 
-#### For SDL:
+#### For Qt:
 
-SDL 1.3 from mercurial
-
-`$ hg clone http://hg.libsdl.org/SDL`
+`$ cmake . -DUSE_QT_WINDOWS=1`
 
 ### Headers
 
@@ -59,14 +57,11 @@ If you have run CMake before, do
 ## Run
 
 Run all all apps from bin and scenes from media/scenes
-`$ scripts/runAllScenes.sh`
+`$ scripts/runExamples`
 
 ### Apps
- 
-Running the applications from the bin directory.
-`$ scripts/runAll.sh`
 
-Or just a specific one
+Or just a specific bin
 `$ ./bin/sponge`
 
 ### Scenes
