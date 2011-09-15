@@ -15,9 +15,10 @@ You also need assimp (i.e. from git).
 ### Window and Context Creation
 
 You can choose between Qt and XCB window creation. XCB will only work with X11 :)
-SDL is optional, found in the CMake options.
 
 #### For Qt:
+
+Qt window creation is optional on XCB Systems, but can be set in the CMake options.
 
 `$ cmake . -DUSE_QT_WINDOWS=1`
 
@@ -74,10 +75,10 @@ View XML nice.xml scene file from media/scenes/.
 You can set a few options in in the config.xml file.
 
 The OpenGL context version can be set
-<Int name="GLcontext" value="4,1" />
+`<Int name="GLcontext" value="4,1" />`
 
 VSync can be turned off
-<Int name="Vsync" value="0" />
+`<Int name="Vsync" value="0" />`
 
 ### Fullscreen Mode with XCB in GNOME
 
@@ -91,7 +92,7 @@ SDL Fullscreen works at init (toggle does not).
 
 To quickly build liblub on Ubuntu (assuming 4 cores)
 
-`sudo aptitude install git build-essential cmake libqt4-dev libfreeimage-dev libx11-xcb-dev libxcb-keysyms1-dev`
+`sudo apt-get install build-essential cmake libqt4-dev libqt4-opengl-dev libgrantlee-dev libboost-dev libx11-xcb-dev libxcb-keysyms1-dev`
 
 `git clone git://github.com/assimp/assimp.git`
 
