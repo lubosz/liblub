@@ -12,7 +12,7 @@
 #include "Mesh/Geometry.h"
 #include "Mesh/MeshLoader.h"
 #include "Atmosphere.h"
-#include "Scene/SceneData.h"
+#include "Scene/Scene.h"
 #include "Planet.h"
 
 TerrainTesselation::TerrainTesselation(Planet * planet) {
@@ -57,12 +57,12 @@ void TerrainTesselation::init(){
  }
 
  void TerrainTesselation::updateTesselation(){
-   QVector3D camFromPlanet = SceneData::Instance().getCurrentCamera()->position - planet->position;
+   QVector3D camFromPlanet = Scene::Instance().getCurrentCamera()->position - planet->position;
    float camDistance = camFromPlanet.length();
 
    while (camDistance < 11.01){
-     SceneData::Instance().getCurrentCamera()->position += SceneData::Instance().getCurrentCamera()->position.normalized() *  0.01;
-     SceneData::Instance().getCurrentCamera()->update();
+     Scene::Instance().getCurrentCamera()->position += Scene::Instance().getCurrentCamera()->position.normalized() *  0.01;
+     Scene::Instance().getCurrentCamera()->update();
    }
    int maxTess = 60;
    float tessStartDistance = 8;
@@ -85,7 +85,7 @@ void TerrainTesselation::init(){
 
  void TerrainTesselation::draw() {
   updateTesselation();
-  SceneData::Instance().getCurrentCamera()->setUniforms(node->getShader(), planet->position);
-  node->setView(SceneData::Instance().getCurrentCamera());
+  Scene::Instance().getCurrentCamera()->setUniforms(node->getShader(), planet->position);
+  node->setView(Scene::Instance().getCurrentCamera());
   node->draw();
 }

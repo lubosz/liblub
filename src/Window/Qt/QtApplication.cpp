@@ -7,7 +7,7 @@
 
 #include "QtApplication.h"
 
-#include "Scene/SceneData.h"
+#include "Scene/Scene.h"
 #include "System/Config.h"
 #include "System/GUI.h"
 #include "Renderer/RenderEngine.h"
@@ -34,7 +34,7 @@ void QtApplication::run() {
   //TODO hardcoded sizes
   window->setMaximumSize(QSize(1920, 1200));
   window->resize(QSize(1920, 1200));
-  SceneData::Instance().setResolution(1920,1200);
+  Scene::Instance().setResolution(1920,1200);
 
 // TODO: Qt Makes errors when context version is specified
 //  QGLFormat fmt = QGLFormat::defaultFormat();

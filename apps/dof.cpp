@@ -23,7 +23,7 @@
 #include "Renderer/FrameBuffer.h"
 #include "Scene/SceneLoader.h"
 #include "Material/Shaders.h"
-#include "Scene/SceneData.h"
+#include "Scene/Scene.h"
 
 class DepthOfFieldExample: public Application
 {
@@ -51,8 +51,8 @@ class DepthOfFieldExample: public Application
 
 void scene() {
     sceneLoader->load();
-    res = SceneData::Instance().getResolution();
-    SceneData::Instance().name = "Depth Buffer";
+    res = Scene::Instance().getResolution();
+    Scene::Instance().name = "Depth Buffer";
 
     Texture* pDepthTexture = new DepthTexture(res, "depth_map"); // debug? => "result"
     Texture* pColorTexture = new ColorTexture(res, "color_map");
@@ -117,9 +117,9 @@ void scene() {
 	pDOFShader->setUniform("pixel_height", 1.f / res.height());
 
 	//pDOFShader->setUniform("VMatrix", QMatrix4x4());
-	pDOFShader->setUniform("VMatrix", SceneData::Instance().getCurrentCamera()->getView());
-	pDOFShader->setUniform("PMatrix", SceneData::Instance().getCurrentCamera()->getProjection());
-	pDOFShader->setUniform("VPIMatrix", (SceneData::Instance().getCurrentCamera()->getProjection() * SceneData::Instance().getCurrentCamera()->getView()).inverted());
+	pDOFShader->setUniform("VMatrix", Scene::Instance().getCurrentCamera()->getView());
+	pDOFShader->setUniform("PMatrix", Scene::Instance().getCurrentCamera()->getProjection());
+	pDOFShader->setUniform("VPIMatrix", (Scene::Instance().getCurrentCamera()->getProjection() * Scene::Instance().getCurrentCamera()->getView()).inverted());
 
 	/*TODO MVP-Inverse should be a uniform (now calculated)
 	QMatrix4x4 tempMatrix = viewPoint->getView() * modelMatrix;

@@ -10,7 +10,7 @@
 #include "Scene/Camera.h"
 #include "Window/Window.h"
 #include "Material/Uniform.h"
-#include "Scene/SceneData.h"
+#include "Scene/Scene.h"
 #include "System/Logger.h"
 #include "Renderer/RenderEngine.h"
 #include "XCBWindow.h"
@@ -78,7 +78,7 @@ void XCBInput::eventLoop() {
                   mediaLayer->toggleFullScreen();
                     break;
                 case XK_p:
-                    cam = SceneData::Instance().getCurrentCamera();
+                    cam = Scene::Instance().getCurrentCamera();
                     LogInfo << "Cam Pos" << cam->position.x() << cam->position.y() << cam->position.z();
                     LogInfo << "Cam Dir" << cam->direction().x() << cam->direction().y() << cam->direction().z();
                     break;
@@ -114,35 +114,35 @@ void XCBInput::eventLoop() {
 void XCBInput::checkKey(xcb_keysym_t pressedKey) {
     switch (pressedKey) {
         case XK_w:
-            SceneData::Instance().getCurrentCamera()->forwardDirection(inputSpeed);
+            Scene::Instance().getCurrentCamera()->forwardDirection(inputSpeed);
             break;
         case XK_a:
-            SceneData::Instance().getCurrentCamera()->leftDirection(inputSpeed);
+            Scene::Instance().getCurrentCamera()->leftDirection(inputSpeed);
             break;
         case XK_s:
-            SceneData::Instance().getCurrentCamera()->backwardDirection(inputSpeed);
+            Scene::Instance().getCurrentCamera()->backwardDirection(inputSpeed);
             break;
         case XK_d:
-            SceneData::Instance().getCurrentCamera()->rightDirection(inputSpeed);
+            Scene::Instance().getCurrentCamera()->rightDirection(inputSpeed);
             break;
             // Light
         case XK_Left:
-            SceneData::Instance().getShadowLight()->leftWorld(inputSpeed);
+            Scene::Instance().getShadowLight()->leftWorld(inputSpeed);
             break;
         case XK_Right:
-            SceneData::Instance().getShadowLight()->rightWorld(inputSpeed);
+            Scene::Instance().getShadowLight()->rightWorld(inputSpeed);
             break;
         case XK_Up:
-            SceneData::Instance().getShadowLight()->upWorld(inputSpeed);
+            Scene::Instance().getShadowLight()->upWorld(inputSpeed);
             break;
         case XK_Down:
-            SceneData::Instance().getShadowLight()->downWorld(inputSpeed);
+            Scene::Instance().getShadowLight()->downWorld(inputSpeed);
             break;
         case XK_1:
-            SceneData::Instance().getShadowLight()->forwardWorld(inputSpeed);
+            Scene::Instance().getShadowLight()->forwardWorld(inputSpeed);
             break;
         case XK_7:
-            SceneData::Instance().getShadowLight()->backWorld(inputSpeed);
+            Scene::Instance().getShadowLight()->backWorld(inputSpeed);
             break;
     }
 }

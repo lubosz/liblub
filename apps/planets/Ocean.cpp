@@ -8,7 +8,7 @@
 #include "Ocean.h"
 #include "Material/Textures.h"
 #include "Mesh/Geometry.h"
-#include "Scene/SceneData.h"
+#include "Scene/Scene.h"
 #include "Planet.h"
 #include "System/Timer.h"
 Ocean::Ocean(Planet * planet) {
@@ -59,13 +59,13 @@ void Ocean::init(){
 void Ocean::draw() {
   checkMaterialToggle();
 
-  node->setView(SceneData::Instance().getCurrentCamera());
+  node->setView(Scene::Instance().getCurrentCamera());
   node->getShader()->setUniform("time",Timer::Instance().getTime());
-  node->getShader()->setUniform("eyePosition",SceneData::Instance().getCurrentCamera()->position);
+  node->getShader()->setUniform("eyePosition",Scene::Instance().getCurrentCamera()->position);
 
-  SceneData::Instance().getCurrentCamera()->setUniforms(
+  Scene::Instance().getCurrentCamera()->setUniforms(
       node->getShader(), planet->position);
-  node->setView(SceneData::Instance().getCurrentCamera());
+  node->setView(Scene::Instance().getCurrentCamera());
 
   node->draw();
 }

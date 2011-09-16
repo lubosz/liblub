@@ -18,20 +18,20 @@
  */
 #include "sponge.h"
 #include "Mesh/MengerSponge.h"
-#include "Scene/SceneData.h"
+#include "Scene/Scene.h"
 #include "Mesh/Geometry.h"
 #include "Material/Textures.h"
 
 Sponge::Sponge(int argc, char *argv[]) :
   Application(argc, argv) {
-  SceneData::Instance().name = "Sponge";
+  Scene::Instance().name = "Sponge";
   attributes = QList<string> () << "uv" << "normal" << "tangent";
 }
 
 void Sponge::initPasses() {
     Light * light = new Light(QVector3D(-9, 32, 11.5), QVector3D(1,-5,-1));
-    SceneData::Instance().addLight("foolight", light);
-    QSize res = SceneData::Instance().getResolution();
+    Scene::Instance().addLight("foolight", light);
+    QSize res = Scene::Instance().getResolution();
     vector<Texture*> shadowTargets = { new ShadowTexture(res, "shadowMap") };
     ShadowCastPass * shadowCastPass = new ShadowCastPass(res, shadowTargets, light);
     drawPasses.push_back(shadowCastPass);
@@ -84,7 +84,7 @@ void Sponge::initMaterial() {
     // spot
     shader->setUniform("spotOuterAngle",0.9f);
     shader->setUniform("spotInnerAngle",0.8f);
-    SceneData::Instance().getLight("foolight")->bindShaderUpdateLight(shader);
+    Scene::Instance().getLight("foolight")->bindShaderUpdateLight(shader);
 }
 
 void Sponge::scene() {

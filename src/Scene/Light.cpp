@@ -7,7 +7,7 @@
 
 #include "Scene/Light.h"
 #include "Scene/SceneGraph.h"
-#include "Scene/SceneData.h"
+#include "Scene/Scene.h"
 #include "Scene/Camera.h"
 #include "Mesh/MeshLoader.h"
 #include "System/Logger.h"
@@ -30,13 +30,13 @@ Light::~Light() {
 }
 
 void Light::bindShaderUpdate(ShaderProgram * shaderProgram) {
-    QVector4D lightPositionView = SceneData::Instance().getCurrentCamera()->getView() * position;
+    QVector4D lightPositionView = Scene::Instance().getCurrentCamera()->getView() * position;
     shaderProgram->setUniform("lightPositionView", lightPositionView);
     shaderProgram->setUniform("lightPositionWS", position);
 //    shaderProgram->setUniform(position, "lightPositionWorld");
 //    QVector3D directionView = SceneData::Instance().getCurrentCamera()->getView() * direction;
 //    shaderProgram->setUniform(directionView, "spotDirection");
-    QVector3D spotDirectionView = SceneData::Instance().getCurrentCamera()->getViewNoTranslation()
+    QVector3D spotDirectionView = Scene::Instance().getCurrentCamera()->getViewNoTranslation()
             * direction();
 //    spotDirectionView.normalize();
     shaderProgram->setUniform("spotDirectionView", spotDirectionView);
@@ -45,14 +45,14 @@ void Light::bindShaderUpdate(ShaderProgram * shaderProgram) {
 
 void Light::bindShaderUpdateLight(ShaderProgram * shaderProgram) {
     shaderProgram->use();
-    QVector4D lightPositionView = SceneData::Instance().getCurrentCamera()->getView() * position;
+    QVector4D lightPositionView = Scene::Instance().getCurrentCamera()->getView() * position;
 
     shaderProgram->setUniform("lightPositionView", lightPositionView);
 
-    QVector3D directionView = SceneData::Instance().getCurrentCamera()->getView() * direction();
+    QVector3D directionView = Scene::Instance().getCurrentCamera()->getView() * direction();
     shaderProgram->setUniform("spotDirection", directionView);
 
-    QVector3D spotDirectionView = SceneData::Instance().getCurrentCamera()->getViewNoTranslation() * direction();
+    QVector3D spotDirectionView = Scene::Instance().getCurrentCamera()->getViewNoTranslation() * direction();
     spotDirectionView.normalize();
     shaderProgram->setUniform("spotDirectionView", spotDirectionView);
 }

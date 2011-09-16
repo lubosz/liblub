@@ -8,7 +8,7 @@
 #include "Renderer/RenderEngine.h"
 #include "Mesh/MeshLoader.h"
 #include "System/Logger.h"
-#include "Scene/SceneData.h"
+#include "Scene/Scene.h"
 #include "System/GUI.h"
 
 SceneGraph::SceneGraph() {
@@ -52,7 +52,7 @@ void SceneGraph::setPosition(string nodeName, const QVector3D& position) {
 }
 
 void SceneGraph::drawNodes() {
-  drawNodes(SceneData::Instance().getCurrentCamera());
+  drawNodes(Scene::Instance().getCurrentCamera());
 }
 
 void SceneGraph::drawNodes(DirectionNode * viewPoint) {
@@ -63,10 +63,10 @@ void SceneGraph::drawNodes(DirectionNode * viewPoint) {
         if(!node->transparent) {
           node->setView(viewPoint);
           node->setShadowCoords(viewPoint);
-          SceneData::Instance().getShadowLight()->bindShaderUpdate(node->getShader());
+          Scene::Instance().getShadowLight()->bindShaderUpdate(node->getShader());
           node->draw();
         } else {
-          QVector3D distance = node->getCenter() - SceneData::Instance().getCurrentCamera()->position;
+          QVector3D distance = node->getCenter() - Scene::Instance().getCurrentCamera()->position;
           transparentNodes.insert(distance.length(), node);
         }
     }
@@ -86,7 +86,7 @@ void SceneGraph::drawNodes(DirectionNode * viewPoint) {
 }
 
 void SceneGraph::drawNodes(ShaderProgram * shader) {
-  drawNodes(shader, SceneData::Instance().getCurrentCamera());
+  drawNodes(shader, Scene::Instance().getCurrentCamera());
 }
 
 void SceneGraph::drawNodes(ShaderProgram * shader, DirectionNode * viewPoint) {
@@ -98,7 +98,7 @@ void SceneGraph::drawNodes(ShaderProgram * shader, DirectionNode * viewPoint) {
 }
 
 void SceneGraph::drawReceivers(ShaderProgram * shader) {
-  DirectionNode * camView = SceneData::Instance().getCurrentCamera();
+  DirectionNode * camView = Scene::Instance().getCurrentCamera();
   Node::setShadowCoords(shader,camView);
   foreach(Node * node, sceneNodes) {
     node->setView(shader, camView );
@@ -108,7 +108,7 @@ void SceneGraph::drawReceivers(ShaderProgram * shader) {
 }
 
 void SceneGraph::drawCasters(ShaderProgram * shader) {
-  drawCasters(shader, SceneData::Instance().getCurrentCamera());
+  drawCasters(shader, Scene::Instance().getCurrentCamera());
 }
 
 void SceneGraph::drawCasters(ShaderProgram * shader, DirectionNode * viewPoint) {

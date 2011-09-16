@@ -22,7 +22,7 @@
 #include "System/GUI.h"
 #include "Scene/SceneLoader.h"
 #include "Scene/SceneGraph.h"
-#include "Scene/SceneData.h"
+#include "Scene/Scene.h"
 #include "System/Logger.h"
 #include "System/Timer.h"
 #include <QPainter>

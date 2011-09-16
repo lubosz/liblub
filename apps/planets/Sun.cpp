@@ -7,7 +7,7 @@
 
 #include "Sun.h"
 #include "System/Timer.h"
-#include "Scene/SceneData.h"
+#include "Scene/Scene.h"
 #include "Mesh/Geometry.h"
 #include "Planet.h"
 #include "Material/Textures.h"
@@ -35,8 +35,8 @@ void Sun::draw(){
   checkMaterialToggle();
   node->getShader()->use();
   node->getShader()->setUniform("time", Timer::Instance().getTime());
-  SceneData::Instance().getCurrentCamera()->setUniforms(
+  Scene::Instance().getCurrentCamera()->setUniforms(
       node->getShader(), planet->position);
-  node->setView(SceneData::Instance().getCurrentCamera());
+  node->setView(Scene::Instance().getCurrentCamera());
   node->draw();
 }

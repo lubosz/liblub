@@ -5,19 +5,19 @@
  *      Author: bmonkey
  */
 
-#include "Scene/SceneData.h"
+#include "Scene/Scene.h"
 #include "System/Logger.h"
 #include "Renderer/RenderEngine.h"
 
-SceneData::SceneData() {
+Scene::Scene() {
   lights = QMap<string, Light*>();
 }
 
-SceneData::~SceneData() {
+Scene::~Scene() {
   // TODO Auto-generated destructor stub
 }
 
-void SceneData::addShader(string & name, ShaderProgram* shader) {
+void Scene::addShader(string & name, ShaderProgram* shader) {
   if (name == "") {
     QString idString = QString::number(shaders.size() + 1);
     name = "Program" + idString.toStdString();
@@ -25,12 +25,12 @@ void SceneData::addShader(string & name, ShaderProgram* shader) {
   shaders.insert(name, shader);
 }
 
-void SceneData::setCurrentCamera(Camera * camera) {
+void Scene::setCurrentCamera(Camera * camera) {
   this->currentCamera = camera;
   addCamera(camera);
 }
 
-void SceneData::addCamera(Camera * camera) {
+void Scene::addCamera(Camera * camera) {
   bool isInCameras = false;
 
   foreach(Camera* cam, cameras) {
@@ -46,7 +46,7 @@ void SceneData::addCamera(Camera * camera) {
   }
 }
 
-ShaderProgram* SceneData::getShader(const string & name) {
+ShaderProgram* Scene::getShader(const string & name) {
   ShaderProgram * shader = shaders[name];
   if (shader) {
     return shader;
@@ -56,18 +56,18 @@ ShaderProgram* SceneData::getShader(const string & name) {
   }
 }
 
-void SceneData::setResolution(unsigned width, unsigned height) {
+void Scene::setResolution(unsigned width, unsigned height) {
   this->height = height;
   this->width = width;
 }
 
-QSize SceneData::getResolution() {
+QSize Scene::getResolution() {
   if(width == 0|| height == 0)
     LogFatal << "No Window Resulution!";
   return QSize(width, height);
 }
 
-void SceneData::addLight(const string & name, Light* light) {
+void Scene::addLight(const string & name, Light* light) {
   light->setName(name);
   string lightName = name;
   if (name == "" || lights.count(name) > 0) {
@@ -83,7 +83,7 @@ void SceneData::addLight(const string & name, Light* light) {
 
 }
 
-Light* SceneData::getLight(const string & name) {
+Light* Scene::getLight(const string & name) {
   Light * light = lights[name];
   if (light) {
     return light;
@@ -94,7 +94,7 @@ Light* SceneData::getLight(const string & name) {
 }
 
 
-Texture* SceneData::getTexture(const string & name) {
+Texture* Scene::getTexture(const string & name) {
   Texture * texture = textures[name];
   if (texture) {
     return texture;
@@ -104,18 +104,18 @@ Texture* SceneData::getTexture(const string & name) {
   }
 }
 
-Texture* SceneData::getTexture(const string & name, const string & as){
+Texture* Scene::getTexture(const string & name, const string & as){
   Texture * texture = getTexture(name);
   texture->name = as;
   return texture;
 }
 
-void SceneData::setBackgroundColor(const QVector3D backgroundColor) {
+void Scene::setBackgroundColor(const QVector3D backgroundColor) {
   this->backgroundColor = backgroundColor;
   RenderEngine::Instance().setClearColor(backgroundColor);
 }
 
-Camera * SceneData::getCurrentCamera() {
+Camera * Scene::getCurrentCamera() {
   if(!currentCamera) {
     if(cameras.size() > 0) {
       currentCamera = cameras[0];
@@ -129,7 +129,7 @@ Camera * SceneData::getCurrentCamera() {
   return currentCamera;
 }
 
-Light * SceneData::getShadowLight() {
+Light * Scene::getShadowLight() {
   if(!shadowLight) {
     LogWarning << "Adding default shadow light";
     Light * light = new Light(QVector3D(-2.5, 21.5, -5.2), QVector3D(1, -5, 0));
@@ -138,11 +138,11 @@ Light * SceneData::getShadowLight() {
   return shadowLight;
 }
 
-void SceneData::setShadowLight(Light * light) {
+void Scene::setShadowLight(Light * light) {
   shadowLight = light;
 }
 
-Light * SceneData::getMoveLight() {
+Light * Scene::getMoveLight() {
 //  if(!moveLight) {
 //    if(lights.size() > 0) {
 //      Logger::Instance().message << lights.size();

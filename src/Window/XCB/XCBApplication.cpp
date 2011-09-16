@@ -37,7 +37,7 @@ void XCBApplication::run() {
   }
 
   window = new XCBWindow();
-  window->init(SceneData::Instance().name);
+  window->init(Scene::Instance().name);
 
   scene();
 

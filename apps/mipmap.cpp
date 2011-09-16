@@ -21,7 +21,7 @@
 #include "System/Application.h"
 #include "System/GUI.h"
 #include "Scene/SceneLoader.h"
-#include "Scene/SceneData.h"
+#include "Scene/Scene.h"
 #include "System/Logger.h"
 #include "System/Timer.h"
 #include <QPainter>
@@ -33,7 +33,7 @@
 #include "Renderer/FrameBuffer.h"
 #include "Scene/SceneLoader.h"
 #include "Material/Shaders.h"
-#include "Scene/SceneData.h"
+#include "Scene/Scene.h"
 #include "Renderer/RenderPasses.h"
 
 class LoadApp: public Application {

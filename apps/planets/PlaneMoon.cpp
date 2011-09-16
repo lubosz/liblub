@@ -10,7 +10,7 @@
 #include "Material/ProcTextures.h"
 #include "System/TemplateEngine.h"
 #include "Atmosphere.h"
-#include "Scene/SceneData.h"
+#include "Scene/Scene.h"
 #include "Planet.h"
 #include "Mesh/Geometry.h"
 
@@ -73,9 +73,9 @@ void PlaneMoon::init() {
 
 void PlaneMoon::draw() {
   checkMaterialToggle();
-  SceneData::Instance().getCurrentCamera()->setUniforms(
+  Scene::Instance().getCurrentCamera()->setUniforms(
       node->getShader(), planet->position);
-  node->setView(SceneData::Instance().getCurrentCamera());
+  node->setView(Scene::Instance().getCurrentCamera());
   glDisable(GL_CULL_FACE);
   node->draw();
   glEnable(GL_CULL_FACE);

@@ -10,7 +10,7 @@
 #include "Window/XCB/XCBWindow.h"
 #include "Mesh/MeshLoader.h"
 #include "Scene/SceneLoader.h"
-#include "Scene/SceneData.h"
+#include "Scene/Scene.h"
 #include "System/Config.h"
 #include "System/GUI.h"
 

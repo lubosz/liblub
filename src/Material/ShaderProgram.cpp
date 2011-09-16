@@ -8,7 +8,7 @@
 #include "Material/ShaderProgram.h"
 #include "Scene/SceneGraph.h"
 #include "System/Logger.h"
-#include "Scene/SceneData.h"
+#include "Scene/Scene.h"
 #include "Renderer/RenderEngine.h"
 #include "Material/Textures.h"
 
@@ -163,7 +163,7 @@ void ShaderProgram::initUniforms() {
   initUniformsByType<float> (uniforms);
   initUniformsByType<int> (uniformsi);
   // TODO: Multiple Light sources
-  SceneData::Instance().getShadowLight()->bindShaderInit(this);
+  Scene::Instance().getShadowLight()->bindShaderInit(this);
 }
 
 void ShaderProgram::linkAndUse() {

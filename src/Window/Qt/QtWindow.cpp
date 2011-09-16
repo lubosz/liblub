@@ -11,7 +11,7 @@
 #include "QtInput.h"
 #include "System/Logger.h"
 #include "System/Timer.h"
-#include "Scene/SceneData.h"
+#include "Scene/Scene.h"
 
 QtWindow::QtWindow() {
   mainLayout = new QHBoxLayout;
@@ -38,13 +38,13 @@ void QtWindow::executeKeys() {
   float inputSpeed = .1;
   foreach(int key, pressedKeys) {
       if (key == Qt::Key_W)
-        SceneData::Instance().getCurrentCamera()->forwardDirection(inputSpeed);
+        Scene::Instance().getCurrentCamera()->forwardDirection(inputSpeed);
       if (key == Qt::Key_A)
-        SceneData::Instance().getCurrentCamera()->leftDirection(inputSpeed);
+        Scene::Instance().getCurrentCamera()->leftDirection(inputSpeed);
       if (key == Qt::Key_S)
-        SceneData::Instance().getCurrentCamera()->backwardDirection(inputSpeed);
+        Scene::Instance().getCurrentCamera()->backwardDirection(inputSpeed);
       if (key == Qt::Key_D)
-        SceneData::Instance().getCurrentCamera()->rightDirection(inputSpeed);
+        Scene::Instance().getCurrentCamera()->rightDirection(inputSpeed);
   }
   emit draw();
 }

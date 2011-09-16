@@ -7,7 +7,7 @@
 
 #include "PlanetElement.h"
 #include "Planet.h"
-#include "Scene/SceneData.h"
+#include "Scene/Scene.h"
 #include "System/TemplateEngine.h"
 #include "Material/Shaders.h"
 
@@ -81,7 +81,7 @@ void PlanetElement::updateSize(){
 void PlanetElement::setAtmoUniforms(ShaderProgram * program) {
   updateWaveLength(program);
 
-  QVector3D lightPosition = SceneData::Instance().getLight("sunlight")->position;
+  QVector3D lightPosition = Scene::Instance().getLight("sunlight")->position;
   QVector3D lightDirection = lightPosition - planet->position;
   lightDirection.normalize();
 
@@ -110,7 +110,7 @@ void PlanetElement::setAtmoUniforms(ShaderProgram * program) {
 }
 
 void  PlanetElement::checkMaterialToggle(){
-  QVector3D camFromPlanet = SceneData::Instance().getCurrentCamera()->position
+  QVector3D camFromPlanet = Scene::Instance().getCurrentCamera()->position
       - planet->position;
   float camDistance = camFromPlanet.length();
   if (camDistance >= planet->outerRadius) {

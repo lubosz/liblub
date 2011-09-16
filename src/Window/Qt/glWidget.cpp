@@ -1,6 +1,6 @@
 #include <QtGui>
 #include "glWidget.h"
-#include "Scene/SceneData.h"
+#include "Scene/Scene.h"
 
 #ifndef GL_MULTISAMPLE
 #define GL_MULTISAMPLE  0x809D
@@ -27,7 +27,7 @@ void GLWidget::paintGL() {
 }
 
 void GLWidget::resizeGL(int width, int height) {
-  SceneData::Instance().getCurrentCamera()->setAspect(
+  Scene::Instance().getCurrentCamera()->setAspect(
       float(width) / float(height));
   glViewport(0, 0, width, height);
   viewSize = QSize(width, height);
@@ -43,7 +43,7 @@ void GLWidget::mouseMoveEvent(QMouseEvent *event) {
   if (event->buttons() & Qt::LeftButton) {
     int dx = event->x() - lastMousePosition.x();
     int dy = event->y() - lastMousePosition.y();
-    SceneData::Instance().getCurrentCamera()->setMouseLook(dx, dy, .1);
+    Scene::Instance().getCurrentCamera()->setMouseLook(dx, dy, .1);
     updateGL();
   } else if (event->buttons() & Qt::RightButton) {
   }

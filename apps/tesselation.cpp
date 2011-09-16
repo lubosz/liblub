@@ -25,7 +25,7 @@
 #include "Material/Textures.h"
 #include "Scene/Camera.h"
 #include "Scene/Light.h"
-#include "Scene/SceneData.h"
+#include "Scene/Scene.h"
 
 class TesselationApp: public Application {
  public:
@@ -55,11 +55,11 @@ class TesselationApp: public Application {
     shader->setUniform("TessLevelOuter",1.0f);
     shader->setUniform("LightPosition", QVector3D(0.25, 0.25, 1));
 
-    camera = SceneData::Instance().getCurrentCamera();
+    camera = Scene::Instance().getCurrentCamera();
     camera->setPosition(QVector3D(0, 0, 25));
     camera->update();
     light = new Light(QVector3D(-2.5, 21.5, -5.2), QVector3D(1, -5, 0));
-    SceneData::Instance().addLight("foolight", light);
+    Scene::Instance().addLight("foolight", light);
 
     Mesh * mesh = MeshLoader::load(attributes, "earth.obj");
 //    Mesh * mesh = Geometry::gluSphere(10.0f, 100, 50);

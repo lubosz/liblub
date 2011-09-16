@@ -12,7 +12,7 @@
 #include "Mesh/Geometry.h"
 #include "Mesh/MeshLoader.h"
 #include "Atmosphere.h"
-#include "Scene/SceneData.h"
+#include "Scene/Scene.h"
 #include "Planet.h"
 
 TerrainPlain::TerrainPlain(Planet * planet){
@@ -43,9 +43,9 @@ void TerrainPlain::init(){
  void TerrainPlain::draw() {
    checkMaterialToggle();
 
-  SceneData::Instance().getCurrentCamera()->setUniforms(
+  Scene::Instance().getCurrentCamera()->setUniforms(
       node->getShader(), planet->position);
-  node->setView(SceneData::Instance().getCurrentCamera());
+  node->setView(Scene::Instance().getCurrentCamera());
 
   node->draw();
 }

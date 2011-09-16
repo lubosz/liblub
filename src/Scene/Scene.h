@@ -20,7 +20,7 @@
 
 using std::string;
 
-class SceneData : public Singleton<SceneData> {
+class Scene : public Singleton<Scene> {
 public:
   string name;
   QVector3D backgroundColor;
@@ -32,8 +32,8 @@ public:
   QMap<string, Camera*> cameras;
   QMap<string, Light*> lights;
 
-  SceneData();
-  virtual ~SceneData();
+  Scene();
+  virtual ~Scene();
   void setBackgroundColor(const QVector3D backgroundColor);
 
   void addShader(string & name, ShaderProgram * program);

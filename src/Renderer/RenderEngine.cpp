@@ -6,7 +6,7 @@
  */
 #include <vector>
 #include "Scene/Camera.h"
-#include "Scene/SceneData.h"
+#include "Scene/Scene.h"
 #include "Mesh/MeshLoader.h"
 #include "Renderer/RenderEngine.h"
 #include "System/Logger.h"

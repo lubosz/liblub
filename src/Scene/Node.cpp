@@ -9,7 +9,7 @@
 #include "Mesh/MeshLoader.h"
 #include "Scene/Camera.h"
 #include "System/Logger.h"
-#include "Scene/SceneData.h"
+#include "Scene/Scene.h"
 #include "Renderer/RenderEngine.h"
 #include <cassert>
 
@@ -98,7 +98,7 @@ void Node::setShadowCoords(DirectionNode * viewPoint) {
 
 void Node::setShadowCoords(ShaderProgram * shaderProgram, DirectionNode * viewPoint){
   unsigned countLights = 0;
-  foreach(Light * light, SceneData::Instance().lights) {
+  foreach(Light * light, Scene::Instance().lights) {
     string name = "camViewToShadowMapMatrixshadowDepthSource" + QString::number(countLights).toStdString();
 
     QMatrix4x4 camViewToShadowMapMatrix = SceneGraph::Instance().bias
@@ -133,7 +133,7 @@ void Node::setView(
     shaderProgram->setUniform("NormalMatrix", tempMatrix.normalMatrix());
     tempMatrix = viewPoint->getProjection() * tempMatrix;
     shaderProgram->setUniform("MVPMatrix", tempMatrix);
-    shaderProgram->setUniform("camPositionWorld",SceneData::Instance().getCurrentCamera()->getPosition());
+    shaderProgram->setUniform("camPositionWorld",Scene::Instance().getCurrentCamera()->getPosition());
     glError;
 }
 

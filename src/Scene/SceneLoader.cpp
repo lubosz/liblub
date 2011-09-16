@@ -9,7 +9,7 @@
 #include <vector>
 #include <string>
 #include "Scene/SceneLoader.h"
-#include "Scene/SceneData.h"
+#include "Scene/Scene.h"
 #include "Mesh/MeshLoader.h"
 #include "Mesh/MengerSponge.h"
 #include "Mesh/Geometry.h"
@@ -87,9 +87,9 @@ void SceneLoader::appendProgram(const QDomElement & programNode) {
                     programInfo.attribute("value"))));
         } else if (programInfo.tagName() == "Layer") {
             if (programInfo.hasAttribute("texture")) {
-                Texture * texture = SceneData::Instance().textures.value(
+                Texture * texture = Scene::Instance().textures.value(
                         programInfo.attribute("texture").toStdString());
-                if (SceneData::Instance().textures.count(programInfo.attribute("texture").toStdString()) == 0)
+                if (Scene::Instance().textures.count(programInfo.attribute("texture").toStdString()) == 0)
                           LogError << "Texture "
                                     << programInfo.attribute("texture").toStdString()
                                     << " not found.";
@@ -104,7 +104,7 @@ void SceneLoader::appendProgram(const QDomElement & programNode) {
 
     program->init(attributes);
     program->samplerUniforms();
-    SceneData::Instance().shaders.insert(name, program);
+    Scene::Instance().shaders.insert(name, program);
 }
 
 void SceneLoader::appendTexture(const QDomElement & textureNode) {
@@ -118,7 +118,7 @@ void SceneLoader::appendTexture(const QDomElement & textureNode) {
         texture = new CubeTextureFile(textureNode.attribute(
                 "url").toStdString(), name);
     } else texture = NULL;
-    SceneData::Instance().textures.insert(name, texture);
+    Scene::Instance().textures.insert(name, texture);
 }
 
 void SceneLoader::appendMesh(const QDomElement & meshNode) {
@@ -214,7 +214,7 @@ void SceneLoader::appendMesh(const QDomElement & meshNode) {
       mesh->setDrawType(drawType);
     }
 
-    SceneData::Instance().meshes.insert(name, mesh);
+    Scene::Instance().meshes.insert(name, mesh);
 }
 
 void SceneLoader::appendObject(const QDomElement & objectNode) {
@@ -238,8 +238,8 @@ void SceneLoader::appendObject(const QDomElement & objectNode) {
         scale = objectNode.attribute("scale").toFloat();
     if (objectNode.hasAttribute("material")) {
         string materialName = objectNode.attribute("material").toStdString();
-        if (SceneData::Instance().shaders.count(materialName) > 0)
-            material = SceneData::Instance().shaders.value(materialName);
+        if (Scene::Instance().shaders.count(materialName) > 0)
+            material = Scene::Instance().shaders.value(materialName);
         else
             LogError << "Shader Not Found" << materialName;
     }
@@ -256,11 +256,11 @@ void SceneLoader::appendObject(const QDomElement & objectNode) {
       if (objectNode.hasAttribute("specular"))
         light->specular = stringToVector3D(objectNode.attribute("specular"));
 
-      SceneData::Instance().addLight(lightName, light);
+      Scene::Instance().addLight(lightName, light);
       if (objectNode.hasAttribute("mesh")) {
         string meshName = objectNode.attribute("mesh").toStdString();
-        if (SceneData::Instance().meshes.count(meshName) > 0)
-          mesh = SceneData::Instance().meshes.value(meshName);
+        if (Scene::Instance().meshes.count(meshName) > 0)
+          mesh = Scene::Instance().meshes.value(meshName);
         else
           LogError << "Mesh Not Found" << meshName;
 
@@ -276,8 +276,8 @@ void SceneLoader::appendObject(const QDomElement & objectNode) {
       }
     } else if (objectNode.tagName() == "Object") {
         string meshName = objectNode.attribute("mesh").toStdString();
-        if (SceneData::Instance().meshes.count(meshName) > 0)
-            mesh = SceneData::Instance().meshes.value(meshName);
+        if (Scene::Instance().meshes.count(meshName) > 0)
+            mesh = Scene::Instance().meshes.value(meshName);
         else
             LogError << "Mesh Not Found"<< meshName;
 
@@ -305,8 +305,8 @@ void SceneLoader::appendObject(const QDomElement & objectNode) {
         SceneGraph::Instance().addNode(node);
     } else if (objectNode.tagName() == "ObjectPlane") {
         string meshName = objectNode.attribute("mesh").toStdString();
-        if (SceneData::Instance().meshes.count(meshName) > 0)
-            mesh = SceneData::Instance().meshes.value(meshName);
+        if (Scene::Instance().meshes.count(meshName) > 0)
+            mesh = Scene::Instance().meshes.value(meshName);
         else
             LogError << "Mesh Not Found"<< meshName;
 
@@ -316,8 +316,8 @@ void SceneLoader::appendObject(const QDomElement & objectNode) {
         vector<ShaderProgram*> planeMaterials;
 
         foreach(string materialName, materialNames) {
-          if (SceneData::Instance().shaders.count(materialName) > 0)
-            planeMaterials.push_back(SceneData::Instance().shaders.value(materialName));
+          if (Scene::Instance().shaders.count(materialName) > 0)
+            planeMaterials.push_back(Scene::Instance().shaders.value(materialName));
           else
             LogError << "Shader Not Found"<< materialName;
         }
@@ -376,15 +376,15 @@ void SceneLoader::load(const QString & fileName) {
         } else if (document.tagName() == "Scene") {
 
           if (document.hasAttribute("name")){
-              SceneData::Instance().name = document.attribute("name").toStdString();
-              LogInfo << "Loading Scene" << SceneData::Instance().name;
+              Scene::Instance().name = document.attribute("name").toStdString();
+              LogInfo << "Loading Scene" << Scene::Instance().name;
           }
           if (document.hasAttribute("backgroundColor")){
-              SceneData::Instance().setBackgroundColor(stringToVector3D(document.attribute("backgroundColor")));
+              Scene::Instance().setBackgroundColor(stringToVector3D(document.attribute("backgroundColor")));
           } else {
             vector<float> backgroundColor =
                         Config::Instance().values<float> ("backgroundColor");
-            SceneData::Instance().setBackgroundColor(
+            Scene::Instance().setBackgroundColor(
                 QVector3D(backgroundColor[0],backgroundColor[1],backgroundColor[2]));
           }
             QDomElement scene = document.firstChildElement();

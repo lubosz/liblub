@@ -7,7 +7,7 @@
 
 #include "PlanetsApp.h"
 
-#include "Scene/SceneData.h"
+#include "Scene/Scene.h"
 #include "Material/Textures.h"
 #include "System/Config.h"
 #include "System/GUI.h"
@@ -69,10 +69,10 @@ void PlanetsApp::renderFrame() {
 }
 
 void PlanetsApp::initCamAndLight() {
-  camera = SceneData::Instance().getCurrentCamera();
+  camera = Scene::Instance().getCurrentCamera();
   camera->setPosition(QVector3D(0, 11.1, -0.85));
   light = new Light(QVector3D(0, 0, 1000), QVector3D(1, -5, 0));
-  SceneData::Instance().addLight("sunlight", light);
+  Scene::Instance().addLight("sunlight", light);
 
   //TODO: Cam does not update
   camera->setRotationX(2.9);
@@ -163,7 +163,7 @@ void PlanetsApp::drawPlanets() {
 
   foreach(Planet * planet, planets) {
       QVector3D distance = planet->atmoSphere->node->getPosition()
-          - SceneData::Instance().getCurrentCamera()->position;
+          - Scene::Instance().getCurrentCamera()->position;
       atmoSpheres.insert(distance.length(), planet->atmoSphere);
   }
 

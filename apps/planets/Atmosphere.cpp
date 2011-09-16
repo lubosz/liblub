@@ -9,7 +9,7 @@
 #include "Atmosphere.h"
 #include "System/TemplateEngine.h"
 #include "Mesh/Geometry.h"
-#include "Scene/SceneData.h"
+#include "Scene/Scene.h"
 #include "Planet.h"
 
 Atmosphere::Atmosphere(Planet * planet) {
@@ -30,8 +30,8 @@ void Atmosphere::init() {
 void Atmosphere::draw() {
   checkMaterialToggle();
 
-  SceneData::Instance().getCurrentCamera()->setUniforms(
+  Scene::Instance().getCurrentCamera()->setUniforms(
       node->getShader(), planet->position);
-  node->setView(SceneData::Instance().getCurrentCamera());
+  node->setView(Scene::Instance().getCurrentCamera());
   node->draw();
 }

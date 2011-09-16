@@ -21,7 +21,7 @@
 #include "Material/Textures.h"
 #include "Window/Qt/FloatEditorWidget.h"
 #include "Material/Shaders.h"
-#include "Scene/SceneData.h"
+#include "Scene/Scene.h"
 #include "System/TemplateEngine.h"
 
   ShadowApp::ShadowApp(int argc, char *argv[]) :
@@ -38,14 +38,14 @@
     QList<string> uv = QList<string> () << "uv";
 
     sceneLoader->load();
-    QSize res = SceneData::Instance().getResolution();
+    QSize res = Scene::Instance().getResolution();
 
     //
     // shadow passes
     //
 
     unsigned countLights = 0;
-    foreach(Light * light, SceneData::Instance().lights) {
+    foreach(Light * light, Scene::Instance().lights) {
       string name = "shadowDepthSource" + QString::number(countLights).toStdString();
       vector<Texture*> shadowSources = {new ShadowTexture(res, name)};
       ShadowCastPass * shadowCastPass = new ShadowCastPass(
@@ -71,9 +71,9 @@
     };
 
     vector<Texture*> shadowReceiveSources = {
-      SceneData::Instance().getTexture("masonry-wall-normal-map","normalTexture"),
-      SceneData::Instance().getTexture("masonry-wall-texture","diffuseTexture"),
-      SceneData::Instance().getTexture("sky", "envMap")
+      Scene::Instance().getTexture("masonry-wall-normal-map","normalTexture"),
+      Scene::Instance().getTexture("masonry-wall-texture","diffuseTexture"),
+      Scene::Instance().getTexture("sky", "envMap")
     };
 
     foreach(ShadowCastPass * shadowCastPass, shadowCastPasses) {

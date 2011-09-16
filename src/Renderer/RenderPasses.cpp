@@ -9,7 +9,7 @@
 #include "Window/Window.h"
 #include "Scene/Camera.h"
 #include "Material/Textures.h"
-#include "Scene/SceneData.h"
+#include "Scene/Scene.h"
 #include "Scene/SceneGraph.h"
 #include "Mesh/Geometry.h"
 #include "System/TemplateEngine.h"
@@ -134,7 +134,7 @@
     RenderEngine::Instance().clear();
     RenderEngine::Instance().updateViewport(res);
     shader->use();
-    shader->setUniform("camPositionWorld",SceneData::Instance().getCurrentCamera()->getPosition());
+    shader->setUniform("camPositionWorld",Scene::Instance().getCurrentCamera()->getPosition());
     drawOnPlane(shader, fullPlane);
     fbo->unBind();
   }

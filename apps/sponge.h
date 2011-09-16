@@ -18,7 +18,7 @@
 */
 #include "System/Application.h"
 #include "Mesh/MengerSponge.h"
-#include "Scene/SceneData.h"
+#include "Scene/Scene.h"
 #include "Mesh/Geometry.h"
 #include "Renderer/RenderPasses.h"
 

@@ -8,7 +8,7 @@
 #include <string>
 #include <vector>
 #include "Scene/Camera.h"
-#include "Scene/SceneData.h"
+#include "Scene/Scene.h"
 #include "System/Config.h"
 #include "System/GUI.h"
 #include "System/Timer.h"
@@ -46,9 +46,9 @@ void XCBWindow::init(string title) {
               display, None, window, 0, 0,
               width, height, halfWidth, halfHeight);
 
-  SceneData::Instance().setResolution(width, height);
+  Scene::Instance().setResolution(width, height);
 
-  SceneData::Instance().getCurrentCamera()->setAspect(
+  Scene::Instance().getCurrentCamera()->setAspect(
           static_cast<float>(width)/
           static_cast<float>(height));
 }
@@ -364,7 +364,7 @@ void XCBWindow::mouseLook(int x, int y) {
   int yRel = y - halfHeight;
 
   if (!(xRel == 0 && yRel == 0) && grab) {
-    SceneData::Instance().getCurrentCamera()->setMouseLook(xRel, yRel, input->mouseSensitivity);
+    Scene::Instance().getCurrentCamera()->setMouseLook(xRel, yRel, input->mouseSensitivity);
     if (grab)
         XWarpPointer(
                 display, None, window, x, y,

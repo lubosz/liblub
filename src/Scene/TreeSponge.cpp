@@ -7,7 +7,7 @@
 
 #include "TreeSponge.h"
 #include "Mesh/MeshLoader.h"
-#include "Scene/SceneData.h"
+#include "Scene/Scene.h"
 
 TreeSponge::TreeSponge(unsigned recursion, QList<string>& attributes) {
     maxRecursion = recursion;
@@ -27,7 +27,7 @@ void TreeSponge::makeSponge(unsigned recursion, const QVector3D & cubePosition,
         modelMatrix.setToIdentity();
         modelMatrix.translate(cubePosition);
         modelMatrix.scale(size);
-        DirectionNode * viewPoint = SceneData::Instance().getCurrentCamera();
+        DirectionNode * viewPoint = Scene::Instance().getCurrentCamera();
         QMatrix4x4 tempMatrix = viewPoint->getView() * modelMatrix;
         //              shaderProgram->setUniform("MMatrix", modelMatrix);
         //              shaderProgram->setUniform("MVMatrix", tempMatrix);
@@ -55,7 +55,7 @@ void TreeSponge::makeSponge(unsigned recursion, const QVector3D & cubePosition,
 
 bool TreeSponge::endRecursionAdaptive(unsigned recursion,
         const QVector3D & cubePosition, float size) {
-    DirectionNode * viewPoint = SceneData::Instance().getCurrentCamera();
+    DirectionNode * viewPoint = Scene::Instance().getCurrentCamera();
     float halfSize = size / 2.0;
     QVector3D cubeCenter = cubePosition + QVector3D(halfSize, halfSize,
             halfSize);
@@ -91,7 +91,7 @@ void TreeSponge::drawAllChildren(unsigned recursion,
 
 void TreeSponge::drawAllChildrenSorted(unsigned recursion,
         const QVector3D& parentPosition, float size) {
-    DirectionNode * viewPoint = SceneData::Instance().getCurrentCamera();
+    DirectionNode * viewPoint = Scene::Instance().getCurrentCamera();
     float trans = size * 2 * 1.1;
     QMap<qreal, QVector3D> distanceMap;
 

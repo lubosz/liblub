@@ -15,7 +15,7 @@
 #include <QMap>
 
 #include "Material/Textures.h"
-#include "Scene/SceneData.h"
+#include "Scene/Scene.h"
 #include "Mesh/Geometry.h"
 #include "Window/Window.h"
 #include "System/Logger.h"
@@ -47,7 +47,7 @@ GUI::~GUI() {
   // TODO Auto-generated destructor stub
 }
 void GUI::init() {
-  addText("ascene", SceneData::Instance().name);
+  addText("ascene", Scene::Instance().name);
   addText("fps", "FPS");
   addText("cam", "Cam");
   addText("time", "Time");
@@ -62,9 +62,9 @@ void GUI::update() {
   fps << "FPS: " << Timer::Instance().getFPS();
   time << "ms: " << Timer::Instance().getSPF();
   updateText("fps",fps.str());
-  cam << "\nCam:\n" << SceneData::Instance().getCurrentCamera()->position.x()
-      <<"\n " << SceneData::Instance().getCurrentCamera()->position.y()
-      <<"\n " << SceneData::Instance().getCurrentCamera()->position.z();
+  cam << "\nCam:\n" << Scene::Instance().getCurrentCamera()->position.x()
+      <<"\n " << Scene::Instance().getCurrentCamera()->position.y()
+      <<"\n " << Scene::Instance().getCurrentCamera()->position.z();
   updateText("fps",fps.str());
   updateText("cam",cam.str());
   updateText("time",time.str().substr (0,12));

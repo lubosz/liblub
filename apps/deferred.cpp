@@ -21,7 +21,7 @@
 #include "Material/Textures.h"
 #include "Window/Qt/FloatEditorWidget.h"
 #include "Material/Shaders.h"
-#include "Scene/SceneData.h"
+#include "Scene/Scene.h"
 #include "System/TemplateEngine.h"
 #include "Scene/InstancedSponge.h"
 
@@ -41,18 +41,18 @@
     QList<string> uv = QList<string> () << "uv";
 
     sceneLoader->load();
-    QSize res = SceneData::Instance().getResolution();
+    QSize res = Scene::Instance().getResolution();
 
-    SceneData::Instance().getCurrentCamera()->setPosition(QVector3D(-1.43765, 0.130675, -1.20157));
-    SceneData::Instance().getCurrentCamera()->setDirection(QVector3D(0.741701, -0.0836778, 0.66549));
-    SceneData::Instance().getCurrentCamera()->update();
+    Scene::Instance().getCurrentCamera()->setPosition(QVector3D(-1.43765, 0.130675, -1.20157));
+    Scene::Instance().getCurrentCamera()->setDirection(QVector3D(0.741701, -0.0836778, 0.66549));
+    Scene::Instance().getCurrentCamera()->update();
 
     //
     // shadow passes
     //
 
     unsigned countLights = 0;
-    foreach(Light * light, SceneData::Instance().lights) {
+    foreach(Light * light, Scene::Instance().lights) {
       string name = "shadowDepthSource" + QString::number(countLights).toStdString();
       vector<Texture*> shadowSources = {new ShadowTexture(res, name)};
       ShadowCastPass * shadowCastPass = new ShadowCastPass(
@@ -175,10 +175,10 @@
         shadowReceivePass->getTarget("binormalTarget"),
         //shadowReceivePass->getTarget("normalMapTarget"),
         blurVPass->getTarget("finalAOTarget"),
-        SceneData::Instance().getTexture("sky", "envMap"),
+        Scene::Instance().getTexture("sky", "envMap"),
         shadowReceivePass->getTarget("uvTarget"),
-        SceneData::Instance().getTexture("masonry-wall-normal-map","normalTexture"),
-        SceneData::Instance().getTexture("masonry-wall-texture","diffuseTexture"),
+        Scene::Instance().getTexture("masonry-wall-normal-map","normalTexture"),
+        Scene::Instance().getTexture("masonry-wall-texture","diffuseTexture"),
     };
 
     vector<Texture*> shadingTargets = {
@@ -188,7 +188,7 @@
         new ColorTexture(res, "envTarget")
     };
 
-    TemplateEngine::Instance().c.insert("lightCount", SceneData::Instance().lights.size());
+    TemplateEngine::Instance().c.insert("lightCount", Scene::Instance().lights.size());
 //    TemplateEngine::Instance().c.insert("paralaxMap", true);
     InOutPass * shadingPass = new InOutPass(res, shadingSources, shadingTargets,
         new TemplateProgram("Post/DeferredMultiLight", uv));
@@ -290,14 +290,14 @@ void DeferredLightApp::initLightBuffer(ShaderProgram * shader, const string& buf
   LogDebug << "Light Uniform Buffer Size" << lightBufferSize;
 
   unsigned lightIndex = 0;
-  foreach(Light* light, SceneData::Instance().lights){
+  foreach(Light* light, Scene::Instance().lights){
 
     lightBufferData[lightIndex].position = light->position;
     lightBufferData[lightIndex].diffuse = light->diffuse;
     lightBufferData[lightIndex].specular = light->specular;
     lightBufferData[lightIndex].direction = light->direction();
 
-    LogDebug << "Found Light" << SceneData::Instance().lights.key(light);
+    LogDebug << "Found Light" << Scene::Instance().lights.key(light);
     qDebug() << lightBufferData[lightIndex].diffuse;
 
     lightIndex++;
