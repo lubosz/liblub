@@ -9,7 +9,6 @@
 #define TERRAINPLAIN_H_
 
 #include "Scene/Node.h"
-#include "Material/Material.h"
 #include "PlanetElement.h"
 
 class TerrainPlain  : public PlanetElement{

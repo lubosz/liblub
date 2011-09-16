@@ -8,7 +8,6 @@
 #include "Sun.h"
 #include "System/Timer.h"
 #include "Scene/SceneData.h"
-#include "Material/Materials.h"
 #include "Mesh/Geometry.h"
 #include "Planet.h"
 #include "Material/Textures.h"
@@ -34,10 +33,10 @@ void Sun::init(){
 }
 void Sun::draw(){
   checkMaterialToggle();
-  node->getMaterial()->getShaderProgram()->use();
-  node->getMaterial()->getShaderProgram()->setUniform("time", Timer::Instance().getTime());
+  node->getShader()->use();
+  node->getShader()->setUniform("time", Timer::Instance().getTime());
   SceneData::Instance().getCurrentCamera()->setUniforms(
-      node->getMaterial()->getShaderProgram(), planet->position);
+      node->getShader(), planet->position);
   node->setView(SceneData::Instance().getCurrentCamera());
   node->draw();
 }

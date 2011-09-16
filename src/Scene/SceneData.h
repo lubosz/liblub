@@ -13,7 +13,6 @@
 #include <QMap>
 #include "Material/ShaderProgram.h"
 #include "Material/Texture.h"
-#include "Material/Material.h"
 #include "Scene/Camera.h"
 #include "Scene/Light.h"
 #include "Mesh/Mesh.h"
@@ -27,9 +26,8 @@ public:
   QVector3D backgroundColor;
   unsigned width, height;
 
-  QMap<string, ShaderProgram*> shaderPrograms;
+  QMap<string, ShaderProgram*> shaders;
   QMap<string, Texture*> textures;
-  QMap<string, Material*> materials;
   QMap<string, Mesh*> meshes;
   QMap<string, Camera*> cameras;
   QMap<string, Light*> lights;
@@ -38,10 +36,8 @@ public:
   virtual ~SceneData();
   void setBackgroundColor(const QVector3D backgroundColor);
 
-  void addProgram(string & name, ShaderProgram * program);
-  ShaderProgram* getProgram(const string & name);
-
-  Material* getMaterial(const string & name);
+  void addShader(string & name, ShaderProgram * program);
+  ShaderProgram* getShader(const string & name);
 
   void addLight(const string & name, Light * light);
   Light* getLight(const string & name);

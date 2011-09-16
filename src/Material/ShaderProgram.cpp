@@ -10,6 +10,7 @@
 #include "System/Logger.h"
 #include "Scene/SceneData.h"
 #include "Renderer/RenderEngine.h"
+#include "Material/Textures.h"
 
 using std::stringstream;
 
@@ -17,12 +18,10 @@ ShaderProgram::ShaderProgram() {
   attribCount = 0;
   handle = glCreateProgram();
   LogDebug << "Creating Program #" << handle;
+  textures = vector<Texture*>();
 }
 
 ShaderProgram::~ShaderProgram() {
-    LogInfo << "Shutting down Shader Program...";
-    glUseProgram(0);
-
     while (shaders.size() > 0) {
         detachShader(shaders.back());
     }
@@ -62,7 +61,7 @@ void ShaderProgram::attachShader(string fileName, GLenum type, bool useTemplate)
     /* Attach our shaders to our program */
   Shader * shader = new Shader(fileName, type, useTemplate);
   shaders.push_back(shader);
-  glAttachShader(handle, shader->getReference());
+  glAttachShader(handle, shader->getHandle());
 }
 
 void ShaderProgram::attachShader(
@@ -70,11 +69,14 @@ void ShaderProgram::attachShader(
     /* Attach our shaders to our program */
   Shader * shader = new Shader(fileName, type, defines);
   shaders.push_back(shader);
-  glAttachShader(handle, shader->getReference());
+  glError;
+  glAttachShader(handle, shader->getHandle());
+  glError;
+  LogDebug << "Attaching shader with defines";
 }
 
 void ShaderProgram::detachShader(Shader *shader) {
-  glDetachShader(handle, shader->getReference());
+  glDetachShader(handle, shader->getHandle());
 //  shaders.remove(shader);
   delete shader;
 }
@@ -259,4 +261,55 @@ void ShaderProgram::bindUniformBuffer(string name, GLuint bindIndex, GLuint buff
     LogFatal << "Uniform Buffer not found in Shader" << name;
   glUniformBlockBinding(handle, blockIndex, bindIndex);
   glError;
+}
+
+void ShaderProgram::addTexture(Texture * texture) {
+    textures.push_back(texture);
+}
+
+void ShaderProgram::addTextures(const vector<Texture *> &addTextures) {
+  foreach(Texture * texture, addTextures)
+    textures.push_back(texture);
+}
+
+void ShaderProgram::addTexture(string file, string name) {
+    textures.push_back(new TextureFile(file, name));
+}
+void ShaderProgram::addTextureCube(string file, string name) {
+    textures.push_back(new CubeTextureFile(file, name));
+}
+
+void ShaderProgram::activateAndBindTextures() {
+    foreach(Texture* texture, textures) {
+            texture->activate();
+            texture->bind();
+        }
+    glError;
+}
+
+void ShaderProgram::activateTextures() {
+    foreach(Texture* texture, textures) {
+            texture->activate();
+        }
+    glError;
+}
+
+void ShaderProgram::bindTextures() {
+    foreach(Texture* texture, textures) {
+            texture->bind();
+        }
+    glError;
+}
+
+void ShaderProgram::initRenderTargets(const vector<Texture*> &targets){
+  for(unsigned i = 0; i < targets.size(); i++){
+    if(!targets[i]->isDepth)
+      glBindFragDataLocation(handle, i, targets[i]->name.c_str());
+  }
+}
+
+void ShaderProgram::samplerUniforms() {
+    foreach(Texture* texture, textures) {
+            texture->uniform(handle);
+        }
 }

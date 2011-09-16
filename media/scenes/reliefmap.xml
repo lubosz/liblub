@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <liblub>
+	<Textures>
+		<Texture name="reliefColor" url="bump/tile1.jpg" />
+		<Texture name="normalTexture" url="bump/tile1.png" />
+	</Textures>
 	<Programs>
 		<Program name="Relief">
 			<Shader url="Bump/relief" />
@@ -8,25 +12,17 @@
 			<Uniform value="0.4, 0.4, 0.4, 1.0" name="specularColor" />
 			<Uniform value="1.0" name="tile" />
 			<Uniform value="0.2" name="depth" />
+			<Layer sampler="colortex" texture="reliefColor" />
+			<Layer sampler="normalTexture" texture="normalTexture" />
 		</Program>
 	</Programs>
-	<Textures>
-		<Texture name="reliefColor" url="bump/tile1.jpg" />
-		<Texture name="normalTexture" url="bump/tile1.png" />
-	</Textures>
 	<Meshes>
 		<File name="cube" url="cube.obj" />
 		<File name="monkey" url="monkey.blend" />
 	</Meshes>
-	<Materials>
-		<Material name="relief" program="Relief">
-			<Layer sampler="colortex" texture="reliefColor" />
-			<Layer sampler="normalTexture" texture="normalTexture" />
-		</Material>
-	</Materials>
 	<Scene name="Relief Mapping">
 		<Light position ="-5.1, 10.5, 3.5" direction="1,-5,-1" />
-		<Object name="bump" mesh="cube" material="relief" scale="1.0" position="3,-2,-5" />
-		<Object name="bumpmonkey" mesh="monkey" material="relief" scale="1.0" position="1,-2,5" />
+		<Object name="bump" mesh="cube" material="Relief" scale="1.0" position="3,-2,-5" />
+		<Object name="bumpmonkey" mesh="monkey" material="Relief" scale="1.0" position="1,-2,5" />
 	</Scene>
 </liblub>

@@ -29,7 +29,7 @@ Q_OBJECT
 public:
   vector<Planet*> planets;
   Planet* focusedPlanet;
-  Material *HDR;
+  ShaderProgram *HDR;
   bool usePostprocessing;
   bool useWireframe;
   Camera* camera;

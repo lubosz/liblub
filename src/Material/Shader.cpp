@@ -45,16 +45,15 @@ Shader::Shader(string fileName, GLenum type, const vector<string> & defines) {
 }
 
 Shader::~Shader() {
-  glDeleteShader(shader);
+  glDeleteShader(handle);
 }
-
 
 void Shader::loadSource() {
   /* Read our shaders into the appropriate buffers */
     shaderSource = readFile(Config::Instance().value<string>("shaderDir") + fileName);
 
     /* Assign our handles a "name" to new shader objects */
-    shader = glCreateShader(type);
+    handle = glCreateShader(type);
 
     if (defines.size() > 0) {
       // set defines
@@ -65,10 +64,10 @@ void Shader::loadSource() {
         LogDebug << "Shader Flags" << define;
       }
       const GLchar *sources[2] = { defineString.c_str(), shaderSource.c_str() };
-      glShaderSource(shader, 2, sources, NULL);
+      glShaderSource(handle, 2, sources, NULL);
     } else {
         const GLchar *source = shaderSource.c_str();
-      glShaderSource(shader, 1, &source, NULL);
+      glShaderSource(handle, 1, &source, NULL);
     }
 }
 
@@ -76,18 +75,16 @@ void Shader::loadTemplate() {
   shaderSource = TemplateEngine::Instance().render(fileName).toStdString();
 //  printf("%s:\n\n %s\n", fileName.c_str(), shaderSource.c_str());
   /* Assign our handles a "name" to new shader objects */
-  shader = glCreateShader(type);
+  handle = glCreateShader(type);
   /* Set rendered template string as source */
   const GLchar *source = shaderSource.c_str();
-  glShaderSource(shader, 1,  &source, NULL);
+  glShaderSource(handle, 1,  &source, NULL);
 }
 
 void Shader::compile() {
-  LogDebug << "Compiling Shader#" << shader << "...";
-  /* Compile our shader objects */
-  // TODO(bmonkey): driver crashes :/
-  glCompileShader(shader);
-  printShaderInfoLog(shader);
+  LogDebug << "Compiling Shader#" << handle << "...";
+  glCompileShader(handle);
+  printShaderInfoLog(handle);
   glError;
 }
 
@@ -104,7 +101,6 @@ string Shader::readFile(string filePath) {
     if(source == ""){
         LogFatal << "Empty Shader file" << filePath;
     }
-
     return source;
 }
 
@@ -126,6 +122,6 @@ void Shader::printShaderInfoLog(GLuint shader) {
   }
 }
 
-GLuint Shader::getReference() const {
-  return shader;
+GLuint Shader::getHandle() const {
+  return handle;
 }

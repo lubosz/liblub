@@ -13,13 +13,13 @@
 class DrawThing {
 public:
   virtual void draw() = 0;
-  static void drawOnPlane(Material * material, Mesh *plane);
+  static void drawOnPlane(ShaderProgram * shader, Mesh *plane);
 };
 
 class DrawPass : public DrawThing{
 public:
   QSize res;
-  Material * material;
+  ShaderProgram * shader;
   explicit DrawPass(QSize res);
 };
 
@@ -32,7 +32,7 @@ class SourcePass : public DrawPass {
 public:
   vector<Texture*> targets;
   FrameBuffer * fbo;
-  SourcePass(QSize res, vector<Texture*> &targets, Material * material);
+  SourcePass(QSize res, vector<Texture*> &targets, ShaderProgram * shader);
   void initFBO();
   void draw();
   Texture* getTarget(string target);
@@ -56,13 +56,13 @@ public:
   Mesh * fullPlane;
   vector<Texture*> sources;
   Texture* getSource(string target);
-  InOutPass(QSize res, vector<Texture*> &sources, vector<Texture*> &targets, Material * material);
+  InOutPass(QSize res, vector<Texture*> &sources, vector<Texture*> &targets, ShaderProgram * shader);
   void draw();
 };
 
 class ShadowReceivePass : public InOutPass {
 public:
-  ShadowReceivePass(QSize res, vector<Texture*> &sources, vector<Texture*> &targets, Material * material) : InOutPass(res, sources, targets, material) {
+  ShadowReceivePass(QSize res, vector<Texture*> &sources, vector<Texture*> &targets, ShaderProgram * shader) : InOutPass(res, sources, targets, shader) {
 
   }
   void draw();
@@ -70,10 +70,10 @@ public:
 
 class DebugPlane : public DrawThing{
 public:
-  Material * material;
+  ShaderProgram * shader;
   Mesh * plane;
   DebugPlane(QRectF rect, Texture * target);
-  Material * initDebugMaterial(Texture * target);
+  ShaderProgram * initDebugMaterial(Texture * target);
   void draw();
 };
 

@@ -28,7 +28,7 @@
 #include <QPainter>
 #include <math.h>
 #include "Material/ProcTextures.h"
-#include "Material/Materials.h"
+#include "Material/Shaders.h"
 #include "Mesh/Geometry.h"
 #include "Renderer/RenderPasses.h"
 
@@ -57,11 +57,10 @@ class LoadApp: public Application {
     attributes.push_back("uv");
 //    attributes.push_back("normal");
 
-    Material * material = new Simple("Noise/perlin",attributes);
-    perlinNoise = material->getShaderProgram();
+    perlinNoise = new SimpleProgram("Noise/perlin",attributes);
 
 
-    Node * plane = new Node("Plane", { 0,0,-2 }, 1, Geometry::plane(attributes, QRectF(-1,-1,2,2)), material);
+    Node * plane = new Node("Plane", { 0,0,-2 }, 1, Geometry::plane(attributes, QRectF(-1,-1,2,2)), perlinNoise);
 //    plane->transparent = true;
     plane->setRotation(QVector3D(-90,0,180));
     SceneGraph::Instance().addNode(plane);

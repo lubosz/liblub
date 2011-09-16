@@ -10,7 +10,6 @@
 
 #include "Mesh/Mesh.h"
 #include "Material/UniformBuffer.h"
-#include "Material/Material.h"
 #include "Scene/Node.h"
 #include <vector>
 #include <QtCore>
@@ -25,8 +24,8 @@ public:
     InstancedSponge(unsigned recursion, QList<string>& attributes);
     void makeSponge(unsigned recursion, const vector<float> & position, float size);
     void addCube(const vector<float> & position, float size);
-    void draw(Material * material);
-    void initBuffers(Material * material);
+    void draw(ShaderProgram * material);
+    void initBuffers(ShaderProgram * material);
     UniformBuffer * initPositionBuffer(vector<QVector4D> * positionBufferData);
     void calculateBufferSize();
 };

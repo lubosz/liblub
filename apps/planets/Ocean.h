@@ -9,12 +9,11 @@
 #define OCEAN_H_
 
 #include "Scene/Node.h"
-#include "Material/Material.h"
 #include "PlanetElement.h"
 
 class Ocean : public PlanetElement{
 public:
-  Material * ocean;
+  ShaderProgram * ocean;
   Ocean(Planet * planet);
   virtual ~Ocean();
   void setOceanUniforms(ShaderProgram * program);

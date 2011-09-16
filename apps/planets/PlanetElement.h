@@ -17,7 +17,7 @@ class PlanetElement {
 public:
   Planet * planet;
   Node * node;
-  Material *fromAtmosphere, *fromSpace;
+  ShaderProgram *fromAtmosphere, *fromSpace;
   PlanetElement() {};
   PlanetElement(Planet * planet);
   virtual ~PlanetElement();

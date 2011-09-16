@@ -43,11 +43,11 @@ void Sponge::initPasses() {
     vector<Texture*> shadowReceiveSources = {
             shadowCastPass->getTarget("shadowMap")
     };
-
+    glError;
     initMaterial();
-
+    glError;
     SourcePass * shadowReceivePass = new ShadowReceivePass(res,
-            shadowReceiveSources, shadowReceiveTargets, material);
+            shadowReceiveSources, shadowReceiveTargets, shader);
     drawPasses.push_back(shadowReceivePass);
 
     SinkPass * sinkPass = new SinkPass();
@@ -59,37 +59,32 @@ void Sponge::initPasses() {
 }
 
 void Sponge::initMaterial() {
-    material = new EmptyMat();
-    material->init();
-    vector < string > flags = {
+    vector<string> flags = {
         "receiveShadows",
         "useSpotLight",
         "usePCF"
     };
-
-    ShaderProgram * shaderProgram = material->getShaderProgram();
-    shaderProgram->attachVertFrag("Color/PhongColor", flags);
-    material->getShaderProgram()->init(attributes);
-    glError;
-    shaderProgram->setUniform("ambientSceneColor",QVector4D(0.1, 0.1,0.1, 1.0));
-    glError;
-    shaderProgram->setUniform("diffuseMaterialColor",QVector4D(1,1,1,1));
-  shaderProgram->setUniform("specularMaterialColor",
+    shader = new ShaderProgram();
+    shader->attachVertFrag("Color/PhongColor", flags);
+    shader->init(attributes);
+    shader->setUniform("ambientSceneColor",QVector4D(0.1, 0.1,0.1, 1.0));
+    shader->setUniform("diffuseMaterialColor",QVector4D(1,1,1,1));
+    shader->setUniform("specularMaterialColor",
             QVector4D(0.8, 0.8, 0.8, 1.0));
-  shaderProgram->setUniform("shininess",4.3f);
-  shaderProgram->setUniform("yPixelOffset",1.0f/1200);
-  shaderProgram->setUniform("xPixelOffset",1.0f/1920);
+    shader->setUniform("shininess",4.3f);
+    shader->setUniform("yPixelOffset",1.0f/1200);
+    shader->setUniform("xPixelOffset",1.0f/1920);
 
-  shaderProgram->setUniform("lightColor",QVector4D(1.0, 1.0, 1.0, 1.0));
-  // attenuation
-  shaderProgram->setUniform("constantAttenuation",0.0f);
-  shaderProgram->setUniform("linearAttenuation",0.1f);
-  shaderProgram->setUniform("quadraticAttenuation",.005f);
+    shader->setUniform("lightColor",QVector4D(1.0, 1.0, 1.0, 1.0));
+    // attenuation
+    shader->setUniform("constantAttenuation",0.0f);
+    shader->setUniform("linearAttenuation",0.1f);
+    shader->setUniform("quadraticAttenuation",.005f);
 
-  // spot
-  shaderProgram->setUniform("spotOuterAngle",0.9f);
-  shaderProgram->setUniform("spotInnerAngle",0.8f);
-  SceneData::Instance().getLight("foolight")->bindShaderUpdateLight(material->getShaderProgram());
+    // spot
+    shader->setUniform("spotOuterAngle",0.9f);
+    shader->setUniform("spotInnerAngle",0.8f);
+    SceneData::Instance().getLight("foolight")->bindShaderUpdateLight(shader);
 }
 
 void Sponge::scene() {
@@ -98,11 +93,11 @@ void Sponge::scene() {
     for (int i = 0; i < 5; i++) {
       MengerSponge * sponge = new MengerSponge(attributes, i);
       Node * node = new Node("sponge", { static_cast<float> (i - 2.5),
-          static_cast<float> (i * 3 - 6), -5 }, 1, sponge->getMesh(), material);
+          static_cast<float> (i * 3 - 6), -5 }, 1, sponge->getMesh(), shader);
       SceneGraph::Instance().addNode(node);
     }
 
-    Node * plane = new Node("Plane", { 0, -30, 0 }, 20, Geometry::plane(attributes, QRectF(-1,-1,2,2)), material);
+    Node * plane = new Node("Plane", { 0, -30, 0 }, 20, Geometry::plane(attributes, QRectF(-1,-1,2,2)), shader);
     plane->setRotation(QVector3D(90,0,0));
     plane->setReceiveShadows(true);
     plane->setCastShadows(false);

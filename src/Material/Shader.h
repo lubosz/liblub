@@ -18,12 +18,12 @@ class Shader {
  public:
 	Shader(string fileName, GLenum type, bool useTemplate);
 	Shader(string fileName, GLenum type, const vector<string> & defines);
-	GLuint getReference() const;
+	GLuint getHandle() const;
 	virtual ~Shader();
 	string shaderSource;
 	string fileName;
  private:
-	GLuint shader;
+	GLuint handle;
 
 	GLenum type;
 

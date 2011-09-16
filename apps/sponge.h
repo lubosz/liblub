@@ -24,7 +24,7 @@
 
 class Sponge : public Application {
  public:
-  Material * material;
+  ShaderProgram * shader;
   vector<DrawThing*> drawPasses;
   QList<string> attributes;
 

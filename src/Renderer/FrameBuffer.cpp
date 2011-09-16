@@ -7,7 +7,6 @@
 #include <sstream>
 #include <string>
 #include "Renderer/FrameBuffer.h"
-#include "Material/Materials.h"
 #include "Scene/SceneGraph.h"
 #include "Scene/Camera.h"
 #include "Mesh/Geometry.h"
@@ -136,11 +135,11 @@ void FrameBuffer::updateRenderView() {
     glViewport(0, 0, res.width(), res.height());
 }
 
-void FrameBuffer::draw(Material * material) {
-    material->getShaderProgram()->use();
-    material->getShaderProgram()->setUniform("MVPMatrix",QMatrix4x4());
-//    material->samplerUniforms();
-    material->activateAndBindTextures();
+void FrameBuffer::draw(ShaderProgram * shader) {
+    shader->use();
+    shader->setUniform("MVPMatrix",QMatrix4x4());
+//    shader->samplerUniforms();
+    shader->activateAndBindTextures();
     renderPlane->draw();
     glError;
 }

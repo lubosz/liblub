@@ -11,6 +11,7 @@
 #include <QImage>
 #include "common/Singleton.h"
 #include "Scene/Node.h"
+#include "Material/Texture.h"
 #include <QMap>
 #include <QPainter>
 using std::string;
@@ -20,7 +21,7 @@ public:
   QMap<string,string> textLines;
   QImage * image;
   Node * node;
-  Material * material;
+  ShaderProgram * shader;
   QRectF textBox;
   QSize screenSize;
   QImage black;

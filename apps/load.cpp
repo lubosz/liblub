@@ -27,7 +27,6 @@
 #include "Renderer/FrameBuffer.h"
 #include "Renderer/RenderPasses.h"
 #include "Scene/SceneLoader.h"
-#include "Material/Materials.h"
 #include "Scene/SceneData.h"
 
 class LoadApp: public Application {

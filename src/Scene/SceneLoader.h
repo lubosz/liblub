@@ -11,7 +11,6 @@
 #include <QDomElement>
 #include "Material/ShaderProgram.h"
 #include "Material/Texture.h"
-#include "Material/Material.h"
 #include "Mesh/Mesh.h"
 #include "System/XmlReader.h"
 

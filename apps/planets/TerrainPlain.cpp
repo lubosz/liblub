@@ -44,7 +44,7 @@ void TerrainPlain::init(){
    checkMaterialToggle();
 
   SceneData::Instance().getCurrentCamera()->setUniforms(
-      node->getMaterial()->getShaderProgram(), planet->position);
+      node->getShader(), planet->position);
   node->setView(SceneData::Instance().getCurrentCamera());
 
   node->draw();

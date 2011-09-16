@@ -9,7 +9,6 @@
 #include "Scene/SceneGraph.h"
 #include "Scene/SceneData.h"
 #include "Scene/Camera.h"
-#include "Material/Materials.h"
 #include "Mesh/MeshLoader.h"
 #include "System/Logger.h"
 

@@ -8,7 +8,6 @@
 #pragma once
 #include <QApplication>
 #include "Window/XCB/XCBWindow.h"
-#include "Material/Materials.h"
 #include "Mesh/MeshLoader.h"
 #include "Scene/SceneLoader.h"
 #include "Scene/SceneData.h"

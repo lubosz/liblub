@@ -9,12 +9,11 @@
 #define TERRAINTESSELATION_H_
 
 #include "Scene/Node.h"
-#include "Material/Material.h"
 #include "PlanetElement.h"
 
 class TerrainTesselation  : public PlanetElement{
 public:
-  Material *terrainMat;
+  ShaderProgram *shader;
   TerrainTesselation(Planet * planet);
   virtual ~TerrainTesselation();
   void init();

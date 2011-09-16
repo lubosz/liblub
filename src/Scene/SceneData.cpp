@@ -8,7 +8,6 @@
 #include "Scene/SceneData.h"
 #include "System/Logger.h"
 #include "Renderer/RenderEngine.h"
-#include "Material/Materials.h"
 
 SceneData::SceneData() {
   lights = QMap<string, Light*>();
@@ -18,12 +17,12 @@ SceneData::~SceneData() {
   // TODO Auto-generated destructor stub
 }
 
-void SceneData::addProgram(string & name, ShaderProgram* program) {
+void SceneData::addShader(string & name, ShaderProgram* shader) {
   if (name == "") {
-    QString idString = QString::number(shaderPrograms.size() + 1);
+    QString idString = QString::number(shaders.size() + 1);
     name = "Program" + idString.toStdString();
   }
-  shaderPrograms.insert(name, program);
+  shaders.insert(name, shader);
 }
 
 void SceneData::setCurrentCamera(Camera * camera) {
@@ -47,23 +46,13 @@ void SceneData::addCamera(Camera * camera) {
   }
 }
 
-ShaderProgram* SceneData::getProgram(const string & name) {
-  ShaderProgram * program = shaderPrograms[name];
-  if (program) {
-    return program;
+ShaderProgram* SceneData::getShader(const string & name) {
+  ShaderProgram * shader = shaders[name];
+  if (shader) {
+    return shader;
   } else {
   LogWarning << "Program not found" << name;
     return new ShaderProgram();
-  }
-}
-
-Material* SceneData::getMaterial(const string & name) {
-  Material * material = materials[name];
-  if (material) {
-    return material;
-  } else {
-    LogWarning << "Material not found"<< name;
-    return new Minimal();
   }
 }
 
@@ -146,7 +135,6 @@ Light * SceneData::getShadowLight() {
     Light * light = new Light(QVector3D(-2.5, 21.5, -5.2), QVector3D(1, -5, 0));
     shadowLight = light;
   }
-
   return shadowLight;
 }
 

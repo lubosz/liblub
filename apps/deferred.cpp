@@ -20,7 +20,7 @@
 #include "deferred.h"
 #include "Material/Textures.h"
 #include "Window/Qt/FloatEditorWidget.h"
-#include "Material/Materials.h"
+#include "Material/Shaders.h"
 #include "Scene/SceneData.h"
 #include "System/TemplateEngine.h"
 #include "Scene/InstancedSponge.h"
@@ -103,12 +103,12 @@
     TemplateEngine::Instance().c.insert("shadowSamplerSize", shadowSamplers.size());
 //    TemplateEngine::Instance().c.insert("positionElements", QVariant::fromValue(sponge->positionBufferDataSize));
 //    TemplateEngine::Instance().c.insert("isInstanced", true);
-    Material * gatherMaterial = new Template("Post/MultiTarget",tangent);
+    ShaderProgram * gatherShader = new TemplateProgram("Post/MultiTarget",tangent);
 
 
     SourcePass * shadowReceivePass = new ShadowReceivePass(
         res,shadowReceiveSources,
-        shadowReceiveTargets,gatherMaterial);
+        shadowReceiveTargets,gatherShader);
 
 //    sponge->initBuffers(gatherMaterial);
 //  SceneGraph::Instance().addNode(sponge);
@@ -128,7 +128,7 @@
         new ColorTexture(res, "ao")
     };
     InOutPass * aoPass = new InOutPass(res, aoSources, aoTargets,
-        new Simple("AO/ssao", uv));
+        new SimpleProgram("AO/ssao", uv));
     drawPasses.push_back(aoPass);
 
 
@@ -143,7 +143,7 @@
     TemplateEngine::Instance().c.insert("source1", QString::fromStdString(aoPass->getTarget("ao")->name));
     TemplateEngine::Instance().c.insert("source2", QString::fromStdString(shadowReceivePass->getTarget("shadowTarget")->name));
     InOutPass * mergePass = new InOutPass(res, mergeSources, mergeTargets,
-        new Template("Post/Merge", uv));
+        new TemplateProgram("Post/Merge", uv));
     drawPasses.push_back(mergePass);
 
     vector<Texture*> blurHSources = {
@@ -153,14 +153,14 @@
         new ColorTexture(res, "blurH")
     };
     InOutPass * blurHPass = new InOutPass(res, blurHSources, blurHTargets,
-        new Simple("AO/blur_horizontal", uv));
+        new SimpleProgram("AO/blur_horizontal", uv));
     drawPasses.push_back(blurHPass);
 
     vector<Texture*> blurVTargets = {
         new ColorTexture(res, "finalAOTarget")
     };
     InOutPass * blurVPass = new InOutPass(res, blurHTargets, blurVTargets,
-        new Simple("AO/blur_vertical", uv));
+        new SimpleProgram("AO/blur_vertical", uv));
     drawPasses.push_back(blurVPass);
 
     //
@@ -191,7 +191,7 @@
     TemplateEngine::Instance().c.insert("lightCount", SceneData::Instance().lights.size());
 //    TemplateEngine::Instance().c.insert("paralaxMap", true);
     InOutPass * shadingPass = new InOutPass(res, shadingSources, shadingTargets,
-        new Template("Post/DeferredMultiLight", uv));
+        new TemplateProgram("Post/DeferredMultiLight", uv));
     drawPasses.push_back(shadingPass);
 
     SinkPass * sinkPass = new SinkPass();
@@ -223,7 +223,7 @@
 
     drawPasses.push_back(sinkPass);
     // Init Light Uniform Buffer
-    initLightBuffer(shadingPass->material->getShaderProgram(), "LightSourceBuffer");
+    initLightBuffer(shadingPass->shader, "LightSourceBuffer");
   }
 
   void DeferredLightApp::renderFrame() {

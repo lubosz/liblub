@@ -6,7 +6,6 @@
 #include "Scene/SceneGraph.h"
 #include "Scene/Camera.h"
 #include "Renderer/RenderEngine.h"
-#include "Material/Materials.h"
 #include "Mesh/MeshLoader.h"
 #include "System/Logger.h"
 #include "Scene/SceneData.h"
@@ -64,7 +63,7 @@ void SceneGraph::drawNodes(DirectionNode * viewPoint) {
         if(!node->transparent) {
           node->setView(viewPoint);
           node->setShadowCoords(viewPoint);
-          SceneData::Instance().getShadowLight()->bindShaderUpdate(node->getMaterial()->getShaderProgram());
+          SceneData::Instance().getShadowLight()->bindShaderUpdate(node->getShader());
           node->draw();
         } else {
           QVector3D distance = node->getCenter() - SceneData::Instance().getCurrentCamera()->position;
@@ -86,36 +85,36 @@ void SceneGraph::drawNodes(DirectionNode * viewPoint) {
     glError;
 }
 
-void SceneGraph::drawNodes(Material * material) {
-  drawNodes(material, SceneData::Instance().getCurrentCamera());
+void SceneGraph::drawNodes(ShaderProgram * shader) {
+  drawNodes(shader, SceneData::Instance().getCurrentCamera());
 }
 
-void SceneGraph::drawNodes(Material * material, DirectionNode * viewPoint) {
+void SceneGraph::drawNodes(ShaderProgram * shader, DirectionNode * viewPoint) {
     foreach(Node * node, sceneNodes) {
-          node->setView(material->getShaderProgram(), viewPoint);
-          node->draw(material);
+          node->setView(shader, viewPoint);
+          node->draw(shader);
     }
     glError;
 }
 
-void SceneGraph::drawReceivers(Material * material) {
+void SceneGraph::drawReceivers(ShaderProgram * shader) {
   DirectionNode * camView = SceneData::Instance().getCurrentCamera();
-  Node::setShadowCoords(material->getShaderProgram(),camView);
+  Node::setShadowCoords(shader,camView);
   foreach(Node * node, sceneNodes) {
-    node->setView(material->getShaderProgram(), camView );
-    node->draw(material);
+    node->setView(shader, camView );
+    node->draw(shader);
   }
   glError;
 }
 
-void SceneGraph::drawCasters(Material * material) {
-  drawCasters(material, SceneData::Instance().getCurrentCamera());
+void SceneGraph::drawCasters(ShaderProgram * shader) {
+  drawCasters(shader, SceneData::Instance().getCurrentCamera());
 }
 
-void SceneGraph::drawCasters(Material * material, DirectionNode * viewPoint) {
+void SceneGraph::drawCasters(ShaderProgram * shader, DirectionNode * viewPoint) {
     foreach(Node * node, sceneNodes) {
         if (node->getCastShadows()) {
-          node->setView(material->getShaderProgram(), viewPoint);
+          node->setView(shader, viewPoint);
           node->mesh->draw();
         }
     }
@@ -124,20 +123,20 @@ void SceneGraph::drawCasters(Material * material, DirectionNode * viewPoint) {
 
 
 void SceneGraph::meshCube(const QList<string> & attributes, string file, float cubeSize, float step,
-        Material * material) {
+        ShaderProgram * shader) {
     Mesh * mesh = MeshLoader::load(attributes, file);
 
     for (float x = -cubeSize / 2.0; x < cubeSize / 2.0; x += step) {
         for (float y = -cubeSize / 2.0; y < cubeSize / 2.0; y += step) {
             for (float z = -cubeSize / 2.0; z < cubeSize / 2.0; z += step) {
-                addNode(new Node("", { x, y, z }, 1, mesh, material));
+                addNode(new Node("", { x, y, z }, 1, mesh, shader));
             }
         }
     }
 }
 
 void SceneGraph::meshCube(const QList<string> & attributes, string file, float cubeSize, float step,
-    vector<Material*> materials) {
+    vector<ShaderProgram*> materials) {
     Mesh * mesh = MeshLoader::load(attributes, file);
     unsigned position = 0;
     for (float x = -cubeSize / 2.0; x < cubeSize / 2.0; x += step) {
@@ -152,7 +151,7 @@ void SceneGraph::meshCube(const QList<string> & attributes, string file, float c
 }
 
 void SceneGraph::meshPlane(Mesh * mesh, float cubeSize, float step,
-    vector<Material*> materials) {
+    vector<ShaderProgram*> materials) {
     unsigned position = 0;
     for (float x = -cubeSize / 2.0; x < cubeSize / 2.0; x += step) {
         for (float y = -cubeSize / 2.0; y < cubeSize / 2.0; y += step) {

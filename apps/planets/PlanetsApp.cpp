@@ -9,12 +9,12 @@
 
 #include "Scene/SceneData.h"
 #include "Material/Textures.h"
-#include "Material/Materials.h"
 #include "System/Config.h"
 #include "System/GUI.h"
 #include "Renderer/RenderEngine.h"
 #include "Window/Qt/FloatEditorWidget.h"
 #include "Renderer/FrameBuffer.h"
+#include "Material/Shaders.h"
 
 PlanetsApp::PlanetsApp(int &argc, char **argv) :
   QtApplication(argc, argv) {
@@ -47,8 +47,8 @@ void PlanetsApp::setPostprocessing(bool post) {
 }
 
 void PlanetsApp::setExposure(float exposure) {
-  HDR->shaderProgram->use();
-  HDR->shaderProgram->setUniform("exposure", exposure);
+  HDR->use();
+  HDR->setUniform("exposure", exposure);
   glWidget->updateGL();
 }
 
@@ -123,9 +123,9 @@ void PlanetsApp::initPostProcessing() {
   fbo->attachTexture(targetTexture);
   fbo->check();
 
-  HDR = new Template("Post/HDR", QList<string> () << "uv");
+  HDR = new TemplateProgram("Post/HDR", QList<string> () << "uv");
   HDR->addTexture(targetTexture);
-  HDR->shaderProgram->setUniform("exposure", 2.0f);
+  HDR->setUniform("exposure", 2.0f);
   HDR->samplerUniforms();
 }
 
@@ -142,7 +142,7 @@ void PlanetsApp::endPass() {
     RenderEngine::Instance().updateViewport(glWidget->viewSize);
     RenderEngine::Instance().clear();
     HDR->activateAndBindTextures();
-    HDR->getShaderProgram()->use();
+    HDR->use();
     fbo->draw(HDR);
   }
 }

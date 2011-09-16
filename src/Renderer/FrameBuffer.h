@@ -7,8 +7,7 @@
 
 #pragma once
 
-#include "Material/Texture.h"
-#include "Material/Material.h"
+#include "Material/ShaderProgram.h"
 #include "Mesh/Mesh.h"
 
 class FrameBuffer {
@@ -20,7 +19,7 @@ class FrameBuffer {
     void setDrawBuffers(vector<GLenum>& buffers);
     void setDrawBuffer(GLenum buffer);
     void unBind();
-    void draw(Material * material);
+    void draw(ShaderProgram * shader);
     void updateRenderView();
 
 	QSize res;

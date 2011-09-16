@@ -7,7 +7,6 @@
 
 #include <math.h>
 #include "Atmosphere.h"
-#include "Material/Materials.h"
 #include "System/TemplateEngine.h"
 #include "Mesh/Geometry.h"
 #include "Scene/SceneData.h"
@@ -32,7 +31,7 @@ void Atmosphere::draw() {
   checkMaterialToggle();
 
   SceneData::Instance().getCurrentCamera()->setUniforms(
-      node->getMaterial()->getShaderProgram(), planet->position);
+      node->getShader(), planet->position);
   node->setView(SceneData::Instance().getCurrentCamera());
   node->draw();
 }

@@ -1,7 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <liblub>
-
-	<include url="common/programs.xml" />
+	<Textures>
+		<Texture name="masonry-wall-texture" url="bump/masonry-wall-texture.jpg" />
+		<Texture name="monkey-occlusion" url="monkey-occlusion.png" />
+		<Texture name="masonry-wall-normal-map" url="bump/masonry-wall-normal-map.jpg" />
+		<Texture name="bump/brickwork-texture" url="bump/brickwork-texture.jpg" />
+		<Texture name="bump/brickwork_normal-map" url="bump/brickwork_normal-map.jpg" />
+		<Texture name="spectrum" url="spectrum.png" />
+		<Texture name="spheremap_bar" url="spheremaps/spheremap_bar.jpg" />
+		<Texture name="paper" url="Paper_Texture_by_Spiteful_Pie_Stock.jpg" />
+		<Texture name="waves" url="ocean/waves.png" />
+		<TextureCube name="sky" url="cubemaps/sky" />
+		<TextureCube name="morning" url="cubemaps/morning" />
+	</Textures>
 	
 	<Programs>
 		<Program name="white">
@@ -14,6 +25,7 @@
 			<Shader url="Texture/cubemap" />
 			<Uniform value="0.5, 0.5, 1.0" name="BaseColor" />
 			<Uniform value="0.5" name="MixRatio" />
+			<Layer sampler="EnvMap" texture="sky" />
 		</Program>
 		<Program name="normalcolor">
 			<Shader url="Color/normalcolor" />
@@ -41,6 +53,8 @@
 		</Program>
 		<Program name="SphereMap">
 			<Shader url="Env/sphereMap" />
+			<Layer sampler="colorMap" texture="spectrum" />
+            <Layer sampler="envMap" texture="spheremap_bar" /> 
 		</Program>
 		<Program name="MandelMat">
 			<Shader url="Procedural/mandelbrot" />
@@ -62,6 +76,7 @@
 			<Uniform value="0.1, 0.1, 0.1, 1.0" name="diffuseMaterialColor" />
 			<Uniform value="0.8, 0.8, 0.8,1.0" name="specularMaterialColor" />
 			<Uniform value="4.3" name="shininess" />
+			<Layer sampler="diffuseTexture" texture="paper" />
 		</Program>
 		
 		<Program name="NormalMapMaterial">
@@ -71,61 +86,43 @@
 			<Uniform value="0.5, 0.5, 0.5, 1.0" name="specularMaterialColor" />
 			<Uniform value="4.3" name="shininess" />
 			<Uniform value="0.9" name="invRadius" />
+			<Layer sampler="colorMap" texture="bump/brickwork-texture" />
+            <Layer sampler="normalMap" texture="bump/brickwork_normal-map" /> 
 		</Program>
+		
+		<Program name="Ocean">
+            <Shader url="Water/Ocean" />
+            
+            <Uniform name="deepColor" value="0, 0.3, 0.5, 1.0" />
+            <Uniform name="shallowColor" value="0, 1, 1, 1.0" />
+            <Uniform name="reflectionColor" value="0.95, 1, 1, 1.0" />
+            
+            <Uniform name="reflectionAmount" value="1.0" />
+            <Uniform name="reflectionBlur" value="0.0" />
+            <Uniform name="waterAmount" value="0.3" />
+            <Uniform name="fresnelPower" value="5.0" />
+            <Uniform name="fresnelBias" value="0.328" />
+            <Uniform name="hdrMultiplier" value="0.471" />
+            
+            <Uniform name="textureScale" value="25, 26" />
+            <Uniform name="bumpSpeed" value="0.015, 0.005" />
+            
+            <Uniform name="eyePosition" value="0.5, 0.5, 0.5" />
+            
+            <Uniform name="BumpScale" value="0.2" />
+            <Uniform name="time" value="0.7" />
+            <Uniform name="waveFreq" value="0.028" />
+            <Uniform name="waveAmp" value="1.8" />
+        	<Layer sampler="EnvironmentMap" texture="morning" />
+			<Layer sampler="NormalMap" texture="waves" />
+        </Program>
 	</Programs>
-	
-	<Textures>
-		<Texture name="masonry-wall-texture" url="bump/masonry-wall-texture.jpg" />
-		<Texture name="monkey-occlusion" url="monkey-occlusion.png" />
-		<Texture name="masonry-wall-normal-map" url="bump/masonry-wall-normal-map.jpg" />
-		<Texture name="bump/brickwork-texture" url="bump/brickwork-texture.jpg" />
-		<Texture name="bump/brickwork_normal-map" url="bump/brickwork_normal-map.jpg" />
-		<Texture name="spectrum" url="spectrum.png" />
-		<Texture name="spheremap_bar" url="spheremaps/spheremap_bar.jpg" />
-		<Texture name="paper" url="Paper_Texture_by_Spiteful_Pie_Stock.jpg" />
-		<Texture name="waves" url="ocean/waves.png" />
-		<TextureCube name="sky" url="cubemaps/sky" />
-		<TextureCube name="morning" url="cubemaps/morning" />
-	</Textures>
 	
 	<Meshes>
 		<File name="monkey" url="monkey.blend" />
 		<Procedural name="sponge" type="Sponge" recursion="3" />
 		<Procedural name="stars" type="Stars" resolution="100" density="1" randomness="0" colorIntensity="1" />
 	</Meshes>
-	
-	<Materials>
-		<Material name="normalcolor" program="normalcolor" />
-		<Material name="BrickMaterial" program="BrickMaterial" />
-        <Material name="ProcBumpMaterial" program="ProcBumpMaterial" />
-        <Material name="PhongColorMat" program="PhongColorMat" />
-        <Material name="MandelMat" program="MandelMat" />
-        <Material name="stars" program="stars" />
-
-        <Material name="OceanMat" program="Ocean" >
-        	<Layer sampler="EnvironmentMap" texture="morning" />
-			<Layer sampler="NormalMap" texture="waves" />
-		</Material>
-
-		<Material name="CubeMap" program="CubeMap">
-			<Layer sampler="EnvMap" texture="sky" />
-		</Material>
-
-        <Material name="NormalMapMaterial" program="NormalMapMaterial">
-        	<Layer sampler="colorMap" texture="bump/brickwork-texture" />
-			<Layer sampler="normalMap" texture="bump/brickwork_normal-map" /> 
-        </Material>
-
-		<Material name="SphereMap" program="SphereMap">
-			<Layer sampler="colorMap" texture="spectrum" />
-			<Layer sampler="envMap" texture="spheremap_bar" /> 
-		</Material> 
-
-		<Material name="PhongTexMat" program="PhongTexMat">
-			<Layer sampler="diffuseTexture" texture="paper" />
-		</Material> 
-
-	</Materials>
 	
 	<Scene name="Nice">
 		<Light position ="0.3, 6.6, -3.3" direction="1,-5,-1" />
@@ -136,7 +133,7 @@
 			normalcolor,
 			BrickMaterial,
 			ProcBumpMaterial,
-			OceanMat,
+			Ocean,
 			NormalMapMaterial,
 			PhongColorMat,
 			SphereMap,

@@ -7,6 +7,7 @@
 
 #include "InstancedSponge.h"
 #include "Mesh/MeshLoader.h"
+#include "Material/ShaderProgram.h"
 
     InstancedSponge::InstancedSponge(unsigned recursion, QList<string>& attributes) {
         bufferCount = 1;
@@ -94,18 +95,18 @@
         positions.push_back(QVector4D(position[0] / size, position[1] / size, position[2] / size,1));
     }
 
-    void InstancedSponge::draw(Material * material) {
-        material->activateAndBindTextures();
+    void InstancedSponge::draw(ShaderProgram * shader) {
+        shader->activateAndBindTextures();
         foreach (UniformBuffer * buffer, positionBuffers){
                     buffer->bind();
-                    material->getShaderProgram()->bindUniformBuffer("positions", 0,
+                    shader->bindUniformBuffer("positions", 0,
                             buffer->getHandle());
                     mesh->draw(positionBufferDataSize);
         }
     }
 
-    void InstancedSponge::initBuffers(Material * material) {
-        this->material = material;
+    void InstancedSponge::initBuffers(ShaderProgram * shader) {
+        this->shader = shader;
         if(positions.size() <= 4096) {
             positionBuffers.push_back(initPositionBuffer(&positions));
         } else {
@@ -125,10 +126,10 @@
           positionBuffer->bind();
 
           GLuint uniBlockIndex = glGetUniformBlockIndex(
-                  material->getShaderProgram()->getHandle(), "positions");
+                  shader->getHandle(), "positions");
 
           GLint positionBufferSize;
-          glGetActiveUniformBlockiv(material->getShaderProgram()->getHandle(),
+          glGetActiveUniformBlockiv(shader->getHandle(),
                   uniBlockIndex, GL_UNIFORM_BLOCK_DATA_SIZE, &positionBufferSize);
 
 //          LogDebug << "Position Uniform Buffer Size" << positionBufferSize;
@@ -136,7 +137,7 @@
 
           positionBuffer->write(positionBufferData->data(), positionBufferSize);
 
-          material->getShaderProgram()->bindUniformBuffer("positions", 0,
+          shader->bindUniformBuffer("positions", 0,
                   positionBuffer->getHandle());
           glError;
           return positionBuffer;

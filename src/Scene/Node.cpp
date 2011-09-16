@@ -14,10 +14,10 @@
 #include <cassert>
 
 Node::Node(string name, const QVector3D& position, float size, Mesh * mesh,
-        Material * material) :
+        ShaderProgram * material) :
     castShadows(true), receiveShadows(false), m_size(size), name(name),
             eulerRotationCache(QVector3D()), modelMatrix(QMatrix4x4()),
-            material(material), transparent(false), position(position),
+            shader(material), transparent(false), position(position),
             rotationMatrix(QMatrix4x4()), mesh(mesh) {
     update();
 }
@@ -53,24 +53,24 @@ void Node::setName(string name) {
     this->name = name;
 }
 
-Material *Node::getMaterial() const {
-    return material;
+ShaderProgram *Node::getShader() const {
+    return shader;
 }
 
 float Node::size() const {
     return m_size;
 }
 
-void Node::setMaterial(Material *material) {
-    this->material = material;
+void Node::setMaterial(ShaderProgram *material) {
+    this->shader = material;
 }
 
 void Node::draw() {
-    assert(material);
-    draw(material);
+    assert(shader);
+    draw(shader);
 }
 
-void Node::draw(Material * material) {
+void Node::draw(ShaderProgram * material) {
     material->activateAndBindTextures();
     mesh->draw();
 }
@@ -93,7 +93,7 @@ bool Node::getCastShadows() const {
 }
 
 void Node::setShadowCoords(DirectionNode * viewPoint) {
-    setShadowCoords(material->getShaderProgram(), viewPoint);
+    setShadowCoords(shader, viewPoint);
 }
 
 void Node::setShadowCoords(ShaderProgram * shaderProgram, DirectionNode * viewPoint){
@@ -138,7 +138,7 @@ void Node::setView(
 }
 
 void Node::setView(DirectionNode * viewPoint) {
-	setView(material->getShaderProgram(), viewPoint);
+	setView(shader, viewPoint);
 }
 
 QVector3D Node::getCenter() {

@@ -32,7 +32,7 @@
 #include "Renderer/RenderEngine.h"
 #include "Renderer/FrameBuffer.h"
 #include "Scene/SceneLoader.h"
-#include "Material/Materials.h"
+#include "Material/Shaders.h"
 #include "Scene/SceneData.h"
 #include "Renderer/RenderPasses.h"
 
@@ -50,8 +50,8 @@ class LoadApp: public Application {
     QList<string> attributes;
     attributes.push_back("uv");
 
-    Material * zoomIn = new Simple("Texture/texture",attributes);
-    Material * zoomOut = new Simple("Texture/texture",attributes);
+    ShaderProgram * zoomIn = new SimpleProgram("Texture/texture",attributes);
+    ShaderProgram * zoomOut = new SimpleProgram("Texture/texture",attributes);
     Texture * groundTexture = new TextureFile("terrain/mud.jpg","diffuse");
     zoomIn->addTexture(groundTexture);
     zoomOut->addTexture(groundTexture);
@@ -63,11 +63,11 @@ class LoadApp: public Application {
     SceneGraph::Instance().addNode(plane);
     SceneGraph::Instance().addNode(plane2);
 
-    zoomIn->getShaderProgram()->use();
-    zoomIn->getShaderProgram()->setUniform("scaleUv", 0.01f);
+    zoomIn->use();
+    zoomIn->setUniform("scaleUv", 0.01f);
 
-    zoomOut->getShaderProgram()->use();
-    zoomOut->getShaderProgram()->setUniform("scaleUv", 100.0f);
+    zoomOut->use();
+    zoomOut->setUniform("scaleUv", 100.0f);
   }
   void renderFrame(){
       OnePass::draw();

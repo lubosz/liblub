@@ -9,7 +9,6 @@
 #define PLANEMOON_H_
 
 #include "Scene/Node.h"
-#include "Material/Material.h"
 #include "Mesh/Mesh.h"
 #include "PlanetElement.h"
 

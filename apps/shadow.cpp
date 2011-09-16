@@ -20,7 +20,7 @@
 #include "shadow.h"
 #include "Material/Textures.h"
 #include "Window/Qt/FloatEditorWidget.h"
-#include "Material/Materials.h"
+#include "Material/Shaders.h"
 #include "Scene/SceneData.h"
 #include "System/TemplateEngine.h"
 
@@ -96,7 +96,7 @@
         res,
         shadowReceiveSources,
         shadowReceiveTargets,
-        new Template("Post/MultiTarget",
+        new TemplateProgram("Post/MultiTarget",
             QList<string> () << "uv" << "normal" << "tangent"));
     drawPasses.push_back(shadowReceivePass);
 

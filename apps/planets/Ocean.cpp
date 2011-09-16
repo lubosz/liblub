@@ -6,7 +6,6 @@
  */
 
 #include "Ocean.h"
-#include "Material/Materials.h"
 #include "Material/Textures.h"
 #include "Mesh/Geometry.h"
 #include "Scene/SceneData.h"
@@ -43,8 +42,8 @@ void Ocean::init(){
   QList<string> attributes = QList<string>() << "normal" << "uv";
 
   initMaterials("Ocean", attributes);
-  setOceanUniforms(fromAtmosphere->getShaderProgram());
-  setOceanUniforms(fromSpace->getShaderProgram());
+  setOceanUniforms(fromAtmosphere);
+  setOceanUniforms(fromSpace);
 
   Texture * oceanNormal = new TextureFile("ocean/waves.png","NormalMap");
   fromAtmosphere->addTexture(oceanNormal);
@@ -61,11 +60,11 @@ void Ocean::draw() {
   checkMaterialToggle();
 
   node->setView(SceneData::Instance().getCurrentCamera());
-  node->getMaterial()->getShaderProgram()->setUniform("time",Timer::Instance().getTime());
-  node->getMaterial()->getShaderProgram()->setUniform("eyePosition",SceneData::Instance().getCurrentCamera()->position);
+  node->getShader()->setUniform("time",Timer::Instance().getTime());
+  node->getShader()->setUniform("eyePosition",SceneData::Instance().getCurrentCamera()->position);
 
   SceneData::Instance().getCurrentCamera()->setUniforms(
-      node->getMaterial()->getShaderProgram(), planet->position);
+      node->getShader(), planet->position);
   node->setView(SceneData::Instance().getCurrentCamera());
 
   node->draw();

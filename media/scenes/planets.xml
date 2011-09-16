@@ -1,41 +1,44 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <liblub>
-	<include url="common/programs.xml" />
-		<Programs>
-		<Program name="Texture">
-			<Shader url="Texture/texture" />
-			<Uniform value="1.0" name="scaleUv" />
-		</Program>
-	</Programs>
 	<Textures>
 		<Texture name="Mars" url="Planets/Mars.jpg" />
 		<Texture name="plane-occlusion" url="sphere_ao.png" />
 		<Texture name="Mars-normal" url="Planets/Mars-normal.png" />
 		<Texture name="TychoSkymap" url="Planets/TychoSkymap.jpg" />
-		<Texture name="waves" url="ocean/waves.png" />
-		<TextureCube name="morning" url="cubemaps/morning" />
 	</Textures>
-	<Materials>
-		<Material name="Mars" program="Ubershader">
+    <Programs>
+		<Program name="universedome">
+			<Shader url="Texture/texture" />
+			<Uniform value="1.0" name="scaleUv" />
+			<Layer sampler="diffuse" texture="TychoSkymap" />
+		</Program>
+		<Program name="Ubershader">
+            <Shader url="Color/PhongColor" 
+                flags="receiveShadows,
+                        useDiffuseTexture,
+                        useSpotLight,
+                        usePCF,
+                        useAmbientTexture,
+                        useNormalTexture"
+            />
+            <Uniform value="0.1, 0.1, 0.1, 1.0" name="ambientSceneColor" />
+            <Uniform value="0.1, 0.1, 0.1, 1.0" name="diffuseMaterialColor" />
+            <Uniform value="0.8, 0.8, 0.8,1.0" name="specularMaterialColor" />
+            <Uniform value="4.3" name="shininess" />
+            <Uniform value="0.000833333" name="yPixelOffset" />
+            <Uniform value="0.000520833" name="xPixelOffset" />
 			<Layer sampler="diffuseTexture" texture="Mars" />
 			<Layer sampler="ambientTexture" texture="plane-occlusion" />
 			<Layer sampler="normalTexture" texture="Mars-normal" />
-		</Material>
-		<Material name="Ocean" program="Ocean">
-			<Layer sampler="EnvironmentMap" texture="morning" />
-			<Layer sampler="NormalMap" texture="waves" />
-		</Material>
-		<Material name="universedome" program="Texture">
-			<Layer sampler="diffuse" texture="TychoSkymap" />
-		</Material>
-	</Materials>
+        </Program>
+	</Programs>
 	<Meshes>
 		<File name="sphere" url="earth.obj" />
 	</Meshes>
 	<Scene name="XML Loader">
 		<Light position ="-15.2, 19.4, 6.5" direction="1,-5,-1" />
-		<Object name="mars" mesh="sphere" material="Mars" scale="10" position="-10,-10,-10" />
-		<Object name="waterplanet" mesh="sphere" material="Ocean" scale="1" position="-10,5,.05" />
+		<Object name="mars" mesh="sphere" material="Ubershader" scale="10" position="-10,-10,-10" />
+		<Object name="waterplanet" mesh="sphere" material="Ubershader" scale="1" position="-10,5,.05" />
 		<Object name="uvmovenode" mesh="sphere" material="universedome" scale="800" position="0, 0,0" />
 	</Scene>
 </liblub>

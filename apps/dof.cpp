@@ -22,7 +22,7 @@
 #include "Renderer/RenderEngine.h"
 #include "Renderer/FrameBuffer.h"
 #include "Scene/SceneLoader.h"
-#include "Material/Materials.h"
+#include "Material/Shaders.h"
 #include "Scene/SceneData.h"
 
 class DepthOfFieldExample: public Application
@@ -30,11 +30,11 @@ class DepthOfFieldExample: public Application
  public:
   SceneLoader *sceneLoader;
 
-	Material* pDebugDepthFBOMaterial;
-	Material* pDebugColorFBOMaterial;
+	ShaderProgram* pDebugDepthFBOMaterial;
+	ShaderProgram* pDebugColorFBOMaterial;
 
-	Material* pDepthMaterial;
-	Material* pDOFShader;
+	ShaderProgram* pDepthMaterial;
+	ShaderProgram* pDOFShader;
 	//Material* colorMaterial;
 
 	FrameBuffer* pFBOColor;
@@ -75,19 +75,19 @@ void scene() {
     attributes.push_back("uv");
 
     // depth material
-    pDepthMaterial = new Simple("Common/depth",QList<string>());
+    pDepthMaterial = new SimpleProgram("Common/depth",QList<string>());
     // = new Simple("Common/minimal",QList<string>());
 
     // debug depth
-    pDebugDepthFBOMaterial = new Simple("Texture/debugfbo",attributes);
+    pDebugDepthFBOMaterial = new SimpleProgram("Texture/debugfbo",attributes);
 	pDebugDepthFBOMaterial->addTexture(pDepthTexture);
 
 	// debug color
-	pDebugColorFBOMaterial = new Simple("Texture/debugfbo",attributes);
+	pDebugColorFBOMaterial = new SimpleProgram("Texture/debugfbo",attributes);
 	pDebugColorFBOMaterial->addTexture(pColorTexture);
 
 	// DOF-Shader
-	pDOFShader = new Simple("DepthOfField/dof", attributes);
+	pDOFShader = new SimpleProgram("DepthOfField/dof", attributes);
 	pDOFShader->addTexture(pColorTexture);
 	pDOFShader->addTexture(pDepthTexture);
 	pDOFShader->samplerUniforms();
@@ -111,15 +111,15 @@ void scene() {
 	pFBOColor->unBind();
 
 	// post processing
-	//pDOFShader->getShaderProgram()->setUniform("PMatrix", SceneData::Instance()..getCurrentCamera()->getProjection());
-	pDOFShader->getShaderProgram()->use();
-	pDOFShader->getShaderProgram()->setUniform("pixel_width", 1.f / res.width());
-	pDOFShader->getShaderProgram()->setUniform("pixel_height", 1.f / res.height());
+	//pDOFShader->setUniform("PMatrix", SceneData::Instance()..getCurrentCamera()->getProjection());
+	pDOFShader->use();
+	pDOFShader->setUniform("pixel_width", 1.f / res.width());
+	pDOFShader->setUniform("pixel_height", 1.f / res.height());
 
-	//pDOFShader->getShaderProgram()->setUniform("VMatrix", QMatrix4x4());
-	pDOFShader->getShaderProgram()->setUniform("VMatrix", SceneData::Instance().getCurrentCamera()->getView());
-	pDOFShader->getShaderProgram()->setUniform("PMatrix", SceneData::Instance().getCurrentCamera()->getProjection());
-	pDOFShader->getShaderProgram()->setUniform("VPIMatrix", (SceneData::Instance().getCurrentCamera()->getProjection() * SceneData::Instance().getCurrentCamera()->getView()).inverted());
+	//pDOFShader->setUniform("VMatrix", QMatrix4x4());
+	pDOFShader->setUniform("VMatrix", SceneData::Instance().getCurrentCamera()->getView());
+	pDOFShader->setUniform("PMatrix", SceneData::Instance().getCurrentCamera()->getProjection());
+	pDOFShader->setUniform("VPIMatrix", (SceneData::Instance().getCurrentCamera()->getProjection() * SceneData::Instance().getCurrentCamera()->getView()).inverted());
 
 	/*TODO MVP-Inverse should be a uniform (now calculated)
 	QMatrix4x4 tempMatrix = viewPoint->getView() * modelMatrix;
@@ -128,7 +128,7 @@ void scene() {
 	    shaderProgram->setUniform("NormalMatrix", tempMatrix.normalMatrix());
 	    tempMatrix = viewPoint->getProjection() * tempMatrix;
 	    shaderProgram->setUniform("MVPMatrix", tempMatrix);
-	pDOFShader->getShaderProgram()->setUniform("MVPIMatrix", SceneData::Instance().getCurrentCamera()->projectionMatrix);
+	pDOFShader->setUniform("MVPIMatrix", SceneData::Instance().getCurrentCamera()->projectionMatrix);
 	*/
 
 

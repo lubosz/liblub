@@ -8,12 +8,11 @@
 #pragma once
 
 #include "Mesh/Mesh.h"
-#include "Material/Material.h"
 #include <QObject>
-#include <QVariant>
-#include <QMetaType>
+#include <QMatrix4x4>
 
 class DirectionNode;
+class ShaderProgram;
 
 class Node: public QObject {
 
@@ -36,26 +35,26 @@ private:
   Node * parent;
 
 public:
-  Material * material;
+  ShaderProgram * shader;
   bool transparent;
   QVector3D position;
   QMatrix4x4 rotationMatrix;
   Mesh * mesh;
 
   Node() {
-      this->material = nullptr;
+      this->shader = nullptr;
       position = QVector3D();
       m_size = 1.0f;
       mesh = nullptr;
   } ;
 
   Node(string name, const QVector3D& position, float size, Mesh * mesh,
-      Material * material);
+      ShaderProgram * material);
 
   virtual ~Node();
 
   void draw();
-  virtual void draw(Material * material);
+  virtual void draw(ShaderProgram * material);
   void update();
   void updateRotationFromEuler();
 
@@ -70,7 +69,7 @@ public:
   bool getReceiveShadows() const;
   string getName() const;
   QVector3D getPosition() const;
-  Material *getMaterial() const;
+  ShaderProgram *getShader() const;
   QVector3D getCenter();
   QVector3D direction();
 
@@ -84,7 +83,7 @@ public:
   void setView(ShaderProgram * shaderProgram, DirectionNode * viewPoint);
   void setShadowCoords(DirectionNode * viewPoint);
   void setName(string name);
-  void setMaterial(Material *material);
+  void setMaterial(ShaderProgram *material);
   static void setShadowCoords(ShaderProgram * shaderProgram,
       DirectionNode * viewPoint);
 

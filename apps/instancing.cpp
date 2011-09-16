@@ -30,7 +30,7 @@
 #include "Renderer/RenderEngine.h"
 #include "Renderer/FrameBuffer.h"
 #include "Scene/SceneLoader.h"
-#include "Material/Materials.h"
+#include "Material/Shaders.h"
 #include "Scene/SceneData.h"
 #include "Scene/InstancedSponge.h"
 #include "System/TemplateEngine.h"
@@ -39,7 +39,7 @@
 
 class InstancingApp: public Application {
  public:
-  Material * material;
+  ShaderProgram * shader;
 
   InstancingApp(int argc, char *argv[]) : Application(argc,argv) {
   }
@@ -58,20 +58,20 @@ class InstancingApp: public Application {
 //    InstancedSponge *sponge = new InstancedSponge(5, attributes);
 //    TemplateEngine::Instance().c.insert("positionElements", QVariant::fromValue(sponge->positionBufferDataSize));
 //    TemplateEngine::Instance().c.insert("useInstancing", true);
-    material = new Template("instancing",attributes);
+    shader = new TemplateProgram("instancing",attributes);
 //    sponge->initBuffers(material);
 
     Texture * texture = new TextureFile("diamond.png", "diffuse");
     texture->bind();
     texture->filterMinMag(GL_LINEAR_MIPMAP_LINEAR, GL_NEAREST);
-    material->addTexture(texture);
+    shader->addTexture(texture);
 
 
 //    MengerSponge * meshSponge = new MengerSponge(attributes, 5);
 //    Node * sponge = new Node("sponge", { 0,0,0 }, 1, meshSponge->getMesh(), material);
 
     TreeSponge * sponge = new TreeSponge(5, attributes);
-    sponge->setMaterial(material);
+    sponge->setMaterial(shader);
 
     SceneGraph::Instance().addNode(sponge);
   }

@@ -9,7 +9,7 @@
 #include "Planet.h"
 #include "Scene/SceneData.h"
 #include "System/TemplateEngine.h"
-#include "Material/Materials.h"
+#include "Material/Shaders.h"
 
 PlanetElement::PlanetElement(Planet * planet) : planet(planet) {
 }
@@ -20,11 +20,11 @@ PlanetElement::~PlanetElement() {
 
 void PlanetElement::initMaterials(string name, const QList<string> & attributes){
   TemplateEngine::Instance().c.insert("fromSpace", QVariant(false));
-  fromAtmosphere = new Template(name,attributes);
+  fromAtmosphere = new TemplateProgram(name,attributes);
   TemplateEngine::Instance().c.insert("fromSpace", QVariant(true));
-  fromSpace = new Template(name,attributes);
-  setAtmoUniforms(fromAtmosphere->getShaderProgram());
-  setAtmoUniforms(fromSpace->getShaderProgram());
+  fromSpace = new TemplateProgram(name,attributes);
+  setAtmoUniforms(fromAtmosphere);
+  setAtmoUniforms(fromSpace);
 }
 
 void PlanetElement::updateWaveLength(ShaderProgram * program){
@@ -43,29 +43,29 @@ void PlanetElement::updateWaveLength(ShaderProgram * program){
 }
 
 void PlanetElement::updateWaveLength(){
-  updateWaveLength(node->getMaterial()->getShaderProgram());
+  updateWaveLength(node->getShader());
 }
 
 void PlanetElement::updateUseAttenuation(){
-  ShaderProgram * program = node->getMaterial()->getShaderProgram();
+  ShaderProgram * program = node->getShader();
   program->use();
   program->setUniform("attenuation", planet->useAttenuation);
 }
 
 void PlanetElement::updateUseMie(){
-  ShaderProgram * program = node->getMaterial()->getShaderProgram();
+  ShaderProgram * program = node->getShader();
   program->use();
   program->setUniform("useMie", planet->useMie);
 }
 
 void PlanetElement::updateUseRayleigh(){
-  ShaderProgram * program = node->getMaterial()->getShaderProgram();
+  ShaderProgram * program = node->getShader();
   program->use();
   program->setUniform("useRayleigh", planet->useRayleigh);
 }
 
 void PlanetElement::updateSize(){
-  ShaderProgram * program = node->getMaterial()->getShaderProgram();
+  ShaderProgram * program = node->getShader();
   program->use();
   program->setUniform("invSphereDistance",
       1.0f / (planet->outerRadius - planet->innerRadius));

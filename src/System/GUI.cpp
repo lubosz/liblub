@@ -14,21 +14,21 @@
 #include <QDebug>
 #include <QMap>
 
-#include "Material/Materials.h"
 #include "Material/Textures.h"
 #include "Scene/SceneData.h"
 #include "Mesh/Geometry.h"
 #include "Window/Window.h"
 #include "System/Logger.h"
 #include "System/Timer.h"
+#include "Material/Shaders.h"
 
 GUI::GUI() {
   textLines = QMap<string,string>();
   QList<string> attributes;
   attributes.push_back("uv");
-  material = new Simple("Texture/font",attributes);
+  shader = new SimpleProgram("Texture/font",attributes);
 
-  node = new Node("GUI", { 0, 0, 0 }, 1, Geometry::plane(attributes, QRectF(0.5,0,0.5,1)), material);
+  node = new Node("GUI", { 0, 0, 0 }, 1, Geometry::plane(attributes, QRectF(0.5,0,0.5,1)), shader);
   screenSize = QSize(480,600);
   textBox = QRectF(0,0,screenSize.width(), screenSize.height());
   image = new QImage(screenSize, QImage::Format_ARGB32);
@@ -53,8 +53,8 @@ void GUI::init() {
   addText("time", "Time");
   render();
   texture = new TextureQImage(image,"myTexture");
-  material->addTexture(texture);
-  material->samplerUniforms();
+  shader->addTexture(texture);
+  shader->samplerUniforms();
 }
 
 void GUI::update() {
@@ -108,9 +108,8 @@ void GUI::updateText(string id, string value) {
 void GUI::draw() {
   glError;
   glEnable(GL_BLEND);
-  ShaderProgram * shaderProgram = material->getShaderProgram();
-  shaderProgram->use();
-  shaderProgram->setUniform("MVPMatrix",QMatrix4x4());
+  shader->use();
+  shader->setUniform("MVPMatrix",QMatrix4x4());
   node->draw();
   glDisable(GL_BLEND);
   glError;

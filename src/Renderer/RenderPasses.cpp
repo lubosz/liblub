@@ -11,14 +11,15 @@
 #include "Material/Textures.h"
 #include "Scene/SceneData.h"
 #include "Scene/SceneGraph.h"
-#include "Material/Materials.h"
 #include "Mesh/Geometry.h"
 #include "System/TemplateEngine.h"
+#include "Renderer/RenderEngine.h"
+#include "Material/Shaders.h"
 
-  void DrawThing::drawOnPlane(Material * material, Mesh *plane) {
-    material->getShaderProgram()->use();
-    material->activateAndBindTextures();
-    material->getShaderProgram()->setUniform("MVPMatrix", QMatrix4x4());
+  void DrawThing::drawOnPlane(ShaderProgram * shader, Mesh *plane) {
+    shader->use();
+    shader->activateAndBindTextures();
+    shader->setUniform("MVPMatrix", QMatrix4x4());
     plane->draw();
   }
 
@@ -26,12 +27,12 @@
     this->res = res;
   }
 
-  SourcePass::SourcePass(QSize res, vector<Texture*> &targets, Material * material) : DrawPass(res) {
+  SourcePass::SourcePass(QSize res, vector<Texture*> &targets, ShaderProgram * shader) : DrawPass(res) {
     this->targets = targets;
-    this->material = material;
+    this->shader = shader;
     initFBO();
     if(targets.size() > 1)
-      material->initRenderTargets(targets);
+      shader->initRenderTargets(targets);
   }
 
   void OnePass::draw(){
@@ -43,7 +44,7 @@
     fbo->bind();
     RenderEngine::Instance().clear();
     RenderEngine::Instance().updateViewport(res);
-    SceneGraph::Instance().drawNodes(material);
+    SceneGraph::Instance().drawNodes(shader);
     fbo->unBind();
   }
 
@@ -66,7 +67,7 @@
   }
 
   ShadowCastPass::ShadowCastPass(QSize res, vector<Texture*> &targets, Light* view)
-  : SourcePass(res, targets, new Minimal()) {
+  : SourcePass(res, targets, new MinimalProgram()) {
     offsetFactor = 2;
     offsetUnits = 0;
     offsetMode = GL_POLYGON_OFFSET_FILL;
@@ -81,7 +82,7 @@
     glCullFace(GL_FRONT);
     glEnable(GL_POLYGON_OFFSET_FILL);
     glPolygonOffset(offsetFactor, offsetUnits);
-    SceneGraph::Instance().drawCasters(material, view);
+    SceneGraph::Instance().drawCasters(shader, view);
     glPolygonOffset(0.0, 0.0);
     glCullFace(GL_BACK);
     fbo->unBind();
@@ -99,20 +100,20 @@
 
   void ShadowReceivePass::draw() {
     fbo->bind();
-    material->activateTextures();
-    material->bindTextures();
+    shader->activateTextures();
+    shader->bindTextures();
     RenderEngine::Instance().clear();
     RenderEngine::Instance().updateViewport(res);
-    SceneGraph::Instance().drawReceivers(material);
+    SceneGraph::Instance().drawReceivers(shader);
     fbo->unBind();
   }
 
-  InOutPass::InOutPass(QSize res, vector<Texture*> &sources, vector<Texture*> &targets, Material * material) : SourcePass(res, targets, material) {
+  InOutPass::InOutPass(QSize res, vector<Texture*> &sources, vector<Texture*> &targets, ShaderProgram * shader) : SourcePass(res, targets, shader) {
     this->sources = sources;
     fullPlane = Geometry::plane(QList<string> () << "uv", QRectF(-1, -1, 2, 2));
-    material->addTextures(sources);
-    material->samplerUniforms();
-    material->activateAndBindTextures();
+    shader->addTextures(sources);
+    shader->samplerUniforms();
+    shader->activateAndBindTextures();
   }
 
   Texture* InOutPass::getSource(string target) {
@@ -132,20 +133,20 @@
     fbo->bind();
     RenderEngine::Instance().clear();
     RenderEngine::Instance().updateViewport(res);
-    material->getShaderProgram()->use();
-    material->getShaderProgram()->setUniform("camPositionWorld",SceneData::Instance().getCurrentCamera()->getPosition());
-    drawOnPlane(material, fullPlane);
+    shader->use();
+    shader->setUniform("camPositionWorld",SceneData::Instance().getCurrentCamera()->getPosition());
+    drawOnPlane(shader, fullPlane);
     fbo->unBind();
   }
 
   DebugPlane::DebugPlane(QRectF rect, Texture * target){
     plane = Geometry::plane(QList<string> () << "uv", rect);
-    material = initDebugMaterial(target);
+    shader = initDebugMaterial(target);
   }
 
-  Material * DebugPlane::initDebugMaterial(Texture * target) {
+  ShaderProgram * DebugPlane::initDebugMaterial(Texture * target) {
     TemplateEngine::Instance().c.insert("samplerName", QString::fromStdString(target->name));
-    Material * debugMaterial = new Template("Post/Debug", QList<string> () << "uv");
+    ShaderProgram * debugMaterial = new TemplateProgram("Post/Debug", QList<string> () << "uv");
     debugMaterial->addTexture(target);
     debugMaterial->samplerUniforms();
     debugMaterial->activateAndBindTextures();
@@ -153,7 +154,7 @@
   }
 
   void DebugPlane::draw(){
-    drawOnPlane(material, plane);
+    drawOnPlane(shader, plane);
   }
 
   SinkPass::SinkPass() {}

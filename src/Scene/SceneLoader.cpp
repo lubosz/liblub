@@ -16,6 +16,7 @@
 #include "System/Config.h"
 #include "System/Logger.h"
 #include "Material/Textures.h"
+#include "Material/Shaders.h"
 
 SceneLoader::SceneLoader(const QString & fileName)
 :
@@ -35,9 +36,17 @@ void SceneLoader::appendProgram(const QDomElement & programNode) {
     string name, shaderUrl;
     vector<string> flags;
     ShaderProgram * program = new ShaderProgram();
+    QList<string> attributes;
+    attributes.push_back("uv");
+    attributes.push_back("normal");
+    attributes.push_back("tangent");
+    attributes.push_back("bitangent");
+
 
     if (programNode.hasAttribute("name"))
         name = programNode.attribute("name").toStdString();
+
+    program->name = name;
 
     QDomElement programInfo = programNode.firstChildElement();
     while (!programInfo.isNull()) {
@@ -76,63 +85,26 @@ void SceneLoader::appendProgram(const QDomElement & programNode) {
             program->uniformsi.push_back(Uniform<int> (programInfo.attribute(
                     "name").toStdString(), splitValues<int> (
                     programInfo.attribute("value"))));
+        } else if (programInfo.tagName() == "Layer") {
+            if (programInfo.hasAttribute("texture")) {
+                Texture * texture = SceneData::Instance().textures.value(
+                        programInfo.attribute("texture").toStdString());
+                if (SceneData::Instance().textures.count(programInfo.attribute("texture").toStdString()) == 0)
+                          LogError << "Texture "
+                                    << programInfo.attribute("texture").toStdString()
+                                    << " not found.";
+                // TODO(bmonkey): uniform name reset
+                LogDebug << programInfo.attribute("sampler").toStdString();
+                texture->name = programInfo.attribute("sampler").toStdString();
+                program->addTexture(texture);
+            }
         }
         programInfo = programInfo.nextSiblingElement();
     }
 
-    QList<string> attributes;
-    attributes.push_back("uv");
-    attributes.push_back("normal");
-    attributes.push_back("tangent");
-    attributes.push_back("bitangent");
-
     program->init(attributes);
-    program->name = name;
-    SceneData::Instance().shaderPrograms.insert(name, program);
-}
-
-void SceneLoader::appendMaterial(const QDomElement & materialNode) {
-    string name, program;
-    vector<string> layerStrings;
-    Material * material = new EmptyMat();
-
-    if (materialNode.hasAttribute("name"))
-        name = materialNode.attribute("name").toStdString();
-    if (materialNode.hasAttribute("program")) {
-        program = materialNode.attribute("program").toStdString();
-        if (SceneData::Instance().shaderPrograms.count(program) > 0)
-            material->shaderProgram = SceneData::Instance().shaderPrograms.value(program);
-        else
-            LogError << "Program Not Found"<< program;
-    } else {
-      LogError << "NO SHADER PROGRAM";
-    }
-
-    QDomElement layers = materialNode.firstChildElement();
-    while (!layers.isNull()) {
-        if (layers.hasAttribute("texture")) {
-            Texture * texture = SceneData::Instance().textures.value(
-                    layers.attribute("texture").toStdString());
-            if (SceneData::Instance().textures.count(layers.attribute("texture").toStdString()) == 0)
-              LogError << "Texture "
-                        << layers.attribute("texture").toStdString()
-                        << " not found.";
-            // TODO(bmonkey): uniform name reset
-            LogDebug << layers.attribute("sampler").toStdString();
-            texture->name = layers.attribute("sampler").toStdString();
-            material->addTexture(texture);
-        }
-        layers = layers.nextSiblingElement();
-    }
-#ifdef USE_FBO
-    // TODO(bmonkey): init shadow map texutre only when needed
-//    material->addTexture(
-//            RenderEngine::Instance().shadowSequence->
-//            renderPasses[0]->targetTexture);
-#endif
-    material->shaderProgram->use();
-    material->samplerUniforms();
-    SceneData::Instance().materials.insert(name, material);
+    program->samplerUniforms();
+    SceneData::Instance().shaders.insert(name, program);
 }
 
 void SceneLoader::appendTexture(const QDomElement & textureNode) {
@@ -249,7 +221,7 @@ void SceneLoader::appendObject(const QDomElement & objectNode) {
     QVector3D position, direction, rotation;
     string name;
     float scale = 1;
-    Material * material = NULL;
+    ShaderProgram * material = NULL;
     Mesh * mesh = NULL;
 
     if (objectNode.hasAttribute("position"))
@@ -266,10 +238,10 @@ void SceneLoader::appendObject(const QDomElement & objectNode) {
         scale = objectNode.attribute("scale").toFloat();
     if (objectNode.hasAttribute("material")) {
         string materialName = objectNode.attribute("material").toStdString();
-        if (SceneData::Instance().materials.count(materialName) > 0)
-            material = SceneData::Instance().materials.value(materialName);
+        if (SceneData::Instance().shaders.count(materialName) > 0)
+            material = SceneData::Instance().shaders.value(materialName);
         else
-            LogError << "Material Not Found" << materialName;
+            LogError << "Shader Not Found" << materialName;
     }
     if (objectNode.tagName() == "Light") {
       string lightName;
@@ -292,11 +264,11 @@ void SceneLoader::appendObject(const QDomElement & objectNode) {
         else
           LogError << "Mesh Not Found" << meshName;
 
-        Material * lightMat;
+        ShaderProgram * lightMat;
         if (objectNode.hasAttribute("material")) {
           lightMat = material;
         } else {
-          lightMat = new Simple("Color/white", QList<string>());
+          lightMat = new SimpleProgram("Color/white", QList<string>());
         }
         Node * lightNode = new Node("Light", position, 1, mesh, lightMat);
         lightNode->setCastShadows(false);
@@ -341,13 +313,13 @@ void SceneLoader::appendObject(const QDomElement & objectNode) {
         vector<string> materialNames =
             splitValues<string> (objectNode.attribute("materials"));
 
-        vector<Material*> planeMaterials;
+        vector<ShaderProgram*> planeMaterials;
 
         foreach(string materialName, materialNames) {
-          if (SceneData::Instance().materials.count(materialName) > 0)
-            planeMaterials.push_back(SceneData::Instance().materials.value(materialName));
+          if (SceneData::Instance().shaders.count(materialName) > 0)
+            planeMaterials.push_back(SceneData::Instance().shaders.value(materialName));
           else
-            LogError << "Material Not Found"<< materialName;
+            LogError << "Shader Not Found"<< materialName;
         }
 
         SceneGraph::Instance().meshPlane(
@@ -400,12 +372,6 @@ void SceneLoader::load(const QString & fileName) {
             while (!meshes.isNull()) {
                 appendMesh(meshes);
                 meshes = meshes.nextSiblingElement();
-            }
-        } else if (document.tagName() == "Materials") {
-            QDomElement materials = document.firstChildElement();
-            while (!materials.isNull()) {
-                appendMaterial(materials);
-                materials = materials.nextSiblingElement();
             }
         } else if (document.tagName() == "Scene") {
 

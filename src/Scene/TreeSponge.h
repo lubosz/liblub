@@ -8,7 +8,6 @@
 #ifndef TREESPONGE_H_
 #define TREESPONGE_H_
 
-#include "Material/Material.h"
 #include "Scene/Node.h"
 #include <vector>
 #include <QtCore>
@@ -39,7 +38,7 @@ public:
     unsigned maxRecursion, minRecursion;
     TreeSponge(unsigned recursion, QList<string>& attributes);
     void makeSponge(unsigned recursion, const QVector3D& parentPosition, float size);
-    void draw(Material * material);
+    void draw(ShaderProgram * shader);
     static bool isNotCulled(const QMatrix4x4& MVPMatrix);
     bool endRecursionAdaptive(unsigned recursion, const QVector3D & cubePosition, float size);
 

@@ -27,7 +27,6 @@ void TreeSponge::makeSponge(unsigned recursion, const QVector3D & cubePosition,
         modelMatrix.setToIdentity();
         modelMatrix.translate(cubePosition);
         modelMatrix.scale(size);
-        ShaderProgram * shaderProgram = material->getShaderProgram();
         DirectionNode * viewPoint = SceneData::Instance().getCurrentCamera();
         QMatrix4x4 tempMatrix = viewPoint->getView() * modelMatrix;
         //              shaderProgram->setUniform("MMatrix", modelMatrix);
@@ -36,8 +35,8 @@ void TreeSponge::makeSponge(unsigned recursion, const QVector3D & cubePosition,
         tempMatrix = viewPoint->getProjection() * tempMatrix;
 
         if (isNotCulled(tempMatrix)) {
-            shaderProgram->use();
-            shaderProgram->setUniform("MVPMatrix", tempMatrix);
+            shader->use();
+            shader->setUniform("MVPMatrix", tempMatrix);
             mesh->draw();
         }
     // subdivide
@@ -115,7 +114,7 @@ void TreeSponge::drawAllChildrenSorted(unsigned recursion,
     }
 }
 
-void TreeSponge::draw(Material * material) {
+void TreeSponge::draw(ShaderProgram * material) {
     material->activateAndBindTextures();
     makeSponge(maxRecursion, { 0, 0, 0 }, 1.0f);
 }

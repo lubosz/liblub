@@ -15,9 +15,6 @@
 		<Procedural name="icosahedron" type="Icosahedron" drawType="TRIANGLES" />
 		<Procedural name="spiral" type="Spiral" resolution="5000" density="1" randomness="0" />
 	</Meshes>
-	<Materials>
-		<Material name="stars" program="stars" />
-	</Materials>
 	<Scene name="Procedural Geometry">
 		<Light position ="0.3, 6.6, -3.3" direction="1,-5,-1" />
 		<Object name="sponge" mesh="sponge" material="stars" scale="1.0" position="5, 5, -10" />

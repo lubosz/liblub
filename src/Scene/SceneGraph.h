@@ -12,18 +12,18 @@ class SceneGraph: public Singleton<SceneGraph> {
 //	Light * light;
 
 	void updateLight();
-	void drawCasters(Material * material);
-	void drawCasters(Material * material, DirectionNode * viewPoint);
-	void drawReceivers(Material * material);
+	void drawCasters(ShaderProgram * material);
+	void drawCasters(ShaderProgram * material, DirectionNode * viewPoint);
+	void drawReceivers(ShaderProgram * material);
 	void drawNodes();
-  void drawNodes(Material * material);
-  void drawNodes(Material * material, DirectionNode * viewPoint);
+  void drawNodes(ShaderProgram * material);
+  void drawNodes(ShaderProgram * material, DirectionNode * viewPoint);
 	void drawNodes(DirectionNode * viewPoint);
 //	void printMatrix(const QMatrix4x4 & matrix, string name);
 
 	void addNode(Node * node);
 	void meshPlane(
-	        Mesh * mesh, float cubeSize, float step, vector<Material*> materials
+	        Mesh * mesh, float cubeSize, float step, vector<ShaderProgram*> materials
 	);
 
 	Node * getNode(const string & name);
@@ -49,9 +49,9 @@ class SceneGraph: public Singleton<SceneGraph> {
 
 	void meshCube(
 	    const QList<string> & attributes,
-	    string file, float cubeSize, float step, Material * material);
+	    string file, float cubeSize, float step, ShaderProgram * material);
 	void meshCube(
 	    const QList<string> & attributes,
-	        string file, float cubeSize, float step, vector<Material*> materials
+	        string file, float cubeSize, float step, vector<ShaderProgram*> materials
 	);
 };
