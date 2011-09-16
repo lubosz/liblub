@@ -2,6 +2,9 @@ cmake_minimum_required(VERSION 2.8)
 project(liblub)
 
 #build tests
+
+set(EXECUTABLE_OUTPUT_PATH ${CMAKE_SOURCE_DIR}/test)
+
 if(BUILD_TESTS)
     file(GLOB_RECURSE TESTS ${TEST_DIR}/*.cpp)
     foreach(TEST_PATH ${TESTS})

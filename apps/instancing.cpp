@@ -18,18 +18,13 @@
 */
 #include <string>
 #include "System/Application.h"
-#include "System/GUI.h"
-#include "Scene/SceneLoader.h"
 #include "Scene/Scene.h"
 #include "System/Logger.h"
-#include "System/Timer.h"
-#include "Scene/Node.h"
 #include "Scene/TreeSponge.h"
 #include "Mesh/Geometry.h"
 #include "Material/Textures.h"
 #include "Renderer/OpenGL.h"
 #include "Renderer/FrameBuffer.h"
-#include "Scene/SceneLoader.h"
 #include "Material/Shaders.h"
 #include "Scene/Scene.h"
 #include "Scene/InstancedSponge.h"

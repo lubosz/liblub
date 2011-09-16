@@ -8,7 +8,6 @@
 #include "Scene/Camera.h"
 #include "Scene/Node.h"
 #include "Scene/Light.h"
-#include "Material/Materials.h"
 #include "Mesh/Mesh.h"
 #include "Mesh/MengerSponge.h"
 
