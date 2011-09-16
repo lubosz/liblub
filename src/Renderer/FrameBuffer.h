@@ -19,7 +19,6 @@ class FrameBuffer {
     void setDrawBuffers(vector<GLenum>& buffers);
     void setDrawBuffer(GLenum buffer);
     void unBind();
-    void draw(ShaderProgram * shader);
     void updateRenderView();
 
 	QSize res;
@@ -29,11 +28,9 @@ class FrameBuffer {
 	void attachTextures(vector<Texture*> &textures);
 	void disableColorBuffer();
  private:
-	GLuint fboId;                       // ID of FBO
-	GLuint rboId;                       // ID of Renderbuffer object
+	GLuint handle;
+	GLuint renderBufferHandle;
 	GLuint attachmentPoint;
-
-	Mesh * renderPlane;
 
 	void printFramebufferInfo();
 	string getTextureParameters(GLuint id);

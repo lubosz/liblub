@@ -15,6 +15,8 @@
 #include "Window/Qt/FloatEditorWidget.h"
 #include "Renderer/FrameBuffer.h"
 #include "Material/Shaders.h"
+#include "Mesh/Geometry.h"
+#include "Renderer/RenderPasses.h"
 
 PlanetsApp::PlanetsApp(int &argc, char **argv) :
   QtApplication(argc, argv) {
@@ -25,6 +27,7 @@ PlanetsApp::PlanetsApp(int &argc, char **argv) :
   focusedPlanet = new Planet("Earth", 11, 11.55, Planet::sun,
       { 0.650f, 0.570f, 0.475f }, { 0, 0, 0 }, 1);
   planets.push_back(focusedPlanet);
+  fullPlane = Geometry::plane(QList<string> () << "uv", QRectF(-1, -1, 2, 2));
 }
 
 PlanetsApp::~PlanetsApp() {
@@ -143,7 +146,7 @@ void PlanetsApp::endPass() {
     RenderEngine::Instance().clear();
     HDR->activateAndBindTextures();
     HDR->use();
-    fbo->draw(HDR);
+    DrawThing::drawOnPlane(HDR, fullPlane);
   }
 }
 

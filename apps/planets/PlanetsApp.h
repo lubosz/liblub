@@ -35,6 +35,7 @@ public:
   Camera* camera;
   Light * light;
   FrameBuffer *fbo;
+  Mesh * fullPlane;
 
   PlanetsApp(int &argc, char **argv);
   ~PlanetsApp();

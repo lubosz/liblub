@@ -24,6 +24,8 @@
 #include "Scene/SceneLoader.h"
 #include "Material/Shaders.h"
 #include "Scene/Scene.h"
+#include "Renderer/RenderPasses.h"
+#include "Mesh/Geometry.h"
 
 class DepthOfFieldExample: public Application
 {
@@ -39,6 +41,8 @@ class DepthOfFieldExample: public Application
 
 	FrameBuffer* pFBOColor;
 	FrameBuffer* pFBODepth;
+
+	Mesh * fullPlane;
 
 	QSize res;
 
@@ -91,6 +95,8 @@ void scene() {
 	pDOFShader->addTexture(pColorTexture);
 	pDOFShader->addTexture(pDepthTexture);
 	pDOFShader->samplerUniforms();
+
+	fullPlane = Geometry::plane(QList<string> () << "uv", QRectF(-1, -1, 2, 2));
   }
   void renderFrame()
   {
@@ -131,7 +137,6 @@ void scene() {
 	pDOFShader->setUniform("MVPIMatrix", SceneData::Instance().getCurrentCamera()->projectionMatrix);
 	*/
 
-
 	// pass 1
 /*
 	for(int i = 0; i < 8; i++)
@@ -143,8 +148,7 @@ void scene() {
 */
 
 	// final pass
-	pFBOColor->draw(pDOFShader);
-
+	DrawThing::drawOnPlane(pDOFShader, fullPlane);
   }
 };
 

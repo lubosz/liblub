@@ -16,18 +16,11 @@ using std::stringstream;
 
 FrameBuffer::FrameBuffer(QSize& res) : res(res) {
   attachmentPoint = GL_COLOR_ATTACHMENT0;
-    glError;
-    // Gen texture for fbo
-    // create a texture object
     QList<string> attributes;
     attributes.push_back("uv");
 
-    renderPlane = Geometry::plane(attributes, QRectF(-1,-1,2,2));
-
-    glError;
-
-    glGenFramebuffers(1, &fboId);
-    glBindFramebuffer(GL_FRAMEBUFFER, fboId);
+    glGenFramebuffers(1, &handle);
+    glBindFramebuffer(GL_FRAMEBUFFER, handle);
 
     // create a renderbuffer object to store depth info
     // NOTE: A depth renderable image should be attached the FBO for depth test.
@@ -37,16 +30,17 @@ FrameBuffer::FrameBuffer(QSize& res) : res(res) {
     // attach additional image to the stencil attachement point, too.
 
 
-    glGenRenderbuffers(1, &rboId);
-    glBindRenderbuffer(GL_RENDERBUFFER, rboId);
+    glGenRenderbuffers(1, &renderBufferHandle);
+    glBindRenderbuffer(GL_RENDERBUFFER, renderBufferHandle);
     glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, res.width(), res.height());
-    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, fboId);
+    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, handle);
     glBindRenderbuffer(GL_RENDERBUFFER, 0);
 
 //     GLuint stencilbuffer;                       // ID of Renderbuffer object
 //     glGenRenderbuffers(1, &stencilbuffer);
 //     glBindRenderbuffer(GL_RENDERBUFFER, stencilbuffer);
-//     glRenderbufferStorage(GL_RENDERBUFFER, GL_STENCIL_INDEX1, width, height);
+//     glRenderbufferStorage(GL_RENDERBUFFER, GL_STENCIL_INDEX1, res.width(), res.height());
+//    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_STENCIL_ATTACHMENT, GL_RENDERBUFFER, handle);
 //     glBindRenderbuffer(GL_RENDERBUFFER, 0);
 
     glError;
@@ -98,7 +92,7 @@ void FrameBuffer::disableColorBuffer() {
 }
 
 void FrameBuffer::bind() {
-  glBindFramebuffer(GL_FRAMEBUFFER, fboId);
+  glBindFramebuffer(GL_FRAMEBUFFER, handle);
 }
 
 void FrameBuffer::setDrawBuffer(GLenum buffer) {
@@ -135,18 +129,9 @@ void FrameBuffer::updateRenderView() {
     glViewport(0, 0, res.width(), res.height());
 }
 
-void FrameBuffer::draw(ShaderProgram * shader) {
-    shader->use();
-    shader->setUniform("MVPMatrix",QMatrix4x4());
-//    shader->samplerUniforms();
-    shader->activateAndBindTextures();
-    renderPlane->draw();
-    glError;
-}
-
 FrameBuffer::~FrameBuffer() {
-    glDeleteFramebuffers(1, &fboId);
-    glDeleteRenderbuffers(1, &rboId);
+    glDeleteFramebuffers(1, &handle);
+    glDeleteRenderbuffers(1, &renderBufferHandle);
 }
 
 void FrameBuffer::printFramebufferInfo() {
