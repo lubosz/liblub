@@ -1,7 +1,7 @@
 #ifndef GLWIDGET_H
 #define GLWIDGET_H
 
-#include "common/OpenGL.h"
+#include "Renderer/OpenGL.h"
 #include <QGLWidget>
 
 class GLWidget: public QGLWidget {

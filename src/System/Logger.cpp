@@ -3,7 +3,7 @@
 #include <iostream>
 #include "System/Logger.h"
 #include "common/BashColor.h"
-#include "common/OpenGL.h"
+#include "Renderer/OpenGL.h"
 
 using std::cerr;
 using std::cout;

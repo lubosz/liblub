@@ -19,9 +19,10 @@
 
 #include "System/Application.h"
 #include "Material/Textures.h"
-#include "Renderer/RenderEngine.h"
+#include "Renderer/OpenGL.h"
 #include "Renderer/FrameBuffer.h"
 #include "Scene/SceneLoader.h"
+#include "Scene/SceneGraph.h"
 #include "Material/Shaders.h"
 #include "Scene/Scene.h"
 #include "Renderer/RenderPasses.h"
@@ -101,18 +102,18 @@ void scene() {
   void renderFrame()
   {
 	// create depth texture
-    RenderEngine::Instance().clear();
+    OpenGL::Instance().clear();
     pFBODepth->bind();
-    RenderEngine::Instance().clear();
+    OpenGL::Instance().clear();
     pDepthMaterial->activateAndBindTextures();
-    RenderEngine::Instance().updateViewport(res);
+    OpenGL::Instance().updateViewport(res);
     SceneGraph::Instance().drawNodes(pDepthMaterial);
     pFBODepth->unBind();
 
     // create color texture
-    RenderEngine::Instance().clear();
+    OpenGL::Instance().clear();
 	pFBOColor->bind();
-	RenderEngine::Instance().clear();
+	OpenGL::Instance().clear();
 	SceneGraph::Instance().drawNodes();
 	pFBOColor->unBind();
 

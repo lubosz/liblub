@@ -7,7 +7,7 @@
 
 #include "Material/Uniform.h"
 #include "System/Logger.h"
-#include "Renderer/RenderEngine.h"
+#include "Renderer/OpenGL.h"
 
 template <>
 void Uniform<float>::init(GLuint program) {

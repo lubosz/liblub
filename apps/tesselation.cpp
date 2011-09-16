@@ -16,7 +16,7 @@
     You should have received a copy of the GNU General Public License
     along with liblub.  If not, see <http://www.gnu.org/licenses/>.
 */
-#include "common/OpenGL.h"
+#include "Renderer/OpenGL.h"
 #include <QApplication>
 #include "System/Application.h"
 #include "System/Logger.h"
@@ -77,7 +77,7 @@ class TesselationApp: public Application {
     Texture * noise = new TextureFile("terrain-noise-blur.jpg","noise");
     shader->addTexture(groundTexture);
     shader->addTexture(noise);
-    RenderEngine::Instance().setWire(true);
+    OpenGL::Instance().setWire(true);
   }
   void renderFrame() {
       int maxTess = 30;
@@ -97,7 +97,7 @@ class TesselationApp: public Application {
       shader->setUniform("TessLevelInner",scale);
       shader->setUniform("TessLevelOuter",scale);
     }
-    RenderEngine::Instance().clear();
+    OpenGL::Instance().clear();
     glEnable(GL_DEPTH_TEST);
 //    glEnable(GL_CULL_FACE);
     groundNode->setView(camera);

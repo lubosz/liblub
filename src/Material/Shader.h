@@ -7,7 +7,7 @@
 
 #pragma once
 
-#include "common/OpenGL.h"
+#include "Renderer/OpenGL.h"
 #include <vector>
 #include <string>
 

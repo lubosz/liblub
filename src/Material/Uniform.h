@@ -9,7 +9,7 @@
 
 #include <string>
 #include <vector>
-#include "common/OpenGL.h"
+#include "Renderer/OpenGL.h"
 
 using std::string;
 using std::vector;

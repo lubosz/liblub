@@ -14,7 +14,7 @@
 #include "System/Config.h"
 #include "System/Logger.h"
 #include <QRectF>
-#include "Renderer/RenderEngine.h"
+#include "Renderer/OpenGL.h"
 
 Mesh * MeshLoader::load(const QList<string> & attributes, string file) {
     LogDebug << "Loading" << file;

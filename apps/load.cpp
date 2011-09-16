@@ -23,7 +23,7 @@
 #include "Scene/SceneLoader.h"
 #include "Scene/Scene.h"
 #include "System/Logger.h"
-#include "Renderer/RenderEngine.h"
+#include "Renderer/OpenGL.h"
 #include "Renderer/FrameBuffer.h"
 #include "Renderer/RenderPasses.h"
 #include "Scene/SceneLoader.h"

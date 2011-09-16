@@ -7,7 +7,7 @@
 
 #pragma once
 #include "common/Singleton.h"
-#include "common/OpenGL.h"
+#include "Renderer/OpenGL.h"
 
 const GLenum textureEnums[32] = {
     GL_TEXTURE0, GL_TEXTURE1, GL_TEXTURE2, GL_TEXTURE3, GL_TEXTURE4,

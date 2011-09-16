@@ -8,7 +8,7 @@
 #pragma once
 
 #include <string>
-#include "Renderer/RenderEngine.h"
+#include "Renderer/OpenGL.h"
 #include "Material/ShaderProgram.h"
 
 class MinimalProgram: public ShaderProgram {

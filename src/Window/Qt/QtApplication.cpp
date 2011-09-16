@@ -10,7 +10,7 @@
 #include "Scene/Scene.h"
 #include "System/Config.h"
 #include "System/GUI.h"
-#include "Renderer/RenderEngine.h"
+#include "Renderer/OpenGL.h"
 
 QtApplication::QtApplication(int & argc, char ** argv) {
   Config::Instance().load("config.xml");
@@ -65,7 +65,7 @@ void QtApplication::run() {
 //  initWinGL();
 #endif
 #endif
-  RenderEngine::Instance();
+  OpenGL::Instance();
   gui = new GUI();
   gui->init();
   scene();

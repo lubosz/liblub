@@ -9,7 +9,7 @@
 #include "Scene/SceneGraph.h"
 #include "System/Logger.h"
 #include "Scene/Scene.h"
-#include "Renderer/RenderEngine.h"
+#include "Renderer/OpenGL.h"
 #include "Material/Textures.h"
 
 using std::stringstream;

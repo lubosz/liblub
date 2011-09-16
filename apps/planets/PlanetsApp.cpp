@@ -11,7 +11,7 @@
 #include "Material/Textures.h"
 #include "System/Config.h"
 #include "System/GUI.h"
-#include "Renderer/RenderEngine.h"
+#include "Renderer/OpenGL.h"
 #include "Window/Qt/FloatEditorWidget.h"
 #include "Renderer/FrameBuffer.h"
 #include "Material/Shaders.h"
@@ -41,7 +41,7 @@ PlanetWidget * PlanetsApp::focusPlanet() {
 
 void PlanetsApp::setWireframe(bool wire) {
   useWireframe = wire;
-  RenderEngine::Instance().setWire(wire);
+  OpenGL::Instance().setWire(wire);
   glWidget->updateGL();
 }
 void PlanetsApp::setPostprocessing(bool post) {
@@ -66,7 +66,7 @@ void PlanetsApp::scene() {
 
 void PlanetsApp::renderFrame() {
   startPass();
-  RenderEngine::Instance().clear();
+  OpenGL::Instance().clear();
   drawPlanets();
   endPass();
 }
@@ -142,8 +142,8 @@ void PlanetsApp::startPass() {
 void PlanetsApp::endPass() {
   if (usePostprocessing && !useWireframe) {
     fbo->unBind();
-    RenderEngine::Instance().updateViewport(glWidget->viewSize);
-    RenderEngine::Instance().clear();
+    OpenGL::Instance().updateViewport(glWidget->viewSize);
+    OpenGL::Instance().clear();
     HDR->activateAndBindTextures();
     HDR->use();
     DrawThing::drawOnPlane(HDR, fullPlane);

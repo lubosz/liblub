@@ -6,6 +6,7 @@
  */
 
 #pragma once
+#include <QtCore>
 #include <QApplication>
 #include "Window/XCB/XCBWindow.h"
 #include "Mesh/MeshLoader.h"

@@ -8,7 +8,7 @@
 #pragma once
 
 // Include first OpenGL then Qt then Xlib / GLX!
-#include "Renderer/RenderEngine.h"
+#include "Renderer/OpenGL.h"
 
 // Needed for GL3 Context Creation
 #define GLX_GLXEXT_PROTOTYPES 1

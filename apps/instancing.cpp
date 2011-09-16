@@ -27,7 +27,7 @@
 #include "Scene/TreeSponge.h"
 #include "Mesh/Geometry.h"
 #include "Material/Textures.h"
-#include "Renderer/RenderEngine.h"
+#include "Renderer/OpenGL.h"
 #include "Renderer/FrameBuffer.h"
 #include "Scene/SceneLoader.h"
 #include "Material/Shaders.h"
@@ -36,6 +36,7 @@
 #include "System/TemplateEngine.h"
 #include "Renderer/RenderPasses.h"
 #include "Mesh/MengerSponge.h"
+#include "Scene/SceneGraph.h"
 
 class InstancingApp: public Application {
  public:

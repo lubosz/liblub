@@ -8,7 +8,7 @@
 #include "Scene/Camera.h"
 #include "Scene/Scene.h"
 #include "Mesh/MeshLoader.h"
-#include "Renderer/RenderEngine.h"
+#include "Renderer/OpenGL.h"
 #include "System/Logger.h"
 #include "System/Config.h"
 
@@ -22,7 +22,7 @@ namespace {
 }
 
 
-RenderEngine::RenderEngine()
+OpenGL::OpenGL()
 :
     useFBO(false), lightView(false), wire(false), frameCount(0) {
     glError;
@@ -54,7 +54,7 @@ RenderEngine::RenderEngine()
     glError;
 }
 
-RenderEngine::~RenderEngine() {
+OpenGL::~OpenGL() {
     glError;
 
     /* Cleanup all the things we bound and allocated */
@@ -62,19 +62,19 @@ RenderEngine::~RenderEngine() {
     glError;
 }
 
-void RenderEngine::setClearColor(const QVector3D & backgroundColor){
+void OpenGL::setClearColor(const QVector3D & backgroundColor){
   glClearColor(
           backgroundColor.x(), backgroundColor.y(), backgroundColor.z(),
           1.0);
 }
 
-void RenderEngine::toggleWire() {
+void OpenGL::toggleWire() {
   wire = !wire;
   setWire(wire);
 
 }
 
-void RenderEngine::setWire(bool wire){
+void OpenGL::setWire(bool wire){
   this->wire = wire;
   if (wire) {
     LogInfo << "Wireframe on";
@@ -85,7 +85,7 @@ void RenderEngine::setWire(bool wire){
   }
 }
 
-void RenderEngine::toggleFBO() {
+void OpenGL::toggleFBO() {
   if (useFBO) {
     useFBO = false;
     LogInfo << "FBO Rendering diabled";
@@ -95,7 +95,7 @@ void RenderEngine::toggleFBO() {
   }
 }
 
-void RenderEngine::toggleLightView() {
+void OpenGL::toggleLightView() {
   if (lightView) {
     lightView = false;
   } else {
@@ -103,11 +103,11 @@ void RenderEngine::toggleLightView() {
   }
 }
 
-void RenderEngine::clear() {
+void OpenGL::clear() {
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
-void RenderEngine::checkVersion() {
+void OpenGL::checkVersion() {
     GLint maxTex1, maxTex2, MajorVersion, MinorVersion, numext, pointSize, uniformSize;
 
     LogInfo << "OpenGL" << glGetStringSafe(GL_VERSION);
@@ -162,7 +162,35 @@ void RenderEngine::checkVersion() {
     glError;
 }
 
-void RenderEngine::updateViewport(QSize& size){
+void OpenGL::updateViewport(QSize& size){
   glViewport(0, 0, size.width(), size.height());
 }
 
+void OpenGL::checkGlError(const char* file, int line) {
+    GLenum err(glGetError());
+
+    while (err != GL_NO_ERROR) {
+        string error;
+        switch (err) {
+            case GL_INVALID_OPERATION:
+                error = "INVALID_OPERATION";
+                break;
+            case GL_INVALID_ENUM:
+                error = "INVALID_ENUM";
+                break;
+            case GL_INVALID_VALUE:
+                error = "INVALID_VALUE";
+                break;
+            case GL_OUT_OF_MEMORY:
+                error = "OUT_OF_MEMORY";
+                break;
+            case GL_INVALID_FRAMEBUFFER_OPERATION:
+                error = "INVALID_FRAMEBUFFER_OPERATION";
+                break;
+            default:
+                error = "Unknown error";
+                break;
+        }
+        Logger(file, line, Logger::Fatal) << "GL_" << error;
+    }
+}

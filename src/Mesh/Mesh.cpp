@@ -8,7 +8,8 @@
 #include <vector>
 #include <assert.h>
 #include <assert.h>
-#include "Renderer/RenderEngine.h"
+#include "Mesh/Mesh.h"
+#include "Renderer/OpenGL.h"
 #include "System/Logger.h"
 
 Mesh::Mesh(const QList<string> & attributes) {

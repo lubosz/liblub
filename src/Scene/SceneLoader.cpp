@@ -17,6 +17,7 @@
 #include "System/Logger.h"
 #include "Material/Textures.h"
 #include "Material/Shaders.h"
+#include "Scene/SceneGraph.h"
 
 SceneLoader::SceneLoader(const QString & fileName)
 :

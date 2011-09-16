@@ -11,7 +11,7 @@
 #include "Material/Texture.h"
 #include "Material/TextureFactory.h"
 #include "System/Logger.h"
-#include "Renderer/RenderEngine.h"
+#include "Renderer/OpenGL.h"
 
 Texture::Texture()  {
   isDepth = false;

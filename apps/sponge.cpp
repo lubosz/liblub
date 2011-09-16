@@ -21,6 +21,7 @@
 #include "Scene/Scene.h"
 #include "Mesh/Geometry.h"
 #include "Material/Textures.h"
+#include "Scene/SceneGraph.h"
 
 Sponge::Sponge(int argc, char *argv[]) :
   Application(argc, argv) {

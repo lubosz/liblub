@@ -12,7 +12,7 @@
 #include "Material/Uniform.h"
 #include "Scene/Scene.h"
 #include "System/Logger.h"
-#include "Renderer/RenderEngine.h"
+#include "Renderer/OpenGL.h"
 #include "XCBWindow.h"
 
 XCBInput::XCBInput(xcb_connection_t *connection, XCBWindow * mediaLayer) {
@@ -83,10 +83,10 @@ void XCBInput::eventLoop() {
                     LogInfo << "Cam Dir" << cam->direction().x() << cam->direction().y() << cam->direction().z();
                     break;
                 case XK_c:
-                    RenderEngine::Instance().toggleLightView();
+                    OpenGL::Instance().toggleLightView();
                     break;
                 case XK_Tab:
-                    RenderEngine::Instance().toggleWire();
+                    OpenGL::Instance().toggleWire();
                     break;
                 case XK_Shift_L:
                     inputSpeed = .2;

@@ -14,7 +14,7 @@
 #include "System/Logger.h"
 #include "System/Config.h"
 #include "System/TemplateEngine.h"
-#include "Renderer/RenderEngine.h"
+#include "Renderer/OpenGL.h"
 
 #include <fstream>
 #include <streambuf>

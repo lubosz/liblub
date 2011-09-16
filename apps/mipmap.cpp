@@ -29,12 +29,13 @@
 #include "Material/ProcTextures.h"
 #include "Material/Textures.h"
 #include "Mesh/Geometry.h"
-#include "Renderer/RenderEngine.h"
+#include "Renderer/OpenGL.h"
 #include "Renderer/FrameBuffer.h"
 #include "Scene/SceneLoader.h"
 #include "Material/Shaders.h"
 #include "Scene/Scene.h"
 #include "Renderer/RenderPasses.h"
+#include "Scene/SceneGraph.h"
 
 class LoadApp: public Application {
  public:

@@ -13,7 +13,7 @@
 #include "System/Logger.h"
 #include <QImage>
 #include <QDebug>
-#include "Renderer/RenderEngine.h"
+#include "Renderer/OpenGL.h"
 
 DepthTexture::DepthTexture(QSize& res, string name) {
   glError;

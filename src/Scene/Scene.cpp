@@ -7,7 +7,7 @@
 
 #include "Scene/Scene.h"
 #include "System/Logger.h"
-#include "Renderer/RenderEngine.h"
+#include "Renderer/OpenGL.h"
 
 Scene::Scene() {
   lights = QMap<string, Light*>();
@@ -112,7 +112,7 @@ Texture* Scene::getTexture(const string & name, const string & as){
 
 void Scene::setBackgroundColor(const QVector3D backgroundColor) {
   this->backgroundColor = backgroundColor;
-  RenderEngine::Instance().setClearColor(backgroundColor);
+  OpenGL::Instance().setClearColor(backgroundColor);
 }
 
 Camera * Scene::getCurrentCamera() {

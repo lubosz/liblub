@@ -13,7 +13,7 @@
 #include "Scene/SceneGraph.h"
 #include "Mesh/Geometry.h"
 #include "System/TemplateEngine.h"
-#include "Renderer/RenderEngine.h"
+#include "Renderer/OpenGL.h"
 #include "Material/Shaders.h"
 
   void DrawThing::drawOnPlane(ShaderProgram * shader, Mesh *plane) {
@@ -36,14 +36,14 @@
   }
 
   void OnePass::draw(){
-      RenderEngine::Instance().clear();
+      OpenGL::Instance().clear();
       SceneGraph::Instance().drawNodes();
   }
 
   void SourcePass::draw() {
     fbo->bind();
-    RenderEngine::Instance().clear();
-    RenderEngine::Instance().updateViewport(res);
+    OpenGL::Instance().clear();
+    OpenGL::Instance().updateViewport(res);
     SceneGraph::Instance().drawNodes(shader);
     fbo->unBind();
   }
@@ -77,8 +77,8 @@
 
   void ShadowCastPass::draw() {
     fbo->bind();
-    RenderEngine::Instance().clear();
-    RenderEngine::Instance().updateViewport(res);
+    OpenGL::Instance().clear();
+    OpenGL::Instance().updateViewport(res);
     glCullFace(GL_FRONT);
     glEnable(GL_POLYGON_OFFSET_FILL);
     glPolygonOffset(offsetFactor, offsetUnits);
@@ -102,8 +102,8 @@
     fbo->bind();
     shader->activateTextures();
     shader->bindTextures();
-    RenderEngine::Instance().clear();
-    RenderEngine::Instance().updateViewport(res);
+    OpenGL::Instance().clear();
+    OpenGL::Instance().updateViewport(res);
     SceneGraph::Instance().drawReceivers(shader);
     fbo->unBind();
   }
@@ -131,8 +131,8 @@
 
   void InOutPass::draw() {
     fbo->bind();
-    RenderEngine::Instance().clear();
-    RenderEngine::Instance().updateViewport(res);
+    OpenGL::Instance().clear();
+    OpenGL::Instance().updateViewport(res);
     shader->use();
     shader->setUniform("camPositionWorld",Scene::Instance().getCurrentCamera()->getPosition());
     drawOnPlane(shader, fullPlane);
@@ -164,7 +164,7 @@
   }
 
   void SinkPass::draw() {
-    RenderEngine::Instance().clear();
+    OpenGL::Instance().clear();
     foreach(DebugPlane *plane, debugPlanes) {
       plane->draw();
     }

@@ -9,7 +9,7 @@
 #include "Mesh/Geometry.h"
 #include "common/Qt3D.h"
 #include "System/Logger.h"
-#include "Renderer/RenderEngine.h"
+#include "Renderer/OpenGL.h"
 
 Mesh * Geometry::plane(const QList<string> & attributes, const QRectF &plane) {
     Mesh * mesh = new Mesh(attributes);

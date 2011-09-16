@@ -5,7 +5,7 @@
 #include <string>
 #include "Scene/SceneGraph.h"
 #include "Scene/Camera.h"
-#include "Renderer/RenderEngine.h"
+#include "Renderer/OpenGL.h"
 #include "Mesh/MeshLoader.h"
 #include "System/Logger.h"
 #include "Scene/Scene.h"
