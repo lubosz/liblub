@@ -13,7 +13,6 @@
 
 class Ocean : public PlanetElement{
 public:
-  ShaderProgram * ocean;
   Ocean(Planet * planet);
   virtual ~Ocean();
   void setOceanUniforms(ShaderProgram * program);

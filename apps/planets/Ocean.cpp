@@ -52,8 +52,12 @@ void Ocean::init(){
   fromAtmosphere->addTexture(oceanSky);
   fromSpace->addTexture(oceanSky);
 
+  fromAtmosphere->samplerUniforms();
+  fromSpace->samplerUniforms();
+
   Mesh * innerSphere = Geometry::sphere(attributes, planet->innerRadius, 100, 50);
-  node = new Node("ocean", planet->position, planet->getSize(), innerSphere, ocean);
+
+  node = new Node("ocean", planet->position, planet->getSize(), innerSphere, fromAtmosphere);
 
 }
 void Ocean::draw() {
@@ -66,6 +70,5 @@ void Ocean::draw() {
   Scene::Instance().getCurrentCamera()->setUniforms(
       node->getShader(), planet->position);
   node->setView(Scene::Instance().getCurrentCamera());
-
   node->draw();
 }
