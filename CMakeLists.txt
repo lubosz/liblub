@@ -148,7 +148,7 @@ if(WITH_Qt)
     set(SOURCES ${SOURCES} ${QT_MOC_OUTFILES})
 endif()
 if(WITH_XCB)
-	list(APPEND LIBS X11-xcb xcb-keysyms)
+	list(APPEND LIBS X11-xcb xcb-keysyms xcb)
     set(WINDOW_TYPES ${WINDOW_TYPES} XCB)
     set(XCB_MOC_INFILES 
         src/Window/XCB/XCBInput.h
@@ -181,6 +181,7 @@ list(APPEND LIBS
     ${QT_LIBRARIES}
     ${Grantlee_CORE_LIBRARIES}
     assimp
+    rt
 )
 
 
