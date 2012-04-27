@@ -5,7 +5,6 @@ project(liblub)
 option(WITH_Qt "Use Qt window/input backend" ON)
 option(WITH_XCB "Use XCB (X11) window/input backend" ON)
 
-option(RELEASE "Release" OFF)
 option(CHECKSTYLE "Check Style" OFF)
 option(BUILD_TESTS "Build Tests" OFF)
 
@@ -39,11 +38,17 @@ set(EXECUTABLE_OUTPUT_PATH ${CMAKE_SOURCE_DIR}/bin)
 
 set(SRC_DIR ${CMAKE_SOURCE_DIR}/src)
 set(TEST_DIR ${CMAKE_SOURCE_DIR}/tests)
-#Optimization / Debug
-if(RELEASE)
-    set(CMAKE_CXX_FLAGS "-O3 -msse4 -mssse3") #Optimized
-else()
+
+if(CMAKE_BUILD_TYPE STREQUAL Debug)
+    #Debug
+    message("On Debug Build")
     set(CMAKE_CXX_FLAGS "-O0 -g3") #Debug
+    add_definitions(-D_DEBUG)
+else()
+    #Release
+    message("On Release Build")
+    set(CMAKE_CXX_FLAGS "-O3 -msse4 -mssse3") #Optimized
+    add_definitions(-D_NDEBUG)
 endif()
 
 #Set c++0x
