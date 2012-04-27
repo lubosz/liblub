@@ -46,7 +46,7 @@ public:
       position = QVector3D();
       m_size = 1.0f;
       mesh = nullptr;
-  } ;
+  }
 
   Node(string name, const QVector3D& position, float size, Mesh * mesh,
       ShaderProgram * material);

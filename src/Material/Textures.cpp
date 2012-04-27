@@ -157,4 +157,5 @@ CubeTextureFile::CubeTextureFile(string filename, string name) {
     string path = textureDir + filename + suffixes[face] + ".jpg";
     loadFile(GL_TEXTURE_CUBE_MAP_POSITIVE_X + face, path);
   }
+  unbind();
 }
