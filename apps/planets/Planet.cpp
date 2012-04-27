@@ -73,9 +73,9 @@ void Planet::draw() {
     element->draw();
 }
 
-void Planet::setType(PlanetType type) {
+void Planet::setType(int type) {
   LogDebug << "Set type" << type;
-  this->type = type;
+  this->type = (PlanetType)type;
   updateGround();
 }
 

@@ -27,7 +27,7 @@ PlanetsApp::PlanetsApp(int &argc, char **argv) :
   focusedPlanet = new Planet("Earth", 11, 11.55, Planet::sun,
       { 0.650f, 0.570f, 0.475f }, { 0, 0, 0 }, 1);
   planets.push_back(focusedPlanet);
-  fullPlane = Geometry::plane(QList<string> () << "uv", QRectF(-1, -1, 2, 2));
+
 }
 
 PlanetsApp::~PlanetsApp() {
@@ -49,9 +49,9 @@ void PlanetsApp::setPostprocessing(bool post) {
   glWidget->updateGL();
 }
 
-void PlanetsApp::setExposure(float exposure) {
+void PlanetsApp::setExposure(double exposure) {
   HDR->use();
-  HDR->setUniform("exposure", exposure);
+  HDR->setUniform("exposure", (float) exposure);
   glWidget->updateGL();
 }
 
@@ -59,6 +59,7 @@ void PlanetsApp::scene() {
     initWidgets(window->mainLayout);
   window->setWindowTitle("Planets Demo");
   initCamAndLight();
+  fullPlane = Geometry::plane(QList<string> () << "uv", QRectF(-1, -1, 2, 2));
   foreach(Planet * planet, planets)
       planet->init();
   initPostProcessing();
