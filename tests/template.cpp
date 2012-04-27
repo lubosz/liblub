@@ -12,6 +12,7 @@ public:
   TemplateTest( std::string name ) : CppUnit::TestCase( name ) {}
 
   void runTest() {
+      Config::Instance().load("config.xml");
     printf("Vertex Shader:\n");
     TemplateEngine::Instance().print("Atmo/Ground.vert");
 //    TemplateEngine::Instance().render("Ubershader.vert");

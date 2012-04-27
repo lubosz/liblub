@@ -2,6 +2,7 @@
  #include <cppunit/TestListener.h>
  #include <cppunit/Test.h>
 #include <QApplication>
+#include "System/Config.h"
 
 #include "System/GUI.h"
 
@@ -14,6 +15,7 @@ public:
   }
 
   void runTest() {
+      Config::Instance().load("config.xml");
     GUI gui;
 //    QImage * image = gui.drawText("Heloww!");
 //    image->save("foo.png");
