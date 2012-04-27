@@ -9,6 +9,8 @@ option(RELEASE "Release" OFF)
 option(CHECKSTYLE "Check Style" OFF)
 option(BUILD_TESTS "Build Tests" OFF)
 
+option(USE_OPENGL3 "Use OpenGL3+ Calls (can be disabled to build with mesa)" On)
+
 option(USE_QT_WINDOWS "Use Qt Windows For All Apps" OFF)
 option(USE_GLEW "Use Qt Windows For All Apps" OFF)
 
@@ -22,6 +24,10 @@ if(USE_GLEW)
     message("GLEW only works with Qt window backend")
     set(USE_QT_WINDOWS 1)
     ADD_DEFINITIONS(-DUSE_GLEW)
+endif()
+
+if(USE_OPENGL3)
+    ADD_DEFINITIONS(-DUSE_OPENGL3)
 endif()
 
 if(USE_QT_WINDOWS)

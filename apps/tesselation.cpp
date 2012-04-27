@@ -102,8 +102,10 @@ class TesselationApp: public Application {
 //    glEnable(GL_CULL_FACE);
     groundNode->setView(camera);
     glError;
+    #ifdef USE_OPENGL3
     glPatchParameteri(GL_PATCH_VERTICES, 3);
     groundNode->draw();
+    #endif
     glError;
   }
 };

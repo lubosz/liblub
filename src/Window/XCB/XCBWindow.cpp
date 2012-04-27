@@ -125,7 +125,7 @@ void XCBWindow::createGLContext() {
   };
 
   /* Get a pointer to the context creation function for GL 3.0 */
-
+#ifdef USE_OPENGL3
   const GLubyte *procname =
           reinterpret_cast<const GLubyte*>("glXCreateContextAttribsARB");
 
@@ -139,6 +139,10 @@ void XCBWindow::createGLContext() {
   context = glXCreateContextAttribs(display, fb_config, NULL, True,
       attribs);
 
+#else
+  XVisualInfo * foo = glXGetVisualFromFBConfig( display, fb_config );
+  context = glXCreateContext(display, foo, NULL, True);
+#endif
   if (!context) LogError << "glXCreateNewContext failed";
 }
 
@@ -194,6 +198,7 @@ void XCBWindow::createWindow() {
     LogError <<  "glXMakeContextCurrent failed";
 
   // Set swap interval
+#ifdef USE_OPENGL3
   PFNGLXSWAPINTERVALSGIPROC
     glXSwapInterval =
           reinterpret_cast<PFNGLXSWAPINTERVALSGIPROC> (glXGetProcAddress(
@@ -203,6 +208,7 @@ void XCBWindow::createWindow() {
   } else {
     glXSwapInterval(Config::Instance().value<int>("Vsync"));
   }
+#endif
   setWindowTitle(programTile);
 }
 

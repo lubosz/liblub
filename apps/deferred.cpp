@@ -279,6 +279,7 @@ void DeferredLightApp::initLightBuffer(ShaderProgram * shader, const string& buf
   lightBuffer = new UniformBuffer();
   lightBuffer->bind();
 
+  #ifdef USE_OPENGL3
   GLuint uniBlockIndex = glGetUniformBlockIndex(shader->getHandle(), bufferName.c_str());
   glGetActiveUniformBlockiv(
     shader->getHandle(),
@@ -286,6 +287,7 @@ void DeferredLightApp::initLightBuffer(ShaderProgram * shader, const string& buf
     GL_UNIFORM_BLOCK_DATA_SIZE,
     &lightBufferSize
   );
+#endif
 
   LogDebug << "Light Uniform Buffer Size" << lightBufferSize;
 
@@ -306,7 +308,9 @@ void DeferredLightApp::initLightBuffer(ShaderProgram * shader, const string& buf
   lightBuffer->write(lightBufferData, lightBufferSize);
 
 //  shader->uniformBuffers.push_back(lightBuffer);
+  #ifdef USE_OPENGL3
   shader->bindUniformBuffer(bufferName,0,lightBuffer->getHandle());
+    #endif
 }
 
 int main(int argc, char *argv[]) {

@@ -124,8 +124,11 @@ void Mesh::draw() {
     foreach(Mesh * mesh, subMeshes)
         mesh->draw();
   } else {
+
+#ifdef USE_OPENGL3
     glBindVertexArray(vao);
     glDrawElements(drawType, indexSize, GL_UNSIGNED_INT, 0);
+#endif
     glError;
   }
 }

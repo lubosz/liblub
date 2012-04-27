@@ -99,8 +99,10 @@
         shader->activateAndBindTextures();
         foreach (UniformBuffer * buffer, positionBuffers){
                     buffer->bind();
+                    #ifdef USE_OPENGL3
                     shader->bindUniformBuffer("positions", 0,
                             buffer->getHandle());
+                    #endif
                     mesh->draw(positionBufferDataSize);
         }
     }
@@ -137,8 +139,10 @@
 
           positionBuffer->write(positionBufferData->data(), positionBufferSize);
 
+          #ifdef USE_OPENGL3
           shader->bindUniformBuffer("positions", 0,
                   positionBuffer->getHandle());
+          #endif
           glError;
           return positionBuffer;
       }

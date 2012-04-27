@@ -24,7 +24,12 @@ TemplateEngine::TemplateEngine() {
 
   vector<int> glContext = Config::Instance().values<int>("GLcontext");
 
+#ifdef USE_OPENGL3
   QString version = QString::number(glContext[0]) +  QString::number(glContext[1]) + "0 core";
+#else
+  QString version = "130";
+#endif
+
 
   c.insert("version", version);
 }

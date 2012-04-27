@@ -253,7 +253,7 @@ void ShaderProgram::translateUniformf(unsigned id, const vector<float> & values)
 		uniforms[id].values[i] += values[i];
 	uniforms[id].init(handle);
 }
-
+#ifdef USE_OPENGL3
 void ShaderProgram::bindUniformBuffer(string name, GLuint bindIndex, GLuint bufferHandle) {
   glBindBufferBase(GL_UNIFORM_BUFFER, bindIndex, bufferHandle);
   GLuint blockIndex = glGetUniformBlockIndex(handle, name.c_str());
@@ -262,7 +262,7 @@ void ShaderProgram::bindUniformBuffer(string name, GLuint bindIndex, GLuint buff
   glUniformBlockBinding(handle, blockIndex, bindIndex);
   glError;
 }
-
+#endif
 void ShaderProgram::addTexture(Texture * texture) {
     textures.push_back(texture);
 }

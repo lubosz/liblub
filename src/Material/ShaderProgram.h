@@ -56,8 +56,9 @@ public:
     void translateUniformf(unsigned id, const vector<float> & values);
 
     void initUniforms();
+    #ifdef USE_OPENGL3
     void bindUniformBuffer(string name, GLuint bindIndex, GLuint bufferHandle);
-
+    #endif
     void samplerUniforms();
     void addTexture(Texture * texture);
     void addTextures(const vector<Texture *> &addTextures);
