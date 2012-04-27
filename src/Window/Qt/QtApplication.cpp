@@ -65,7 +65,7 @@ void QtApplication::run() {
 //  initWinGL();
 #endif
 #endif
-  OpenGL::Instance();
+  OpenGL::Instance().setContextCreated(true);
   gui = new GUI();
   gui->init();
   scene();

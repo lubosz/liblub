@@ -43,10 +43,16 @@ public:
     void setClearColor(const QVector3D & backgroundColor);
     void updateViewport(QSize& size);
     static void checkGlError(const char* file, int line);
+    static void checkVersion();
+    void setContextCreated(bool contextCreated);
+    bool getContextCreated (){
+        return isContextCreated;
+    }
  private:
 
+    bool isContextCreated;
+
     unsigned frameCount;
-    void checkVersion();
     GLboolean QueryExtension(char *extName);
 
     OpenGL();

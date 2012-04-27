@@ -27,6 +27,7 @@ XCBWindow::XCBWindow() {
   createColorMap();
 
   createWindow();
+  OpenGL::Instance().setContextCreated(true);
   createBlankCursor();
 }
 

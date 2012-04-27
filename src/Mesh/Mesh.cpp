@@ -27,6 +27,7 @@ void Mesh::init() {
   assert(!buffers.empty());
   assert(!buffers["position"].empty());
   assert(!indices.empty());
+  assert(OpenGL::Instance().getContextCreated());
   /* Allocate and assign a Vertex Array Object to our handle */
   glGenVertexArrays(1, &vao);
   LogDebug << "Generating Vertex Array Object #" << vao;

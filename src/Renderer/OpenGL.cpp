@@ -110,10 +110,17 @@ void OpenGL::clear() {
 void OpenGL::checkVersion() {
     GLint maxTex1, maxTex2, MajorVersion, MinorVersion, numext, pointSize, uniformSize;
 
-    LogInfo << "OpenGL" << glGetStringSafe(GL_VERSION);
+    string version = glGetStringSafe(GL_VERSION);
+
+    if (version == "null") {
+        LogError << "OpenGL is uninitialized";
+    }
+
+    LogInfo << "OpenGL" << version;
 
     glGetIntegerv(GL_MAJOR_VERSION, &MajorVersion);
     glGetIntegerv(GL_MINOR_VERSION, &MinorVersion);
+
     LogInfo << "Version" << MajorVersion << "." << MinorVersion;
 
     LogInfo << "GLSL" << glGetStringSafe(GL_SHADING_LANGUAGE_VERSION);
@@ -193,4 +200,8 @@ void OpenGL::checkGlError(const char* file, int line) {
         }
         Logger(file, line, Logger::Fatal) << "GL_" << error;
     }
+}
+
+void OpenGL::setContextCreated(bool contextCreated) {
+    isContextCreated = true;
 }
