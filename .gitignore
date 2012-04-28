@@ -7,4 +7,12 @@ bin/
 build/
 lib/
 src/Renderer/GL3/
-
+test/
+liblub.cbp
+*.cxx
+*~
+*CMakeFiles/
+*Makefile
+CMakeCache.txt
+CMakeLists.txt.user
+*cmake_install.cmake
