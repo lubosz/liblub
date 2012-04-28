@@ -23,6 +23,8 @@ public:
             LogDebug << "Generating Vertex Array Object #" << vao;
             glError;
       }
+
+      delete window;
   }
 };
 
