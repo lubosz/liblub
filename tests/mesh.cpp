@@ -5,6 +5,7 @@
 #include "Mesh/MeshLoader.h"
 #include "System/Config.h"
 #include "Mesh/MengerSponge.h"
+#include "Window/XCB/XCBWindow.h"
 
 class MeshTest: public CppUnit::TestCase {
 public:
@@ -13,15 +14,17 @@ public:
   }
 
   void runTest() {
+    Config::Instance().load("config.xml");
+    XCBWindow * window  = new XCBWindow();
+
     QList<string> attributes;
     attributes.push_back("color");
     attributes.push_back("normal");
     attributes.push_back("tangent");
     attributes.push_back("bitangent");
     attributes.push_back("uv");
-    Config::Instance().load("config.xml");
-    Mesh * sphere = Geometry::sphere(attributes, 11.0f, 100, 50);
-    sphere->setDrawType(GL_PATCHES);
+    Mesh * mysphere = Geometry::sphere(attributes, 11.0f, 100, 50);
+    mysphere->setDrawType(GL_PATCHES);
     Mesh * cube = Geometry::cube(attributes);
     cube->setDrawType(GL_PATCHES);
     Mesh * tetrahedron = Geometry::tetrahedron(attributes);
@@ -40,6 +43,8 @@ public:
     MengerSponge * sponge = new MengerSponge(attributes, 3);
     Mesh * spongeMesh = sponge->getMesh();
     spongeMesh->setDrawType(GL_POINTS);
+
+    delete mysphere, cube, tetrahedron, plane, stars, spiral, icosahedron, monkey, spongeMesh;
   }
 };
 
