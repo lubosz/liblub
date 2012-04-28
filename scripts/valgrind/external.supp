@@ -1,0 +1,41 @@
+{
+   QtCore
+   Memcheck:Leak
+   fun:_Znwm
+   obj:/usr/lib/libQtCore.so*
+   ...
+   fun:main
+}
+{
+   LibGL malloc
+   Memcheck:Leak
+   fun:malloc
+   ...
+   obj:/usr/lib/libGL*
+   ...
+}
+
+{
+   LibGL calloc
+   Memcheck:Leak
+   fun:calloc
+   ...
+   obj:/usr/lib/libGL.so*
+   ...
+}
+
+{
+   XCB
+   Memcheck:Leak
+   fun:malloc
+   obj:/usr/lib/libxcb.so.1.1.0
+   ...
+   fun:main
+}
+
+{
+   Assimp
+   Memcheck:Leak
+   ...
+   obj:/usr/lib/libassimp.so.2.0.0
+}
