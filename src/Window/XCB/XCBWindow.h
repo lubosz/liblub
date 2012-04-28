@@ -62,7 +62,7 @@ private:
 
 public:
   XCBWindow();
-  ~XCBWindow();
+  virtual ~XCBWindow();
   void updateWindowTitle();
   void init(string title);
   void swapBuffers();
