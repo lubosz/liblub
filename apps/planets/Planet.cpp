@@ -75,7 +75,7 @@ void Planet::draw() {
 
 void Planet::setType(int type) {
   LogDebug << "Set type" << type;
-  this->type = (PlanetType)type;
+  this->type = static_cast<PlanetType>(type);
   updateGround();
 }
 
