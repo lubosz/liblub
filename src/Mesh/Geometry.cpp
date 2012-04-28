@@ -6,6 +6,8 @@
  */
 #include <math.h>
 #include <vector>
+#include <random>
+#include <functional>
 #include "Mesh/Geometry.h"
 #include "common/Qt3D.h"
 #include "System/Logger.h"
@@ -168,39 +170,51 @@ Mesh * Geometry::icosahedron(const QList<string> & attributes) {
   return mesh;
 }
 
-float Geometry::randomize(float density, float randomness) {
-#ifndef LIBLUB_WINDOWS
-    unsigned seed;
-    float randomValue = 1 / static_cast<float>((rand_r(&seed) % 20) + 1);
-    return density + (density * randomValue * randomness);
-#else
-    return density*randomness;
-#endif
-}
-
-Mesh * Geometry::stars(const QList<string> & attributes, vector<float> & resolution, float density,
-    float randomness, float colorIntensity) {
+Mesh * Geometry::stars(const QList<string> & attributes, const QVector3D & resolution, const float &density,
+    const float &randomness, const float &colorIntensity) {
 
   Mesh * mesh = new Mesh(attributes);
   unsigned i = 0;
-#ifndef LIBLUB_WINDOWS
-  srand(time(NULL));
-#endif
-  for (float x = 0; x < resolution.at(0); x += randomize(density, randomness)) {
-    for (float y = 0; y < resolution.at(1); y += randomize(density, randomness)) {
-      for (float z = 0; z < resolution.at(2); z += randomize(density, randomness)) {
-        mesh->vertex("position",x, y, z);
-        mesh->vertex("color",
-            static_cast<float> (static_cast<int> (x * colorIntensity) % 255)
-                / 256,
-            static_cast<float> (static_cast<int> (y * colorIntensity) % 255)
-                / 256,
-            static_cast<float> (static_cast<int> (z * colorIntensity) % 255)
-                / 256);
+
+  //std::uniform_int_distribution<int> distribution(0, resolution.x());
+  std::exponential_distribution<> distribution(1);
+
+  std::random_device rd;
+  std::mt19937 engine(rd());
+
+  LogDebug << "Density: " << density
+          << "Resolution: " << resolution.x() << resolution.y() << resolution.z()
+          << "Randomness: " << randomness
+          << "Color Intensity " << colorIntensity;
+
+  for(float x = 0; x < resolution.x(); x++) {
+    for(float y = 0; y < resolution.y(); y++) {
+      for(float z = 0; z < resolution.z(); z++) {
+
+        float vecX = distribution(engine) * resolution.x() / 10;
+        float vecY = distribution(engine) * resolution.x() / 10;
+        float vecZ = distribution(engine) * resolution.x() / 10;
+
+        mesh->vertex("position", vecX, vecY, vecZ);
+        mesh->vertex("position", vecX, -vecY, vecZ);
+        mesh->vertex("position", vecX, vecY, -vecZ);
+        mesh->vertex("position", vecX, -vecY, -vecZ);
+
+        mesh->vertex("position", -vecX, vecY, vecZ);
+        mesh->vertex("position", -vecX, -vecY, vecZ);
+        mesh->vertex("position", -vecX, vecY, -vecZ);
+        mesh->vertex("position", -vecX, -vecY, -vecZ);
+
+        for (unsigned colors = 0; colors < 8; colors++)
+            mesh->vertex("color",
+                vecX * colorIntensity / 256,
+                vecY * colorIntensity / 256,
+                vecZ * colorIntensity/ 256);
+        i++;
       }
     }
   }
-  LogInfo << i << "stars generated";
+  LogDebug << i << "stars generated";
   mesh->init();
   mesh->setDrawType(GL_POINTS);
   return mesh;

@@ -146,10 +146,11 @@ void SceneLoader::appendMesh(const QDomElement & meshNode) {
           QList<string> attributes;
           attributes.push_back("color");
           float resolution = meshNode.attribute("resolution").toFloat();
-          vector<float> resolutionvec = { resolution, resolution, resolution };
+          QVector3D resolutionVec =
+                  QVector3D(resolution, resolution, resolution);
             mesh = Geometry::stars(
                 attributes,
-                    resolutionvec,
+                    resolutionVec,
                     meshNode.attribute("density").toFloat(),
                     meshNode.attribute("randomness").toFloat(),
                     meshNode.attribute("colorIntensity").toFloat());
