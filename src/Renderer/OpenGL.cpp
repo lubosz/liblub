@@ -201,5 +201,5 @@ void OpenGL::checkGlError(const char* file, int line) {
 }
 
 void OpenGL::setContextCreated(bool contextCreated) {
-    isContextCreated = true;
+    isContextCreated = contextCreated;
 }
