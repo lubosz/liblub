@@ -20,6 +20,7 @@ public:
     QImage * glow = ProcTextures::makeGlow(size, 1.0f, 1.0f);
     TextureQImage(glow, "qimage");
     CubeTextureFile("cubemaps/morning", "cube");
+    delete glow;
   }
 };
 

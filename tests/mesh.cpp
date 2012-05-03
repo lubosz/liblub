@@ -17,17 +17,12 @@ public:
     Config::Instance().load("config.xml");
     XCBWindow * window  = new XCBWindow();
 
-    QList<string> attributes;
-    attributes.push_back("color");
-    attributes.push_back("normal");
-    attributes.push_back("tangent");
-    attributes.push_back("bitangent");
-    attributes.push_back("uv");
+    QList<string> attributes = QList<string>() << "color";
+//    attributes << "color" << "normal" << "tangent" << "bitangent" << "uv";
 
     Mesh * mysphere = Geometry::sphere(attributes, 11.0f, 100, 50);
     mysphere->setDrawType(GL_PATCHES);
     delete mysphere;
-
     Mesh * cube = Geometry::cube(attributes);
     cube->setDrawType(GL_PATCHES);
     delete cube;
@@ -57,10 +52,12 @@ public:
     monkey->setDrawType(GL_POINTS);
     delete monkey;
 
-    MengerSponge * sponge = new MengerSponge(attributes, 3);
+    MengerSponge * sponge = new MengerSponge(attributes, 1);
     Mesh * spongeMesh = sponge->getMesh();
     spongeMesh->setDrawType(GL_POINTS);
     delete spongeMesh;
+    delete sponge;
+    attributes.clear();
 
     delete window;
   }

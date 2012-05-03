@@ -22,6 +22,7 @@ public:
             glGenVertexArrays(1, &vao);
             LogDebug << "Generating Vertex Array Object #" << vao;
             glError;
+            glDeleteVertexArrays(1, &vao);
       }
 
       delete window;

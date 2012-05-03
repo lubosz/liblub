@@ -1,32 +1,40 @@
 #include <cppunit/TestCase.h>
- #include <cppunit/TestListener.h>
- #include <cppunit/Test.h>
-#include <QApplication>
+
+#include "Material/Textures.h"
+#include "Material/ProcTextures.h"
 #include "System/Config.h"
 
-#include "System/GUI.h"
-
-#include <iostream>
-
-class TextTest: public CppUnit::TestCase {
+class TextureTest: public CppUnit::TestCase {
 public:
-  TextTest(std::string name) :
+  TextureTest(std::string name) :
     CppUnit::TestCase(name) {
   }
 
   void runTest() {
-      Config::Instance().load("config.xml");
-    GUI gui;
-//    QImage * image = gui.drawText("Heloww!");
-//    image->save("foo.png");
+    QImage image(800,800);
+    QPainter fontPainter(image);
+    //draw font
+    fontPainter.setRenderHint(QPainter::Antialiasing, true);
+    fontPainter.setRenderHint(QPainter::TextAntialiasing, true);
+    fontPainter.setRenderHint(QPainter::SmoothPixmapTransform, true);
+    fontPainter.setFont(QFont("Ubuntu", 24));
+    fontPainter.setLayoutDirection(Qt::RightToLeft);
+    fontPainter.setPen(Qt::white);
+
+    string text = "fooo";
+
+    fontPainter.drawText(drawBox, Qt::AlignLeft, QString::fromStdString(text));
+    fontPainter.end();
+
   }
 };
 
-int main(int argc, char *argv[]) {
-  QApplication app(argc, argv);
-  TextTest foo("bar");
-  foo.runTest();
+int main() {
+  TextureTest foo2("bar");
+  foo2.runTest();
 }
+
+
 
 
 
