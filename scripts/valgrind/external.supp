@@ -1,41 +1,224 @@
 {
-   QtCore
+   libGL
+   Memcheck:Leak
+   fun:malloc
+   obj:/usr/lib/libGL.so.295.40
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+}
+{
+   QFile
    Memcheck:Leak
    fun:_Znwm
-   obj:/usr/lib/libQtCore.so*
    ...
-   fun:main
+   obj:/usr/lib/libQtCore.so.4.8.1
+   fun:_ZN7QObjectC1ER14QObjectPrivatePS_
+   fun:_ZN9QIODeviceC1ER16QIODevicePrivateP7QObject
+   fun:_ZN5QFileC1ERK7QString
+   fun:_ZN6Config4loadERK7QString
+   ...
 }
 {
-   LibGL malloc
+   XextCreateExtension
    Memcheck:Leak
    fun:malloc
+   fun:XextCreateExtension
    ...
-   obj:/usr/lib/libGL*
-   ...
+   obj:/usr/lib/libGL.so.295.40
+   obj:*
+   obj:/usr/lib/libGL.so.295.40
+   obj:*
 }
-
 {
-   LibGL calloc
+   libGL calloc dlsym
    Memcheck:Leak
    fun:calloc
-   ...
-   obj:/usr/lib/libGL.so*
-   ...
+   obj:/lib/libdl-2.15.so
+   fun:dlsym
+   obj:/usr/lib/libGL.so.295.40
+   obj:/usr/lib/libGL.so.295.40
+   obj:*
+   obj:/usr/lib/libGL.so.295.40
 }
-
 {
-   XCB
+   Assimp Importer
    Memcheck:Leak
-   fun:malloc
-   obj:/usr/lib/libxcb.so.1.1.0
-   ...
-   fun:main
-}
-
-{
-   Assimp
-   Memcheck:Leak
+   fun:_Znwm
    ...
    obj:/usr/lib/libassimp.so.2.0.0
+   fun:_ZN6Assimp8Importer8ReadFileEPKcj
+   ...
+}
+{
+   Assimp Blender
+   Memcheck:Leak
+   fun:_Znwm
+   fun:_ZNSt6vectorIN6Assimp7Blender*
+   obj:/usr/lib/libassimp.so.2.0.0
+   ...
+   obj:/usr/lib/libassimp.so.2.0.0
+}
+{
+   Just Assimp
+   Memcheck:Leak
+   fun:_Znwm
+   obj:/usr/lib/libassimp.so.2.0.0
+   ...
+   obj:/usr/lib/libassimp.so.2.0.0
+}
+{
+   Assimp Blender Material
+   Memcheck:Leak
+   fun:_Znwm
+   fun:_ZNSt6vectorIN5boost10shared_ptrIN6Assimp7Blender8Material*
+   obj:/usr/lib/libassimp.so.2.0.0
+   ...
+   obj:/usr/lib/libassimp.so.2.0.0
+}
+
+{
+   grantlee QPluginLoader
+   Memcheck:Leak
+   fun:_Znwm
+   fun:_Z5qrandv
+   fun:_ZN8QMapData11node_createEPPNS_4NodeEii
+   obj:/usr/lib/libQtCore.so.4.8.1
+   obj:/usr/lib/libQtCore.so.4.8.1
+   obj:/usr/lib/libQtCore.so.4.8.1
+   fun:_ZNK9QSettings5valueERK7QStringRK8QVariant
+   obj:/usr/lib/libQtCore.so.4.8.1
+   fun:_ZN13QPluginLoader4loadEv
+   fun:_ZN13QPluginLoader8instanceEv
+   obj:/usr/lib/libgrantlee_core.so.0.2.0
+   fun:_ZN8Grantlee6Engine20loadDefaultLibrariesEv
+}
+
+{
+   grantlee QFileInfo
+   Memcheck:Leak
+   fun:malloc
+   fun:_ZN7QString7reallocEi
+   obj:/usr/lib/libQtCore.so.4.8.1
+   obj:/usr/lib/libQtCore.so.4.8.1
+   obj:/usr/lib/libQtCore.so.4.8.1
+   fun:_ZNK9QFileInfo17canonicalFilePathEv
+   fun:_ZN13QPluginLoader11setFileNameERK7QString
+   fun:_ZN13QPluginLoaderC1ERK7QStringP7QObject
+   obj:/usr/lib/libgrantlee_core.so.0.2.0
+   fun:_ZN8Grantlee6Engine20loadDefaultLibrariesEv
+   fun:_ZN8Grantlee6ParserC1ERK5QListINS_5TokenEEP7QObject
+   obj:/usr/lib/libgrantlee_core.so.0.2.0
+}
+
+{
+   grantlee loadByName
+   Memcheck:Leak
+   fun:_Znwm
+   ...
+   obj:/usr/lib/libgrantlee_core.so.0.2.0
+   ...
+   fun:_ZNK8Grantlee6Engine10loadByNameERK7QString
+   ...
+}
+
+{
+   grantlee newTemplate
+   Memcheck:Leak
+   fun:malloc
+   fun:_ZN7QStringC1EiN2Qt14InitializationE
+   obj:/usr/lib/libQtCore.so.4.8.1
+   obj:/usr/lib/libQtCore.so.4.8.1
+   obj:/usr/lib/libQtCore.so.4.8.1
+   fun:_ZN13QPluginLoader8instanceEv
+   obj:/usr/lib/libgrantlee_core.so.0.2.0
+   fun:_ZN8Grantlee6Engine20loadDefaultLibrariesEv
+   fun:_ZN8Grantlee6ParserC1ERK5QListINS_5TokenEEP7QObject
+   obj:/usr/lib/libgrantlee_core.so.0.2.0
+   fun:_ZN8Grantlee12TemplateImpl10setContentERK7QString
+   fun:_ZNK8Grantlee6Engine11newTemplateERK7QStringS3_
+}
+{
+   grantlee setContent
+   Memcheck:Leak
+   fun:realloc
+   fun:_ZN7QString7reallocEi
+   fun:_ZN7QString6appendERKS_
+   fun:_ZNK9QDateTime8toStringEN2Qt10DateFormatE
+   obj:/usr/lib/libQtCore.so.4.8.1
+   fun:_ZN13QPluginLoader4loadEv
+   fun:_ZN13QPluginLoader8instanceEv
+   obj:/usr/lib/libgrantlee_core.so.0.2.0
+   fun:_ZN8Grantlee6Engine20loadDefaultLibrariesEv
+   fun:_ZN8Grantlee6ParserC1ERK5QListINS_5TokenEEP7QObject
+   obj:/usr/lib/libgrantlee_core.so.0.2.0
+   fun:_ZN8Grantlee12TemplateImpl10setContentERK7QString
+}
+
+{
+   some libGL leak malloc
+   Memcheck:Leak
+   fun:malloc
+   obj:/usr/lib/libGL.so.295.40
+   ...
+   obj:*
+}
+
+{
+   QPainter Cond
+   Memcheck:Cond
+   ...
+   obj:/usr/lib/libQtGui.so.4.8.1
+   fun:_ZN8QPainter8fillPathERK12QPainterPathRK6QBrush
+   fun:_ZN12QPaintEngine12drawTextItemERK7QPointFRK9QTextItem
+   obj:/usr/lib/libQtGui.so.4.8.1
+   fun:_ZN8QPainter12drawTextItemERK7QPointFRK9QTextItem
+   fun:_ZNK9QTextLine4drawEP8QPainterRK7QPointFPKN11QTextLayout11FormatRangeE
+   ...
+}
+
+
+{
+   png_write_row Cond
+   Memcheck:Cond
+   obj:/usr/lib/libpng15.so.15.10.0
+   fun:png_write_row
+   fun:png_write_image
+   obj:/usr/lib/libQtGui.so.4.8.1
+   obj:/usr/lib/libQtGui.so.4.8.1
+   fun:_ZN12QImageWriter5writeERK6QImage
+   fun:_ZNK6QImage4saveERK7QStringPKci
+   fun:_ZN11TextureTest7runTestEv
+   fun:main
+}
+{
+   libpng15 Value8
+   Memcheck:Value8
+   fun:crc32
+   obj:/usr/lib/libpng15.so.15.10.0
+   obj:/usr/lib/libpng15.so.15.10.0
+   obj:/usr/lib/libpng15.so.15.10.0
+   obj:/usr/lib/libpng15.so.15.10.0
+   obj:/usr/lib/libpng15.so.15.10.0
+   fun:png_write_row
+   fun:png_write_image
+   obj:/usr/lib/libQtGui.so.4.8.1
+   obj:/usr/lib/libQtGui.so.4.8.1
+   fun:_ZN12QImageWriter5writeERK6QImage
+   fun:_ZNK6QImage4saveERK7QStringPKci
+}
+{
+   __write_nocancel Param
+   Memcheck:Param
+   write(buf)
+   fun:__write_nocancel
+   obj:/usr/lib/libQtCore.so.4.8.1
+   fun:_ZN5QFile5flushEv
+   fun:_ZN12QImageWriter5writeERK6QImage
+   fun:_ZNK6QImage4saveERK7QStringPKci
+   fun:_ZN11TextureTest7runTestEv
+   fun:main
 }

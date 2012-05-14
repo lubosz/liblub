@@ -1,0 +1,10 @@
+{
+   QList<string> leak
+   Memcheck:Leak
+   fun:_Znwm
+   fun:_ZN5QListISsE14node_constructEPNS0_4NodeERKSs
+   fun:_ZN5QListISsE6appendERKSs
+   fun:_ZN5QListISsE9push_backERKSs
+   ...
+   fun:main
+}

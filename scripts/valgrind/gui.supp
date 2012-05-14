@@ -1,0 +1,162 @@
+{
+   gobject
+   Memcheck:Leak
+   ...
+   obj:/usr/lib/libgobject-2.0.so.0.3200.1
+   ...
+}
+
+{
+   fontconfig Addr4
+   Memcheck:Addr4
+   ...
+   obj:/usr/lib/libfontconfig.so.1.4.4
+   ...
+}
+
+{
+   QtGui Addr4
+   Memcheck:Addr4
+   obj:/usr/lib/libQtGui.so.4.8.1
+   ...
+}
+
+{
+   QtGui Leak malloc
+   Memcheck:Leak
+   ...
+   obj:/usr/lib/libQtGui.so.4.8.1
+   ...
+}
+
+{
+   fontconfig Leak
+   Memcheck:Leak
+   ...
+   obj:/usr/lib/libfontconfig.so.1.4.4
+   ...
+}
+
+{
+   cairo leak malloc
+   Memcheck:Leak
+   fun:malloc
+   obj:/usr/lib/libcairo.so.2.11000.2
+   ...
+}
+
+{
+   glib
+   Memcheck:Leak
+   ...
+   obj:/usr/lib/libglib-2.0.so.0.3200.1
+   ...
+}
+
+{
+   Xlib malloc
+   Memcheck:Leak
+   fun:malloc
+   ...
+   obj:/usr/lib/libX11.so.6.3.0
+   ...
+}
+
+{
+   libdl-2
+   Memcheck:Leak
+   ...
+   obj:/lib/libdl-2.15.so
+   ...
+}
+{
+   libcairo
+   Memcheck:Leak
+   ...
+   obj:/usr/lib/libcairo.so.2.11000.2
+   ...
+}
+{
+   libdbus-1
+   Memcheck:Leak
+   ...
+   obj:/usr/lib/libdbus-1.so.3.5.9
+   ...
+}
+{
+   libfreetype
+   Memcheck:Leak
+   ...
+   obj:/usr/lib/libfreetype.so.6.8.1
+   ...
+}
+{
+   libgconf-2
+   Memcheck:Leak
+   ...
+   obj:/usr/lib/libgconf-2.so.4.1.5
+   ...
+}
+{
+   libgtk-x11-2
+   Memcheck:Leak
+   ...
+   obj:/usr/lib/libgtk-x11-2.0.so.0.2400.10
+   ...
+}
+{
+   libpango-1
+   Memcheck:Leak
+   ...
+   obj:/usr/lib/libpango-1.0.so.0.3000.0
+   ...
+}
+{
+   libpangocairo-1
+   Memcheck:Leak
+   ...
+   obj:/usr/lib/libpangocairo-1.0.so.0.3000.0
+   ...
+}
+{
+   libpangoft2-1
+   Memcheck:Leak
+   ...
+   obj:/usr/lib/libpangoft2-1.0.so.0.3000.0
+   ...
+}
+{
+   libpixman-1
+   Memcheck:Leak
+   ...
+   obj:/usr/lib/libpixman-1.so.0.24.4
+   ...
+}
+{
+   libQtCore
+   Memcheck:Leak
+   ...
+   obj:/usr/lib/libQtCore.so.4.8.1
+   ...
+}
+{
+   libX11
+   Memcheck:Leak
+   ...
+   obj:/usr/lib/libX11.so.6.3.0
+   ...
+}
+{
+   libXext
+   Memcheck:Leak
+   ...
+   obj:/usr/lib/libXext.so.6.4.0
+   ...
+}
+{
+   libXrandr
+   Memcheck:Leak
+   ...
+   obj:/usr/lib/libXrandr.so.2.2.0
+   ...
+}
