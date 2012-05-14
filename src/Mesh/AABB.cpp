@@ -16,7 +16,7 @@ AABB::AABB(QVector3D min, QVector3D max) {
 }
 
 AABB::~AABB() {
-  // TODO Auto-generated destructor stub
+  delete mesh;
 }
 
 const QVector3D AABB::getCenter() {

@@ -16,12 +16,12 @@ using std::string;
 typedef char GLchar;
 class Shader {
  public:
-	Shader(string fileName, GLenum type, bool useTemplate);
-	Shader(string fileName, GLenum type, const vector<string> & defines);
+    Shader(const string &fileName, GLenum type, bool useTemplate);
+    Shader(const string &fileName, GLenum type, const vector<string> & defines);
 	GLuint getHandle() const;
 	virtual ~Shader();
-	string shaderSource;
-	string fileName;
+    string shaderSource;
+    string fileName;
  private:
 	GLuint handle;
 

@@ -22,10 +22,14 @@
 using std::ifstream;
 using std::istreambuf_iterator;
 
-Shader::Shader(string fileName, GLenum type, bool useTemplate) {
+Shader::Shader(const string & fileName, GLenum type, bool useTemplate) {
   LogDebug << "Creating Shader" << fileName;
   this->fileName = fileName;
   this->type = type;
+
+  shaderSource = "";
+
+  defines = vector<string>();
 
   if (useTemplate)
     loadTemplate();
@@ -34,11 +38,13 @@ Shader::Shader(string fileName, GLenum type, bool useTemplate) {
   compile();
 }
 
-Shader::Shader(string fileName, GLenum type, const vector<string> & defines) {
+Shader::Shader(const string &fileName, GLenum type, const vector<string> & defines) {
   LogDebug << "Creating Shader" << fileName;
   this->fileName = fileName;
   this->type = type;
   this->defines = defines;
+
+  shaderSource = "";
 
   loadSource();
   compile();
@@ -108,14 +114,14 @@ void Shader::printShaderInfoLog(GLuint shader) {
   int infologLen = 0;
   glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &infologLen);
   if (infologLen > 1) {
-    GLchar * infoLog = reinterpret_cast<GLchar*>(malloc(infologLen));
+    GLchar * infoLog = new GLchar[infologLen];
     if (infoLog == NULL) {
       LogError << "Could not allocate InfoLog buffer";
     }
     int charsWritten = 0;
     glGetShaderInfoLog(shader, infologLen, &charsWritten, infoLog);
     string shaderlog = infoLog;
-    free(infoLog);
+    delete[] infoLog;
     LogError << "Shader Log"<< shaderlog;
   } else {
     LogDebug << "Success";

@@ -22,8 +22,8 @@ ShaderProgram::ShaderProgram() {
 }
 
 ShaderProgram::~ShaderProgram() {
-    while (shaders.size() > 0) {
-        detachShader(shaders.back());
+    foreach (Shader* shader, shaders) {
+        detachShader(shader);
     }
 }
 
@@ -57,7 +57,7 @@ void ShaderProgram::printProgramInfoLog() {
   }
 }
 
-void ShaderProgram::attachShader(string fileName, GLenum type, bool useTemplate) {
+void ShaderProgram::attachShader(const string &fileName, GLenum type, bool useTemplate) {
     /* Attach our shaders to our program */
   Shader * shader = new Shader(fileName, type, useTemplate);
   shaders.push_back(shader);
@@ -65,7 +65,7 @@ void ShaderProgram::attachShader(string fileName, GLenum type, bool useTemplate)
 }
 
 void ShaderProgram::attachShader(
-        string fileName, GLenum type, const vector<string> & defines) {
+        const string &fileName, GLenum type, const vector<string> & defines) {
     /* Attach our shaders to our program */
   Shader * shader = new Shader(fileName, type, defines);
   shaders.push_back(shader);
@@ -81,32 +81,32 @@ void ShaderProgram::detachShader(Shader *shader) {
   delete shader;
 }
 
-void ShaderProgram::attachVertFrag(string file, bool useTemplate) {
+void ShaderProgram::attachVertFrag(const string &file, bool useTemplate) {
   attachShader(file + ".vert", GL_VERTEX_SHADER, useTemplate);
   attachShader(file + ".frag", GL_FRAGMENT_SHADER, useTemplate);
 }
 void ShaderProgram::attachVertFrag(
-        string file, const vector<string> & defines) {
+        const string &file, const vector<string> & defines) {
     attachShader(file + ".vert", GL_VERTEX_SHADER, defines);
     attachShader(file + ".frag", GL_FRAGMENT_SHADER, defines);
 }
 
-void ShaderProgram::attachVertGeom(string file, bool useTemplate) {
+void ShaderProgram::attachVertGeom(const string &file, bool useTemplate) {
   attachShader(file + ".vert", GL_VERTEX_SHADER, useTemplate);
   attachShader(file + ".geom", GL_GEOMETRY_SHADER, useTemplate);
 }
 
-void ShaderProgram::attachVertFragGeom(string file, bool useTemplate) {
+void ShaderProgram::attachVertFragGeom(const string &file, bool useTemplate) {
   attachShader(file + ".vert", GL_VERTEX_SHADER, useTemplate);
   attachShader(file + ".geom", GL_GEOMETRY_SHADER, useTemplate);
   attachShader(file + ".frag", GL_FRAGMENT_SHADER, useTemplate);
 }
 
-void ShaderProgram::bindAttrib(unsigned position, string name) {
+void ShaderProgram::bindAttrib(unsigned position, const string &name) {
   glBindAttribLocation(handle, position, name.c_str());
 }
 
-void ShaderProgram::bindAttribIfUnbound(string name) {
+void ShaderProgram::bindAttribIfUnbound(const string &name) {
   foreach(string attrib, boundAttribs)
         if (attrib == name) return;
   LogDebug << "Binding " + name;
@@ -116,7 +116,7 @@ void ShaderProgram::bindAttribIfUnbound(string name) {
 
 
 
-void ShaderProgram::bindAttrib(string name) {
+void ShaderProgram::bindAttrib(const string &name) {
   LogDebug << "Binding Shader Attribute" << name << " #"<< attribCount;
   bindAttrib(attribCount, name);
   attribCount++;
@@ -146,7 +146,7 @@ void ShaderProgram::bindVertexAttributes(const QList<string> & attributes) {
 }
 
 template<typename T>
-void ShaderProgram::initUniformsByType(vector<Uniform<T> > & uniforms) {
+void ShaderProgram::initUniformsByType(const vector<Uniform<T> > & uniforms) {
   foreach(Uniform<T> uniform, uniforms) {
     stringstream log;
       log << "Uniform: " + uniform.name + ": ";
@@ -189,17 +189,17 @@ void ShaderProgram::use() {
   glError;
 }
 
-void ShaderProgram::setUniform(string name, const QVector4D& vector) {
+void ShaderProgram::setUniform(const string &name, const QVector4D& vector) {
   glUniform4f(glGetUniformLocation(handle, name.c_str()),
           vector.x(), vector.y(), vector.z(), vector.w());
 }
 
-void ShaderProgram::setUniform(string name, const QVector3D& vector) {
+void ShaderProgram::setUniform(const string &name, const QVector3D& vector) {
   glUniform3f(glGetUniformLocation(handle, name.c_str()),
           vector.x(), vector.y(), vector.z());
 }
 
-void ShaderProgram::setUniform(string name, const QVector2D& vector) {
+void ShaderProgram::setUniform(const string &name, const QVector2D& vector) {
   glUniform2f(glGetUniformLocation(handle, name.c_str()),
           vector.x(), vector.y());
 }
@@ -208,7 +208,7 @@ GLuint ShaderProgram::getHandle() const {
   return handle;
 }
 
-void ShaderProgram::setUniform(string name, const QMatrix3x3 & matrix) {
+void ShaderProgram::setUniform(const string &name, const QMatrix3x3 & matrix) {
     GLfloat mat[9];
     const qreal *data = matrix.constData();
     for (int i = 0; i < 9; ++i)
@@ -218,7 +218,7 @@ void ShaderProgram::setUniform(string name, const QMatrix3x3 & matrix) {
       glGetUniformLocation(handle, name.c_str()), 1, GL_FALSE, mat);
 }
 
-void ShaderProgram::setUniform(string name, const QMatrix4x4 & matrix) {
+void ShaderProgram::setUniform(const string &name, const QMatrix4x4 & matrix) {
     GLfloat mat[16];
     const qreal *data = matrix.constData();
     for (int i = 0; i < 16; ++i)
@@ -235,15 +235,15 @@ void ShaderProgram::setUniform(string name, const QMatrix4x4 & matrix) {
   */
 }
 
-void ShaderProgram::setUniform(string name, float value) {
+void ShaderProgram::setUniform(const string &name, float value) {
   glUniform1f(glGetUniformLocation(handle, name.c_str()), value);
 }
 
-void ShaderProgram::setUniform(string name, qreal value) {
+void ShaderProgram::setUniform(const string &name, qreal value) {
     setUniform(name, static_cast<float>(value));
 }
 
-void ShaderProgram::setUniform(string name, int value) {
+void ShaderProgram::setUniform(const string &name, int value) {
   glUniform1i(glGetUniformLocation(handle, name.c_str()), value);
 }
 
@@ -254,7 +254,7 @@ void ShaderProgram::translateUniformf(unsigned id, const vector<float> & values)
 	uniforms[id].init(handle);
 }
 #ifdef USE_OPENGL3
-void ShaderProgram::bindUniformBuffer(string name, GLuint bindIndex, GLuint bufferHandle) {
+void ShaderProgram::bindUniformBuffer(const string &name, GLuint bindIndex, GLuint bufferHandle) {
   glBindBufferBase(GL_UNIFORM_BUFFER, bindIndex, bufferHandle);
   GLuint blockIndex = glGetUniformBlockIndex(handle, name.c_str());
   if(blockIndex == GL_INVALID_INDEX)
@@ -272,10 +272,10 @@ void ShaderProgram::addTextures(const vector<Texture *> &addTextures) {
     textures.push_back(texture);
 }
 
-void ShaderProgram::addTexture(string file, string name) {
+void ShaderProgram::addTexture(const string &file, const string &name) {
     textures.push_back(new TextureFile(file, name));
 }
-void ShaderProgram::addTextureCube(string file, string name) {
+void ShaderProgram::addTextureCube(const string &file, const string &name) {
     textures.push_back(new CubeTextureFile(file, name));
 }
 

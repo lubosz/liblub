@@ -27,6 +27,9 @@ class SimpleProgram: public ShaderProgram {
     init(attributes);
     samplerUniforms();
   }
+  virtual ~SimpleProgram(){
+
+  }
 };
 
 class TemplateProgram: public ShaderProgram {

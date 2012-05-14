@@ -22,19 +22,19 @@ class ShaderProgram {
 public:
     ShaderProgram();
     virtual ~ShaderProgram();
-    void attachShader(string fileName, GLenum type, bool useTemplate);
-    void attachShader(string fileName, GLenum type,
+    void attachShader(const string &fileName, GLenum type, bool useTemplate);
+    void attachShader(const string &fileName, GLenum type,
             const vector<string> & defines);
 
-    void attachVertFrag(string file, bool useTemplate);
-    void attachVertFrag(string file, const vector<string> & defines);
-    void attachVertGeom(string file, bool useTemplate);
-    void attachVertFragGeom(string file, bool useTemplate);
+    void attachVertFrag(const string &file, bool useTemplate);
+    void attachVertFrag(const string &file, const vector<string> & defines);
+    void attachVertGeom(const string &file, bool useTemplate);
+    void attachVertFragGeom(const string &file, bool useTemplate);
 
     void use();
-    void bindAttribIfUnbound(string name);
-    void bindAttrib(string name);
-    void bindAttrib(unsigned position, string name);
+    void bindAttribIfUnbound(const string &name);
+    void bindAttrib(const string &name);
+    void bindAttrib(unsigned position, const string &name);
     void bindVertexAttributes(const QList<string> & attributes);
     void init(const QList<string> & attributes);
     void linkAndUse();
@@ -44,20 +44,20 @@ public:
     vector<Uniform<float> > uniforms;
     vector<Uniform<int> > uniformsi;
     vector<UniformBuffer> uniformBuffers;
-    void setUniform(string name, int value);
-    void setUniform(string name, float value);
-    void setUniform(string name, qreal value);
-    void setUniform(string name, const QMatrix3x3 & matrix);
-    void setUniform(string name, const QMatrix4x4 & matrix);
-    void setUniform(string name, const QVector2D & vector);
-    void setUniform(string name, const QVector3D & vector);
-    void setUniform(string name, const QVector4D & vector);
+    void setUniform(const string &name, int value);
+    void setUniform(const string &name, float value);
+    void setUniform(const string &name, qreal value);
+    void setUniform(const string &name, const QMatrix3x3 & matrix);
+    void setUniform(const string &name, const QMatrix4x4 & matrix);
+    void setUniform(const string &name, const QVector2D & vector);
+    void setUniform(const string &name, const QVector3D & vector);
+    void setUniform(const string &name, const QVector4D & vector);
 
     void translateUniformf(unsigned id, const vector<float> & values);
 
     void initUniforms();
     #ifdef USE_OPENGL3
-    void bindUniformBuffer(string name, GLuint bindIndex, GLuint bufferHandle);
+    void bindUniformBuffer(const string &name, GLuint bindIndex, GLuint bufferHandle);
     #endif
     void samplerUniforms();
     void addTexture(Texture * texture);
@@ -72,14 +72,14 @@ public:
     void activateTextures();
 protected:
 
-    void addTexture(string file, string name);
-    void addTextureCube(string file, string name);
+    void addTexture(const string &file, const string &name);
+    void addTextureCube(const string &file, const string &name);
 
 private:
     /* This is a handle to the shader program */
     GLuint handle;
     template<typename T> void
-            initUniformsByType(vector<Uniform<T> > & uniforms);
+            initUniformsByType(const vector<Uniform<T> > & uniforms);
     vector<Shader*> shaders;
     vector<string> boundAttribs;
     unsigned attribCount;

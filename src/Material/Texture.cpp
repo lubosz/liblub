@@ -63,6 +63,7 @@ void Texture::loadFile(GLenum target, const string & path) {
   //TODO: Qt loads image with wrong pixel order
   *image = image->mirrored(false, true);
   loadQImage(target, image);
+  delete image;
 }
 
 void Texture::loadQImage(QImage * image) {

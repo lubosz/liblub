@@ -90,5 +90,7 @@ Mesh * MeshLoader::load(const QList<string> & attributes, string file) {
     mesh->setDrawType(GL_TRIANGLES);
     mesh->boundingBox = new AABB(boundingBoxMin,boundingBoxMax);
     glError;
+//    delete assMesh;
+    importer.FreeScene();
     return mesh;
 }
