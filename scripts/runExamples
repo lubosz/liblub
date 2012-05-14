@@ -1,21 +1,95 @@
 #!/usr/bin/python
 #coding: UTF-8
-import os, subprocess
+import os, subprocess, sys
+from optparse import OptionParser
 
 blacklist_demos = ["depth", "ssao", "load", "posteffect", "multilight", "tesselation"]
 blacklist_scenes = ["ash", "common", "csm", "multilight", "nice", "terrain", "ocean"]
+blacklist_tests = []
 
-def getFiles(path):
-  files = os.listdir(path)
-  files.sort()
-  return files
+class ExampleRunner:
 
-for demo in getFiles("bin"):
-  if demo not in blacklist_demos:
-    print("Running %s demo" % demo)
-    subprocess.call(['bin/%s'% demo])
+  def __init__(self):
+    self.pausing = False
+    self.valgrind = False
+
+  def waitForInput(self):
+    if self.pausing:
+      print("[Press Enter to Continue]")
+      sys.stdin.read(1)
+      
+  def getFiles(self, path):
+    files = os.listdir(path)
+    files.sort()
+    return files
     
-for scene in getFiles("media/scenes"):
-  scene = scene.replace(".xml", "")
-  if scene not in blacklist_scenes:
-      subprocess.call(['bin/load', scene])
+  def run(self, command):
+    print("Running", command)
+    
+    if self.valgrind:
+      command = ["sh", "scripts/valgrindStats.sh", command]
+    print(command)
+    subprocess.call(command)
+    self.waitForInput()
+
+  def runApps(self):
+    for demo in self.getFiles("bin"):
+      if demo not in blacklist_demos:
+        self.run('bin/%s' % demo)
+        
+  def runScenes(self):    
+    for scene in self.getFiles("media/scenes"):
+      if not "~" in scene:
+        scene = scene.replace(".xml", "")
+        if scene not in blacklist_scenes:
+          self.run(['bin/load', scene])
+
+  def runTests(self):    
+    for test in self.getFiles("test"):
+        if test not in blacklist_tests:
+            self.run('test/%s' % test)
+            
+  def start(self):
+    parser = OptionParser()
+    #parser.add_option("-a", "--all", dest="filename",
+    #                  help="Run all", metavar="FILE")
+    parser.add_option("-a", "--all", action="store_true", dest="all", help="Run all")
+    parser.add_option("-e", "--examples", action="store_true", dest="examples", help="Run examples")
+    parser.add_option("-s", "--scenes", action="store_true", dest="scenes", help="Run scene files")
+    parser.add_option("-t", "--tests", action="store_true", dest="tests", help="Run tests")
+    parser.add_option("-p", "--pause", action="store_true", dest="pause", help="Pause after every test")
+    parser.add_option("-v", "--valgrind", action="store_true", dest="valgrind", help="Run in valgrind")
+
+    (options, args) = parser.parse_args()
+
+    if options.valgrind is not None:
+      self.valgrind = True
+      self.pausing = True
+
+    if options.pause is not None:
+      self.pausing = True
+
+    if options.all is not None:
+      options.examples = True
+      options.scenes = True
+      options.tests = True
+    if options.examples is not None:
+      self.runApps()
+    if options.scenes is not None:
+      self.runScenes()
+    if options.tests is not None:
+      self.runTests()
+ 
+    hasNeededOption = False
+    mandatories = ['all', 'examples', 'scenes', 'tests']
+    for m in mandatories:
+      if options.__dict__[m]:
+        hasNeededOption = True
+        
+    if not hasNeededOption:
+      print("A mandatory option is missing.")
+      parser.print_help()
+      exit(-1)
+
+foo = ExampleRunner()
+foo.start()
