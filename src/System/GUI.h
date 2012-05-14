@@ -20,8 +20,8 @@ class GUI {
 public:
   QMap<string,string> textLines;
   QImage * image;
-  Node * node;
   ShaderProgram * shader;
+  Mesh * mesh;
   QRectF textBox;
   QSize screenSize;
   QImage black;

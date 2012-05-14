@@ -35,7 +35,7 @@ TemplateEngine::TemplateEngine() {
 }
 
 TemplateEngine::~TemplateEngine() {
-  // TODO Auto-generated destructor stub
+  delete m_engine;
 }
 
 QString TemplateEngine::render(const string& file) {

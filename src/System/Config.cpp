@@ -77,7 +77,9 @@ void Config::load(const QString & fileName) {
         }
         document = document.nextSiblingElement();
     }
+
     initialized = true;
+    file.close();
 }
 
 void Config::appendOption(const QDomElement & optionNode) {

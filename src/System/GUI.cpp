@@ -24,11 +24,13 @@
 
 GUI::GUI() {
   textLines = QMap<string,string>();
-  QList<string> attributes;
+  QList<string> attributes = QList<string>();
   attributes.push_back("uv");
   shader = new SimpleProgram("Texture/font",attributes);
+  mesh = Geometry::plane(attributes, QRectF(0.5,0,0.5,1));
+  attributes.clear();
+//  attributes.~QList();
 
-  node = new Node("GUI", { 0, 0, 0 }, 1, Geometry::plane(attributes, QRectF(0.5,0,0.5,1)), shader);
   screenSize = QSize(480,600);
   textBox = QRectF(0,0,screenSize.width(), screenSize.height());
   image = new QImage(screenSize, QImage::Format_ARGB32);
@@ -41,10 +43,16 @@ GUI::GUI() {
 
   clear();
   drawBox = QRectF(50,200,screenSize.width()-100, screenSize.height()-100);
+
+  texture = nullptr;
 }
 
 GUI::~GUI() {
-  // TODO Auto-generated destructor stub
+    delete image;
+    delete mesh;
+    delete shader;
+    if (texture != nullptr)
+        delete texture;
 }
 void GUI::init() {
   addText("ascene", Scene::Instance().name);
@@ -88,7 +96,7 @@ void GUI::render() {
   fontPainter.setLayoutDirection(Qt::RightToLeft);
   fontPainter.setPen(Qt::white);
 
-  string text;
+  string text = "";
   foreach(string line, textLines) {
     text += line + "\n";
   }
@@ -110,7 +118,8 @@ void GUI::draw() {
   glEnable(GL_BLEND);
   shader->use();
   shader->setUniform("MVPMatrix",QMatrix4x4());
-  node->draw();
+  shader->activateAndBindTextures();
+  mesh->draw();
   glDisable(GL_BLEND);
   glError;
 }
