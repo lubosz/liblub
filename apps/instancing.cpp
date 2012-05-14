@@ -36,11 +36,17 @@
 class InstancingApp: public Application {
  public:
   ShaderProgram * shader;
+  TreeSponge * sponge;
+  Texture * texture;
 
   InstancingApp(int argc, char *argv[]) : Application(argc,argv) {
   }
 
-  ~InstancingApp() {}
+  ~InstancingApp() {
+      delete shader;
+      delete sponge;
+      delete texture;
+  }
 
   void scene() {
 //      glEnable(GL_BLEND);
@@ -57,7 +63,7 @@ class InstancingApp: public Application {
     shader = new TemplateProgram("instancing",attributes);
 //    sponge->initBuffers(material);
 
-    Texture * texture = new TextureFile("diamond.png", "diffuse");
+    texture = new TextureFile("diamond.png", "diffuse");
     texture->bind();
     texture->filterMinMag(GL_LINEAR_MIPMAP_LINEAR, GL_NEAREST);
     shader->addTexture(texture);
@@ -66,8 +72,7 @@ class InstancingApp: public Application {
 //    MengerSponge * meshSponge = new MengerSponge(attributes, 5);
 //    Node * sponge = new Node("sponge", { 0,0,0 }, 1, meshSponge->getMesh(), material);
 
-    TreeSponge * sponge = new TreeSponge(5, attributes);
-    sponge->setMaterial(shader);
+    TreeSponge * sponge = new TreeSponge(5, attributes, shader);
 
     SceneGraph::Instance().addNode(sponge);
   }
@@ -77,19 +82,19 @@ class InstancingApp: public Application {
     OnePass::draw();
   }
 
-  vector<QVector4D> * initPositionData(QVector3D translation) {
-        vector<QVector4D> * positionBufferData = new vector<QVector4D> ();
-        for (int x = 0; x < 16; x++) {
-            for (int y = 0; y < 16; y++) {
-                for (int z = 0; z < 16; z++) {
-                    positionBufferData->push_back(
-                            QVector4D(3 * x, 3 * y, 3 * z, 1)
-                                    + translation.toVector4D());
-                }
-            }
-        }
-        return positionBufferData;
-    }
+//  vector<QVector4D> * initPositionData(QVector3D translation) {
+//        vector<QVector4D> * positionBufferData = new vector<QVector4D> ();
+//        for (int x = 0; x < 16; x++) {
+//            for (int y = 0; y < 16; y++) {
+//                for (int z = 0; z < 16; z++) {
+//                    positionBufferData->push_back(
+//                            QVector4D(3 * x, 3 * y, 3 * z, 1)
+//                                    + translation.toVector4D());
+//                }
+//            }
+//        }
+//        return positionBufferData;
+//    }
 };
 
 int main(int argc, char *argv[]) {

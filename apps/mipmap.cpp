@@ -40,25 +40,33 @@
 class LoadApp: public Application {
  public:
 
-   ShaderProgram * perlinNoise;
+    Texture * groundTexture;
+    Node * plane;
+    Node * plane2;
 
   explicit LoadApp(int argc, char *argv[]) : Application(argc,argv) {
   }
 
-  ~LoadApp() {}
+  ~LoadApp() {
+        delete groundTexture;
+        delete plane;
+        delete plane2;
+    }
 
   void scene() {
     QList<string> attributes;
     attributes.push_back("uv");
 
-    ShaderProgram * zoomIn = new SimpleProgram("Texture/texture",attributes);
-    ShaderProgram * zoomOut = new SimpleProgram("Texture/texture",attributes);
-    Texture * groundTexture = new TextureFile("terrain/mud.jpg","diffuse");
+    ShaderProgram * zoomIn;
+    ShaderProgram * zoomOut;
+    zoomIn = new SimpleProgram("Texture/texture",attributes);
+    zoomOut = new SimpleProgram("Texture/texture",attributes);
+    groundTexture = new TextureFile("terrain/mud.jpg","diffuse");
     zoomIn->addTexture(groundTexture);
     zoomOut->addTexture(groundTexture);
 
-    Node * plane = new Node("Plane", { 10,8,-3 }, 10, Geometry::plane(attributes, QRectF(-1,-1,2,2)), zoomIn);
-    Node * plane2 = new Node("Plane", { -10,8,-3 }, 10, Geometry::plane(attributes, QRectF(-1,-1,2,2)), zoomOut);
+    plane = new Node("Plane", QVector3D(10,8,-3), 10, Geometry::plane(attributes, QRectF(-1,-1,2,2)), zoomIn);
+    plane2 = new Node("Plane", QVector3D(-10,8,-3), 10, Geometry::plane(attributes, QRectF(-1,-1,2,2)), zoomOut);
     plane->setRotation(QVector3D(-90,0,180));
     plane2->setRotation(QVector3D(-90,0,180));
     SceneGraph::Instance().addNode(plane);

@@ -34,15 +34,15 @@ class LoadApp: public Application {
   SceneLoader *sceneLoader;
 
   LoadApp(int argc, char *argv[]) : Application(argc,argv) {
-    if (argc != 2)
-      LogFatal << "NO SCENE SPECIFIED. Try; ./load test";
     fontOverlay = true;
     string sceneName = argv[1];
     QString sceneFile = QString::fromStdString(sceneName + ".xml");
     sceneLoader = new SceneLoader(sceneFile);
   }
 
-  ~LoadApp() {}
+  ~LoadApp() {
+    delete sceneLoader;
+  }
 
   void scene() {
     sceneLoader->load();
@@ -53,5 +53,8 @@ class LoadApp: public Application {
 };
 
 int main(int argc, char *argv[]) {
-    LoadApp(argc,argv).run();
+  if (argc != 2)
+    LogError << "NO SCENE SPECIFIED. Try; ./load test";
+  else
+    LoadApp app(argc,argv);
 }
