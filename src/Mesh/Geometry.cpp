@@ -205,11 +205,12 @@ Mesh * Geometry::stars(const QList<string> & attributes, const QVector3D & resol
         mesh->vertex("position", -vecX, vecY, -vecZ);
         mesh->vertex("position", -vecX, -vecY, -vecZ);
 
-        for (unsigned colors = 0; colors < 8; colors++)
+        // Mirror exponential distribution on all axes
+        for (unsigned octants = 0; octants < 8; octants++)
             mesh->vertex("color",
-                vecX * colorIntensity / 256,
-                vecY * colorIntensity / 256,
-                vecZ * colorIntensity/ 256);
+                1.0-(vecX * colorIntensity / 256.0),
+                1.0-(vecY * colorIntensity / 256.0),
+                1.0-(vecZ * colorIntensity/ 256.0));
         i++;
       }
     }
