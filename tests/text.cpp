@@ -3,6 +3,8 @@
 #include "Material/Textures.h"
 #include "Material/ProcTextures.h"
 #include "System/Config.h"
+#include <QPainter>
+#include <QApplication>
 
 class TextureTest: public CppUnit::TestCase {
 public:
@@ -11,31 +13,33 @@ public:
   }
 
   void runTest() {
-    QImage image(800,800);
-    QPainter fontPainter(image);
+
+    QSize screenSize = QSize(480,600);
+    QImage image = QImage(screenSize, QImage::Format_ARGB32);
+    QRectF drawBox = QRectF(50,200,screenSize.width()-100, screenSize.height()-100);
+
+    QPainter fontPainter(&image);
     //draw font
     fontPainter.setRenderHint(QPainter::Antialiasing, true);
     fontPainter.setRenderHint(QPainter::TextAntialiasing, true);
     fontPainter.setRenderHint(QPainter::SmoothPixmapTransform, true);
-    fontPainter.setFont(QFont("Ubuntu", 24));
+    fontPainter.setFont(QFont("Ubuntu", 50));
     fontPainter.setLayoutDirection(Qt::RightToLeft);
-    fontPainter.setPen(Qt::white);
+    fontPainter.setPen(Qt::black);
 
-    string text = "fooo";
-
+    string text = "foooBUNTU";
     fontPainter.drawText(drawBox, Qt::AlignLeft, QString::fromStdString(text));
     fontPainter.end();
+
+    image.save("texttest.png");
 
   }
 };
 
-int main() {
+//int main() {
+int main(int argc, char *argv[]) {
+  QApplication app(argc, argv);
   TextureTest foo2("bar");
   foo2.runTest();
 }
-
-
-
-
-
 
