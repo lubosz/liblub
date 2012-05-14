@@ -13,6 +13,14 @@ XCBApplication::XCBApplication(int argc, char ** argv) {
   argcount = argc;
   argvalues = argv;
   app = new QApplication(argcount,argvalues, false);
+  fontOverlay = false;
+}
+
+XCBApplication::~XCBApplication() {
+    if (fontOverlay)
+        delete gui;
+    delete window;
+    delete app;
 }
 
 void XCBApplication::updateFont() {

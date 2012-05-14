@@ -27,7 +27,7 @@ class XCBApplication : public QObject{
 	QApplication * app;
 
   XCBApplication(int argc, char ** argv);
-	virtual ~XCBApplication() {}
+    virtual ~XCBApplication();
 	virtual void scene() = 0;
 	virtual void renderFrame() = 0;
 

@@ -31,7 +31,8 @@ XCBInput::XCBInput(xcb_connection_t *connection, XCBWindow * mediaLayer) {
 }
 
 XCBInput::~XCBInput() {
-  // TODO(bmonkey): Auto-generated destructor stub
+    delete eventTimer;
+    xcb_key_symbols_free(syms);
 }
 
 void XCBInput::eventLoop() {

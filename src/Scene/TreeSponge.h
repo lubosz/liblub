@@ -32,14 +32,16 @@ const vector<QVector3D> translations = {
 
 class TreeSponge : public Node{
 public:
-
+DirectionNode * viewPoint;
+QMatrix4x4 viewProjection;
 
 //    vector<QVector3D> translations;
     unsigned maxRecursion, minRecursion;
-    TreeSponge(unsigned recursion, QList<string>& attributes);
+    TreeSponge(unsigned recursion, QList<string>& attributes, ShaderProgram *shader);
+    virtual ~TreeSponge();
     void makeSponge(unsigned recursion, const QVector3D& parentPosition, float size);
     void draw(ShaderProgram * shader);
-    static bool isNotCulled(const QMatrix4x4& MVPMatrix);
+    static bool isNotCulled(const QMatrix4x4& mvp);
     bool endRecursionAdaptive(unsigned recursion, const QVector3D & cubePosition, float size);
 
     void drawAllChildren(unsigned recursion, const QVector3D& parentPosition, float size);

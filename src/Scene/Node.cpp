@@ -24,7 +24,10 @@ Node::Node(string name, const QVector3D& position, float size, Mesh * mesh,
 }
 
 Node::~Node() {
-    // TODO(bmonkey): Auto-generated destructor stub
+    if(shader != nullptr)
+        delete shader;
+    if(mesh != nullptr)
+        delete mesh;
 }
 void Node::setMesh(Mesh *mesh) {
     this->mesh = mesh;

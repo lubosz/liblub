@@ -11,10 +11,16 @@
 
 Scene::Scene() {
   lights = QMap<string, Light*>();
+  shadowLight = nullptr;
+  currentCamera = nullptr;
+  moveLight = nullptr;
 }
 
 Scene::~Scene() {
-  // TODO Auto-generated destructor stub
+  foreach(Camera* camera, cameras)
+    delete camera;
+  foreach(Light* light, lights)
+    delete light;
 }
 
 void Scene::addShader(string & name, ShaderProgram* shader) {
@@ -133,7 +139,7 @@ Light * Scene::getShadowLight() {
   if(!shadowLight) {
     LogWarning << "Adding default shadow light";
     Light * light = new Light(QVector3D(-2.5, 21.5, -5.2), QVector3D(1, -5, 0));
-    shadowLight = light;
+    addLight("ShadowLight", light);
   }
   return shadowLight;
 }

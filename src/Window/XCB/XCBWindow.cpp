@@ -20,6 +20,7 @@ using std::stringstream;
 XCBWindow::XCBWindow() {
   fullscreen = false;
   grab = false;
+  input = nullptr;
   quit = false;
   initScreen();
   initFrameBuffer();
@@ -56,10 +57,13 @@ void XCBWindow::init(string title) {
 
 XCBWindow::~XCBWindow() {
     /* Cleanup */
+    if(input != nullptr)
+        delete input;
     glXDestroyWindow(display, glxwindow);
     xcb_destroy_window(connection, window);
     glXDestroyContext(display, context);
     XCloseDisplay(display);
+
 }
 
 void XCBWindow::createBlankCursor() {

@@ -9,11 +9,13 @@
 #include "Mesh/MeshLoader.h"
 #include "Scene/Scene.h"
 
-TreeSponge::TreeSponge(unsigned recursion, QList<string>& attributes) {
+TreeSponge::TreeSponge(unsigned recursion, QList<string>& attributes, ShaderProgram * shader) : Node("treesponge", QVector3D(), 1, MeshLoader::load(attributes, "cube.obj"), shader){
     maxRecursion = recursion;
     minRecursion = 0;
-    mesh = MeshLoader::load(attributes, "cube.obj");
     setCastShadows(false);
+}
+
+TreeSponge::~TreeSponge() {
 }
 
 void TreeSponge::makeSponge(unsigned recursion, const QVector3D & cubePosition,
@@ -27,12 +29,11 @@ void TreeSponge::makeSponge(unsigned recursion, const QVector3D & cubePosition,
         modelMatrix.setToIdentity();
         modelMatrix.translate(cubePosition);
         modelMatrix.scale(size);
-        DirectionNode * viewPoint = Scene::Instance().getCurrentCamera();
-        QMatrix4x4 tempMatrix = viewPoint->getView() * modelMatrix;
+
+        QMatrix4x4 tempMatrix = viewProjection * modelMatrix;
         //              shaderProgram->setUniform("MMatrix", modelMatrix);
         //              shaderProgram->setUniform("MVMatrix", tempMatrix);
         //              shaderProgram->setUniform("NormalMatrix", tempMatrix.normalMatrix());
-        tempMatrix = viewPoint->getProjection() * tempMatrix;
 
         if (isNotCulled(tempMatrix)) {
             shader->use();
@@ -55,7 +56,6 @@ void TreeSponge::makeSponge(unsigned recursion, const QVector3D & cubePosition,
 
 bool TreeSponge::endRecursionAdaptive(unsigned recursion,
         const QVector3D & cubePosition, float size) {
-    DirectionNode * viewPoint = Scene::Instance().getCurrentCamera();
     float halfSize = size / 2.0;
     QVector3D cubeCenter = cubePosition + QVector3D(halfSize, halfSize,
             halfSize);
@@ -68,9 +68,20 @@ bool TreeSponge::endRecursionAdaptive(unsigned recursion,
         return false;
 }
 
-bool TreeSponge::isNotCulled(const QMatrix4x4& MVPMatrix) {
-    QVector3D minPosition = MVPMatrix * QVector3D(-1, -1, -1);
-    QVector3D maxPosition = MVPMatrix * QVector3D(1, 1, 1);
+bool TreeSponge::isNotCulled(const QMatrix4x4& mvp) {
+    QVector3D minPosition = mvp * QVector3D(-1, -1, -1);
+    QVector3D maxPosition = mvp * QVector3D(1, 1, 1);
+
+    //faster:
+    float x = mvp(0,0)+mvp(1,0)+mvp(2,0);
+
+    QVector3D maxPosition2 = QVector3D(
+          mvp(0,0)+mvp(1,0)+mvp(2,0),
+          mvp(0,0)+mvp(0,1)+mvp(0,2),
+          mvp(3,0)+mvp(3,1)+mvp(3,2));
+
+    LogInfo << x << maxPosition2.y() << maxPosition2.x() << maxPosition.x();
+
     if ((minPosition.x() > -1 && minPosition.y() > -1 && minPosition.z() > -1)
             || (maxPosition.x() < 1 && maxPosition.y() < 1 && maxPosition.z()
                     < 1)) {
@@ -115,6 +126,8 @@ void TreeSponge::drawAllChildrenSorted(unsigned recursion,
 }
 
 void TreeSponge::draw(ShaderProgram * material) {
+    viewPoint = Scene::Instance().getCurrentCamera();
+    viewProjection = viewPoint->getProjection() * viewPoint->getView();
     material->activateAndBindTextures();
     makeSponge(maxRecursion, { 0, 0, 0 }, 1.0f);
 }
