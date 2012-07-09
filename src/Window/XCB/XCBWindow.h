@@ -66,5 +66,4 @@ public:
   void updateWindowTitle();
   void init(string title);
   void swapBuffers();
-  void renderFrame();
 };

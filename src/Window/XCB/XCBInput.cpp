@@ -16,6 +16,8 @@
 #include "XCBWindow.h"
 
 XCBInput::XCBInput(xcb_connection_t *connection, XCBWindow * mediaLayer) {
+  lastEventX = 0;
+  lastEventY = 0;
   this->connection = connection;
   syms = xcb_key_symbols_alloc(connection);
   pressedKeys = QList<xcb_keysym_t>();
@@ -45,8 +47,13 @@ void XCBInput::eventLoop() {
   while ((event = xcb_poll_for_event(connection))) {
     switch (event->response_type & ~0x80) {
         case XCB_MOTION_NOTIFY:
+
             motion = reinterpret_cast<xcb_motion_notify_event_t *>(event);
-            mediaLayer->mouseLook(motion->event_x, motion->event_y);
+            if (lastEventX != motion->event_x || motion->event_y != lastEventY) {
+                mediaLayer->mouseLook(motion->event_x, motion->event_y);
+                lastEventX = motion->event_x;
+                lastEventY = motion->event_y;
+            }
             break;
 
         case XCB_KEY_RELEASE:

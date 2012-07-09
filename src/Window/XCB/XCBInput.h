@@ -48,6 +48,8 @@ private:
   QList<xcb_keysym_t> pressedKeys;
   XCBWindow * mediaLayer;
 
+  int16_t lastEventX, lastEventY;
+
   void checkKey(xcb_keysym_t pressedKey);
 
 };
