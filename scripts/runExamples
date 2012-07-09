@@ -44,10 +44,13 @@ class ExampleRunner:
         if scene not in blacklist_scenes:
           self.run(['bin/load', scene])
 
-  def runTests(self):    
-    for test in self.getFiles("test"):
-        if test not in blacklist_tests:
-            self.run('test/%s' % test)
+  def runTests(self):
+    try:
+        for test in self.getFiles("test"):
+            if test not in blacklist_tests:
+                self.run('test/%s' % test)
+    except OSError:
+        print ("Tests are not build yet. Try 'cmake . -DBUILD_TESTS=On'")
             
   def start(self):
     parser = OptionParser()
