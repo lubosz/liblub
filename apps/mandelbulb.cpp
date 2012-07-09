@@ -20,6 +20,7 @@
 #include "Scene/SceneGraph.h"
 #include "Renderer/RenderPasses.h"
 #include "System/Application.h"
+#include "Material/Shaders.h"
 #include <QVariantAnimation>
 
 class MandelbulbApp: public Application {
@@ -36,20 +37,20 @@ public:
   Mesh * bulb(const QList<string> & attributes, unsigned resolution, float density) {
       Mesh * mesh = new Mesh(attributes);
 
-      for(unsigned x=0; iY < resolution; x++) {
-          for(unsigned y=0; iX < resolution; y++) {
-              for(unsigned z=0; iX < resolution; z++) {
+      for(unsigned x = 0; x < resolution; x++) {
+          for(unsigned y = 0; y < resolution; y++) {
+              for(unsigned z = 0; z < resolution; z++) {
 
               QVector3D position = QVector3D(x * density, y * density, z * density);
 
               mesh->vertex("position", position);
+              double color = double(x)/double(resolution);
+              mesh->vertex("color", QVector3D(color, color, color));
               }
           }
       }
 
-//      mesh->calculateNormals(resolution);
       mesh->makeLinearIndex();
-//      mesh->calculatePlaneIndex(resolution);
 
       mesh->init();
       mesh->setDrawType(GL_POINTS);
@@ -57,12 +58,12 @@ public:
   }
 
   void scene() {
-      QList<string> foo = QList<string>() << "color";
-      Mesh* mandelBulb = bulb(foo, 100, 1);
+      QList<string> attributes = QList<string>() << "color";
+      Mesh* mandelBulb = bulb(attributes, 100, 0.1);
 
       ShaderProgram * stars = new SimpleProgram("Particle/stars",attributes);
 
-      Node * plane = new Node("Plane", { 0,0,0 }, 1, mandelBulb, stars);
+      Node * plane = new Node("Plane", QVector3D(-5,-10,-15), 1, mandelBulb, stars);
       SceneGraph::Instance().addNode(plane);
 
   }
