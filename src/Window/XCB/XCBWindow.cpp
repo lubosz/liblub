@@ -327,11 +327,6 @@ void XCBWindow::updateWindowTitle() {
   setWindowTitle(windowTitle.str());
 }
 
-void XCBWindow::renderFrame() {
-  updateWindowTitle();
-  swapBuffers();
-}
-
 void XCBWindow::setWindowTitle(string title) {
     xcb_change_property(
       connection,
@@ -376,9 +371,13 @@ void XCBWindow::mouseLook(int x, int y) {
 
   if (!(xRel == 0 && yRel == 0) && grab) {
     Scene::Instance().getCurrentCamera()->setMouseLook(xRel, yRel, input->mouseSensitivity);
-    if (grab)
-        XWarpPointer(
-                display, None, window, x, y,
+    if (grab) {
+
+        int xret = XWarpPointer(
+                display, window, window, x, y,
                 width, height, halfWidth, halfHeight);
+        if (xret != 1)
+            LogError << "x return" << xret;
+    }
   }
 }
