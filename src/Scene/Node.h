@@ -41,12 +41,7 @@ public:
   QMatrix4x4 rotationMatrix;
   Mesh * mesh;
 
-  Node() {
-      this->shader = nullptr;
-      position = QVector3D();
-      m_size = 1.0f;
-      mesh = nullptr;
-  }
+  Node();
 
   Node(string name, const QVector3D& position, float size, Mesh * mesh,
       ShaderProgram * material);

@@ -14,6 +14,14 @@
 #include "Renderer/OpenGL.h"
 #include <cassert>
 
+
+Node::Node() : castShadows(true), receiveShadows(false),
+    m_size(1.0f), name("A Node"), eulerRotationCache(QVector3D()),
+    modelMatrix(QMatrix4x4()), shader(nullptr), transparent(false),
+    position(QVector3D()), rotationMatrix(QMatrix4x4()), mesh(nullptr) {
+    update();
+}
+
 Node::Node(string name, const QVector3D& position, float size, Mesh * mesh,
         ShaderProgram * material) :
     castShadows(true), receiveShadows(false), m_size(size), name(name),
@@ -146,7 +154,7 @@ void Node::setView(DirectionNode * viewPoint) {
 }
 
 QVector3D Node::getCenter() {
-    return position + mesh->boundingBox->getCenter() * size();
+    return position + mesh->getCenter() * size();
 }
 
 void Node::setRotationX(float rotation) {
