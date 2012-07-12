@@ -49,10 +49,12 @@ class Mesh {
 
     void calculatePlaneIndex(unsigned resolution);
     QVector3D getVectorAtPosition(unsigned p, const string &bufferName);
-    const unsigned getPositionAtXY(unsigned x, unsigned y, unsigned resolution) const;
+    const unsigned getPositionAtXY(unsigned x, unsigned y, const unsigned resolution) const;
     void calculateNormals(unsigned resolution);
     Mesh * makeNormalMesh();
     QVector3D getTriangleNormal(const QVector3D & p1, const QVector3D & p2, const QVector3D & p3);
+
+    const QVector3D getCenter();
 
  private:
 	GLuint vao;
