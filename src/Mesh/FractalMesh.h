@@ -33,11 +33,15 @@ public:
 
     float density;
 
+    unsigned threadCount;
+    unsigned step;
+
     FractalMesh(const QList<string> & attributes, unsigned resolution, float density, double range);
-    complex<double> f(complex<double> z, complex<double> c);
+    static complex<double> f(complex<double> z, complex<double> c);
     int GiveLastIteration(complex<double> C,complex<double> Z);
+    static int GiveLastIteration(complex<double> C,complex<double> Z, complex<double> * distance, unsigned IterationMax, unsigned EscapeRadius);
     void setRange(double range);
-    void generate();
+    void generate(unsigned from, unsigned to, vector<GLfloat> *positions, vector<GLfloat> *colors);
     void regenerate();
 };
 
