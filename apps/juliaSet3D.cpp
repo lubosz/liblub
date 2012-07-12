@@ -42,7 +42,7 @@ public:
 
     JuliaSet3D(int argc, char *argv[]) :
         Application(argc, argv) {
-        phase = 3.5;
+        phase = 1;
         attributes = QList<string>() << "normal" << "color" << "uv";
         //            attributes = QList<string>() << "normal" << "uv";
     }
@@ -132,9 +132,11 @@ public:
         //      ocean->samplerUniforms();
 
         //    mesh = sinePlane(attributes, 100 , 1, phase);
-        fractal = new FractalMesh(attributes, 1000 , .01, 0.5);
+        fractal = new FractalMesh(attributes, 1000 , .01, 2);
         //fractal = new FractalMesh(attributes, 400 , .01, 0.5);
         mesh = plane(attributes, 10, 1);
+
+        fractal->setRange(3.0);
 
 
 
@@ -151,13 +153,16 @@ public:
     }
 
     void renderFrame() {
-        //      fractal->regenerate();
+              fractal->regenerate();
         //      delete mesh;
         //      mesh = sinePlane(attributes, 100, 1, phase);
         //      mesh = julia(attributes, 400 , .1, phase);
         //      phase += 0.1;
-        //      phase -= 0.01;
-        //      fractal->setRange(phase);
+              phase -= 0.001;
+//              fractal->setRange(phase);
+
+              fractal->C = complex<double>(phase,0.156);
+//              fractal->C = complex<double>(0,0);
         OnePass::draw();
     }
 };
