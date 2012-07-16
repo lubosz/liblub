@@ -9,8 +9,6 @@
 #include <QtCore>
 #include <QApplication>
 #include "Window/XCB/XCBWindow.h"
-#include "Mesh/MeshLoader.h"
-#include "Scene/SceneLoader.h"
 #include "Scene/Scene.h"
 #include "System/Config.h"
 #include "System/GUI.h"
@@ -24,7 +22,7 @@ class XCBApplication : public QObject{
 	XCBWindow * window;
   int argcount;
   char ** argvalues;
-	QApplication * app;
+    QApplication * app;
 
   XCBApplication(int argc, char ** argv);
     virtual ~XCBApplication();
@@ -32,7 +30,8 @@ class XCBApplication : public QObject{
 	virtual void renderFrame() = 0;
 
 	void run();
-	void setFontOverlay(bool fontOverlay);
+
+    void setFontOverlay(bool fontOverlay);
 
 public slots:
 	void updateFont();
