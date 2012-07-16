@@ -159,3 +159,17 @@ CubeTextureFile::CubeTextureFile(string filename, string name) {
   }
   unbind();
 }
+
+Texture3D::Texture3D(string name, GLubyte *voxels, unsigned size) {
+    this->name = name;
+    target = GL_TEXTURE_3D;
+    glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+    glGenTextures(1, &handle);
+    bind();
+    filterMinMag(GL_LINEAR, GL_LINEAR);
+    glTexParameteri(target, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
+    glTexParameteri(target, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
+    glTexParameteri(target, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_BORDER);
+    glTexImage3D(target, 0,GL_RGBA, size, size,size,0, GL_RGBA, GL_UNSIGNED_BYTE,voxels);
+    unbind();
+}

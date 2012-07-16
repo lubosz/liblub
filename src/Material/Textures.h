@@ -39,3 +39,8 @@ class CubeTextureFile : public Texture {
  public:
 	CubeTextureFile(string filename, string name);
 };
+
+class Texture3D : public Texture {
+ public:
+    Texture3D(string name, GLubyte *voxels, unsigned size);
+};
