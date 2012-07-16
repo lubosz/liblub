@@ -15,7 +15,6 @@ typedef QtApplication Application;
 #else
 #include "Window/XCB/XCBApplication.h"
 typedef XCBApplication Application;
-#include <QHBoxLayout>
 #endif
 
 

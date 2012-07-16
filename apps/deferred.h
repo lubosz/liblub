@@ -20,6 +20,8 @@
 #include "Scene/SceneLoader.h"
 #include "Renderer/RenderPasses.h"
 
+#include <QHBoxLayout>
+
 class DeferredLightApp: public Application {
   Q_OBJECT
 public:
