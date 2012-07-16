@@ -16,3 +16,4 @@ liblub.cbp
 CMakeCache.txt
 CMakeLists.txt.user
 *cmake_install.cmake
+*.ogv
