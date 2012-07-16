@@ -11,8 +11,8 @@
 #include "Renderer/OpenGL.h"
 
 // Needed for GL3 Context Creation
-#define GLX_GLXEXT_PROTOTYPES 1
-#include <GL/glx.h>
+//#define GLX_GLXEXT_PROTOTYPES 1
+#include <GL3/glx.h>
 
 #include <X11/Xlib.h>
 #include <X11/Xlib-xcb.h>
