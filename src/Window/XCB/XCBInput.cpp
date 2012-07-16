@@ -49,7 +49,6 @@ void XCBInput::eventLoop() {
   while ((event = xcb_poll_for_event(connection))) {
     switch (event->response_type & ~0x80) {
         case XCB_MOTION_NOTIFY:
-
             motion = reinterpret_cast<xcb_motion_notify_event_t *>(event);
             if ((lastEventX != motion->event_x || motion->event_y != lastEventY) || !touchPadHack) {
                 mediaLayer->mouseLook(motion->event_x, motion->event_y);
