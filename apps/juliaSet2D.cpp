@@ -30,7 +30,7 @@
 
 using std::complex;
 
-class JuliaSet3D: public Application {
+class JuliaSet2D: public Application {
 public:
 
     Mesh * mesh;
@@ -40,14 +40,14 @@ public:
     float phase;
     QList<string> attributes;
 
-    JuliaSet3D(int argc, char *argv[]) :
+    JuliaSet2D(int argc, char *argv[]) :
         Application(argc, argv) {
         phase = 1;
         attributes = QList<string>() << "normal" << "color" << "uv";
         //            attributes = QList<string>() << "normal" << "uv";
     }
 
-    ~JuliaSet3D() {
+    ~JuliaSet2D() {
         delete node;
     }
 
@@ -168,6 +168,6 @@ public:
 };
 
 int main(int argc, char *argv[]) {
-    JuliaSet3D(argc, argv).run();
+    JuliaSet2D(argc, argv).run();
 }
 
