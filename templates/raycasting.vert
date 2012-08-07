@@ -19,6 +19,7 @@ uniform mat3 NormalMatrix;
 out vec4 viewPosition;
 out vec4 thePosition;
 out vec2 texCoord;
+out vec4 lightPositionView;
 
 uniform mat4 MVPMatrix;
 
@@ -39,6 +40,7 @@ void main(void) {
   //OUT.Color = IN.Color;
   texCoord = in_Uv;
   thePosition = vec4(in_Vertex,1);
+  lightPositionView = MVPMatrix * vec4(2,1,0.5,1);
   viewPosition = MVPMatrix * vec4(in_Vertex,1);
     gl_Position = MVPMatrix * vec4(in_Vertex,1);
 }

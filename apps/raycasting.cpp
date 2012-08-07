@@ -25,6 +25,7 @@
 #include "Mesh/Geometry.h"
 #include "Scene/SceneGraph.h"
 #include "Mesh/MandelBulb.h"
+#include "Scene/Scene.h"
 
 #include <thread>
 
@@ -196,9 +197,10 @@ public:
         res = Scene::Instance().getResolution();
         Texture* backfaceTexture = new ColorTexture(res, "backfaces");
         Texture* frontfaceTexture = new ColorTexture(res, "frontfaces");
-        Texture* volumeTexture = bulbThreads(128);
-        //        Texture* volumeTexture = createVolumeTexture(512);
-        //        Texture* volumeTexture = ballGradient(512);
+        Texture* volumeTexture = bulbThreads(256);
+//        volumeTexture->filterMinMag();
+               // Texture* volumeTexture = createVolumeTexture(512);
+//        Texture* volumeTexture = ballGradient(512);
 
         raycastingShader = new TemplateProgram("raycasting",attributes);
         raycastingShader->addTexture(backfaceTexture);
@@ -207,7 +209,8 @@ public:
         raycastingShader->samplerUniforms();
 
         raycastingShader->use();
-        raycastingShader->setUniform("stepsize", 1.0/50.0);
+//        raycastingShader->setUniform("stepsize", .001);
+        raycastingShader->setUniform("stepsize", 1.0/500.0);
 
         positionShader = new SimpleProgram("Color/position",QList<string> ());
 
@@ -224,10 +227,37 @@ public:
 
         fullPlane = Geometry::plane(QList<string> () << "uv", QRectF(-1, -1, 2, 2));
 
-        Mesh * cube = Geometry::cube(QList<string> ());
+//        Mesh * cube = Geometry::cube(QList<string> ());
+
+        Mesh * cube = new Mesh(QList<string> ());
+        cube->buffers["position"] = {
+            1.0, -1.0, -1.0,
+            1.0, -1.0, 1.0,
+            -1.0, -1.0, 1.0,
+            -1.0, -1.0, -1.0,
+            1.0, 1.0, -1.0,
+            1.0, 1.0, 1.0,
+            -1.0, 1.0, 1.0,
+            -1.0, 1.0, -1.0
+        };
+        cube->indices = {
+                4, 0, 3, 4, 3, 7,
+                1, 5, 2, 5, 6, 2,
+                2, 6, 7, 2, 7, 3,
+                0, 4, 1, 4, 5, 1,
+                4, 7, 5, 7, 6, 5,
+                0, 1, 2, 0, 2, 3
+        };
+        cube->init();
+        cube->setDrawType(GL_TRIANGLES);
 
         Node * cubeNode = new Node("cubenode", QVector3D(-0.5,-0.75,-2), 1, cube, positionShader);
         SceneGraph::Instance().addNode(cubeNode);
+
+//        Scene::Instance().getCurrentCamera()->setParams(75, 0.01, 100);
+//        Scene::Instance().getCurrentCamera()->update();
+//        updatePerspective();
+
     }
 
     void renderFrame(){
