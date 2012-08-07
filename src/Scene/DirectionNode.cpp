@@ -15,7 +15,7 @@ DirectionNode::DirectionNode(){
   aspect = 1920.0 / 1200.0;
 
   fov = 70.0;
-  nearClip = 0.1;
+  nearClip = 0.01;
   farClip = 1000.0;
   updatePerspective();
 }
