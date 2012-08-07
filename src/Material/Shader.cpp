@@ -95,19 +95,12 @@ void Shader::compile() {
 }
 
 string Shader::readFile(string filePath) {
-    string source;
-    try {
-        ifstream t(filePath);
-        source = string((istreambuf_iterator<char> (t)),
-                istreambuf_iterator<char> ());
-    } catch (...) {
-        LogFatal << "Could Not Load File:" << filePath;
-    }
+    QFile file(QString::fromStdString(filePath));
+     if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
+         LogError << "Can not open File." << filePath;
+     QString source = file.readAll();
 
-    if(source == ""){
-        LogFatal << "Empty Shader file" << filePath;
-    }
-    return source;
+     return source.toStdString();
 }
 
 void Shader::printShaderInfoLog(GLuint shader) {
