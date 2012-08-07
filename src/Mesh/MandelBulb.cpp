@@ -3,14 +3,13 @@
 namespace fractal {
 
 QVector3D MandelBulb::triplexPow(QVector3D vec, unsigned n) {
-    double z = vec.z();
     double r = sqrt(vec.x()*vec.x() + vec.y() * vec.y() + vec.z() * vec.z());
     double theta = 0;
     if (vec.x() != 0)
         theta = n * atan(vec.y()/vec.x());
     double phi = 0;
     if (r != 0)
-        phi = n * asin(z/r);
+        phi = n * asin(vec.z()/r);
     return pow(r,n) * QVector3D(cos(theta)*cos(phi),
                                 sin(theta)*sin(phi),
                                 -sin(phi));
@@ -89,8 +88,8 @@ void MandelBulb::setColor(vector<GLubyte> *voxels, GLubyte r, GLubyte g, GLubyte
 
 void MandelBulb::generateVoxels(unsigned fromVoxel, unsigned toVoxel, vector<GLubyte> *voxels, int id, int size) {
 
-    int maxIter = 24;
-    unsigned maxIter2 = 5;
+    int maxIter = 20;
+    unsigned maxIter2 = 20;
 
     double from = -1.1;
     double to = 1.1;
@@ -187,7 +186,8 @@ void MandelBulb::generateVoxels(unsigned fromVoxel, unsigned toVoxel, vector<GLu
                 }
 */
 
-                if (z2 > 0.0) {
+                //if (z2 > 1.1) {
+                if (distance < 0) {
                     //                    color.setRgbF(0.0,1.0,0.0,0.1);
                     double hue = 0;
                     for (int scaleFactor = 3; scaleFactor > -2; scaleFactor--) {
@@ -199,12 +199,16 @@ void MandelBulb::generateVoxels(unsigned fromVoxel, unsigned toVoxel, vector<GLu
                         }
                     }
 
-                    //                    LogDebug << hue;
-
                     if (hue < 0.0 || hue > 1.0)
                         hue = 0;
 
-                    color.setHsvF(hue, 1.0, 1.0, 0.1);
+//                    if (hue > 0.5)
+//                        hue -= 0.5;
+//                    else
+//                        hue += 0.5;
+
+                    color.setHsvF(hue, 1.0, 1.0, 0.7);
+//                    color.setRgbF(0,1,1,1);
                 } else {
                     color.setRgb(0,0,0,0);
                 }

@@ -151,7 +151,7 @@ public:
 
     Texture * bulbThreads(int size) {
 
-        unsigned threadCount = 16;
+        unsigned threadCount = 8;
         unsigned threadSize = size / threadCount;
 
         vector<GLubyte> voxels;
@@ -197,7 +197,7 @@ public:
         res = Scene::Instance().getResolution();
         Texture* backfaceTexture = new ColorTexture(res, "backfaces");
         Texture* frontfaceTexture = new ColorTexture(res, "frontfaces");
-        Texture* volumeTexture = bulbThreads(256);
+        Texture* volumeTexture = bulbThreads(128);
 //        volumeTexture->filterMinMag();
                // Texture* volumeTexture = createVolumeTexture(512);
 //        Texture* volumeTexture = ballGradient(512);
