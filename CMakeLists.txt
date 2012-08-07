@@ -196,6 +196,7 @@ list(APPEND LIBS
     ${QT_LIBRARIES}
     ${Grantlee_CORE_LIBRARIES}
     assimp
+    OpenCL
     rt
 )
 
