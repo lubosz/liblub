@@ -82,6 +82,12 @@ void QtApplication::draw() {
   glError;
 }
 
+void QtApplication::setWireframe(bool wire) {
+  useWireframe = wire;
+  OpenGL::Instance().setWire(wire);
+  glWidget->updateGL();
+}
+
 void QtApplication::setLazy(bool lazy){
   if(lazy){
     drawTimer->stop();

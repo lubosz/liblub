@@ -29,6 +29,9 @@ public:
   int myargc;
   char ** myargv;
 
+  bool useWireframe;
+
+
   void run();
 
   QtApplication(int & argc, char ** argv);
@@ -36,6 +39,8 @@ public:
 
   virtual void renderFrame() = 0;
   virtual void scene() = 0;
+
+  void setWireframe(bool wire);
 
 public slots:
   void draw();

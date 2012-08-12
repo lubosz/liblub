@@ -31,7 +31,6 @@ public:
   Planet* focusedPlanet;
   ShaderProgram *HDR;
   bool usePostprocessing;
-  bool useWireframe;
   Camera* camera;
   Light * light;
   FrameBuffer *fbo;
@@ -52,7 +51,6 @@ public:
 
 public slots:
   void setExposure(double exposure);
-  void setWireframe(bool wire);
   void setPostprocessing(bool post);
 };
 #endif /* PLANETSAPP_H_ */

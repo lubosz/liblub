@@ -25,7 +25,8 @@ PlanetsApp::PlanetsApp(int &argc, char **argv) :
   useWireframe = false;
 
   focusedPlanet = new Planet("Earth", 11, 11.55, Planet::sun,
-      { 0.650f, 0.570f, 0.475f }, { 0, 0, 0 }, 1);
+                             QVector3D(0.650f, 0.570f, 0.475f),
+                             QVector3D( 0, 0, 0 ), 1);
   planets.push_back(focusedPlanet);
 
 }
@@ -39,11 +40,6 @@ PlanetWidget * PlanetsApp::focusPlanet() {
   return planetWidget;
 }
 
-void PlanetsApp::setWireframe(bool wire) {
-  useWireframe = wire;
-  OpenGL::Instance().setWire(wire);
-  glWidget->updateGL();
-}
 void PlanetsApp::setPostprocessing(bool post) {
   usePostprocessing = post;
   glWidget->updateGL();
