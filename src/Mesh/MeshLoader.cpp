@@ -4,9 +4,9 @@
  *
  *  Created on: Jun 8, 2010
  */
-#include <assimp/assimp.hpp>
-#include <assimp/aiScene.h>
-#include <assimp/aiPostProcess.h>
+#include <assimp/scene.h>
+#include <assimp/postprocess.h>
+#include <assimp/Importer.hpp>
 #include <string>
 #include <vector>
 #include "Mesh/MeshLoader.h"
