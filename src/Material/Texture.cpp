@@ -12,6 +12,7 @@
 #include "Material/TextureFactory.h"
 #include "System/Logger.h"
 #include "Renderer/OpenGL.h"
+#include "System/Config.h"
 
 Texture::Texture()  {
   isDepth = false;
@@ -55,10 +56,16 @@ void Texture::loadFile(const string & path) {
 }
 
 void Texture::loadFile(GLenum target, const string & path) {
+    if (path == "")
+        LogError << "Path is empty.";
+
   QImage * image = new QImage();
   image->load(QString::fromStdString(path));
+
   if(image->isNull())
-    LogFatal << path << "does not exist";
+    image->load(QString::fromStdString(Config::Instance().value<string> ("textureDir") + path));
+  if(image->isNull())
+    LogError << path << "does not exist";
 
   //TODO: Qt loads image with wrong pixel order
   *image = image->mirrored(false, true);

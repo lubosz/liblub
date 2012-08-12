@@ -110,7 +110,7 @@ ColorTexture::ColorTexture(QSize& res, string name) {
 
 TextureFile::TextureFile(string filename, string name) {
   this->name = name;
-  string path = Config::Instance().value<string> ("textureDir") + filename;
+  string path =  filename;
   glGenTextures(1, &handle);
   LogDebug << "Creating texture from file #" << handle << " " << name;
   bind();
