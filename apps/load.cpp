@@ -16,8 +16,6 @@
     You should have received a copy of the GNU General Public License
     along with liblub.  If not, see <http://www.gnu.org/licenses/>.
 */
-#include <string>
-#include <QApplication>
 #include "System/Application.h"
 #include "System/GUI.h"
 #include "Scene/SceneLoader.h"
@@ -56,5 +54,5 @@ int main(int argc, char *argv[]) {
   if (argc != 2)
     LogError << "NO SCENE SPECIFIED. Try; ./load test";
   else
-    LoadApp app(argc,argv);
+    LoadApp(argc,argv).run();
 }
