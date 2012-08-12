@@ -5,7 +5,6 @@
 #include <vector>
 #include <cstring>
 #include <iostream>
-#include <string>
 
 #define LogDebug    Logger(__FILE__,__LINE__, Logger::Debug)
 #define LogError    Logger(__FILE__,__LINE__, Logger::Error)

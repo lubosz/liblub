@@ -22,11 +22,13 @@ const LogSetting blackList[] = {
   { "ShaderProgram.cpp", Logger::Warning },
   { "Config.cpp", Logger::Warning },
   { "Mesh.cpp", Logger::Warning },
+  { "MeshBuffer.cpp", Logger::Warning },
   { "XCBApplication.cpp", Logger::Warning },
   { "SceneGraph.cpp", Logger::Warning },
   { "SceneLoader.cpp", Logger::Warning },
   { "Textures.cpp", Logger::Warning },
   { "Texture.cpp", Logger::Warning },
+  { "FrameBuffer.cpp", Logger::Warning },
 };
 
 Logger::Logger(const std::string& file, int line, Logger::LogLevel level) {
@@ -40,8 +42,12 @@ Logger::Logger(const char* file, int line, Logger::LogLevel level) {
 Logger::~Logger() {
   if (print)
     cout<<std::endl;
-  if (fatal)
-    exit(0);
+  if (fatal) {
+      // generate segfault for backtrace
+      char *s = "Segfaultme";
+      *s = 'S';
+      exit(0);
+  }
 }
 
 void Logger::writeInfo(const char* longFile, int line, Logger::LogLevel level) {
