@@ -16,22 +16,36 @@
  You should have received a copy of the GNU General Public License
  along with liblub.  If not, see <http://www.gnu.org/licenses/>.
  */
+
+#ifndef EDITOR_H
+#define EDITOR_H
+
 #include "System/Application.h"
-#include "Scene/SceneLoader.h"
+#include "Renderer/RenderPasses.h"
 #include <QHBoxLayout>
+#include "Window/Qt/PassModel.h"
 
-class DeferredLightApp: public Application {
-  Q_OBJECT
+
+class Editor: public Application {
+    Q_OBJECT
 public:
-  SceneLoader *sceneLoader;
 
-  DeferredLightApp(int argc, char *argv[]);
-  ~DeferredLightApp();
+    Editor(int argc, char *argv[]);
 
-  void scene();
-  void renderFrame();
+    ~Editor();
+
+    void scene();
+    void renderFrame();
+
   void initWidgets(QHBoxLayout * mainLayout);
+
+  QComboBox * thebox;
+  DebugPlane * selectedPlane;
+  PassModel * passModel;
+
 public slots:
-  void setOffSetFactor(double factor);
-  void setOffSetUnits(double units);
+  void setSelectedPlane(const QModelIndex &index);
+  void changePlaneSource(const QString &name);
 };
+
+#endif
