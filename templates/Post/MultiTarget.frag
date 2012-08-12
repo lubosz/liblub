@@ -8,19 +8,20 @@ in vec4 positionWorld;
 in vec4 normalWorld;
 in vec4 tangentWorld;
 in vec4 binormalWorld;
+
 out vec4 positionTarget;
 out vec4 normalTarget;
-//out vec4 diffuseTarget;
+out vec4 diffuseTarget;
 out vec4 tangentTarget;
 out vec4 binormalTarget;
-//out vec4 normalMapTarget;
+out vec4 normalMapTarget;
 out vec4 shadowTarget;
 out vec4 uvTarget;
 {% endblock %}
 
 {% block uniforms %}
-//uniform sampler2D diffuseTexture;
-//uniform sampler2D normalTexture;
+uniform sampler2D diffuseTexture;
+uniform sampler2D normalTexture;
 //uniform samplerCube envMap;
 
 {% for shadowSampler in shadowSamplers %}
@@ -57,9 +58,25 @@ float lookup( vec2 offSet,vec4 shadowTexCoord){
 	normalTarget = normalWorld;
 	tangentTarget = tangentWorld;
 	binormalTarget = binormalWorld;
-	//diffuseTarget = texture(diffuseTexture, uv);
-	//normalMapTarget = texture(normalTexture, uv);
-	
+        diffuseTarget = texture(diffuseTexture, uv);
+
+        if (uv == vec2(0,0)) {
+            normalMapTarget = normalWorld;
+        } else {
+            normalMapTarget = texture(normalTexture, uv);
+        }
+
+{% if paralaxMap %}
+        float height = normalMap.w;
+        float uvTrans = max(dot(normalTS, -viewDirectionTS), 0.0) * height;
+        vec2 uv2 = uv + vec2(uvTrans);
+        normalMap = texture(normalTexture, uv2);
+        normalTS = normalize( normalMap.xyz * 2.0 - 1.0);
+{% else %}
+        vec2 uv2 = uv;
+{% endif %}
+        diffuseTarget = texture(diffuseTexture, uv2);
+
 	//shadow
 	shadowTarget = vec4(1);
 	vec4 shadowTexCoord;

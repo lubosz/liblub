@@ -158,6 +158,7 @@ if(WITH_Qt)
         src/Window/Qt/glWidget.h 
         src/Window/Qt/FloatEditorWidget.h
         src/Window/Qt/QtApplication.h
+        src/Window/Qt/PassModel.h
     )
     qt4_wrap_cpp(QT_MOC_OUTFILES ${QT_MOC_INFILES})
     set(SOURCES ${SOURCES} ${QT_MOC_OUTFILES})

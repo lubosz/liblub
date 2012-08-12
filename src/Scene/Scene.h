@@ -56,6 +56,18 @@ public:
   void setCurrentCamera(Camera * camera);
   void addCamera(Camera * camera);
 
+  struct LightSource {
+    QVector4D position;
+    QVector4D diffuse;
+    QVector4D specular;
+    QVector4D direction;
+  };
+
+  LightSource lightBufferData[10];
+  UniformBuffer * lightBuffer;
+  GLint lightBufferSize;
+  void initLightBuffer(ShaderProgram * shader, const string& bufferName);
+
 private:
   Camera *currentCamera;
   Light *shadowLight, *moveLight;

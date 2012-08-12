@@ -167,3 +167,41 @@ Light * Scene::getMoveLight() {
 
   return moveLight;
 }
+
+void Scene::initLightBuffer(ShaderProgram * shader, const string& bufferName) {
+  lightBuffer = new UniformBuffer();
+  lightBuffer->bind();
+
+  #ifdef USE_OPENGL3
+  GLuint uniBlockIndex = glGetUniformBlockIndex(shader->getHandle(), bufferName.c_str());
+  glGetActiveUniformBlockiv(
+    shader->getHandle(),
+    uniBlockIndex,
+    GL_UNIFORM_BLOCK_DATA_SIZE,
+    &lightBufferSize
+  );
+#endif
+
+  LogDebug << "Light Uniform Buffer Size" << lightBufferSize;
+
+  unsigned lightIndex = 0;
+  foreach(Light* light, Scene::Instance().lights){
+
+    lightBufferData[lightIndex].position = light->position;
+    lightBufferData[lightIndex].diffuse = light->diffuse;
+    lightBufferData[lightIndex].specular = light->specular;
+    lightBufferData[lightIndex].direction = light->direction();
+
+    LogDebug << "Found Light" << Scene::Instance().lights.key(light);
+//    qDebug() << lightBufferData[lightIndex].diffuse;
+
+    lightIndex++;
+    glError;
+  }
+  lightBuffer->write(lightBufferData, lightBufferSize);
+
+//  shader->uniformBuffers.push_back(lightBuffer);
+  #ifdef USE_OPENGL3
+  shader->bindUniformBuffer(bufferName,0,lightBuffer->getHandle());
+    #endif
+}

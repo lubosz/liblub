@@ -100,8 +100,7 @@
 
   void ShadowReceivePass::draw() {
     fbo->bind();
-    shader->activateTextures();
-    shader->bindTextures();
+
     OpenGL::Instance().clear();
     OpenGL::Instance().updateViewport(res);
     SceneGraph::Instance().drawReceivers(shader);
@@ -128,7 +127,6 @@
     return new Texture();
   }
 
-
   void InOutPass::draw() {
     fbo->bind();
     OpenGL::Instance().clear();
@@ -140,7 +138,15 @@
   }
 
   DebugPlane::DebugPlane(QRectF rect, Texture * target){
+    targetName = target->name;
+    visible = true;
     plane = Geometry::plane(QList<string> () << "uv", rect);
+    shader = initDebugMaterial(target);
+  }
+
+  void DebugPlane::updateSource(Texture * target) {
+    targetName = target->name;
+    delete shader;
     shader = initDebugMaterial(target);
   }
 
@@ -154,7 +160,8 @@
   }
 
   void DebugPlane::draw(){
-    drawOnPlane(shader, plane);
+    if (visible)
+      drawOnPlane(shader, plane);
   }
 
   SinkPass::SinkPass() {}

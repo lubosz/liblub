@@ -68,6 +68,7 @@ public:
   QVector3D getCenter();
   QVector3D direction();
 
+  void setRotation(const QMatrix4x4& rotation);
   void setDirection(const QVector3D & direction);
   void setCastShadows(bool castShadows);
   void setReceiveShadows(bool receiveShadows);

@@ -55,6 +55,10 @@ void SceneGraph::drawNodes() {
   drawNodes(Scene::Instance().getCurrentCamera());
 }
 
+//void SceneGraph::drawTransparent() {
+
+//}
+
 void SceneGraph::drawNodes(DirectionNode * viewPoint) {
   QMap <qreal, Node*> transparentNodes;
 
@@ -100,10 +104,43 @@ void SceneGraph::drawNodes(ShaderProgram * shader, DirectionNode * viewPoint) {
 void SceneGraph::drawReceivers(ShaderProgram * shader) {
   DirectionNode * camView = Scene::Instance().getCurrentCamera();
   Node::setShadowCoords(shader,camView);
-  foreach(Node * node, sceneNodes) {
-    node->setView(shader, camView );
-    node->draw(shader);
-  }
+
+  QMap <qreal, Node*> transparentNodes;
+
+    foreach(Node * node, sceneNodes) {
+        if(!node->transparent) {
+//          node->setView(viewPoint);
+//          node->setShadowCoords(viewPoint);
+//          Scene::Instance().getShadowLight()->bindShaderUpdate(node->getShader());
+//          node->draw();
+            foreach(Node * node, sceneNodes) {
+              node->setView(shader, camView );
+              foreach( Texture* tex, node->shader->textures)
+                  tex->uniform(shader->getHandle());
+              node->shader->activateAndBindTextures();
+              node->draw(shader);
+            }
+        } else {
+          QVector3D distance = node->getCenter() - Scene::Instance().getCurrentCamera()->position;
+          transparentNodes.insert(distance.length(), node);
+        }
+    }
+    if (transparentNodes.size() > 0) {
+      glEnable(GL_BLEND);
+      QList<qreal> transparentKeys = transparentNodes.keys();
+      qSort(transparentKeys.begin(), transparentKeys.end(), qGreater<qreal>());
+
+      foreach(qreal transparentKey, transparentKeys) {
+        Node * node = transparentNodes[transparentKey];
+        node->setView(shader, camView );
+        foreach( Texture* tex, node->shader->textures)
+            tex->uniform(shader->getHandle());
+        node->shader->activateAndBindTextures();
+        node->draw(shader);
+      }
+      glDisable(GL_BLEND);
+    }
+
   glError;
 }
 

@@ -70,10 +70,13 @@ public:
 
 class DebugPlane : public DrawThing{
 public:
+  bool visible;
   ShaderProgram * shader;
   Mesh * plane;
+  string targetName;
   DebugPlane(QRectF rect, Texture * target);
   ShaderProgram * initDebugMaterial(Texture * target);
+  void updateSource(Texture * target);
   void draw();
 };
 

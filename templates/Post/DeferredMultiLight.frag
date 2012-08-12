@@ -19,15 +19,15 @@ out vec4 envTarget;
 {% block uniforms %}
 uniform sampler2D positionTarget;
 uniform sampler2D normalTarget;
-//uniform sampler2D diffuseTarget;
+uniform sampler2D diffuseTarget;
 uniform sampler2D tangentTarget;
 uniform sampler2D binormalTarget;
-//uniform sampler2D normalMapTarget;
+uniform sampler2D normalMapTarget;
 uniform sampler2D finalAOTarget;
 uniform samplerCube envMap;
 uniform sampler2D uvTarget;
-uniform sampler2D diffuseTexture;
-uniform sampler2D normalTexture;
+//uniform sampler2D diffuseTexture;
+//uniform sampler2D normalTexture;
 
 uniform LightSourceBuffer {
 	LightSource lightSources[LIGHTS];
@@ -41,7 +41,7 @@ const int shininess = 32;
 {% endblock %}
 
 {% block main %}
-    vec2 uvModel = texture(uvTarget, uv).xy;
+    //vec2 uvModel = texture(uvTarget, uv).xy;
 	vec3 position = texture(positionTarget, uv).xyz;
 	vec3 normal = normalize(texture(normalTarget, uv).xyz);
 	vec3 tangent = normalize(texture(tangentTarget, uv).xyz);
@@ -57,19 +57,21 @@ const int shininess = 32;
 		dot(viewDirectionWS, normal)
 	));
 	
-	vec4 normalMap = texture(normalTexture, uvModel);
+        //vec4 normalMap = texture(normalTexture, uvModel);
+        vec4 normalMap = texture(normalMapTarget, uv);
 	vec3 normalTS = normalize( normalMap.xyz * 2.0 - 1.0);
 	
-	{% if paralaxMap %}
-	float height = normalMap.w;
-	float uvTrans = max(dot(normalTS, -viewDirectionTS), 0.0) * height;
-    vec2 uv2 = uvModel + vec2(uvTrans);
-    normalMap = texture(normalTexture, uv2);
-    normalTS = normalize( normalMap.xyz * 2.0 - 1.0);
-    {% else %}
-    vec2 uv2 = uvModel;
-    {% endif %}
-	vec4 diffuse = texture(diffuseTexture, uv2);
+//	{% if paralaxMap %}
+//	float height = normalMap.w;
+//	float uvTrans = max(dot(normalTS, -viewDirectionTS), 0.0) * height;
+//    vec2 uv2 = uvModel + vec2(uvTrans);
+//    normalMap = texture(normalTexture, uv2);
+//    normalTS = normalize( normalMap.xyz * 2.0 - 1.0);
+//    {% else %}
+//    vec2 uv2 = uvModel;
+//    {% endif %}
+//	vec4 diffuse = texture(diffuseTexture, uv2);
+        vec4 diffuse = texture(diffuseTarget, uv);
 	finalSpecularTarget = vec4(0);
 	finalDiffuseTarget = vec4(0);
 	finalTarget = vec4(0);
@@ -105,6 +107,9 @@ const int shininess = 32;
 	   //finalTarget += AshikhminShirley(lightDirectionWS, viewDirectionWS, normal, diffuse, tbn);
     }
 	finalTarget = (finalDiffuseTarget + finalSpecularTarget + envTarget / 3.0)*ambient;
+
+        if (finalTarget == vec4(0))
+            finalTarget = envTarget;
 	//finalTarget = vec4(height);
 	//finalDiffuseTarget = diffuse;
 	//finalSpecularTarget = vec4(normalTS,1);

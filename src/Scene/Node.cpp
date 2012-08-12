@@ -54,6 +54,11 @@ void Node::setRotation(const QVector3D& rotation) {
     update();
 }
 
+void Node::setRotation(const QMatrix4x4& rotation) {
+    rotationMatrix = rotation;
+    update();
+}
+
 string Node::getName() const {
     return name;
 }
@@ -85,6 +90,7 @@ void Node::draw() {
 void Node::draw(ShaderProgram * material) {
     material->activateAndBindTextures();
     mesh->draw();
+    mesh->boundingBox->draw();
 }
 
 void Node::setSize(float size) {
