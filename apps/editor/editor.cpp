@@ -34,7 +34,6 @@
 #include <QTableView>
 #include "System/Config.h"
 #include "Window/Qt/FloatEditorWidget.h"
-#include "RenderPassEditor.h"
 
 Editor::Editor(int argc, char *argv[]) :
     Application(argc, argv) {
