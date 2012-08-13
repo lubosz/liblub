@@ -9,28 +9,41 @@ Engine:
 	- gui thread
 	- mehr config optionen
 	- recource managment verbessern
-	- mehrere shadow maps (texture buffer)
 	- mehr struct uniforms nutzen
 	- maus lag fixen
 	- multiple uv coords
-	- node konstruktor aufräumen
-	- refactoring mit diagram
 
 Shader:
 	- Shader ausmisten
-	- shader reload
 
 Scene:
-	- graph performance
-	- blender scene laden
+	- performance messung
 	- umlaufbahnen
+  - scene aufräumen
+  - node child tranformation
+  - bounding boxes
+  - mesh normals
 
 Rendering:
-	- render passes aufräumen und verallgemeinern
 	- wolken
 	- pflanzen / gras
 	
 GUI App:
 	- runtime uniform editor
-	- qt gui
 	- shader selector
+	
+	
+- Materials klasse für deferred renderer
+- Alles bennennen
+- GL Header Updaten
+- Fix All Todos
+- Style check
+- Warnings
+- scene in gui öffnen
+- scene in gui manipulieren
+- planets demo => renderpasses
+- find out opengl version
+- new move files
+- rename "gui" class
+
+
