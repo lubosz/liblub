@@ -32,7 +32,7 @@ class TextureFile : public Texture {
 
 class TextureQImage : public Texture {
  public:
-  TextureQImage(QImage * image, string name);
+  TextureQImage(const QImage &image, string name);
 };
 
 class CubeTextureFile : public Texture {

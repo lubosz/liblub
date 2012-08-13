@@ -34,8 +34,8 @@ class Texture {
 
 public:
 	void loadFile(const string & path);
-	void loadQImage(QImage * image);
+    void loadQImage(const QImage &image);
   void loadFile(GLenum target, const string & path);
-  void loadQImage(GLenum target, QImage * image);
+  void loadQImage(GLenum target, const QImage &image);
 	void filterMinMag(GLenum min, GLenum mag);
 };

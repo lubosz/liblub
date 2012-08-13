@@ -58,13 +58,7 @@ float lookup( vec2 offSet,vec4 shadowTexCoord){
 	normalTarget = normalWorld;
 	tangentTarget = tangentWorld;
 	binormalTarget = binormalWorld;
-        diffuseTarget = texture(diffuseTexture, uv);
-
-        if (uv == vec2(0,0)) {
-            normalMapTarget = normalWorld;
-        } else {
-            normalMapTarget = texture(normalTexture, uv);
-        }
+        diffuseTarget = vec4(0);
 
 {% if paralaxMap %}
         float height = normalMap.w;
@@ -75,9 +69,18 @@ float lookup( vec2 offSet,vec4 shadowTexCoord){
 {% else %}
         vec2 uv2 = uv;
 {% endif %}
-        diffuseTarget = texture(diffuseTexture, uv2);
 
-	//shadow
+
+        if (uv == vec2(0,0)) {
+            normalMapTarget = normalWorld;
+            diffuseTarget = vec4(1);
+        } else {
+            normalMapTarget = texture(normalTexture, uv);
+            //diffuseTarget = texture(diffuseTexture, uv);
+            diffuseTarget = texture(diffuseTexture, uv2);
+        }
+
+        //shadow
 	shadowTarget = vec4(1);
 	vec4 shadowTexCoord;
 	float shadowSum = 0;

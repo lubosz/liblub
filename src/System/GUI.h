@@ -19,7 +19,7 @@ using std::string;
 class GUI {
 public:
   QMap<string,string> textLines;
-  QImage * image;
+  QImage image;
   ShaderProgram * shader;
   Mesh * mesh;
   QRectF textBox;

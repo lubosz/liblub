@@ -57,7 +57,7 @@ void Texture::uniform(GLuint program) {
 //    glUniform1i(texLoc, glId - GL_TEXTURE0);
 //    glUniform1i(texLoc, handle-1);
     glUniform1i(texLoc, handle-1);
-    LogDebug << name << ": Setting Sampler Uniform in Program" << program << "Handle: "<< handle-1;
+//    LogDebug << name << ": Setting Sampler Uniform in Program" << program << "Handle: "<< handle-1;
     glError;
 }
 
@@ -70,36 +70,49 @@ void Texture::loadFile(GLenum target, const string & path) {
         LogError << "Path is empty.";
 
     this->path = path;
-  QImage * image = new QImage();
-  image->load(QString::fromStdString(path));
+  QImage image = QImage();
+  image.load(QString::fromStdString(path));
 
-  if(image->isNull())
-    image->load(QString::fromStdString(Config::Instance().value<string> ("textureDir") + path));
-  if(image->isNull())
+  if(image.isNull())
+    image.load(QString::fromStdString(Config::Instance().value<string> ("textureDir") + path));
+  if(image.isNull())
     LogError << path << "does not exist";
 
   //TODO: Qt loads image with wrong pixel order
-  *image = image->mirrored(false, true);
-  loadQImage(target, image);
-  delete image;
-}
-
-void Texture::loadQImage(QImage * image) {
+  image = image.mirrored(false, true);
   loadQImage(target, image);
 }
 
-void Texture::loadQImage(GLenum target, QImage * image) {
-  if (image->bitPlaneCount() == 32) {
-    glChannelOrder = GL_RGBA;
+void Texture::loadQImage(const QImage & image) {
+  loadQImage(target, image);
+}
+
+void Texture::loadQImage(GLenum target, const QImage& image) {
+    QImage img = image;
+
     texChannelOrder = GL_BGRA;
-  } else {
-    glChannelOrder = GL_RGB;
-    //TODO: Qt needs A
-    texChannelOrder = GL_BGRA;
-  }
-    glTexImage2D(target, 0, glChannelOrder, image->width(),
-                 image->height(), 0, texChannelOrder, GL_UNSIGNED_BYTE,
-                 image->bits());
+
+    switch(img.bitPlaneCount()) {
+        case 32:
+            glChannelOrder = GL_RGBA;
+            break;
+        case 24:
+            glChannelOrder = GL_RGB;
+            break;
+        default:
+            if (img.hasAlphaChannel()) {
+                img = img.convertToFormat(QImage::Format_ARGB32);
+                glChannelOrder = GL_RGBA;
+            } else {
+                img = img.convertToFormat(QImage::Format_RGB32);
+                glChannelOrder = GL_RGB;
+            }
+            break;
+    }
+
+    glTexImage2D(target, 0, glChannelOrder, img.width(),
+                 img.height(), 0, texChannelOrder, GL_UNSIGNED_BYTE,
+                 img.bits());
     glError;
 }
 

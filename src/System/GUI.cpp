@@ -33,7 +33,7 @@ GUI::GUI() {
 
   screenSize = QSize(480,600);
   textBox = QRectF(0,0,screenSize.width(), screenSize.height());
-  image = new QImage(screenSize, QImage::Format_ARGB32);
+  image = QImage(screenSize, QImage::Format_ARGB32);
 
   //clean alpha channel
   black = QImage(screenSize, QImage::Format_Mono);
@@ -48,7 +48,6 @@ GUI::GUI() {
 }
 
 GUI::~GUI() {
-    delete image;
     delete mesh;
     delete shader;
     if (texture != nullptr)
@@ -83,11 +82,11 @@ void GUI::update() {
 }
 
 void GUI::clear() {
-  image->setAlphaChannel(black);
+  image.setAlphaChannel(black);
 }
 
 void GUI::render() {
-  QPainter fontPainter(image);
+  QPainter fontPainter(&image);
   //draw font
   fontPainter.setRenderHint(QPainter::Antialiasing, true);
   fontPainter.setRenderHint(QPainter::TextAntialiasing, true);

@@ -65,7 +65,14 @@ void Mesh::initBuffer(string name, string linkage, unsigned vertexSize) {
         LogWarning << "No" << name << "Buffer found. Will use Position Buffer instead.";
         addBuffer(buffers["position"], vertexSize, linkage);
       } else {
-        LogError << "No" << name << "Buffer found.";
+          LogWarning << "No" << name << "Buffer found. Will fill it with zeros.";
+          vector<float> zeroBuffer;
+          unsigned elements = buffers["position"].size()/3;
+          for (unsigned i = 0; i < elements; i++) {
+              for (unsigned j = 0; j < vertexSize; j++)
+                  zeroBuffer.push_back(0);
+          }
+          addBuffer(zeroBuffer, vertexSize, linkage);
       }
     }
   }

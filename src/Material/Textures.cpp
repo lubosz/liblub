@@ -121,7 +121,7 @@ TextureFile::TextureFile(string filename, string name) : Texture(name) {
   unbind();
 }
 
-TextureQImage::TextureQImage(QImage * image, string name) : Texture(name) {
+TextureQImage::TextureQImage(const QImage & image, string name) : Texture(name) {
   glGenTextures(1, &handle);
   LogDebug << "Creating texture from qimage #" << handle << " " << name;
   bind();
