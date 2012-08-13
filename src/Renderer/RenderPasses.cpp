@@ -57,7 +57,7 @@
         }
     }
     LogFatal << "Texture Not Found" << target;
-    return new Texture();
+    return new Texture("Dummy Texture");
   }
 
   void SourcePass::initFBO() {
@@ -124,7 +124,7 @@
         }
     }
     LogFatal << "Texture Not Found" << target;
-    return new Texture();
+    return new Texture("Dummy Texture");
   }
 
   void InOutPass::draw() {

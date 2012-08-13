@@ -20,6 +20,7 @@
 
 using std::string;
 
+
 class Scene : public Singleton<Scene> {
 public:
   string name;

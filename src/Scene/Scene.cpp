@@ -106,7 +106,7 @@ Texture* Scene::getTexture(const string & name) {
     return texture;
   } else {
     LogWarning <<  "Texture not found" << name;
-    return new Texture();
+    return new Texture("Dummy Texture");
   }
 }
 

@@ -15,9 +15,8 @@
 #include <QDebug>
 #include "Renderer/OpenGL.h"
 
-DepthTexture::DepthTexture(QSize& res, string name) {
+DepthTexture::DepthTexture(QSize& res, string name) : Texture(name) {
   glError;
-  this->name = name;
   isDepth = true;
   glGenTextures(1, &handle);
   bind();
@@ -40,8 +39,7 @@ DepthTexture::DepthTexture(QSize& res, string name) {
   glError;
 }
 
-ShadowTexture::ShadowTexture(QSize& res, string name) {
-  this->name = name;
+ShadowTexture::ShadowTexture(QSize& res, string name) : Texture(name){
   isDepth = true;
     glGenTextures(1, &handle);
     bind();
@@ -74,10 +72,7 @@ ShadowTexture::ShadowTexture(QSize& res, string name) {
   glError;
 }
 
-ColorTexture::ColorTexture(QSize& res, string name) {
-  glError;
-  this->name = name;
-
+ColorTexture::ColorTexture(QSize& res, string name) : Texture(name) {
   glGenTextures(1, &handle);
   LogDebug << "Creating FBO Color texture #" << handle << " " << name;
   bind();
@@ -108,8 +103,7 @@ ColorTexture::ColorTexture(QSize& res, string name) {
   glError;
 }
 
-TextureFile::TextureFile(string filename, string name) {
-  this->name = name;
+TextureFile::TextureFile(string filename, string name) : Texture(name) {
   string path =  filename;
   glGenTextures(1, &handle);
   LogDebug << "Creating texture from file #" << handle << " " << name;
@@ -127,8 +121,7 @@ TextureFile::TextureFile(string filename, string name) {
   unbind();
 }
 
-TextureQImage::TextureQImage(QImage * image, string name) {
-  this->name = name;
+TextureQImage::TextureQImage(QImage * image, string name) : Texture(name) {
   glGenTextures(1, &handle);
   LogDebug << "Creating texture from qimage #" << handle << " " << name;
   bind();
@@ -139,9 +132,7 @@ TextureQImage::TextureQImage(QImage * image, string name) {
   unbind();
 }
 
-CubeTextureFile::CubeTextureFile(string filename, string name) {
-  this->name = name;
-
+CubeTextureFile::CubeTextureFile(string filename, string name) : Texture(name) {
   target = GL_TEXTURE_CUBE_MAP;
 
   glGenTextures(1, &handle);
@@ -160,8 +151,7 @@ CubeTextureFile::CubeTextureFile(string filename, string name) {
   unbind();
 }
 
-Texture3D::Texture3D(string name, GLubyte *voxels, unsigned size) {
-    this->name = name;
+Texture3D::Texture3D(string name, GLubyte *voxels, unsigned size) : Texture(name) {
     target = GL_TEXTURE_3D;
     glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
     glGenTextures(1, &handle);

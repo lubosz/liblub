@@ -35,6 +35,9 @@
 #include "System/Config.h"
 #include "Window/Qt/FloatEditorWidget.h"
 #include "TextureModel.h"
+#include <QTreeWidget>
+
+#include <QMdiArea>
 
 Editor::Editor(int argc, char *argv[]) :
     Application(argc, argv) {
@@ -50,7 +53,7 @@ void Editor::scene() {
 
     Texture* env = new CubeTextureFile("cubemaps/sky", "sky");
 
-    Scene::Instance().textures.insert("sky", env);
+//    Scene::Instance().textures.insert("sky", env);
 
     BlenderLoader::Instance().load("nature.blend");
     DeferredRenderer::Instance().init();
@@ -67,7 +70,7 @@ void Editor::setSelectedPlane(const QModelIndex &index) {
     vector<string> targets = DeferredRenderer::Instance().getTargetNames();
     for (int i = 0; i < targets.size(); ++i) {
         if (targets[i] == selectedPlane->targetName)
-            thebox->setCurrentIndex(i);
+            renderPassSelector->setCurrentIndex(i);
     }
 }
 
@@ -75,6 +78,13 @@ void Editor::changePlaneSource(const QString &name) {
     DeferredRenderer::Instance().changePlaneSource(selectedPlane, name);
     glWidget->updateGL();
 }
+
+void Editor::setSelectedTexture(const QModelIndex &index) {
+    Texture * texture = Scene::Instance().textures.values().at(index.row());
+    selectedPlane->updateSource(texture);
+    glWidget->updateGL();
+}
+
 
 void Editor::initWidgets(QHBoxLayout * mainLayout) {
     QVBoxLayout *sideLayout = new QVBoxLayout;
@@ -95,39 +105,48 @@ void Editor::initWidgets(QHBoxLayout * mainLayout) {
 
     QVBoxLayout *renderPassTabLayout = new QVBoxLayout(renderPassTab);
 
-    QListView *listView = new QListView;
+    QListView *passListView = new QListView;
     passModel = new PassModel(0);
     connect(passModel, SIGNAL(draw()), glWidget, SLOT(updateGL()));
-    listView->setModel(passModel);
-    listView->show();
-    renderPassTabLayout->addWidget(listView);
+    passListView->setModel(passModel);
+    passListView->show();
+    renderPassTabLayout->addWidget(passListView);
 
 
-    thebox = new QComboBox;
+    renderPassSelector = new QComboBox;
 
     vector<string> targets = DeferredRenderer::Instance().getTargetNames();
 
     for (int i = 0; i < targets.size(); ++i) {
-        thebox->insertItem(i, QString::fromStdString(targets[i]));
+        renderPassSelector->insertItem(i, QString::fromStdString(targets[i]));
     }
-    renderPassTabLayout->addWidget(thebox);
+    renderPassTabLayout->addWidget(renderPassSelector);
 
 
     QWidget * textureTab = new QWidget();
     tabWidget->addTab(textureTab, "Textures");
     QVBoxLayout *textureTabLayout = new QVBoxLayout(textureTab);
 
-    QListView *texturelistView = new QListView;
+    QTreeView *texturelistView = new QTreeView;
     TextureModel * texModel = new TextureModel(0);
     texturelistView->setModel(texModel);
     texturelistView->show();
-    textureTabLayout->addWidget(texturelistView);
+//    textureTabLayout->addWidget(texturelistView);
 
+    texturelistView->resizeColumnToContents(2);
+
+
+    QMdiArea * area = new QMdiArea;
+    textureTabLayout->addWidget(area);
+
+    area->addSubWindow(renderPassSelector);
+    area->addSubWindow(texturelistView);
 
     setSelectedPlane(passModel->index(0, 0,QModelIndex()));
-    connect(listView, SIGNAL(activated(QModelIndex)), this, SLOT(setSelectedPlane(QModelIndex)));
-    connect(thebox, SIGNAL(currentIndexChanged(QString)), this, SLOT(changePlaneSource(QString)));
-    connect(thebox, SIGNAL(currentIndexChanged(QString)), listView, SLOT(updateGeometries()));
+    connect(passListView, SIGNAL(clicked(QModelIndex)), this, SLOT(setSelectedPlane(QModelIndex)));
+    connect(texturelistView, SIGNAL(clicked(QModelIndex)), this, SLOT(setSelectedTexture(QModelIndex)));
+    connect(renderPassSelector, SIGNAL(currentIndexChanged(QString)), this, SLOT(changePlaneSource(QString)));
+    connect(renderPassSelector, SIGNAL(currentIndexChanged(QString)), passListView, SLOT(updateGeometries()));
 }
 
 int main(int argc, char *argv[]) {

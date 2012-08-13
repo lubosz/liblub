@@ -44,7 +44,6 @@ public:
 
         Texture* env = new CubeTextureFile("cubemaps/sky", "sky");
 
-        Scene::Instance().textures.insert("sky", env);
         BlenderLoader::Instance().load("nature.blend");
         DeferredRenderer::Instance().init();
     }

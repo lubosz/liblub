@@ -15,15 +15,17 @@ using std::string;
 
 class Texture {
  public:
-  Texture();
+  Texture(string name);
 	void activate();
 	void bind();
 	void unbind();
 	void uniform(GLuint program);
+    string checkName(string name);
   GLuint getHandle() const;
 	virtual ~Texture();
 	string name;
 	bool isDepth;
+    string path;
  protected:
 	GLuint handle;
 	GLenum glId;

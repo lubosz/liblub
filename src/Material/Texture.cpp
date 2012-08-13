@@ -14,10 +14,20 @@
 #include "Renderer/OpenGL.h"
 #include "System/Config.h"
 
-Texture::Texture()  {
-  isDepth = false;
-  target = GL_TEXTURE_2D;
+#include "Scene/Scene.h"
+
+Texture::Texture(string name) : name(name), isDepth(false), target(GL_TEXTURE_2D) {
   glId = TextureFactory::Instance().getNextId();
+  Scene::Instance().textures.insert(checkName(name), this);
+}
+
+string Texture::checkName(string name) {
+    if (!Scene::Instance().textures.contains(name)) {
+        return name;
+    } else {
+        LogWarning << "Texture name" << name << "already taken.";
+        return checkName(name+"1");
+    }
 }
 
 Texture::~Texture() {
@@ -59,6 +69,7 @@ void Texture::loadFile(GLenum target, const string & path) {
     if (path == "")
         LogError << "Path is empty.";
 
+    this->path = path;
   QImage * image = new QImage();
   image->load(QString::fromStdString(path));
 

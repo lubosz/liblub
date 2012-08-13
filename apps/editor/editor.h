@@ -39,12 +39,13 @@ public:
 
   void initWidgets(QHBoxLayout * mainLayout);
 
-  QComboBox * thebox;
+  QComboBox * renderPassSelector;
   DebugPlane * selectedPlane;
   PassModel * passModel;
 
 public slots:
   void setSelectedPlane(const QModelIndex &index);
+  void setSelectedTexture(const QModelIndex &index);
   void changePlaneSource(const QString &name);
 };
 
