@@ -20,7 +20,7 @@ Camera::~Camera() {
 }
 
 void Camera::setMouseLook(int mouseXrel, int mouseYrel, qreal mouseSensitivity) {
-  rotationMatrix.rotate(mouseSensitivity * mouseXrel, QVector3D(0,1,0));
+    rotationMatrix.rotate(mouseSensitivity * mouseXrel, QVector3D(0,1,0));
 
   QVector3D dir = direction();
   qreal upAngle = QVector3D::dotProduct(up, dir);

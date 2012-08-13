@@ -10,6 +10,7 @@
 #include "common/Qt3D.h"
 #include <QtCore>
 #include "Scene/Node.h"
+
 const QVector3D up(0, 1, 0);
 
 class DirectionNode : public Node{
@@ -24,6 +25,8 @@ public:
   qreal farClip;
 
   QMatrix4x4 viewMatrix, projectionMatrix;
+
+  QVector3D sideDirection;
 
   QMatrix4x4 getView() const;
   QMatrix4x4 getViewNoTranslation();
@@ -48,4 +51,6 @@ public:
   void updateView();
 
   virtual void update() = 0;
+
+  void updateSideDirection();
 };

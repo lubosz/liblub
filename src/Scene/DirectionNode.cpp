@@ -66,27 +66,25 @@ void DirectionNode::setAspect(qreal aspect) {
 
 
 void DirectionNode::forwardDirection(qreal distance) {
-  position += distance*direction();
-  updateView();
+    position += distance*direction();
+    updateView();
 }
 
 void DirectionNode::backwardDirection(qreal distance) {
-  position -= distance*direction();
-  updateView();
+    position -= distance*direction();
+    updateView();
 }
 
 void DirectionNode::leftDirection(qreal distance) {
-  QVector3D side = QVector3D::crossProduct(direction(), up);
-  side.normalize();
-  position -= distance * side;
-  updateView();
+    updateSideDirection();
+    position -= distance * sideDirection;
+    updateView();
 }
 
 void DirectionNode::rightDirection(qreal distance) {
-  QVector3D side = QVector3D::crossProduct(direction(), up);
-  side.normalize();
-  position += distance * side;
-  updateView();
+    updateSideDirection();
+    position += distance * sideDirection;
+    updateView();
 }
 
 void DirectionNode::leftWorld(qreal distance) {
@@ -117,4 +115,9 @@ void DirectionNode::forwardWorld(qreal distance) {
 void DirectionNode::backWorld(qreal distance) {
     position += QVector3D(0, 0, -distance);
     update();
+}
+
+void DirectionNode::updateSideDirection() {
+    sideDirection = QVector3D::crossProduct(direction(), up);
+    sideDirection.normalize();
 }

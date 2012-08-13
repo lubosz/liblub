@@ -11,6 +11,7 @@
 #include "System/Config.h"
 #include "System/GUI.h"
 #include "Renderer/OpenGL.h"
+#include "QtInput.h"
 
 QtApplication::QtApplication(int & argc, char ** argv) {
   Config::Instance().load("config.xml");
@@ -70,8 +71,9 @@ void QtApplication::run() {
   gui->init();
   scene();
   drawTimer = new QTimer(this);
+  QtInput *input = &QtInput::Instance();
   connect(drawTimer, SIGNAL(timeout()), glWidget, SLOT(updateGL()));
-  connect(window, SIGNAL(draw(void)), glWidget, SLOT(updateGL()));
+  connect(input, SIGNAL(draw(void)), glWidget, SLOT(updateGL()));
   connect(glWidget, SIGNAL(draw()), this, SLOT(draw()));
   app->exec();
 }

@@ -126,7 +126,7 @@ void SceneGraph::drawReceivers(ShaderProgram * shader) {
         }
     }
     if (transparentNodes.size() > 0) {
-      glEnable(GL_BLEND);
+//      glEnable(GL_BLEND);
       QList<qreal> transparentKeys = transparentNodes.keys();
       qSort(transparentKeys.begin(), transparentKeys.end(), qGreater<qreal>());
 
@@ -138,7 +138,7 @@ void SceneGraph::drawReceivers(ShaderProgram * shader) {
         node->shader->activateAndBindTextures();
         node->draw(shader);
       }
-      glDisable(GL_BLEND);
+//      glDisable(GL_BLEND);
     }
 
   glError;

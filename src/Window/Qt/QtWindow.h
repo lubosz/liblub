@@ -19,14 +19,10 @@ public:
   QtWindow();
   ~QtWindow();
   QHBoxLayout *mainLayout;
-signals:
-  void draw();
 protected:
   void keyPressEvent(QKeyEvent *event);
   void keyReleaseEvent(QKeyEvent *e);
-  void executeKeys();
 private:
-  QList<int> pressedKeys;
   void toggleFullScreen();
   void toggleMouseGrab();
   void mouseLook(int x, int y);

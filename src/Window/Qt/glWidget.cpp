@@ -1,6 +1,7 @@
 #include <QtGui>
 #include "glWidget.h"
 #include "Scene/Scene.h"
+#include "QtInput.h"
 
 #ifndef GL_MULTISAMPLE
 #define GL_MULTISAMPLE  0x809D
@@ -37,14 +38,18 @@ void GLWidget::mousePressEvent(QMouseEvent *event) {
   lastMousePosition = event->pos();
 }
 
+void GLWidget::mouseReleaseEvent(QMouseEvent *event) {
+    QtInput::Instance().mousePosition = QVector2D(0,0);
+}
+
 void GLWidget::mouseMoveEvent(QMouseEvent *event) {
   this->setFocus();
 
   if (event->buttons() & Qt::LeftButton) {
     int dx = event->x() - lastMousePosition.x();
     int dy = event->y() - lastMousePosition.y();
-    Scene::Instance().getCurrentCamera()->setMouseLook(dx, dy, .1);
-    updateGL();
+    QtInput::Instance().mousePosition = QVector2D(dx,dy);
+    QtInput::Instance().move();
   } else if (event->buttons() & Qt::RightButton) {
   }
   lastMousePosition = event->pos();
