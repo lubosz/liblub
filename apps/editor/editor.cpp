@@ -37,7 +37,7 @@
 #include "TextureModel.h"
 #include <QTreeWidget>
 
-#include <QMdiArea>
+#include <QSplitter>
 
 Editor::Editor(int argc, char *argv[]) :
     Application(argc, argv) {
@@ -57,7 +57,7 @@ void Editor::scene() {
 
     BlenderLoader::Instance().load("nature.blend");
     DeferredRenderer::Instance().init();
-    initWidgets(window->mainLayout);
+    initWidgets(window->splitter);
 
 }
 void Editor::renderFrame() {
@@ -86,9 +86,13 @@ void Editor::setSelectedTexture(const QModelIndex &index) {
 }
 
 
-void Editor::initWidgets(QHBoxLayout * mainLayout) {
+void Editor::initWidgets(QSplitter * mainSplitter) {
     QVBoxLayout *sideLayout = new QVBoxLayout;
-    mainLayout->addLayout(sideLayout);
+//    mainLayout->addL(sideLayout);
+
+    QWidget *sideLayoutWidget = new QWidget;
+    sideLayoutWidget->setLayout(sideLayout);
+    mainSplitter->addWidget(sideLayoutWidget);
 
     QCheckBox *lazyBox = new QCheckBox();
     lazyBox->setText("Lazy Rendering");

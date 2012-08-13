@@ -8,6 +8,7 @@
 #pragma once
 
 #include <QWidget>
+#include <QSplitter>
 #include "Window/Window.h"
 
 class QHBoxLayout;
@@ -19,6 +20,7 @@ public:
   QtWindow();
   ~QtWindow();
   QHBoxLayout *mainLayout;
+  QSplitter *splitter;
 protected:
   void keyPressEvent(QKeyEvent *event);
   void keyReleaseEvent(QKeyEvent *e);

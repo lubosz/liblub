@@ -53,7 +53,7 @@ void QtApplication::run() {
   glWidget->setFocus();
   if(!glWidget->isValid())
     LogFatal << "GL Widget Invalid";
-  window->mainLayout->addWidget(glWidget);
+  window->splitter->addWidget(glWidget);
   window->show();
 #ifdef USE_GLEW
   GLenum err = glewInit();

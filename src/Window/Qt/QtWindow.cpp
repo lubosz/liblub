@@ -16,7 +16,10 @@
 
 QtWindow::QtWindow() {
   mainLayout = new QHBoxLayout;
+//  mainLayout->setSizeConstraint(QLayout::SetNoConstraint);
   setLayout(mainLayout);
+  splitter = new QSplitter;
+  mainLayout->addWidget(splitter);
 }
 
 QtWindow::~QtWindow() {

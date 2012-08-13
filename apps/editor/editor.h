@@ -37,7 +37,7 @@ public:
     void scene();
     void renderFrame();
 
-  void initWidgets(QHBoxLayout * mainLayout);
+  void initWidgets(QSplitter *mainSplitter);
 
   QComboBox * renderPassSelector;
   DebugPlane * selectedPlane;
