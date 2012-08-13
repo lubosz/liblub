@@ -8,6 +8,7 @@ file(GLOB EDITOR_CPP_FILES *.cpp)
 #moc qt stuff
 set(EDITOR_MOC_INFILES
     editor.h
+    TextureModel.h
 )
 
 qt4_wrap_cpp(EDITOR_MOC_OUTFILES ${EDITOR_MOC_INFILES})

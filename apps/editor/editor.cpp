@@ -34,6 +34,7 @@
 #include <QTableView>
 #include "System/Config.h"
 #include "Window/Qt/FloatEditorWidget.h"
+#include "TextureModel.h"
 
 Editor::Editor(int argc, char *argv[]) :
     Application(argc, argv) {
@@ -79,12 +80,27 @@ void Editor::initWidgets(QHBoxLayout * mainLayout) {
     QVBoxLayout *sideLayout = new QVBoxLayout;
     mainLayout->addLayout(sideLayout);
 
+    QCheckBox *lazyBox = new QCheckBox();
+    lazyBox->setText("Lazy Rendering");
+    lazyBox->setChecked(true);
+    connect(lazyBox, SIGNAL(clicked(bool)), this, SLOT(setLazy(bool)));
+    sideLayout->addWidget(lazyBox);
+
+
+    QTabWidget * tabWidget = new QTabWidget;
+    sideLayout->addWidget(tabWidget);
+    QWidget * renderPassTab = new QWidget();
+    tabWidget->addTab(renderPassTab, "Passes");
+
+
+    QVBoxLayout *renderPassTabLayout = new QVBoxLayout(renderPassTab);
+
     QListView *listView = new QListView;
     passModel = new PassModel(0);
     connect(passModel, SIGNAL(draw()), glWidget, SLOT(updateGL()));
     listView->setModel(passModel);
     listView->show();
-    sideLayout->addWidget(listView);
+    renderPassTabLayout->addWidget(listView);
 
 
     thebox = new QComboBox;
@@ -94,17 +110,23 @@ void Editor::initWidgets(QHBoxLayout * mainLayout) {
     for (int i = 0; i < targets.size(); ++i) {
         thebox->insertItem(i, QString::fromStdString(targets[i]));
     }
-    sideLayout->addWidget(thebox);
+    renderPassTabLayout->addWidget(thebox);
 
-    QCheckBox *lazyBox = new QCheckBox();
-    lazyBox->setText("Lazy Rendering");
-    lazyBox->setChecked(true);
-    connect(lazyBox, SIGNAL(clicked(bool)), this, SLOT(setLazy(bool)));
-    sideLayout->addWidget(lazyBox);
 
+    QWidget * textureTab = new QWidget();
+    tabWidget->addTab(textureTab, "Textures");
+    QVBoxLayout *textureTabLayout = new QVBoxLayout(textureTab);
+
+    QListView *texturelistView = new QListView;
+    TextureModel * texModel = new TextureModel(0);
+    texturelistView->setModel(texModel);
+    texturelistView->show();
+    textureTabLayout->addWidget(texturelistView);
+
+
+    setSelectedPlane(passModel->index(0, 0,QModelIndex()));
     connect(listView, SIGNAL(activated(QModelIndex)), this, SLOT(setSelectedPlane(QModelIndex)));
     connect(thebox, SIGNAL(currentIndexChanged(QString)), this, SLOT(changePlaneSource(QString)));
-
     connect(thebox, SIGNAL(currentIndexChanged(QString)), listView, SLOT(updateGeometries()));
 }
 

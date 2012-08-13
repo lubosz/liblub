@@ -1,0 +1,16 @@
+#ifndef TEXTUREMODEL_H
+#define TEXTUREMODEL_H
+
+#include <QAbstractTableModel>
+class TextureModel : public QAbstractListModel {
+    Q_OBJECT
+ public:
+    TextureModel(QObject *parent);
+    int rowCount(const QModelIndex &parent = QModelIndex()) const ;
+    QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
+    Qt::ItemFlags flags(const QModelIndex &) const;
+
+    bool setData(const QModelIndex& index, const QVariant& value, int role);
+};
+
+#endif // TEXTUREMODEL_H
