@@ -5,6 +5,9 @@
  *  Created on: Dec 20, 2010
  */
 
+#ifndef CONFIG_H
+#define CONFIG_H
+
 #include "common/Singleton.h"
 #include "XmlReader.h"
 #include <string>
@@ -47,3 +50,4 @@ class Config : public Singleton<Config>, public XmlReader {
 	bool initialized;
 };
 
+#endif
