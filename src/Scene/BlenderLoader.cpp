@@ -5,8 +5,24 @@
 #include "Material/Shaders.h"
 #include "Material/Textures.h"
 
-BlenderLoader::BlenderLoader()
-{
+BlenderLoader::BlenderLoader() {
+}
+
+QMatrix4x4 BlenderLoader::qFromAssimpMatrix(const aiMatrix4x4 &aMatrix) {
+
+    QMatrix4x4 qMatrix =
+    //                QMatrix4x4();
+    //            QMatrix4x4(aMatrix.a1,aMatrix.a2,aMatrix.a3,aMatrix.a4,
+    //                       aMatrix.b1,aMatrix.b2,aMatrix.b3,aMatrix.b4,
+    //                       aMatrix.c1,aMatrix.c2,aMatrix.c3,aMatrix.c4,
+    //                       aMatrix.d1,aMatrix.d2,aMatrix.d3,aMatrix.d4);
+            QMatrix4x4(aMatrix.a1,aMatrix.b1,aMatrix.c1,aMatrix.d1,
+                       aMatrix.a2,aMatrix.b2,aMatrix.c2,aMatrix.d2,
+                       aMatrix.a3,aMatrix.b3,aMatrix.c3,aMatrix.d3,
+                       aMatrix.a4,aMatrix.b4,aMatrix.c4,aMatrix.d4);
+    //            qaMatrix = qaMatrix.transposed();
+    //            LogDebug << "Rot"<<rotation.x<<rotation.y<<rotation.z;
+    return qMatrix;
 }
 
 void BlenderLoader::initNode(aiNode * parent) {
@@ -35,24 +51,11 @@ void BlenderLoader::initNode(aiNode * parent) {
 
         someMeshNode->transparent = true;
 
-//            someMeshNode->setRotation(QVector3D(rotation.x,rotation.y,rotation.z));
         aiMatrix4x4 rotMatrix = aiMatrix4x4(rotation.GetMatrix());
-        QMatrix4x4 qRotMatrix =
-//                QMatrix4x4(0,0,0,0,
-//                           0,0,0,0,
-//                           0,0,0,0,
-//                           0,0,0,0);
-//            QMatrix4x4(rotMatrix.a1,rotMatrix.a2,rotMatrix.a3,rotMatrix.a4,
-//                       rotMatrix.b1,rotMatrix.b2,rotMatrix.b3,rotMatrix.b4,
-//                       rotMatrix.c1,rotMatrix.c2,rotMatrix.c3,rotMatrix.c4,
-//                       rotMatrix.d1,rotMatrix.d2,rotMatrix.d3,rotMatrix.d4);
-                QMatrix4x4(rotMatrix.a1,rotMatrix.b1,rotMatrix.c1,rotMatrix.d1,
-                           rotMatrix.a2,rotMatrix.b2,rotMatrix.c2,rotMatrix.d2,
-                           rotMatrix.a3,rotMatrix.b3,rotMatrix.c3,rotMatrix.d3,
-                           rotMatrix.a4,rotMatrix.b4,rotMatrix.c4,rotMatrix.d4);
-//            qRotMatrix = qRotMatrix.transposed();
-//            LogDebug << "Rot"<<rotation.x<<rotation.y<<rotation.z;
-        someMeshNode->setRotation(qRotMatrix);
+//            someMeshNode->setRotation(QVector3D(rotation.x,rotation.y,rotation.z));
+//        someMeshNode->setRotation(qFromAssimpMatrix(rotMatrix));
+        someMeshNode->setRotation(qFromAssimpMatrix(trans));
+
         SceneGraph::Instance().addNode(someMeshNode);
     }
 

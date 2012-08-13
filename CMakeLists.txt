@@ -39,6 +39,8 @@ set(EXECUTABLE_OUTPUT_PATH ${CMAKE_SOURCE_DIR}/bin)
 set(SRC_DIR ${CMAKE_SOURCE_DIR}/src)
 set(TEST_DIR ${CMAKE_SOURCE_DIR}/tests)
 
+set(CMAKE_CXX_FLAGS "-ffast-math") #Faster
+
 if(CMAKE_BUILD_TYPE STREQUAL Debug)
     #Debug
     message("On Debug Build")

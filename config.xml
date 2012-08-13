@@ -10,7 +10,7 @@
 		<String name="suffixes" value="_RT, _LF, _DN,_UP, _FR, _BK" />
 		<Float name="backgroundColor" value="0.0,0.0,0.0" />
 		<Float name="FPS_INTERVAL" value="1.0" />
-		<Int name="GLcontext" value="3,3" />
+		<Int name="GLcontext" value="4,2" />
 		<Int name="maxBuffers" value="6" />
 	</Config>
 </liblub>

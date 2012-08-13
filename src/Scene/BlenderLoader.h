@@ -25,6 +25,8 @@ public:
     Mesh * initMesh(aiMesh * assMesh);
     void initNode(aiNode * parent);
 
+    QMatrix4x4 qFromAssimpMatrix(const aiMatrix4x4 &aMatrix);
+
 };
 
 #endif // BLENDERLOADER_H
