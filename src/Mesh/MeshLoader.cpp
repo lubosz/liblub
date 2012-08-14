@@ -35,9 +35,6 @@ Mesh * MeshLoader::load(const QList<string> & attributes, string file) {
 
     aiMesh * assMesh = scene->mMeshes[0];
 
-    QVector3D boundingBoxMin = QVector3D();
-    QVector3D boundingBoxMax = QVector3D();
-
     for (unsigned i = 0; i < assMesh->mNumFaces; i++) {
         aiFace face = assMesh->mFaces[i];
         for (unsigned j = 0; j < face.mNumIndices; j++) {
@@ -46,23 +43,7 @@ Mesh * MeshLoader::load(const QList<string> & attributes, string file) {
             aiVector3D position = assMesh->mVertices[vertex];
             mesh->vertex("position",position.x,position.y,position.z);
 
-            if(i == 0 && j == 0) {
-                boundingBoxMin = QVector3D(position.x,position.y,position.z);
-                boundingBoxMax = QVector3D(position.x,position.y,position.z);
-            } else {
-              if (boundingBoxMin.x() > position.x)
-                boundingBoxMin.setX(position.x);
-              if (boundingBoxMin.y() > position.y)
-                boundingBoxMin.setY(position.y);
-              if (boundingBoxMin.z() > position.z)
-                boundingBoxMin.setZ(position.z);
-              if (boundingBoxMax.x() < position.x)
-                boundingBoxMax.setX(position.x);
-              if (boundingBoxMax.y() < position.y)
-                boundingBoxMax.setY(position.y);
-              if (boundingBoxMax.z() < position.z)
-                boundingBoxMax.setZ(position.z);
-            }
+            mesh->getBoundingBox()->update(position.x,position.y,position.z);
 
             if(assMesh->HasNormals() && attributes.contains("normal")) {
               aiVector3D normal = assMesh->mNormals[vertex];
@@ -88,7 +69,6 @@ Mesh * MeshLoader::load(const QList<string> & attributes, string file) {
 
     mesh->init();
     mesh->setDrawType(GL_TRIANGLES);
-    mesh->boundingBox = new AABB(boundingBoxMin,boundingBoxMax);
     glError;
 //    delete assMesh;
     importer.FreeScene();

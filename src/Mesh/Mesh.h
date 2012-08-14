@@ -28,7 +28,6 @@ class Mesh {
   vector<Mesh*> subMeshes;
   QMap<string, MeshBuffer* > meshBuffers;
   bool initialized;
-	AABB * boundingBox;
 	QList<string> usedAttributes;
 
 	Mesh(const QList<string> & attributes);
@@ -56,7 +55,10 @@ class Mesh {
 
     const QVector3D getCenter();
 
+    AABB * getBoundingBox();
+
  private:
+    AABB * boundingBox;
 	GLuint vao;
 	GLint drawType;
 

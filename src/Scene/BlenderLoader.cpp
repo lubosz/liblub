@@ -51,10 +51,22 @@ void BlenderLoader::initNode(aiNode * parent) {
 
         someMeshNode->transparent = true;
 
+//        QMatrix4x4 transQ;
+//        QTransform tranlationo = transQ.toTransform();
+
+//        tranlationo.
+
         aiMatrix4x4 rotMatrix = aiMatrix4x4(rotation.GetMatrix());
+        QMatrix4x4 theNewRotMatrix;
+        QQuaternion qquat =
+//                QQuaternion(rotation.x, rotation.y, rotation.z, rotation.w);
+                QQuaternion(rotation.w, rotation.x, rotation.y, rotation.z);
+        theNewRotMatrix.rotate(qquat);
+        theNewRotMatrix = theNewRotMatrix.inverted();
+        theNewRotMatrix = theNewRotMatrix.transposed();
 //            someMeshNode->setRotation(QVector3D(rotation.x,rotation.y,rotation.z));
 //        someMeshNode->setRotation(qFromAssimpMatrix(rotMatrix));
-        someMeshNode->setRotation(qFromAssimpMatrix(trans));
+        someMeshNode->setRotation(theNewRotMatrix);
 
         SceneGraph::Instance().addNode(someMeshNode);
     }
@@ -91,24 +103,7 @@ Mesh * BlenderLoader::initMesh(aiMesh * assMesh) {
             aiVector3D position = assMesh->mVertices[vertex];
             mesh->vertex("position",position.x,position.z,position.y);
 
-            if(i == 0 && j == 0) {
-                boundingBoxMin = QVector3D(position.x,position.y,position.z);
-                boundingBoxMax = QVector3D(position.x,position.y,position.z);
-            } else {
-                if (boundingBoxMin.x() > position.x)
-                    boundingBoxMin.setX(position.x);
-                if (boundingBoxMin.y() > position.y)
-                    boundingBoxMin.setY(position.y);
-                if (boundingBoxMin.z() > position.z)
-                    boundingBoxMin.setZ(position.z);
-                if (boundingBoxMax.x() < position.x)
-                    boundingBoxMax.setX(position.x);
-                if (boundingBoxMax.y() < position.y)
-                    boundingBoxMax.setY(position.y);
-                if (boundingBoxMax.z() < position.z)
-                    boundingBoxMax.setZ(position.z);
-            }
-
+            mesh->getBoundingBox()->update(position.x,position.z,position.y);
             if(assMesh->HasNormals() && attributes.contains("normal")) {
                 aiVector3D normal = assMesh->mNormals[vertex];
                 mesh->vertex("normal",normal.x, normal.y, normal.z);
@@ -133,7 +128,7 @@ Mesh * BlenderLoader::initMesh(aiMesh * assMesh) {
 
     mesh->init();
     mesh->setDrawType(GL_TRIANGLES);
-    mesh->boundingBox = new AABB(boundingBoxMin,boundingBoxMax);
+//    mesh->boundingBox = new AABB(boundingBoxMin,boundingBoxMax);
     return mesh;
 }
 

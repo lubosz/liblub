@@ -13,12 +13,15 @@ class Mesh;
 
 class AABB {
 public:
-  AABB(QVector3D min, QVector3D max);
+  AABB();
   virtual ~AABB();
   const QVector3D getCenter();
 
   void draw();
   void createMesh();
+
+  void update(const QVector3D& position);
+  void update(float x, float y, float z);
   Mesh * mesh;
   QVector3D min;
   QVector3D max;

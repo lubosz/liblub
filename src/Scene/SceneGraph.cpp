@@ -10,6 +10,7 @@
 #include "System/Logger.h"
 #include "Scene/Scene.h"
 #include "System/GUI.h"
+#include <cassert>
 
 SceneGraph::SceneGraph() {
     bias = QMatrix4x4();
@@ -113,13 +114,11 @@ void SceneGraph::drawReceivers(ShaderProgram * shader) {
 //          node->setShadowCoords(viewPoint);
 //          Scene::Instance().getShadowLight()->bindShaderUpdate(node->getShader());
 //          node->draw();
-            foreach(Node * node, sceneNodes) {
               node->setView(shader, camView );
-              foreach( Texture* tex, node->shader->textures)
+              foreach( Texture* tex, node->getShader()->textures)
                   tex->uniform(shader->getHandle());
-              node->shader->activateAndBindTextures();
+              node->getShader()->activateAndBindTextures();
               node->draw(shader);
-            }
         } else {
           QVector3D distance = node->getCenter() - Scene::Instance().getCurrentCamera()->position;
           transparentNodes.insert(distance.length(), node);
@@ -132,10 +131,11 @@ void SceneGraph::drawReceivers(ShaderProgram * shader) {
 
       foreach(qreal transparentKey, transparentKeys) {
         Node * node = transparentNodes[transparentKey];
+
         node->setView(shader, camView );
-        foreach( Texture* tex, node->shader->textures)
+        foreach( Texture* tex, node->getShader()->textures)
             tex->uniform(shader->getHandle());
-        node->shader->activateAndBindTextures();
+        node->getShader()->activateAndBindTextures();
         node->draw(shader);
       }
 //      glDisable(GL_BLEND);

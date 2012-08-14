@@ -41,6 +41,10 @@ void Node::setMesh(Mesh *mesh) {
     this->mesh = mesh;
 }
 
+bool Node::hasShader() const {
+    return (shader != nullptr);
+}
+
 void Node::setPosition(const QVector3D& position) {
     this->position = position;
     update();
@@ -70,7 +74,12 @@ void Node::setName(string name) {
     this->name = name;
 }
 
+void Node::setShader(ShaderProgram* shader) {
+    this->shader = shader;
+}
+
 ShaderProgram *Node::getShader() const {
+    assert(shader != nullptr);
     return shader;
 }
 
@@ -90,7 +99,7 @@ void Node::draw() {
 void Node::draw(ShaderProgram * material) {
     material->activateAndBindTextures();
     mesh->draw();
-    mesh->boundingBox->draw();
+//    mesh->boundingBox->draw();
 }
 
 void Node::setSize(float size) {

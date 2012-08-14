@@ -18,7 +18,7 @@ Mesh::Mesh(const QList<string> & attributes) {
   indexSize = 0;
   indices = vector<GLuint>();
   initialized = false;
-  boundingBox = nullptr;
+  boundingBox = new AABB();
 
   meshBuffers = QMap<string, MeshBuffer* > ();
 
@@ -27,6 +27,11 @@ Mesh::Mesh(const QList<string> & attributes) {
 
   foreach(string attrib, attributes)
       buffers[attrib] = vector<GLfloat>();
+}
+
+AABB * Mesh::getBoundingBox() {
+  assert(boundingBox != nullptr);
+  return boundingBox;
 }
 
 void Mesh::init() {

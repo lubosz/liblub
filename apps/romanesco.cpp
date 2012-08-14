@@ -99,7 +99,7 @@ class RomanescoApp: public Application {
       for (int i = 0; i < 500; i++) {
           RomanescoNode * romanesco;
         romanesco = new RomanescoNode();
-        romanesco->shader = shader;
+        romanesco->setShader(shader);
         romanesco->mesh = mesh;
 //        rotation += .1;
 //        QVector3D theVector = romanesco->makeVectorFromPolarCoords(10*rotation, rotation/10);

@@ -34,8 +34,10 @@ private:
   QMatrix4x4 modelMatrix;
   Node * parent;
 
-public:
+protected:
   ShaderProgram * shader;
+
+public:
   bool transparent;
   QVector3D position;
   QMatrix4x4 rotationMatrix;
@@ -52,6 +54,8 @@ public:
   virtual void draw(ShaderProgram * material);
   void update();
   void updateRotationFromEuler();
+
+  bool hasShader() const;
 
   float size() const;
   float rotationX() const;
@@ -82,6 +86,7 @@ public:
   void setMaterial(ShaderProgram *material);
   static void setShadowCoords(ShaderProgram * shaderProgram,
       DirectionNode * viewPoint);
+  void setShader(ShaderProgram* shader);
 
 public slots:
   void setSize(float size);
