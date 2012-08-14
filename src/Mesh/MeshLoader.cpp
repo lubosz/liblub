@@ -4,7 +4,6 @@
  *
  *  Created on: Jun 8, 2010
  */
-#include <assimp/scene.h>
 #include <assimp/postprocess.h>
 #include <assimp/Importer.hpp>
 #include <string>
@@ -16,24 +15,9 @@
 #include <QRectF>
 #include "Renderer/OpenGL.h"
 
-Mesh * MeshLoader::load(const QList<string> & attributes, string file) {
-    LogDebug << "Loading" << file;
+Mesh * MeshLoader::getMeshFromAssimp(aiMesh * assMesh, const QList<string> & attributes) {
     Mesh * mesh = new Mesh(attributes);
-    string path = Config::Instance().value<string> ("meshDir") + file;
-
-    Assimp::Importer importer;
-
-    const aiScene* scene = importer.ReadFile(path,
-            aiProcess_CalcTangentSpace
-            | aiProcess_Triangulate);
-            // | aiProcess_JoinIdenticalVertices
-            // | aiProcess_SortByPType
-
-    if (!scene) {
-        LogError << "Assimp Scene Load"<< importer.GetErrorString();
-    }
-
-    aiMesh * assMesh = scene->mMeshes[0];
+    mesh->name = assMesh->mName.data;
 
     for (unsigned i = 0; i < assMesh->mNumFaces; i++) {
         aiFace face = assMesh->mFaces[i];
@@ -41,7 +25,8 @@ Mesh * MeshLoader::load(const QList<string> & attributes, string file) {
             int vertex = face.mIndices[j];
 
             aiVector3D position = assMesh->mVertices[vertex];
-            mesh->vertex("position",position.x,position.y,position.z);
+//            mesh->vertex("position",position.x,position.y,position.z);
+            mesh->vertex("position",position.x,position.z,position.y);
 
             mesh->getBoundingBox()->update(position.x,position.y,position.z);
 
@@ -69,6 +54,29 @@ Mesh * MeshLoader::load(const QList<string> & attributes, string file) {
 
     mesh->init();
     mesh->setDrawType(GL_TRIANGLES);
+}
+
+Mesh * MeshLoader::load(const QList<string> & attributes, string file) {
+    LogDebug << "Loading" << file;
+
+    string path = Config::Instance().value<string> ("meshDir") + file;
+
+    Assimp::Importer importer;
+
+    const aiScene* scene = importer.ReadFile(path,
+            aiProcess_CalcTangentSpace
+            | aiProcess_Triangulate);
+            // | aiProcess_JoinIdenticalVertices
+            // | aiProcess_SortByPType
+
+    if (!scene) {
+        LogError << "Assimp Scene Load"<< importer.GetErrorString();
+    }
+
+    aiMesh * assMesh = scene->mMeshes[0];
+
+    Mesh * mesh = getMeshFromAssimp(assMesh, attributes);
+
     glError;
 //    delete assMesh;
     importer.FreeScene();

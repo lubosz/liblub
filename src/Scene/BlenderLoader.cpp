@@ -4,6 +4,7 @@
 #include "System/Config.h"
 #include "Material/Shaders.h"
 #include "Material/Textures.h"
+#include "Mesh/MeshLoader.h"
 
 BlenderLoader::BlenderLoader() {
 }
@@ -84,51 +85,8 @@ void BlenderLoader::initNode(aiNode * parent) {
 }
 
 Mesh * BlenderLoader::initMesh(aiMesh * assMesh) {
-
-    QVector3D boundingBoxMin = QVector3D();
-    QVector3D boundingBoxMax = QVector3D();
-
     QList<string> attributes = QList<string> () << "uv" << "normal" << "tangent" << "bitangent";
-
-
-    Mesh * mesh = new Mesh(attributes);
-    mesh->name = assMesh->mName.data;
-//        LogDebug << mesh->name;
-
-    for (unsigned i = 0; i < assMesh->mNumFaces; i++) {
-        aiFace face = assMesh->mFaces[i];
-        for (unsigned j = 0; j < face.mNumIndices; j++) {
-            int vertex = face.mIndices[j];
-
-            aiVector3D position = assMesh->mVertices[vertex];
-            mesh->vertex("position",position.x,position.z,position.y);
-
-            mesh->getBoundingBox()->update(position.x,position.z,position.y);
-            if(assMesh->HasNormals() && attributes.contains("normal")) {
-                aiVector3D normal = assMesh->mNormals[vertex];
-                mesh->vertex("normal",normal.x, normal.y, normal.z);
-            }
-
-            if (assMesh->HasTangentsAndBitangents() && attributes.contains("tangent")) {
-                aiVector3D tangent = assMesh->mTangents[vertex];
-                mesh->vertex("tangent",tangent.x, tangent.y, tangent.z);
-            }
-
-            if (assMesh->HasTangentsAndBitangents() && attributes.contains("bitangent")) {
-                aiVector3D bitangent = assMesh->mBitangents[vertex];
-                mesh->vertex("bitangent",bitangent.x, bitangent.y, bitangent.z);
-            }
-
-            if(assMesh->HasTextureCoords(0) && attributes.contains("uv")){
-                aiVector3D uv = assMesh->mTextureCoords[0][vertex];
-                mesh->vertex("uv",uv.x, uv.y);
-            }
-        }
-    }
-
-    mesh->init();
-    mesh->setDrawType(GL_TRIANGLES);
-//    mesh->boundingBox = new AABB(boundingBoxMin,boundingBoxMax);
+    Mesh * mesh = MeshLoader::getMeshFromAssimp(assMesh, attributes);
     return mesh;
 }
 
