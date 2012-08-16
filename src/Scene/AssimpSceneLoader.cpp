@@ -1,4 +1,4 @@
-#include "BlenderLoader.h"
+#include "AssimpSceneLoader.h"
 #include "Scene/SceneGraph.h"
 #include "Scene/Scene.h"
 #include "System/Config.h"
@@ -6,10 +6,10 @@
 #include "Material/Textures.h"
 #include "Mesh/MeshLoader.h"
 
-BlenderLoader::BlenderLoader() {
+AssimpSceneLoader::AssimpSceneLoader() {
 }
 
-void BlenderLoader::initNode(aiNode * parent) {
+void AssimpSceneLoader::initNode(aiNode * parent) {
 
     aiMatrix4x4 trans = parent->mTransformation;
 
@@ -52,13 +52,13 @@ void BlenderLoader::initNode(aiNode * parent) {
     }
 }
 
-Mesh * BlenderLoader::initMesh(aiMesh * assMesh) {
+Mesh * AssimpSceneLoader::initMesh(aiMesh * assMesh) {
     QList<string> attributes = QList<string> () << "uv" << "normal" << "tangent" << "bitangent";
     Mesh * mesh = MeshLoader::getMeshFromAssimp(assMesh, attributes);
     return mesh;
 }
 
-void BlenderLoader::load(string file) {
+void AssimpSceneLoader::load(string file) {
     LogDebug << "Loading" << file;
 
     string path = Config::Instance().value<string> ("meshDir") + file;

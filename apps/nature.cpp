@@ -25,7 +25,7 @@
 #include "Renderer/DeferredRenderer.h"
 #include "Scene/Scene.h"
 #include "Window/Qt/PassModel.h"
-#include "Scene/BlenderLoader.h"
+#include "Scene/AssimpSceneLoader.h"
 
 class NatureApp: public Application {
 public:
@@ -44,7 +44,7 @@ public:
 
         Texture* env = new CubeTextureFile("cubemaps/sky", "sky");
 
-        BlenderLoader::Instance().load("nature.blend");
+        AssimpSceneLoader::Instance().load("nature.blend");
         DeferredRenderer::Instance().init();
     }
     void renderFrame() {

@@ -1,5 +1,5 @@
-#ifndef BLENDERLOADER_H
-#define BLENDERLOADER_H
+#ifndef AssimpSceneLoader_H
+#define AssimpSceneLoader_H
 
 #include <string>
 
@@ -13,17 +13,17 @@
 
 using std::string;
 
-class BlenderLoader : public Singleton<BlenderLoader>
+class AssimpSceneLoader : public Singleton<AssimpSceneLoader>
 {
 public:
     vector<Mesh*> meshes;
     const aiScene* assimpScene;
     vector<ShaderProgram*> materials;
 
-    BlenderLoader();
+    AssimpSceneLoader();
     void load(string file);
     Mesh * initMesh(aiMesh * assMesh);
     void initNode(aiNode * parent);
 };
 
-#endif // BLENDERLOADER_H
+#endif // AssimpSceneLoader_H
