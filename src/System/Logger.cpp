@@ -27,9 +27,9 @@ const LogSetting blackList[] = {
   { "SceneGraph.cpp", Logger::Warning },
   { "SceneLoader.cpp", Logger::Warning },
   { "Textures.cpp", Logger::Warning },
-//  { "Texture.cpp", Logger::Warning },
+  { "Texture.cpp", Logger::Warning },
   { "FrameBuffer.cpp", Logger::Warning },
-  { "BlenderLoader.cpp", Logger::Warning },
+  { "AssimpSceneLoader.cpp", Logger::Warning },
 };
 
 Logger::Logger(const std::string& file, int line, Logger::LogLevel level) {
