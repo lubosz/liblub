@@ -85,6 +85,11 @@ void Editor::setSelectedTexture(const QModelIndex &index) {
 }
 
 
+void Editor::setTransparency(bool transparent) {
+  DeferredRenderer::Instance().drawTransparency = transparent;
+  glWidget->updateGL();
+}
+
 void Editor::initWidgets(QSplitter * mainSplitter) {
     QVBoxLayout *sideLayout = new QVBoxLayout;
 //    mainLayout->addL(sideLayout);
@@ -99,6 +104,12 @@ void Editor::initWidgets(QSplitter * mainSplitter) {
     connect(lazyBox, SIGNAL(clicked(bool)), this, SLOT(setLazy(bool)));
     sideLayout->addWidget(lazyBox);
 
+
+    QCheckBox *transparencyBox = new QCheckBox();
+    transparencyBox->setText("Draw Transparency");
+    transparencyBox->setChecked(true);
+    connect(transparencyBox, SIGNAL(clicked(bool)), this, SLOT(setTransparency(bool)));
+    sideLayout->addWidget(transparencyBox);
 
     QTabWidget * tabWidget = new QTabWidget;
     sideLayout->addWidget(tabWidget);
