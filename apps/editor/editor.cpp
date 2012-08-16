@@ -36,6 +36,7 @@
 #include "Window/Qt/FloatEditorWidget.h"
 #include "TextureModel.h"
 #include <QTreeWidget>
+#include "Mesh/Geometry.h"
 
 #include <QSplitter>
 
@@ -76,6 +77,12 @@ void Editor::scene() {
     Scene::Instance().getCurrentCamera()->update();
 
     new CubeTextureFile("cubemaps/sky", "sky");
+
+    Material *skyMat = new Material("sky");
+    QList<string> attributes = QList<string> () << "uv" << "normal" << "tangent" << "bitangent";
+    Mesh * sphere = Geometry::sphere(attributes, 100, 10, 10);
+    Node * skyNode = new Node("skynode", QVector3D(0,0,0),1,  sphere, skyMat);
+    SceneGraph::Instance().addNode(skyNode);
 
     AssimpSceneLoader::Instance().load(scenePath);
     DeferredRenderer::Instance().init();

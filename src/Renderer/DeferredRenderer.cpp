@@ -164,9 +164,9 @@ void DeferredRenderer::initShadingPass() {
 
     vector<Texture*> shadingTargets = {
         new ColorTexture(res, "finalTarget"),
-        new ColorTexture(res, "finalSpecularTarget"),
+//        new ColorTexture(res, "finalSpecularTarget"),
         new ColorTexture(res, "finalDiffuseTarget"),
-//        new ColorTexture(res, "envTarget")
+        new ColorTexture(res, "envTarget")
     };
 
     TemplateEngine::Instance().c.insert("lightCount", Scene::Instance().lights.size());

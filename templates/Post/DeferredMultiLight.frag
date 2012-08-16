@@ -11,7 +11,7 @@ struct LightSource {
 };
 
 out vec4 finalTarget;
-out vec4 finalSpecularTarget;
+//out vec4 finalSpecularTarget;
 out vec4 finalDiffuseTarget;
 out vec4 envTarget;
 {% endblock %}
@@ -72,7 +72,7 @@ const int shininess = 32;
 //    {% endif %}
 //	vec4 diffuse = texture(diffuseTexture, uv2);
         vec4 diffuse = texture(diffuseTarget, uv);
-	finalSpecularTarget = vec4(0);
+        vec4 finalSpecularTarget = vec4(0);
 	finalDiffuseTarget = vec4(0);
 	finalTarget = vec4(0);
 
@@ -108,8 +108,10 @@ const int shininess = 32;
     }
 	finalTarget = (finalDiffuseTarget + finalSpecularTarget + envTarget / 3.0)*ambient;
 
-        if (finalTarget == vec4(0))
+        if (length(diffuse) == 0) {
+            envTarget = texture(envMap, -position);
             finalTarget = envTarget;
+        }
 	//finalTarget = vec4(height);
 	//finalDiffuseTarget = diffuse;
 	//finalSpecularTarget = vec4(normalTS,1);
