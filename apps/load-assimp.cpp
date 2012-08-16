@@ -30,8 +30,12 @@
 class NatureApp: public Application {
 public:
 
+     string scenePath;
+
     NatureApp(int argc, char *argv[]) :
         Application(argc, argv) {
+
+        scenePath = argv[1];
     }
 
     ~NatureApp() {
@@ -42,9 +46,9 @@ public:
         Scene::Instance().getCurrentCamera()->setDirection(QVector3D(0.741701, -0.0836778, 0.66549));
         Scene::Instance().getCurrentCamera()->update();
 
-        Texture* env = new CubeTextureFile("cubemaps/sky", "sky");
+        new CubeTextureFile("cubemaps/sky", "sky");
 
-        AssimpSceneLoader::Instance().load("nature.blend");
+        AssimpSceneLoader::Instance().load(scenePath);
         DeferredRenderer::Instance().init();
     }
     void renderFrame() {
