@@ -138,12 +138,8 @@ void Editor::initWidgets(QSplitter * mainSplitter) {
 
     texturelistView->resizeColumnToContents(2);
 
-
-    QMdiArea * area = new QMdiArea;
-    textureTabLayout->addWidget(area);
-
-    area->addSubWindow(renderPassSelector);
-    area->addSubWindow(texturelistView);
+    textureTabLayout->addWidget(renderPassSelector);
+    textureTabLayout->addWidget(texturelistView);
 
     setSelectedPlane(passModel->index(0, 0,QModelIndex()));
     connect(passListView, SIGNAL(clicked(QModelIndex)), this, SLOT(setSelectedPlane(QModelIndex)));
