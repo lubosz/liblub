@@ -26,7 +26,7 @@
 #include "Renderer/RenderPasses.h"
 #include "Renderer/DeferredRenderer.h"
 #include "Scene/Scene.h"
-#include "Scene/BlenderLoader.h"
+#include "Scene/AssimpSceneLoader.h"
 
 #include <QTableWidget>
 #include <QHBoxLayout>
@@ -55,7 +55,7 @@ void Editor::scene() {
 
 //    Scene::Instance().textures.insert("sky", env);
 
-    BlenderLoader::Instance().load("nature.blend");
+    AssimpSceneLoader::Instance().load("nature.blend");
     DeferredRenderer::Instance().init();
     initWidgets(window->splitter);
 
