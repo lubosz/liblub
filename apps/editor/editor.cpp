@@ -41,6 +41,7 @@
 
 Editor::Editor(int argc, char *argv[]) :
     Application(argc, argv) {
+    scenePath = argv[1];
 }
 
 Editor::~Editor() {
@@ -51,11 +52,9 @@ void Editor::scene() {
     Scene::Instance().getCurrentCamera()->setDirection(QVector3D(0.741701, -0.0836778, 0.66549));
     Scene::Instance().getCurrentCamera()->update();
 
-    Texture* env = new CubeTextureFile("cubemaps/sky", "sky");
+    new CubeTextureFile("cubemaps/sky", "sky");
 
-//    Scene::Instance().textures.insert("sky", env);
-
-    AssimpSceneLoader::Instance().load("nature.blend");
+    AssimpSceneLoader::Instance().load(scenePath);
     DeferredRenderer::Instance().init();
     initWidgets(window->splitter);
 
@@ -154,6 +153,9 @@ void Editor::initWidgets(QSplitter * mainSplitter) {
 }
 
 int main(int argc, char *argv[]) {
-    Editor(argc, argv).run();
+    if (argc != 2)
+      LogError << "NO SCENE SPECIFIED. Try; ./editor foo.blend";
+    else
+      Editor(argc, argv).run();
 }
 

@@ -43,6 +43,8 @@ public:
   DebugPlane * selectedPlane;
   PassModel * passModel;
 
+  string scenePath;
+
 public slots:
   void setSelectedPlane(const QModelIndex &index);
   void setSelectedTexture(const QModelIndex &index);

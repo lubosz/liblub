@@ -56,6 +56,9 @@ public:
 };
 
 int main(int argc, char *argv[]) {
-    NatureApp(argc, argv).run();
+    if (argc != 2)
+      LogError << "NO SCENE SPECIFIED. Try; ./load-assimp foo.blend";
+    else
+      NatureApp(argc, argv).run();
 }
 

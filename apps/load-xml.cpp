@@ -52,7 +52,7 @@ class LoadApp: public Application {
 
 int main(int argc, char *argv[]) {
   if (argc != 2)
-    LogError << "NO SCENE SPECIFIED. Try; ./load test";
+    LogError << "NO SCENE SPECIFIED. Try; ./load-xml test";
   else
     LoadApp(argc,argv).run();
 }
