@@ -78,6 +78,7 @@ float lookup( vec2 offSet,vec4 shadowTexCoord){
         vec2 uv2 = uv;
 {% endif %}
 
+        uvTarget = vec4(uv,0,0);
 
         if (!matHasTexture) {
             diffuseTarget = matDiffuseColor;
@@ -90,23 +91,31 @@ float lookup( vec2 offSet,vec4 shadowTexCoord){
 
         if (matIsTransparent) {
            //gl_FragDepth = diffuseTarget.a;
-                if (diffuseTarget.a < 0.1)
+                if (diffuseTarget.a < 0.1) {
                     positionTarget = vec4(0);
+                    normalTarget = vec4(0);
+                    tangentTarget = vec4(0);
+                    binormalTarget = vec4(0);
+                    uvTarget = vec4(0);
+                }
                 //diffuseTarget = vec4(1,0,0,1);
         }
 
 
         //shadow
-	shadowTarget = vec4(1);
+        shadowTarget = vec4(0);
+
+        if (diffuseTarget.a > 0.1) {
 	vec4 shadowTexCoord;
 	float shadowSum = 0;
 {% for shadowSampler in shadowSamplers %}
 	shadowTexCoord = camViewToShadowMapMatrix{{shadowSampler}} * positionView;
 	shadowSum += textureProj({{shadowSampler}}, shadowTexCoord);
 {% endfor %}
+
 	
-	shadowTarget*= shadowSum/{{shadowSamplerSize}}.0;
-	uvTarget = vec4(uv,0,0);
+        shadowTarget= vec4(shadowSum/{{shadowSamplerSize}}.0);
+        }
 
 
 	/*
