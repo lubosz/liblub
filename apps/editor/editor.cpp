@@ -42,6 +42,50 @@
 Editor::Editor(int argc, char *argv[]) :
     Application(argc, argv) {
     scenePath = argv[1];
+
+    /*
+    // BlendingFactorDest
+    #define GL_ZERO                           0
+    #define GL_ONE                            1
+    #define GL_SRC_COLOR                      0x0300
+    #define GL_ONE_MINUS_SRC_COLOR            0x0301
+    #define GL_SRC_ALPHA                      0x0302
+    #define GL_ONE_MINUS_SRC_ALPHA            0x0303
+    #define GL_DST_ALPHA                      0x0304
+    #define GL_ONE_MINUS_DST_ALPHA            0x0305
+    // BlendingFactorSrc
+    #define GL_DST_COLOR                      0x0306
+    #define GL_ONE_MINUS_DST_COLOR            0x0307
+    #define GL_SRC_ALPHA_SATURATE             0x0308
+*/
+    transparencyModes.insert("GL_ZERO", GL_ZERO);
+    transparencyModes.insert("GL_ONE", GL_ONE);
+
+    transparencyModes.insert("GL_SRC_COLOR", GL_SRC_COLOR);
+    transparencyModes.insert("GL_ONE_MINUS_SRC_COLOR", GL_ONE_MINUS_SRC_COLOR);
+
+    transparencyModes.insert("GL_DST_COLOR", GL_DST_COLOR);
+    transparencyModes.insert("GL_ONE_MINUS_DST_COLOR", GL_ONE_MINUS_DST_COLOR);
+
+    transparencyModes.insert("GL_SRC_ALPHA", GL_SRC_ALPHA);
+    transparencyModes.insert("GL_ONE_MINUS_SRC_ALPHA", GL_ONE_MINUS_SRC_ALPHA);
+
+    transparencyModes.insert("GL_DST_ALPHA", GL_DST_ALPHA);
+    transparencyModes.insert("GL_ONE_MINUS_DST_ALPHA", GL_ONE_MINUS_DST_ALPHA);
+
+    transparencyModes.insert("GL_CONSTANT_COLOR", GL_CONSTANT_COLOR);
+    transparencyModes.insert("GL_ONE_MINUS_CONSTANT_COLOR", GL_ONE_MINUS_CONSTANT_COLOR);
+
+    transparencyModes.insert("GL_CONSTANT_ALPHA", GL_CONSTANT_ALPHA);
+    transparencyModes.insert("GL_ONE_MINUS_CONSTANT_ALPHA", GL_ONE_MINUS_CONSTANT_ALPHA);
+
+    transparencyModes.insert("GL_SRC_ALPHA_SATURATE", GL_SRC_ALPHA_SATURATE);
+
+//    transparencyModes.insert("GL_SRC1_COLOR", GL_SRC1_COLOR);
+//    transparencyModes.insert("GL_ONE_MINUS_SRC1_COLOR", GL_ONE_MINUS_SRC1_COLOR);
+
+//    transparencyModes.insert("GL_SRC1_ALPHA", GL_SRC1_ALPHA);
+//    transparencyModes.insert("GL_ONE_MINUS_SRC1_ALPHA", GL_ONE_MINUS_SRC1_ALPHA);
 }
 
 Editor::~Editor() {
@@ -90,9 +134,25 @@ void Editor::setTransparency(bool transparent) {
   glWidget->updateGL();
 }
 
+void Editor::updateTransparency() {
+    glBlendFunc(srcMode, destMode);
+    glWidget->updateGL();
+}
+
+void Editor::setSelectedTransparencySrc(const QString &srcModeName) {
+    srcMode = transparencyModes[srcModeName];
+    LogDebug << "Src Mode" << srcModeName.toStdString() << srcMode;
+    updateTransparency();
+}
+
+void Editor::setSelectedTransparencyDest(const QString &destModeName) {
+    destMode = transparencyModes[destModeName];
+    LogDebug << "Dest Mode" << destModeName.toStdString() << destMode;
+    updateTransparency();
+}
+
 void Editor::initWidgets(QSplitter * mainSplitter) {
     QVBoxLayout *sideLayout = new QVBoxLayout;
-//    mainLayout->addL(sideLayout);
 
     QWidget *sideLayoutWidget = new QWidget;
     sideLayoutWidget->setLayout(sideLayout);
@@ -145,12 +205,30 @@ void Editor::initWidgets(QSplitter * mainSplitter) {
     TextureModel * texModel = new TextureModel(0);
     texturelistView->setModel(texModel);
     texturelistView->show();
-//    textureTabLayout->addWidget(texturelistView);
 
     texturelistView->resizeColumnToContents(2);
 
     textureTabLayout->addWidget(renderPassSelector);
     textureTabLayout->addWidget(texturelistView);
+
+
+    transparencyModeSrc = new QComboBox;
+    transparencyModeDest = new QComboBox;
+    unsigned index = 0;
+    foreach (QString mode, transparencyModes.keys()) {
+        transparencyModeSrc->insertItem(index, mode);
+        transparencyModeDest->insertItem(index, mode);
+        index++;
+    }
+    connect(transparencyModeSrc, SIGNAL(currentIndexChanged(QString)), this, SLOT(setSelectedTransparencySrc(QString)));
+    connect(transparencyModeDest, SIGNAL(currentIndexChanged(QString)), this, SLOT(setSelectedTransparencyDest(QString)));
+
+    QWidget * transparencyBoxLayoutWidget = new QWidget;
+    QVBoxLayout * transparencyBoxLayout = new QVBoxLayout(transparencyBoxLayoutWidget);
+    transparencyBoxLayout->addWidget(transparencyModeSrc);
+    transparencyBoxLayout->addWidget(transparencyModeDest);
+
+    renderPassTabLayout->addWidget(transparencyBoxLayoutWidget);
 
     setSelectedPlane(passModel->index(0, 0,QModelIndex()));
     connect(passListView, SIGNAL(clicked(QModelIndex)), this, SLOT(setSelectedPlane(QModelIndex)));

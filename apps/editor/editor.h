@@ -40,12 +40,25 @@ public:
   void initWidgets(QSplitter *mainSplitter);
 
   QComboBox * renderPassSelector;
+  QComboBox* transparencyModeSrc;
+  QComboBox* transparencyModeDest;
+
   DebugPlane * selectedPlane;
   PassModel * passModel;
 
+  QMap<QString, GLuint> transparencyModes;
+
+  GLuint srcMode;
+  GLuint destMode;
+
   string scenePath;
 
+  void updateTransparency();
+
 public slots:
+  void setSelectedTransparencySrc(const QString &srcModeName);
+  void setSelectedTransparencyDest(const QString &destModeName);
+
   void setSelectedPlane(const QModelIndex &index);
   void setSelectedTexture(const QModelIndex &index);
   void changePlaneSource(const QString &name);

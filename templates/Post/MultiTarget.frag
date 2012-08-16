@@ -90,7 +90,9 @@ float lookup( vec2 offSet,vec4 shadowTexCoord){
 
         if (matIsTransparent) {
            //gl_FragDepth = diffuseTarget.a;
-                diffuseTarget = vec4(1,0,0,1);
+                if (diffuseTarget.a < 0.1)
+                    positionTarget = vec4(0);
+                //diffuseTarget = vec4(1,0,0,1);
         }
 
 
