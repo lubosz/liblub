@@ -24,7 +24,6 @@
 #include "System/Application.h"
 #include "Renderer/DeferredRenderer.h"
 #include "Scene/Scene.h"
-#include "Window/Qt/PassModel.h"
 #include "Scene/AssimpSceneLoader.h"
 
 class NatureApp: public Application {

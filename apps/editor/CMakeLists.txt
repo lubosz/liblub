@@ -9,6 +9,7 @@ file(GLOB EDITOR_CPP_FILES *.cpp)
 set(EDITOR_MOC_INFILES
     editor.h
     TextureModel.h
+    PassModel.h
 )
 
 qt4_wrap_cpp(EDITOR_MOC_OUTFILES ${EDITOR_MOC_INFILES})

@@ -23,7 +23,7 @@
 #include "System/Application.h"
 #include "Renderer/RenderPasses.h"
 #include <QHBoxLayout>
-#include "Window/Qt/PassModel.h"
+#include "PassModel.h"
 
 
 class Editor: public Application {
