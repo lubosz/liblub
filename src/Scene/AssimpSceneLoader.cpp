@@ -68,8 +68,6 @@ void AssimpSceneLoader::load(string file) {
     assimpScene = importer.ReadFile(path,
          aiProcess_CalcTangentSpace
        | aiProcess_Triangulate);
-    // | aiProcess_JoinIdenticalVertices
-    // | aiProcess_SortByPType
 
     if (!assimpScene) {
         LogError << "Assimp Scene Load"<< importer.GetErrorString();
@@ -82,16 +80,12 @@ void AssimpSceneLoader::load(string file) {
     LogInfo << assimpScene->mNumTextures << "textures.";
     LogInfo << assimpScene->mNumMeshes<< "meshes.";
 
-    if (assimpScene->HasLights()) {
-        LogInfo << "Scene Has Lights";
-    } else {
-        LogError << "Scene Has no Lights.";
+    if (!assimpScene->HasLights()) {
+        LogWarning << "Assimp didn't find Lights.";
     }
 
-    if (assimpScene->HasTextures()) {
-        LogInfo << "Scene Has Textures";
-    } else {
-        LogError << "Scene Has no Textures.";
+    if (!assimpScene->HasTextures()) {
+        LogWarning << "Assimp didn't find Textures.";
     }
 
     if (assimpScene->HasMeshes()) {
@@ -102,8 +96,6 @@ void AssimpSceneLoader::load(string file) {
     }
 
     if (assimpScene->HasMaterials()) {
-        LogInfo << "Scene Has Materials";
-
         for(unsigned i = 0; i < assimpScene->mNumMaterials; i++) {
             aiMaterial * material = assimpScene->mMaterials[i];
 
