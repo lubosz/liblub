@@ -30,6 +30,14 @@ uniform sampler2DShadow {{shadowSampler}};
 uniform mat4 camViewToShadowMapMatrix{{shadowSampler}};
 {% endfor %}
 
+uniform vec4 matDiffuseColor;
+uniform vec4 matSpecularColor;
+uniform float matShininess;
+uniform vec4 matAmbientColor;
+uniform vec4 matReflectiveColor;
+uniform bool matHasTexture;
+uniform bool matIsTransparent;
+
 {% endblock %}
 
 
@@ -54,11 +62,11 @@ float lookup( vec2 offSet,vec4 shadowTexCoord){
 {% endblock %}
 
 {% block main %}
+
 	positionTarget = positionWorld;
 	normalTarget = normalWorld;
 	tangentTarget = tangentWorld;
 	binormalTarget = binormalWorld;
-        diffuseTarget = vec4(0);
 
 {% if paralaxMap %}
         float height = normalMap.w;
@@ -71,14 +79,20 @@ float lookup( vec2 offSet,vec4 shadowTexCoord){
 {% endif %}
 
 
-        if (uv == vec2(0,0)) {
+        if (!matHasTexture) {
+            diffuseTarget = matDiffuseColor;
             normalMapTarget = normalWorld;
-            diffuseTarget = vec4(1);
         } else {
             normalMapTarget = texture(normalTexture, uv);
-            //diffuseTarget = texture(diffuseTexture, uv);
             diffuseTarget = texture(diffuseTexture, uv2);
+            normalMapTarget.a = diffuseTarget.a;
         }
+
+        if (matIsTransparent) {
+           //gl_FragDepth = diffuseTarget.a;
+                diffuseTarget = vec4(1,0,0,1);
+        }
+
 
         //shadow
 	shadowTarget = vec4(1);
@@ -91,6 +105,7 @@ float lookup( vec2 offSet,vec4 shadowTexCoord){
 	
 	shadowTarget*= shadowSum/{{shadowSamplerSize}}.0;
 	uvTarget = vec4(uv,0,0);
+
 
 	/*
 	// 8x8 kernel PCF
