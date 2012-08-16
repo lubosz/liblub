@@ -18,7 +18,7 @@
 Node::Node() : castShadows(true), receiveShadows(false),
     m_size(1.0f), name("A Node"), eulerRotationCache(QVector3D()),
     modelMatrix(QMatrix4x4()), shader(nullptr), transparent(false),
-    position(QVector3D()), rotationMatrix(QMatrix4x4()), mesh(nullptr) {
+    position(QVector3D()), rotation(QQuaternion()), mesh(nullptr) {
     update();
 }
 
@@ -27,7 +27,7 @@ Node::Node(string name, const QVector3D& position, float size, Mesh * mesh,
     castShadows(true), receiveShadows(false), m_size(size), name(name),
             eulerRotationCache(QVector3D()), modelMatrix(QMatrix4x4()),
             shader(material), transparent(false), position(position),
-            rotationMatrix(QMatrix4x4()), mesh(mesh) {
+            rotation(QQuaternion()), mesh(mesh) {
     update();
 }
 
@@ -47,19 +47,6 @@ bool Node::hasShader() const {
 
 void Node::setPosition(const QVector3D& position) {
     this->position = position;
-    update();
-}
-
-void Node::setRotation(const QVector3D& rotation) {
-    eulerRotationCache = rotation;
-    setRotationX(rotation.x());
-    setRotationY(rotation.y());
-    setRotationZ(rotation.z());
-    update();
-}
-
-void Node::setRotation(const QMatrix4x4& rotation) {
-    rotationMatrix = rotation;
     update();
 }
 
@@ -147,7 +134,11 @@ void Node::update() {
     modelMatrix.setToIdentity();
     modelMatrix.translate(position);
     modelMatrix.scale(size());
-    modelMatrix = modelMatrix * rotationMatrix;
+
+    if (rotation != QQuaternion())
+        modelMatrix.rotate(rotation);
+    else
+        modelMatrix = modelMatrix * rotationMatrix;
 }
 
 void Node::setView(
@@ -172,17 +163,36 @@ QVector3D Node::getCenter() {
     return position + mesh->getCenter() * size();
 }
 
-void Node::setRotationX(float rotation) {
-    eulerRotationCache.setX(rotation);
+void Node::setRotationX(float rotationX) {
+    eulerRotationCache.setX(rotationX);
     updateRotationFromEuler();
 }
-void Node::setRotationY(float rotation) {
-    eulerRotationCache.setY(rotation);
+void Node::setRotationY(float rotationY) {
+    eulerRotationCache.setY(rotationY);
     updateRotationFromEuler();
 }
-void Node::setRotationZ(float rotation) {
-    eulerRotationCache.setZ(rotation);
+void Node::setRotationZ(float rotationZ) {
+    eulerRotationCache.setZ(rotationZ);
     updateRotationFromEuler();
+}
+
+void Node::setRotation(const QQuaternion& rotationQuat) {
+    rotation = rotationQuat;
+    update();
+}
+
+void Node::setRotation(const QVector3D& rotationVec) {
+//    rotation = QQuaternion(1, rotationVec);
+    eulerRotationCache = rotationVec;
+    setRotationX(rotationVec.x());
+    setRotationY(rotationVec.y());
+    setRotationZ(rotationVec.z());
+    update();
+}
+
+void Node::setRotation(const QMatrix4x4& rotationMatrix) {
+    this->rotationMatrix = rotationMatrix;
+    update();
 }
 
 void Node::updateRotationFromEuler() {
@@ -193,16 +203,16 @@ void Node::updateRotationFromEuler() {
     update();
 }
 
-void Node::setPositionX(float position) {
-    this->position.setX(position);
+void Node::setPositionX(float positionX) {
+    position.setX(positionX);
     update();
 }
-void Node::setPositionY(float position) {
-    this->position.setY(position);
+void Node::setPositionY(float positionY) {
+    position.setY(positionY);
     update();
 }
-void Node::setPositionZ(float position) {
-    this->position.setZ(position);
+void Node::setPositionZ(float positionZ) {
+    position.setZ(positionZ);
     update();
 }
 
@@ -229,11 +239,15 @@ float Node::rotationZ() const {
 QVector3D Node::direction() {
     // 3. row of the rotation matrix  is the unit vector
     // describing the direction in which you are facing.
+//    QMatrix4x4 rotationMatrix;
+//    rotationMatrix.setToIdentity();
+//    rotationMatrix.rotate(rotation);
     QVector3D direction = rotationMatrix.row(2).toVector3D();
     return direction;
 }
 
 void Node::setDirection(const QVector3D & direction) {
+//    rotation = QQuaternion(1, direction);
     rotationMatrix.setToIdentity();
     rotationMatrix.lookAt(QVector3D(), -direction, up);
 }

@@ -21,6 +21,7 @@ Camera::~Camera() {
 
 void Camera::setMouseLook(int mouseXrel, int mouseYrel, qreal mouseSensitivity) {
     rotationMatrix.rotate(mouseSensitivity * mouseXrel, QVector3D(0,1,0));
+//    rotation = QQuaternion(mouseSensitivity * mouseXrel, QVector3D(0,1,0));
 
   QVector3D dir = direction();
   qreal upAngle = QVector3D::dotProduct(up, dir);
@@ -28,6 +29,7 @@ void Camera::setMouseLook(int mouseXrel, int mouseYrel, qreal mouseSensitivity) 
   // Don't damage rotation matrix when looking straigt up and down
   if((upAngle > -0.99 || mouseYrel < 0)
      && (upAngle < 0.99 || mouseYrel > 0)) {
+//      rotation = QQuaternion(mouseSensitivity * mouseYrel, QVector3D::crossProduct(dir, up));
     rotationMatrix.rotate(mouseSensitivity * mouseYrel, QVector3D::crossProduct(dir, up));
   }
   update();

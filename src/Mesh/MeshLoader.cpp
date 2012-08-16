@@ -25,9 +25,7 @@ Mesh * MeshLoader::getMeshFromAssimp(aiMesh * assMesh, const QList<string> & att
             int vertex = face.mIndices[j];
 
             aiVector3D position = assMesh->mVertices[vertex];
-//            mesh->vertex("position",position.x,position.y,position.z);
-            mesh->vertex("position",position.x,position.z,position.y);
-
+            mesh->vertex("position",position.y,position.z,position.x);
             mesh->getBoundingBox()->update(position.x,position.y,position.z);
 
             if(assMesh->HasNormals() && attributes.contains("normal")) {

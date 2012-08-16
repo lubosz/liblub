@@ -9,23 +9,6 @@
 BlenderLoader::BlenderLoader() {
 }
 
-QMatrix4x4 BlenderLoader::qFromAssimpMatrix(const aiMatrix4x4 &aMatrix) {
-
-    QMatrix4x4 qMatrix =
-    //                QMatrix4x4();
-    //            QMatrix4x4(aMatrix.a1,aMatrix.a2,aMatrix.a3,aMatrix.a4,
-    //                       aMatrix.b1,aMatrix.b2,aMatrix.b3,aMatrix.b4,
-    //                       aMatrix.c1,aMatrix.c2,aMatrix.c3,aMatrix.c4,
-    //                       aMatrix.d1,aMatrix.d2,aMatrix.d3,aMatrix.d4);
-            QMatrix4x4(aMatrix.a1,aMatrix.b1,aMatrix.c1,aMatrix.d1,
-                       aMatrix.a2,aMatrix.b2,aMatrix.c2,aMatrix.d2,
-                       aMatrix.a3,aMatrix.b3,aMatrix.c3,aMatrix.d3,
-                       aMatrix.a4,aMatrix.b4,aMatrix.c4,aMatrix.d4);
-    //            qaMatrix = qaMatrix.transposed();
-    //            LogDebug << "Rot"<<rotation.x<<rotation.y<<rotation.z;
-    return qMatrix;
-}
-
 void BlenderLoader::initNode(aiNode * parent) {
 
     aiMatrix4x4 trans = parent->mTransformation;
@@ -36,12 +19,12 @@ void BlenderLoader::initNode(aiNode * parent) {
 
     trans.Decompose(scaling, rotation, position);
 
-    QVector3D qposition = QVector3D(position.x, position.z, position.y);
+    QVector3D qposition =
+            QVector3D(position.y, position.z, position.x);
 
     for (unsigned i = 0; i < parent->mNumMeshes; i++) {
         unsigned meshId = parent->mMeshes[i];
         aiMesh * mesh = assimpScene->mMeshes[meshId];
-//            LogDebug << prefix + "-" << mesh->mName.data << meshId;
 
         Node * someMeshNode = new Node(
                     parent->mName.data,
@@ -50,25 +33,10 @@ void BlenderLoader::initNode(aiNode * parent) {
                     meshes[meshId],
                     materials[mesh->mMaterialIndex]);
 
-        someMeshNode->transparent = true;
+//        someMeshNode->transparent = true;
 
-//        QMatrix4x4 transQ;
-//        QTransform tranlationo = transQ.toTransform();
-
-//        tranlationo.
-
-        aiMatrix4x4 rotMatrix = aiMatrix4x4(rotation.GetMatrix());
-        QMatrix4x4 theNewRotMatrix;
-        QQuaternion qquat =
-//                QQuaternion(rotation.x, rotation.y, rotation.z, rotation.w);
-                QQuaternion(rotation.w, rotation.x, rotation.y, rotation.z);
-        theNewRotMatrix.rotate(qquat);
-        theNewRotMatrix = theNewRotMatrix.inverted();
-        theNewRotMatrix = theNewRotMatrix.transposed();
-//            someMeshNode->setRotation(QVector3D(rotation.x,rotation.y,rotation.z));
-//        someMeshNode->setRotation(qFromAssimpMatrix(rotMatrix));
-        someMeshNode->setRotation(theNewRotMatrix);
-
+        QQuaternion qrotation(rotation.w, rotation.y, rotation.z, rotation.x);
+        someMeshNode->setRotation(qrotation);
         SceneGraph::Instance().addNode(someMeshNode);
     }
 

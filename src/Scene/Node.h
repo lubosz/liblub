@@ -41,6 +41,7 @@ public:
   bool transparent;
   QVector3D position;
   QMatrix4x4 rotationMatrix;
+  QQuaternion rotation;
   Mesh * mesh;
 
   Node();
@@ -72,13 +73,14 @@ public:
   QVector3D getCenter();
   QVector3D direction();
 
-  void setRotation(const QMatrix4x4& rotation);
+  void setRotation(const QMatrix4x4& rotationMatrix);
+  void setRotation(const QQuaternion& rotationQuat);
   void setDirection(const QVector3D & direction);
   void setCastShadows(bool castShadows);
   void setReceiveShadows(bool receiveShadows);
   void setMesh(Mesh *mesh);
   void setPosition(const QVector3D& position);
-  void setRotation(const QVector3D& rotation);
+  void setRotation(const QVector3D& rotationVec);
   void setView(DirectionNode * viewPoint);
   void setView(ShaderProgram * shaderProgram, DirectionNode * viewPoint);
   void setShadowCoords(DirectionNode * viewPoint);
@@ -88,13 +90,14 @@ public:
       DirectionNode * viewPoint);
   void setShader(ShaderProgram* shader);
 
+
 public slots:
   void setSize(float size);
-  void setRotationX(float rotation);
-  void setRotationY(float rotation);
-  void setRotationZ(float rotation);
-  void setPositionX(float position);
-  void setPositionY(float position);
-  void setPositionZ(float position);
+  void setRotationX(float rotationX);
+  void setRotationY(float rotationY);
+  void setRotationZ(float rotationZ);
+  void setPositionX(float positionX);
+  void setPositionY(float positionY);
+  void setPositionZ(float positionZ);
 };
 
