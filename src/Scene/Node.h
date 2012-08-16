@@ -8,6 +8,7 @@
 #pragma once
 
 #include "Mesh/Mesh.h"
+#include "Scene/Material.h"
 #include <QObject>
 #include <QMatrix4x4>
 
@@ -43,16 +44,20 @@ public:
   QMatrix4x4 rotationMatrix;
   QQuaternion rotation;
   Mesh * mesh;
+  Material * material;
 
   Node();
 
   Node(string name, const QVector3D& position, float size, Mesh * mesh,
-      ShaderProgram * material);
+      ShaderProgram * shaderProgram);
+
+  Node(string name, const QVector3D& position, float size, Mesh * mesh,
+      Material * material);
 
   virtual ~Node();
 
   void draw();
-  virtual void draw(ShaderProgram * material);
+  virtual void draw(ShaderProgram * shaderProgram);
   void update();
   void updateRotationFromEuler();
 

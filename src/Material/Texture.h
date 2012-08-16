@@ -26,11 +26,11 @@ class Texture {
 	string name;
 	bool isDepth;
     string path;
+    GLint glChannelOrder, texChannelOrder;
  protected:
 	GLuint handle;
 	GLenum glId;
 	GLuint target;
-	GLint glChannelOrder, texChannelOrder;
 
 public:
 	void loadFile(const string & path);

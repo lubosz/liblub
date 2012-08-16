@@ -23,10 +23,19 @@ Node::Node() : castShadows(true), receiveShadows(false),
 }
 
 Node::Node(string name, const QVector3D& position, float size, Mesh * mesh,
-        ShaderProgram * material) :
+        ShaderProgram * shaderProgram) :
     castShadows(true), receiveShadows(false), m_size(size), name(name),
             eulerRotationCache(QVector3D()), modelMatrix(QMatrix4x4()),
-            shader(material), transparent(false), position(position),
+            shader(shaderProgram), transparent(false), position(position),
+            rotation(QQuaternion()), mesh(mesh) {
+    update();
+}
+
+Node::Node(string name, const QVector3D& position, float size, Mesh * mesh,
+        Material * material) :
+    castShadows(true), receiveShadows(false), m_size(size), name(name),
+            eulerRotationCache(QVector3D()), modelMatrix(QMatrix4x4()),
+            material(material), transparent(false), position(position),
             rotation(QQuaternion()), mesh(mesh) {
     update();
 }
@@ -83,8 +92,8 @@ void Node::draw() {
     draw(shader);
 }
 
-void Node::draw(ShaderProgram * material) {
-    material->activateAndBindTextures();
+void Node::draw(ShaderProgram * shaderProgram) {
+    shaderProgram->activateAndBindTextures();
     mesh->draw();
 //    mesh->boundingBox->draw();
 }

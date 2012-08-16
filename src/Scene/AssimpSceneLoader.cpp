@@ -6,6 +6,7 @@
 #include "Material/Textures.h"
 #include "Mesh/MeshLoader.h"
 
+
 AssimpSceneLoader::AssimpSceneLoader() {
 }
 
@@ -58,6 +59,14 @@ Mesh * AssimpSceneLoader::initMesh(aiMesh * assMesh) {
     return mesh;
 }
 
+void AssimpSceneLoader::printColor(const string & name, const aiColor4D & color) {
+    LogDebug << name
+             << color.r
+             << color.g
+             << color.b
+             << color.a;
+}
+
 void AssimpSceneLoader::load(string file) {
     LogDebug << "Loading" << file;
 
@@ -99,45 +108,75 @@ void AssimpSceneLoader::load(string file) {
         for(unsigned i = 0; i < assimpScene->mNumMaterials; i++) {
             aiMaterial * material = assimpScene->mMaterials[i];
 
+
             aiString materialName;
             material->Get(AI_MATKEY_NAME, materialName);
-            LogDebug << "Material" << materialName.data;
+            Material * newMaterial = new Material(materialName.data);
+            LogDebug << "Material" << materialName.data << ":" << material->mNumProperties << "Properties";
+
+
+//            for (unsigned j = 0; j < material->mNumProperties; j++) {
+//                aiMaterialProperty* prop = material->mProperties[j];
+////                LogDebug << prop->mType << prop->mKey.data << prop->mSemantic;
+//            }
+
+/*
+$clr.diffuse
+$clr.specular
+$mat.shininess
+$clr.ambient
+$clr.reflective
+
+AI_MATKEY_COLOR_DIFFUSE
+AI_MATKEY_COLOR_SPECULAR
+AI_MATKEY_SHININESS
+AI_MATKEY_COLOR_AMBIENT
+AI_MATKEY_COLOR_REFLECTIVE
+*/
 
             aiColor4D diffuseColor;
             material->Get(AI_MATKEY_COLOR_DIFFUSE, diffuseColor);
-            LogDebug << "Color" << diffuseColor.r << diffuseColor.g << diffuseColor.b << diffuseColor.a;
+            printColor("diffuseColor", diffuseColor);
+            newMaterial->diffuseColor = Material::colorFromAssimp(diffuseColor);
 
-            aiString textureName;
-            material->Get(AI_MATKEY_TEXTURE_DIFFUSE(0), textureName);
-            string diffuseTexture = textureName.data;
+            aiColor4D specularColor;
+            material->Get(AI_MATKEY_COLOR_SPECULAR, specularColor);
+            printColor("specularColor", specularColor);
+            newMaterial->specularColor = Material::colorFromAssimp(specularColor);
 
-            material->Get(AI_MATKEY_TEXTURE_DIFFUSE(1), textureName);
-            string normalTexture = textureName.data;
+            float shininess;
+            material->Get(AI_MATKEY_SHININESS, shininess);
+            LogDebug << "shininess" << shininess;
+            newMaterial->shininess = shininess;
 
-            bool validNormal = normalTexture!= "" && normalTexture != diffuseTexture;
+            aiColor4D ambientColor;
+            material->Get(AI_MATKEY_COLOR_AMBIENT, ambientColor);
+            printColor("ambientColor", ambientColor);
+            newMaterial->ambientColor = Material::colorFromAssimp(ambientColor);
 
-            ShaderProgram* mat;
+            aiColor4D reflectiveColor;
+            material->Get(AI_MATKEY_COLOR_REFLECTIVE, reflectiveColor);
+            printColor("reflectiveColor", reflectiveColor);
+            newMaterial->reflectiveColor = Material::colorFromAssimp(reflectiveColor);
 
-            QList<string> attributes = QList<string> () << "normal" << "uv";
-            if (diffuseTexture == "") {
-                mat = new SimpleProgram("Color/PhongColor", attributes);
-            } else {
-                LogDebug << "Diffuse Texture" << diffuseTexture;
-                Texture * matTexture = new TextureFile(diffuseTexture, "diffuseTexture");
-                Texture * normalTex;
-                if (validNormal) {
-                    LogDebug << "Normal Texture" << normalTexture;
-                    normalTex = new TextureFile(normalTexture, "normalTexture");
-                }
+            int texC = material->GetTextureCount(aiTextureType_DIFFUSE);
+            LogDebug << texC << "textures";
 
-                mat = new SimpleProgram("Texture/texture", attributes);
-                mat->addTexture(matTexture);
-                if (validNormal)
-                     mat->addTexture(normalTex);
-                mat->samplerUniforms();
+            for (unsigned texIndex = 0; texIndex < texC; texIndex++) {
+                aiString textureName;
+                material->Get(AI_MATKEY_TEXTURE_DIFFUSE(texIndex), textureName);
+                string texturePath = textureName.data;
+                string targetName = "Texture";
+                if (texIndex < 1)
+                    targetName = "diffuseTexture";
+                else if (texIndex < 2)
+                    targetName = "normalTexture";
+
+                Texture * texture = new TextureFile(texturePath, targetName);
+                newMaterial->addTexture(texture);
             }
 
-            materials.push_back(mat);
+            materials.push_back(newMaterial);
         }
     } else {
         LogError << "Scene Has no Materials.";

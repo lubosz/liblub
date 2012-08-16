@@ -11,6 +11,7 @@
 #include "Scene/Scene.h"
 #include "System/GUI.h"
 #include <cassert>
+#include "Renderer/DeferredRenderer.h"
 
 SceneGraph::SceneGraph() {
     bias = QMatrix4x4();
@@ -109,15 +110,10 @@ void SceneGraph::drawReceivers(ShaderProgram * shader) {
   QMap <qreal, Node*> transparentNodes;
 
     foreach(Node * node, sceneNodes) {
-        if(!node->transparent) {
-//          node->setView(viewPoint);
-//          node->setShadowCoords(viewPoint);
-//          Scene::Instance().getShadowLight()->bindShaderUpdate(node->getShader());
-//          node->draw();
+        if(!node->material->transparent) {
               node->setView(shader, camView );
-              foreach( Texture* tex, node->getShader()->textures)
-                  tex->uniform(shader->getHandle());
-              node->getShader()->activateAndBindTextures();
+              node->material->uniforms(shader);
+              node->material->activateAndBindTextures();
               node->draw(shader);
         } else {
           QVector3D distance = node->getCenter() - Scene::Instance().getCurrentCamera()->position;
@@ -125,20 +121,22 @@ void SceneGraph::drawReceivers(ShaderProgram * shader) {
         }
     }
     if (transparentNodes.size() > 0) {
-//      glEnable(GL_BLEND);
-      QList<qreal> transparentKeys = transparentNodes.keys();
-      qSort(transparentKeys.begin(), transparentKeys.end(), qGreater<qreal>());
+        QList<qreal> transparentKeys = transparentNodes.keys();
+        qSort(transparentKeys.begin(), transparentKeys.end(), qGreater<qreal>());
 
+        if(DeferredRenderer::Instance().drawTransparency) {
+            glEnable(GL_BLEND);
+        }
       foreach(qreal transparentKey, transparentKeys) {
         Node * node = transparentNodes[transparentKey];
-
         node->setView(shader, camView );
-        foreach( Texture* tex, node->getShader()->textures)
-            tex->uniform(shader->getHandle());
-        node->getShader()->activateAndBindTextures();
+        node->material->uniforms(shader);
+        node->material->activateAndBindTextures();
         node->draw(shader);
       }
-//      glDisable(GL_BLEND);
+      if(DeferredRenderer::Instance().drawTransparency) {
+          glDisable(GL_BLEND);
+      }
     }
 
   glError;

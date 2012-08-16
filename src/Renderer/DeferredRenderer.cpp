@@ -4,7 +4,7 @@
 #include "System/TemplateEngine.h"
 #include "Material/Shaders.h"
 
-DeferredRenderer::DeferredRenderer()
+DeferredRenderer::DeferredRenderer() : drawTransparency(true)
 {
 }
 

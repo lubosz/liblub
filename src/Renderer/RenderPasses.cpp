@@ -151,7 +151,10 @@
   }
 
   ShaderProgram * DebugPlane::initDebugMaterial(Texture * target) {
-    TemplateEngine::Instance().c.insert("samplerName", QString::fromStdString(target->name));
+      TemplateEngine::Instance().c.insert("samplerName", QString::fromStdString(target->name));
+
+    TemplateEngine::Instance().c.insert("isDepthTexture", target->isDepth);
+
     ShaderProgram * debugMaterial = new TemplateProgram("Post/Debug", QList<string> () << "uv");
     debugMaterial->addTexture(target);
     debugMaterial->samplerUniforms();

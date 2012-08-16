@@ -23,6 +23,7 @@ public:
     InOutPass * shadingPass;
     SinkPass * sinkPass;
     QSize res;
+    bool drawTransparency;
     void initShadowCasters();
     void initShadowReceivers();
     void initAo();
@@ -30,6 +31,7 @@ public:
     void initSinkPass();
     void init();
     void draw();
+
 
     vector<string> getTargetNames();
 

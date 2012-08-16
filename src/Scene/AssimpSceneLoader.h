@@ -10,6 +10,7 @@
 #include "common/Singleton.h"
 #include "Mesh/Mesh.h"
 #include "Material/ShaderProgram.h"
+#include "Scene/Material.h"
 
 using std::string;
 
@@ -18,12 +19,13 @@ class AssimpSceneLoader : public Singleton<AssimpSceneLoader>
 public:
     vector<Mesh*> meshes;
     const aiScene* assimpScene;
-    vector<ShaderProgram*> materials;
+    vector<Material*> materials;
 
     AssimpSceneLoader();
     void load(string file);
     Mesh * initMesh(aiMesh * assMesh);
     void initNode(aiNode * parent);
+    void printColor(const string &name, const aiColor4D & color);
 };
 
 #endif // AssimpSceneLoader_H
