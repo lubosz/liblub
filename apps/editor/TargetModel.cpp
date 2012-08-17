@@ -1,19 +1,19 @@
-#include "PassModel.h"
+#include "TargetModel.h"
 #include <QTime>
 #include "Renderer/DeferredRenderer.h"
 
-PassModel::PassModel(QObject *parent) : QAbstractListModel(parent) {}
+TargetModel::TargetModel(QObject *parent) : QAbstractListModel(parent) {}
 
-int PassModel::rowCount(const QModelIndex &) const {
+int TargetModel::rowCount(const QModelIndex &) const {
     SinkPass * sinkPass = DeferredRenderer::Instance().sinkPass;
     return sinkPass->debugPlanes.size();
 }
 
-Qt::ItemFlags PassModel::flags(const QModelIndex &) const {
+Qt::ItemFlags TargetModel::flags(const QModelIndex &) const {
     return Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsUserCheckable;
 }
 
-QVariant PassModel::data(const QModelIndex &index, int role) const {
+QVariant TargetModel::data(const QModelIndex &index, int role) const {
     int row = index.row();
 
     DebugPlane * plane = DeferredRenderer::Instance().sinkPass->debugPlanes[row];
@@ -36,7 +36,7 @@ QVariant PassModel::data(const QModelIndex &index, int role) const {
     return QVariant();
 }
 
-bool PassModel::setData(const QModelIndex& index, const QVariant& value, int role) {
+bool TargetModel::setData(const QModelIndex& index, const QVariant& value, int role) {
     int row = index.row();
 
     DebugPlane * plane = DeferredRenderer::Instance().sinkPass->debugPlanes[row];

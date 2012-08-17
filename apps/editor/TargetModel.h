@@ -1,14 +1,14 @@
-#ifndef PassModel_H
-#define PassModel_H
+#ifndef TargetModel_H
+#define TargetModel_H
 
 #include "Renderer/RenderPasses.h"
 
 #include <QAbstractTableModel>
 
-class PassModel : public QAbstractListModel {
+class TargetModel : public QAbstractListModel {
     Q_OBJECT
 public:
-    PassModel(QObject *parent);
+    TargetModel(QObject *parent);
     int rowCount(const QModelIndex &parent = QModelIndex()) const ;
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
     Qt::ItemFlags flags(const QModelIndex &) const;
@@ -20,4 +20,4 @@ signals:
 
 };
 
-#endif // PassModel_H
+#endif // TargetModel_H

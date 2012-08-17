@@ -10,7 +10,7 @@ set(EDITOR_MOC_INFILES
     editor.h
     TextureModel.h
     PassModel.h
-    TransparencyModel.h
+    TargetModel.h
 )
 
 qt4_wrap_cpp(EDITOR_MOC_OUTFILES ${EDITOR_MOC_INFILES})
