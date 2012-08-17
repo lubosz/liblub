@@ -39,7 +39,7 @@ public:
 
   void initWidgets(QSplitter *mainSplitter);
 
-  QComboBox * renderPassSelector;
+  QComboBox * renderTargetSelector;
   QComboBox* transparencyModeSrc;
   QComboBox* transparencyModeDest;
 

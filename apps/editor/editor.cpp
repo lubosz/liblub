@@ -99,7 +99,7 @@ void Editor::setSelectedPlane(const QModelIndex &index) {
     vector<string> targets = DeferredRenderer::Instance().getTargetNames();
     for (int i = 0; i < targets.size(); ++i) {
         if (targets[i] == selectedPlane->targetName)
-            renderPassSelector->setCurrentIndex(i);
+            renderTargetSelector->setCurrentIndex(i);
     }
 }
 
@@ -159,29 +159,27 @@ void Editor::initWidgets(QSplitter * mainSplitter) {
 
     QTabWidget * tabWidget = new QTabWidget;
     sideLayout->addWidget(tabWidget);
-    QWidget * renderPassTab = new QWidget();
-    tabWidget->addTab(renderPassTab, "Passes");
+    QWidget * renderTargetTab = new QWidget();
+    tabWidget->addTab(renderTargetTab, "Targets");
 
 
-    QVBoxLayout *renderPassTabLayout = new QVBoxLayout(renderPassTab);
+    QVBoxLayout *renderTargetLayout = new QVBoxLayout(renderTargetTab);
 
     QListView *passListView = new QListView;
     passModel = new PassModel(0);
     connect(passModel, SIGNAL(draw()), glWidget, SLOT(updateGL()));
     passListView->setModel(passModel);
     passListView->show();
-    renderPassTabLayout->addWidget(passListView);
+    renderTargetLayout->addWidget(passListView);
 
-
-    renderPassSelector = new QComboBox;
+    renderTargetSelector = new QComboBox;
 
     vector<string> targets = DeferredRenderer::Instance().getTargetNames();
 
     for (int i = 0; i < targets.size(); ++i) {
-        renderPassSelector->insertItem(i, QString::fromStdString(targets[i]));
+        renderTargetSelector->insertItem(i, QString::fromStdString(targets[i]));
     }
-    renderPassTabLayout->addWidget(renderPassSelector);
-
+    renderTargetLayout->addWidget(renderTargetSelector);
 
     QWidget * textureTab = new QWidget();
     tabWidget->addTab(textureTab, "Textures");
@@ -194,9 +192,7 @@ void Editor::initWidgets(QSplitter * mainSplitter) {
 
     texturelistView->resizeColumnToContents(2);
 
-    textureTabLayout->addWidget(renderPassSelector);
     textureTabLayout->addWidget(texturelistView);
-
 
     transparencyModeSrc = new QComboBox;
     transparencyModeDest = new QComboBox;
@@ -214,13 +210,13 @@ void Editor::initWidgets(QSplitter * mainSplitter) {
     transparencyBoxLayout->addWidget(transparencyModeSrc);
     transparencyBoxLayout->addWidget(transparencyModeDest);
 
-    renderPassTabLayout->addWidget(transparencyBoxLayoutWidget);
+    renderTargetLayout->addWidget(transparencyBoxLayoutWidget);
 
     setSelectedPlane(passModel->index(0, 0,QModelIndex()));
     connect(passListView, SIGNAL(clicked(QModelIndex)), this, SLOT(setSelectedPlane(QModelIndex)));
     connect(texturelistView, SIGNAL(clicked(QModelIndex)), this, SLOT(setSelectedTexture(QModelIndex)));
-    connect(renderPassSelector, SIGNAL(currentIndexChanged(QString)), this, SLOT(changePlaneSource(QString)));
-    connect(renderPassSelector, SIGNAL(currentIndexChanged(QString)), passListView, SLOT(updateGeometries()));
+    connect(renderTargetSelector, SIGNAL(currentIndexChanged(QString)), this, SLOT(changePlaneSource(QString)));
+    connect(renderTargetSelector, SIGNAL(currentIndexChanged(QString)), passListView, SLOT(updateGeometries()));
 }
 
 int main(int argc, char *argv[]) {
