@@ -80,7 +80,7 @@ void Editor::scene() {
 
     Material *skyMat = new Material("sky");
     QList<string> attributes = QList<string> () << "uv" << "normal" << "tangent" << "bitangent";
-    Mesh * sphere = Geometry::sphere(attributes, 100, 10, 10);
+    Mesh * sphere = Geometry::sphere(attributes, 500, 20, 20);
     Node * skyNode = new Node("skynode", QVector3D(0,0,0),1,  sphere, skyMat);
     SceneGraph::Instance().addNode(skyNode);
 
