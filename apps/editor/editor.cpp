@@ -36,6 +36,7 @@
 #include "Window/Qt/FloatEditorWidget.h"
 #include "TextureModel.h"
 #include <QTreeWidget>
+#include <QLabel>
 #include "Mesh/Geometry.h"
 
 #include <QSplitter>
@@ -114,6 +115,48 @@ void Editor::setSelectedTexture(const QModelIndex &index) {
     glWidget->updateGL();
 }
 
+void Editor::setSelectedPass(const QModelIndex &index) {
+    DrawThing * pass = DeferredRenderer::Instance().drawPasses.at(index.row());
+
+    QLayoutItem* item;
+    while ((item = passLayout->takeAt(0)) != nullptr) {
+            delete item->widget();
+            delete item;
+    }
+
+    SourcePass * sourceCheck = dynamic_cast<SourcePass*>(pass);
+    if (sourceCheck != nullptr) {
+        QLabel * targetLabel = new QLabel;
+        targetLabel->setText("<b>Targets</b>");
+        passLayout->addWidget(targetLabel);
+
+        foreach(Texture * target, sourceCheck->targets) {
+            QLabel * label = new QLabel;
+            label->setText(QString::fromStdString(target->name));
+            passLayout->addWidget(label);
+        }
+    }
+
+    InOutPass * inOutCheck = dynamic_cast<InOutPass*>(pass);
+    if (inOutCheck != nullptr) {
+
+        QLabel * sourceLabel = new QLabel;
+        sourceLabel->setText("<b>Sources</b>");
+        passLayout->addWidget(sourceLabel);
+
+        foreach(Texture * target, inOutCheck->sources) {
+            QLabel * label = new QLabel;
+            label->setText(QString::fromStdString(target->name));
+            passLayout->addWidget(label);
+        }
+
+    }
+
+//    SinkPass * sinkCheck = dynamic_cast<SinkPass*>(pass);
+//    if (sinkCheck != nullptr)
+//        passType = "SinkPass";
+}
+
 
 void Editor::setTransparency(bool transparent) {
   DeferredRenderer::Instance().drawTransparency = transparent;
@@ -181,6 +224,10 @@ void Editor::initWidgets(QSplitter * mainSplitter) {
     renderTargetLayout->addWidget(passListView);
 
 
+    passLayout = new QVBoxLayout;
+    passLayoutWidget = new QWidget;
+    passLayoutWidget->setLayout(passLayout);
+    renderTargetLayout->addWidget(passLayoutWidget);
 
     renderTargetSelector = new QComboBox;
 
@@ -224,6 +271,7 @@ void Editor::initWidgets(QSplitter * mainSplitter) {
 
     setSelectedPlane(targetModel->index(0, 0, QModelIndex()));
     connect(targetListView, SIGNAL(clicked(QModelIndex)), this, SLOT(setSelectedPlane(QModelIndex)));
+    connect(passListView, SIGNAL(clicked(QModelIndex)), this, SLOT(setSelectedPass(QModelIndex)));
     connect(texturelistView, SIGNAL(clicked(QModelIndex)), this, SLOT(setSelectedTexture(QModelIndex)));
     connect(renderTargetSelector, SIGNAL(currentIndexChanged(QString)), this, SLOT(changePlaneSource(QString)));
     connect(renderTargetSelector, SIGNAL(currentIndexChanged(QString)), passListView, SLOT(updateGeometries()));
