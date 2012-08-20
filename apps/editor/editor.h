@@ -20,9 +20,13 @@
 #ifndef EDITOR_H
 #define EDITOR_H
 
+#define QT_NO_GRAPHICSEFFECT 1
+
+#include <QHBoxLayout>
+#include <QComboBox>
+
 #include "System/Application.h"
 #include "Renderer/RenderPasses.h"
-#include <QHBoxLayout>
 #include "TargetModel.h"
 #include "PassModel.h"
 
@@ -38,7 +42,9 @@ public:
     void scene();
     void renderFrame();
 
-  void initWidgets(QSplitter *mainSplitter);
+    string scenePath;
+
+    void initWidgets(QSplitter *mainSplitter);
 
   QComboBox * renderTargetSelector;
   QComboBox* transparencyModeSrc;
@@ -56,7 +62,6 @@ public:
   GLuint srcMode;
   GLuint destMode;
 
-  string scenePath;
 
   void updateTransparency();
 

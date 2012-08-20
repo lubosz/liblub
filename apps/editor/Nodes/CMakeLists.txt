@@ -3,7 +3,7 @@ project(liblub)
 
 if(${USE_QT_WINDOWS})
 
-file(GLOB_RECURSE EDITOR_CPP_FILES *.cpp)
+file(GLOB EDITOR_CPP_FILES *.cpp)
 
 #moc qt stuff
 set(EDITOR_MOC_INFILES
@@ -11,11 +11,10 @@ set(EDITOR_MOC_INFILES
     TextureModel.h
     PassModel.h
     TargetModel.h
-    Nodes/GraphWidget.h
 )
 
 qt4_wrap_cpp(EDITOR_MOC_OUTFILES ${EDITOR_MOC_INFILES})
-add_executable(editor ${EDITOR_CPP_FILES} ${NODES_CPP_FILES} ${EDITOR_MOC_OUTFILES})
+add_executable(editor ${EDITOR_CPP_FILES} ${EDITOR_MOC_OUTFILES})
 target_link_libraries(editor lub)
 
 endif()

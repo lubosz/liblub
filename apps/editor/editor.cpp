@@ -19,32 +19,18 @@
 
 #include "editor.h"
 
-#include "System/Logger.h"
-#include "Material/Shaders.h"
-#include "Material/Textures.h"
-#include "Scene/SceneGraph.h"
-#include "Renderer/RenderPasses.h"
-#include "Renderer/DeferredRenderer.h"
 #include "Scene/Scene.h"
+#include "Material/Textures.h"
 #include "Scene/AssimpSceneLoader.h"
-
-#include <QTableWidget>
-#include <QHBoxLayout>
-#include <QListView>
-#include <QTableView>
-#include "System/Config.h"
-#include "Window/Qt/FloatEditorWidget.h"
-#include "TextureModel.h"
-#include <QTreeWidget>
-#include <QLabel>
+#include "Renderer/DeferredRenderer.h"
 #include "Mesh/Geometry.h"
-
-#include <QSplitter>
+#include "Scene/SceneGraph.h"
+#include "TextureModel.h"
+#include "Nodes/GraphWidget.h"
 
 Editor::Editor(int argc, char *argv[]) :
     Application(argc, argv) {
     scenePath = argv[1];
-
     transparencyModes.insert("GL_ZERO", GL_ZERO);
     transparencyModes.insert("GL_ONE", GL_ONE);
 
@@ -78,13 +64,11 @@ void Editor::scene() {
     Scene::Instance().getCurrentCamera()->update();
 
     new CubeTextureFile("cubemaps/sky", "sky");
-
     Material *skyMat = new Material("sky");
     QList<string> attributes = QList<string> () << "uv" << "normal" << "tangent" << "bitangent";
     Mesh * sphere = Geometry::sphere(attributes, 500, 20, 20);
     Node * skyNode = new Node("skynode", QVector3D(0,0,0),1,  sphere, skyMat);
     SceneGraph::Instance().addNode(skyNode);
-
     AssimpSceneLoader::Instance().load(scenePath);
     DeferredRenderer::Instance().init();
     initWidgets(window->splitter);
@@ -93,7 +77,6 @@ void Editor::scene() {
 void Editor::renderFrame() {
     DeferredRenderer::Instance().draw();
 }
-
 void Editor::setSelectedPlane(const QModelIndex &index) {
     selectedPlane = DeferredRenderer::Instance().sinkPass->debugPlanes[index.row()];
 
@@ -275,8 +258,11 @@ void Editor::initWidgets(QSplitter * mainSplitter) {
     connect(texturelistView, SIGNAL(clicked(QModelIndex)), this, SLOT(setSelectedTexture(QModelIndex)));
     connect(renderTargetSelector, SIGNAL(currentIndexChanged(QString)), this, SLOT(changePlaneSource(QString)));
     connect(renderTargetSelector, SIGNAL(currentIndexChanged(QString)), passListView, SLOT(updateGeometries()));
-}
 
+    GraphWidget * graphWidget = new GraphWidget;
+    tabWidget->addTab(graphWidget, "Nodes");
+
+}
 int main(int argc, char *argv[]) {
     if (argc != 2)
       LogError << "NO SCENE SPECIFIED. Try; ./editor foo.blend";
