@@ -14,7 +14,8 @@ DeferredRenderer::~DeferredRenderer()
 
 void DeferredRenderer::draw() {
     foreach(DrawThing * pass, drawPasses)
-        pass->draw();
+        if (pass->enabled)
+            pass->draw();
 }
 
 void DeferredRenderer::init() {
