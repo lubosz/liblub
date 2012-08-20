@@ -50,6 +50,9 @@ public:
 
   QMap<QString, GLuint> transparencyModes;
 
+  QVBoxLayout *passLayout;
+  QWidget *passLayoutWidget;
+
   GLuint srcMode;
   GLuint destMode;
 
@@ -62,6 +65,7 @@ public slots:
   void setSelectedTransparencyDest(const QString &destModeName);
 
   void setSelectedPlane(const QModelIndex &index);
+  void setSelectedPass(const QModelIndex &index);
   void setSelectedTexture(const QModelIndex &index);
   void changePlaneSource(const QString &name);
   void setTransparency(bool transparent);
