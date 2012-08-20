@@ -24,6 +24,7 @@
 #include "Renderer/RenderPasses.h"
 #include <QHBoxLayout>
 #include "TargetModel.h"
+#include "PassModel.h"
 
 
 class Editor: public Application {
@@ -44,6 +45,7 @@ public:
   QComboBox* transparencyModeDest;
 
   DebugPlane * selectedPlane;
+  PassModel * passModel;
   TargetModel * targetModel;
 
   QMap<QString, GLuint> transparencyModes;

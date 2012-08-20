@@ -12,6 +12,8 @@
 
 class DrawThing {
 public:
+    DrawThing();
+    bool enabled;
   virtual void draw() = 0;
   static void drawOnPlane(ShaderProgram * shader, Mesh *plane);
 };

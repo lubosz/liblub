@@ -165,12 +165,22 @@ void Editor::initWidgets(QSplitter * mainSplitter) {
 
     QVBoxLayout *renderTargetLayout = new QVBoxLayout(renderTargetTab);
 
-    QListView *passListView = new QListView;
+    QListView *targetListView = new QListView;
     targetModel = new TargetModel(0);
     connect(targetModel, SIGNAL(draw()), glWidget, SLOT(updateGL()));
-    passListView->setModel(targetModel);
+    targetListView->setModel(targetModel);
+    targetListView->show();
+    renderTargetLayout->addWidget(targetListView);
+
+
+    QListView *passListView = new QListView;
+    passModel = new PassModel(0);
+    connect(passModel, SIGNAL(draw()), glWidget, SLOT(updateGL()));
+    passListView->setModel(passModel);
     passListView->show();
     renderTargetLayout->addWidget(passListView);
+
+
 
     renderTargetSelector = new QComboBox;
 
@@ -213,7 +223,7 @@ void Editor::initWidgets(QSplitter * mainSplitter) {
     renderTargetLayout->addWidget(transparencyBoxLayoutWidget);
 
     setSelectedPlane(targetModel->index(0, 0, QModelIndex()));
-    connect(passListView, SIGNAL(clicked(QModelIndex)), this, SLOT(setSelectedPlane(QModelIndex)));
+    connect(targetListView, SIGNAL(clicked(QModelIndex)), this, SLOT(setSelectedPlane(QModelIndex)));
     connect(texturelistView, SIGNAL(clicked(QModelIndex)), this, SLOT(setSelectedTexture(QModelIndex)));
     connect(renderTargetSelector, SIGNAL(currentIndexChanged(QString)), this, SLOT(changePlaneSource(QString)));
     connect(renderTargetSelector, SIGNAL(currentIndexChanged(QString)), passListView, SLOT(updateGeometries()));

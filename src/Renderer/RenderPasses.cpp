@@ -16,6 +16,9 @@
 #include "Renderer/OpenGL.h"
 #include "Material/Shaders.h"
 
+DrawThing::DrawThing() : enabled(true){
+}
+
   void DrawThing::drawOnPlane(ShaderProgram * shader, Mesh *plane) {
     shader->use();
     shader->activateAndBindTextures();
@@ -23,7 +26,7 @@
     plane->draw();
   }
 
-  DrawPass::DrawPass(QSize res) {
+  DrawPass::DrawPass(QSize res) : DrawThing() {
     this->res = res;
   }
 
