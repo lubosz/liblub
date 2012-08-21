@@ -47,13 +47,14 @@
 #include "GraphWidget.h"
 
 
-GraphNode::GraphNode(GraphWidget *graphWidget)
-    : graph(graphWidget)
+GraphNode::GraphNode(GraphWidget *graphWidget, QString name)
+    : graph(graphWidget), name(name)
 {
     setFlag(ItemIsMovable);
     setFlag(ItemSendsGeometryChanges);
     setCacheMode(DeviceCoordinateCache);
     setZValue(-1);
+    size = QSize(120, 50);
 }
 
 void GraphNode::addEdge(Edge *edge)
@@ -65,51 +66,6 @@ void GraphNode::addEdge(Edge *edge)
 QList<Edge *> GraphNode::edges() const
 {
     return edgeList;
-}
-
-void GraphNode::calculateForces()
-{
-    if (!scene() || scene()->mouseGrabberItem() == this) {
-        newPos = pos();
-        return;
-    }
-
-    // Sum up all forces pushing this item away
-    qreal xvel = 0;
-    qreal yvel = 0;
-
-    foreach (QGraphicsItem *item, scene()->items()) {
-        GraphNode *graphNode = qgraphicsitem_cast<GraphNode *>(item);
-        if (!graphNode)
-            continue;
-
-        QPointF vec = mapToItem(graphNode, 0, 0);
-        qreal dx = vec.x();
-        qreal dy = vec.y();
-        double l = 2.0 * (dx * dx + dy * dy);
-        if (l > 0) {
-            xvel += (dx * 150.0) / l;
-            yvel += (dy * 150.0) / l;
-        }
-    }
-    // Now subtract all forces pulling items together
-    double weight = (edgeList.size() + 1) * 10;
-    foreach (Edge *edge, edgeList) {
-        QPointF vec;
-        if (edge->sourceGraphNode() == this)
-            vec = mapToItem(edge->destGraphNode(), 0, 0);
-        else
-            vec = mapToItem(edge->sourceGraphNode(), 0, 0);
-        xvel -= vec.x() / weight;
-        yvel -= vec.y() / weight;
-    }
-    if (qAbs(xvel) < 0.1 && qAbs(yvel) < 0.1)
-        xvel = yvel = 0;
-
-    QRectF sceneRect = scene()->sceneRect();
-    newPos = pos() + QPointF(xvel, yvel);
-    newPos.setX(qMin(qMax(newPos.x(), sceneRect.left() + 10), sceneRect.right() - 10));
-    newPos.setY(qMin(qMax(newPos.y(), sceneRect.top() + 10), sceneRect.bottom() - 10));
 }
 
 bool GraphNode::advance()
@@ -124,35 +80,52 @@ QRectF GraphNode::boundingRect() const
 {
     qreal adjust = 2;
     return QRectF(-10 - adjust, -10 - adjust,
-                  23 + adjust, 23 + adjust);
+                  size.width() + 3 + adjust, size.height() + 3 + adjust);
 }
 
 QPainterPath GraphNode::shape() const
 {
     QPainterPath path;
-    path.addEllipse(-10, -10, 20, 20);
+    path.addEllipse(-10, -10, size.width(), size.height());
     return path;
 }
 
 void GraphNode::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *)
 {
-    painter->setPen(Qt::NoPen);
-    painter->setBrush(Qt::darkGray);
-    painter->drawEllipse(-7, -7, 20, 20);
+//    painter->setPen(Qt::NoPen);
+//    painter->setBrush(Qt::darkGray);
+//    painter->drawEllipse(-7, -7, size.width(), size.height());
 
-    QRadialGradient gradient(-3, -3, 10);
+    QRadialGradient gradient(-3, -3, size.width()*1.5);
     if (option->state & QStyle::State_Sunken) {
         gradient.setCenter(3, 3);
         gradient.setFocalPoint(3, 3);
-        gradient.setColorAt(1, QColor(Qt::yellow).light(120));
-        gradient.setColorAt(0, QColor(Qt::darkYellow).light(120));
+        gradient.setColorAt(1, Qt::white);
+        gradient.setColorAt(0, Qt::blue);
     } else {
-        gradient.setColorAt(0, Qt::yellow);
-        gradient.setColorAt(1, Qt::darkYellow);
+        gradient.setColorAt(1, Qt::white);
+        gradient.setColorAt(0, Qt::darkBlue);
     }
     painter->setBrush(gradient);
     painter->setPen(QPen(Qt::black, 0));
-    painter->drawEllipse(-10, -10, 20, 20);
+//    painter->drawEllipse(-10, -10, size.width(), size.height());
+    painter->drawRoundedRect(QRect(-10, -10, size.width(), size.height()), 5, 5);
+
+    // Text
+
+    QFont font = painter->font();
+    font.setBold(true);
+    font.setPointSize(10);
+    painter->setFont(font);
+    painter->setPen(Qt::black);
+
+    QFontMetrics fm(font);
+    int pixelsWide = fm.width(name);
+    int pixelsHigh = fm.height();
+
+    QRectF textRect(size.width()/2 - pixelsWide/2 - 10, pixelsHigh/4, size.width(), size.height());
+
+    painter->drawText(textRect, name);
 }
 
 QVariant GraphNode::itemChange(GraphicsItemChange change, const QVariant &value)

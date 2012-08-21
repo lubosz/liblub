@@ -10,10 +10,15 @@
 #include "Scene/Light.h"
 #include "Renderer/FrameBuffer.h"
 
+#include <string>
+
+using std::string;
+
 class DrawThing {
 public:
     DrawThing();
     bool enabled;
+    string typeName;
   virtual void draw() = 0;
   static void drawOnPlane(ShaderProgram * shader, Mesh *plane);
 };

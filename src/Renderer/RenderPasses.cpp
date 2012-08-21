@@ -16,7 +16,7 @@
 #include "Renderer/OpenGL.h"
 #include "Material/Shaders.h"
 
-DrawThing::DrawThing() : enabled(true){
+DrawThing::DrawThing() : enabled(true), typeName("Pass"){
 }
 
   void DrawThing::drawOnPlane(ShaderProgram * shader, Mesh *plane) {
@@ -31,6 +31,7 @@ DrawThing::DrawThing() : enabled(true){
   }
 
   SourcePass::SourcePass(QSize res, vector<Texture*> &targets, ShaderProgram * shader) : DrawPass(res) {
+    typeName = "SourcePass";
     this->targets = targets;
     this->shader = shader;
     initFBO();
@@ -71,6 +72,7 @@ DrawThing::DrawThing() : enabled(true){
 
   ShadowCastPass::ShadowCastPass(QSize res, vector<Texture*> &targets, Light* view)
   : SourcePass(res, targets, new MinimalProgram()) {
+    typeName = "ShadowCastPass";
     offsetFactor = 2;
     offsetUnits = 0;
     offsetMode = GL_POLYGON_OFFSET_FILL;
@@ -111,6 +113,7 @@ DrawThing::DrawThing() : enabled(true){
   }
 
   InOutPass::InOutPass(QSize res, vector<Texture*> &sources, vector<Texture*> &targets, ShaderProgram * shader) : SourcePass(res, targets, shader) {
+    typeName = "InOutPass";
     this->sources = sources;
     fullPlane = Geometry::plane(QList<string> () << "uv", QRectF(-1, -1, 2, 2));
     shader->addTextures(sources);
@@ -170,7 +173,9 @@ DrawThing::DrawThing() : enabled(true){
       drawOnPlane(shader, plane);
   }
 
-  SinkPass::SinkPass() {}
+  SinkPass::SinkPass() {
+    typeName = "SinkPass";
+  }
 
   void SinkPass::debugTarget(QRectF rect, Texture * target) {
     debugPlanes.push_back(new DebugPlane(rect, target));

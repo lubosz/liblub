@@ -17,24 +17,9 @@ QVariant PassModel::data(const QModelIndex &index, int role) const {
 
     DrawThing * pass = DeferredRenderer::Instance().drawPasses[row];
 
-    QString passType = "Pass";
-
-    SourcePass * sourceCheck = dynamic_cast<SourcePass*>(pass);
-    if (sourceCheck != nullptr) {
-        passType = "SourcePass";
-    }
-
-    InOutPass * inOutCheck = dynamic_cast<InOutPass*>(pass);
-    if (inOutCheck != nullptr)
-        passType = "InOutPass";
-
-    SinkPass * sinkCheck = dynamic_cast<SinkPass*>(pass);
-    if (sinkCheck != nullptr)
-        passType = "SinkPass";
-
     switch(role) {
         case Qt::DisplayRole:
-        return passType + QString::number(row);
+        return QString::fromStdString(pass->typeName) + QString::number(row);
             break;
         case Qt::CheckStateRole:
             if (pass->enabled) {

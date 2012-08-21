@@ -54,15 +54,15 @@ class GraphNode
         : public QGraphicsItem
 {
 public:
-    GraphNode(GraphWidget *graphWidget);
+    GraphNode(GraphWidget *graphWidget, QString name);
 
+    QString name;
     void addEdge(Edge *edge);
     QList<Edge *> edges() const;
 
     enum { Type = UserType + 1 };
     int type() const { return Type; }
 
-    void calculateForces();
     bool advance();
 
     QRectF boundingRect() const;
@@ -79,6 +79,7 @@ private:
     QList<Edge *> edgeList;
     QPointF newPos;
     GraphWidget *graph;
+    QSize size;
 };
 
 #endif

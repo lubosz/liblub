@@ -42,12 +42,15 @@
 #define GRAPHWIDGET_H
 
 #include <QtGui/QGraphicsView>
+#include <QMultiMap>
+
+#include <string>
+
+using std::string;
 
 class GraphNode;
 
-//! [0]
-class GraphWidget : public QGraphicsView
-{
+class GraphWidget : public QGraphicsView {
     Q_OBJECT
 
 public:
@@ -57,16 +60,16 @@ public:
 
 protected:
     void keyPressEvent(QKeyEvent *event);
-    void timerEvent(QTimerEvent *event);
     void wheelEvent(QWheelEvent *event);
-    void drawBackground(QPainter *painter, const QRectF &rect);
+//    void drawBackground(QPainter *painter, const QRectF &rect);
 
     void scaleView(qreal scaleFactor);
 
+    QMultiMap<string, GraphNode *> sources;
+    QMap<string, GraphNode *> targets;
+
 private:
-    int timerId;
     GraphNode *centerGraphNode;
 };
-//! [0]
 
 #endif

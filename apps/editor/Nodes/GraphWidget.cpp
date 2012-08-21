@@ -42,6 +42,8 @@
 #include "Edge.h"
 #include "GraphNode.h"
 
+#include "Renderer/DeferredRenderer.h"
+
 #include <QtGui>
 
 #include <math.h>
@@ -50,56 +52,52 @@ GraphWidget::GraphWidget(QWidget *parent)
     : QGraphicsView(parent), timerId(0) {
     QGraphicsScene *scene = new QGraphicsScene(this);
     scene->setItemIndexMethod(QGraphicsScene::NoIndex);
-    scene->setSceneRect(-200, -200, 400, 400);
+    scene->setSceneRect(-1000, -200, 2000, 400);
     setScene(scene);
     setCacheMode(CacheBackground);
     setViewportUpdateMode(BoundingRectViewportUpdate);
     setRenderHint(QPainter::Antialiasing);
     setTransformationAnchor(AnchorUnderMouse);
-    scale(qreal(0.8), qreal(0.8));
     setMinimumSize(400, 400);
-    setWindowTitle(tr("Elastic GraphNodes"));
 
-    GraphNode *GraphNode1 = new GraphNode(this);
-    GraphNode *GraphNode2 = new GraphNode(this);
-    GraphNode *GraphNode3 = new GraphNode(this);
-    GraphNode *GraphNode4 = new GraphNode(this);
-    centerGraphNode = new GraphNode(this);
-    GraphNode *GraphNode6 = new GraphNode(this);
-    GraphNode *GraphNode7 = new GraphNode(this);
-    GraphNode *GraphNode8 = new GraphNode(this);
-    GraphNode *GraphNode9 = new GraphNode(this);
-    scene->addItem(GraphNode1);
-    scene->addItem(GraphNode2);
-    scene->addItem(GraphNode3);
-    scene->addItem(GraphNode4);
-    scene->addItem(centerGraphNode);
-    scene->addItem(GraphNode6);
-    scene->addItem(GraphNode7);
-    scene->addItem(GraphNode8);
-    scene->addItem(GraphNode9);
-    scene->addItem(new Edge(GraphNode1, GraphNode2));
-    scene->addItem(new Edge(GraphNode2, GraphNode3));
-    scene->addItem(new Edge(GraphNode2, centerGraphNode));
-    scene->addItem(new Edge(GraphNode3, GraphNode6));
-    scene->addItem(new Edge(GraphNode4, GraphNode1));
-    scene->addItem(new Edge(GraphNode4, centerGraphNode));
-    scene->addItem(new Edge(centerGraphNode, GraphNode6));
-    scene->addItem(new Edge(centerGraphNode, GraphNode8));
-    scene->addItem(new Edge(GraphNode6, GraphNode9));
-    scene->addItem(new Edge(GraphNode7, GraphNode4));
-    scene->addItem(new Edge(GraphNode8, GraphNode7));
-    scene->addItem(new Edge(GraphNode9, GraphNode8));
+    qreal xpos = -900;
+    foreach(DrawThing * pass, DeferredRenderer::Instance().drawPasses) {
+        GraphNode *graphNode = new GraphNode(this, QString::fromStdString(pass->typeName));
+        graphNode->setPos(xpos, -50);
+        xpos += 110;
+        scene->addItem(graphNode);
 
-    GraphNode1->setPos(-50, -50);
-    GraphNode2->setPos(0, -50);
-    GraphNode3->setPos(50, -50);
-    GraphNode4->setPos(-50, 0);
-    centerGraphNode->setPos(0, 0);
-    GraphNode6->setPos(50, 0);
-    GraphNode7->setPos(-50, 50);
-    GraphNode8->setPos(0, 50);
-    GraphNode9->setPos(50, 50);
+        SourcePass * sourceCheck = dynamic_cast<SourcePass*>(pass);
+        if (sourceCheck != nullptr) {
+            foreach(Texture * target, sourceCheck->targets) {
+                targets.insert(target->name, graphNode);
+            }
+        }
+
+        InOutPass * inOutCheck = dynamic_cast<InOutPass*>(pass);
+        if (inOutCheck != nullptr) {
+            foreach(Texture * source, inOutCheck->sources) {
+                sources.insert(source->name, graphNode);
+            }
+        }
+
+        SinkPass * sinkCheck = dynamic_cast<SinkPass*>(pass);
+        if (sinkCheck != nullptr) {
+            foreach(DebugPlane * plane, sinkCheck->debugPlanes) {
+                sources.insert(plane->targetName, graphNode);
+            }
+        }
+    }
+
+    foreach (string foo, targets.keys()) {
+        GraphNode *sourceNode = targets[foo];
+
+         QList<GraphNode *>targetNodes = sources.values(foo);
+
+         foreach (GraphNode * targetNode, targetNodes) {
+             scene->addItem(new Edge(sourceNode, targetNode));
+         }
+    }
 }
 
 void GraphWidget::itemMoved() {
@@ -109,64 +107,21 @@ void GraphWidget::itemMoved() {
 
 void GraphWidget::keyPressEvent(QKeyEvent *event) {
     switch (event->key()) {
-    case Qt::Key_Up:
-        centerGraphNode->moveBy(0, -20);
-        break;
-    case Qt::Key_Down:
-        centerGraphNode->moveBy(0, 20);
-        break;
-    case Qt::Key_Left:
-        centerGraphNode->moveBy(-20, 0);
-        break;
-    case Qt::Key_Right:
-        centerGraphNode->moveBy(20, 0);
-        break;
     case Qt::Key_Plus:
         scaleView(qreal(1.2));
         break;
     case Qt::Key_Minus:
         scaleView(1 / qreal(1.2));
         break;
-    case Qt::Key_Space:
-    case Qt::Key_Enter:
-        foreach (QGraphicsItem *item, scene()->items()) {
-            if (qgraphicsitem_cast<GraphNode *>(item))
-                item->setPos(-150 + qrand() % 300, -150 + qrand() % 300);
-        }
-        break;
     default:
         QGraphicsView::keyPressEvent(event);
-    }
-}
-
-void GraphWidget::timerEvent(QTimerEvent *event) {
-    Q_UNUSED(event);
-
-    QList<GraphNode *> graphNodes;
-    foreach (QGraphicsItem *item, scene()->items()) {
-        if (GraphNode *graphNode = qgraphicsitem_cast<GraphNode *>(item))
-            graphNodes << graphNode;
-    }
-
-    foreach (GraphNode *graphNode, graphNodes)
-        graphNode->calculateForces();
-
-    bool itemsMoved = false;
-    foreach (GraphNode *graphNode, graphNodes) {
-        if (graphNode->advance())
-            itemsMoved = true;
-    }
-
-    if (!itemsMoved) {
-        killTimer(timerId);
-        timerId = 0;
     }
 }
 
 void GraphWidget::wheelEvent(QWheelEvent *event) {
     scaleView(pow((double)2, -event->delta() / 240.0));
 }
-
+/*
 void GraphWidget::drawBackground(QPainter *painter, const QRectF &rect) {
     Q_UNUSED(rect);
 
@@ -202,7 +157,7 @@ void GraphWidget::drawBackground(QPainter *painter, const QRectF &rect) {
     painter->setPen(Qt::black);
     painter->drawText(textRect, message);
 }
-
+*/
 void GraphWidget::scaleView(qreal scaleFactor) {
     qreal factor = transform().scale(scaleFactor, scaleFactor).mapRect(QRectF(0, 0, 1, 1)).width();
     if (factor < 0.07 || factor > 100)

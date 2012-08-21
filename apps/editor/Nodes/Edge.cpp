@@ -74,7 +74,7 @@ void Edge::adjust()
     if (!source || !dest)
         return;
 
-    QLineF line(mapFromItem(source, 0, 0), mapFromItem(dest, 0, 0));
+    QLineF line(mapFromItem(source, 100, 10), mapFromItem(dest, 0, 0));
     qreal length = line.length();
 
     prepareGeometryChange();
