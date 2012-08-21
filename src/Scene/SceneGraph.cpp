@@ -129,7 +129,7 @@ void SceneGraph::drawReceivers(ShaderProgram * shader) {
         }
       foreach(qreal transparentKey, transparentKeys) {
         Node * node = transparentNodes[transparentKey];
-        node->setView(shader, camView );
+        node->setView(shader, camView);
         node->material->uniforms(shader);
         node->material->activateAndBindTextures();
         node->draw(shader);
@@ -164,7 +164,7 @@ void SceneGraph::meshCube(const QList<string> & attributes, string file, float c
     for (float x = -cubeSize / 2.0; x < cubeSize / 2.0; x += step) {
         for (float y = -cubeSize / 2.0; y < cubeSize / 2.0; y += step) {
             for (float z = -cubeSize / 2.0; z < cubeSize / 2.0; z += step) {
-                addNode(new Node("", { x, y, z }, 1, mesh, shader));
+                addNode(new Node("Mesh Cube Node", QVector3D(x, y, z), 1, mesh, shader));
             }
         }
     }
@@ -177,7 +177,7 @@ void SceneGraph::meshCube(const QList<string> & attributes, string file, float c
     for (float x = -cubeSize / 2.0; x < cubeSize / 2.0; x += step) {
         for (float y = -cubeSize / 2.0; y < cubeSize / 2.0; y += step) {
             for (float z = -cubeSize / 2.0; z < cubeSize / 2.0; z += step) {
-                addNode(new Node("", { z, x, y }, 1, mesh,
+                addNode(new Node("Mesh Cube Node", QVector3D(z, x, y), 1, mesh,
                     materials.at(position % materials.size())));
                 position++;
             }
@@ -190,7 +190,7 @@ void SceneGraph::meshPlane(Mesh * mesh, float cubeSize, float step,
     unsigned position = 0;
     for (float x = -cubeSize / 2.0; x < cubeSize / 2.0; x += step) {
         for (float y = -cubeSize / 2.0; y < cubeSize / 2.0; y += step) {
-            addNode(new Node("", { x, y, -5 + x }, 1, mesh,
+            addNode(new Node("Mesh Plane Node", QVector3D(x, y, -5 + x), 1, mesh,
                 materials.at(position % materials.size())));
             position++;
         }

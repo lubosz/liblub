@@ -261,8 +261,8 @@ void Editor::initWidgets(QSplitter * mainSplitter) {
 
     GraphWidget * graphWidget = new GraphWidget;
     tabWidget->addTab(graphWidget, "Nodes");
-
 }
+
 int main(int argc, char *argv[]) {
     if (argc != 2)
       LogError << "NO SCENE SPECIFIED. Try; ./editor foo.blend";
