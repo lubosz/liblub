@@ -56,8 +56,6 @@ class GraphWidget : public QGraphicsView {
 public:
     GraphWidget(QWidget *parent = 0);
 
-    void itemMoved();
-
 protected:
     void keyPressEvent(QKeyEvent *event);
     void wheelEvent(QWheelEvent *event);

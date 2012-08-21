@@ -48,8 +48,8 @@
 static const double Pi = 3.14159265358979323846264338327950288419717;
 static double TwoPi = 2.0 * Pi;
 
-Edge::Edge(GraphNode *sourceGraphNode, GraphNode *destGraphNode)
-    : arrowSize(10)
+Edge::Edge(GraphNode *sourceGraphNode, GraphNode *destGraphNode, string name)
+    : arrowSize(10), name(name)
 {
     setAcceptedMouseButtons(0);
     source = sourceGraphNode;
@@ -131,5 +131,22 @@ void Edge::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)
 
     painter->setBrush(Qt::black);
     painter->drawPolygon(QPolygonF() << line.p1() << sourceArrowP1 << sourceArrowP2);
-    painter->drawPolygon(QPolygonF() << line.p2() << destArrowP1 << destArrowP2);        
+    painter->drawPolygon(QPolygonF() << line.p2() << destArrowP1 << destArrowP2);
+
+
+    QFont font = painter->font();
+    font.setBold(true);
+    font.setPointSize(8);
+    painter->setFont(font);
+    painter->setPen(Qt::black);
+
+    QFontMetrics fm(font);
+    int pixelsWide = fm.width(QString::fromStdString(name));
+    int pixelsHigh = fm.height();
+
+    QPointF center = (line.p1() + line.p2()) / 2;
+
+    QRectF textRect(center.x(), center.y(), pixelsWide, pixelsHigh);
+
+    painter->drawText(textRect, QString::fromStdString(name));
 }

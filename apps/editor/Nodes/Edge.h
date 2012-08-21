@@ -42,13 +42,16 @@
 #define EDGE_H
 
 #include <QGraphicsItem>
+#include <string>
+
+using std::string;
 
 class GraphNode;
 
 class Edge : public QGraphicsItem
 {
 public:
-    Edge(GraphNode *sourceGraphNode, GraphNode *destGraphNode);
+    Edge(GraphNode *sourceGraphNode, GraphNode *destGraphNode, string name);
 
     GraphNode *sourceGraphNode() const;
     GraphNode *destGraphNode() const;
@@ -65,6 +68,7 @@ protected:
 private:
     GraphNode *source, *dest;
 
+    string name;
     QPointF sourcePoint;
     QPointF destPoint;
     qreal arrowSize;

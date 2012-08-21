@@ -96,14 +96,15 @@ void GraphNode::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
 //    painter->setBrush(Qt::darkGray);
 //    painter->drawEllipse(-7, -7, size.width(), size.height());
 
-    QRadialGradient gradient(-3, -3, size.width()*1.5);
+    QLinearGradient gradient(size.width()/2, 0, size.width()/2, size.height());
+//    QRadialGradient gradient(-3, -3, size.width()*1.5);
     if (option->state & QStyle::State_Sunken) {
-        gradient.setCenter(3, 3);
-        gradient.setFocalPoint(3, 3);
-        gradient.setColorAt(1, Qt::white);
+//        gradient.setCenter(3, 3);
+//        gradient.setFocalPoint(3, 3);
+        gradient.setColorAt(0.8, Qt::white);
         gradient.setColorAt(0, Qt::blue);
     } else {
-        gradient.setColorAt(1, Qt::white);
+        gradient.setColorAt(0.8, Qt::white);
         gradient.setColorAt(0, Qt::darkBlue);
     }
     painter->setBrush(gradient);
@@ -134,7 +135,6 @@ QVariant GraphNode::itemChange(GraphicsItemChange change, const QVariant &value)
     case ItemPositionHasChanged:
         foreach (Edge *edge, edgeList)
             edge->adjust();
-        graph->itemMoved();
         break;
     default:
         break;

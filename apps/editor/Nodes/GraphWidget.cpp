@@ -49,7 +49,7 @@
 #include <math.h>
 
 GraphWidget::GraphWidget(QWidget *parent)
-    : QGraphicsView(parent), timerId(0) {
+    : QGraphicsView(parent) {
     QGraphicsScene *scene = new QGraphicsScene(this);
     scene->setItemIndexMethod(QGraphicsScene::NoIndex);
     scene->setSceneRect(-1000, -200, 2000, 400);
@@ -64,7 +64,7 @@ GraphWidget::GraphWidget(QWidget *parent)
     foreach(DrawThing * pass, DeferredRenderer::Instance().drawPasses) {
         GraphNode *graphNode = new GraphNode(this, QString::fromStdString(pass->typeName));
         graphNode->setPos(xpos, -50);
-        xpos += 110;
+        xpos += 150;
         scene->addItem(graphNode);
 
         SourcePass * sourceCheck = dynamic_cast<SourcePass*>(pass);
@@ -95,14 +95,9 @@ GraphWidget::GraphWidget(QWidget *parent)
          QList<GraphNode *>targetNodes = sources.values(foo);
 
          foreach (GraphNode * targetNode, targetNodes) {
-             scene->addItem(new Edge(sourceNode, targetNode));
+             scene->addItem(new Edge(sourceNode, targetNode, foo));
          }
     }
-}
-
-void GraphWidget::itemMoved() {
-    if (!timerId)
-        timerId = startTimer(1000 / 25);
 }
 
 void GraphWidget::keyPressEvent(QKeyEvent *event) {
