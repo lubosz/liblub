@@ -61,11 +61,16 @@ GraphWidget::GraphWidget(QWidget *parent)
     setMinimumSize(400, 400);
 
     qreal xpos = -900;
+    qreal ypos = -50;
     foreach(DrawThing * pass, DeferredRenderer::Instance().drawPasses) {
         GraphNode *graphNode = new GraphNode(this, QString::fromStdString(pass->typeName));
-        graphNode->setPos(xpos, -50);
-        xpos += 150;
-        scene->addItem(graphNode);
+
+
+        DrawPass * passCheck = dynamic_cast<DrawPass*>(pass);
+        if (passCheck != nullptr) {
+            LogDebug << "shaderName" << passCheck->shader->getName();
+            graphNode->setShaderName(passCheck->shader->getName());
+        }
 
         SourcePass * sourceCheck = dynamic_cast<SourcePass*>(pass);
         if (sourceCheck != nullptr) {
@@ -87,6 +92,16 @@ GraphWidget::GraphWidget(QWidget *parent)
                 sources.insert(plane->targetName, graphNode);
             }
         }
+
+        if (sourceCheck && !inOutCheck) {
+            // Stack source passes
+            ypos -= 80;
+        } else {
+            xpos += 200;
+        }
+
+        graphNode->setPos(xpos,ypos);
+        scene->addItem(graphNode);
     }
 
     foreach (string foo, targets.keys()) {

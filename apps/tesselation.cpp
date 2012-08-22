@@ -34,7 +34,7 @@ class TesselationApp: public Application {
   ShaderProgram *shader;
 
   explicit TesselationApp(int argc, char *argv[]) : Application(argc,argv) {
-      shader = new ShaderProgram();
+      shader = new ShaderProgram("Tesselation");
   }
 
   ~TesselationApp() {}

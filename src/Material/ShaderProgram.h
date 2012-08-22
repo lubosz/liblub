@@ -15,12 +15,13 @@
 #include "Material/Uniform.h"
 #include "Material/UniformBuffer.h"
 #include "Material/Texture.h"
+#include "System/NamedObject.h"
 
 using std::string;
 
-class ShaderProgram {
+class ShaderProgram : public NamedObject {
 public:
-    ShaderProgram();
+    ShaderProgram(string name);
     virtual ~ShaderProgram();
     void attachShader(const string &fileName, GLenum type, bool useTemplate);
     void attachShader(const string &fileName, GLenum type,
@@ -40,7 +41,6 @@ public:
     void linkAndUse();
     GLuint getHandle() const;
 
-    string name;
     vector<Uniform<float> > uniforms;
     vector<Uniform<int> > uniformsi;
     vector<UniformBuffer> uniformBuffers;

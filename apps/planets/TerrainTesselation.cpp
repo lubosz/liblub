@@ -17,7 +17,7 @@
 
 TerrainTesselation::TerrainTesselation(Planet * planet) {
   this->planet = planet;
-  shader = new ShaderProgram();
+    shader = new ShaderProgram("Tesselation");
 }
 
 TerrainTesselation::~TerrainTesselation() {

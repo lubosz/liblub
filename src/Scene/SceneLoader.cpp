@@ -36,18 +36,16 @@ QVector3D SceneLoader::stringToVector3D(const QString& values) {
 void SceneLoader::appendProgram(const QDomElement & programNode) {
     string name, shaderUrl;
     vector<string> flags;
-    ShaderProgram * program = new ShaderProgram();
     QList<string> attributes;
     attributes.push_back("uv");
     attributes.push_back("normal");
     attributes.push_back("tangent");
     attributes.push_back("bitangent");
 
-
     if (programNode.hasAttribute("name"))
         name = programNode.attribute("name").toStdString();
 
-    program->name = name;
+    ShaderProgram * program = new ShaderProgram(name);
 
     QDomElement programInfo = programNode.firstChildElement();
     while (!programInfo.isNull()) {

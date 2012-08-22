@@ -57,6 +57,10 @@ GraphNode::GraphNode(GraphWidget *graphWidget, QString name)
     size = QSize(120, 50);
 }
 
+void GraphNode::setShaderName(string shaderName) {
+    this->shaderName = shaderName;
+}
+
 void GraphNode::addEdge(Edge *edge)
 {
     edgeList << edge;
@@ -90,17 +94,9 @@ QPainterPath GraphNode::shape() const
     return path;
 }
 
-void GraphNode::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *)
-{
-//    painter->setPen(Qt::NoPen);
-//    painter->setBrush(Qt::darkGray);
-//    painter->drawEllipse(-7, -7, size.width(), size.height());
-
+void GraphNode::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *) {
     QLinearGradient gradient(size.width()/2, 0, size.width()/2, size.height());
-//    QRadialGradient gradient(-3, -3, size.width()*1.5);
     if (option->state & QStyle::State_Sunken) {
-//        gradient.setCenter(3, 3);
-//        gradient.setFocalPoint(3, 3);
         gradient.setColorAt(0.8, Qt::white);
         gradient.setColorAt(0, Qt::blue);
     } else {
@@ -109,11 +105,9 @@ void GraphNode::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
     }
     painter->setBrush(gradient);
     painter->setPen(QPen(Qt::black, 0));
-//    painter->drawEllipse(-10, -10, size.width(), size.height());
     painter->drawRoundedRect(QRect(-10, -10, size.width(), size.height()), 5, 5);
 
     // Text
-
     QFont font = painter->font();
     font.setBold(true);
     font.setPointSize(10);
@@ -123,10 +117,20 @@ void GraphNode::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
     QFontMetrics fm(font);
     int pixelsWide = fm.width(name);
     int pixelsHigh = fm.height();
-
     QRectF textRect(size.width()/2 - pixelsWide/2 - 10, pixelsHigh/4, size.width(), size.height());
-
     painter->drawText(textRect, name);
+
+
+    font.setBold(false);
+    font.setPointSize(8);
+    painter->setFont(font);
+
+    fm = QFontMetrics(font);
+    pixelsWide = fm.width(name);
+    pixelsHigh = fm.height();
+    textRect = QRectF(size.width()/2 - pixelsWide/2 - 10, pixelsHigh/4, size.width(), size.height());
+    painter->drawText(textRect, QString::fromStdString(shaderName));
+
 }
 
 QVariant GraphNode::itemChange(GraphicsItemChange change, const QVariant &value)

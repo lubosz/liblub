@@ -43,6 +43,9 @@
 
 #include <QGraphicsItem>
 #include <QList>
+#include <string>
+
+using std::string;
 
 class Edge;
 class GraphWidget;
@@ -69,6 +72,8 @@ public:
     QPainterPath shape() const;
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 
+    void setShaderName(string shaderName);
+
 protected:
     QVariant itemChange(GraphicsItemChange change, const QVariant &value);
 
@@ -80,6 +85,7 @@ private:
     QPointF newPos;
     GraphWidget *graph;
     QSize size;
+    string shaderName;
 };
 
 #endif

@@ -65,7 +65,7 @@ void Sponge::initMaterial() {
         "useSpotLight",
         "usePCF"
     };
-    shader = new ShaderProgram();
+    shader = new ShaderProgram("Phong Color");
     shader->attachVertFrag("Color/PhongColor", flags);
     shader->init(attributes);
     shader->setUniform("ambientSceneColor",QVector4D(0.1, 0.1,0.1, 1.0));

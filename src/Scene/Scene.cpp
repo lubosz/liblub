@@ -8,6 +8,7 @@
 #include "Scene/Scene.h"
 #include "System/Logger.h"
 #include "Renderer/OpenGL.h"
+#include "Material/Shaders.h"
 
 Scene::Scene() {
   lights = QMap<string, Light*>();
@@ -58,7 +59,7 @@ ShaderProgram* Scene::getShader(const string & name) {
     return shader;
   } else {
   LogWarning << "Program not found" << name;
-    return new ShaderProgram();
+    return new EmptyProgram();
   }
 }
 
