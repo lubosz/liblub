@@ -110,11 +110,8 @@ void SceneGraph::drawReceivers(ShaderProgram * shader) {
   QMap <qreal, Node*> transparentNodes;
 
     foreach(Node * node, sceneNodes) {
-        if(!node->material->transparent) {
-              node->setView(shader, camView );
-              node->material->uniforms(shader);
-              node->material->activateAndBindTextures();
-              node->draw(shader);
+        if(node->getMaterial() && !node->getMaterial()->transparent) {
+            node->draw(shader, camView);
         } else {
           QVector3D distance = node->getCenter() - Scene::Instance().getCurrentCamera()->position;
           transparentNodes.insert(distance.length(), node);
@@ -128,17 +125,12 @@ void SceneGraph::drawReceivers(ShaderProgram * shader) {
             glEnable(GL_BLEND);
         }
       foreach(qreal transparentKey, transparentKeys) {
-        Node * node = transparentNodes[transparentKey];
-        node->setView(shader, camView);
-        node->material->uniforms(shader);
-        node->material->activateAndBindTextures();
-        node->draw(shader);
+        transparentNodes[transparentKey]->draw(shader, camView);
       }
       if(DeferredRenderer::Instance().drawTransparency) {
           glDisable(GL_BLEND);
       }
     }
-
   glError;
 }
 

@@ -31,7 +31,7 @@ class LoadApp: public Application {
  public:
   SceneLoader *sceneLoader;
 
-  LoadApp(int argc, char *argv[]) : Application(argc,argv) {
+  LoadApp(int &argc, char **argv) : Application(argc,argv) {
     fontOverlay = true;
     string sceneName = argv[1];
     QString sceneFile = QString::fromStdString(sceneName + ".xml");
@@ -50,7 +50,7 @@ class LoadApp: public Application {
   }
 };
 
-int main(int argc, char *argv[]) {
+int main(int argc, char **argv) {
   if (argc != 2)
     LogError << "NO SCENE SPECIFIED. Try; ./load-xml test";
   else

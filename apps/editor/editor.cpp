@@ -28,7 +28,7 @@
 #include "TextureModel.h"
 #include "Nodes/GraphWidget.h"
 
-Editor::Editor(int argc, char *argv[]) :
+Editor::Editor(int &argc, char **argv) :
     Application(argc, argv) {
     scenePath = argv[1];
     transparencyModes.insert("GL_ZERO", GL_ZERO);
@@ -263,7 +263,7 @@ void Editor::initWidgets(QSplitter * mainSplitter) {
     tabWidget->addTab(graphWidget, "Nodes");
 }
 
-int main(int argc, char *argv[]) {
+int main(int argc, char **argv) {
     if (argc != 2)
       LogError << "NO SCENE SPECIFIED. Try; ./editor foo.blend";
     else

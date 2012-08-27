@@ -34,6 +34,7 @@ private:
   QVector3D eulerRotationCache;
   QMatrix4x4 modelMatrix;
   Node * parent;
+  Material * material;
 
 protected:
   ShaderProgram * shader;
@@ -44,7 +45,6 @@ public:
   QMatrix4x4 rotationMatrix;
   QQuaternion rotation;
   Mesh * mesh;
-  Material * material;
 
   Node();
 
@@ -58,6 +58,7 @@ public:
 
   void draw();
   virtual void draw(ShaderProgram * shaderProgram);
+  void draw(ShaderProgram * shader, DirectionNode * camView);
   void update();
   void updateRotationFromEuler();
 
@@ -77,6 +78,9 @@ public:
   ShaderProgram *getShader() const;
   QVector3D getCenter();
   QVector3D direction();
+
+  Material * getMaterial() const;
+
 
   void setRotation(const QMatrix4x4& rotationMatrix);
   void setRotation(const QQuaternion& rotationQuat);

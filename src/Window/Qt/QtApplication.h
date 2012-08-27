@@ -15,7 +15,7 @@
 #include "System/GUI.h"
 
 
-class QtApplication: public QObject {
+class QtApplication: public QApplication {
 
 Q_OBJECT
 
@@ -25,7 +25,7 @@ public:
   QtWindow * window;
   QTimer *drawTimer;
   bool fontOverlay;
-  QApplication * app;
+//  QApplication * app;
   int myargc;
   char ** myargv;
 
@@ -34,11 +34,13 @@ public:
 
   void run();
 
-  QtApplication(int & argc, char ** argv);
+  QtApplication(int &argc, char **argv);
   ~QtApplication();
 
   virtual void renderFrame() = 0;
   virtual void scene() = 0;
+
+  void notify();
 
   void setWireframe(bool wire);
 

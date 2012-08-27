@@ -13,12 +13,12 @@
 #include "Renderer/OpenGL.h"
 #include "QtInput.h"
 
-QtApplication::QtApplication(int & argc, char ** argv) {
+QtApplication::QtApplication(int &argc, char **argv) : QApplication(argc, argv){
   Config::Instance().load("config.xml");
   // Cache args over App execution time
-  myargc = argc;
-  myargv = argv;
-  app = new QApplication(myargc, myargv);
+//  myargc = argc;
+//  myargv = argv;
+//  app = new QApplication(myargc, myargv);
 }
 
 QtApplication::~QtApplication() {
@@ -26,8 +26,8 @@ QtApplication::~QtApplication() {
 
 void QtApplication::run() {
   // Qt requires at least one argument.
-  if (app->arguments().length() < 1) {
-    LogFatal << "No args for QtApplication.";
+  if (arguments().length() < 1) {
+    LogWarning << "No args for QtApplication.";
   }
 
   window = new QtWindow();
@@ -49,7 +49,7 @@ void QtApplication::run() {
   QGLFormat fmt;
   fmt.setDoubleBuffer(true);
   fmt.setProfile(QGLFormat::CoreProfile);
-  glWidget = new GLWidget(fmt, NULL);
+  glWidget = new GLWidget(fmt, window->splitter);
   glWidget->setFocus();
   if(!glWidget->isValid())
     LogFatal << "GL Widget Invalid";
@@ -75,13 +75,19 @@ void QtApplication::run() {
   connect(drawTimer, SIGNAL(timeout()), glWidget, SLOT(updateGL()));
   connect(input, SIGNAL(draw(void)), glWidget, SLOT(updateGL()));
   connect(glWidget, SIGNAL(draw()), this, SLOT(draw()));
-  app->exec();
+//  app->exec();
+  setLazy(false);
+  exec();
 }
 
 void QtApplication::draw() {
   renderFrame();
   gui->draw();
   glError;
+}
+
+void QtApplication::notify() {
+
 }
 
 void QtApplication::setWireframe(bool wire) {

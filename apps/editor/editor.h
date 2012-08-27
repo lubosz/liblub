@@ -35,7 +35,7 @@ class Editor: public Application {
     Q_OBJECT
 public:
 
-    Editor(int argc, char *argv[]);
+    Editor(int &argc, char **argv);
 
     ~Editor();
 

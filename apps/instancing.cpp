@@ -98,7 +98,6 @@ class InstancingApp: public Application {
 };
 
 int main(int argc, char *argv[]) {
-  InstancingApp app(argc,argv);
-  app.run();
+    InstancingApp(argc,argv).run();
 }
 

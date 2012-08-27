@@ -19,6 +19,7 @@ Node::Node() : castShadows(true), receiveShadows(false),
     m_size(1.0f), name("A Node"), eulerRotationCache(QVector3D()),
     modelMatrix(QMatrix4x4()), shader(nullptr), transparent(false),
     position(QVector3D()), rotation(QQuaternion()), mesh(nullptr) {
+    material = new Material("Dummy material");
     update();
 }
 
@@ -28,6 +29,7 @@ Node::Node(string name, const QVector3D& position, float size, Mesh * mesh,
             eulerRotationCache(QVector3D()), modelMatrix(QMatrix4x4()),
             shader(shaderProgram), transparent(false), position(position),
             rotation(QQuaternion()), mesh(mesh) {
+    material = new Material("Dummy material");
     update();
 }
 
@@ -46,6 +48,13 @@ Node::~Node() {
     if(mesh != nullptr)
         delete mesh;
 }
+
+Material * Node::getMaterial() const {
+    if (material == nullptr)
+        LogError << "no material";
+    return material;
+}
+
 void Node::setMesh(Mesh *mesh) {
     this->mesh = mesh;
 }
@@ -97,6 +106,16 @@ void Node::draw(ShaderProgram * shaderProgram) {
     mesh->draw();
 //    mesh->boundingBox->draw();
 }
+
+void Node::draw(ShaderProgram * shader, DirectionNode * camView) {
+    setView(shader, camView);
+    if (material) {
+        material->uniforms(shader);
+        material->activateAndBindTextures();
+    }
+    draw(shader);
+}
+
 
 void Node::setSize(float size) {
     m_size = size;
