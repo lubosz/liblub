@@ -141,7 +141,8 @@ void PlanetsApp::endPass() {
     fbo->unBind();
     OpenGL::Instance().updateViewport(glWidget->viewSize);
     OpenGL::Instance().clear();
-    HDR->activateAndBindTextures();
+    HDR->activateTextures();
+    HDR->bindTextures();
     HDR->use();
     DrawThing::drawOnPlane(HDR, fullPlane);
   }
