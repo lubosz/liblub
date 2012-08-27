@@ -15,7 +15,7 @@
 #include <QRectF>
 #include "Renderer/OpenGL.h"
 
-Mesh * MeshLoader::getMeshFromAssimp(aiMesh * assMesh, const QList<string> & attributes) {
+Mesh * MeshLoader::getMeshFromAssimp(aiMesh * assMesh, const QList<string> & attributes, bool changePositionOrder) {
     Mesh * mesh = new Mesh(attributes);
     mesh->name = assMesh->mName.data;
 
@@ -25,7 +25,11 @@ Mesh * MeshLoader::getMeshFromAssimp(aiMesh * assMesh, const QList<string> & att
             int vertex = face.mIndices[j];
 
             aiVector3D position = assMesh->mVertices[vertex];
-            mesh->vertex("position",position.y,position.z,position.x);
+            if (changePositionOrder)
+                mesh->vertex("position",position.y,position.z,position.x);
+            else
+            mesh->vertex("position",position.x,position.y,position.z);
+
             mesh->getBoundingBox()->update(position.x,position.y,position.z);
 
             if(assMesh->HasNormals() && attributes.contains("normal")) {
@@ -73,10 +77,9 @@ Mesh * MeshLoader::load(const QList<string> & attributes, string file) {
 
     aiMesh * assMesh = scene->mMeshes[0];
 
-    Mesh * mesh = getMeshFromAssimp(assMesh, attributes);
+    Mesh * mesh = getMeshFromAssimp(assMesh, attributes, false);
 
     glError;
-//    delete assMesh;
     importer.FreeScene();
     return mesh;
 }

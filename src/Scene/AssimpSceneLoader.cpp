@@ -55,7 +55,7 @@ void AssimpSceneLoader::initNode(aiNode * parent) {
 
 Mesh * AssimpSceneLoader::initMesh(aiMesh * assMesh) {
     QList<string> attributes = QList<string> () << "uv" << "normal" << "tangent" << "bitangent";
-    Mesh * mesh = MeshLoader::getMeshFromAssimp(assMesh, attributes);
+    Mesh * mesh = MeshLoader::getMeshFromAssimp(assMesh, attributes, true);
     return mesh;
 }
 

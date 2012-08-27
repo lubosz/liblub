@@ -12,7 +12,7 @@
 
 class MeshLoader {
  public:
-    static Mesh * getMeshFromAssimp(aiMesh * assMesh, const QList<string> & attributes);
+    static Mesh * getMeshFromAssimp(aiMesh * assMesh, const QList<string> & attributes, bool changePositionOrder);
 	static Mesh * load(const QList<string> & attributes, string file);
 };
 
