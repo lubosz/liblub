@@ -27,6 +27,7 @@
 #include "Scene/SceneGraph.h"
 #include "TextureModel.h"
 #include "Nodes/GraphWidget.h"
+#include "Scene/SceneLoader.h"
 
 Editor::Editor(int &argc, char **argv) :
     Application(argc, argv) {
@@ -69,7 +70,16 @@ void Editor::scene() {
     Mesh * sphere = Geometry::sphere(attributes, 500, 20, 20);
     Node * skyNode = new Node("skynode", QVector3D(0,0,0),1,  sphere, skyMat);
     SceneGraph::Instance().addNode(skyNode);
-    AssimpSceneLoader::Instance().load(scenePath);
+
+    QString qScenePath = QString::fromStdString(scenePath);
+
+    if (qScenePath.contains(".xml")) {
+        SceneLoader * sceneLoader = new SceneLoader(qScenePath);
+        sceneLoader->load();
+    } else{
+        AssimpSceneLoader::Instance().load(scenePath);
+    }
+
     DeferredRenderer::Instance().init();
     initWidgets(window->splitter);
 

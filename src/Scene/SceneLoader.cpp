@@ -217,6 +217,10 @@ void SceneLoader::appendMesh(const QDomElement & meshNode) {
     Scene::Instance().meshes.insert(name, mesh);
 }
 
+void SceneLoader::appendMaterial(const QDomElement & materialNode) {
+
+}
+
 void SceneLoader::appendObject(const QDomElement & objectNode) {
     QVector3D position, direction, rotation;
     string name;
@@ -298,7 +302,7 @@ void SceneLoader::appendObject(const QDomElement & objectNode) {
 
         if (objectNode.attribute("transparent").contains("true",
                 Qt::CaseInsensitive))
-            node->transparent = true;
+            node->setTransparent(true);
 
         node->setRotation(rotation);
 

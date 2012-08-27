@@ -17,7 +17,7 @@
 
 Node::Node() : castShadows(true), receiveShadows(false),
     m_size(1.0f), name("A Node"), eulerRotationCache(QVector3D()),
-    modelMatrix(QMatrix4x4()), shader(nullptr), transparent(false),
+    modelMatrix(QMatrix4x4()), shader(nullptr),
     position(QVector3D()), rotation(QQuaternion()), mesh(nullptr) {
     material = new Material("Dummy material");
     update();
@@ -27,7 +27,7 @@ Node::Node(string name, const QVector3D& position, float size, Mesh * mesh,
         ShaderProgram * shaderProgram) :
     castShadows(true), receiveShadows(false), m_size(size), name(name),
             eulerRotationCache(QVector3D()), modelMatrix(QMatrix4x4()),
-            shader(shaderProgram), transparent(false), position(position),
+            shader(shaderProgram), position(position),
             rotation(QQuaternion()), mesh(mesh) {
     material = new Material("Dummy material");
     update();
@@ -37,7 +37,7 @@ Node::Node(string name, const QVector3D& position, float size, Mesh * mesh,
         Material * material) :
     castShadows(true), receiveShadows(false), m_size(size), name(name),
             eulerRotationCache(QVector3D()), modelMatrix(QMatrix4x4()),
-            material(material), transparent(false), position(position),
+            material(material), position(position),
             rotation(QQuaternion()), mesh(mesh) {
     update();
 }
@@ -278,4 +278,13 @@ void Node::setDirection(const QVector3D & direction) {
 //    rotation = QQuaternion(1, direction);
     rotationMatrix.setToIdentity();
     rotationMatrix.lookAt(QVector3D(), -direction, up);
+}
+
+
+void Node::setTransparent(bool transparent) {
+    material->transparent = transparent;
+}
+
+bool Node::getTransparent() {
+    return material->transparent;
 }

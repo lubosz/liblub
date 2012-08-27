@@ -108,31 +108,10 @@ void AssimpSceneLoader::load(string file) {
         for(unsigned i = 0; i < assimpScene->mNumMaterials; i++) {
             aiMaterial * material = assimpScene->mMaterials[i];
 
-
             aiString materialName;
             material->Get(AI_MATKEY_NAME, materialName);
             Material * newMaterial = new Material(materialName.data);
             LogDebug << "Material" << materialName.data << ":" << material->mNumProperties << "Properties";
-
-
-//            for (unsigned j = 0; j < material->mNumProperties; j++) {
-//                aiMaterialProperty* prop = material->mProperties[j];
-////                LogDebug << prop->mType << prop->mKey.data << prop->mSemantic;
-//            }
-
-/*
-$clr.diffuse
-$clr.specular
-$mat.shininess
-$clr.ambient
-$clr.reflective
-
-AI_MATKEY_COLOR_DIFFUSE
-AI_MATKEY_COLOR_SPECULAR
-AI_MATKEY_SHININESS
-AI_MATKEY_COLOR_AMBIENT
-AI_MATKEY_COLOR_REFLECTIVE
-*/
 
             aiColor4D diffuseColor;
             material->Get(AI_MATKEY_COLOR_DIFFUSE, diffuseColor);

@@ -13,6 +13,7 @@
 #include <QMap>
 #include "Material/ShaderProgram.h"
 #include "Material/Texture.h"
+#include "Scene/Material.h"
 #include "Scene/Camera.h"
 #include "Scene/Light.h"
 #include "Mesh/Mesh.h"
@@ -27,6 +28,7 @@ public:
   QVector3D backgroundColor;
   unsigned width, height;
 
+  QMap<string, Material*> materials;
   QMap<string, ShaderProgram*> shaders;
   QMap<string, Texture*> textures;
   QMap<string, Mesh*> meshes;

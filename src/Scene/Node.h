@@ -40,7 +40,6 @@ protected:
   ShaderProgram * shader;
 
 public:
-  bool transparent;
   QVector3D position;
   QMatrix4x4 rotationMatrix;
   QQuaternion rotation;
@@ -78,6 +77,9 @@ public:
   ShaderProgram *getShader() const;
   QVector3D getCenter();
   QVector3D direction();
+
+  void setTransparent(bool transparent);
+  bool getTransparent();
 
   Material * getMaterial() const;
 

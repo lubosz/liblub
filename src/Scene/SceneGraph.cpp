@@ -57,16 +57,11 @@ void SceneGraph::drawNodes() {
   drawNodes(Scene::Instance().getCurrentCamera());
 }
 
-//void SceneGraph::drawTransparent() {
-
-//}
-
 void SceneGraph::drawNodes(DirectionNode * viewPoint) {
   QMap <qreal, Node*> transparentNodes;
 
-  //TODO: Multiple lights
     foreach(Node * node, sceneNodes) {
-        if(!node->transparent) {
+        if(!node->getTransparent()) {
           node->setView(viewPoint);
           node->setShadowCoords(viewPoint);
           Scene::Instance().getShadowLight()->bindShaderUpdate(node->getShader());
