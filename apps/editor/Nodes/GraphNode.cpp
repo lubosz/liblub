@@ -67,6 +67,43 @@ void GraphNode::addEdge(Edge *edge)
     edge->adjust();
 }
 
+unsigned GraphNode::getConnectionsTo(GraphNode * node) {
+    unsigned connections = 0;
+    foreach (Edge * edge, edgeList) {
+        if (edge->source == this && edge->dest == node
+                || edge->source == node && edge->dest == this)
+            connections++;
+
+    }
+    return connections;
+}
+
+unsigned GraphNode::getEdgeNumber(Edge * edge) {
+    for (unsigned i = 0; i < edgeList.size(); i++)
+        if (edgeList[i] == edge)
+            return i;
+}
+
+unsigned GraphNode::getEdgeNumberTo(Edge * edge) {
+    GraphNode * destination;
+
+    if (edge->source == this)
+        destination = edge->dest;
+    else
+        destination = edge->source;
+
+    unsigned i = 0;
+
+    foreach (Edge * someEdge, edgeList) {
+        if (someEdge->dest == destination || someEdge->source == destination)
+            i++;
+
+        if (someEdge == edge)
+            return i;
+    }
+
+}
+
 QList<Edge *> GraphNode::edges() const
 {
     return edgeList;
@@ -120,7 +157,6 @@ void GraphNode::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
     QRectF textRect(size.width()/2 - pixelsWide/2 - 10, pixelsHigh/4, size.width(), size.height());
     painter->drawText(textRect, name);
 
-
     font.setBold(false);
     font.setPointSize(8);
     painter->setFont(font);
@@ -128,7 +164,7 @@ void GraphNode::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
     fm = QFontMetrics(font);
     pixelsWide = fm.width(name);
     pixelsHigh = fm.height();
-    textRect = QRectF(size.width()/2 - pixelsWide/2 - 10, pixelsHigh/4, size.width(), size.height());
+    textRect = QRectF(-5, pixelsHigh, size.width(), size.height());
     painter->drawText(textRect, QString::fromStdString(shaderName));
 
 }

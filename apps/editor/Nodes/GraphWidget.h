@@ -59,6 +59,9 @@ public:
 protected:
     void keyPressEvent(QKeyEvent *event);
     void wheelEvent(QWheelEvent *event);
+    void mousePressEvent(QMouseEvent * event);
+    void mouseReleaseEvent(QMouseEvent *event);
+    void mouseMoveEvent(QMouseEvent *event);
 //    void drawBackground(QPainter *painter, const QRectF &rect);
 
     void scaleView(qreal scaleFactor);
@@ -67,7 +70,9 @@ protected:
     QMap<string, GraphNode *> targets;
 
 private:
+    bool middleButton;
     GraphNode *centerGraphNode;
+    QPointF lastMousePosition;
 };
 
 #endif

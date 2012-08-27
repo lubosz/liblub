@@ -74,6 +74,10 @@ public:
 
     void setShaderName(string shaderName);
 
+    unsigned getConnectionsTo(GraphNode * node);
+    unsigned getEdgeNumber(Edge * edge);
+    unsigned getEdgeNumberTo(Edge * edge);
+
 protected:
     QVariant itemChange(GraphicsItemChange change, const QVariant &value);
 

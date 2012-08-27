@@ -50,25 +50,26 @@
 
 GraphWidget::GraphWidget(QWidget *parent)
     : QGraphicsView(parent) {
+    middleButton = false;
     QGraphicsScene *scene = new QGraphicsScene(this);
     scene->setItemIndexMethod(QGraphicsScene::NoIndex);
-    scene->setSceneRect(-1000, -200, 2000, 400);
+    scene->setSceneRect(-1000, -1000, 2000, 2000);
     setScene(scene);
     setCacheMode(CacheBackground);
-    setViewportUpdateMode(BoundingRectViewportUpdate);
+//    setViewportUpdateMode(BoundingRectViewportUpdate);
+    setViewportUpdateMode(FullViewportUpdate);
     setRenderHint(QPainter::Antialiasing);
     setTransformationAnchor(AnchorUnderMouse);
     setMinimumSize(400, 400);
 
+    lastMousePosition = QPointF(0,0);
     qreal xpos = -900;
     qreal ypos = -50;
     foreach(DrawThing * pass, DeferredRenderer::Instance().drawPasses) {
         GraphNode *graphNode = new GraphNode(this, QString::fromStdString(pass->typeName));
 
-
         DrawPass * passCheck = dynamic_cast<DrawPass*>(pass);
         if (passCheck != nullptr) {
-            LogDebug << "shaderName" << passCheck->shader->getName();
             graphNode->setShaderName(passCheck->shader->getName());
         }
 
@@ -131,18 +132,39 @@ void GraphWidget::keyPressEvent(QKeyEvent *event) {
 void GraphWidget::wheelEvent(QWheelEvent *event) {
     scaleView(pow((double)2, -event->delta() / 240.0));
 }
+
+void GraphWidget::mousePressEvent(QMouseEvent *event) {
+    if (event->button() == Qt::MiddleButton) {
+        middleButton = true;
+        setTransformationAnchor(NoAnchor);
+    }
+    lastMousePosition.setX(event->x());
+    lastMousePosition.setY(event->y());
+    QGraphicsView::mousePressEvent(event);
+}
+
+void GraphWidget::mouseReleaseEvent(QMouseEvent *event) {
+    if (event->button() == Qt::MiddleButton) {
+        middleButton = false;
+        setTransformationAnchor(AnchorUnderMouse);
+    }
+    lastMousePosition.setX(event->x());
+    lastMousePosition.setY(event->y());
+    QGraphicsView::mouseReleaseEvent(event);
+}
+
+void GraphWidget::mouseMoveEvent(QMouseEvent *event) {
+    if (middleButton) {
+        translate(event->x() - lastMousePosition.x(), event->y() - lastMousePosition.y());
+    }
+    lastMousePosition.setX(event->x());
+    lastMousePosition.setY(event->y());
+    QGraphicsView::mouseMoveEvent(event);
+}
+
 /*
 void GraphWidget::drawBackground(QPainter *painter, const QRectF &rect) {
     Q_UNUSED(rect);
-
-    // Shadow
-    QRectF sceneRect = this->sceneRect();
-    QRectF rightShadow(sceneRect.right(), sceneRect.top() + 5, 5, sceneRect.height());
-    QRectF bottomShadow(sceneRect.left() + 5, sceneRect.bottom(), sceneRect.width(), 5);
-    if (rightShadow.intersects(rect) || rightShadow.contains(rect))
-	painter->fillRect(rightShadow, Qt::darkGray);
-    if (bottomShadow.intersects(rect) || bottomShadow.contains(rect))
-	painter->fillRect(bottomShadow, Qt::darkGray);
 
     // Fill
     QLinearGradient gradient(sceneRect.topLeft(), sceneRect.bottomRight());
@@ -151,21 +173,6 @@ void GraphWidget::drawBackground(QPainter *painter, const QRectF &rect) {
     painter->fillRect(rect.intersect(sceneRect), gradient);
     painter->setBrush(Qt::NoBrush);
     painter->drawRect(sceneRect);
-
-    // Text
-    QRectF textRect(sceneRect.left() + 4, sceneRect.top() + 4,
-                    sceneRect.width() - 4, sceneRect.height() - 4);
-    QString message(tr("Click and drag the GraphNodes around, and zoom with the mouse "
-                       "wheel or the '+' and '-' keys"));
-
-    QFont font = painter->font();
-    font.setBold(true);
-    font.setPointSize(14);
-    painter->setFont(font);
-    painter->setPen(Qt::lightGray);
-    painter->drawText(textRect.translated(2, 2), message);
-    painter->setPen(Qt::black);
-    painter->drawText(textRect, message);
 }
 */
 void GraphWidget::scaleView(qreal scaleFactor) {

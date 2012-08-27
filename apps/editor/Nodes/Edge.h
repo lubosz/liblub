@@ -60,18 +60,27 @@ public:
 
     enum { Type = UserType + 2 };
     int type() const { return Type; }
+    GraphNode *source, *dest;
     
 protected:
     QRectF boundingRect() const;
+    QPainterPath shape() const;
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
+
+    void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
     
 private:
-    GraphNode *source, *dest;
+
+    QPainterPath updatePath() const;
 
     string name;
     QPointF sourcePoint;
     QPointF destPoint;
+    QPointF centerPoint;
+    QRectF textRect;
     qreal arrowSize;
+    QPointF lastMousePosition;
+    bool movingCenter;
 };
 
 #endif

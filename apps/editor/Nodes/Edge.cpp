@@ -39,10 +39,11 @@
 ****************************************************************************/
 
 #include <QPainter>
+#include <QGraphicsSceneMouseEvent>
 
 #include "Edge.h"
 #include "GraphNode.h"
-
+#include "System/Logger.h"
 #include <math.h>
 
 static const double Pi = 3.14159265358979323846264338327950288419717;
@@ -51,11 +52,16 @@ static double TwoPi = 2.0 * Pi;
 Edge::Edge(GraphNode *sourceGraphNode, GraphNode *destGraphNode, string name)
     : arrowSize(10), name(name)
 {
-    setAcceptedMouseButtons(0);
+//    setAcceptedMouseButtons(0);
+    setFlag(ItemIsMovable);
+    setFlag(ItemSendsGeometryChanges);
+    setCacheMode(DeviceCoordinateCache);
+    setZValue(-1);
     source = sourceGraphNode;
     dest = destGraphNode;
     source->addEdge(this);
     dest->addEdge(this);
+    centerPoint = QPointF();
     adjust();
 }
 
@@ -86,6 +92,9 @@ void Edge::adjust()
     } else {
         sourcePoint = destPoint = line.p1();
     }
+
+    centerPoint = (sourcePoint + destPoint) / 2;
+    centerPoint.setY(centerPoint.y() + 20 * source->getEdgeNumberTo(this));
 }
 
 QRectF Edge::boundingRect() const
@@ -96,10 +105,34 @@ QRectF Edge::boundingRect() const
     qreal penWidth = 1;
     qreal extra = (penWidth + arrowSize) / 2.0;
 
-    return QRectF(sourcePoint, QSizeF(destPoint.x() - sourcePoint.x(),
-                                      destPoint.y() - sourcePoint.y()))
-        .normalized()
-        .adjusted(-extra, -extra, extra, extra);
+    QPainterPath path = updatePath();
+    QRectF lineBox =  path.boundingRect().adjusted(-extra, -extra, extra, extra);
+    return lineBox.unite(textRect);
+}
+
+QPainterPath Edge::shape() const {
+    QPainterPath path;
+    path.addRect(textRect);
+    return path;
+}
+
+QPainterPath Edge::updatePath() const {
+    QPainterPath path(sourcePoint);
+    QPointF c1 = (sourcePoint + centerPoint) / 2.0;
+    QPointF c2 = (centerPoint + destPoint) / 2.0;
+
+    QLineF foo(sourcePoint, centerPoint);
+    QLineF normal = foo.normalVector();
+
+    QLineF foo2(centerPoint, destPoint);
+    QLineF normal2 = foo2.normalVector();
+
+    float scale = -0.1;
+
+    path.quadTo((normal.p2() - sourcePoint) * scale + c1, centerPoint);
+    path.quadTo((normal2.p2() - centerPoint) * scale + c2, destPoint);
+
+    return path;
 }
 
 void Edge::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)
@@ -111,29 +144,37 @@ void Edge::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)
     if (qFuzzyCompare(line.length(), qreal(0.)))
         return;
 
-    // Draw the line itself
     painter->setPen(QPen(Qt::black, 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
-    painter->drawLine(line);
+
+    QPainterPath path = updatePath();
+    painter->drawPath(path);
 
     // Draw the arrows
-    double angle = ::acos(line.dx() / line.length());
-    if (line.dy() >= 0)
-        angle = TwoPi - angle;
+    QLineF line1(sourcePoint, centerPoint);
+    QLineF line2(centerPoint, destPoint);
 
-    QPointF sourceArrowP1 = sourcePoint + QPointF(sin(angle + Pi / 3) * arrowSize,
-                                                  cos(angle + Pi / 3) * arrowSize);
-    QPointF sourceArrowP2 = sourcePoint + QPointF(sin(angle + Pi - Pi / 3) * arrowSize,
-                                                  cos(angle + Pi - Pi / 3) * arrowSize);   
-    QPointF destArrowP1 = destPoint + QPointF(sin(angle - Pi / 3) * arrowSize,
-                                              cos(angle - Pi / 3) * arrowSize);
-    QPointF destArrowP2 = destPoint + QPointF(sin(angle - Pi + Pi / 3) * arrowSize,
-                                              cos(angle - Pi + Pi / 3) * arrowSize);
+    double angle1 = ::acos(line1.dx() / line1.length());
+    if (line1.dy() >= 0)
+        angle1 = TwoPi - angle1;
+
+    double angle2 = ::acos(line2.dx() / line2.length());
+    if (line2.dy() >= 0)
+        angle2 = TwoPi - angle2;
+
+    QPointF sourceArrowP1 = sourcePoint + QPointF(sin(angle1 + Pi / 3) * arrowSize,
+                                                  cos(angle1 + Pi / 3) * arrowSize);
+    QPointF sourceArrowP2 = sourcePoint + QPointF(sin(angle1 + Pi - Pi / 3) * arrowSize,
+                                                  cos(angle1 + Pi - Pi / 3) * arrowSize);
+    QPointF destArrowP1 = destPoint + QPointF(sin(angle2 - Pi / 3) * arrowSize,
+                                              cos(angle2 - Pi / 3) * arrowSize);
+    QPointF destArrowP2 = destPoint + QPointF(sin(angle2 - Pi + Pi / 3) * arrowSize,
+                                              cos(angle2 - Pi + Pi / 3) * arrowSize);
 
     painter->setBrush(Qt::black);
     painter->drawPolygon(QPolygonF() << line.p1() << sourceArrowP1 << sourceArrowP2);
     painter->drawPolygon(QPolygonF() << line.p2() << destArrowP1 << destArrowP2);
 
-
+    // Text
     QFont font = painter->font();
     font.setBold(true);
     font.setPointSize(8);
@@ -144,9 +185,14 @@ void Edge::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)
     int pixelsWide = fm.width(QString::fromStdString(name));
     int pixelsHigh = fm.height();
 
-    QPointF center = (line.p1() + line.p2()) / 2;
-
-    QRectF textRect(center.x(), center.y(), pixelsWide, pixelsHigh);
+     textRect = QRectF(centerPoint.x(), centerPoint.y(), pixelsWide, pixelsHigh);
 
     painter->drawText(textRect, QString::fromStdString(name));
+}
+
+
+void Edge::mouseMoveEvent(QGraphicsSceneMouseEvent *event) {
+    prepareGeometryChange();
+    centerPoint = event->scenePos();
+    update();
 }
