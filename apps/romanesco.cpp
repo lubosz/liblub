@@ -100,7 +100,7 @@ class RomanescoApp: public Application {
           RomanescoNode * romanesco;
         romanesco = new RomanescoNode();
         romanesco->setShader(shader);
-        romanesco->mesh = mesh;
+        romanesco->setMesh(mesh);
 //        rotation += .1;
 //        QVector3D theVector = romanesco->makeVectorFromPolarCoords(10*rotation, rotation/10);
 //        romanesco->setSize(rotation/100);

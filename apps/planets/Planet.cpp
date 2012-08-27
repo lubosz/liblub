@@ -54,8 +54,8 @@ void Planet::updateSize(){
   atmoSphere->updateSize();
 
   QList<string> attributes = QList<string>() << "normal" << "uv";
-  elements[0]->node->mesh = Geometry::sphere(attributes, innerRadius, 100, 50);
-  atmoSphere->node->mesh = Geometry::sphere(attributes, outerRadius, 300, 500);
+  elements[0]->node->setMesh(Geometry::sphere(attributes, innerRadius, 100, 50));
+  atmoSphere->node->setMesh(Geometry::sphere(attributes, outerRadius, 300, 500));
 }
 
 void Planet::init() {

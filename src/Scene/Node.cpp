@@ -288,3 +288,13 @@ void Node::setTransparent(bool transparent) {
 bool Node::getTransparent() {
     return material->transparent;
 }
+
+Mesh * Node::getMesh() {
+    if (mesh == nullptr) {
+        LogError << "Node" << name << "has no mesh!";
+//        mesh = new Mesh(QList<string>());
+        return nullptr;
+    } else {
+        return mesh;
+    }
+}

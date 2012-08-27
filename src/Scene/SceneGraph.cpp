@@ -136,7 +136,10 @@ void SceneGraph::drawCasters(ShaderProgram * shader, DirectionNode * viewPoint) 
     foreach(Node * node, sceneNodes) {
         if (node->getCastShadows()) {
           node->setView(shader, viewPoint);
-          node->mesh->draw();
+          if (node->getMesh() != nullptr) {
+              LogDebug << node->getName();
+             node->getMesh()->draw();
+          }
         }
     }
     glError;

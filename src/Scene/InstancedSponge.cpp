@@ -12,7 +12,7 @@
     InstancedSponge::InstancedSponge(unsigned recursion, QList<string>& attributes) {
         bufferCount = 1;
         makeSponge(recursion, {0, 0, 0}, 1.0f);
-        mesh = MeshLoader::load(attributes, "cube.obj");
+        setMesh(MeshLoader::load(attributes, "cube.obj"));
         calculateBufferSize();
         setCastShadows(false);
     }
@@ -103,7 +103,7 @@
                     shader->bindUniformBuffer("positions", 0,
                             buffer->getHandle());
                     #endif
-                    mesh->draw(positionBufferDataSize);
+                    getMesh()->draw(positionBufferDataSize);
         }
     }
 

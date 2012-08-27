@@ -35,6 +35,7 @@ private:
   QMatrix4x4 modelMatrix;
   Node * parent;
   Material * material;
+  Mesh * mesh;
 
 protected:
   ShaderProgram * shader;
@@ -43,7 +44,6 @@ public:
   QVector3D position;
   QMatrix4x4 rotationMatrix;
   QQuaternion rotation;
-  Mesh * mesh;
 
   Node();
 
@@ -83,13 +83,15 @@ public:
 
   Material * getMaterial() const;
 
+  Mesh * getMesh();
+  void setMesh(Mesh * mesh);
+
 
   void setRotation(const QMatrix4x4& rotationMatrix);
   void setRotation(const QQuaternion& rotationQuat);
   void setDirection(const QVector3D & direction);
   void setCastShadows(bool castShadows);
   void setReceiveShadows(bool receiveShadows);
-  void setMesh(Mesh *mesh);
   void setPosition(const QVector3D& position);
   void setRotation(const QVector3D& rotationVec);
   void setView(DirectionNode * viewPoint);
