@@ -13,8 +13,11 @@
 #include "common/Singleton.h"
 #include "Window/Input.h"
 
+const float BILLION = 1000000000; // 10^9
+const float MILLION = 1000000;
+
 class Timer : public Singleton<Timer>{
-private:
+public:
 #ifndef LIBLUB_WINDOWS
   timespec startTime, lastTime, frameTime;
   static timespec elapsed(timespec &start, timespec &end);
@@ -22,14 +25,13 @@ private:
   //TODO: Qt Timer for Win
 #endif
 
-public:
   Timer();
   virtual ~Timer();
   void updateFPS();
   void printFPS();
   float getFPS();
   float getSPF();
-  float getTime();
+  static float getTime();
 };
 
 #endif /* TIMER_H_ */

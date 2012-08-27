@@ -19,8 +19,6 @@ Timer::~Timer() {
 }
 
 #ifndef LIBLUB_WINDOWS
-const float BILLION = 1000000000; // 10^9
-const float MILLION = 1000000;
 
 /* Returns a timespec representing the elapsed time between
  * start and end.
