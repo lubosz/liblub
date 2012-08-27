@@ -3,6 +3,8 @@
 
 #include <vector>
 
+#include <time.h>
+
 #include "common/Singleton.h"
 #include "Renderer/RenderPasses.h"
 
@@ -32,6 +34,12 @@ public:
     void init();
     void draw();
 
+    timespec frameTime;
+    timespec lastFrameTime;
+
+    unsigned framesRendered;
+
+    float avarageFrameTimeMs;
 
     vector<string> getTargetNames();
 

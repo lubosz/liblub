@@ -45,6 +45,7 @@
 #include "Edge.h"
 #include "GraphNode.h"
 #include "GraphWidget.h"
+#include "System/Timer.h"
 
 
 GraphNode::GraphNode(GraphWidget *graphWidget, QString name)
@@ -154,7 +155,7 @@ void GraphNode::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
     QFontMetrics fm(font);
     int pixelsWide = fm.width(name);
     int pixelsHigh = fm.height();
-    QRectF textRect(size.width()/2 - pixelsWide/2 - 10, pixelsHigh/4, size.width(), size.height());
+    QRectF textRect(size.width()/2.0 - pixelsWide/2.0 - 10.0, -10, pixelsWide, pixelsHigh);
     painter->drawText(textRect, name);
 
     font.setBold(false);
@@ -162,11 +163,24 @@ void GraphNode::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
     painter->setFont(font);
 
     fm = QFontMetrics(font);
-    pixelsWide = fm.width(name);
+    pixelsWide = fm.width(QString::fromStdString(shaderName));
     pixelsHigh = fm.height();
-    textRect = QRectF(-5, pixelsHigh, size.width(), size.height());
+    textRect = QRectF(-5, 5, pixelsWide, pixelsHigh);
     painter->drawText(textRect, QString::fromStdString(shaderName));
 
+
+    // draw frametime
+    float frameTime = drawPass->frameTime.tv_nsec / 1000000.0;
+    QString fps = QString::number(float(BILLION)/float(drawPass->frameTime.tv_nsec)) + "fps";
+    QString miliSecounds = QString::number(frameTime) + "ms";
+//    QString timeString = miliSecounds + " " + fps;
+    pixelsWide = fm.width(fps);
+    textRect = QRectF(-5, 12, pixelsWide, pixelsHigh);
+    painter->drawText(textRect, fps);
+
+    pixelsWide = fm.width(miliSecounds);
+    textRect = QRectF(-5, 20, pixelsWide, pixelsHigh);
+    painter->drawText(textRect, miliSecounds);
 }
 
 QVariant GraphNode::itemChange(GraphicsItemChange change, const QVariant &value)

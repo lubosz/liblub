@@ -44,6 +44,7 @@
 #include <QGraphicsItem>
 #include <QList>
 #include <string>
+#include "Renderer/RenderPasses.h"
 
 using std::string;
 
@@ -77,6 +78,7 @@ public:
     unsigned getConnectionsTo(GraphNode * node);
     unsigned getEdgeNumber(Edge * edge);
     unsigned getEdgeNumberTo(Edge * edge);
+    DrawThing * drawPass;
 
 protected:
     QVariant itemChange(GraphicsItemChange change, const QVariant &value);

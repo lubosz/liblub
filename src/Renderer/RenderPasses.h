@@ -17,6 +17,7 @@ using std::string;
 class DrawThing {
 public:
     DrawThing();
+    timespec frameTime;
     bool enabled;
     string typeName;
   virtual void draw() = 0;

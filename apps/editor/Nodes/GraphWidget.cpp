@@ -68,6 +68,8 @@ GraphWidget::GraphWidget(QWidget *parent)
     foreach(DrawThing * pass, DeferredRenderer::Instance().drawPasses) {
         GraphNode *graphNode = new GraphNode(this, QString::fromStdString(pass->typeName));
 
+        graphNode->drawPass = pass;
+
         DrawPass * passCheck = dynamic_cast<DrawPass*>(pass);
         if (passCheck != nullptr) {
             graphNode->setShaderName(passCheck->shader->getName());

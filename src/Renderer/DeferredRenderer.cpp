@@ -3,19 +3,50 @@
 #include "Material/Textures.h"
 #include "System/TemplateEngine.h"
 #include "Material/Shaders.h"
+#include "System/Timer.h"
 
 DeferredRenderer::DeferredRenderer() : drawTransparency(true)
 {
+    framesRendered = 0;
+    avarageFrameTimeMs = 0;
 }
 
-DeferredRenderer::~DeferredRenderer()
-{
+DeferredRenderer::~DeferredRenderer() {
+    LogDebug << "Avarage Frame Time was:" << avarageFrameTimeMs << "ms" << 1000.0 / avarageFrameTimeMs << "fps";
 }
 
 void DeferredRenderer::draw() {
-    foreach(DrawThing * pass, drawPasses)
-        if (pass->enabled)
+    timespec before;
+    timespec after;
+
+    foreach(DrawThing * pass, drawPasses) {
+        if (pass->enabled) {
+            clock_gettime(CLOCK_MONOTONIC, &before);
             pass->draw();
+            clock_gettime(CLOCK_MONOTONIC, &after);
+            pass->frameTime = Timer::elapsed(before, after);
+        }
+    }
+    timespec now;
+    clock_gettime(CLOCK_MONOTONIC, &now);
+    frameTime = Timer::elapsed(lastFrameTime, now);
+    lastFrameTime = now;
+    framesRendered++;
+
+    float frameTimeMs = frameTime.tv_nsec / float(MILLION);
+
+    if (avarageFrameTimeMs == 0)
+        avarageFrameTimeMs = frameTimeMs;
+    else
+        avarageFrameTimeMs = ((avarageFrameTimeMs * (framesRendered - 1)) + frameTimeMs) / framesRendered;
+
+//    QString fps = QString::number(BILLION/frameTime.tv_nsec) + "fps";
+//    QString secs = QString::number(frameTime.tv_sec) + "secs";
+//    QString miliSecounds = QString::number(frameTime.tv_nsec / float(MILLION)) + "ms";
+
+//    LogDebug << Timer::getTime()<< fps.toStdString() << miliSecounds.toStdString() << secs.toStdString();
+
+//    LogDebug << avarageFrameTimeMs << "ms" << 1000.0 / avarageFrameTimeMs << "fps";
 }
 
 void DeferredRenderer::init() {
