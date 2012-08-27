@@ -138,8 +138,6 @@ public:
 
         fractal->setRange(3.0);
 
-
-
         node = new Node("Test", QVector3D(-5,-5,-5), 1, fractal, ocean);
         SceneGraph::Instance().addNode(node);
 
@@ -152,7 +150,6 @@ public:
         //    Node * normalNode = new Node("Normals", QVector3D(-5,-5,-5), 1, normalMesh, shader);
         //    LogInfo << normalNode->getName();
         //    SceneGraph::Instance().addNode(normalNode);
-
     }
 
     void renderFrame() {
