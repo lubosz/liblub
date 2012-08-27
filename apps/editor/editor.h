@@ -74,6 +74,9 @@ public slots:
   void setSelectedTexture(const QModelIndex &index);
   void changePlaneSource(const QString &name);
   void setTransparency(bool transparent);
+
+  void setOffSetFactor(double factor);
+  void setOffSetUnits(double units);
 };
 
 #endif

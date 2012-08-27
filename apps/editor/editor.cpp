@@ -28,6 +28,7 @@
 #include "TextureModel.h"
 #include "Nodes/GraphWidget.h"
 #include "Scene/SceneLoader.h"
+#include "Window/Qt/FloatEditorWidget.h"
 
 Editor::Editor(int &argc, char **argv) :
     Application(argc, argv) {
@@ -57,6 +58,16 @@ Editor::Editor(int &argc, char **argv) :
 }
 
 Editor::~Editor() {
+}
+
+void Editor::setOffSetFactor(double factor) {
+  foreach(ShadowCastPass* shadowCastPass, DeferredRenderer::Instance().shadowCastPasses)
+      shadowCastPass->setOffsetFactor(factor);
+}
+
+void Editor::setOffSetUnits(double units) {
+  foreach(ShadowCastPass* shadowCastPass, DeferredRenderer::Instance().shadowCastPasses)
+      shadowCastPass->setOffsetUnits(units);
 }
 
 void Editor::scene() {
@@ -186,15 +197,23 @@ void Editor::initWidgets(QSplitter * mainSplitter) {
     connect(lazyBox, SIGNAL(clicked(bool)), this, SLOT(setLazy(bool)));
     sideLayout->addWidget(lazyBox);
 
-
     QCheckBox *transparencyBox = new QCheckBox();
     transparencyBox->setText("Draw Transparency");
     transparencyBox->setChecked(true);
     connect(transparencyBox, SIGNAL(clicked(bool)), this, SLOT(setTransparency(bool)));
     sideLayout->addWidget(transparencyBox);
 
+    QCheckBox *wireFrameBox = new QCheckBox();
+    wireFrameBox->setText("Wireframe");
+    wireFrameBox->setChecked(false);
+    //      connect(wireFrameBox, SIGNAL(clicked(bool)), this, SLOT(setWireframe(bool)));
+    sideLayout->addWidget(wireFrameBox);
+
+
     QTabWidget * tabWidget = new QTabWidget;
     sideLayout->addWidget(tabWidget);
+
+    //target tab
     QWidget * renderTargetTab = new QWidget();
     tabWidget->addTab(renderTargetTab, "Targets");
 
@@ -271,6 +290,25 @@ void Editor::initWidgets(QSplitter * mainSplitter) {
 
     GraphWidget * graphWidget = new GraphWidget;
     tabWidget->addTab(graphWidget, "Nodes");
+
+
+    // Shadow Tab
+    QWidget * shadowTab = new QWidget();
+    tabWidget->addTab(shadowTab, "Shadow");
+
+
+    QVBoxLayout *shadowTabLayout = new QVBoxLayout(shadowTab);
+
+
+    FloatEditorWidget* factor = new FloatEditorWidget("Offset Factor",
+        SLOT(setOffSetFactor(double)), 2.0, -25, 25, this);
+    connect(factor, SIGNAL(draw()), glWidget, SLOT(updateGL()));
+    shadowTabLayout->addWidget(factor);
+
+    FloatEditorWidget* units = new FloatEditorWidget("Offset Units",
+        SLOT(setOffSetUnits(double)), 0, -1000, 1000, this);
+    connect(units, SIGNAL(draw()), glWidget, SLOT(updateGL()));
+    shadowTabLayout->addWidget(units);
 }
 
 int main(int argc, char **argv) {
