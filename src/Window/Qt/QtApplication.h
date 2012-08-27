@@ -42,9 +42,9 @@ public:
 
   void notify();
 
-  void setWireframe(bool wire);
 
 public slots:
+  void setWireframe(bool wire);
   void draw();
   void setLazy(bool lazy);
 };
