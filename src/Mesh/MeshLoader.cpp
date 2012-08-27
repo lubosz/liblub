@@ -17,6 +17,7 @@
 
 Mesh * MeshLoader::getMeshFromAssimp(aiMesh * assMesh, const QList<string> & attributes, bool changePositionOrder) {
     Mesh * mesh = new Mesh(attributes);
+
     mesh->name = assMesh->mName.data;
 
     for (unsigned i = 0; i < assMesh->mNumFaces; i++) {
@@ -56,6 +57,8 @@ Mesh * MeshLoader::getMeshFromAssimp(aiMesh * assMesh, const QList<string> & att
 
     mesh->init();
     mesh->setDrawType(GL_TRIANGLES);
+
+    return mesh;
 }
 
 Mesh * MeshLoader::load(const QList<string> & attributes, string file) {
