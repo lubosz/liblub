@@ -26,6 +26,8 @@
 #include "Material/Textures.h"
 #include "System/TemplateEngine.h"
 #include "Mesh/FractalMesh.h"
+#include "Scene/Camera.h"
+#include "Scene/Scene.h"
 #include <complex>
 
 using std::complex;
@@ -119,8 +121,6 @@ public:
 
         ShaderProgram * ocean = new TemplateProgram("julia", attributes);
 
-
-
         //      ShaderProgram * ocean = new TemplateProgram("Ocean-small", attributes);
         //      setOceanUniforms(ocean);
 
@@ -143,6 +143,9 @@ public:
         node = new Node("Test", QVector3D(-5,-5,-5), 1, fractal, ocean);
         SceneGraph::Instance().addNode(node);
 
+        Camera * cam = Scene::Instance().getCurrentCamera();
+        cam->setDirection(QVector3D(-1,-5,-1));
+        cam->update();
         //    QList<string> NormalAttributes = QList<string>() << "color";
         //    shader = new SimpleProgram("Particle/stars",NormalAttributes);
         //    Mesh * normalMesh = makeNormalMesh(mesh);
