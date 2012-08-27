@@ -19,7 +19,7 @@ public:
       XCBWindow * window  = new XCBWindow();
       SimpleProgram * simpleProgram = new SimpleProgram("Texture/font",attributes);
 
-      ShaderProgram * program = new ShaderProgram();
+      ShaderProgram * program = new ShaderProgram("A Program");
 
       delete program;
       delete simpleProgram;
@@ -28,7 +28,6 @@ public:
 };
 
 int main() {
-//  QApplication app(argc, argv);
   TextTest foo("bar");
   foo.runTest();
 }

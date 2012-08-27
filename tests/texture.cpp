@@ -18,7 +18,7 @@ public:
     ShadowTexture(size, "shadow");
     ColorTexture(size, "color");
     QImage * glow = ProcTextures::makeGlow(size, 1.0f, 1.0f);
-    TextureQImage(glow, "qimage");
+    TextureQImage(*glow, "qimage");
     CubeTextureFile("cubemaps/morning", "cube");
     delete glow;
   }
