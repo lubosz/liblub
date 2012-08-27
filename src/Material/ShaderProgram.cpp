@@ -283,6 +283,7 @@ void ShaderProgram::activateAndBindTextures() {
     foreach(Texture* texture, textures) {
             texture->activate();
             texture->bind();
+            texture->uniform(getHandle());
         }
     glError;
 }
