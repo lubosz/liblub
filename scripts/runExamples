@@ -3,7 +3,7 @@
 import os, subprocess, sys
 from optparse import OptionParser
 
-blacklist_demos = ["depth", "ssao", "load", "posteffect", "multilight", "tesselation"]
+blacklist_demos = ["depth", "ssao", "load", "posteffect", "multilight", "tesselation", "mandelbulb", "load-assimp", "load-xml", "editor", "raycasting"]
 blacklist_scenes = ["ash", "common", "csm", "multilight", "nice", "terrain", "ocean"]
 blacklist_tests = []
 
@@ -42,7 +42,7 @@ class ExampleRunner:
       if not "~" in scene:
         scene = scene.replace(".xml", "")
         if scene not in blacklist_scenes:
-          self.run(['bin/load', scene])
+          self.run(['bin/load-xml', scene])
 
   def runTests(self):
     try:
