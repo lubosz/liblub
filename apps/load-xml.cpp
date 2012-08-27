@@ -17,7 +17,6 @@
     along with liblub.  If not, see <http://www.gnu.org/licenses/>.
 */
 #include "System/Application.h"
-#include "System/GUI.h"
 #include "Scene/SceneLoader.h"
 #include "Scene/Scene.h"
 #include "System/Logger.h"
@@ -32,7 +31,7 @@ class LoadApp: public Application {
   SceneLoader *sceneLoader;
 
   LoadApp(int &argc, char **argv) : Application(argc,argv) {
-    fontOverlay = true;
+    useFontOverlay = true;
     string sceneName = argv[1];
     QString sceneFile = QString::fromStdString(sceneName + ".xml");
     sceneLoader = new SceneLoader(sceneFile);

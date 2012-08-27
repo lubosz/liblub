@@ -16,7 +16,7 @@
 #include <QPainter>
 using std::string;
 
-class GUI {
+class FontOverlay {
 public:
   QMap<string,string> textLines;
   QImage image;
@@ -27,8 +27,8 @@ public:
   QImage black;
   Texture *texture;
   QRectF drawBox;
-  GUI();
-  virtual ~GUI();
+  FontOverlay();
+  virtual ~FontOverlay();
   void addText(string id, string value);
   void updateText(string id, string value);
   void render();

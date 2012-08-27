@@ -1,5 +1,5 @@
 #include "System/Config.h"
-#include "System/GUI.h"
+#include "System/FontOverlay.h"
 #include <iostream>
 #include <QApplication>
 #include <cppunit/TestCase.h>
@@ -15,7 +15,7 @@ public:
   void runTest() {
       Config::Instance().load("config.xml");
       XCBWindow * window  = new XCBWindow();
-      GUI gui;
+      FontOverlay gui;
       gui.init();
       delete window;
   }

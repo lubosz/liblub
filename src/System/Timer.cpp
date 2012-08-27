@@ -6,7 +6,6 @@
  */
 
 #include "System/Timer.h"
-#include "System/GUI.h"
 #include "Window/Window.h"
 
 Timer::Timer() {

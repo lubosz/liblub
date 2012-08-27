@@ -52,7 +52,7 @@ void XCBApplication::run() {
   connect(window->getInput(), SIGNAL(shutdown()), app, SLOT(quit()));
 
   if (fontOverlay) {
-    gui = new GUI();
+    gui = new FontOverlay();
     gui->init();
     QTimer *fontTimer = new QTimer(this);
     connect(fontTimer, SIGNAL(timeout()), this, SLOT(updateFont()));

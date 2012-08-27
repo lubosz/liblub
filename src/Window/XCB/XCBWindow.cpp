@@ -10,7 +10,6 @@
 #include "Scene/Camera.h"
 #include "Scene/Scene.h"
 #include "System/Config.h"
-#include "System/GUI.h"
 #include "System/Timer.h"
 #include "XCBWindow.h"
 #include "XCBInput.h"

@@ -8,7 +8,6 @@
 #include <vector>
 #include <string>
 #include "Material/Textures.h"
-#include "System/GUI.h"
 #include "System/Config.h"
 #include "System/Logger.h"
 #include <QImage>

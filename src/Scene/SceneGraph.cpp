@@ -9,7 +9,6 @@
 #include "Mesh/MeshLoader.h"
 #include "System/Logger.h"
 #include "Scene/Scene.h"
-#include "System/GUI.h"
 #include <cassert>
 #include "Renderer/DeferredRenderer.h"
 

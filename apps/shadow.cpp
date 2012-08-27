@@ -27,7 +27,7 @@
   ShadowApp::ShadowApp(int argc, char *argv[]) :
     Application(argc, argv) {
     sceneLoader = new SceneLoader("multilight.xml");
-    fontOverlay = false;
+    useFontOverlay = false;
   }
 
   ShadowApp::~ShadowApp() {

@@ -11,14 +11,14 @@
 #include "Window/XCB/XCBWindow.h"
 #include "Scene/Scene.h"
 #include "System/Config.h"
-#include "System/GUI.h"
+#include "System/FontOverlay.h"
 
 class XCBApplication : public QObject{
 
   Q_OBJECT
 
  public:
-  GUI * gui;
+  FontOverlay * gui;
 	XCBWindow * window;
   int argcount;
   char ** argvalues;

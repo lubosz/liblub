@@ -8,7 +8,6 @@
 #include "TerrainPlain.h"
 #include "Material/Textures.h"
 
-#include "System/GUI.h"
 #include "Mesh/Geometry.h"
 #include "Mesh/MeshLoader.h"
 #include "Atmosphere.h"

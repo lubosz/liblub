@@ -25,7 +25,7 @@
   DeferredLightApp::DeferredLightApp(int argc, char *argv[]) :
     Application(argc, argv) {
     sceneLoader = new SceneLoader("multilight.xml");
-    fontOverlay = false;
+    useFontOverlay = false;
   }
 
   DeferredLightApp::~DeferredLightApp() {

@@ -66,12 +66,12 @@ class TesselationApp: public Application {
 //    Mesh * mesh = Geometry::makeIcosahedron();
     mesh->setDrawType(GL_PATCHES);
 
-    groundNode = new Node("ground", { 0, 0, 0 }, 10, mesh, shader);
+    groundNode = new Node("ground", QVector3D(0, 0, 0), 10, mesh, shader);
     groundNode->setRotation(QVector3D(90,0,0));
     glError;
 
-    gui->addText("tess", "Tess");
-    gui->addText("dist", "Dist");
+    fontOverlay->addText("tess", "Tess");
+    fontOverlay->addText("dist", "Dist");
 
     Texture * groundTexture = new TextureFile("terrain/mud.jpg","diffuse");
     Texture * noise = new TextureFile("terrain-noise-blur.jpg","noise");
@@ -86,11 +86,11 @@ class TesselationApp: public Application {
 
       std::stringstream tess;
       tess << "Tess " << int(scale);
-      gui->updateText("tess",tess.str());
+      fontOverlay->updateText("tess",tess.str());
 
       std::stringstream dist;
       dist << "Dist " << camera->position.length();
-      gui->updateText("dist",dist.str());
+      fontOverlay->updateText("dist",dist.str());
 
     if (scale > 1){
       shader->use();

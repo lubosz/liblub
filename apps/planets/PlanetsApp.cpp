@@ -10,7 +10,6 @@
 #include "Scene/Scene.h"
 #include "Material/Textures.h"
 #include "System/Config.h"
-#include "System/GUI.h"
 #include "Renderer/OpenGL.h"
 #include "Window/Qt/FloatEditorWidget.h"
 #include "Renderer/FrameBuffer.h"

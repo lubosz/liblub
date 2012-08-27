@@ -19,7 +19,6 @@
 #include <string>
 #include <QApplication>
 #include "System/Application.h"
-#include "System/GUI.h"
 #include "Scene/SceneLoader.h"
 #include "Scene/SceneGraph.h"
 #include "Scene/Scene.h"
@@ -60,7 +59,7 @@ class LoadApp: public Application {
     perlinNoise = new SimpleProgram("Noise/perlin",attributes);
 
 
-    Node * plane = new Node("Plane", { 0,0,-2 }, 1, Geometry::plane(attributes, QRectF(-1,-1,2,2)), perlinNoise);
+    Node * plane = new Node("Plane", QVector3D(0,0,-2), 1, Geometry::plane(attributes, QRectF(-1,-1,2,2)), perlinNoise);
 //    plane->transparent = true;
     plane->setRotation(QVector3D(-90,0,180));
     SceneGraph::Instance().addNode(plane);

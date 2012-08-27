@@ -48,7 +48,7 @@ class DepthOfFieldExample: public Application
 	QSize res;
 
 	DepthOfFieldExample(int argc, char *argv[]) : Application(argc,argv) {
-	  fontOverlay = true;
+      useFontOverlay = true;
 	  sceneLoader = new SceneLoader("terrain.xml");
   }
 

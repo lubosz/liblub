@@ -19,7 +19,6 @@
 #include <string>
 #include <QApplication>
 #include "System/Application.h"
-#include "System/GUI.h"
 #include "Scene/SceneLoader.h"
 #include "Scene/Scene.h"
 #include "System/Logger.h"

@@ -12,8 +12,7 @@
 #include <QtGui>
 #include "Window/Qt/QtWindow.h"
 #include "Window/Qt/glWidget.h"
-#include "System/GUI.h"
-
+#include "System/FontOverlay.h"
 
 class QtApplication: public QApplication {
 
@@ -21,16 +20,12 @@ Q_OBJECT
 
 public:
   GLWidget *glWidget;
-  GUI* gui;
+  FontOverlay* fontOverlay;
   QtWindow * window;
   QTimer *drawTimer;
-  bool fontOverlay;
-//  QApplication * app;
-  int myargc;
-  char ** myargv;
+  bool useFontOverlay;
 
   bool useWireframe;
-
 
   void run();
 

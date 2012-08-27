@@ -5,7 +5,7 @@
  *      Author: bmonkey
  */
 
-#include "System/GUI.h"
+#include "System/FontOverlay.h"
 
 #include <sstream>
 #include <string>
@@ -22,7 +22,7 @@
 #include "System/Timer.h"
 #include "Material/Shaders.h"
 
-GUI::GUI() {
+FontOverlay::FontOverlay() {
   textLines = QMap<string,string>();
   QList<string> attributes = QList<string>();
   attributes.push_back("uv");
@@ -47,13 +47,13 @@ GUI::GUI() {
   texture = nullptr;
 }
 
-GUI::~GUI() {
+FontOverlay::~FontOverlay() {
     delete mesh;
     delete shader;
     if (texture != nullptr)
         delete texture;
 }
-void GUI::init() {
+void FontOverlay::init() {
   addText("ascene", Scene::Instance().name);
   addText("fps", "FPS");
   addText("cam", "Cam");
@@ -64,7 +64,7 @@ void GUI::init() {
   shader->samplerUniforms();
 }
 
-void GUI::update() {
+void FontOverlay::update() {
   std::stringstream fps, cam, zoom, time;
   fps << "FPS: " << Timer::Instance().getFPS();
   time << "ms: " << Timer::Instance().getSPF();
@@ -81,11 +81,11 @@ void GUI::update() {
   texture->loadQImage(image);
 }
 
-void GUI::clear() {
+void FontOverlay::clear() {
   image.setAlphaChannel(black);
 }
 
-void GUI::render() {
+void FontOverlay::render() {
   QPainter fontPainter(&image);
   //draw font
   fontPainter.setRenderHint(QPainter::Antialiasing, true);
@@ -105,14 +105,14 @@ void GUI::render() {
 
 }
 
-void GUI::addText(string id, string value){
+void FontOverlay::addText(string id, string value){
   textLines.insert(id, value);
 }
-void GUI::updateText(string id, string value) {
+void FontOverlay::updateText(string id, string value) {
   textLines[id] = value;
 }
 
-void GUI::draw() {
+void FontOverlay::draw() {
   glError;
   glEnable(GL_BLEND);
   shader->use();

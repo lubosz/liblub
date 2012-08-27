@@ -9,16 +9,11 @@
 
 #include "Scene/Scene.h"
 #include "System/Config.h"
-#include "System/GUI.h"
 #include "Renderer/OpenGL.h"
 #include "QtInput.h"
 
 QtApplication::QtApplication(int &argc, char **argv) : QApplication(argc, argv){
   Config::Instance().load("config.xml");
-  // Cache args over App execution time
-//  myargc = argc;
-//  myargv = argv;
-//  app = new QApplication(myargc, myargv);
 }
 
 QtApplication::~QtApplication() {
@@ -67,8 +62,8 @@ void QtApplication::run() {
 #endif
 #endif
   OpenGL::Instance().setContextCreated(true);
-  gui = new GUI();
-  gui->init();
+  fontOverlay = new FontOverlay();
+  fontOverlay->init();
   scene();
   drawTimer = new QTimer(this);
   QtInput *input = &QtInput::Instance();
@@ -82,7 +77,7 @@ void QtApplication::run() {
 
 void QtApplication::draw() {
   renderFrame();
-  gui->draw();
+  fontOverlay->draw();
   glError;
 }
 

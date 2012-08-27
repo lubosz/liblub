@@ -18,7 +18,7 @@
 
 
 class FrameBuffer;
-class GUI;
+class FontOverlay;
 class Camera;
 class Light;
 
