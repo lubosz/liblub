@@ -13,24 +13,24 @@ XCBApplication::XCBApplication(int argc, char ** argv) {
   argcount = argc;
   argvalues = argv;
   app = new QApplication(argcount,argvalues, false);
-  fontOverlay = false;
+  useFontOverlay = false;
 }
 
 XCBApplication::~XCBApplication() {
-    if (fontOverlay)
-        delete gui;
+    if (useFontOverlay)
+        delete fontOverlay;
     delete window;
     delete app;
 }
 
 void XCBApplication::updateFont() {
-  gui->update();
+  fontOverlay->update();
 }
 
 void XCBApplication::draw() {
     renderFrame();
-    if (fontOverlay)
-      gui->draw();
+    if (useFontOverlay)
+      fontOverlay->draw();
     window->update();
 }
 
@@ -48,9 +48,9 @@ void XCBApplication::run() {
 
   connect(window->getInput(), SIGNAL(shutdown()), app, SLOT(quit()));
 
-  if (fontOverlay) {
-    gui = new FontOverlay();
-    gui->init();
+  if (useFontOverlay) {
+    fontOverlay = new FontOverlay();
+    fontOverlay->init();
     QTimer *fontTimer = new QTimer(this);
     connect(fontTimer, SIGNAL(timeout()), this, SLOT(updateFont()));
     fontTimer->start(1000);
@@ -63,7 +63,7 @@ void XCBApplication::run() {
   app->exec();
 }
 
-void XCBApplication::setFontOverlay(bool fontOverlay) {
-  this->fontOverlay = fontOverlay;
+void XCBApplication::setFontOverlay(bool useFontOverlay) {
+  this->useFontOverlay = useFontOverlay;
 }
 

@@ -18,7 +18,7 @@ class XCBApplication : public QObject{
   Q_OBJECT
 
  public:
-  FontOverlay * gui;
+  FontOverlay * fontOverlay;
 	XCBWindow * window;
   int argcount;
   char ** argvalues;
@@ -31,13 +31,13 @@ class XCBApplication : public QObject{
 
 	void run();
 
-    void setFontOverlay(bool fontOverlay);
+    void setFontOverlay(bool useFontOverlay);
 
 public slots:
 	void updateFont();
 	void draw();
 
 protected:
-	bool fontOverlay;
+    bool useFontOverlay;
 };
 
