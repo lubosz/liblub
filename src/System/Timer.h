@@ -10,13 +10,12 @@
 
 #include <time.h>
 
-#include "common/Singleton.h"
 #include "Window/Input.h"
 
 const float BILLION = 1000000000; // 10^9
 const float MILLION = 1000000;
 
-class Timer : public Singleton<Timer>{
+class Timer {
 public:
 #ifndef LIBLUB_WINDOWS
   timespec startTime, lastTime, frameTime;

@@ -66,8 +66,8 @@ void FontOverlay::init() {
 
 void FontOverlay::update() {
   std::stringstream fps, cam, zoom, time;
-  fps << "FPS: " << Timer::Instance().getFPS();
-  time << "ms: " << Timer::Instance().getSPF();
+//  fps << "FPS: " << Timer::Instance().getFPS();
+//  time << "ms: " << Timer::Instance().getSPF();
   updateText("fps",fps.str());
   cam << "\nCam:\n" << Scene::Instance().getCurrentCamera()->position.x()
       <<"\n " << Scene::Instance().getCurrentCamera()->position.y()

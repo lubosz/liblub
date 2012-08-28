@@ -31,10 +31,7 @@ void XCBApplication::draw() {
     renderFrame();
     if (fontOverlay)
       gui->draw();
-    window->swapBuffers();
-    //TODO: Mouse Input is buggy when title is updated less often
-    window->updateWindowTitle();
-    Timer::Instance().updateFPS();
+    window->update();
 }
 
 void XCBApplication::run() {

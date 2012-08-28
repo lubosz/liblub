@@ -64,7 +64,7 @@ void Ocean::draw() {
   checkMaterialToggle();
 
   node->setView(Scene::Instance().getCurrentCamera());
-  node->getShader()->setUniform("time",Timer::Instance().getTime());
+  node->getShader()->setUniform("time",Timer::getTime());
   node->getShader()->setUniform("eyePosition",Scene::Instance().getCurrentCamera()->position);
 
   Scene::Instance().getCurrentCamera()->setUniforms(

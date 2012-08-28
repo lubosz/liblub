@@ -19,6 +19,7 @@
 
 #include <xcb/xcb.h>
 
+#include "System/Timer.h"
 #include "Window/Window.h"
 class XCBWindow: public LL::Window {
 
@@ -40,6 +41,8 @@ private:
   GLXContext context;
   GLXDrawable drawable;
   GLXFBConfig fb_config;
+
+  Timer * timer;
 
   // Input
 
@@ -66,4 +69,5 @@ public:
   void updateWindowTitle();
   void init(string title);
   void swapBuffers();
+  void update();
 };

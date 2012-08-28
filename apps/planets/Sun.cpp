@@ -34,7 +34,7 @@ void Sun::init(){
 void Sun::draw(){
   checkMaterialToggle();
   node->getShader()->use();
-  node->getShader()->setUniform("time", Timer::Instance().getTime());
+  node->getShader()->setUniform("time", Timer::getTime());
   Scene::Instance().getCurrentCamera()->setUniforms(
       node->getShader(), planet->position);
   node->setView(Scene::Instance().getCurrentCamera());

@@ -52,6 +52,8 @@ void XCBWindow::init(string title) {
   Scene::Instance().getCurrentCamera()->setAspect(
           static_cast<float>(width)/
           static_cast<float>(height));
+
+  timer = new Timer();
 }
 
 XCBWindow::~XCBWindow() {
@@ -322,7 +324,7 @@ void XCBWindow::updateWindowTitle() {
   // TODO(bmonkey): should be per secound, and not per frame (breaks mouse input)
   stringstream windowTitle;
   //windowTitle << programTile << " - FPS: " << fps_current;
-  windowTitle << "FPS: " << Timer::Instance().getFPS();
+  windowTitle << "FPS: " << timer->getFPS();
   setWindowTitle(windowTitle.str());
 }
 
@@ -379,4 +381,11 @@ void XCBWindow::mouseLook(int x, int y) {
             LogError << "x return" << xret;
     }
   }
+}
+
+void XCBWindow::update() {
+    swapBuffers();
+    //TODO: Mouse Input is buggy when title is updated less often
+    updateWindowTitle();
+    timer->updateFPS();
 }

@@ -66,7 +66,7 @@ class LoadApp: public Application {
   }
   void renderFrame(){
     perlinNoise->use();
-    perlinNoise->setUniform("time", Timer::Instance().getTime());
+    perlinNoise->setUniform("time", Timer::getTime());
     OnePass::draw();
   }
 };
