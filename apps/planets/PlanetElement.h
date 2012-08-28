@@ -18,7 +18,7 @@ public:
   Planet * planet;
   Node * node;
   ShaderProgram *fromAtmosphere, *fromSpace;
-  PlanetElement() {};
+  PlanetElement() {}
   PlanetElement(Planet * planet);
   virtual ~PlanetElement();
   virtual void init() = 0;
