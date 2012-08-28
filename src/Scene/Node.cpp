@@ -108,6 +108,7 @@ void Node::draw(ShaderProgram * shaderProgram) {
 }
 
 void Node::draw(ShaderProgram * shader, DirectionNode * camView) {
+    //TODO: another shader for every node
     setView(shader, camView);
     if (material) {
         material->uniforms(shader);
@@ -179,12 +180,12 @@ void Node::setView(
     shaderProgram->setUniform("NormalMatrix", tempMatrix.normalMatrix());
     tempMatrix = viewPoint->getProjection() * tempMatrix;
     shaderProgram->setUniform("MVPMatrix", tempMatrix);
-    shaderProgram->setUniform("camPositionWorld",Scene::Instance().getCurrentCamera()->getPosition());
-    glError;
+//    shaderProgram->setUniform("camPositionWorld",Scene::Instance().getCurrentCamera()->getPosition());
 }
 
 void Node::setView(DirectionNode * viewPoint) {
-	setView(shader, viewPoint);
+    //TODO: another shader for every node
+    setView(shader, viewPoint);
 }
 
 QVector3D Node::getCenter() {

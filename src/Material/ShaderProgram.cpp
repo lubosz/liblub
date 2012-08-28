@@ -189,18 +189,22 @@ void ShaderProgram::use() {
   glError;
 }
 
+GLint ShaderProgram::getUniformLocation(const string &name) const {
+    return glGetUniformLocation(handle, name.c_str());
+}
+
 void ShaderProgram::setUniform(const string &name, const QVector4D& vector) {
-  glUniform4f(glGetUniformLocation(handle, name.c_str()),
+  glUniform4f(getUniformLocation(name),
           vector.x(), vector.y(), vector.z(), vector.w());
 }
 
 void ShaderProgram::setUniform(const string &name, const QVector3D& vector) {
-  glUniform3f(glGetUniformLocation(handle, name.c_str()),
+  glUniform3f(getUniformLocation(name),
           vector.x(), vector.y(), vector.z());
 }
 
 void ShaderProgram::setUniform(const string &name, const QVector2D& vector) {
-  glUniform2f(glGetUniformLocation(handle, name.c_str()),
+  glUniform2f(getUniformLocation(name),
           vector.x(), vector.y());
 }
 
@@ -214,8 +218,7 @@ void ShaderProgram::setUniform(const string &name, const QMatrix3x3 & matrix) {
     for (int i = 0; i < 9; ++i)
         mat[i] = data[i];
 
-  glUniformMatrix3fv(
-      glGetUniformLocation(handle, name.c_str()), 1, GL_FALSE, mat);
+  glUniformMatrix3fv(getUniformLocation(name), 1, GL_FALSE, mat);
 }
 
 void ShaderProgram::setUniform(const string &name, const QMatrix4x4 & matrix) {
@@ -225,7 +228,7 @@ void ShaderProgram::setUniform(const string &name, const QMatrix4x4 & matrix) {
         mat[i] = data[i];
 
   glUniformMatrix4fv(
-      glGetUniformLocation(handle, name.c_str()), 1, GL_FALSE,
+      getUniformLocation(name), 1, GL_FALSE,
       // reinterpret_cast<const GLfloat *>(matrix.constData())
       mat);
   /* DOUBLE PRECISION
@@ -235,8 +238,26 @@ void ShaderProgram::setUniform(const string &name, const QMatrix4x4 & matrix) {
   */
 }
 
+void ShaderProgram::setUniform(GLint uniform, const QMatrix3x3 & matrix) {
+    GLfloat mat[9];
+    const qreal *data = matrix.constData();
+    for (int i = 0; i < 9; ++i)
+        mat[i] = data[i];
+
+    glUniformMatrix3fv(uniform, 1, GL_FALSE, mat);
+}
+
+void ShaderProgram::setUniform(GLint uniform, const QMatrix4x4 & matrix) {
+    GLfloat mat[16];
+    const qreal *data = matrix.constData();
+    for (int i = 0; i < 16; ++i)
+        mat[i] = data[i];
+
+    glUniformMatrix4fv(uniform, 1, GL_FALSE, mat);
+}
+
 void ShaderProgram::setUniform(const string &name, float value) {
-  glUniform1f(glGetUniformLocation(handle, name.c_str()), value);
+  glUniform1f(getUniformLocation(name), value);
 }
 
 void ShaderProgram::setUniform(const string &name, qreal value) {
@@ -244,7 +265,7 @@ void ShaderProgram::setUniform(const string &name, qreal value) {
 }
 
 void ShaderProgram::setUniform(const string &name, int value) {
-  glUniform1i(glGetUniformLocation(handle, name.c_str()), value);
+  glUniform1i(getUniformLocation(name), value);
 }
 
 void ShaderProgram::translateUniformf(unsigned id, const vector<float> & values){

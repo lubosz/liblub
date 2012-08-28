@@ -70,6 +70,10 @@ public:
     void activateAndBindTextures();
     void bindTextures();
     void activateTextures();
+
+    GLint getUniformLocation(const string &name) const;
+    void setUniform(GLint uniform, const QMatrix3x3 & matrix);
+    void setUniform(GLint uniform, const QMatrix4x4 & matrix);
 protected:
 
     void addTexture(const string &file, const string &name);

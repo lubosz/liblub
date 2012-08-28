@@ -32,7 +32,6 @@ private:
   float m_size;
   string name;
   QVector3D eulerRotationCache;
-  QMatrix4x4 modelMatrix;
   Node * parent;
   Material * material;
   Mesh * mesh;
@@ -43,6 +42,7 @@ protected:
 public:
   QVector3D position;
   QMatrix4x4 rotationMatrix;
+  QMatrix4x4 modelMatrix;
   QQuaternion rotation;
 
   Node();

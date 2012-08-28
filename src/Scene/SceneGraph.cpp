@@ -90,9 +90,23 @@ void SceneGraph::drawNodes(ShaderProgram * shader) {
 }
 
 void SceneGraph::drawNodes(ShaderProgram * shader, DirectionNode * viewPoint) {
+    shader->use();
+
+    GLint MMatrix = shader->getUniformLocation("MMatrix");
+    GLint MVMatrix = shader->getUniformLocation("MVMatrix");
+    GLint NormalMatrix = shader->getUniformLocation("NormalMatrix");
+    GLint MVPMatrix = shader->getUniformLocation("MVPMatrix");
+
     foreach(Node * node, sceneNodes) {
-          node->setView(shader, viewPoint);
-          node->draw(shader);
+        //          node->setView(shader, viewPoint);
+        QMatrix4x4 tempMatrix = viewPoint->getView() * node->modelMatrix;
+        shader->setUniform(MMatrix, node->modelMatrix);
+        shader->setUniform(MVMatrix, tempMatrix);
+        shader->setUniform(NormalMatrix, tempMatrix.normalMatrix());
+        tempMatrix = viewPoint->getProjection() * tempMatrix;
+        shader->setUniform(MVPMatrix, tempMatrix);
+
+        node->draw(shader);
     }
     glError;
 }
@@ -133,13 +147,25 @@ void SceneGraph::drawCasters(ShaderProgram * shader) {
 }
 
 void SceneGraph::drawCasters(ShaderProgram * shader, DirectionNode * viewPoint) {
+    shader->use();
+
+    GLint MMatrix = shader->getUniformLocation("MMatrix");
+    GLint MVMatrix = shader->getUniformLocation("MVMatrix");
+    GLint NormalMatrix = shader->getUniformLocation("NormalMatrix");
+    GLint MVPMatrix = shader->getUniformLocation("MVPMatrix");
+
+    //TODO: uniforms
     foreach(Node * node, sceneNodes) {
         if (node->getCastShadows()) {
-          node->setView(shader, viewPoint);
-          if (node->getMesh() != nullptr) {
-              LogDebug << node->getName();
-             node->getMesh()->draw();
-          }
+            //          node->setView(shader, viewPoint);
+            QMatrix4x4 tempMatrix = viewPoint->getView() * node->modelMatrix;
+            shader->setUniform(MMatrix, node->modelMatrix);
+            shader->setUniform(MVMatrix, tempMatrix);
+            shader->setUniform(NormalMatrix, tempMatrix.normalMatrix());
+            tempMatrix = viewPoint->getProjection() * tempMatrix;
+            shader->setUniform(MVPMatrix, tempMatrix);
+
+            node->getMesh()->draw();
         }
     }
     glError;
