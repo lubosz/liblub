@@ -387,5 +387,5 @@ void XCBWindow::update() {
     swapBuffers();
     //TODO: Mouse Input is buggy when title is updated less often
     updateWindowTitle();
-    timer->updateFPS();
+    timer->frameDone();
 }

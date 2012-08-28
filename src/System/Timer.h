@@ -18,19 +18,25 @@ const float MILLION = 1000000;
 class Timer {
 public:
 #ifndef LIBLUB_WINDOWS
-  timespec startTime, lastTime, frameTime;
+  timespec lastTime, frameTime;
   static timespec elapsed(timespec &start, timespec &end);
 #else
   //TODO: Qt Timer for Win
 #endif
 
+    unsigned framesRendered;
+    float avarageFrameTimeMs;
+
   Timer();
   virtual ~Timer();
-  void updateFPS();
+  void startFrame();
+  void frameDone();
   void printFPS();
+  float getSeconds();
   float getFPS();
-  float getSPF();
+  float getMilliseconds();
   static float getTime();
+  void countAverage();
 };
 
 #endif /* TIMER_H_ */

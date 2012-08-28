@@ -9,6 +9,7 @@
 
 #include "Scene/Light.h"
 #include "Renderer/FrameBuffer.h"
+#include "System/Timer.h"
 
 #include <string>
 
@@ -17,7 +18,7 @@ using std::string;
 class DrawThing {
 public:
     DrawThing();
-    timespec frameTime;
+    Timer* timer;
     bool enabled;
     string typeName;
   virtual void draw() = 0;

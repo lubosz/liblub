@@ -7,6 +7,7 @@
 
 #include "common/Singleton.h"
 #include "Renderer/RenderPasses.h"
+#include "System/Timer.h"
 
 using std::vector;
 
@@ -34,18 +35,13 @@ public:
     void init();
     void draw();
 
-    timespec frameTime;
-    timespec lastFrameTime;
-
-    unsigned framesRendered;
-
-    float avarageFrameTimeMs;
-
     vector<string> getTargetNames();
 
     Texture* getTargetFromName(const QString &name);
 
     void changePlaneSource(DebugPlane *plane, const QString &name);
+
+    Timer * timer;
 
 };
 

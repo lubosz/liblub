@@ -17,6 +17,7 @@
 #include "Material/Shaders.h"
 
 DrawThing::DrawThing() : enabled(true), typeName("Pass"){
+    timer = new Timer();
 }
 
   void DrawThing::drawOnPlane(ShaderProgram * shader, Mesh *plane) {

@@ -5,6 +5,7 @@
 #include "Material/Shaders.h"
 #include "Material/Textures.h"
 #include "Mesh/MeshLoader.h"
+#include "System/Timer.h"
 
 
 AssimpSceneLoader::AssimpSceneLoader() {
@@ -68,6 +69,7 @@ void AssimpSceneLoader::printColor(const string & name, const aiColor4D & color)
 }
 
 void AssimpSceneLoader::load(string file) {
+    Timer * timer = new Timer();
     LogDebug << "Loading" << file;
 
     string path = Config::Instance().value<string> ("meshDir") + file;
@@ -163,4 +165,8 @@ void AssimpSceneLoader::load(string file) {
     initNode(assimpScene->mRootNode);
 
     importer.FreeScene();
+
+    timer->frameDone();
+
+    LogWarning << "Scene Loading took" << timer->getSeconds() << "secounds";
 }

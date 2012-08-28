@@ -9,8 +9,10 @@
 #include "Window/Window.h"
 
 Timer::Timer() {
+    framesRendered = 0;
+    avarageFrameTimeMs = 0;
 #ifndef LIBLUB_WINDOWS
-  clock_gettime(CLOCK_MONOTONIC, &startTime);
+  clock_gettime(CLOCK_MONOTONIC, &lastTime);
 #endif
 }
 
@@ -35,7 +37,11 @@ timespec Timer::elapsed(timespec &start, timespec &end) {
     return result;
 }
 
-void Timer::updateFPS() {
+void Timer::startFrame() {
+  clock_gettime(CLOCK_MONOTONIC, &lastTime);
+}
+
+void Timer::frameDone() {
   timespec now;
   clock_gettime(CLOCK_MONOTONIC, &now);
   frameTime = elapsed(lastTime, now);
@@ -46,8 +52,12 @@ float Timer::getFPS() {
   return BILLION / float(frameTime.tv_nsec);
 }
 
-float Timer::getSPF() {
+float Timer::getMilliseconds() {
   return float(frameTime.tv_nsec) / MILLION;
+}
+
+float Timer::getSeconds() {
+  return float(frameTime.tv_sec) + getMilliseconds()/1000.0;
 }
 #else
 
@@ -65,7 +75,7 @@ float Timer::getSPF() {
 #endif
 
 void Timer::printFPS() {
-  LogInfo << "FPS" << getFPS() << "," << getSPF() << "ms per Frame";
+  LogInfo << "FPS" << getFPS() << "," << getMilliseconds() << "ms per Frame";
 }
 
 float Timer::getTime() {
@@ -74,4 +84,15 @@ float Timer::getTime() {
   clock_gettime(CLOCK_MONOTONIC, &now);
   return (float(now.tv_sec) + float(now.tv_nsec)/BILLION);
 #endif
+}
+
+void Timer::countAverage() {
+    framesRendered++;
+    float frameTimeMs = getMilliseconds();
+    if (avarageFrameTimeMs == 0) {
+        avarageFrameTimeMs = frameTimeMs;
+    } else {
+        avarageFrameTimeMs = ((avarageFrameTimeMs * (framesRendered - 1)) + frameTimeMs) / framesRendered;
+//        avarageFrameTimeMs = (avarageFrameTimeMs + frameTimeMs) / 2.0;
+    }
 }

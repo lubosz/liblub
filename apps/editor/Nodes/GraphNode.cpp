@@ -168,12 +168,9 @@ void GraphNode::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
     textRect = QRectF(-5, 5, pixelsWide, pixelsHigh);
     painter->drawText(textRect, QString::fromStdString(shaderName));
 
-
     // draw frametime
-    float frameTime = drawPass->frameTime.tv_nsec / 1000000.0;
-    QString fps = QString::number(float(BILLION)/float(drawPass->frameTime.tv_nsec)) + "fps";
-    QString miliSecounds = QString::number(frameTime) + "ms";
-//    QString timeString = miliSecounds + " " + fps;
+    QString fps = QString::number(drawPass->timer->getFPS()) + "fps";
+    QString miliSecounds = QString::number(drawPass->timer->getMilliseconds()) + "ms";
     pixelsWide = fm.width(fps);
     textRect = QRectF(-5, 12, pixelsWide, pixelsHigh);
     painter->drawText(textRect, fps);
