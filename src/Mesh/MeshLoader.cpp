@@ -20,6 +20,12 @@ Mesh * MeshLoader::getMeshFromAssimp(aiMesh * assMesh, const QList<string> & att
 
     mesh->name = assMesh->mName.data;
 
+    vector<GLfloat> * positions = &mesh->buffers["position"];
+    vector<GLfloat> * normals = &mesh->buffers["normal"];
+    vector<GLfloat> * tangents = &mesh->buffers["tangent"];
+    vector<GLfloat> * bitangents = &mesh->buffers["bitangent"];
+    vector<GLfloat> * uvs = &mesh->buffers["uv"];
+
     for (unsigned i = 0; i < assMesh->mNumFaces; i++) {
         aiFace face = assMesh->mFaces[i];
         for (unsigned j = 0; j < face.mNumIndices; j++) {
@@ -27,30 +33,30 @@ Mesh * MeshLoader::getMeshFromAssimp(aiMesh * assMesh, const QList<string> & att
 
             aiVector3D position = assMesh->mVertices[vertex];
             if (changePositionOrder)
-                mesh->vertex("position",position.y,position.z,position.x);
+                mesh->vertex(positions, position.y,position.z,position.x);
             else
-            mesh->vertex("position",position.x,position.y,position.z);
+            mesh->vertex(positions, position.x,position.y,position.z);
 
             mesh->getBoundingBox()->update(position.x,position.y,position.z);
 
             if(assMesh->HasNormals() && attributes.contains("normal")) {
               aiVector3D normal = assMesh->mNormals[vertex];
-              mesh->vertex("normal",normal.x, normal.y, normal.z);
+              mesh->vertex(normals, normal.x, normal.y, normal.z);
             }
 
             if (assMesh->HasTangentsAndBitangents() && attributes.contains("tangent")) {
               aiVector3D tangent = assMesh->mTangents[vertex];
-              mesh->vertex("tangent",tangent.x, tangent.y, tangent.z);
+              mesh->vertex(tangents, tangent.x, tangent.y, tangent.z);
             }
 
             if (assMesh->HasTangentsAndBitangents() && attributes.contains("bitangent")) {
               aiVector3D bitangent = assMesh->mBitangents[vertex];
-              mesh->vertex("bitangent",bitangent.x, bitangent.y, bitangent.z);
+              mesh->vertex(bitangents, bitangent.x, bitangent.y, bitangent.z);
             }
 
             if(assMesh->HasTextureCoords(0) && attributes.contains("uv")){
               aiVector3D uv = assMesh->mTextureCoords[0][vertex];
-              mesh->vertex("uv",uv.x, uv.y);
+              mesh->vertex(uvs, uv.x, uv.y);
             }
         }
     }

@@ -171,7 +171,8 @@ void Mesh::addSubMesh(Mesh * mesh) {
 }
 
 void Mesh::makeLinearIndex() {
-    for(unsigned i = 0; i < buffers["position"].size(); i+= 3) {
+    unsigned positionSize = buffers["position"].size();
+    for(unsigned i = 0; i < positionSize; i+= 3) {
         indices.push_back(i/3);
     }
 }
@@ -187,6 +188,17 @@ void Mesh::vertex(const string & type, const GLfloat &x, const GLfloat &y, const
   buffer->push_back(x);
   buffer->push_back(y);
   buffer->push_back(z);
+}
+
+void Mesh::vertex(vector<GLfloat> * buffer, const GLfloat &x, const GLfloat &y, const GLfloat &z) {
+  buffer->push_back(x);
+  buffer->push_back(y);
+  buffer->push_back(z);
+}
+
+void Mesh::vertex(vector<GLfloat> * buffer, const GLfloat &x, const GLfloat &y) {
+  buffer->push_back(x);
+  buffer->push_back(y);
 }
 
 void Mesh::vertex(const string & type, const QVector3D & vector) {

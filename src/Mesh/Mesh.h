@@ -38,6 +38,8 @@ class Mesh {
 	void initBuffer(string name, string linkage, unsigned vertexSize);
 	void addSubMesh(Mesh * mesh);
 	virtual ~Mesh();
+    void vertex(vector<GLfloat> * buffer, const GLfloat &x, const GLfloat &y, const GLfloat &z);
+    void vertex(vector<GLfloat> * buffer, const GLfloat &x, const GLfloat &y);
     void vertex(const string & type, const GLfloat &x, const GLfloat &y, const GLfloat &z);
     void vertex(const string & type, GLfloat x, GLfloat y);
     void vertex(const string & type, const QVector3D &vector);
