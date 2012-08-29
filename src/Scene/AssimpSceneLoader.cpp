@@ -147,6 +147,11 @@ void AssimpSceneLoader::load(string file) {
                 aiString textureName;
                 material->Get(AI_MATKEY_TEXTURE_DIFFUSE(texIndex), textureName);
                 string texturePath = textureName.data;
+
+                QString blenderDir = QString::fromStdString(texturePath);
+                blenderDir.replace("//textures", QString::fromStdString(Config::Instance().value<string> ("meshDir")+ "textures"));
+                texturePath = blenderDir.toStdString();
+
                 string targetName = "Texture";
                 if (texIndex < 1)
                     targetName = "diffuseTexture";
