@@ -45,7 +45,7 @@ public:
         Scene::Instance().getCurrentCamera()->setDirection(QVector3D(0.741701, -0.0836778, 0.66549));
         Scene::Instance().getCurrentCamera()->update();
 
-        new CubeTextureFile("cubemaps/sky", "sky");
+        DeferredRenderer::Instance().initSky("cubemaps/sky");
 
         AssimpSceneLoader::Instance().load(scenePath);
         DeferredRenderer::Instance().init();

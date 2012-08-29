@@ -32,6 +32,7 @@
 #include "Renderer/RenderPasses.h"
 #include "Mesh/MengerSponge.h"
 #include "Scene/SceneGraph.h"
+#include "Renderer/DeferredRenderer.h"
 
 class Ball : public Node {
 public:

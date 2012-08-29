@@ -3,6 +3,8 @@
 #include "Material/Textures.h"
 #include "System/TemplateEngine.h"
 #include "Material/Shaders.h"
+#include "Scene/SceneGraph.h"
+#include "Mesh/Geometry.h"
 
 
 DeferredRenderer::DeferredRenderer() : drawTransparency(true)
@@ -12,6 +14,15 @@ DeferredRenderer::DeferredRenderer() : drawTransparency(true)
 
 DeferredRenderer::~DeferredRenderer() {
     LogDebug << "Avarage Frame Time was:" << timer->avarageFrameTimeMs << "ms" << 1000.0 / timer->avarageFrameTimeMs << "fps";
+}
+
+void DeferredRenderer::initSky(const string& textureName) {
+    new CubeTextureFile(textureName, "sky");
+    Material *skyMat = new Material("sky");
+    QList<string> attributes = QList<string> () << "uv" << "normal" << "tangent" << "bitangent";
+    Mesh * sphere = Geometry::sphere(attributes, 500, 20, 20);
+    Node * skyNode = new Node("skynode", QVector3D(0,0,0),1,  sphere, skyMat);
+    SceneGraph::Instance().addNode(skyNode);
 }
 
 void DeferredRenderer::draw() {

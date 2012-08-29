@@ -75,12 +75,7 @@ void Editor::scene() {
     Scene::Instance().getCurrentCamera()->setDirection(QVector3D(0.741701, -0.0836778, 0.66549));
     Scene::Instance().getCurrentCamera()->update();
 
-    new CubeTextureFile("cubemaps/sky", "sky");
-    Material *skyMat = new Material("sky");
-    QList<string> attributes = QList<string> () << "uv" << "normal" << "tangent" << "bitangent";
-    Mesh * sphere = Geometry::sphere(attributes, 500, 20, 20);
-    Node * skyNode = new Node("skynode", QVector3D(0,0,0),1,  sphere, skyMat);
-    SceneGraph::Instance().addNode(skyNode);
+    DeferredRenderer::Instance().initSky("cubemaps/sky");
 
     QString qScenePath = QString::fromStdString(scenePath);
 
