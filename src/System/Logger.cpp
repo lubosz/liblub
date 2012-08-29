@@ -45,8 +45,8 @@ Logger::~Logger() {
     cout<<std::endl;
   if (fatal) {
       // generate segfault for backtrace
-      char *s = "Segfaultme";
-      *s = 'S';
+      int *ptr = nullptr;
+      *ptr = 1;
       exit(0);
   }
 }
