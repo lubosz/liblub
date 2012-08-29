@@ -51,7 +51,7 @@ void ShaderProgram::printProgramInfoLog() {
 //            }
         }
     }
-    LogFatal << "Program Log"<< shaderlog;
+    LogError << "Program Log"<< shaderlog;
   } else {
     LogDebug << "Program compiled";
   }
