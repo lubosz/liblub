@@ -71,26 +71,35 @@ public:
     }
 
     void scene() {
-        Texture * texture;
+        Scene::Instance().getCurrentCamera()->setPosition(QVector3D(-1.43765, 5.130675, -1.20157));
+        Scene::Instance().getCurrentCamera()->setDirection(QVector3D(0.741701, -0.0836778, 0.66549));
+        Scene::Instance().getCurrentCamera()->update();
+
+
+        DeferredRenderer::Instance().initSky("cubemaps/sky");
+
         Mesh* mesh;
 
-        QList<string> attributes = QList<string>() << "uv";
-        ShaderProgram * shader = new TemplateProgram("instancing",attributes);
+        QList<string> attributes = QList<string>() << "uv" << "normal" << "tangent" << "bitangent";
+        Material * someMaterial = new Material("someMaterial");
 
-        texture = new TextureFile("diamond.png", "diffuse");
-        texture->bind();
-        texture->filterMinMag(GL_LINEAR_MIPMAP_LINEAR, GL_NEAREST);
-        shader->addTexture(texture);
-        mesh = Geometry::sphere(attributes, 1, 20, 20);
+//        Texture * diffuse = new TextureFile("Planets/Mars.jpg", "diffuseTexture");
+//        Texture * normal = new TextureFile("Planets/Mars-normal.png", "normalTexture");
+//        someMaterial->addTexture(diffuse);
+//        someMaterial->addTexture(normal);
+
+        mesh = Geometry::sphere(attributes, 1, 10, 10);
 
         for (int i = 0; i < 500; i++) {
             Ball * ball;
             ball = new Ball();
-            ball->setShader(shader);
+            ball->setMaterial(someMaterial);
             ball->setMesh(mesh);
             SceneGraph::Instance().addNode(ball);
             balls.push_back(ball);
         }
+
+        DeferredRenderer::Instance().init();
     }
 
     void renderFrame(){
@@ -105,7 +114,8 @@ public:
             rotation += .1;
 
         }
-        OnePass::draw();
+//        OnePass::draw();
+        DeferredRenderer::Instance().draw();
     }
 };
 
