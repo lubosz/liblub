@@ -12,7 +12,9 @@
 
 // Needed for GL3 Context Creation
 //#define GLX_GLXEXT_PROTOTYPES 1
-#include <GL3/glx.h>
+// Patched glx with gl3
+//#include <GL3/glx.h>
+#include <GL/glx.h>
 
 #include <X11/Xlib.h>
 #include <X11/Xlib-xcb.h>
