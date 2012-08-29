@@ -107,15 +107,15 @@ void Node::draw(ShaderProgram * shaderProgram) {
 //    mesh->boundingBox->draw();
 }
 
-void Node::draw(ShaderProgram * shader, DirectionNode * camView) {
-    //TODO: another shader for every node
-    setView(shader, camView);
-    if (material) {
-        material->uniforms(shader);
-        material->activateAndBindTextures();
-    }
-    draw(shader);
-}
+//void Node::draw(ShaderProgram * shader, DirectionNode * camView) {
+//    //TODO: another shader for every node
+//    setView(shader, camView);
+//    if (material) {
+//        material->uniforms(shader);
+//        material->activateAndBindTextures();
+//    }
+//    draw(shader);
+//}
 
 
 void Node::setSize(float size) {

@@ -57,7 +57,7 @@ public:
 
   void draw();
   virtual void draw(ShaderProgram * shaderProgram);
-  void draw(ShaderProgram * shader, DirectionNode * camView);
+//  void draw(ShaderProgram * shader, DirectionNode * camView);
   void update();
   void updateRotationFromEuler();
 

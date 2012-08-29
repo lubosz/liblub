@@ -112,6 +112,12 @@ void SceneGraph::drawNodes(ShaderProgram * shader, DirectionNode * viewPoint) {
 }
 
 void SceneGraph::drawReceivers(ShaderProgram * shader) {
+
+    GLint MMatrix = shader->getUniformLocation("MMatrix");
+    GLint MVMatrix = shader->getUniformLocation("MVMatrix");
+    GLint NormalMatrix = shader->getUniformLocation("NormalMatrix");
+    GLint MVPMatrix = shader->getUniformLocation("MVPMatrix");
+
   DirectionNode * camView = Scene::Instance().getCurrentCamera();
   Node::setShadowCoords(shader,camView);
 
@@ -119,7 +125,19 @@ void SceneGraph::drawReceivers(ShaderProgram * shader) {
 
     foreach(Node * node, sceneNodes) {
         if(node->getMaterial() && !node->getMaterial()->transparent) {
-            node->draw(shader, camView);
+//            node->draw(shader, camView);
+            QMatrix4x4 tempMatrix = camView->getView() * node->modelMatrix;
+            shader->setUniform(MMatrix, node->modelMatrix);
+            shader->setUniform(MVMatrix, tempMatrix);
+            shader->setUniform(NormalMatrix, tempMatrix.normalMatrix());
+            tempMatrix = camView->getProjection() * tempMatrix;
+            shader->setUniform(MVPMatrix, tempMatrix);
+                if (node->getMaterial() != nullptr) {
+                    node->getMaterial()->uniforms(shader);
+                    node->getMaterial()->activateAndBindTextures();
+                }
+            node->draw(shader);
+
         } else {
           QVector3D distance = node->getCenter() - Scene::Instance().getCurrentCamera()->position;
           transparentNodes.insert(distance.length(), node);
@@ -133,7 +151,21 @@ void SceneGraph::drawReceivers(ShaderProgram * shader) {
             glEnable(GL_BLEND);
         }
       foreach(qreal transparentKey, transparentKeys) {
-        transparentNodes[transparentKey]->draw(shader, camView);
+//        transparentNodes[transparentKey]->draw(shader, camView);
+        Node * node = transparentNodes[transparentKey];
+
+        QMatrix4x4 tempMatrix = camView->getView() * node->modelMatrix;
+        shader->setUniform(MMatrix, node->modelMatrix);
+        shader->setUniform(MVMatrix, tempMatrix);
+        shader->setUniform(NormalMatrix, tempMatrix.normalMatrix());
+        tempMatrix = camView->getProjection() * tempMatrix;
+        shader->setUniform(MVPMatrix, tempMatrix);
+            if (node->getMaterial() != nullptr) {
+                node->getMaterial()->uniforms(shader);
+                node->getMaterial()->activateAndBindTextures();
+            }
+        node->draw(shader);
+
       }
       if(DeferredRenderer::Instance().drawTransparency) {
           glDisable(GL_BLEND);
