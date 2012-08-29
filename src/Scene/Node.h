@@ -98,7 +98,7 @@ public:
   void setView(ShaderProgram * shaderProgram, DirectionNode * viewPoint);
   void setShadowCoords(DirectionNode * viewPoint);
   void setName(string name);
-  void setMaterial(ShaderProgram *material);
+  void setMaterial(Material *material);
   static void setShadowCoords(ShaderProgram * shaderProgram,
       DirectionNode * viewPoint);
   void setShader(ShaderProgram* shader);

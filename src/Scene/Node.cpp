@@ -92,8 +92,8 @@ float Node::size() const {
     return m_size;
 }
 
-void Node::setMaterial(ShaderProgram *material) {
-    this->shader = material;
+void Node::setMaterial(Material *material) {
+    this->material = material;
 }
 
 void Node::draw() {

@@ -114,12 +114,12 @@ void  PlanetElement::checkMaterialToggle(){
       - planet->position;
   float camDistance = camFromPlanet.length();
   if (camDistance >= planet->outerRadius) {
-    node->setMaterial(fromSpace);
+    node->setShader(fromSpace);
     updateWaveLength();
     updateUseAttenuation();
     updateSize();
   } else {
-    node->setMaterial(fromAtmosphere);
+    node->setShader(fromAtmosphere);
     updateWaveLength();
     updateUseAttenuation();
     updateSize();
