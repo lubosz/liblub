@@ -14,12 +14,12 @@
 #ifdef LIBLUB_WINDOWS
 # include <GL/wglew.h>
 # define glfGetProcAddress wglGetProcAddress
-#include "WinGL.h"
+# include "WinGL.h"
 #else
-#define GL3_PROTOTYPES 1
+# define GLCOREARB_PROTOTYPES 1
 # define GL_GLEXT_PROTOTYPES 1
-# include <GL3/gl3.h>
-# include <GL3/glext.h>
+# include <GL/glcorearb.h>
+# include <GL/glext.h>
 #endif
 
 #include "common/Singleton.h"

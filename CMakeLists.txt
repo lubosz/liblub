@@ -93,22 +93,22 @@ endif(NOT OPENGL_FOUND)
 
 #check for opengl3 headers
 function(download_gl_header GL_HEADER)
-    if(NOT EXISTS ${CMAKE_SOURCE_DIR}/src/Renderer/GL3/${GL_HEADER})
+    if(NOT EXISTS ${CMAKE_SOURCE_DIR}/src/Renderer/GL/${GL_HEADER})
         execute_process(
-            WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/src/Renderer/GL3
+            WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/src/Renderer/GL
             COMMAND wget http://www.opengl.org/registry/api/${GL_HEADER}
     )
     endif()
 endfunction(download_gl_header)
 
-if(EXISTS /usr/include/GL3 AND NOT LIBLUB_WINDOWS)
-	message("OpenGL 3 Headers in /usr/include")
+if(EXISTS /usr/include/GL/glcorearb.h AND NOT LIBLUB_WINDOWS)
+	message("Core Profile API Header found in /usr/include")
 else()
-	message("No OpenGL 3 Headers found in /usr! Using local ones")
-	if(NOT EXISTS src/Renderer/GL3)
-		execute_process(COMMAND mkdir -p ${CMAKE_SOURCE_DIR}/src/Renderer/GL3)
+	message("No Core Profile API Header in /usr. Using local ones / downloading.")
+	if(NOT EXISTS src/Renderer/GL)
+		execute_process(COMMAND mkdir -p ${CMAKE_SOURCE_DIR}/src/Renderer/GL)
 	endif()
-	set(GL_HEADERS gl3.h glext.h glxext.h)
+	set(GL_HEADERS glcorearb.h glext.h glxext.h)
 	foreach(GL_HEADER ${GL_HEADERS})
 		    download_gl_header(${GL_HEADER})
     endforeach(GL_HEADER)
