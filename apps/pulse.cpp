@@ -33,18 +33,11 @@
 #include "Mesh/MengerSponge.h"
 #include "Scene/SceneGraph.h"
 
-class RomanescoNode : public Node {
+class Ball : public Node {
 public:
 
-
-
-    RomanescoNode() {
+    Ball() {
         position = QVector3D(0,0,0);
-        QList<string> attributes = QList<string>() << "uv";
-
-
-
-
     }
 
     QVector3D makeVectorFromPolarCoords(float amount, float length) {
@@ -52,87 +45,72 @@ public:
         QMatrix4x4 rotation = QMatrix4x4();
         rotation.setToIdentity();
         rotation.rotate(amount, QVector3D(0, 1, 0));
-
         return rotation * returnMe;
-    }
-
-    ~RomanescoNode() {
-
     }
 };
 
-class RomanescoApp: public Application {
- public:
+class PulseApp: public Application {
+public:
 
     float rotation;
-    Texture * texture;
-    Mesh* mesh;
 
-    float foo;
-    vector<RomanescoNode*> romanescos;
+    float pulse;
+    vector<Ball*> balls;
 
 
-  RomanescoApp(int argc, char *argv[]) : Application(argc,argv) {
-      foo = 0;
-      rotation = 0;
-  }
-
-  ~RomanescoApp() {
-//      delete texture;
-      for(auto romanesco : romanescos)
-        delete romanesco;
-  }
-
-  void scene() {
-
-      QList<string> attributes = QList<string>() << "uv";
-      ShaderProgram * shader = new TemplateProgram("instancing",attributes);
-  //    sponge->initBuffers(material);
-
-      texture = new TextureFile("diamond.png", "diffuse");
-      texture->bind();
-      texture->filterMinMag(GL_LINEAR_MIPMAP_LINEAR, GL_NEAREST);
-      shader->addTexture(texture);
-//      mesh = Geometry::tetrahedron(attributes);
-      mesh = Geometry::sphere(attributes, 1, 20, 20);
-
-      for (int i = 0; i < 500; i++) {
-          RomanescoNode * romanesco;
-        romanesco = new RomanescoNode();
-        romanesco->setShader(shader);
-        romanesco->setMesh(mesh);
-//        rotation += .1;
-//        QVector3D theVector = romanesco->makeVectorFromPolarCoords(10*rotation, rotation/10);
-//        romanesco->setSize(rotation/100);
-//        romanesco->setDirection(theVector);
-//        romanesco->setPosition(theVector);
-//        romanesco->update();
-        SceneGraph::Instance().addNode(romanesco);
-        romanescos.push_back(romanesco);
-
-      }
-  }
-
-  void renderFrame(){
-      foo += .1;
+    PulseApp(int argc, char *argv[]) : Application(argc,argv) {
+        pulse = 0;
         rotation = 0;
-      for (auto romanesco : romanescos) {
-          QVector3D theVector = romanesco->makeVectorFromPolarCoords(-10*rotation, rotation/10);
-          romanesco->setSize((sin(foo+rotation)+1.0)/10.0+rotation/100);
-          romanesco->setDirection(theVector);
-          romanesco->setPosition(theVector);
-          romanesco->update();
-          rotation += .1;
+    }
 
-      }
-    OnePass::draw();
-  }
+    ~PulseApp() {
+//        delete texture;
+//        for(auto ball : balls)
+//            delete ball;
+    }
 
+    void scene() {
+        Texture * texture;
+        Mesh* mesh;
+
+        QList<string> attributes = QList<string>() << "uv";
+        ShaderProgram * shader = new TemplateProgram("instancing",attributes);
+
+        texture = new TextureFile("diamond.png", "diffuse");
+        texture->bind();
+        texture->filterMinMag(GL_LINEAR_MIPMAP_LINEAR, GL_NEAREST);
+        shader->addTexture(texture);
+        mesh = Geometry::sphere(attributes, 1, 20, 20);
+
+        for (int i = 0; i < 500; i++) {
+            Ball * ball;
+            ball = new Ball();
+            ball->setShader(shader);
+            ball->setMesh(mesh);
+            SceneGraph::Instance().addNode(ball);
+            balls.push_back(ball);
+        }
+    }
+
+    void renderFrame(){
+        pulse += .1;
+        rotation = 0;
+        for (auto romanesco : balls) {
+            QVector3D theVector = romanesco->makeVectorFromPolarCoords(-10*rotation, rotation/10);
+            romanesco->setSize((sin(pulse+rotation)+1.0)/10.0+rotation/100);
+            romanesco->setDirection(theVector);
+            romanesco->setPosition(theVector);
+            romanesco->update();
+            rotation += .1;
+
+        }
+        OnePass::draw();
+    }
 };
 
 int main(int argc, char *argv[]) {
-  RomanescoApp app(argc,argv);
-  app.run();
+    PulseApp app(argc,argv);
+    app.run();
 }
 
 
