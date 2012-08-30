@@ -25,16 +25,16 @@
 #include "Renderer/RenderPasses.h"
 #include "Scene/SceneGraph.h"
 
-class InstancingApp: public Application {
+class RecursiveSpongeApp: public Application {
 public:
     ShaderProgram * shader;
     TreeSponge * sponge;
     Texture * texture;
 
-    InstancingApp(int argc, char *argv[]) : Application(argc,argv) {
+    RecursiveSpongeApp(int argc, char *argv[]) : Application(argc,argv) {
     }
 
-    ~InstancingApp() {
+    ~RecursiveSpongeApp() {
         delete shader;
         delete texture;
     }
@@ -64,6 +64,6 @@ public:
 };
 
 int main(int argc, char *argv[]) {
-    InstancingApp(argc,argv).run();
+    RecursiveSpongeApp(argc,argv).run();
 }
 
