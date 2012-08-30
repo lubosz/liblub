@@ -97,7 +97,7 @@ void Editor::setSelectedPlane(const QModelIndex &index) {
     selectedPlane = DeferredRenderer::Instance().sinkPass->debugPlanes[index.row()];
 
     vector<string> targets = DeferredRenderer::Instance().getTargetNames();
-    for (int i = 0; i < targets.size(); ++i) {
+    for (unsigned i = 0; i < targets.size(); ++i) {
         if (targets[i] == selectedPlane->targetName)
             renderTargetSelector->setCurrentIndex(i);
     }
@@ -240,7 +240,7 @@ void Editor::initWidgets(QSplitter * mainSplitter) {
 
     vector<string> targets = DeferredRenderer::Instance().getTargetNames();
 
-    for (int i = 0; i < targets.size(); ++i) {
+    for (unsigned i = 0; i < targets.size(); ++i) {
         renderTargetSelector->insertItem(i, QString::fromStdString(targets[i]));
     }
     renderTargetLayout->addWidget(renderTargetSelector);

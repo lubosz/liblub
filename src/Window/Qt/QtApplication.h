@@ -35,9 +35,6 @@ public:
   virtual void renderFrame() = 0;
   virtual void scene() = 0;
 
-  void notify();
-
-
 public slots:
   void setWireframe(bool wire);
   void draw();

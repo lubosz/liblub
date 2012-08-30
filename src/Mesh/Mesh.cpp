@@ -255,7 +255,7 @@ QVector3D Mesh::getVectorAtPosition(unsigned p, const string & bufferName) {
     return QVector3D(buffer->at(p), buffer->at(p+1), buffer->at(p+2));
 }
 
-const unsigned Mesh::getPositionAtXY(unsigned x, unsigned y, const unsigned resolution) const {
+unsigned Mesh::getPositionAtXY(unsigned x, unsigned y, const unsigned resolution) const {
 //      if (x < 0) x = 0;
 //      if (y < 0) y = 0;
     if (x > resolution) x = resolution;

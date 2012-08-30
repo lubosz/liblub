@@ -132,7 +132,7 @@ void GraphWidget::keyPressEvent(QKeyEvent *event) {
 }
 
 void GraphWidget::wheelEvent(QWheelEvent *event) {
-    scaleView(pow((double)2, -event->delta() / 240.0));
+    scaleView(pow(2.0, -event->delta() / 240.0));
 }
 
 void GraphWidget::mousePressEvent(QMouseEvent *event) {

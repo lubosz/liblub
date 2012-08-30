@@ -73,12 +73,12 @@ private:
 
     QPainterPath updatePath() const;
 
+    qreal arrowSize;
     string name;
     QPointF sourcePoint;
     QPointF destPoint;
     QPointF centerPoint;
     QRectF textRect;
-    qreal arrowSize;
     QPointF lastMousePosition;
     bool movingCenter;
 };

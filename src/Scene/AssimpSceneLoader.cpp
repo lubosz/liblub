@@ -140,7 +140,7 @@ void AssimpSceneLoader::load(string file) {
             printColor("reflectiveColor", reflectiveColor);
             newMaterial->reflectiveColor = Material::colorFromAssimp(reflectiveColor);
 
-            int texC = material->GetTextureCount(aiTextureType_DIFFUSE);
+            unsigned texC = material->GetTextureCount(aiTextureType_DIFFUSE);
             LogDebug << texC << "textures";
 
             for (unsigned texIndex = 0; texIndex < texC; texIndex++) {

@@ -76,7 +76,7 @@ public:
     }
 
 
-    Mesh * bulb(const QList<string> & attributes, unsigned resolution, float density) {
+    Mesh * bulb(const QList<string> & attributes, float density) {
         Mesh * mesh = new Mesh(attributes);
         double n = 100;
 
@@ -94,12 +94,12 @@ public:
 
         for(double x = from; x < to; x+=step) {
 
-            double progress = 0;
-            if (x < 0) {
-                progress = fabs(from) - fabs(x);
-            } else if (x >= 0) {
-                progress = fabs(from) + x;
-            }
+//            double progress;
+//            if (x < 0) {
+//                progress = fabs(from) - fabs(x);
+//            } else if (x >= 0) {
+//                progress = fabs(from) + x;
+//            }
 
             LogInfo << (x - from) * 100 / (fabs(from) + fabs(to)) << "%";
 
@@ -146,7 +146,7 @@ public:
 
     void scene() {
         QList<string> attributes = QList<string>() << "color";
-        Mesh* mandelBulb = bulb(attributes, 100, 0.1);
+        Mesh* mandelBulb = bulb(attributes, 0.1);
 
         ShaderProgram * stars = new SimpleProgram("Particle/stars",attributes);
 

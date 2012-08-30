@@ -32,6 +32,4 @@ class SceneLoader : public XmlReader {
 	void appendProgram(const QDomElement & programNode);
 	void appendTexture(const QDomElement & textureNode);
 	void appendMesh(const QDomElement & meshNode);
-
-
 };

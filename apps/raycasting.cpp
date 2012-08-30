@@ -133,7 +133,7 @@ public:
                 for(int z = 0; z < size; z++) {
 
                     QVector3D dist = QVector3D(x,y,z) - center;
-                    float fac = 1.0 - (dist.length() / (float)size);
+                    float fac = 1.0 - (dist.length() / static_cast<float>(size));
                     GLubyte color = fac*255;
 
                     voxels[(x*4) + (y * sizex4) + (z * size2x4)] = color;
@@ -159,7 +159,7 @@ public:
 
         std::vector<std::thread> threads;
 
-        for(int i = 0; i < threadCount; i++){
+        for(unsigned i = 0; i < threadCount; i++){
             vector<GLubyte> *voxelPart = new vector<GLubyte>();
             voxelParts.push_back(voxelPart);
 
@@ -173,7 +173,7 @@ public:
             thread.join();
         }
 
-        for (int i = 0; i < threadCount; i++) {
+        for (unsigned i = 0; i < threadCount; i++) {
             foreach (GLubyte voxel, *voxelParts.at(i)) {
                 voxels.push_back(voxel);
             }

@@ -10,8 +10,6 @@ class TextureModel : public QAbstractListModel {
     int columnCount(const QModelIndex &) const;
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
     Qt::ItemFlags flags(const QModelIndex &) const;
-
-    bool setData(const QModelIndex& index, const QVariant& value, int role);
 };
 
 #endif // TEXTUREMODEL_H

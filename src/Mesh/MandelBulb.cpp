@@ -41,7 +41,7 @@ double MandelBulb::distanceEstimate(QVector3D c, int n, unsigned maxIter) {
     const QVector3D dir = QVector3D(1, 0, 0);
     double r;
     double dr = 1;
-    int i = 0;
+    unsigned i = 0;
     bool loop = true;
 
     while(loop) {
@@ -114,7 +114,7 @@ void MandelBulb::generateVoxels(unsigned fromVoxel, unsigned toVoxel, vector<GLu
     //        QMap< int, unsigned> distances;
 
 
-    for(int x = fromVoxel; x < toVoxel; x++) {
+    for(unsigned x = fromVoxel; x < toVoxel; x++) {
         LogInfo << id << 100*(x-fromVoxel)/voxelRange << "%";
         double xtrans = scale * x + from;
 

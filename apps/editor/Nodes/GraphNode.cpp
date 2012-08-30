@@ -64,15 +64,15 @@ void GraphNode::setShaderName(string shaderName) {
 
 void GraphNode::addEdge(Edge *edge)
 {
-    edgeList << edge;
+    edgeList.push_back(edge);
     edge->adjust();
 }
 
 unsigned GraphNode::getConnectionsTo(GraphNode * node) {
     unsigned connections = 0;
     foreach (Edge * edge, edgeList) {
-        if (edge->source == this && edge->dest == node
-                || edge->source == node && edge->dest == this)
+        if ((edge->source == this && edge->dest == node)
+                || (edge->source == node && edge->dest == this))
             connections++;
 
     }
@@ -83,6 +83,7 @@ unsigned GraphNode::getEdgeNumber(Edge * edge) {
     for (unsigned i = 0; i < edgeList.size(); i++)
         if (edgeList[i] == edge)
             return i;
+    return 0;
 }
 
 unsigned GraphNode::getEdgeNumberTo(Edge * edge) {
@@ -102,20 +103,11 @@ unsigned GraphNode::getEdgeNumberTo(Edge * edge) {
         if (someEdge == edge)
             return i;
     }
-
+    return 0;
 }
 
-QList<Edge *> GraphNode::edges() const
-{
+vector<Edge *> GraphNode::edges() const {
     return edgeList;
-}
-
-bool GraphNode::advance()
-{
-    if (newPos == pos())
-        return false;
-    setPos(newPos);
-    return true;
 }
 
 QRectF GraphNode::boundingRect() const

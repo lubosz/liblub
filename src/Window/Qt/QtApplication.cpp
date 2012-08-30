@@ -81,10 +81,6 @@ void QtApplication::draw() {
   glError;
 }
 
-void QtApplication::notify() {
-
-}
-
 void QtApplication::setWireframe(bool wire) {
   useWireframe = wire;
   OpenGL::Instance().setWire(wire);

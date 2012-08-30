@@ -228,6 +228,8 @@ Texture* DeferredRenderer::getTargetFromName(const QString &name) {
                 return tex;
 
     LogError << name.toStdString() << "not found";
+
+    return nullptr;
 }
 
 void DeferredRenderer::changePlaneSource(DebugPlane * plane, const QString &name) {

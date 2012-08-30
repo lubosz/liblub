@@ -17,7 +17,7 @@ class ShaderProgram;
 
 class Node: public QObject {
 
-    friend class TreeSponge;
+  friend class TreeSponge;
   Q_OBJECT
   Q_PROPERTY(float size READ size WRITE setSize)
   Q_PROPERTY(float rotationX READ rotationX WRITE setRotationX)
@@ -33,17 +33,14 @@ private:
   string name;
   QVector3D eulerRotationCache;
   Node * parent;
-  Material * material;
-  Mesh * mesh;
-
-protected:
-  ShaderProgram * shader;
-
 public:
-  QVector3D position;
-  QMatrix4x4 rotationMatrix;
   QMatrix4x4 modelMatrix;
+  Material * material;
+  ShaderProgram * shader;
+  QVector3D position;
   QQuaternion rotation;
+  Mesh * mesh;
+  QMatrix4x4 rotationMatrix;
 
   Node();
 
@@ -102,7 +99,6 @@ public:
   static void setShadowCoords(ShaderProgram * shaderProgram,
       DirectionNode * viewPoint);
   void setShader(ShaderProgram* shader);
-
 
 public slots:
   void setSize(float size);

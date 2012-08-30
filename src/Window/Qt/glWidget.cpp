@@ -38,10 +38,6 @@ void GLWidget::mousePressEvent(QMouseEvent *event) {
   lastMousePosition = event->pos();
 }
 
-void GLWidget::mouseReleaseEvent(QMouseEvent *event) {
-    QtInput::Instance().mousePosition = QVector2D(0,0);
-}
-
 void GLWidget::mouseMoveEvent(QMouseEvent *event) {
   this->setFocus();
 

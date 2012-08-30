@@ -19,7 +19,6 @@ public:
 protected:
   void resizeGL(int width, int height);
   void mousePressEvent(QMouseEvent *event);
-  void mouseReleaseEvent(QMouseEvent *event);
   void mouseMoveEvent(QMouseEvent *event);
   QPoint lastMousePosition;
 

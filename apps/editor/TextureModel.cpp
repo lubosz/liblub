@@ -31,19 +31,3 @@ QVariant TextureModel::data(const QModelIndex &index, int role) const {
 
     return QVariant();
 }
-
-bool TextureModel::setData(const QModelIndex& index, const QVariant& value, int role) {
-//    int row = index.row();
-
-//    DebugPlane * plane = DeferredRenderer::Instance().sinkPass->debugPlanes[row];
-
-//    if (role == Qt::CheckStateRole) {
-//        if (value == Qt::Checked) {
-//            plane->visible = true;
-//        } else {
-//            plane->visible = false;
-//        }
-//        emit draw();
-//    }
-    return true;
-}

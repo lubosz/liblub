@@ -23,7 +23,7 @@ static void generate_static(unsigned from, unsigned to,
 
             complex<double> Z = complex<double>(ZxMin + iX * Pixelresolution, Zimag);
 
-            int Iteration = FractalMesh::GiveLastIteration(C, Z, &distance, IterationMax, EscapeRadius);
+            unsigned Iteration = FractalMesh::GiveLastIteration(C, Z, &distance, IterationMax, EscapeRadius);
 
             double measure = distance.real() / static_cast<double>(Iteration);
             QColor color(0,0,0);
@@ -62,7 +62,7 @@ static void generate_static_noposition(unsigned from, unsigned to,
             unsigned resolution, unsigned IterationMax, unsigned EscapeRadius,
             double Pixelresolution, double PixelHeight,
             double ZyMax, double ZxMin,
-            complex<double> C, float density) {
+            complex<double> C) {
 
     for(unsigned iY=from; iY < to; ++iY) {
 
@@ -76,8 +76,8 @@ static void generate_static_noposition(unsigned from, unsigned to,
             complex<double> Z = complex<double>(ZxMin + iX * Pixelresolution, Zimag);
 
 //            int Iteration = FractalMesh::GiveLastIteration(C, Z, &distance, IterationMax, EscapeRadius);
-            int Iteration;
-            for(Iteration=0; Iteration < IterationMax && abs(Z) <= EscapeRadius; Iteration++) {
+            unsigned Iteration;
+            for(Iteration = 0; Iteration < IterationMax && abs(Z) <= EscapeRadius; Iteration++) {
                 Z = FractalMesh::f(Z, C);
             }
 //            int Iteration = IterationMax;
@@ -125,7 +125,7 @@ FractalMesh::FractalMesh(const QList<string> & attributes, unsigned resolution, 
 
     std::vector<std::thread> threads;
 
-    for(int i = 0; i < threadCount; ++i){
+    for(unsigned i = 0; i < threadCount; ++i){
         vector<GLfloat> * pos = new vector<GLfloat>();
         positions.push_back(pos);
         vector<GLfloat> * col = new vector<GLfloat>();
@@ -184,8 +184,8 @@ int FractalMesh::GiveLastIteration(complex<double> C,complex<double> Z) {
 int FractalMesh::GiveLastIteration(complex<double> C,complex<double> Z, complex<double> * distance, unsigned IterationMax, unsigned EscapeRadius) {
     complex<double> h;
     *distance = 0;
-    int i;
-    for(i=0; i < IterationMax && abs(Z) <= EscapeRadius; i++) {
+    unsigned i;
+    for(i = 0; i < IterationMax && abs(Z) <= EscapeRadius; i++) {
         h = Z;
         Z = f(Z, C);
         *distance = *distance + abs(Z - h);
@@ -290,7 +290,7 @@ void FractalMesh::regenerate() {
 
     std::vector<std::thread> threads;
 
-    for(int i = 0; i < threadCount; ++i){
+    for(unsigned i = 0; i < threadCount; ++i){
 //        vector<GLfloat> * pos = new vector<GLfloat>();
 //        positions.push_back(pos);
         vector<GLfloat> * col = new vector<GLfloat>();
@@ -301,7 +301,7 @@ void FractalMesh::regenerate() {
                                resolution, IterationMax, EscapeRadius,
                                Pixelresolution, PixelHeight,
                                ZyMax, ZxMin,
-                               C, density));
+                               C));
 
     }
 

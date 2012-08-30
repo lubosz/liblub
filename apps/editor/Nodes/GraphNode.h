@@ -60,14 +60,11 @@ class GraphNode
 public:
     GraphNode(GraphWidget *graphWidget, QString name);
 
-    QString name;
     void addEdge(Edge *edge);
-    QList<Edge *> edges() const;
+    vector<Edge *> edges() const;
 
     enum { Type = UserType + 1 };
     int type() const { return Type; }
-
-    bool advance();
 
     QRectF boundingRect() const;
     QPainterPath shape() const;
@@ -87,11 +84,12 @@ protected:
     void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
     
 private:
-    QList<Edge *> edgeList;
-    QPointF newPos;
     GraphWidget *graph;
-    QSize size;
+    QString name;
+    vector<Edge *> edgeList;
+    QPointF newPos;
     string shaderName;
+    QSize size;
 };
 
 #endif
