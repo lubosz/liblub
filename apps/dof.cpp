@@ -84,11 +84,11 @@ void scene() {
     // = new Simple("Common/minimal",QList<string>());
 
     // debug depth
-    pDebugDepthFBOMaterial = new VertFragProgram("Texture/debugfbo",attributes);
+    pDebugDepthFBOMaterial = new VertFragProgram("Texture/texture",attributes);
 	pDebugDepthFBOMaterial->addTexture(pDepthTexture);
 
 	// debug color
-	pDebugColorFBOMaterial = new VertFragProgram("Texture/debugfbo",attributes);
+	pDebugColorFBOMaterial = new VertFragProgram("Texture/texture",attributes);
 	pDebugColorFBOMaterial->addTexture(pColorTexture);
 
 	// DOF-Shader

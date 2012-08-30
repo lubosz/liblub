@@ -17,7 +17,7 @@ public:
 
       Config::Instance().load("config.xml");
       XCBWindow * window  = new XCBWindow();
-      VertFragProgram * simpleProgram = new VertFragProgram("Texture/font",attributes);
+      VertFragProgram * simpleProgram = new VertFragProgram("Texture/texture",attributes);
 
       ShaderProgram * program = new ShaderProgram("A Program");
 

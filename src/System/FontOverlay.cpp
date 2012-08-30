@@ -26,7 +26,7 @@ FontOverlay::FontOverlay() {
   textLines = QMap<string,string>();
   QList<string> attributes = QList<string>();
   attributes.push_back("uv");
-  shader = new VertFragProgram("Texture/font",attributes);
+  shader = new VertFragProgram("Texture/texture",attributes);
   mesh = Geometry::plane(attributes, QRectF(0.5,0,0.5,1));
   attributes.clear();
 //  attributes.~QList();
@@ -102,6 +102,9 @@ void FontOverlay::render() {
 
   fontPainter.drawText(drawBox, Qt::AlignLeft, QString::fromStdString(text));
   fontPainter.end();
+
+  //TODO: Qt loads image with wrong pixel order
+  image = image.mirrored(false, true);
 
 }
 
