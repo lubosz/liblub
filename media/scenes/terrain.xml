@@ -9,7 +9,7 @@
 	</Textures>
 	<Programs>
 		<Program name="uvmove">
-			<Shader url="Geometry/uvmove" />
+			<Shader url="Geometry/heightmap" />
 			<Uniform name="uvoffset" value="0.5,1.2" />
 			<Uniform name="tiling" value="1" />
 			<Uniform value="0.6, 0.6, 0.6, 1.0" name="specularMaterialColor" />
