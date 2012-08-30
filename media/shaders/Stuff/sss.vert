@@ -11,17 +11,17 @@ uniform mat4 MVMatrix;
 uniform mat4 MVPMatrix;
 uniform mat3 NormalMatrix;
 
-uniform vec3 lightPositionView;
+uniform vec4 lightPositionView;
 
 out vec3 worldNormal, eyeVec, lightVec, vertPos, lightPos;
 out vec2 uv;
 
 void subScatterVS(in vec4 ecVert)
 {
-	lightVec = lightPositionView - ecVert.xyz;
+	lightVec = lightPositionView.xyz - ecVert.xyz;
 	eyeVec = -ecVert.xyz;
 	vertPos = ecVert.xyz;
-	lightPos = lightPositionView;
+	lightPos = lightPositionView.xyz;
 }
 
 void main()

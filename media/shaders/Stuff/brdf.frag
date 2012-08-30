@@ -1,12 +1,21 @@
-#version 150 core
+#version 420 core
 
 const float PI = 3.14159;
 const float ONE_OVER_PI = 1.0 / PI;
 
+/*
 uniform vec4 SurfaceColor; // Base color of surface
 uniform vec2 P; // Diffuse (x) and specular reflectance (y)
 uniform vec2 A; // Slope distribution in x and y
 uniform vec3 Scale; // Scale factors for intensity computation
+*/
+
+
+const vec4 SurfaceColor = vec4(1,0,0,1); // Base color of surface
+const vec2 P = vec2(0.8, 0.7); // Diffuse (x) and specular reflectance (y)
+const vec2 A = vec2(1,1); // Slope distribution in x and y
+const vec3 Scale = vec3(1,1,1); // Scale factors for intensity computation
+
 
 in  vec3  N, L, H, R, T, B;
 
@@ -28,5 +37,7 @@ void main()
               Scale[2] * dot(H, N) * P.y;
   vec3 color = intensity * SurfaceColor.rgb;
   FragColor = vec4(color, 1.0);
+  
+  FragColor = vec4(brdf);
 }
 

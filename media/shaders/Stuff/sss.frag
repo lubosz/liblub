@@ -2,6 +2,7 @@
 
 precision highp float;
 
+/*
 uniform float MaterialThickness;
 uniform vec3 ExtinctionCoefficient; // Will show as X Y and Z ports in QC, but actually represent RGB values.
 uniform vec4 lightColor;
@@ -9,7 +10,16 @@ uniform vec4 BaseColor;
 uniform vec4 SpecColor;
 uniform float SpecPower;
 uniform float RimScalar;
-//uniform sampler2D Texture;
+*/
+uniform sampler2D diffuseTexture;
+
+const float MaterialThickness = 1.0;
+const vec3 ExtinctionCoefficient = vec3(1);
+const vec4 lightColor = vec4(1);
+const vec4 BaseColor = vec4(1,0,0,1);
+const vec4 SpecColor = vec4(1);
+const float SpecPower = 1.0;
+const float RimScalar = 1.0;
 
 in vec3 worldNormal, eyeVec, lightVec, vertPos, lightPos;
 in vec2 uv;
@@ -36,7 +46,7 @@ void main()
 	vec3 wNorm = normalize(worldNormal);
 
 	vec4 dotLN = vec4(halfLambert(lVec,wNorm) * attenuation);
-	//dotLN *= texture2D(Texture, gl_TexCoord[0].xy);
+	dotLN *= texture2D(diffuseTexture, uv);
 	dotLN *= BaseColor;
 
 	vec3 indirectLightComponent = vec3(MaterialThickness * max(0.0,dot(-wNorm,lVec)));
@@ -54,5 +64,6 @@ void main()
 	finalCol.rgb += (rim * RimScalar * attenuation * finalCol.a);
 	finalCol.rgb += vec3(blinnPhongSpecular(wNorm,lVec,SpecPower) * attenuation * SpecColor * finalCol.a * 0.05);
 	finalCol.rgb *= lightColor.rgb;
+	
 }
 

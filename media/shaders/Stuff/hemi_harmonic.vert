@@ -1,9 +1,10 @@
-#version 150 core
+#version 420 core
 
 uniform mat4 MVMatrix;
 uniform mat4 MVPMatrix;
 uniform mat3 NormalMatrix;
-uniform float ScaleFactor;
+//uniform float ScaleFactor;
+const float ScaleFactor = 1.0;
 
 const float  C1 = 0.429043;
 const float  C2 = 0.511664;
@@ -22,16 +23,16 @@ const vec3 L20 = vec3(-0.028667, -0.024926,  -0.020998);
 const vec3 L21 = vec3(-0.077539, -0.086325,  -0.091591);
 const vec3 L22 = vec3(-0.161784, -0.191783,  -0.219152);
 
-in  vec4 MCVertex;
-in  vec3 MCNormal;
-in  float Accessibility;
+in  vec3 in_Vertex;
+in  vec3 in_Normal;
+//in  float Accessibility;
+const float Accessibility = 1.0;
 
 out vec3  DiffuseColor;
 
 void main()
 {
-  foo();
-  vec3 tnorm   = normalize(NormalMatrix * MCNormal);
+  vec3 tnorm   = normalize(NormalMatrix * in_Normal);
   DiffuseColor = C1 * L22 * (tnorm.x * tnorm.x - tnorm.y * tnorm.y) +
                  C3 * L20 *  tnorm.z * tnorm.z +
                  C4 * L00 -
@@ -44,6 +45,6 @@ void main()
                  2.0 * C2 * L10  * tnorm.z;
   DiffuseColor *= ScaleFactor;
   DiffuseColor *= Accessibility;
-  gl_Position = MVPMatrix * MCVertex;
+  gl_Position = MVPMatrix * vec4(in_Vertex,1);
 }
 
