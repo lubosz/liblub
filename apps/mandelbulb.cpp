@@ -148,7 +148,7 @@ public:
         QList<string> attributes = QList<string>() << "color";
         Mesh* mandelBulb = bulb(attributes, 0.1);
 
-        ShaderProgram * stars = new VertFragProgram("Particle/stars",attributes);
+        ShaderProgram * stars = new VertFragProgram("Geometry/pointsize",attributes);
 
         Node * plane = new Node("Plane", QVector3D(-5,-10,-15), 1, mandelBulb, stars);
         SceneGraph::Instance().addNode(plane);

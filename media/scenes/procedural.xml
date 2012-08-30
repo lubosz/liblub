@@ -2,7 +2,7 @@
 <liblub>
 	<Programs>
 		<Program name="stars">
-			<Shader url="Particle/stars" />
+			<Shader url="Geometry/pointsize" />
 		</Program>
 	</Programs>
 	<Meshes>

@@ -52,9 +52,7 @@ class LoadApp: public Application {
 //    material->shaderProgram = SceneData::Instance().shaderPrograms.value("Texture");
 //    material->addTexture(textTexture);
 
-    QList<string> attributes;
-    attributes.push_back("uv");
-//    attributes.push_back("normal");
+      QList<string> attributes = QList<string> () << "normal" << "uv";
 
     perlinNoise = new VertFragProgram("Noise/perlin",attributes);
 

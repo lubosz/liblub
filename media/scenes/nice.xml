@@ -19,7 +19,7 @@
 			<Shader url="Color/white" />
 		</Program>
 		<Program name="stars">
-			<Shader url="Particle/stars" />
+			<Shader url="Geometry/pointsize" />
 		</Program>
 		<Program name="CubeMap">
 			<Shader url="Texture/cubemap" />
@@ -29,20 +29,6 @@
 		</Program>
 		<Program name="normalcolor">
 			<Shader url="Color/normalcolor" />
-		</Program>
-		<Program name="BrickMaterial">
-			<Shader url="Procedural/brick" />
-			<Uniform value="1.0, 0.3, 0.2" name="brickColor" />
-			<Uniform value="0.85, 0.86, 0.84" name="mortarColor" />
-			<Uniform value="0.30, 0.15" name="brickSize" />
-			<Uniform value="0.90, 0.85" name="brickPct" />
-		</Program>
-		<Program name="ProcBumpMaterial">
-			<Shader url="Procedural/procBump" />
-			<Uniform value="0.7, 0.6, 0.18, 1.0" name="SurfaceColor" />
-			<Uniform value="16.0" name="BumpDensity" />
-			<Uniform value="0.15" name="BumpSize" />
-			<Uniform value="0.5" name="SpecularFactor" />
 		</Program>
 		<Program name="PhongColorMat">
 			<Shader url="Color/PhongColor" />
@@ -131,8 +117,6 @@
 		<ObjectPlane size="10" step="3" mesh="monkey" materials="
 			CubeMap,
 			normalcolor,
-			BrickMaterial,
-			ProcBumpMaterial,
 			Ocean,
 			NormalMapMaterial,
 			PhongColorMat,

@@ -14,7 +14,7 @@ in vec3 color1;
 in vec3 color2;
 in vec3 position;
 
-{% include "noise/simplex3D.glsl" %}
+{% include "Noise/simplex3D.glsl" %}
 
 /*
 float normalNoise(vec3 normal, float time) {

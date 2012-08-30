@@ -145,7 +145,7 @@ public:
         cam->setDirection(QVector3D(-1,-5,-1));
         cam->update();
         //    QList<string> NormalAttributes = QList<string>() << "color";
-        //    shader = new VertFragProgram("Particle/stars",NormalAttributes);
+        //    shader = new VertFragProgram("Geometry/pointsize",NormalAttributes);
         //    Mesh * normalMesh = makeNormalMesh(mesh);
         //    Node * normalNode = new Node("Normals", QVector3D(-5,-5,-5), 1, normalMesh, shader);
         //    LogInfo << normalNode->getName();
