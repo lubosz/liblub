@@ -20,7 +20,7 @@ public:
     Camera * camera = new Camera();
     Light * light = new Light(QVector3D(0, 0, 0),QVector3D(0, -5, 0));
     Mesh * mesh = new Mesh(attributes); //Geometry::plane(attributes, QRectF(0.5,0,0.5,1)
-    ShaderProgram * shader = new SimpleProgram("Texture/font",attributes);
+    ShaderProgram * shader = new VertFragProgram("Texture/font",attributes);
 
     Node * node = new Node("Test", QVector3D(0,0,0), 1, mesh, shader);
     delete camera;

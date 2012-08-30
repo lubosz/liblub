@@ -115,7 +115,7 @@ void DeferredRenderer::initShadowReceivers() {
 
     TemplateEngine::Instance().c.insert("shadowSamplers", shadowSamplers);
     TemplateEngine::Instance().c.insert("shadowSamplerSize", shadowSamplers.size());
-    ShaderProgram * gatherShader = new TemplateProgram("Post/MultiTarget", tangentAttribs);
+    ShaderProgram * gatherShader = new VertFragProgram("Post/MultiTarget", tangentAttribs);
 
 
     shadowReceivePass = new ShadowReceivePass(res,shadowReceiveSources,
@@ -140,7 +140,7 @@ void DeferredRenderer::initAo() {
         new ColorTexture(res, "ao")
     };
     aoPass = new InOutPass(res, aoSources, aoTargets,
-        new SimpleProgram("AO/ssao", uv));
+        new VertFragProgram("AO/ssao", uv));
     drawPasses.push_back(aoPass);
 
 
@@ -155,7 +155,7 @@ void DeferredRenderer::initAo() {
     TemplateEngine::Instance().c.insert("source1", QString::fromStdString(aoPass->getTarget("ao")->name));
     TemplateEngine::Instance().c.insert("source2", QString::fromStdString(shadowReceivePass->getTarget("shadowTarget")->name));
     InOutPass * mergePass = new InOutPass(res, mergeSources, mergeTargets,
-        new TemplateProgram("Post/Merge", uv));
+        new VertFragProgram("Post/Merge", uv));
     drawPasses.push_back(mergePass);
 
     vector<Texture*> blurHSources = {
@@ -165,14 +165,14 @@ void DeferredRenderer::initAo() {
         new ColorTexture(res, "blurH")
     };
     InOutPass * blurHPass = new InOutPass(res, blurHSources, blurHTargets,
-        new SimpleProgram("AO/blur_horizontal", uv));
+        new VertFragProgram("AO/blur_horizontal", uv));
     drawPasses.push_back(blurHPass);
 
     vector<Texture*> blurVTargets = {
         new ColorTexture(res, "finalAOTarget")
     };
     blurVPass = new InOutPass(res, blurHTargets, blurVTargets,
-        new SimpleProgram("AO/blur_vertical", uv));
+        new VertFragProgram("AO/blur_vertical", uv));
     drawPasses.push_back(blurVPass);
 }
 
@@ -203,7 +203,7 @@ void DeferredRenderer::initShadingPass() {
 //    TemplateEngine::Instance().c.insert("paralaxMap", true);
     QList<string> uv = QList<string> () << "uv";
     shadingPass = new InOutPass(res, shadingSources, shadingTargets,
-        new TemplateProgram("Post/DeferredMultiLight", uv));
+        new VertFragProgram("Post/DeferredMultiLight", uv));
     drawPasses.push_back(shadingPass);
 
     // Init Light Uniform Buffer

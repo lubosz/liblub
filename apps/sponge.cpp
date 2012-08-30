@@ -60,13 +60,13 @@ void Sponge::initPasses() {
 }
 
 void Sponge::initMaterial() {
-    vector<string> flags = {
-        "receiveShadows",
-        "useSpotLight",
-        "usePCF"
-    };
+//    vector<string> flags = {
+//        "receiveShadows",
+//        "useSpotLight",
+//        "usePCF"
+//    };
     shader = new ShaderProgram("Phong Color");
-    shader->attachVertFrag("Color/PhongColor", flags);
+    shader->attachVertFrag("Color/PhongColor");
     shader->init(attributes);
     shader->setUniform("ambientSceneColor",QVector4D(0.1, 0.1,0.1, 1.0));
     shader->setUniform("diffuseMaterialColor",QVector4D(1,1,1,1));

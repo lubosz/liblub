@@ -80,19 +80,19 @@ void scene() {
     attributes.push_back("uv");
 
     // depth material
-    pDepthMaterial = new SimpleProgram("Common/depth",QList<string>());
+    pDepthMaterial = new VertFragProgram("Common/depth",QList<string>());
     // = new Simple("Common/minimal",QList<string>());
 
     // debug depth
-    pDebugDepthFBOMaterial = new SimpleProgram("Texture/debugfbo",attributes);
+    pDebugDepthFBOMaterial = new VertFragProgram("Texture/debugfbo",attributes);
 	pDebugDepthFBOMaterial->addTexture(pDepthTexture);
 
 	// debug color
-	pDebugColorFBOMaterial = new SimpleProgram("Texture/debugfbo",attributes);
+	pDebugColorFBOMaterial = new VertFragProgram("Texture/debugfbo",attributes);
 	pDebugColorFBOMaterial->addTexture(pColorTexture);
 
 	// DOF-Shader
-	pDOFShader = new SimpleProgram("DepthOfField/dof", attributes);
+	pDOFShader = new VertFragProgram("DepthOfField/dof", attributes);
 	pDOFShader->addTexture(pColorTexture);
 	pDOFShader->addTexture(pDepthTexture);
 	pDOFShader->samplerUniforms();

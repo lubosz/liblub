@@ -57,22 +57,11 @@ void ShaderProgram::printProgramInfoLog() {
   }
 }
 
-void ShaderProgram::attachShader(const string &fileName, GLenum type, bool useTemplate) {
+void ShaderProgram::attachShader(const string &fileName, GLenum type) {
     /* Attach our shaders to our program */
-  Shader * shader = new Shader(fileName, type, useTemplate);
+  Shader * shader = new Shader(fileName, type);
   shaders.push_back(shader);
   glAttachShader(handle, shader->getHandle());
-}
-
-void ShaderProgram::attachShader(
-        const string &fileName, GLenum type, const vector<string> & defines) {
-    /* Attach our shaders to our program */
-  Shader * shader = new Shader(fileName, type, defines);
-  shaders.push_back(shader);
-  glError;
-  glAttachShader(handle, shader->getHandle());
-  glError;
-  LogDebug << "Attaching shader with defines";
 }
 
 void ShaderProgram::detachShader(Shader *shader) {
@@ -81,25 +70,20 @@ void ShaderProgram::detachShader(Shader *shader) {
   delete shader;
 }
 
-void ShaderProgram::attachVertFrag(const string &file, bool useTemplate) {
-  attachShader(file + ".vert", GL_VERTEX_SHADER, useTemplate);
-  attachShader(file + ".frag", GL_FRAGMENT_SHADER, useTemplate);
-}
-void ShaderProgram::attachVertFrag(
-        const string &file, const vector<string> & defines) {
-    attachShader(file + ".vert", GL_VERTEX_SHADER, defines);
-    attachShader(file + ".frag", GL_FRAGMENT_SHADER, defines);
+void ShaderProgram::attachVertFrag(const string &file) {
+  attachShader(file + ".vert", GL_VERTEX_SHADER);
+  attachShader(file + ".frag", GL_FRAGMENT_SHADER);
 }
 
-void ShaderProgram::attachVertGeom(const string &file, bool useTemplate) {
-  attachShader(file + ".vert", GL_VERTEX_SHADER, useTemplate);
-  attachShader(file + ".geom", GL_GEOMETRY_SHADER, useTemplate);
+void ShaderProgram::attachVertGeom(const string &file) {
+  attachShader(file + ".vert", GL_VERTEX_SHADER);
+  attachShader(file + ".geom", GL_GEOMETRY_SHADER);
 }
 
-void ShaderProgram::attachVertFragGeom(const string &file, bool useTemplate) {
-  attachShader(file + ".vert", GL_VERTEX_SHADER, useTemplate);
-  attachShader(file + ".geom", GL_GEOMETRY_SHADER, useTemplate);
-  attachShader(file + ".frag", GL_FRAGMENT_SHADER, useTemplate);
+void ShaderProgram::attachVertFragGeom(const string &file) {
+  attachShader(file + ".vert", GL_VERTEX_SHADER);
+  attachShader(file + ".geom", GL_GEOMETRY_SHADER);
+  attachShader(file + ".frag", GL_FRAGMENT_SHADER);
 }
 
 void ShaderProgram::bindAttrib(unsigned position, const string &name) {

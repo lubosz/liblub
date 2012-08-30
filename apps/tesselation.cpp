@@ -44,11 +44,11 @@ class TesselationApp: public Application {
 
     QList<string> attributes;
 
-    shader->attachShader("Tesselation/Tesselation.vert",GL_VERTEX_SHADER,true);
-    shader->attachShader("Tesselation/Tesselation.eval",GL_TESS_EVALUATION_SHADER,true);
-    shader->attachShader("Tesselation/Tesselation.cont",GL_TESS_CONTROL_SHADER,true);
-    shader->attachShader("Tesselation/Tesselation.geom",GL_GEOMETRY_SHADER,true);
-    shader->attachShader("Tesselation/Tesselation.frag",GL_FRAGMENT_SHADER,true);
+    shader->attachShader("Tesselation/Tesselation.vert",GL_VERTEX_SHADER);
+    shader->attachShader("Tesselation/Tesselation.eval",GL_TESS_EVALUATION_SHADER);
+    shader->attachShader("Tesselation/Tesselation.cont",GL_TESS_CONTROL_SHADER);
+    shader->attachShader("Tesselation/Tesselation.geom",GL_GEOMETRY_SHADER);
+    shader->attachShader("Tesselation/Tesselation.frag",GL_FRAGMENT_SHADER);
     shader->init(attributes);
 
     shader->setUniform("TessLevelInner",1.0f);

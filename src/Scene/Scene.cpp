@@ -59,7 +59,7 @@ ShaderProgram* Scene::getShader(const string & name) {
     return shader;
   } else {
   LogWarning << "Program not found" << name;
-    return new EmptyProgram();
+    return new ShaderProgram("Empty");
   }
 }
 

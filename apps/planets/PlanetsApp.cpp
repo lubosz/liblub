@@ -122,7 +122,7 @@ void PlanetsApp::initPostProcessing() {
   fbo->attachTexture(targetTexture);
   fbo->check();
 
-  HDR = new TemplateProgram("Post/HDR", QList<string> () << "uv");
+  HDR = new VertFragProgram("Post/HDR", QList<string> () << "uv");
   HDR->addTexture(targetTexture);
   HDR->setUniform("exposure", 2.0f);
   HDR->samplerUniforms();

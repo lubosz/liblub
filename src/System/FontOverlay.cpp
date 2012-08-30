@@ -26,7 +26,7 @@ FontOverlay::FontOverlay() {
   textLines = QMap<string,string>();
   QList<string> attributes = QList<string>();
   attributes.push_back("uv");
-  shader = new SimpleProgram("Texture/font",attributes);
+  shader = new VertFragProgram("Texture/font",attributes);
   mesh = Geometry::plane(attributes, QRectF(0.5,0,0.5,1));
   attributes.clear();
 //  attributes.~QList();

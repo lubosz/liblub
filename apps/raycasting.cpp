@@ -202,7 +202,7 @@ public:
                // Texture* volumeTexture = createVolumeTexture(512);
 //        Texture* volumeTexture = ballGradient(512);
 
-        raycastingShader = new TemplateProgram("raycasting",attributes);
+        raycastingShader = new VertFragProgram("raycasting",attributes);
         raycastingShader->addTexture(backfaceTexture);
         raycastingShader->addTexture(frontfaceTexture);
         raycastingShader->addTexture(volumeTexture);
@@ -212,7 +212,7 @@ public:
 //        raycastingShader->setUniform("stepsize", .001);
         raycastingShader->setUniform("stepsize", 1.0/500.0);
 
-        positionShader = new SimpleProgram("Color/position",QList<string> ());
+        positionShader = new VertFragProgram("Color/position",QList<string> ());
 
 
         Scene::Instance().name = "Raycasting";

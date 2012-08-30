@@ -119,9 +119,9 @@ public:
 
     void scene() {
 
-        ShaderProgram * ocean = new TemplateProgram("julia", attributes);
+        ShaderProgram * ocean = new VertFragProgram("julia", attributes);
 
-        //      ShaderProgram * ocean = new TemplateProgram("Ocean-small", attributes);
+        //      ShaderProgram * ocean = new VertFragProgram("Ocean-small", attributes);
         //      setOceanUniforms(ocean);
 
         //      Texture * oceanNormal = new TextureFile("ocean/waves.png","NormalMap");
@@ -145,7 +145,7 @@ public:
         cam->setDirection(QVector3D(-1,-5,-1));
         cam->update();
         //    QList<string> NormalAttributes = QList<string>() << "color";
-        //    shader = new SimpleProgram("Particle/stars",NormalAttributes);
+        //    shader = new VertFragProgram("Particle/stars",NormalAttributes);
         //    Mesh * normalMesh = makeNormalMesh(mesh);
         //    Node * normalNode = new Node("Normals", QVector3D(-5,-5,-5), 1, normalMesh, shader);
         //    LogInfo << normalNode->getName();

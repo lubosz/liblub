@@ -23,14 +23,13 @@ class ShaderProgram : public NamedObject {
 public:
     ShaderProgram(string name);
     virtual ~ShaderProgram();
-    void attachShader(const string &fileName, GLenum type, bool useTemplate);
+    void attachShader(const string &fileName, GLenum type);
     void attachShader(const string &fileName, GLenum type,
             const vector<string> & defines);
 
-    void attachVertFrag(const string &file, bool useTemplate);
-    void attachVertFrag(const string &file, const vector<string> & defines);
-    void attachVertGeom(const string &file, bool useTemplate);
-    void attachVertFragGeom(const string &file, bool useTemplate);
+    void attachVertFrag(const string &file);
+    void attachVertGeom(const string &file);
+    void attachVertFragGeom(const string &file);
 
     void use();
     void bindAttribIfUnbound(const string &name);

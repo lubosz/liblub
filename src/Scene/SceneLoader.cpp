@@ -54,28 +54,18 @@ void SceneLoader::appendProgram(const QDomElement & programNode) {
             if (programInfo.hasAttribute("type")) {
                 QString shaderType = programInfo.attribute("type");
                 if (shaderType == "VERTEX_SHADER")
-                    program->attachShader(shaderUrl, GL_VERTEX_SHADER, false);
+                    program->attachShader(shaderUrl, GL_VERTEX_SHADER);
                 else if (shaderType == "GEOMETRY_SHADER")
-                    program->attachShader(shaderUrl, GL_GEOMETRY_SHADER, false);
+                    program->attachShader(shaderUrl, GL_GEOMETRY_SHADER);
                 else if (shaderType == "FRAGMENT_SHADER")
-                    program->attachShader(shaderUrl, GL_FRAGMENT_SHADER, false);
+                    program->attachShader(shaderUrl, GL_FRAGMENT_SHADER);
                 else if (shaderType == "CONTROL_SHADER")
-                    program->attachShader(shaderUrl, GL_TESS_CONTROL_SHADER, false);
+                    program->attachShader(shaderUrl, GL_TESS_CONTROL_SHADER);
                 else if (shaderType == "EVALUATION_SHADER")
-                    program->attachShader(shaderUrl, GL_TESS_EVALUATION_SHADER, false);
+                    program->attachShader(shaderUrl, GL_TESS_EVALUATION_SHADER);
             } else {
-                if (programInfo.hasAttribute("flags")) {
-                    flags
-                            = splitValues<string> (programInfo.attribute(
-                                    "flags"));
-                    program->attachVertFrag(shaderUrl, flags);
-                } else {
-                    program->attachVertFrag(shaderUrl, false);
-                }
+                    program->attachVertFrag(shaderUrl);
             }
-        } else if (programInfo.tagName() == "Template") {
-          shaderUrl = programInfo.attribute("url").toStdString();
-          program->attachVertFrag(shaderUrl, true);
         } else if (programInfo.tagName() == "Uniform") {
             program->uniforms.push_back(Uniform<float> (programInfo.attribute(
                     "name").toStdString(), splitValues<float> (
@@ -268,7 +258,7 @@ void SceneLoader::appendObject(const QDomElement & objectNode) {
         if (objectNode.hasAttribute("material")) {
           lightMat = material;
         } else {
-          lightMat = new SimpleProgram("Color/white", QList<string>());
+          lightMat = new VertFragProgram("Color/white", QList<string>());
         }
         Node * lightNode = new Node("Light", position, 1, mesh, lightMat);
         lightNode->setCastShadows(false);

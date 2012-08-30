@@ -56,7 +56,7 @@ class LoadApp: public Application {
     attributes.push_back("uv");
 //    attributes.push_back("normal");
 
-    perlinNoise = new SimpleProgram("Noise/perlin",attributes);
+    perlinNoise = new VertFragProgram("Noise/perlin",attributes);
 
 
     Node * plane = new Node("Plane", QVector3D(0,0,-2), 1, Geometry::plane(attributes, QRectF(-1,-1,2,2)), perlinNoise);

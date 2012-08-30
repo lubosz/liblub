@@ -14,36 +14,17 @@
 class MinimalProgram: public ShaderProgram {
  public:
     MinimalProgram() : ShaderProgram("minimal") {
-    attachShader("Common/minimal.vert", GL_VERTEX_SHADER, false);
+    attachShader("Common/minimal.vert", GL_VERTEX_SHADER);
     QList<string> attributes;
     init(attributes);
   }
 };
 
-class SimpleProgram: public ShaderProgram {
+class VertFragProgram: public ShaderProgram {
  public:
-  SimpleProgram(string shaders, const QList<string> & attributes) : ShaderProgram(shaders) {
-    attachVertFrag(shaders, false);
-    init(attributes);
-    samplerUniforms();
-  }
-  virtual ~SimpleProgram(){
-
-  }
-};
-
-class TemplateProgram: public ShaderProgram {
- public:
-  TemplateProgram(string shaders, const QList<string> & attributes) : ShaderProgram(shaders) {
-    attachVertFrag(shaders, true);
+  VertFragProgram(string shaders, const QList<string> & attributes) : ShaderProgram(shaders) {
+    attachVertFrag(shaders);
     init(attributes);
     samplerUniforms();
   }
 };
-
-class EmptyProgram: public ShaderProgram {
- public:
-    EmptyProgram() : ShaderProgram("empty") {
-  }
-};
-

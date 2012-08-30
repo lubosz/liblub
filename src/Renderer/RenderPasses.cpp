@@ -162,7 +162,7 @@ DrawThing::DrawThing() : enabled(true), typeName("Pass"){
 
     TemplateEngine::Instance().c.insert("isDepthTexture", target->isDepth);
 
-    ShaderProgram * debugMaterial = new TemplateProgram("Post/Debug", QList<string> () << "uv");
+    ShaderProgram * debugMaterial = new VertFragProgram("Post/Debug", QList<string> () << "uv");
     debugMaterial->addTexture(target);
     debugMaterial->samplerUniforms();
     debugMaterial->activateAndBindTextures();

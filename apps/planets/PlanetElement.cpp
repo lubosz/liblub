@@ -20,9 +20,9 @@ PlanetElement::~PlanetElement() {
 
 void PlanetElement::initMaterials(string name, const QList<string> & attributes){
   TemplateEngine::Instance().c.insert("fromSpace", QVariant(false));
-  fromAtmosphere = new TemplateProgram(name,attributes);
+  fromAtmosphere = new VertFragProgram(name,attributes);
   TemplateEngine::Instance().c.insert("fromSpace", QVariant(true));
-  fromSpace = new TemplateProgram(name,attributes);
+  fromSpace = new VertFragProgram(name,attributes);
   setAtmoUniforms(fromAtmosphere);
   setAtmoUniforms(fromSpace);
 }

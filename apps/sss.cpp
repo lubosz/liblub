@@ -41,9 +41,9 @@ public:
 //        QList<string> attributes = QList<string>() << "normal";
 
         ShaderProgram * shader;
-        shader = new SimpleProgram("Stuff/sss", attributes);
-//        shader = new SimpleProgram("Stuff/hemi_harmonic", attributes);
-//        shader = new SimpleProgram("Stuff/brdf", attributes);
+        shader = new VertFragProgram("Stuff/sss", attributes);
+//        shader = new VertFragProgram("Stuff/hemi_harmonic", attributes);
+//        shader = new VertFragProgram("Stuff/brdf", attributes);
 
 
         Mesh * mesh = MeshLoader::load(attributes, "monkey.blend");

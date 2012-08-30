@@ -12,7 +12,7 @@ Planet::Planet(string texturePath, const QVector3D &position, float radius) : te
 
 void Planet::init() {
     QList<string> attributes = QList<string>() << "uv";
-    ShaderProgram * shader = new TemplateProgram("instancing",attributes);
+    ShaderProgram * shader = new VertFragProgram("instancing",attributes);
     Texture * texture = new TextureFile(texturePath, "diffuse");
     texture->bind();
     texture->filterMinMag(GL_LINEAR_MIPMAP_LINEAR, GL_NEAREST);
