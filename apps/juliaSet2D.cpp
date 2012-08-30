@@ -45,8 +45,7 @@ public:
     JuliaSet2D(int argc, char *argv[]) :
         Application(argc, argv) {
         phase = 1;
-        attributes = QList<string>() << "normal" << "color" << "uv";
-        //            attributes = QList<string>() << "normal" << "uv";
+        attributes = QList<string>() << "color";
     }
 
     ~JuliaSet2D() {
@@ -98,38 +97,8 @@ public:
         return mesh;
     }
 
-    void setOceanUniforms(ShaderProgram * program) {
-        program->use();
-        program->setUniform("deepColor", QVector4D(0, 0.3, 0.5, 1.0));
-        program->setUniform("shallowColor",QVector4D(0, 1, 1, 1.0));
-        program->setUniform("reflectionColor",QVector4D(0.95, 1, 1, 1.0));
-        program->setUniform("reflectionAmount",1.0f);
-        program->setUniform("reflectionBlur",0.0f);
-        program->setUniform("waterAmount",0.3f);
-        program->setUniform("fresnelPower",5.0f);
-        program->setUniform("fresnelBias",0.328f);
-        program->setUniform("hdrMultiplier", 0.471f);
-        program->setUniform("textureScale",QVector2D(25, 26));
-        program->setUniform("bumpSpeed",QVector2D(0.015, 0.005));
-        program->setUniform("BumpScale",0.2f);
-        program->setUniform("time",0.7f);
-        program->setUniform("waveFreq",0.028f);
-        program->setUniform("waveAmp",1.8f);
-    }
-
     void scene() {
-
-        ShaderProgram * ocean = new VertFragProgram("julia", attributes);
-
-        //      ShaderProgram * ocean = new VertFragProgram("Ocean-small", attributes);
-        //      setOceanUniforms(ocean);
-
-        //      Texture * oceanNormal = new TextureFile("ocean/waves.png","NormalMap");
-        //      ocean->addTexture(oceanNormal);
-        //      Texture * oceanSky = new CubeTextureFile("cubemaps/sky","EnvironmentMap");
-        //      ocean->addTexture(oceanSky);
-
-        //      ocean->samplerUniforms();
+        ShaderProgram * ocean = new VertFragProgram("Color/vertexcolor", attributes);
 
         //    mesh = sinePlane(attributes, 100 , 1, phase);
         fractal = new FractalMesh(attributes, 1000 , .01, 2);
@@ -144,25 +113,12 @@ public:
         Camera * cam = Scene::Instance().getCurrentCamera();
         cam->setDirection(QVector3D(-1,-5,-1));
         cam->update();
-        //    QList<string> NormalAttributes = QList<string>() << "color";
-        //    shader = new VertFragProgram("Geometry/pointsize",NormalAttributes);
-        //    Mesh * normalMesh = makeNormalMesh(mesh);
-        //    Node * normalNode = new Node("Normals", QVector3D(-5,-5,-5), 1, normalMesh, shader);
-        //    LogInfo << normalNode->getName();
-        //    SceneGraph::Instance().addNode(normalNode);
     }
 
     void renderFrame() {
-              fractal->regenerate();
-        //      delete mesh;
-        //      mesh = sinePlane(attributes, 100, 1, phase);
-        //      mesh = julia(attributes, 400 , .1, phase);
-        //      phase += 0.1;
-              phase -= 0.001;
-//              fractal->setRange(phase);
-
-              fractal->C = complex<double>(phase,0.156);
-//              fractal->C = complex<double>(0,0);
+        fractal->regenerate();
+        phase -= 0.001;
+        fractal->C = complex<double>(phase,0.156);
         OnePass::draw();
     }
 };
