@@ -115,7 +115,7 @@ void DeferredRenderer::initShadowReceivers() {
 
     TemplateEngine::Instance().c.insert("shadowSamplers", shadowSamplers);
     TemplateEngine::Instance().c.insert("shadowSamplerSize", shadowSamplers.size());
-    ShaderProgram * gatherShader = new VertFragProgram("Post/MultiTarget", tangentAttribs);
+    ShaderProgram * gatherShader = new VertFragProgram("Deferred/Gather", tangentAttribs);
 
 
     shadowReceivePass = new ShadowReceivePass(res,shadowReceiveSources,
@@ -155,7 +155,7 @@ void DeferredRenderer::initAo() {
     TemplateEngine::Instance().c.insert("source1", QString::fromStdString(aoPass->getTarget("ao")->name));
     TemplateEngine::Instance().c.insert("source2", QString::fromStdString(shadowReceivePass->getTarget("shadowTarget")->name));
     InOutPass * mergePass = new InOutPass(res, mergeSources, mergeTargets,
-        new VertFragProgram("Post/Merge", uv));
+        new VertFragProgram("Deferred/Merge", uv));
     drawPasses.push_back(mergePass);
 
     vector<Texture*> blurHSources = {
@@ -165,14 +165,14 @@ void DeferredRenderer::initAo() {
         new ColorTexture(res, "blurH")
     };
     InOutPass * blurHPass = new InOutPass(res, blurHSources, blurHTargets,
-        new VertFragProgram("AO/blur_horizontal", uv));
+        new VertFragProgram("Post/blur_horizontal", uv));
     drawPasses.push_back(blurHPass);
 
     vector<Texture*> blurVTargets = {
         new ColorTexture(res, "finalAOTarget")
     };
     blurVPass = new InOutPass(res, blurHTargets, blurVTargets,
-        new VertFragProgram("AO/blur_vertical", uv));
+        new VertFragProgram("Post/blur_vertical", uv));
     drawPasses.push_back(blurVPass);
 }
 
@@ -203,7 +203,7 @@ void DeferredRenderer::initShadingPass() {
 //    TemplateEngine::Instance().c.insert("paralaxMap", true);
     QList<string> uv = QList<string> () << "uv";
     shadingPass = new InOutPass(res, shadingSources, shadingTargets,
-        new VertFragProgram("Post/DeferredMultiLight", uv));
+        new VertFragProgram("Deferred/Shading", uv));
     drawPasses.push_back(shadingPass);
 
     // Init Light Uniform Buffer

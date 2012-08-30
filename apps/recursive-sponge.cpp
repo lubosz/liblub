@@ -45,7 +45,7 @@ public:
         QList<string> attributes;
         attributes.push_back("uv");
 
-        shader = new VertFragProgram("instancing",attributes);
+        shader = new VertFragProgram("Texture/transparentTexture",attributes);
 
         texture = new TextureFile("diamond.png", "diffuse");
         texture->bind();

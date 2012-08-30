@@ -54,7 +54,7 @@ class LoadApp: public Application {
 
       QList<string> attributes = QList<string> () << "normal" << "uv";
 
-    perlinNoise = new VertFragProgram("Noise/perlin",attributes);
+    perlinNoise = new VertFragProgram("Fractal/perlin",attributes);
 
 
     Node * plane = new Node("Plane", QVector3D(0,0,-2), 1, Geometry::plane(attributes, QRectF(-1,-1,2,2)), perlinNoise);

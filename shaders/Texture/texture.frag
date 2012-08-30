@@ -1,10 +1,13 @@
 {% extends "base.frag" %}
 
 {% block linkage %}
-uniform sampler2D diffuse;
 in vec2 uv;
 {% endblock %}
 
+{% block uniforms %}
+uniform sampler2D targetTexture;
+{% endblock %}
+
 {% block main %}
-	fragColor    = texture(diffuse, uv);
+	fragColor = texture(targetTexture, uv);
 {% endblock %}

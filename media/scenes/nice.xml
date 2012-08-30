@@ -43,7 +43,7 @@
             <Layer sampler="envMap" texture="spheremap_bar" /> 
 		</Program>
 		<Program name="MandelMat">
-			<Shader url="Procedural/mandelbrot" />
+			<Shader url="Fractal/mandelbrot" />
 			<Uniform value="1.0" name="SpecularContribution" />
 			<Uniform value="1.0" name="DiffuseContribution" />
 			<Uniform value="1.0" name="Shininess" />

@@ -92,7 +92,7 @@ void scene() {
 	pDebugColorFBOMaterial->addTexture(pColorTexture);
 
 	// DOF-Shader
-	pDOFShader = new VertFragProgram("DepthOfField/dof", attributes);
+    pDOFShader = new VertFragProgram("Post/DepthOfField", attributes);
 	pDOFShader->addTexture(pColorTexture);
 	pDOFShader->addTexture(pDepthTexture);
 	pDOFShader->samplerUniforms();
