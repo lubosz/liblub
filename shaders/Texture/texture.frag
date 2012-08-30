@@ -1,13 +1,10 @@
-#version 330 core
+{% extends "base.frag" %}
 
+{% block linkage %}
 uniform sampler2D diffuse;
-
 in vec2 uv;
+{% endblock %}
 
-out vec4 fragColor;
-
-void main()
-{
+{% block main %}
 	fragColor    = texture(diffuse, uv);
-}
-
+{% endblock %}
