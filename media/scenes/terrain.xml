@@ -27,7 +27,7 @@
 			<Layer sampler="EnvMap" texture="sky" />
 		</Program>
 		<Program name="Ocean">
-			<Shader url="Water/Ocean" />
+			<Shader url="Ocean" />
 			<Uniform name="deepColor" value="0, 0.3, 0.5, 1.0" />
 			<Uniform name="shallowColor" value="0, 1, 1, 1.0" />
 			<Uniform name="reflectionColor" value="0.95, 1, 1, 1.0" />
