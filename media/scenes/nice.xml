@@ -38,7 +38,7 @@
 			<Uniform value="4.3" name="shininess" />
 		</Program>
 		<Program name="SphereMap">
-			<Shader url="Env/sphereMap" />
+			<Shader url="Texture/sphereMap" />
 			<Layer sampler="colorMap" texture="spectrum" />
             <Layer sampler="envMap" texture="spheremap_bar" /> 
 		</Program>
