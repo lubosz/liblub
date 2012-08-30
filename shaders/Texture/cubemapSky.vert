@@ -1,13 +1,11 @@
-#version 330 core
+{% extends "base.vert" %}
 
-uniform mat4 MVPMatrix;
-
-in vec3 in_Vertex;
-
+{% block linkage %}
 out vec3 reflectDir;
+{% endblock %}
 
-void main() {
+{% block main %}
     reflectDir = -in_Vertex;
-    gl_Position    = MVPMatrix * vec4(in_Vertex,1);
-}
+    gl_Position = MVPMatrix * vec4(in_Vertex, 1);
+{% endblock %}
 
