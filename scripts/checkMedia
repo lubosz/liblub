@@ -111,10 +111,10 @@ class ShaderPack(AssetPack):
       self.printAll("shaders")
       
   def search(self):
-      for dirname, dirnames, filenames in os.walk('media/shaders'):
+      for dirname, dirnames, filenames in os.walk('shaders'):
           for filename in filenames:
               shaderpath = dirname + "/" + filename
-              shaderpath = shaderpath.replace("media/shaders/","")
+              shaderpath = shaderpath.replace("shaders/","")
               self.search_result[shaderpath.replace(".vert","").replace(".frag","")] = 0
       for result in self.search_result:
         self.search_result[result] =  grepCount(result)
