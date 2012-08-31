@@ -6,8 +6,8 @@
  */
 
 #include "InstancedSponge.h"
-#include "Mesh/MeshLoader.h"
-#include "Material/ShaderProgram.h"
+#include "Load/MeshLoader.h"
+#include "Shader/ShaderProgram.h"
 
     InstancedSponge::InstancedSponge(unsigned recursion, QList<string>& attributes) {
         bufferCount = 1;

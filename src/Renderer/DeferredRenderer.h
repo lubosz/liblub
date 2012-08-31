@@ -5,7 +5,7 @@
 
 #include <time.h>
 
-#include "common/Singleton.h"
+#include "Common/Singleton.h"
 #include "Renderer/RenderPasses.h"
 #include "System/Timer.h"
 

@@ -5,7 +5,7 @@
 
 #include "Node.h"
 #include "Light.h"
-#include "common/Singleton.h"
+#include "Common/Singleton.h"
 
 class SceneGraph: public Singleton<SceneGraph> {
  public:

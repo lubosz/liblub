@@ -8,8 +8,8 @@
 #include <assimp/Importer.hpp>
 #include <string>
 #include <vector>
-#include "Mesh/MeshLoader.h"
-#include "Mesh/Geometry.h"
+#include "Load/MeshLoader.h"
+#include "Procedural/Geometry.h"
 #include "System/Config.h"
 #include "System/Logger.h"
 #include <QRectF>

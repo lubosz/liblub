@@ -17,14 +17,14 @@
  along with liblub.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include "System/Logger.h"
-#include "Material/Shaders.h"
-#include "Material/Textures.h"
+#include "Shader/Shaders.h"
+#include "Texture/Textures.h"
 #include "Scene/SceneGraph.h"
 #include "Renderer/RenderPasses.h"
 #include "System/Application.h"
 #include "Renderer/DeferredRenderer.h"
 #include "Scene/Scene.h"
-#include "Scene/AssimpSceneLoader.h"
+#include "Load/AssimpSceneLoader.h"
 
 class NatureApp: public Application {
 public:

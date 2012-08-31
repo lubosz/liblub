@@ -6,12 +6,12 @@
  */
 #include <assert.h>
 #include <QVector2D>
-#include "Material/ShaderProgram.h"
+#include "Shader/ShaderProgram.h"
 #include "Scene/SceneGraph.h"
 #include "System/Logger.h"
 #include "Scene/Scene.h"
 #include "Renderer/OpenGL.h"
-#include "Material/Textures.h"
+#include "Texture/Textures.h"
 
 using std::stringstream;
 

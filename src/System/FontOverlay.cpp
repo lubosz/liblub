@@ -14,13 +14,13 @@
 #include <QDebug>
 #include <QMap>
 
-#include "Material/Textures.h"
+#include "Texture/Textures.h"
 #include "Scene/Scene.h"
-#include "Mesh/Geometry.h"
+#include "Procedural/Geometry.h"
 #include "Window/Window.h"
 #include "System/Logger.h"
 #include "System/Timer.h"
-#include "Material/Shaders.h"
+#include "Shader/Shaders.h"
 
 FontOverlay::FontOverlay() {
   textLines = QMap<string,string>();

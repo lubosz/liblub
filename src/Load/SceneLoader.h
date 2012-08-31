@@ -9,8 +9,8 @@
 
 #include <QVector3D>
 #include <QDomElement>
-#include "Material/ShaderProgram.h"
-#include "Material/Texture.h"
+#include "Shader/ShaderProgram.h"
+#include "Texture/Texture.h"
 #include "Mesh/Mesh.h"
 #include "System/XmlReader.h"
 

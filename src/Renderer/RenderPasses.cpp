@@ -8,13 +8,13 @@
 #include "RenderPasses.h"
 #include "Window/Window.h"
 #include "Scene/Camera.h"
-#include "Material/Textures.h"
+#include "Texture/Textures.h"
 #include "Scene/Scene.h"
 #include "Scene/SceneGraph.h"
-#include "Mesh/Geometry.h"
+#include "Procedural/Geometry.h"
 #include "System/TemplateEngine.h"
 #include "Renderer/OpenGL.h"
-#include "Material/Shaders.h"
+#include "Shader/Shaders.h"
 
 DrawThing::DrawThing() : enabled(true), typeName("Pass"){
     timer = new Timer();

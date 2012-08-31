@@ -16,7 +16,7 @@
  You should have received a copy of the GNU General Public License
  along with liblub.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include "Material/Shaders.h"
+#include "Shader/Shaders.h"
 #include "System/Demo.h"
 #include "Renderer/RenderPasses.h"
 

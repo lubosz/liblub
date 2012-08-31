@@ -17,7 +17,7 @@
  along with liblub.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include "animation.h"
-#include "Scene/SceneLoader.h"
+#include "Load/SceneLoader.h"
 #include "Scene/SceneGraph.h"
 #include "Renderer/RenderPasses.h"
 #include "System/Application.h"

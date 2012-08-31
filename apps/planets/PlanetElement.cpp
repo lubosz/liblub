@@ -9,7 +9,7 @@
 #include "Planet.h"
 #include "Scene/Scene.h"
 #include "System/TemplateEngine.h"
-#include "Material/Shaders.h"
+#include "Shader/Shaders.h"
 
 PlanetElement::PlanetElement(Planet * planet) : planet(planet) {
 }

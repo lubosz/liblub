@@ -9,9 +9,9 @@
 
 #include <string>
 #include <QImage>
-#include "common/Singleton.h"
+#include "Common/Singleton.h"
 #include "Scene/Node.h"
-#include "Material/Texture.h"
+#include "Texture/Texture.h"
 #include <QMap>
 #include <QPainter>
 using std::string;

@@ -9,7 +9,7 @@
 
 #include <string>
 #include "Renderer/OpenGL.h"
-#include "Material/ShaderProgram.h"
+#include "Shader/ShaderProgram.h"
 
 class MinimalProgram: public ShaderProgram {
  public:

@@ -6,8 +6,8 @@
  */
 
 #include "Ocean.h"
-#include "Material/Textures.h"
-#include "Mesh/Geometry.h"
+#include "Texture/Textures.h"
+#include "Procedural/Geometry.h"
 #include "Scene/Scene.h"
 #include "Planet.h"
 #include "System/Timer.h"

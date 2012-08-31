@@ -7,9 +7,9 @@
 
 #pragma once
 
-#include "common/Singleton.h"
+#include "Common/Singleton.h"
 #include "Scene/DirectionNode.h"
-#include "Material/ShaderProgram.h"
+#include "Shader/ShaderProgram.h"
 
 class Camera: public DirectionNode {
  public:

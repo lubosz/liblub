@@ -17,10 +17,10 @@
  along with liblub.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include "sponge.h"
-#include "Mesh/MengerSponge.h"
+#include "Procedural/MengerSponge.h"
 #include "Scene/Scene.h"
-#include "Mesh/Geometry.h"
-#include "Material/Textures.h"
+#include "Procedural/Geometry.h"
+#include "Texture/Textures.h"
 #include "Scene/SceneGraph.h"
 
 Sponge::Sponge() : Demo("offline-sponge") {

@@ -7,7 +7,7 @@
 
 #pragma once
 
-#include "Material/ShaderProgram.h"
+#include "Shader/ShaderProgram.h"
 #include "Mesh/Mesh.h"
 
 class FrameBuffer {

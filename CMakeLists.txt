@@ -138,7 +138,7 @@ include_directories(
 
 #Add liblub sources
 set(SOURCE_DIRS
-        Renderer Material Mesh Scene System
+        Common Load Mesh Procedural Renderer Scene Shader System Texture 
 )
 foreach(SOURCE_DIR ${SOURCE_DIRS})
     #cpps

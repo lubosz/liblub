@@ -8,15 +8,15 @@
 #include <QFile>
 #include <vector>
 #include <string>
-#include "Scene/SceneLoader.h"
+#include "Load/SceneLoader.h"
 #include "Scene/Scene.h"
-#include "Mesh/MeshLoader.h"
-#include "Mesh/MengerSponge.h"
-#include "Mesh/Geometry.h"
+#include "Load/MeshLoader.h"
+#include "Procedural/MengerSponge.h"
+#include "Procedural/Geometry.h"
 #include "System/Config.h"
 #include "System/Logger.h"
-#include "Material/Textures.h"
-#include "Material/Shaders.h"
+#include "Texture/Textures.h"
+#include "Shader/Shaders.h"
 #include "Scene/SceneGraph.h"
 
 SceneLoader::SceneLoader(const QString & fileName)

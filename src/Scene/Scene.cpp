@@ -8,7 +8,7 @@
 #include "Scene/Scene.h"
 #include "System/Logger.h"
 #include "Renderer/OpenGL.h"
-#include "Material/Shaders.h"
+#include "Shader/Shaders.h"
 
 Scene::Scene() {
   lights = QMap<string, Light*>();

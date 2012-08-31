@@ -17,7 +17,7 @@
     along with liblub.  If not, see <http://www.gnu.org/licenses/>.
 */
 #include "System/Demo.h"
-#include "Material/ShaderProgram.h"
+#include "Shader/ShaderProgram.h"
 
 class PerlinDemo: public Demo {
  public:

@@ -2,7 +2,7 @@
 #include <string>
 #include <iostream>
 #include "System/Logger.h"
-#include "common/BashColor.h"
+#include "Common/BashColor.h"
 #include "Renderer/OpenGL.h"
 
 using std::cerr;

@@ -5,7 +5,7 @@
  *  Created on: Jul 11, 2010
  */
 
-#include "Mesh/MengerSponge.h"
+#include "Procedural/MengerSponge.h"
 #include <vector>
 #include <algorithm>
 #include "System/Logger.h"

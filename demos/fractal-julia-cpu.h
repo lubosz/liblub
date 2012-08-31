@@ -16,7 +16,7 @@
  You should have received a copy of the GNU General Public License
  along with liblub.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include "Mesh/FractalMesh.h"
+#include "Procedural/FractalMesh.h"
 #include "Scene/Scene.h"
 #include "System/Demo.h"
 

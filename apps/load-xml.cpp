@@ -17,13 +17,13 @@
     along with liblub.  If not, see <http://www.gnu.org/licenses/>.
 */
 #include "System/Application.h"
-#include "Scene/SceneLoader.h"
+#include "Load/SceneLoader.h"
 #include "Scene/Scene.h"
 #include "System/Logger.h"
 #include "Renderer/OpenGL.h"
 #include "Renderer/FrameBuffer.h"
 #include "Renderer/RenderPasses.h"
-#include "Scene/SceneLoader.h"
+#include "Load/SceneLoader.h"
 #include "Scene/Scene.h"
 
 class LoadApp: public Application {

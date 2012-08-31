@@ -9,7 +9,7 @@
 #define PLANETELEMENT_H_
 
 #include <QVector3D>
-#include "Material/ShaderProgram.h"
+#include "Shader/ShaderProgram.h"
 #include "Scene/Node.h"
 class Planet;
 

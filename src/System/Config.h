@@ -8,7 +8,7 @@
 #ifndef CONFIG_H
 #define CONFIG_H
 
-#include "common/Singleton.h"
+#include "Common/Singleton.h"
 #include "XmlReader.h"
 #include <string>
 #include <vector>

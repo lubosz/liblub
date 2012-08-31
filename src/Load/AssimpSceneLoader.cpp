@@ -2,9 +2,9 @@
 #include "Scene/SceneGraph.h"
 #include "Scene/Scene.h"
 #include "System/Config.h"
-#include "Material/Shaders.h"
-#include "Material/Textures.h"
-#include "Mesh/MeshLoader.h"
+#include "Shader/Shaders.h"
+#include "Texture/Textures.h"
+#include "Load/MeshLoader.h"
 #include "System/Timer.h"
 
 

@@ -7,7 +7,7 @@
 #include <math.h>
 #include <vector>
 #include <string>
-#include "Material/Textures.h"
+#include "Texture/Textures.h"
 #include "System/Config.h"
 #include "System/Logger.h"
 #include <QImage>

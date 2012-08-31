@@ -5,7 +5,7 @@
  *  Created on: Mar 22, 2010
  */
 
-#include "Material/Shader.h"
+#include "Shader/Shader.h"
 
 #include <QtCore>
 #include <string>

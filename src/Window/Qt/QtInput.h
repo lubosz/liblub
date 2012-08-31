@@ -8,7 +8,7 @@
 #pragma once
 
 #include "Window/Input.h"
-#include "common/Singleton.h"
+#include "Common/Singleton.h"
 #include <QTimer>
 #include <QVector2D>
 

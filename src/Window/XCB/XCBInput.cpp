@@ -9,7 +9,7 @@
 #include <list>
 #include "Scene/Camera.h"
 #include "Window/Window.h"
-#include "Material/Uniform.h"
+#include "Shader/Uniform.h"
 #include "Scene/Scene.h"
 #include "System/Logger.h"
 #include "Renderer/OpenGL.h"

@@ -5,7 +5,7 @@
  *      Author: bmonkey
  */
 
-#include "Material/UniformBuffer.h"
+#include "Shader/UniformBuffer.h"
 
 UniformBuffer::UniformBuffer() {
   target = GL_UNIFORM_BUFFER;

@@ -5,7 +5,7 @@
  *  Created on: Dec 16, 2010
  */
 
-#include "Material/Uniform.h"
+#include "Shader/Uniform.h"
 #include "System/Logger.h"
 #include "Renderer/OpenGL.h"
 

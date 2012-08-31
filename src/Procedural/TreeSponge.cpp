@@ -6,7 +6,7 @@
  */
 
 #include "TreeSponge.h"
-#include "Mesh/MeshLoader.h"
+#include "Load/MeshLoader.h"
 #include "Scene/Scene.h"
 
 TreeSponge::TreeSponge(unsigned recursion, QList<string>& attributes, ShaderProgram * shader) : Node("treesponge", QVector3D(), 1, MeshLoader::load(attributes, "cube.obj"), shader){

@@ -7,9 +7,9 @@
 #include <assimp/postprocess.h>
 #include <assimp/Importer.hpp>
 
-#include "common/Singleton.h"
+#include "Common/Singleton.h"
 #include "Mesh/Mesh.h"
-#include "Material/ShaderProgram.h"
+#include "Shader/ShaderProgram.h"
 #include "Scene/Material.h"
 
 using std::string;

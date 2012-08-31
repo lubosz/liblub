@@ -6,10 +6,10 @@
  */
 
 #include "TerrainTesselation.h"
-#include "Material/Textures.h"
+#include "Texture/Textures.h"
 #include "System/TemplateEngine.h"
-#include "Mesh/Geometry.h"
-#include "Mesh/MeshLoader.h"
+#include "Procedural/Geometry.h"
+#include "Load/MeshLoader.h"
 #include "Atmosphere.h"
 #include "Scene/Scene.h"
 #include "Planet.h"

@@ -8,7 +8,7 @@
 #include <math.h>
 #include "Atmosphere.h"
 #include "System/TemplateEngine.h"
-#include "Mesh/Geometry.h"
+#include "Procedural/Geometry.h"
 #include "Scene/Scene.h"
 #include "Planet.h"
 

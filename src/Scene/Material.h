@@ -5,8 +5,8 @@
 #include <string>
 #include <QVector4D>
 #include <assimp/scene.h>
-#include "Material/Texture.h"
-#include "Material/ShaderProgram.h"
+#include "Texture/Texture.h"
+#include "Shader/ShaderProgram.h"
 
 using std::vector;
 

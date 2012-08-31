@@ -6,13 +6,13 @@
  */
 
 #include "PlaneMoon.h"
-#include "Material/Textures.h"
-#include "Material/ProcTextures.h"
+#include "Texture/Textures.h"
+#include "Procedural/ProcTextures.h"
 #include "System/TemplateEngine.h"
 #include "Atmosphere.h"
 #include "Scene/Scene.h"
 #include "Planet.h"
-#include "Mesh/Geometry.h"
+#include "Procedural/Geometry.h"
 
 PlaneMoon::PlaneMoon(Planet * planet) {
   this->planet = planet;

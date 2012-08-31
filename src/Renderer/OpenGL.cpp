@@ -7,7 +7,7 @@
 #include <vector>
 #include "Scene/Camera.h"
 #include "Scene/Scene.h"
-#include "Mesh/MeshLoader.h"
+#include "Load/MeshLoader.h"
 #include "Renderer/OpenGL.h"
 #include "System/Logger.h"
 #include "System/Config.h"

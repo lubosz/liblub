@@ -1,9 +1,9 @@
 #include "planet.h"
 
-#include "Material/Shaders.h"
-#include "Material/Textures.h"
+#include "Shader/Shaders.h"
+#include "Texture/Textures.h"
 #include "Scene/SceneGraph.h"
-#include "Mesh/Geometry.h"
+#include "Procedural/Geometry.h"
 
 Planet::Planet(string texturePath, const QVector3D &position, float radius) : texturePath(texturePath) {
     this->position = position;

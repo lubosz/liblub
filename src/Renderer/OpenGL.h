@@ -22,7 +22,7 @@
 # include <GL/glext.h>
 #endif
 
-#include "common/Singleton.h"
+#include "Common/Singleton.h"
 #include <System/Logger.h>
 #define glError OpenGL::checkGlError(__FILE__,__LINE__)
 

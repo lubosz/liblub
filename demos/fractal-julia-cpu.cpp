@@ -17,16 +17,16 @@
  along with liblub.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include "fractal-julia-cpu.h"
-#include "Scene/SceneLoader.h"
+#include "Load/SceneLoader.h"
 #include "Scene/SceneGraph.h"
 #include "Renderer/RenderPasses.h"
 #include "System/Application.h"
-#include "Material/Shaders.h"
+#include "Shader/Shaders.h"
 #include <QVariantAnimation>
-#include "Mesh/Geometry.h"
-#include "Material/Textures.h"
+#include "Procedural/Geometry.h"
+#include "Texture/Textures.h"
 #include "System/TemplateEngine.h"
-#include "Mesh/FractalMesh.h"
+#include "Procedural/FractalMesh.h"
 #include "Scene/Camera.h"
 #include "Scene/Scene.h"
 #include <complex>

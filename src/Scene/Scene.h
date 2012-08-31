@@ -7,17 +7,17 @@
 
 #pragma once
 
-#include "common/Singleton.h"
+#include "Common/Singleton.h"
 
 #include <string>
 #include <QMap>
-#include "Material/ShaderProgram.h"
-#include "Material/Texture.h"
+#include "Shader/ShaderProgram.h"
+#include "Texture/Texture.h"
 #include "Scene/Material.h"
 #include "Scene/Camera.h"
 #include "Scene/Light.h"
 #include "Mesh/Mesh.h"
-#include "Material/UniformBuffer.h"
+#include "Shader/UniformBuffer.h"
 
 using std::string;
 

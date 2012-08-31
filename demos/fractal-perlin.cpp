@@ -20,16 +20,16 @@
 #include <string>
 #include <QApplication>
 #include "System/Application.h"
-#include "Scene/SceneLoader.h"
+#include "Load/SceneLoader.h"
 #include "Scene/SceneGraph.h"
 #include "Scene/Scene.h"
 #include "System/Logger.h"
 #include "System/Timer.h"
 #include <QPainter>
 #include <math.h>
-#include "Material/ProcTextures.h"
-#include "Material/Shaders.h"
-#include "Mesh/Geometry.h"
+#include "Procedural/ProcTextures.h"
+#include "Shader/Shaders.h"
+#include "Procedural/Geometry.h"
 #include "Renderer/RenderPasses.h"
 
 PerlinDemo::PerlinDemo() : Demo("perlin") {

@@ -4,7 +4,7 @@
  *
  *  Created on: Mar 25, 2010
  */
-#include "Material/TextureFactory.h"
+#include "Texture/TextureFactory.h"
 #include "System/Logger.h"
 
 TextureFactory::TextureFactory() {

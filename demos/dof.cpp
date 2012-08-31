@@ -18,15 +18,15 @@
 */
 #include "dof.h"
 #include "System/Application.h"
-#include "Material/Textures.h"
+#include "Texture/Textures.h"
 #include "Renderer/OpenGL.h"
 #include "Renderer/FrameBuffer.h"
-#include "Scene/SceneLoader.h"
+#include "Load/SceneLoader.h"
 #include "Scene/SceneGraph.h"
-#include "Material/Shaders.h"
+#include "Shader/Shaders.h"
 #include "Scene/Scene.h"
 #include "Renderer/RenderPasses.h"
-#include "Mesh/Geometry.h"
+#include "Procedural/Geometry.h"
 
 DepthOfFieldDemo::DepthOfFieldDemo() : Demo("dof") {
     sceneLoader = new SceneLoader("terrain.xml");

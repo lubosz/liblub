@@ -8,8 +8,8 @@
 #include <QImage>
 #include <QDebug>
 
-#include "Material/Texture.h"
-#include "Material/TextureFactory.h"
+#include "Texture/Texture.h"
+#include "Texture/TextureFactory.h"
 #include "System/Logger.h"
 #include "Renderer/OpenGL.h"
 #include "System/Config.h"

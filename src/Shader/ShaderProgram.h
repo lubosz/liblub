@@ -11,11 +11,11 @@
 #include <QList>
 #include <QMatrix3x3>
 
-#include "Material/Shader.h"
-#include "Material/Uniform.h"
-#include "Material/UniformBuffer.h"
-#include "Material/Texture.h"
-#include "System/NamedObject.h"
+#include "Shader/Shader.h"
+#include "Shader/Uniform.h"
+#include "Shader/UniformBuffer.h"
+#include "Texture/Texture.h"
+#include "Common/NamedObject.h"
 
 
 using std::string;

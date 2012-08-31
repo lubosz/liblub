@@ -8,13 +8,13 @@
 #include "PlanetsApp.h"
 
 #include "Scene/Scene.h"
-#include "Material/Textures.h"
+#include "Texture/Textures.h"
 #include "System/Config.h"
 #include "Renderer/OpenGL.h"
 #include "Window/Qt/FloatEditorWidget.h"
 #include "Renderer/FrameBuffer.h"
-#include "Material/Shaders.h"
-#include "Mesh/Geometry.h"
+#include "Shader/Shaders.h"
+#include "Procedural/Geometry.h"
 #include "Renderer/RenderPasses.h"
 
 PlanetsApp::PlanetsApp(int &argc, char **argv) :

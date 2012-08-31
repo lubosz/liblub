@@ -9,7 +9,7 @@
 #include "Renderer/FrameBuffer.h"
 #include "Scene/SceneGraph.h"
 #include "Scene/Camera.h"
-#include "Mesh/Geometry.h"
+#include "Procedural/Geometry.h"
 #include "System/Logger.h"
 
 using std::stringstream;

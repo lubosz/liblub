@@ -9,7 +9,7 @@
 #include "Scene/SceneGraph.h"
 #include "Scene/Scene.h"
 #include "Scene/Camera.h"
-#include "Mesh/MeshLoader.h"
+#include "Load/MeshLoader.h"
 #include "System/Logger.h"
 
 Light::Light() {

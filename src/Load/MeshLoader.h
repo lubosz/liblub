@@ -7,7 +7,7 @@
 
 #pragma once
 
-#include "Mesh.h"
+#include "Mesh/Mesh.h"
 #include <assimp/scene.h>
 
 class MeshLoader {

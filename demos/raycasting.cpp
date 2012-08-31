@@ -19,13 +19,13 @@
 #include "raycasting.h"
 #include "System/Application.h"
 #include "System/Logger.h"
-#include "Material/Shaders.h"
+#include "Shader/Shaders.h"
 #include "System/TemplateEngine.h"
 #include "Renderer/RenderPasses.h"
-#include "Material/Textures.h"
-#include "Mesh/Geometry.h"
+#include "Texture/Textures.h"
+#include "Procedural/Geometry.h"
 #include "Scene/SceneGraph.h"
-#include "Mesh/MandelBulb.h"
+#include "Procedural/MandelBulb.h"
 #include "Scene/Scene.h"
 
 #include <thread>

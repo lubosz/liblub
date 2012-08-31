@@ -9,7 +9,7 @@
 #define INSTANCEDSPONGE_H_
 
 #include "Mesh/Mesh.h"
-#include "Material/UniformBuffer.h"
+#include "Shader/UniformBuffer.h"
 #include "Scene/Node.h"
 #include <vector>
 #include <QtCore>

@@ -8,9 +8,9 @@
 #include "Sun.h"
 #include "System/Timer.h"
 #include "Scene/Scene.h"
-#include "Mesh/Geometry.h"
+#include "Procedural/Geometry.h"
 #include "Planet.h"
-#include "Material/Textures.h"
+#include "Texture/Textures.h"
 
 Sun::Sun(Planet * planet) {
   this->planet = planet;

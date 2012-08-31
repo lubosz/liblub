@@ -8,7 +8,7 @@
 #include <vector>
 #include <random>
 #include <functional>
-#include "Mesh/Geometry.h"
+#include "Procedural/Geometry.h"
 #include "System/Logger.h"
 #include "Renderer/OpenGL.h"
 

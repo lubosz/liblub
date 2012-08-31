@@ -8,7 +8,7 @@
 #ifndef TEMPLATEENGINE_H_
 #define TEMPLATEENGINE_H_
 
-#include "common/Singleton.h"
+#include "Common/Singleton.h"
 #include <grantlee_core.h>
 #include <string>
 using std::string;

@@ -8,7 +8,7 @@
 #include <string>
 #include <QList>
 #include "Planet.h"
-#include "Mesh/Geometry.h"
+#include "Procedural/Geometry.h"
 
 #include "TerrainPlain.h"
 #include "TerrainTesselation.h"

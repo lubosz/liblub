@@ -9,7 +9,7 @@
 
 #include <QList>
 #include <QTimer>
-#include "Material/ShaderProgram.h"
+#include "Shader/ShaderProgram.h"
 #include <xcb/xcb_keysyms.h>
 #include "Window/Input.h"
 

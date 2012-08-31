@@ -9,7 +9,7 @@
 #define SUN_H_
 
 #include "Scene/Node.h"
-#include "Material/ShaderProgram.h"
+#include "Shader/ShaderProgram.h"
 
 #include "PlanetElement.h"
 

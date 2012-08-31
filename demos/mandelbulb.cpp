@@ -17,11 +17,11 @@
  along with liblub.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include "mandelbulb.h"
-#include "Scene/SceneLoader.h"
+#include "Load/SceneLoader.h"
 #include "Scene/SceneGraph.h"
 #include "Renderer/RenderPasses.h"
 #include "System/Application.h"
-#include "Material/Shaders.h"
+#include "Shader/Shaders.h"
 #include <QVariantAnimation>
 
 MandelbulbDemo::MandelbulbDemo() : Demo("mandelbulb") {

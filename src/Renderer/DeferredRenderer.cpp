@@ -1,10 +1,10 @@
 #include "DeferredRenderer.h"
 #include "Scene/Scene.h"
-#include "Material/Textures.h"
+#include "Texture/Textures.h"
 #include "System/TemplateEngine.h"
-#include "Material/Shaders.h"
+#include "Shader/Shaders.h"
 #include "Scene/SceneGraph.h"
-#include "Mesh/Geometry.h"
+#include "Procedural/Geometry.h"
 
 
 DeferredRenderer::DeferredRenderer() : drawTransparency(true)

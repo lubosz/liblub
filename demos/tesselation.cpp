@@ -21,9 +21,9 @@
 #include <QApplication>
 #include "System/Application.h"
 #include "System/Logger.h"
-#include "Mesh/Geometry.h"
-#include "Mesh/MeshLoader.h"
-#include "Material/Textures.h"
+#include "Procedural/Geometry.h"
+#include "Load/MeshLoader.h"
+#include "Texture/Textures.h"
 #include "Scene/Camera.h"
 #include "Scene/Light.h"
 #include "Scene/Scene.h"

@@ -10,7 +10,7 @@
 #include <QString>
 #include <QStringList>
 #include <vector>
-#include "common/Singleton.h"
+#include "Common/Singleton.h"
 
 using std::vector;
 using std::string;

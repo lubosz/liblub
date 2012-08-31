@@ -19,9 +19,9 @@
 #include "recursive-sponge.h"
 #include <string>
 #include "System/Application.h"
-#include "Scene/TreeSponge.h"
-#include "Material/Textures.h"
-#include "Material/Shaders.h"
+#include "Procedural/TreeSponge.h"
+#include "Texture/Textures.h"
+#include "Shader/Shaders.h"
 #include "System/TemplateEngine.h"
 #include "Renderer/RenderPasses.h"
 #include "Scene/SceneGraph.h"
