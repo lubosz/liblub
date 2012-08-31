@@ -17,21 +17,34 @@
     along with liblub.  If not, see <http://www.gnu.org/licenses/>.
 */
 #include "System/Application.h"
-#include "Mesh/MengerSponge.h"
-#include "Scene/Scene.h"
-#include "Mesh/Geometry.h"
-#include "Renderer/RenderPasses.h"
+#include "sponge.h"
 
-class Sponge : public Application {
- public:
-  ShaderProgram * shader;
-  vector<DrawThing*> drawPasses;
-  QList<string> attributes;
+class Sponge;
 
-  Sponge(int argc, char *argv[]);
+class LoadApp: public Application {
+public:
 
-  void scene();
-  void renderFrame();
-  void initPasses();
-  void initMaterial();
+    Demo * demo;
+
+    LoadApp(int &argc, char **argv) : Application(argc,argv) {
+        demo = new Sponge();
+    }
+
+    ~LoadApp() {
+        //    delete demo;
+    }
+
+    void scene() {
+        demo->init();
+    }
+    void renderFrame(){
+        demo->draw();
+    }
 };
+
+int main(int argc, char **argv) {
+    //  if (argc != 2)
+    //    LogError << "NO SCENE SPECIFIED. Try; ./load-xml test";
+    //  else
+    LoadApp(argc,argv).run();
+}

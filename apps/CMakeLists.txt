@@ -6,6 +6,10 @@ find_package(Qt4 REQUIRED)
 #build examples
 file(GLOB EXAMPLES *.cpp)
 
+include_directories(
+    ../demos
+)
+
 set(MOC_APPS 
     deferred
     shadow
@@ -28,7 +32,7 @@ foreach(EXAMPLE_PATH ${EXAMPLES})
     endforeach()
     
     add_executable("${EXAMPLE_NAME}" ${EXAMPLE_SOURCES})
-    target_link_libraries(${EXAMPLE_NAME} lub)
+    target_link_libraries(${EXAMPLE_NAME} lub lubDemos)
 endforeach(EXAMPLE_PATH)
 
 ADD_SUBDIRECTORY(planets)

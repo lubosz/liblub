@@ -23,10 +23,8 @@
 #include "Material/Textures.h"
 #include "Scene/SceneGraph.h"
 
-Sponge::Sponge(int argc, char *argv[]) :
-  Application(argc, argv) {
-  Scene::Instance().name = "Sponge";
-  attributes = QList<string> () << "uv" << "normal" << "tangent";
+Sponge::Sponge() : Demo("Sponge") {
+    attributes = QList<string> () << "uv" << "normal" << "tangent";
 }
 
 void Sponge::initPasses() {
@@ -38,49 +36,46 @@ void Sponge::initPasses() {
     drawPasses.push_back(shadowCastPass);
 
     vector<Texture*> shadowReceiveTargets = {
-            new ColorTexture(res, "finalColor")
+        new ColorTexture(res, "finalColor")
     };
 
     vector<Texture*> shadowReceiveSources = {
-            shadowCastPass->getTarget("shadowMap")
+        shadowCastPass->getTarget("shadowMap")
     };
     glError;
     initMaterial();
     glError;
     SourcePass * shadowReceivePass = new ShadowReceivePass(res,
-            shadowReceiveSources, shadowReceiveTargets, shader);
+                                                           shadowReceiveSources, shadowReceiveTargets, shader);
     drawPasses.push_back(shadowReceivePass);
 
     SinkPass * sinkPass = new SinkPass();
     sinkPass->debugTarget(QRectF(-1, -1, 2, 2),
-            shadowReceivePass->getTarget("finalColor")
-//            shadowCastPass->getTarget("shadowMap")
-    );
+                          shadowReceivePass->getTarget("finalColor")
+                          //            shadowCastPass->getTarget("shadowMap")
+                          );
     drawPasses.push_back(sinkPass);
 }
 
 void Sponge::initMaterial() {
-//    vector<string> flags = {
-//        "receiveShadows",
-//        "useSpotLight",
-//        "usePCF"
-//    };
-    shader = new ShaderProgram("Phong Color");
-    shader->attachVertFrag("Shading/PhongColor");
-    shader->init(attributes);
-    shader->setUniform("ambientSceneColor",QVector4D(0.1, 0.1,0.1, 1.0));
-    shader->setUniform("diffuseMaterialColor",QVector4D(1,1,1,1));
-    shader->setUniform("specularMaterialColor",
-            QVector4D(0.8, 0.8, 0.8, 1.0));
-    shader->setUniform("shininess",4.3f);
-    shader->setUniform("yPixelOffset",1.0f/1200);
-    shader->setUniform("xPixelOffset",1.0f/1920);
+    //    vector<string> flags = {
+    //        "receiveShadows",
+    //        "useSpotLight",
+    //        "usePCF"
+    //    };
+    shader = new VertFragProgram("Shading/PhongColor", attributes);
+    shader->setUniform("ambientSceneColor", QVector4D(0.1, 0.1,0.1, 1.0));
+    shader->setUniform("diffuseMaterialColor", QVector4D(1,1,1,1));
+    shader->setUniform("specularMaterialColor", QVector4D(0.8, 0.8, 0.8, 1.0));
+    shader->setUniform("shininess", 4.3f);
+    shader->setUniform("yPixelOffset", 1.0f/1200);
+    shader->setUniform("xPixelOffset", 1.0f/1920);
 
-    shader->setUniform("lightColor",QVector4D(1.0, 1.0, 1.0, 1.0));
+    shader->setUniform("lightColor", QVector4D(1.0, 1.0, 1.0, 1.0));
     // attenuation
-    shader->setUniform("constantAttenuation",0.0f);
-    shader->setUniform("linearAttenuation",0.1f);
-    shader->setUniform("quadraticAttenuation",.005f);
+    shader->setUniform("constantAttenuation", 0.0f);
+    shader->setUniform("linearAttenuation", 0.1f);
+    shader->setUniform("quadraticAttenuation", .005f);
 
     // spot
     shader->setUniform("spotOuterAngle",0.9f);
@@ -88,28 +83,23 @@ void Sponge::initMaterial() {
     Scene::Instance().getLight("foolight")->bindShaderUpdateLight(shader);
 }
 
-void Sponge::scene() {
+void Sponge::init() {
     initPasses();
     QList<string> attributes = QList<string> () << "uv" << "normal" << "tangent";
     for (int i = 0; i < 5; i++) {
-      MengerSponge * sponge = new MengerSponge(attributes, i);
-      Node * node = new Node("sponge", { static_cast<float> (i - 2.5),
-          static_cast<float> (i * 3 - 6), -5 }, 1, sponge->getMesh(), shader);
-      SceneGraph::Instance().addNode(node);
+        MengerSponge * sponge = new MengerSponge(attributes, i);
+        Node * node = new Node("sponge", QVector3D(i - 2.5, i * 3 - 6, -5), 1, sponge->getMesh(), shader);
+        SceneGraph::Instance().addNode(node);
     }
 
-    Node * plane = new Node("Plane", { 0, -30, 0 }, 20, Geometry::plane(attributes, QRectF(-1,-1,2,2)), shader);
+    Node * plane = new Node("Plane", QVector3D(0, -30, 0), 20, Geometry::plane(attributes, QRectF(-1,-1,2,2)), shader);
     plane->setRotation(QVector3D(90,0,0));
     plane->setReceiveShadows(true);
     plane->setCastShadows(false);
     SceneGraph::Instance().addNode(plane);
 }
 
-void Sponge::renderFrame() {
+void Sponge::draw() {
     foreach(DrawThing * pass, drawPasses)
         pass->draw();
-}
-
-int main(int argc, char *argv[]) {
-  Sponge(argc, argv).run();
 }

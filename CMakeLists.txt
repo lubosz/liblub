@@ -219,6 +219,7 @@ endif()
 target_link_libraries(lub ${LIBS})
 
 ADD_SUBDIRECTORY(apps)
+ADD_SUBDIRECTORY(demos)
 ADD_SUBDIRECTORY(tests)
 
 #check code stlye
