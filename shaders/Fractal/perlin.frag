@@ -3,7 +3,7 @@
 {% block linkage %}
 uniform float time; // Used for texture animation
 in vec2 uv;
-{% include "Noise/classic3D.glsl" %}
+{% include "Fractal/classic3D.glsl" %}
 
 {% endblock %}
 

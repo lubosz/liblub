@@ -66,7 +66,7 @@ void Sponge::initMaterial() {
 //        "usePCF"
 //    };
     shader = new ShaderProgram("Phong Color");
-    shader->attachVertFrag("Color/PhongColor");
+    shader->attachVertFrag("Shading/PhongColor");
     shader->init(attributes);
     shader->setUniform("ambientSceneColor",QVector4D(0.1, 0.1,0.1, 1.0));
     shader->setUniform("diffuseMaterialColor",QVector4D(1,1,1,1));

@@ -41,7 +41,7 @@ void Ocean::setOceanUniforms(ShaderProgram * program) {
 void Ocean::init(){
   QList<string> attributes = QList<string>() << "normal" << "uv";
 
-  initMaterials("Ocean", attributes);
+  initMaterials("Atmo/Ocean", attributes);
   setOceanUniforms(fromAtmosphere);
   setOceanUniforms(fromSpace);
 

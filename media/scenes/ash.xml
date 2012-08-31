@@ -2,7 +2,7 @@
 <liblub>
 	<Programs>
 		<Program name="ash">
-			<Shader url="Color/Ashikhmin" />
+			<Shader url="Shading/Ashikhmin" />
 			<Uniform value="0.1, 0.1, 0.1, 1.0" name="ambientSceneColor" />
 			<Uniform value="0.8, 0.8, 0.8,1.0" name="specularMaterialColor" />
 			<Uniform value="4.3" name="shininess" />
@@ -11,7 +11,7 @@
 		</Program>
 		<Program name="Ubershader">
 			<Shader 
-				url="Color/PhongColor" 
+				url="Shading/PhongColor" 
 				flags="receiveShadows,
 						useDiffuseTexture,
 						useSpotLight,

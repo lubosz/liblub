@@ -202,7 +202,7 @@ public:
                // Texture* volumeTexture = createVolumeTexture(512);
 //        Texture* volumeTexture = ballGradient(512);
 
-        raycastingShader = new VertFragProgram("raycasting",attributes);
+        raycastingShader = new VertFragProgram("Stuff/raycasting",attributes);
         raycastingShader->addTexture(backfaceTexture);
         raycastingShader->addTexture(frontfaceTexture);
         raycastingShader->addTexture(volumeTexture);

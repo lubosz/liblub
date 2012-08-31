@@ -20,7 +20,7 @@
   {% endif %}
     
   {% if normal %}
-    {% include "normal.vert" %}
+    {% include "Shading/normal.vert" %}
   {% endif %}
 {% endblock %}
 

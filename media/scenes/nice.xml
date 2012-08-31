@@ -31,7 +31,7 @@
 			<Shader url="Color/normalcolor" />
 		</Program>
 		<Program name="PhongColorMat">
-			<Shader url="Color/PhongColor" />
+			<Shader url="Shading/PhongColor" />
 			<Uniform value="0.0, 1.0, 0.0, 1.0" name="diffuseMaterialColor" />
 			<Uniform value="0.0, 0.0, 0.0, 1.0" name="ambientSceneColor" />
 			<Uniform value="0.8, 0.8, 0.8, 1.0" name="specularMaterialColor" />
@@ -57,7 +57,7 @@
 		</Program>
 		
 		<Program name="PhongTexMat">
-			<Shader url="Color/PhongColor" flags="useDiffuseTexture" />
+			<Shader url="Shading/PhongColor" flags="useDiffuseTexture" />
 			<Uniform value="0.1, 0.1, 0.1, 1.0" name="ambientSceneColor" />
 			<Uniform value="0.1, 0.1, 0.1, 1.0" name="diffuseMaterialColor" />
 			<Uniform value="0.8, 0.8, 0.8,1.0" name="specularMaterialColor" />
@@ -77,7 +77,7 @@
 		</Program>
 		
 		<Program name="Ocean">
-            <Shader url="Ocean" />
+            <Shader url="Atmo/Ocean" />
             
             <Uniform name="deepColor" value="0, 0.3, 0.5, 1.0" />
             <Uniform name="shallowColor" value="0, 1, 1, 1.0" />

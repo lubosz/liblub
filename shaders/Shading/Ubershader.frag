@@ -15,7 +15,7 @@ in vec2 uv;
 {% block uniform %}
 
 {% if light %}
-{% include "singlelight.frag" %}
+{% include "Shading/singlelight.frag" %}
 {% endif %}
 
 {% if diffuseTexture %}
@@ -23,15 +23,15 @@ uniform sampler2D diffuseTexture;
 {% endif %}
 
 {% if normalmap %}
-{% include "normalmap.frag" %}
+{% include "Shading/normalmap.frag" %}
 {% endif %}
 
 {% if spotlight %}
-{% include "spotlight.frag" %}
+{% include "Shading/spotlight.frag" %}
 {% endif %}
 
 {% if shadow %}
-{% include "shadow.frag" %}
+{% include "Shading/shadow.frag" %}
 {% endif %}
 
 {% endblock %}

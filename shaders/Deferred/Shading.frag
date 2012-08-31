@@ -37,7 +37,7 @@ uniform vec3 camPositionWorld;
 
 const int shininess = 32;
 //const int shininess = 1;
-{% include "ashikhmin.glsl" %}
+{% include "Shading/ashikhmin.glsl" %}
 {% endblock %}
 
 {% block main %}
