@@ -4,7 +4,13 @@ project(liblub)
 find_package(Qt4 REQUIRED)
 
 #build examples
-file(GLOB DEMOS *.cpp)
+file(GLOB_RECURSE DEMOS *.cpp)
 
-add_library(lubDemos ${DEMOS})
+#moc qt
+set(MOC_INFILES
+    gravity/gravity.h
+)
+qt4_wrap_cpp(MOC_OUTFILES ${MOC_INFILES})
+
+add_library(lubDemos ${DEMOS} ${MOC_OUTFILES})
 target_link_libraries(lubDemos lub)

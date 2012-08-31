@@ -17,28 +17,27 @@
     along with liblub.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "System/Application.h"
-
-#include "planet.h"
 #include <vector>
 #include <QTimer>
+#include "System/Demo.h"
+#include "planet.h"
 
 using std::vector;
 
-class GravityApp: public Application {
-	Q_OBJECT
- public:
+class GravityDemo: public QObject, public Demo {
+    Q_OBJECT
+public:
 
     vector<Planet*> planets;
     QTimer *simulationTimer;
 
-  GravityApp(int argc, char *argv[]);
-  ~GravityApp();
+    GravityDemo();
+    ~GravityDemo();
 
-  void scene();
-  void renderFrame();
+    void init();
+    void draw();
 
 public slots:
-  void simulatePlanets();
+    void simulatePlanets();
 };
 

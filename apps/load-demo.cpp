@@ -29,6 +29,7 @@
 #include "pulse.h"
 #include "recursive-sponge.h"
 #include "sss.h"
+#include "gravity/gravity.h"
 
 class LoadApp: public Application {
 public:
@@ -87,6 +88,7 @@ public:
         addDemo(new RecursiveSpongeApp());
         addDemo(new SSSApp());
         addDemo(new TesselationApp());
+        addDemo(new GravityDemo());
     }
 
     void addDemo(Demo * demo) {

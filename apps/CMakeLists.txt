@@ -37,4 +37,3 @@ endforeach(EXAMPLE_PATH)
 
 ADD_SUBDIRECTORY(planets)
 ADD_SUBDIRECTORY(editor)
-ADD_SUBDIRECTORY(gravity)

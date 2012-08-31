@@ -21,26 +21,30 @@
 #include "Renderer/RenderPasses.h"
 #include "Scene/Scene.h"
 
-GravityApp::GravityApp(int argc, char *argv[]) : Application(argc,argv) {
+GravityDemo::GravityDemo() : Demo("gravity") {
 }
 
-GravityApp::~GravityApp() {
+GravityDemo::~GravityDemo() {
 }
 
-void GravityApp::scene() {
+void GravityDemo::init() {
+    float sunDistance = 1.496e+8;
+    float moonDistance = 356400;
 
-//    moon = new Planet("Earth/MoonMap_2500x1250.jpg", QVector3D(0,0,356400), 1737.1);
-    Planet * moon = new Planet("Earth/MoonMap_2500x1250.jpg", QVector3D(-1.496e+8,0,356400), 1737.1);
+    sunDistance /= 4.0;
+    moonDistance /= 4.0;
+
+    Planet * moon = new Planet("Earth/MoonMap_2500x1250.jpg", QVector3D(-sunDistance,0,moonDistance), 1737.1);
     moon->mass = 7.3477e+22;
-    QVector3D moonDir = QVector3D(356400-1.496e+8, 0, 0) - moon->position;
+    QVector3D moonDir = QVector3D(moonDistance - sunDistance, 0, 0) - moon->position;
     //    moon->velocity = 1022 * moonDir.normalized();
     moon->velocity = 30 * moonDir.normalized();
     planets.push_back(moon);
 
-    Planet * earth = new Planet("earthmap1k.jpg", QVector3D(-1.496e+8,0,0), 6371);
+    Planet * earth = new Planet("earthmap1k.jpg", QVector3D(-sunDistance,0,0), 6371);
     earth->mass = 5.9736e+24;
 
-    QVector3D earthDir = QVector3D(0, 0, -1.496e+8) - earth->position;
+    QVector3D earthDir = QVector3D(0, 0, -sunDistance) - earth->position;
     //    moon->velocity = 1022 * moonDir.normalized();
     earth->velocity = 3 * earthDir.normalized();
 
@@ -56,13 +60,15 @@ void GravityApp::scene() {
     Scene::Instance().getCurrentCamera()->farClip = 100000.0;
     Scene::Instance().getCurrentCamera()->updatePerspective();
 
-    simulationTimer = new QTimer(this);
+    simulationTimer = new QTimer();
     connect(simulationTimer, SIGNAL(timeout()), this, SLOT(simulatePlanets()));
-    simulationTimer->start(1000);
+    simulationTimer->start(0);
 
+    Scene::Instance().getCurrentCamera()->setPosition(planets[1]->node->position + QVector3D(0,5,5));
+    Scene::Instance().getCurrentCamera()->update();
 }
 
-void GravityApp::simulatePlanets() {
+void GravityDemo::simulatePlanets() {
     foreach (Planet * planet, planets)
         foreach (Planet * planet2, planets)
             if (planet != planet2)
@@ -70,16 +76,8 @@ void GravityApp::simulatePlanets() {
 
     foreach (Planet * planet, planets)
         planet->move();
-
-    Scene::Instance().getCurrentCamera()->setPosition(planets[1]->node->position + QVector3D(0,5,5));
-    Scene::Instance().getCurrentCamera()->update();
 }
 
-void GravityApp::renderFrame(){
+void GravityDemo::draw(){
     OnePass::draw();
-}
-
-int main(int argc, char *argv[]) {
-    GravityApp app(argc,argv);
-    app.run();
 }
