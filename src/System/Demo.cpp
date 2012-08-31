@@ -2,3 +2,7 @@
 
 Demo::Demo(const string &name) : name(name) {
 }
+
+Demo::~Demo() {
+
+}

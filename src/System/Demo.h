@@ -10,6 +10,8 @@ public:
     string name;
     Demo(const string& name);
 
+    virtual ~Demo();
+
     virtual void init() = 0;
     virtual void draw() = 0;
 };

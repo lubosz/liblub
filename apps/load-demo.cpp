@@ -30,8 +30,6 @@
 #include "recursive-sponge.h"
 #include "sss.h"
 
-class Sponge;
-
 class LoadApp: public Application {
 public:
 
@@ -47,7 +45,12 @@ public:
             LogError << "NO SCENE SPECIFIED. Try; ./load-demo name";
             listDemos();
         } else {
+
             string arg = argv[1];
+            if (arg == "-l") {
+                std::cout << demoList() << "\n";
+                exit(0);
+            }
             if (demos.contains(arg)) {
                 currentDemo = demos[arg];
             } else {
@@ -61,11 +64,15 @@ public:
     }
 
     void listDemos() {
-        LogInfo << "Possible Demos:";
+        LogInfo << "Possible Demos:" << demoList();
 
-        foreach (Demo * demo, demos) {
-            LogInfo << demo->name;
-        }
+    }
+
+    string demoList() {
+        string allDemos;
+        foreach (Demo * demo, demos)
+            allDemos += demo->name + " ";
+        return allDemos;
     }
 
     void addDemos() {
@@ -87,7 +94,7 @@ public:
     }
 
     ~LoadApp() {
-        //    delete demo;
+        delete currentDemo;
     }
 
     void scene() {

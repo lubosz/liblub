@@ -23,7 +23,7 @@
 #include "Material/Textures.h"
 #include "Scene/SceneGraph.h"
 
-Sponge::Sponge() : Demo("Sponge") {
+Sponge::Sponge() : Demo("offline-sponge") {
     attributes = QList<string> () << "uv" << "normal" << "tangent";
 }
 

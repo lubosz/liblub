@@ -24,7 +24,7 @@
 #include "Material/Shaders.h"
 #include <QVariantAnimation>
 
-MandelbulbDemo::MandelbulbDemo() : Demo("Mandelbulb") {
+MandelbulbDemo::MandelbulbDemo() : Demo("mandelbulb") {
 }
 
 MandelbulbDemo::~MandelbulbDemo() {

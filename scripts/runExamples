@@ -3,7 +3,7 @@
 import os, subprocess, sys
 from optparse import OptionParser
 
-blacklist_demos = ["depth", "ssao", "load", "posteffect", "multilight", "tesselation", "mandelbulb", "load-assimp", "load-xml", "editor", "raycasting"]
+blacklist_demos = ["tesselation", "mandelbulb", "raycasting"]
 blacklist_scenes = ["ash", "common", "csm", "multilight", "nice", "terrain", "ocean"]
 blacklist_tests = []
 
@@ -23,6 +23,11 @@ class ExampleRunner:
     files.sort()
     return files
     
+  def getDemos(self):
+    demos = os.popen("bin/load-demo -l").readlines()[0].strip().split(" ")
+    print (demos)
+    return demos
+    
   def run(self, command):
     print("Running", command)
     
@@ -32,10 +37,10 @@ class ExampleRunner:
     subprocess.call(command)
     self.waitForInput()
 
-  def runApps(self):
-    for demo in self.getFiles("bin"):
+  def runDemos(self):
+    for demo in self.getDemos():
       if demo not in blacklist_demos:
-        self.run('bin/%s' % demo)
+        self.run(['bin/load-demo', demo])
         
   def runScenes(self):    
     for scene in self.getFiles("media/scenes"):
@@ -77,7 +82,7 @@ class ExampleRunner:
       options.scenes = True
       options.tests = True
     if options.examples is not None:
-      self.runApps()
+      self.runDemos()
     if options.scenes is not None:
       self.runScenes()
     if options.tests is not None:

@@ -28,7 +28,7 @@
 #include "Scene/Light.h"
 #include "Scene/Scene.h"
 
-TesselationApp::TesselationApp() : Demo("Tesselation") {
+TesselationApp::TesselationApp() : Demo("tesselation") {
     shader = new ShaderProgram("Tesselation");
 }
 

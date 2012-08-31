@@ -29,11 +29,12 @@
 #include "Mesh/Geometry.h"
 
 DepthOfFieldDemo::DepthOfFieldDemo() : Demo("dof") {
-//    useFontOverlay = true;
     sceneLoader = new SceneLoader("terrain.xml");
 }
 
-DepthOfFieldDemo::~DepthOfFieldDemo() {}
+DepthOfFieldDemo::~DepthOfFieldDemo() {
+    delete sceneLoader;
+}
 
 void DepthOfFieldDemo::init() {
     sceneLoader->load();
