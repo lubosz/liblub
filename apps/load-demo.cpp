@@ -35,35 +35,55 @@ class Sponge;
 class LoadApp: public Application {
 public:
 
-    Demo * demo;
+    Demo * currentDemo;
+    QMap<string, Demo*> demos;
 
     LoadApp(int &argc, char **argv) : Application(argc,argv) {
-        string name = argv[1];
-        if (name == "Sponge")
-            demo = new Sponge();
-        else if (name == "AnimationDemo")
-            demo = new AnimationDemo();
-        else if (name == "JuliaDemo")
-            demo = new JuliaDemo();
-        else if (name == "PerlinDemo")
-            demo = new PerlinDemo();
-        else if (name == "DepthOfFieldDemo")
-            demo = new DepthOfFieldDemo();
-        else if (name == "MandelbulbDemo")
-            demo = new MandelbulbDemo();
-        else if (name == "PulseDemo")
-            demo = new PulseDemo();
-        else if (name == "RaycastingDemo")
-            demo = new RaycastingDemo();
-        else if (name == "RecursiveSpongeApp")
-            demo = new RecursiveSpongeApp();
-        else if (name == "SSSApp")
-            demo = new SSSApp();
-        else if (name == "TesselationApp")
-            demo = new TesselationApp();
-        else
-            LogFatal << "No Such Demo";
+        addDemos();
 
+        currentDemo = nullptr;
+
+        if (argc != 2) {
+            LogError << "NO SCENE SPECIFIED. Try; ./load-demo name";
+            listDemos();
+        } else {
+            string arg = argv[1];
+            if (demos.contains(arg)) {
+                currentDemo = demos[arg];
+            } else {
+                LogError << "No such demo" << arg;
+                listDemos();
+            }
+        }
+
+        if (currentDemo == nullptr)
+            exit(0);
+    }
+
+    void listDemos() {
+        LogInfo << "Possible Demos:";
+
+        foreach (Demo * demo, demos) {
+            LogInfo << demo->name;
+        }
+    }
+
+    void addDemos() {
+        addDemo(new Sponge());
+        addDemo(new AnimationDemo());
+        addDemo(new JuliaDemo());
+        addDemo(new PerlinDemo());
+        addDemo(new DepthOfFieldDemo());
+        addDemo(new MandelbulbDemo());
+        addDemo(new PulseDemo());
+        addDemo(new RaycastingDemo());
+        addDemo(new RecursiveSpongeApp());
+        addDemo(new SSSApp());
+        addDemo(new TesselationApp());
+    }
+
+    void addDemo(Demo * demo) {
+        demos.insert(demo->name, demo);
     }
 
     ~LoadApp() {
@@ -71,16 +91,13 @@ public:
     }
 
     void scene() {
-        demo->init();
+        currentDemo->init();
     }
     void renderFrame(){
-        demo->draw();
+        currentDemo->draw();
     }
 };
 
 int main(int argc, char **argv) {
-      if (argc != 2)
-        LogError << "NO SCENE SPECIFIED. Try; ./load-demo name";
-      else
     LoadApp(argc,argv).run();
 }

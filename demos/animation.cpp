@@ -24,14 +24,13 @@
 #include <QVariantAnimation>
 
 AnimationDemo::AnimationDemo() : Demo("animation") {
-    sceneLoader = new SceneLoader("nice.xml");
 }
 
 AnimationDemo::~AnimationDemo() {
-    delete sceneLoader;
 }
 
 void AnimationDemo::init() {
+    sceneLoader = new SceneLoader("nice.xml");
     sceneLoader->load();
 
     Node * sponge = SceneGraph::Instance().getNode("menger sponge");
@@ -91,6 +90,7 @@ void AnimationDemo::init() {
     starsAnim->start();
     spongeSize->start();
     spongeRotation->start();
+    delete sceneLoader;
 }
 
 void AnimationDemo::draw() {
