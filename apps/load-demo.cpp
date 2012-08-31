@@ -17,7 +17,18 @@
     along with liblub.  If not, see <http://www.gnu.org/licenses/>.
 */
 #include "System/Application.h"
+
 #include "sponge.h"
+#include "animation.h"
+#include "fractal-julia-cpu.h"
+#include "mandelbulb.h"
+#include "raycasting.h"
+#include "tesselation.h"
+#include "dof.h"
+#include "fractal-perlin.h"
+#include "pulse.h"
+#include "recursive-sponge.h"
+#include "sss.h"
 
 class Sponge;
 
@@ -27,7 +38,32 @@ public:
     Demo * demo;
 
     LoadApp(int &argc, char **argv) : Application(argc,argv) {
-        demo = new Sponge();
+        string name = argv[1];
+        if (name == "Sponge")
+            demo = new Sponge();
+        else if (name == "AnimationDemo")
+            demo = new AnimationDemo();
+        else if (name == "JuliaDemo")
+            demo = new JuliaDemo();
+        else if (name == "PerlinDemo")
+            demo = new PerlinDemo();
+        else if (name == "DepthOfFieldDemo")
+            demo = new DepthOfFieldDemo();
+        else if (name == "MandelbulbDemo")
+            demo = new MandelbulbDemo();
+        else if (name == "PulseDemo")
+            demo = new PulseDemo();
+        else if (name == "RaycastingDemo")
+            demo = new RaycastingDemo();
+        else if (name == "RecursiveSpongeApp")
+            demo = new RecursiveSpongeApp();
+        else if (name == "SSSApp")
+            demo = new SSSApp();
+        else if (name == "TesselationApp")
+            demo = new TesselationApp();
+        else
+            LogFatal << "No Such Demo";
+
     }
 
     ~LoadApp() {
@@ -43,8 +79,8 @@ public:
 };
 
 int main(int argc, char **argv) {
-    //  if (argc != 2)
-    //    LogError << "NO SCENE SPECIFIED. Try; ./load-xml test";
-    //  else
+      if (argc != 2)
+        LogError << "NO SCENE SPECIFIED. Try; ./load-demo name";
+      else
     LoadApp(argc,argv).run();
 }
