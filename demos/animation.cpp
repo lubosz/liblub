@@ -16,27 +16,22 @@
  You should have received a copy of the GNU General Public License
  along with liblub.  If not, see <http://www.gnu.org/licenses/>.
  */
+#include "animation.h"
 #include "Scene/SceneLoader.h"
 #include "Scene/SceneGraph.h"
 #include "Renderer/RenderPasses.h"
 #include "System/Application.h"
 #include <QVariantAnimation>
 
-class AnimationApp: public Application {
-public:
-
-  SceneLoader *sceneLoader;
-
-  AnimationApp(int argc, char *argv[]) :
-    Application(argc, argv) {
+AnimationDemo::AnimationDemo() : Demo("animation") {
     sceneLoader = new SceneLoader("nice.xml");
-  }
+}
 
-  ~AnimationApp() {
+AnimationDemo::~AnimationDemo() {
     delete sceneLoader;
-  }
+}
 
-  void scene() {
+void AnimationDemo::init() {
     sceneLoader->load();
 
     Node * sponge = SceneGraph::Instance().getNode("menger sponge");
@@ -49,7 +44,7 @@ public:
     spongeSize->setLoopCount(-1);
 
     QPropertyAnimation * spongeRotation = new QPropertyAnimation(sponge,
-        "rotationX");
+                                                                 "rotationX");
     spongeRotation->setDuration(10000);
     spongeRotation->setStartValue(0);
     spongeRotation->setEndValue(360.0f);
@@ -70,39 +65,34 @@ public:
 
     int i = -10;
     foreach(Node * node, SceneGraph::Instance().sceneNodes) {
-      if (node != sponge && node != stars) {
-        QPropertyAnimation * posAnim = new QPropertyAnimation(node, "positionX");
-        posAnim->setDuration(5000);
-        posAnim->setKeyValueAt(0, node->positionX());
-        posAnim->setKeyValueAt(0.5, node->positionX() - i * 2);
-        posAnim->setKeyValueAt(1, node->positionX());
-        posAnim->setEasingCurve(QEasingCurve::InOutElastic);
-        posAnim->setLoopCount(-1);
+        if (node != sponge && node != stars) {
+            QPropertyAnimation * posAnim = new QPropertyAnimation(node, "positionX");
+            posAnim->setDuration(5000);
+            posAnim->setKeyValueAt(0, node->positionX());
+            posAnim->setKeyValueAt(0.5, node->positionX() - i * 2);
+            posAnim->setKeyValueAt(1, node->positionX());
+            posAnim->setEasingCurve(QEasingCurve::InOutElastic);
+            posAnim->setLoopCount(-1);
 
-        QPropertyAnimation * rotAnim = new QPropertyAnimation(node, "rotationZ");
-        rotAnim->setDuration(5010);
-        rotAnim->setKeyValueAt(0, node->positionX());
-        rotAnim->setKeyValueAt(0.6, -(node->positionX() - i * 10));
-        rotAnim->setKeyValueAt(1, node->positionX());
-        rotAnim->setEasingCurve(QEasingCurve::InOutElastic);
-        rotAnim->setLoopCount(-1);
+            QPropertyAnimation * rotAnim = new QPropertyAnimation(node, "rotationZ");
+            rotAnim->setDuration(5010);
+            rotAnim->setKeyValueAt(0, node->positionX());
+            rotAnim->setKeyValueAt(0.6, -(node->positionX() - i * 10));
+            rotAnim->setKeyValueAt(1, node->positionX());
+            rotAnim->setEasingCurve(QEasingCurve::InOutElastic);
+            rotAnim->setLoopCount(-1);
 
-        rotAnim->start();
-        posAnim->start();
-        i++;
-      }
+            rotAnim->start();
+            posAnim->start();
+            i++;
+        }
     }
 
     starsAnim->start();
     spongeSize->start();
     spongeRotation->start();
-  }
-  void renderFrame() {
-      OnePass::draw();
-  }
-};
-
-int main(int argc, char *argv[]) {
-  AnimationApp(argc, argv).run();
 }
 
+void AnimationDemo::draw() {
+    OnePass::draw();
+}

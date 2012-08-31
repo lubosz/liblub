@@ -16,6 +16,7 @@
     You should have received a copy of the GNU General Public License
     along with liblub.  If not, see <http://www.gnu.org/licenses/>.
 */
+#include "fractal-perlin.h"
 #include <string>
 #include <QApplication>
 #include "System/Application.h"
@@ -31,45 +32,33 @@
 #include "Mesh/Geometry.h"
 #include "Renderer/RenderPasses.h"
 
+PerlinDemo::PerlinDemo() : Demo("perlin") {
+}
 
-class LoadApp: public Application {
- public:
+PerlinDemo::~PerlinDemo() {}
 
-   ShaderProgram * perlinNoise;
+void PerlinDemo::init() {
+    //    QImage * image = ProcTextures::makeGlow(QSize(1000,2000),40.0f, 0.1f);
+    //
+    //    Texture * textTexture = TextureFactory::Instance().load(image,"myTexture");
+    //
+    //    Material * material = new EmptyMat();
+    //
+    //    material->shaderProgram = SceneData::Instance().shaderPrograms.value("Texture");
+    //    material->addTexture(textTexture);
 
-  explicit LoadApp(int argc, char *argv[]) : Application(argc,argv) {
-  }
-
-  ~LoadApp() {}
-
-  void scene() {
-//    QImage * image = ProcTextures::makeGlow(QSize(1000,2000),40.0f, 0.1f);
-//
-//    Texture * textTexture = TextureFactory::Instance().load(image,"myTexture");
-//
-//    Material * material = new EmptyMat();
-//
-//    material->shaderProgram = SceneData::Instance().shaderPrograms.value("Texture");
-//    material->addTexture(textTexture);
-
-      QList<string> attributes = QList<string> () << "normal" << "uv";
+    QList<string> attributes = QList<string> () << "normal" << "uv";
 
     perlinNoise = new VertFragProgram("Fractal/perlin",attributes);
 
 
     Node * plane = new Node("Plane", QVector3D(0,0,-2), 1, Geometry::plane(attributes, QRectF(-1,-1,2,2)), perlinNoise);
-//    plane->transparent = true;
+    //    plane->transparent = true;
     plane->setRotation(QVector3D(-90,0,180));
     SceneGraph::Instance().addNode(plane);
-  }
-  void renderFrame(){
+}
+void PerlinDemo::draw(){
     perlinNoise->use();
     perlinNoise->setUniform("time", Timer::getTime());
     OnePass::draw();
-  }
-};
-
-int main(int argc, char *argv[]) {
-  LoadApp(argc,argv).run();
 }
-
