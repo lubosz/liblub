@@ -9,9 +9,11 @@
 #include <random>
 #include <functional>
 #include "Mesh/Geometry.h"
-#include "common/Qt3D.h"
 #include "System/Logger.h"
 #include "Renderer/OpenGL.h"
+
+#include <QRectF>
+#include <QMatrix4x4>
 
 Mesh * Geometry::plane(const QList<string> & attributes, const QRectF &plane) {
     Mesh * mesh = new Mesh(attributes);

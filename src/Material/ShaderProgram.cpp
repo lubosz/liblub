@@ -5,6 +5,7 @@
  *  Created on: Mar 22, 2010
  */
 #include <assert.h>
+#include <QVector2D>
 #include "Material/ShaderProgram.h"
 #include "Scene/SceneGraph.h"
 #include "System/Logger.h"

@@ -11,6 +11,8 @@
 #include "Scene/Scene.h"
 #include "Planet.h"
 #include "System/Timer.h"
+#include <QVector2D>
+
 Ocean::Ocean(Planet * planet) {
   this->planet = planet;
 }

@@ -9,13 +9,14 @@
 
 #include <string>
 #include <QList>
+#include <QMatrix3x3>
 
-#include "common/Qt3D.h"
 #include "Material/Shader.h"
 #include "Material/Uniform.h"
 #include "Material/UniformBuffer.h"
 #include "Material/Texture.h"
 #include "System/NamedObject.h"
+
 
 using std::string;
 

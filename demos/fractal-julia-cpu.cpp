@@ -30,6 +30,7 @@
 #include "Scene/Camera.h"
 #include "Scene/Scene.h"
 #include <complex>
+#include <QVector2D>
 
 using std::complex;
 

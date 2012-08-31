@@ -7,7 +7,6 @@
 
 #pragma once
 
-#include "common/Qt3D.h"
 #include <QtCore>
 #include "Scene/Node.h"
 
