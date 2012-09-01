@@ -57,7 +57,11 @@ endif()
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++0x")
 
 #Warnings
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Werror -Wextra -Woverloaded-virtual -Wuninitialized -Wold-style-cast -isystem /usr/include/QtCore")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -Woverloaded-virtual -Wuninitialized -Wold-style-cast")
+#Ignore Qt Headers, because they warn a lot
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -isystem /usr/include/qt4/QtGui -isystem /usr/include/qt4/QtCore")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -isystem /usr/include/QtCore")
+
 if(WARNINGS)
 	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Werror")
 	#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Winline")
@@ -92,7 +96,7 @@ if(NOT OPENGL_FOUND)
 	message("ERROR: OpenGL not found")
 endif(NOT OPENGL_FOUND)
 
-#check for opengl3 headers
+#check for opengl corearb headers
 function(download_gl_header GL_HEADER)
     if(NOT EXISTS ${CMAKE_SOURCE_DIR}/src/Renderer/GL/${GL_HEADER})
         execute_process(
@@ -109,7 +113,8 @@ else()
 	if(NOT EXISTS src/Renderer/GL)
 		execute_process(COMMAND mkdir -p ${CMAKE_SOURCE_DIR}/src/Renderer/GL)
 	endif()
-	set(GL_HEADERS glcorearb.h glext.h glxext.h)
+	#set(GL_HEADERS glcorearb.h glext.h glxext.h)
+	set(GL_HEADERS glcorearb.h)
 	foreach(GL_HEADER ${GL_HEADERS})
 		    download_gl_header(${GL_HEADER})
     endforeach(GL_HEADER)
