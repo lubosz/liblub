@@ -12,18 +12,69 @@
 #include <typeinfo>
 #include "System/Config.h"
 #include "System/Logger.h"
+#include <QDir>
+#include <QTextStream>
 
 Config::Config():XmlReader() {
-  initialized = false;
+
+  QString configPath = QDir::homePath() + "/.liblub";
+
+  if (!QDir(configPath).exists()) {
+      LogWarning << "Creating Config Path" << configPath.toStdString();
+      QDir().mkdir(configPath);
+  }
+
+  QFile file(configPath + "/config.xml");
+
+  if (!file.exists()) {
+      LogWarning << "Creating Config File" << file.fileName().toStdString();
+      file.open(QIODevice::WriteOnly | QIODevice::Text);
+      QTextStream out(&file);
+
+      out << "<?xml version='1.0' encoding='UTF-8'?>"
+          << "<liblub>"
+          << "    <Config>"
+          << "        <Int name='Vsync' value='1' />"
+          << "        <String name='shaderDir' value='shaders/' />"
+          << "        <String name='textureDir' value='media/textures/' />"
+          << "        <String name='sceneDir' value='media/scenes/' />"
+          << "        <String name='meshDir' value='media/meshes/' />"
+          << "        <String name='templateDir' value='shaders/' />"
+          << "        <String name='suffixes' value='_RT, _LF, _DN,_UP, _FR, _BK' />"
+          << "        <Float name='backgroundColor' value='0.0,0.0,0.0' />"
+          << "        <Float name='FPS_INTERVAL' value='1.0' />"
+          << "        <Int name='GLcontext' value='4,2' />"
+          << "        <Int name='maxBuffers' value='6' />"
+          << "    </Config>"
+          << "</liblub>";
+      file.close();
+  }
+
+  QString errorStr;
+  int errorLine;
+  int errorColumn;
+  QDomDocument domDocument;
+  domDocument.setContent(&file, true, &errorStr, &errorLine, &errorColumn);
+
+  QDomElement document = domDocument.documentElement().firstChildElement();
+  while (!document.isNull()) {
+      if (document.tagName() == "Config") {
+          QDomElement option = document.firstChildElement();
+          while (!option.isNull()) {
+              appendOption(option);
+              option = option.nextSiblingElement();
+          }
+      }
+      document = document.nextSiblingElement();
+  }
+
+  file.close();
 }
 
 Config::~Config() {}
 
 template<typename T>
 vector<T> Config::getValues(string name, const vector<ConfigOption<T>> & config) {
-    if (!initialized)
-      LogFatal << "The config file was not initialized yet.";
-
     foreach(ConfigOption<T> configOption, config) {
             if (configOption.name == name)
                 return configOption.optionVec;
@@ -55,31 +106,6 @@ template<> int Config::value<int>(const string & name) {
 }
 template<> float Config::value<float>(const string & name) {
     return values<float>(name)[0];
-}
-
-void Config::load(const QString & fileName) {
-    QFile file(fileName);
-
-    QString errorStr;
-    int errorLine;
-    int errorColumn;
-    QDomDocument domDocument;
-    domDocument.setContent(&file, true, &errorStr, &errorLine, &errorColumn);
-
-    QDomElement document = domDocument.documentElement().firstChildElement();
-    while (!document.isNull()) {
-        if (document.tagName() == "Config") {
-            QDomElement option = document.firstChildElement();
-            while (!option.isNull()) {
-                appendOption(option);
-                option = option.nextSiblingElement();
-            }
-        }
-        document = document.nextSiblingElement();
-    }
-
-    initialized = true;
-    file.close();
 }
 
 void Config::appendOption(const QDomElement & optionNode) {

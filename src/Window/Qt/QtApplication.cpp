@@ -13,7 +13,6 @@
 #include "QtInput.h"
 
 QtApplication::QtApplication(int &argc, char **argv) : QApplication(argc, argv){
-  Config::Instance().load("config.xml");
 }
 
 QtApplication::~QtApplication() {

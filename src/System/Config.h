@@ -31,9 +31,7 @@ class Config : public Singleton<Config>, public XmlReader {
  public:
 	Config();
 	virtual ~Config();
-	void load(const QString & fileName);
 	void appendOption(const QDomElement & optionNode);
-	string fileName;
 	template<typename T> vector<T> getValues(string name, const vector<ConfigOption<T>> & config);
 	template<typename T> T value(const string & name);
 	template<typename T> vector<T> values(const string & name);
@@ -46,8 +44,6 @@ class Config : public Singleton<Config>, public XmlReader {
 
 
 	bool isEnabled(string value);
- private:
-	bool initialized;
 };
 
 #endif

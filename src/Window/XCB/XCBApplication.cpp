@@ -35,7 +35,6 @@ void XCBApplication::draw() {
 }
 
 void XCBApplication::run() {
-  Config::Instance().load("config.xml");
   // Qt requires at least one argument.
   if (app->arguments().length() < 1) {
     LogError << "no args in qt app.";
