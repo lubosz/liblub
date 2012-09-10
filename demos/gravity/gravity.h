@@ -28,7 +28,7 @@ class GravityDemo: public QObject, public Demo {
     Q_OBJECT
 public:
 
-    vector<Planet*> planets;
+    vector<SimPlanet*> planets;
     QTimer *simulationTimer;
 
     GravityDemo();

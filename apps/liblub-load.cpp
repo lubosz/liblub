@@ -32,6 +32,7 @@
 #include "gravity/gravity.h"
 #include "load-assimp.h"
 #include "load-xml.h"
+#include "planets/planets.h"
 
 class LoadApp: public Application {
 public:
@@ -97,6 +98,7 @@ public:
         addDemo(new SSSApp());
         addDemo(new TesselationApp());
         addDemo(new GravityDemo());
+        addDemo(new PlanetsDemo());
     }
 
     void addDemo(Demo * demo) {

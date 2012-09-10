@@ -1,13 +1,12 @@
-#ifndef PLANET_H
-#define PLANET_H
+#ifndef SIMPLANET_H
+#define SIMPLANET_H
 
 #include "Scene/Node.h"
 
 const float massstab = 0.0001;
 const double G = 6.67300e-11;
-//const float massstab = 0.0001;
 
-class Planet {
+class SimPlanet {
 public:
     string texturePath;
     QVector3D position;
@@ -18,15 +17,14 @@ public:
 
     QVector3D velocity;
 
-
-    Planet(string texturePath, const QVector3D &position, float radius);
+    SimPlanet(string texturePath, const QVector3D &position, float radius);
 
     void init();
 
     void move();
     void accelerate(const QVector3D &acceleration);
 
-    void influenceByPlanet(Planet * planet);
+    void influenceByPlanet(SimPlanet * planet);
 };
 
-#endif // PLANET_H
+#endif // SIMPLANET_H

@@ -5,12 +5,12 @@
 #include "Scene/SceneGraph.h"
 #include "Procedural/Geometry.h"
 
-Planet::Planet(string texturePath, const QVector3D &position, float radius) : texturePath(texturePath) {
+SimPlanet::SimPlanet(string texturePath, const QVector3D &position, float radius) : texturePath(texturePath) {
     this->position = position;
     this->radius = radius;
 }
 
-void Planet::init() {
+void SimPlanet::init() {
     QList<string> attributes = QList<string>() << "uv";
     ShaderProgram * shader = new VertFragProgram("Texture/texture", attributes);
     Texture * texture = new TextureFile(texturePath, "diffuse");
@@ -24,7 +24,7 @@ void Planet::init() {
     SceneGraph::Instance().addNode(node);
 }
 
-void Planet::move() {
+void SimPlanet::move() {
     position += velocity;
     node->position += velocity * massstab;
     node->update();
@@ -34,7 +34,7 @@ void Planet::move() {
     node->updateRotationFromEuler();
 }
 
-void Planet::influenceByPlanet(Planet * planet) {
+void SimPlanet::influenceByPlanet(SimPlanet * planet) {
     QVector3D distanceVector = (planet->position - position) * 1000;
     double r = distanceVector.length();
     QVector3D moveDir = distanceVector.normalized();
@@ -61,7 +61,7 @@ void Planet::influenceByPlanet(Planet * planet) {
     accelerate(acceleration * moveDir);
 }
 
-void Planet::accelerate(const QVector3D &acceleration) {
+void SimPlanet::accelerate(const QVector3D &acceleration) {
     velocity += acceleration;
 //    LogDebug << "velocity" << velocity.x() << velocity.y() << velocity.z()
 //             << "acceleration" << acceleration.x() << acceleration.y() << acceleration.z();

@@ -34,14 +34,14 @@ void GravityDemo::init() {
     sunDistance /= 4.0;
     moonDistance /= 4.0;
 
-    Planet * moon = new Planet("Earth/MoonMap_2500x1250.jpg", QVector3D(-sunDistance,0,moonDistance), 1737.1);
+    SimPlanet * moon = new SimPlanet("Earth/MoonMap_2500x1250.jpg", QVector3D(-sunDistance,0,moonDistance), 1737.1);
     moon->mass = 7.3477e+22;
     QVector3D moonDir = QVector3D(moonDistance - sunDistance, 0, 0) - moon->position;
     //    moon->velocity = 1022 * moonDir.normalized();
     moon->velocity = 30 * moonDir.normalized();
     planets.push_back(moon);
 
-    Planet * earth = new Planet("earthmap1k.jpg", QVector3D(-sunDistance,0,0), 6371);
+    SimPlanet * earth = new SimPlanet("earthmap1k.jpg", QVector3D(-sunDistance,0,0), 6371);
     earth->mass = 5.9736e+24;
 
     QVector3D earthDir = QVector3D(0, 0, -sunDistance) - earth->position;
@@ -50,11 +50,11 @@ void GravityDemo::init() {
 
     planets.push_back(earth);
 
-    Planet * sun = new Planet("Planets/sun.jpg", QVector3D(0,0,0), 6.96342e+5);
+    SimPlanet * sun = new SimPlanet("Planets/sun.jpg", QVector3D(0,0,0), 6.96342e+5);
     sun->mass = 1.9891e+30;
     planets.push_back(sun);
 
-    foreach (Planet * planet, planets)
+    foreach (SimPlanet * planet, planets)
         planet->init();
 
     Scene::Instance().getCurrentCamera()->farClip = 100000.0;
@@ -69,12 +69,12 @@ void GravityDemo::init() {
 }
 
 void GravityDemo::simulatePlanets() {
-    foreach (Planet * planet, planets)
-        foreach (Planet * planet2, planets)
+    foreach (SimPlanet * planet, planets)
+        foreach (SimPlanet * planet2, planets)
             if (planet != planet2)
                 planet->influenceByPlanet(planet2);
 
-    foreach (Planet * planet, planets)
+    foreach (SimPlanet * planet, planets)
         planet->move();
 }
 

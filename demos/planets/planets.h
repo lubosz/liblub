@@ -8,22 +8,21 @@
 #ifndef PLANETSAPP_H_
 #define PLANETSAPP_H_
 
-#include <QtGui>
+//#include <QtGui>
 
 #include "Window/Qt/QtWindow.h"
 #include "Window/Qt/glWidget.h"
-#include "Window/Qt/QtApplication.h"
+#include "System/Demo.h"
 #include "Procedural/Planets/Planet.h"
-#include "PlanetWidget.h"
 
 class FrameBuffer;
 class FontOverlay;
 class Camera;
 class Light;
 
-class PlanetsApp: public QtApplication {
+class PlanetsDemo: public Demo {
 
-Q_OBJECT
+//Q_OBJECT
 
 public:
   vector<Planet*> planets;
@@ -35,21 +34,18 @@ public:
   FrameBuffer *fbo;
   Mesh * fullPlane;
 
-  PlanetsApp(int &argc, char **argv);
-  ~PlanetsApp();
+  PlanetsDemo();
+  ~PlanetsDemo();
 
-  PlanetWidget * focusPlanet();
-  void scene();
+  bool useWireframe;
+
+  void init();
+  void draw();
   void initCamAndLight();
-  void initWidgets(QHBoxLayout * mainLayout);
   void initPostProcessing();
   void drawPlanets();
   void startPass();
   void endPass();
-  void renderFrame();
 
-public slots:
-  void setExposure(double exposure);
-  void setPostprocessing(bool post);
 };
 #endif /* PLANETSAPP_H_ */

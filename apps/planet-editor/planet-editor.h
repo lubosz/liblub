@@ -17,9 +17,39 @@
  along with liblub.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "PlanetsApp.h"
+#ifndef PLANETEDITOR_H
+#define PLANETEDITOR_H
 
-int main(int argc, char *argv[]) {
-  PlanetsApp planetsApp(argc, argv);
-  planetsApp.run();
-}
+#define QT_NO_GRAPHICSEFFECT 1
+
+#include <QHBoxLayout>
+#include <QComboBox>
+
+#include "Window/Qt/QtApplication.h"
+#include "Renderer/RenderPasses.h"
+#include "PlanetWidget.h"
+#include "planets/planets.h"
+
+class PlanetEditor: public QtApplication {
+    Q_OBJECT
+public:
+
+    PlanetEditor(int &argc, char **argv);
+
+    ~PlanetEditor();
+
+    PlanetsDemo * demo;
+
+    void scene();
+    void renderFrame();
+
+    PlanetWidget * focusPlanet();
+    void initWidgets(QSplitter *mainSplitter);
+
+public slots:
+    void setExposure(double exposure);
+    void setPostprocessing(bool post);
+
+};
+
+#endif

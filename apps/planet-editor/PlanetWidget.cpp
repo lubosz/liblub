@@ -19,8 +19,8 @@
 #include "Window/Qt/FloatEditorWidget.h"
 
 PlanetWidget::PlanetWidget(Planet* planet) {
-  if(planet == NULL)
-    LogFatal << "No planet! :(";
+  if(planet == nullptr)
+    LogError << "No planet! :(";
 
   QVBoxLayout *sliderBarLayout = new QVBoxLayout(this);
 

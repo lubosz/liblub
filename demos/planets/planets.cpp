@@ -5,7 +5,7 @@
  *      Author: bmonkey
  */
 
-#include "PlanetsApp.h"
+#include "planets.h"
 
 #include "Scene/Scene.h"
 #include "Texture/Textures.h"
@@ -17,8 +17,8 @@
 #include "Procedural/Geometry.h"
 #include "Renderer/RenderPasses.h"
 
-PlanetsApp::PlanetsApp(int &argc, char **argv) :
-  QtApplication(argc, argv) {
+PlanetsDemo::PlanetsDemo() :
+    Demo("planets") {
 
   usePostprocessing = true;
   useWireframe = false;
@@ -30,29 +30,10 @@ PlanetsApp::PlanetsApp(int &argc, char **argv) :
 
 }
 
-PlanetsApp::~PlanetsApp() {
+PlanetsDemo::~PlanetsDemo() {
 }
 
-PlanetWidget * PlanetsApp::focusPlanet() {
-  PlanetWidget * planetWidget = new PlanetWidget(focusedPlanet);
-  connect(planetWidget, SIGNAL(draw(void)), glWidget, SLOT(updateGL()));
-  return planetWidget;
-}
-
-void PlanetsApp::setPostprocessing(bool post) {
-  usePostprocessing = post;
-  glWidget->updateGL();
-}
-
-void PlanetsApp::setExposure(double exposure) {
-  HDR->use();
-  HDR->setUniform("exposure", static_cast<float>(exposure));
-  glWidget->updateGL();
-}
-
-void PlanetsApp::scene() {
-    initWidgets(window->mainLayout);
-  window->setWindowTitle("Planets Demo");
+void PlanetsDemo::init() {
   initCamAndLight();
   fullPlane = Geometry::plane(QList<string> () << "uv", QRectF(-1, -1, 2, 2));
   foreach(Planet * planet, planets)
@@ -60,14 +41,14 @@ void PlanetsApp::scene() {
   initPostProcessing();
 }
 
-void PlanetsApp::renderFrame() {
+void PlanetsDemo::draw() {
   startPass();
   OpenGL::Instance().clear();
   drawPlanets();
   endPass();
 }
 
-void PlanetsApp::initCamAndLight() {
+void PlanetsDemo::initCamAndLight() {
   camera = Scene::Instance().getCurrentCamera();
   camera->setPosition(QVector3D(0, 11.1, -0.85));
   light = new Light(QVector3D(0, 0, 1000), QVector3D(1, -5, 0));
@@ -79,42 +60,7 @@ void PlanetsApp::initCamAndLight() {
   camera->update();
 }
 
-void PlanetsApp::initWidgets(QHBoxLayout * mainLayout) {
-  QVBoxLayout *sideLayout = new QVBoxLayout;
-  mainLayout->addLayout(sideLayout);
-
-  QListWidget * planetList = new QListWidget();
-
-  foreach(Planet * planet , planets) {
-      QListWidgetItem * planetItem = new QListWidgetItem(planetList);
-      planetItem->setText(planet->name);
-  }
-  QCheckBox *postBox = new QCheckBox();
-  postBox->setText("Postprocessing");
-  postBox->setChecked(true);
-  connect(postBox, SIGNAL(clicked(bool)), this, SLOT(setPostprocessing(bool)));
-  sideLayout->addWidget(postBox);
-
-  FloatEditorWidget* exposureWidget = new FloatEditorWidget("Exposure", SLOT(setExposure(double)), 2.0, 0, 10, this);
-  connect(exposureWidget, SIGNAL(draw()), glWidget, SLOT(updateGL()));
-  sideLayout->addWidget(exposureWidget);
-
-  QCheckBox *wireFrameBox = new QCheckBox();
-  wireFrameBox->setText("Wireframe");
-  wireFrameBox->setChecked(false);
-  connect(wireFrameBox, SIGNAL(clicked(bool)), this, SLOT(setWireframe(bool)));
-  sideLayout->addWidget(wireFrameBox);
-
-  QCheckBox *lazyBox = new QCheckBox();
-  lazyBox->setText("Lazy Rendering");
-  lazyBox->setChecked(true);
-  connect(lazyBox, SIGNAL(clicked(bool)), this, SLOT(setLazy(bool)));
-  sideLayout->addWidget(lazyBox);
-
-  sideLayout->addWidget(focusPlanet());
-}
-
-void PlanetsApp::initPostProcessing() {
+void PlanetsDemo::initPostProcessing() {
   //TODO: Hardcoded res
   QSize res(1920, 1200);
   fbo = new FrameBuffer(res);
@@ -128,17 +74,19 @@ void PlanetsApp::initPostProcessing() {
   HDR->samplerUniforms();
 }
 
-void PlanetsApp::startPass() {
+void PlanetsDemo::startPass() {
   if (usePostprocessing && !useWireframe) {
     fbo->bind();
     fbo->updateRenderView();
   }
 }
 
-void PlanetsApp::endPass() {
+void PlanetsDemo::endPass() {
   if (usePostprocessing && !useWireframe) {
     fbo->unBind();
-    OpenGL::Instance().updateViewport(glWidget->viewSize);
+//    OpenGL::Instance().updateViewport(glWidget->viewSize);
+    QSize size = QSize(1920,1200);
+    OpenGL::Instance().updateViewport(size);
     OpenGL::Instance().clear();
     HDR->activateTextures();
     HDR->bindTextures();
@@ -147,7 +95,7 @@ void PlanetsApp::endPass() {
   }
 }
 
-void PlanetsApp::drawPlanets() {
+void PlanetsDemo::drawPlanets() {
   glEnable(GL_DEPTH_TEST);
   glEnable(GL_CULL_FACE);
 
