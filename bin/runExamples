@@ -7,6 +7,20 @@ blacklist_demos = ["tesselation", "mandelbulb", "raycasting"]
 blacklist_scenes = ["ash", "common", "csm", "multilight", "nice", "terrain", "ocean"]
 blacklist_tests = []
 
+path_prefixes = ["/usr/", "/usr/local/", ""]
+path_prefix = ""
+
+for prefix in path_prefixes:
+	if os.path.exists(prefix + "bin/load"):
+		path_prefix = prefix
+
+media_prefixes = ["/usr/share/liblub/", "/usr/local/share/liblub/", ""]
+media_prefix = ""
+
+for prefix in media_prefixes:
+	if os.path.exists(prefix + "media"):
+		media_prefix = prefix
+
 class ExampleRunner:
 
   def __init__(self):
@@ -24,7 +38,7 @@ class ExampleRunner:
     return files
     
   def getDemos(self):
-    demos = os.popen("bin/load -l").readlines()[0].strip().split(" ")
+    demos = os.popen(path_prefix + "bin/load -l").readlines()[0].strip().split(" ")
     print (demos)
     return demos
     
@@ -40,14 +54,14 @@ class ExampleRunner:
   def runDemos(self):
     for demo in self.getDemos():
       if demo not in blacklist_demos:
-        self.run(['bin/load', demo])
+        self.run([path_prefix + 'bin/load', demo])
         
   def runScenes(self):    
-    for scene in self.getFiles("media/scenes"):
+    for scene in self.getFiles(media_prefix + "media/scenes"):
       if not "~" in scene:
         sceneShort = scene.replace(".xml", "")
         if sceneShort not in blacklist_scenes:
-          self.run(['bin/load', scene])
+          self.run([path_prefix + 'bin/load', scene])
 
   def runTests(self):
     try:
