@@ -24,12 +24,8 @@ Qt window creation is optional on XCB Systems, but can be set in the CMake optio
 
 ### Headers
 
-The CMake script will download following headers from the [OpenGL Registry](http://www.opengl.org/registry/), if you dont have them in `/usr/include/GL3`,
+The CMake script will download glcorearb.h from the [OpenGL Registry](http://www.opengl.org/registry/), if you dont have it in `/usr/include/GL`,
 and put them into the local liblub include directory.
-
-* gl3.h
-* glext.h
-* glxext.h
 
 ## Compile
 
@@ -58,21 +54,21 @@ If you have run CMake before, do
 ## Run
 
 Run all all apps from bin and scenes from media/scenes
-`$ scripts/runExamples`
+`$ bin/liblub-examples -a`
 
 ### Apps
 
 Or just a specific bin
-`$ ./bin/sponge`
+`$ bin/liblub-load animation`
 
 ### Scenes
 
 View XML nice.xml scene file from media/scenes/.
-`$ ./bin/load nice`
+`$ bin/liblub-load nice.xml`
 
 ### Interesting config options
 
-You can set a few options in in the config.xml file.
+You can set a few options in in the ~/.liblub/config.xml file.
 
 The OpenGL context version can be set
 `<Int name="GLcontext" value="4,1" />`
@@ -113,3 +109,9 @@ To quickly build liblub on Ubuntu (assuming 4 cores)
 `cmake .`
 
 `make -j5`
+
+## tl;dr Arch Linux
+
+You can install the [AUR Package](https://aur.archlinux.org/packages.php?ID=62678)
+
+`packer -S liblub-git`
