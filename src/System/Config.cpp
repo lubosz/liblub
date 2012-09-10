@@ -97,8 +97,12 @@ void Config::createConfigFile(QFile * file) {
         << "<liblub>\n"
         << "    <Config>\n"
         << "        <Int name='Vsync' value='1' />\n"
+        << "        <Int name='touchPadFix' value='0' />\n"
         << "        <String name='suffixes' value='_RT, _LF, _DN,_UP, _FR, _BK' />\n"
         << "        <Float name='backgroundColor' value='0.0,0.0,0.0' />\n"
+        << "        <Float name='inputSpeedFast' value='0.2' />\n"
+        << "        <Float name='inputSpeedSlow' value='0.03' />\n"
+        << "        <Float name='mouseSensitivity' value='0.1' />\n"
         << "        <Int name='GLcontext' value='" << glVersion[0] << "," << glVersion[1] << "' />\n"
         << "    </Config>\n"
         << "</liblub>";

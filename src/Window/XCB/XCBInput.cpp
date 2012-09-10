@@ -14,6 +14,7 @@
 #include "System/Logger.h"
 #include "Renderer/OpenGL.h"
 #include "XCBWindow.h"
+#include "System/Config.h"
 
 XCBInput::XCBInput(xcb_connection_t *connection, XCBWindow * mediaLayer) {
   lastEventX = 0;
@@ -22,9 +23,8 @@ XCBInput::XCBInput(xcb_connection_t *connection, XCBWindow * mediaLayer) {
   syms = xcb_key_symbols_alloc(connection);
   pressedKeys = QList<xcb_keysym_t>();
 
-  // TODO(bmonkey): Hardcoded values => xml
-  inputSpeed = .03;
-  mouseSensitivity = .1;
+  inputSpeed = Config::Instance().value<float>("inputSpeedSlow");
+  mouseSensitivity = Config::Instance().value<float>("mouseSensitivity");
   this->mediaLayer = mediaLayer;
 
   eventTimer = new QTimer(this);
@@ -44,7 +44,7 @@ void XCBInput::eventLoop() {
   xcb_key_press_event_t *kp;
   xcb_key_release_event_t *kr;
 
-  bool touchPadHack = false;
+  bool touchPadHack = Config::Instance().value<int>("touchPadFix");
 
   while ((event = xcb_poll_for_event(connection))) {
     switch (event->response_type & ~0x80) {
@@ -65,7 +65,7 @@ void XCBInput::eventLoop() {
 
             switch (pressedKey) {
             case XK_Shift_L:
-              inputSpeed = .03;
+              inputSpeed = Config::Instance().value<float>("inputSpeedSlow");
                           break;
 
             }
@@ -98,7 +98,7 @@ void XCBInput::eventLoop() {
                     OpenGL::Instance().toggleWire();
                     break;
                 case XK_Shift_L:
-                    inputSpeed = .2;
+                    inputSpeed = Config::Instance().value<float>("inputSpeedFast");
                 	break;
                 	
                 default:
