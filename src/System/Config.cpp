@@ -23,11 +23,20 @@ Config::Config():XmlReader() {
 
     QStringList mediaPrefixes = QStringList() << "/usr/share/liblub/" << "/usr/local/share/liblub/" << "";
 
-    string mediaPrefix = "";
+    string mediaPrefix = "None";
+
+    QString allPrefixes = "";
 
     foreach(QString prefix, mediaPrefixes) {
+        allPrefixes += prefix + "media, ";
         if (QDir(prefix + "media").exists())
             mediaPrefix = prefix.toStdString();
+    }
+
+    if (mediaPrefix == "None") {
+        LogError << "Media directory not found.";
+        LogError << "Tried" << allPrefixes.toStdString();
+        exit(0);
     }
 
     LogInfo << "Media Prefix:" << mediaPrefix;
@@ -57,9 +66,7 @@ Config::Config():XmlReader() {
           << "        <Int name='Vsync' value='1' />\n"
           << "        <String name='suffixes' value='_RT, _LF, _DN,_UP, _FR, _BK' />\n"
           << "        <Float name='backgroundColor' value='0.0,0.0,0.0' />\n"
-          << "        <Float name='FPS_INTERVAL' value='1.0' />\n"
           << "        <Int name='GLcontext' value='4,2' />\n"
-          << "        <Int name='maxBuffers' value='6' />\n"
           << "    </Config>\n"
           << "</liblub>";
       file.close();
