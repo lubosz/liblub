@@ -20,8 +20,12 @@ using std::vector;
 template <typename T>
 class ConfigOption {
  public:
-	ConfigOption(string name, vector <T> &optionVec)
+    ConfigOption(const string& name, const vector <T> &optionVec)
 	:name(name), optionVec(optionVec) {}
+    ConfigOption(const string& name, const T &option)
+    :name(name) {
+        optionVec.push_back(option);
+    }
 	virtual ~ConfigOption() {}
 	string name;
 	vector <T> optionVec;
@@ -31,8 +35,9 @@ class Config : public Singleton<Config>, public XmlReader {
  public:
 	Config();
 	virtual ~Config();
+    void addString(const string &name, const string &option);
 	void appendOption(const QDomElement & optionNode);
-	template<typename T> vector<T> getValues(string name, const vector<ConfigOption<T>> & config);
+    template<typename T> vector<T> getValues(const string & name, const vector<ConfigOption<T>> & config);
 	template<typename T> T value(const string & name);
 	template<typename T> vector<T> values(const string & name);
 //	template<typename T> vector<T> splitValues(QString values);

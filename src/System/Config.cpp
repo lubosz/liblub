@@ -15,37 +15,52 @@
 #include <QDir>
 #include <QTextStream>
 
+void Config::addString(const string& name, const string& option) {
+    strings.push_back(ConfigOption<string> (name, option));
+}
+
 Config::Config():XmlReader() {
+
+    QStringList mediaPrefixes = QStringList() << "/usr/share/liblub/" << "/usr/local/share/liblub/" << "";
+
+    string mediaPrefix = "";
+
+    foreach(QString prefix, mediaPrefixes) {
+        if (QDir(prefix + "media").exists())
+            mediaPrefix = prefix.toStdString();
+    }
+
+    LogInfo << "Media Prefix:" << mediaPrefix;
+
+    addString("shaderDir", mediaPrefix + "shaders/");
+    addString("textureDir", mediaPrefix +  "media/textures/");
+    addString("meshDir", mediaPrefix + "media/meshes/");
+    addString("sceneDir", mediaPrefix + "media/scenes/");
 
   QString configPath = QDir::homePath() + "/.liblub";
 
   if (!QDir(configPath).exists()) {
-      LogWarning << "Creating Config Path" << configPath.toStdString();
+      LogInfo << "Creating Config Path" << configPath.toStdString();
       QDir().mkdir(configPath);
   }
 
   QFile file(configPath + "/config.xml");
 
   if (!file.exists()) {
-      LogWarning << "Creating Config File" << file.fileName().toStdString();
+      LogInfo << "Creating Config File" << file.fileName().toStdString();
       file.open(QIODevice::WriteOnly | QIODevice::Text);
       QTextStream out(&file);
 
-      out << "<?xml version='1.0' encoding='UTF-8'?>"
-          << "<liblub>"
-          << "    <Config>"
-          << "        <Int name='Vsync' value='1' />"
-          << "        <String name='shaderDir' value='shaders/' />"
-          << "        <String name='textureDir' value='media/textures/' />"
-          << "        <String name='sceneDir' value='media/scenes/' />"
-          << "        <String name='meshDir' value='media/meshes/' />"
-          << "        <String name='templateDir' value='shaders/' />"
-          << "        <String name='suffixes' value='_RT, _LF, _DN,_UP, _FR, _BK' />"
-          << "        <Float name='backgroundColor' value='0.0,0.0,0.0' />"
-          << "        <Float name='FPS_INTERVAL' value='1.0' />"
-          << "        <Int name='GLcontext' value='4,2' />"
-          << "        <Int name='maxBuffers' value='6' />"
-          << "    </Config>"
+      out << "<?xml version='1.0' encoding='UTF-8'?>\n"
+          << "<liblub>\n"
+          << "    <Config>\n"
+          << "        <Int name='Vsync' value='1' />\n"
+          << "        <String name='suffixes' value='_RT, _LF, _DN,_UP, _FR, _BK' />\n"
+          << "        <Float name='backgroundColor' value='0.0,0.0,0.0' />\n"
+          << "        <Float name='FPS_INTERVAL' value='1.0' />\n"
+          << "        <Int name='GLcontext' value='4,2' />\n"
+          << "        <Int name='maxBuffers' value='6' />\n"
+          << "    </Config>\n"
           << "</liblub>";
       file.close();
   }
@@ -74,7 +89,7 @@ Config::Config():XmlReader() {
 Config::~Config() {}
 
 template<typename T>
-vector<T> Config::getValues(string name, const vector<ConfigOption<T>> & config) {
+vector<T> Config::getValues(const string& name, const vector<ConfigOption<T>> & config) {
     foreach(ConfigOption<T> configOption, config) {
             if (configOption.name == name)
                 return configOption.optionVec;
