@@ -1,0 +1,96 @@
+#!/usr/bin/python
+
+import os, subprocess
+
+binary = "bin/editor"
+#binary = "/usr/bin/assimp"
+
+def stripSymbol(package, symbol):
+	test = package.split(symbol)
+	return test[0]
+
+def stripVersion(package):
+	package = stripSymbol(package, ">")
+	package = stripSymbol(package, "<")
+	package = stripSymbol(package, "=")
+	return package
+	
+def getProvidedPackages(package):
+	providedPackage = os.popen("/usr/bin/pacman -Qi %s | grep Provides" % package).readlines()
+	providedPackage = providedPackage[0].split(": ")[1].strip()
+	if providedPackage == "None":
+		return [package]
+	providesPackages = providedPackage.split("  ")
+	providesPackages2 = []
+	for provPackage in providesPackages:
+		providesPackages2.append(stripVersion(provPackage))
+	return providesPackages2
+
+class PackageFinder():
+	
+	def __init__(self):
+		self.blacklist = ["None"]
+		self.checked = []
+
+	def getDependencies(self, package):
+		if package in self.blacklist or package in self.checked:
+			return []
+		dependencies = os.popen("/usr/bin/pacman -Qi %s | grep Depends" % package).readlines()
+		if not dependencies:
+			self.blacklist.append(package)
+			return []
+		dependencies = dependencies[0].strip()
+		if dependencies == "None":
+			return []
+		dependencies = dependencies.split(": ")[1].strip().split("  ")
+		parentDependencies = []
+		strippedDependencies = []
+		for dependency in dependencies:
+			strippedDep = stripVersion(dependency)
+			strippedDependencies.append(strippedDep)
+			parentDependencies += self.getDependencies(strippedDep)
+	
+		self.checked.append(package)
+	
+		return strippedDependencies + parentDependencies
+
+libs = os.popen("ldd %s" % binary).readlines()
+
+packages = []
+
+for lib in libs:
+	libSplit = lib.split(" => ")
+	if len(libSplit) > 1:
+		libPath = libSplit[1].split(" (")[0]
+		package = os.popen("/usr/bin/pacman -Qo %s" % libPath).readlines()
+		package = package[0].split("by ")[1].split(" ")[0]
+		packages.append(package)
+		#print (libPath, package)
+		
+packages = list(set(packages))
+packages.sort()
+print("All dependencies")
+print(packages)
+
+moreDependencies = []
+
+finder = PackageFinder()
+
+for package in packages:
+	moreDependencies += finder.getDependencies(package)
+
+moreDependencies = list(set(moreDependencies))
+moreDependencies.sort()
+
+providedPackages = []
+for package in packages:
+	providedPackages += getProvidedPackages(package)
+
+packageString = ""
+for package in providedPackages:
+	if not package in moreDependencies:
+		packageString += "'%s' " % package
+print ("Needed Dependencies")
+print (packageString)
+
+
