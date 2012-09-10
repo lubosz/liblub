@@ -15,16 +15,99 @@
 #include <QDir>
 #include <QTextStream>
 
+Config::Config():XmlReader() {
+
+    string mediaPrefix = getMediaPrefix();
+
+    addString("shaderDir", mediaPrefix + "shaders/");
+    addString("textureDir", mediaPrefix +  "media/textures/");
+    addString("meshDir", mediaPrefix + "media/meshes/");
+    addString("sceneDir", mediaPrefix + "media/scenes/");
+
+  QString configPath = QDir::homePath() + "/.liblub";
+
+  if (!QDir(configPath).exists()) {
+      LogInfo << "Creating Config Path" << configPath.toStdString();
+      QDir().mkdir(configPath);
+  }
+
+  QFile * file = new QFile(configPath + "/config.xml");
+
+  if (!file->exists()) {
+      createConfigFile(file);
+  }
+
+  QString errorStr;
+  int errorLine;
+  int errorColumn;
+  QDomDocument domDocument;
+  domDocument.setContent(file, true, &errorStr, &errorLine, &errorColumn);
+
+  QDomElement document = domDocument.documentElement().firstChildElement();
+  while (!document.isNull()) {
+      if (document.tagName() == "Config") {
+          QDomElement option = document.firstChildElement();
+          while (!option.isNull()) {
+              appendOption(option);
+              option = option.nextSiblingElement();
+          }
+      }
+      document = document.nextSiblingElement();
+  }
+
+  file->close();
+  delete file;
+}
+
+Config::~Config() {}
+
 void Config::addString(const string& name, const string& option) {
     strings.push_back(ConfigOption<string> (name, option));
 }
 
-Config::Config():XmlReader() {
+QStringList Config::getGLVersion() {
+    FILE *in;
+    char buff[512];
 
+    if(!(in = popen("glxinfo | grep 'OpenGL version string'", "r"))){
+        LogError << "Could not get GL Version from glxinfo";
+    }
+
+    QString glVersion;
+    while(fgets(buff, sizeof(buff), in)!=NULL){
+        glVersion = QString::fromStdString(buff);
+    }
+    pclose(in);
+
+    QStringList glVersionSplit = glVersion.split("string: ");
+    QString glVersionString = glVersionSplit[1];
+    glVersionString.truncate(3);
+    QStringList glVersionSplitFinal = glVersionString.split(".");
+    return glVersionSplitFinal;
+}
+
+void Config::createConfigFile(QFile * file) {
+    LogInfo << "Creating Config File" << file->fileName().toStdString();
+    file->open(QIODevice::WriteOnly | QIODevice::Text);
+    QTextStream out(file);
+
+    QStringList glVersion = getGLVersion();
+
+    out << "<?xml version='1.0' encoding='UTF-8'?>\n"
+        << "<liblub>\n"
+        << "    <Config>\n"
+        << "        <Int name='Vsync' value='1' />\n"
+        << "        <String name='suffixes' value='_RT, _LF, _DN,_UP, _FR, _BK' />\n"
+        << "        <Float name='backgroundColor' value='0.0,0.0,0.0' />\n"
+        << "        <Int name='GLcontext' value='" << glVersion[0] << "," << glVersion[1] << "' />\n"
+        << "    </Config>\n"
+        << "</liblub>";
+    file->close();
+}
+
+string Config::getMediaPrefix() {
     QStringList mediaPrefixes = QStringList() << "/usr/share/liblub/" << "/usr/local/share/liblub/" << "";
-
     string mediaPrefix = "None";
-
     QString allPrefixes = "";
 
     foreach(QString prefix, mediaPrefixes) {
@@ -40,60 +123,8 @@ Config::Config():XmlReader() {
     }
 
     LogInfo << "Media Prefix:" << mediaPrefix;
-
-    addString("shaderDir", mediaPrefix + "shaders/");
-    addString("textureDir", mediaPrefix +  "media/textures/");
-    addString("meshDir", mediaPrefix + "media/meshes/");
-    addString("sceneDir", mediaPrefix + "media/scenes/");
-
-  QString configPath = QDir::homePath() + "/.liblub";
-
-  if (!QDir(configPath).exists()) {
-      LogInfo << "Creating Config Path" << configPath.toStdString();
-      QDir().mkdir(configPath);
-  }
-
-  QFile file(configPath + "/config.xml");
-
-  if (!file.exists()) {
-      LogInfo << "Creating Config File" << file.fileName().toStdString();
-      file.open(QIODevice::WriteOnly | QIODevice::Text);
-      QTextStream out(&file);
-
-      out << "<?xml version='1.0' encoding='UTF-8'?>\n"
-          << "<liblub>\n"
-          << "    <Config>\n"
-          << "        <Int name='Vsync' value='1' />\n"
-          << "        <String name='suffixes' value='_RT, _LF, _DN,_UP, _FR, _BK' />\n"
-          << "        <Float name='backgroundColor' value='0.0,0.0,0.0' />\n"
-          << "        <Int name='GLcontext' value='4,2' />\n"
-          << "    </Config>\n"
-          << "</liblub>";
-      file.close();
-  }
-
-  QString errorStr;
-  int errorLine;
-  int errorColumn;
-  QDomDocument domDocument;
-  domDocument.setContent(&file, true, &errorStr, &errorLine, &errorColumn);
-
-  QDomElement document = domDocument.documentElement().firstChildElement();
-  while (!document.isNull()) {
-      if (document.tagName() == "Config") {
-          QDomElement option = document.firstChildElement();
-          while (!option.isNull()) {
-              appendOption(option);
-              option = option.nextSiblingElement();
-          }
-      }
-      document = document.nextSiblingElement();
-  }
-
-  file.close();
+    return mediaPrefix;
 }
-
-Config::~Config() {}
 
 template<typename T>
 vector<T> Config::getValues(const string& name, const vector<ConfigOption<T>> & config) {

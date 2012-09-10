@@ -13,6 +13,7 @@
 #include <string>
 #include <vector>
 #include <QDomElement>
+#include <QFile>
 
 using std::string;
 using std::vector;
@@ -47,6 +48,9 @@ class Config : public Singleton<Config>, public XmlReader {
 	vector<ConfigOption<string>> strings;
 	vector<ConfigOption<float>> floats;
 
+    QStringList getGLVersion();
+    void createConfigFile(QFile *file);
+    string getMediaPrefix();
 
 	bool isEnabled(string value);
 };
