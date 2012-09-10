@@ -20,18 +20,20 @@
 #include "editor.h"
 
 #include "Scene/Scene.h"
-#include "Material/Textures.h"
-#include "Scene/AssimpSceneLoader.h"
+#include "Texture/Textures.h"
+#include "Load/AssimpSceneLoader.h"
+#include "Load/SceneLoader.h"
 #include "Renderer/DeferredRenderer.h"
-#include "Mesh/Geometry.h"
+#include "Procedural/Geometry.h"
 #include "Scene/SceneGraph.h"
 #include "TextureModel.h"
 #include "Nodes/GraphWidget.h"
-#include "Scene/SceneLoader.h"
 #include "Window/Qt/FloatEditorWidget.h"
 
+#include <QSplitter>
+
 Editor::Editor(int &argc, char **argv) :
-    Application(argc, argv) {
+    QtApplication(argc, argv) {
     scenePath = argv[1];
     transparencyModes.insert("GL_ZERO", GL_ZERO);
     transparencyModes.insert("GL_ONE", GL_ONE);

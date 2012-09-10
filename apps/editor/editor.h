@@ -25,13 +25,13 @@
 #include <QHBoxLayout>
 #include <QComboBox>
 
-#include "System/Application.h"
+#include "Window/Qt/QtApplication.h"
 #include "Renderer/RenderPasses.h"
 #include "TargetModel.h"
 #include "PassModel.h"
 
 
-class Editor: public Application {
+class Editor: public QtApplication {
     Q_OBJECT
 public:
 

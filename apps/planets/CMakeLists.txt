@@ -13,7 +13,8 @@ set(PLANETS_MOC_INFILES
 )
 
 qt4_wrap_cpp(PLANETS_MOC_OUTFILES ${PLANETS_MOC_INFILES})
-add_executable(planets ${PLANETS_CPP_FILES} ${PLANETS_MOC_OUTFILES})
-target_link_libraries(planets lub)
+add_executable(liblub-planets ${PLANETS_CPP_FILES} ${PLANETS_MOC_OUTFILES})
+target_link_libraries(liblub-planets lub)
+install(TARGETS liblub-planets DESTINATION "${CMAKE_INSTALL_BINDIR}")
 
 endif()

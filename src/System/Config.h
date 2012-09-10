@@ -13,6 +13,7 @@
 #include <string>
 #include <vector>
 #include <QDomElement>
+#include <QFile>
 
 using std::string;
 using std::vector;
@@ -20,8 +21,12 @@ using std::vector;
 template <typename T>
 class ConfigOption {
  public:
-	ConfigOption(string name, vector <T> &optionVec)
+    ConfigOption(const string& name, const vector <T> &optionVec)
 	:name(name), optionVec(optionVec) {}
+    ConfigOption(const string& name, const T &option)
+    :name(name) {
+        optionVec.push_back(option);
+    }
 	virtual ~ConfigOption() {}
 	string name;
 	vector <T> optionVec;
@@ -31,10 +36,9 @@ class Config : public Singleton<Config>, public XmlReader {
  public:
 	Config();
 	virtual ~Config();
-	void load(const QString & fileName);
+    void addString(const string &name, const string &option);
 	void appendOption(const QDomElement & optionNode);
-	string fileName;
-	template<typename T> vector<T> getValues(string name, const vector<ConfigOption<T>> & config);
+    template<typename T> vector<T> getValues(const string & name, const vector<ConfigOption<T>> & config);
 	template<typename T> T value(const string & name);
 	template<typename T> vector<T> values(const string & name);
 //	template<typename T> vector<T> splitValues(QString values);
@@ -44,10 +48,11 @@ class Config : public Singleton<Config>, public XmlReader {
 	vector<ConfigOption<string>> strings;
 	vector<ConfigOption<float>> floats;
 
+    QStringList getGLVersion();
+    void createConfigFile(QFile *file);
+    string getMediaPrefix();
 
 	bool isEnabled(string value);
- private:
-	bool initialized;
 };
 
 #endif

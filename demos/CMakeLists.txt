@@ -14,3 +14,4 @@ qt4_wrap_cpp(MOC_OUTFILES ${MOC_INFILES})
 
 add_library(lubDemos ${DEMOS} ${MOC_OUTFILES})
 target_link_libraries(lubDemos lub)
+install(TARGETS lubDemos DESTINATION "${CMAKE_INSTALL_LIBDIR}")

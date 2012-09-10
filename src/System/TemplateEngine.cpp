@@ -16,7 +16,7 @@ TemplateEngine::TemplateEngine() {
   Grantlee::FileSystemTemplateLoader::Ptr loader =
       Grantlee::FileSystemTemplateLoader::Ptr(
           new Grantlee::FileSystemTemplateLoader());
-  string dir = Config::Instance().value<string> ("templateDir");
+  string dir = Config::Instance().value<string> ("shaderDir");
   loader->setTemplateDirs(QStringList() << QString::fromStdString(dir));
   m_engine->addTemplateLoader(loader);
 

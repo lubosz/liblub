@@ -1,8 +1,6 @@
 cmake_minimum_required(VERSION 2.8)
 project(liblub)
 
-if(${USE_QT_WINDOWS})
-
 file(GLOB_RECURSE EDITOR_CPP_FILES *.cpp)
 
 #moc qt stuff
@@ -15,7 +13,6 @@ set(EDITOR_MOC_INFILES
 )
 
 qt4_wrap_cpp(EDITOR_MOC_OUTFILES ${EDITOR_MOC_INFILES})
-add_executable(editor ${EDITOR_CPP_FILES} ${NODES_CPP_FILES} ${EDITOR_MOC_OUTFILES})
-target_link_libraries(editor lub)
-
-endif()
+add_executable(liblub-editor ${EDITOR_CPP_FILES} ${NODES_CPP_FILES} ${EDITOR_MOC_OUTFILES})
+target_link_libraries(liblub-editor lub)
+install(TARGETS liblub-editor DESTINATION "${CMAKE_INSTALL_BINDIR}")
