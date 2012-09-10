@@ -61,7 +61,7 @@ DrawThing::DrawThing() : enabled(true), typeName("Pass"){
           return texture;
         }
     }
-    LogFatal << "Texture Not Found" << target;
+    LogError << "Texture Not Found" << target;
     return new Texture("Dummy Texture");
   }
 
