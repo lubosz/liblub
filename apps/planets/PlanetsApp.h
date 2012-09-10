@@ -13,9 +13,8 @@
 #include "Window/Qt/QtWindow.h"
 #include "Window/Qt/glWidget.h"
 #include "Window/Qt/QtApplication.h"
-#include "Planet.h"
+#include "Procedural/Planets/Planet.h"
 #include "PlanetWidget.h"
-
 
 class FrameBuffer;
 class FontOverlay;

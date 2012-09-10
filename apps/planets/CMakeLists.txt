@@ -7,7 +7,6 @@ file(GLOB PLANETS_CPP_FILES *.cpp)
 
 #moc qt stuff
 set(PLANETS_MOC_INFILES 
-    Planet.h 
     PlanetWidget.h
     PlanetsApp.h
 )

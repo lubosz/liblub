@@ -161,6 +161,7 @@ endforeach(SOURCE_DIR)
 set(LIBLUB_MOC_INFILES 
     src/Window/Input.h
     src/Scene/Node.h
+    src/Procedural/Planets/Planet.h
 )
 qt4_wrap_cpp(LIBLUB_MOC_OUTFILES ${LIBLUB_MOC_INFILES})
 set(SOURCES ${SOURCES} ${LIBLUB_MOC_OUTFILES})
