@@ -33,6 +33,7 @@ foreach(EXAMPLE_PATH ${EXAMPLES})
     
     add_executable("${EXAMPLE_NAME}" ${EXAMPLE_SOURCES})
     target_link_libraries(${EXAMPLE_NAME} lub lubDemos)
+    install(TARGETS ${EXAMPLE_NAME} DESTINATION "${CMAKE_INSTALL_BINDIR}")
 endforeach(EXAMPLE_PATH)
 
 ADD_SUBDIRECTORY(planets)

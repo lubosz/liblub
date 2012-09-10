@@ -15,3 +15,4 @@ set(EDITOR_MOC_INFILES
 qt4_wrap_cpp(EDITOR_MOC_OUTFILES ${EDITOR_MOC_INFILES})
 add_executable(editor ${EDITOR_CPP_FILES} ${NODES_CPP_FILES} ${EDITOR_MOC_OUTFILES})
 target_link_libraries(editor lub)
+install(TARGETS editor DESTINATION "${CMAKE_INSTALL_BINDIR}")

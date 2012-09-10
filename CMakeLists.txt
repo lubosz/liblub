@@ -75,6 +75,9 @@ else()
 	message(STATUS "GCC Version < 4.6, try to upgrade")      
 endif()
 
+#install
+include(GNUInstallDirs)
+
 
 #check for qt
 find_package(Qt4 REQUIRED)
@@ -197,6 +200,8 @@ set(WINDOW_CODE ${WINDOW_CODE} ${GLOB_RESULT})
 set(SOURCES ${SOURCES} ${WINDOW_CODE})
 add_library(lub ${SOURCES})
 
+
+
 #libs to link
 list(APPEND LIBS
     ${OPENGL_LIB}
@@ -217,6 +222,11 @@ endif()
 
 #link
 target_link_libraries(lub ${LIBS})
+
+#install
+install(TARGETS lub DESTINATION "${CMAKE_INSTALL_LIBDIR}")
+install(DIRECTORY "${CMAKE_SOURCE_DIR}/media" DESTINATION "${CMAKE_INSTALL_DATAROOTDIR}/liblub")
+install(DIRECTORY "${CMAKE_SOURCE_DIR}/shaders" DESTINATION "${CMAKE_INSTALL_DATAROOTDIR}/liblub")
 
 ADD_SUBDIRECTORY(apps)
 ADD_SUBDIRECTORY(demos)
