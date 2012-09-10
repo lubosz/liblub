@@ -30,6 +30,8 @@
 #include "recursive-sponge.h"
 #include "sss.h"
 #include "gravity/gravity.h"
+#include "load-assimp.h"
+#include "load-xml.h"
 
 class LoadApp: public Application {
 public:
@@ -43,20 +45,25 @@ public:
         currentDemo = nullptr;
 
         if (argc != 2) {
-            LogError << "NO SCENE SPECIFIED. Try; ./load-demo name";
+            LogError << "No Scene Specified. Try: ./load name";
             listDemos();
         } else {
 
             string arg = argv[1];
+            QString qarg = QString::fromStdString(arg);
+
             if (arg == "-l") {
                 std::cout << demoList() << "\n";
                 exit(0);
             }
             if (demos.contains(arg)) {
                 currentDemo = demos[arg];
+            } else if (qarg.contains(".xml")){
+                currentDemo = new LoadXml("xml scene", arg);
             } else {
-                LogError << "No such demo" << arg;
-                listDemos();
+                currentDemo = new LoadAssimp("assimp scene", arg);
+//                LogError << "No such demo" << arg;
+//                listDemos();
             }
         }
 
@@ -76,6 +83,7 @@ public:
         return allDemos;
     }
 
+    // All Demos need to be Initialized here
     void addDemos() {
         addDemo(new Sponge());
         addDemo(new AnimationDemo());

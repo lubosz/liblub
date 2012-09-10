@@ -24,7 +24,7 @@ class ExampleRunner:
     return files
     
   def getDemos(self):
-    demos = os.popen("bin/load-demo -l").readlines()[0].strip().split(" ")
+    demos = os.popen("bin/load -l").readlines()[0].strip().split(" ")
     print (demos)
     return demos
     
@@ -40,14 +40,14 @@ class ExampleRunner:
   def runDemos(self):
     for demo in self.getDemos():
       if demo not in blacklist_demos:
-        self.run(['bin/load-demo', demo])
+        self.run(['bin/load', demo])
         
   def runScenes(self):    
     for scene in self.getFiles("media/scenes"):
       if not "~" in scene:
-        scene = scene.replace(".xml", "")
-        if scene not in blacklist_scenes:
-          self.run(['bin/load-xml', scene])
+        sceneShort = scene.replace(".xml", "")
+        if sceneShort not in blacklist_scenes:
+          self.run(['bin/load', scene])
 
   def runTests(self):
     try:
