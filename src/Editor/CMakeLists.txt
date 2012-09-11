@@ -1,6 +1,8 @@
 #Editor Lib
 file(GLOB_RECURSE EDITOR_SRC *.cpp)
 
+set(QT_USE_QTOPENGL true)
+
 set(EDITOR_MOC_INFILES
     TextureModel.h
     PassModel.h
@@ -12,5 +14,5 @@ set(EDITOR_MOC_INFILES
 qt4_wrap_cpp(EDITOR_MOC_OUTFILES ${EDITOR_MOC_INFILES})
 add_library(lubEdit ${EDITOR_SRC} ${EDITOR_MOC_OUTFILES})
 
-target_link_libraries(lubEdit lubApp)
+target_link_libraries(lubEdit lubApp ${QT_LIBRARIES})
 install(TARGETS lubEdit DESTINATION "${CMAKE_INSTALL_LIBDIR}")

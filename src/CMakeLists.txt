@@ -7,7 +7,7 @@ set(QT_USE_QTXML true)
 
 if(WITH_Qt)
     set(QT_USE_QTUITOOLS true)
-    set(QT_USE_QTOPENGL true)
+    set(QT_USE_QTOPENGL false)
 endif()
 
 include(${QT_USE_FILE})
@@ -50,6 +50,8 @@ set(LIBLUB_MOC_INFILES
 )
 qt4_wrap_cpp(LIBLUB_MOC_OUTFILES ${LIBLUB_MOC_INFILES})
 add_library(lub ${SOURCES} ${LIBLUB_MOC_OUTFILES})
+
+message(${QT_LIBRARIES})
 
 #libs to link
 list(APPEND LIBS
