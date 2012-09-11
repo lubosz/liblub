@@ -79,25 +79,12 @@ else()
 	message(STATUS "GCC Version < 4.6, try to upgrade")      
 endif()
 
-#install
-include(GNUInstallDirs)
-
-
-#check for qt
 find_package(Qt4 REQUIRED)
-find_package(Grantlee REQUIRED)
-set(QT_USE_QTXML true)
 
-if(WITH_Qt)
-    set(QT_USE_QTUITOOLS true)
-    set(QT_USE_QTOPENGL true)
-endif()
-
-include(${QT_USE_FILE})
-find_package(OpenGL)
-if(NOT OPENGL_FOUND)
-	message("ERROR: OpenGL not found")
-endif(NOT OPENGL_FOUND)
+include_directories(
+	src
+	${QT_INCLUDES}
+)
 
 #check for opengl corearb headers
 function(download_gl_header GL_HEADER)
@@ -125,113 +112,11 @@ else()
 	include_directories(src/Renderer/)
 endif()
 
-#Check for nvidia libGL in ubuntu
-if(EXISTS "/usr/lib/nvidia-current/libGL.so")
-	message("Taking Ubuntu Nvidia libGL")
-	SET(OPENGL_LIB /usr/lib/nvidia-current/libGL.so)
-elseif(EXISTS "/usr/lib/fglrx/libGL.so")
-        message("Taking fglrx ATI libGL")
-        SET(OPENGL_LIB /usr/lib/fglrx/libGL.so)
-else()
-	message("Taking system libGL")
-	#SET(OPENGL_LIB GL)
-	#set(OPENGL_LIB opengl32)
-	set(OPENGL_LIB ${OPENGL_LIBRARY})
-endif()
-
-include_directories(
-	src
-	${QT_INCLUDES}
-)
-
-#Add liblub sources
-set(SOURCE_DIRS
-        Common Load Mesh Procedural Renderer Scene Shader System Texture 
-)
-foreach(SOURCE_DIR ${SOURCE_DIRS})
-    #cpps
-    file(GLOB_RECURSE GLOB_RESULT ${SRC_DIR}/${SOURCE_DIR}/*.cpp)
-    set(SOURCES ${SOURCES} ${GLOB_RESULT})
-    #headers
-    file(GLOB_RECURSE GLOB_RESULT ${SRC_DIR}/${SOURCE_DIR}/*.h)
-    set(SOURCES ${SOURCES} ${GLOB_RESULT})
-endforeach(SOURCE_DIR)
-
-#moc qt stuff
-set(LIBLUB_MOC_INFILES 
-    src/Scene/Node.h
-    src/Procedural/Planets/Planet.h
-)
-qt4_wrap_cpp(LIBLUB_MOC_OUTFILES ${LIBLUB_MOC_INFILES})
-add_library(lub ${SOURCES} ${LIBLUB_MOC_OUTFILES})
-
-#Application Lib
-file(GLOB APP_SRC ${SRC_DIR}/Application/*.cpp)
-
-set(APP_MOC_INFILES 
-    src/Application/Input.h
-)
-qt4_wrap_cpp(APP_MOC_OUTFILES ${APP_MOC_INFILES})
-list(APPEND APP_SRC ${APP_MOC_OUTFILES})
-
-if(WITH_Qt)
-    set(WINDOW_TYPES ${WINDOW_TYPES} Qt)
-    set(QT_MOC_INFILES 
-        src/Application/Qt/QtWindow.h
-        src/Application/Qt/glWidget.h 
-        src/Application/Qt/FloatEditorWidget.h
-        src/Application/Qt/QtApplication.h
-        src/Application/Qt/QtInput.h
-    )
-    qt4_wrap_cpp(QT_MOC_OUTFILES ${QT_MOC_INFILES})
-    list(APPEND APP_SRC ${QT_MOC_OUTFILES})
-endif()
-if(WITH_XCB)
-	list(APPEND LIBS X11-xcb xcb-keysyms xcb)
-    set(WINDOW_TYPES ${WINDOW_TYPES} XCB)
-    set(XCB_MOC_INFILES 
-        src/Application/XCB/XCBInput.h
-        src/Application/XCB/XCBApplication.h
-    )
-    qt4_wrap_cpp(XCB_MOC_OUTFILES ${XCB_MOC_INFILES})
-    list(APPEND APP_SRC ${XCB_MOC_OUTFILES})
-endif()
-
-foreach(WINDOW_TYPE ${WINDOW_TYPES})
-    add_definitions(-DWITH_${WINDOW_TYPE})
-    file(GLOB_RECURSE GLOB_RESULT ${SRC_DIR}/Application/${WINDOW_TYPE}/*.cpp)
-    list(APPEND APP_SRC ${GLOB_RESULT})
-endforeach()
-
-if(WINDOW_TYPES)
-else()
-    message(FATAL_ERROR "You need to choose a window lib.")
-endif()
-
-add_library(lubApp ${APP_SRC})
-
-#libs to link
-list(APPEND LIBS
-    ${OPENGL_LIB}
-    ${QT_LIBRARIES}
-    ${Grantlee_CORE_LIBRARIES}
-    assimp
-    rt
-)
-
-
-if(USE_GLEW)
-    if(LIBLUB_WINDOWS)
-        list(APPEND LIBS glew32)
-    else()
-        list(APPEND LIBS GLEW)
-    endif()
-endif()
-
-#link
-target_link_libraries(lub ${LIBS})
-
-target_link_libraries(lubApp lub)
+include(GNUInstallDirs)
+ADD_SUBDIRECTORY(src)
+ADD_SUBDIRECTORY(apps)
+ADD_SUBDIRECTORY(demos)
+ADD_SUBDIRECTORY(tests)
 
 #install
 set(BINPERMISSIONS PERMISSIONS
@@ -239,15 +124,9 @@ set(BINPERMISSIONS PERMISSIONS
 	GROUP_READ GROUP_EXECUTE
 	WORLD_READ WORLD_EXECUTE)
 
-install(TARGETS lub DESTINATION "${CMAKE_INSTALL_LIBDIR}")
-install(TARGETS lubApp DESTINATION "${CMAKE_INSTALL_LIBDIR}")
 install(FILES "${CMAKE_SOURCE_DIR}/bin/liblub-examples" DESTINATION "${CMAKE_INSTALL_BINDIR}" ${BINPERMISSIONS})
 install(DIRECTORY "${CMAKE_SOURCE_DIR}/media" DESTINATION "${CMAKE_INSTALL_DATAROOTDIR}/liblub")
 install(DIRECTORY "${CMAKE_SOURCE_DIR}/shaders" DESTINATION "${CMAKE_INSTALL_DATAROOTDIR}/liblub")
-
-ADD_SUBDIRECTORY(apps)
-ADD_SUBDIRECTORY(demos)
-ADD_SUBDIRECTORY(tests)
 
 #check code stlye
 if(EXISTS "/usr/bin/python2")
