@@ -73,4 +73,5 @@ target_link_libraries(lub ${LIBS})
 install(TARGETS lub DESTINATION "${CMAKE_INSTALL_LIBDIR}")
 
 add_subdirectory(Application)
+add_subdirectory(Editor)
 

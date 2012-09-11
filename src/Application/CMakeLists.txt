@@ -12,7 +12,6 @@ if(WITH_Qt)
     set(QT_MOC_INFILES 
         Qt/QtWindow.h
         Qt/glWidget.h 
-        Qt/FloatEditorWidget.h
         Qt/QtApplication.h
         Qt/QtInput.h
     )

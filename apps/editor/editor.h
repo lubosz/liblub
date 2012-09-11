@@ -27,8 +27,8 @@
 
 #include "Application/Qt/QtApplication.h"
 #include "Renderer/RenderPasses.h"
-#include "TargetModel.h"
-#include "PassModel.h"
+#include "Editor/TargetModel.h"
+#include "Editor/PassModel.h"
 
 
 class Editor: public QtApplication {
