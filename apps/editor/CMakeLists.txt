@@ -14,5 +14,5 @@ set(EDITOR_MOC_INFILES
 
 qt4_wrap_cpp(EDITOR_MOC_OUTFILES ${EDITOR_MOC_INFILES})
 add_executable(liblub-editor ${EDITOR_CPP_FILES} ${EDITOR_MOC_OUTFILES})
-target_link_libraries(liblub-editor lub)
+target_link_libraries(liblub-editor lubApp)
 install(TARGETS liblub-editor DESTINATION "${CMAKE_INSTALL_BINDIR}")

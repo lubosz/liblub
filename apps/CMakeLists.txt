@@ -10,8 +10,6 @@ include_directories(
     ../demos
 )
 
-set(SOURCES ${SOURCES} ${LIBLUB_MOC_OUTFILES})
-
 foreach(EXAMPLE_PATH ${EXAMPLES})
     STRING(REGEX REPLACE "\\.cpp" "" EXAMPLE_NAME "${EXAMPLE_PATH}")
     STRING(REGEX REPLACE "^.*/([^/]*)\$" "\\1" EXAMPLE_NAME "${EXAMPLE_NAME}")
@@ -19,7 +17,7 @@ foreach(EXAMPLE_PATH ${EXAMPLES})
     set(EXAMPLE_SOURCES ${EXAMPLE_PATH})
     
     add_executable("${EXAMPLE_NAME}" ${EXAMPLE_SOURCES})
-    target_link_libraries(${EXAMPLE_NAME} lub lubDemos)
+    target_link_libraries(${EXAMPLE_NAME} lubApp lubDemos)
     install(TARGETS ${EXAMPLE_NAME} DESTINATION "${CMAKE_INSTALL_BINDIR}")
 endforeach(EXAMPLE_PATH)
 

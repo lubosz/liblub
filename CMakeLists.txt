@@ -159,12 +159,20 @@ endforeach(SOURCE_DIR)
 
 #moc qt stuff
 set(LIBLUB_MOC_INFILES 
-    src/Application/Input.h
     src/Scene/Node.h
     src/Procedural/Planets/Planet.h
 )
 qt4_wrap_cpp(LIBLUB_MOC_OUTFILES ${LIBLUB_MOC_INFILES})
-set(SOURCES ${SOURCES} ${LIBLUB_MOC_OUTFILES})
+add_library(lub ${SOURCES} ${LIBLUB_MOC_OUTFILES})
+
+#Application Lib
+file(GLOB APP_SRC ${SRC_DIR}/Application/*.cpp)
+
+set(APP_MOC_INFILES 
+    src/Application/Input.h
+)
+qt4_wrap_cpp(APP_MOC_OUTFILES ${APP_MOC_INFILES})
+list(APPEND APP_SRC ${APP_MOC_OUTFILES})
 
 if(WITH_Qt)
     set(WINDOW_TYPES ${WINDOW_TYPES} Qt)
@@ -176,7 +184,7 @@ if(WITH_Qt)
         src/Application/Qt/QtInput.h
     )
     qt4_wrap_cpp(QT_MOC_OUTFILES ${QT_MOC_INFILES})
-    set(SOURCES ${SOURCES} ${QT_MOC_OUTFILES})
+    list(APPEND APP_SRC ${QT_MOC_OUTFILES})
 endif()
 if(WITH_XCB)
 	list(APPEND LIBS X11-xcb xcb-keysyms xcb)
@@ -186,27 +194,21 @@ if(WITH_XCB)
         src/Application/XCB/XCBApplication.h
     )
     qt4_wrap_cpp(XCB_MOC_OUTFILES ${XCB_MOC_INFILES})
-    set(SOURCES ${SOURCES} ${XCB_MOC_OUTFILES})
+    list(APPEND APP_SRC ${XCB_MOC_OUTFILES})
 endif()
 
 foreach(WINDOW_TYPE ${WINDOW_TYPES})
     add_definitions(-DWITH_${WINDOW_TYPE})
     file(GLOB_RECURSE GLOB_RESULT ${SRC_DIR}/Application/${WINDOW_TYPE}/*.cpp)
-    set(WINDOW_CODE ${WINDOW_CODE} ${GLOB_RESULT})
+    list(APPEND APP_SRC ${GLOB_RESULT})
 endforeach()
 
-if(WINDOW_CODE)
+if(WINDOW_TYPES)
 else()
     message(FATAL_ERROR "You need to choose a window lib.")
 endif()
 
-file(GLOB_RECURSE GLOB_RESULT ${SRC_DIR}/Application/*.h)
-set(WINDOW_CODE ${WINDOW_CODE} ${GLOB_RESULT})
-
-set(SOURCES ${SOURCES} ${WINDOW_CODE})
-add_library(lub ${SOURCES})
-
-
+add_library(lubApp ${APP_SRC})
 
 #libs to link
 list(APPEND LIBS
@@ -229,6 +231,8 @@ endif()
 #link
 target_link_libraries(lub ${LIBS})
 
+target_link_libraries(lubApp lub)
+
 #install
 set(BINPERMISSIONS PERMISSIONS
 	OWNER_READ OWNER_WRITE OWNER_EXECUTE
@@ -236,6 +240,7 @@ set(BINPERMISSIONS PERMISSIONS
 	WORLD_READ WORLD_EXECUTE)
 
 install(TARGETS lub DESTINATION "${CMAKE_INSTALL_LIBDIR}")
+install(TARGETS lubApp DESTINATION "${CMAKE_INSTALL_LIBDIR}")
 install(FILES "${CMAKE_SOURCE_DIR}/bin/liblub-examples" DESTINATION "${CMAKE_INSTALL_BINDIR}" ${BINPERMISSIONS})
 install(DIRECTORY "${CMAKE_SOURCE_DIR}/media" DESTINATION "${CMAKE_INSTALL_DATAROOTDIR}/liblub")
 install(DIRECTORY "${CMAKE_SOURCE_DIR}/shaders" DESTINATION "${CMAKE_INSTALL_DATAROOTDIR}/liblub")
