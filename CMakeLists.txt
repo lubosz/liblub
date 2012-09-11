@@ -88,9 +88,9 @@ include_directories(
 
 #check for opengl corearb headers
 function(download_gl_header GL_HEADER)
-    if(NOT EXISTS ${CMAKE_SOURCE_DIR}/src/Renderer/GL/${GL_HEADER})
+    if(NOT EXISTS ${CMAKE_SOURCE_DIR}/include/GL/${GL_HEADER})
         execute_process(
-            WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/src/Renderer/GL
+            WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/include/GL
             COMMAND wget http://www.opengl.org/registry/api/${GL_HEADER}
     )
     endif()
@@ -100,8 +100,8 @@ if(EXISTS /usr/include/GL/glcorearb.h AND NOT LIBLUB_WINDOWS)
 	message("Core Profile API Header found in /usr/include")
 else()
 	message("No Core Profile API Header in /usr. Using local ones / downloading.")
-	if(NOT EXISTS src/Renderer/GL)
-		execute_process(COMMAND mkdir -p ${CMAKE_SOURCE_DIR}/src/Renderer/GL)
+	if(NOT EXISTS include/GL)
+		execute_process(COMMAND mkdir -p ${CMAKE_SOURCE_DIR}/include/GL)
 	endif()
 	#set(GL_HEADERS glcorearb.h glext.h glxext.h)
 	set(GL_HEADERS glcorearb.h)
@@ -109,7 +109,7 @@ else()
 		    download_gl_header(${GL_HEADER})
     endforeach(GL_HEADER)
 
-	include_directories(src/Renderer/)
+	include_directories(include/)
 endif()
 
 include(GNUInstallDirs)

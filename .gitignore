@@ -6,7 +6,7 @@ media/meshes/dragon*.ply
 bin/
 build/
 lib/
-src/Renderer/GL/
+include/GL/
 test/
 liblub.cbp
 *.cxx
