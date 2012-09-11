@@ -26,7 +26,7 @@
 #include "Renderer/DeferredRenderer.h"
 #include "Procedural/Geometry.h"
 #include "Scene/SceneGraph.h"
-#include "Window/Qt/FloatEditorWidget.h"
+#include "Application/Qt/FloatEditorWidget.h"
 
 #include <QSplitter>
 

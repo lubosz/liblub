@@ -7,7 +7,7 @@
 
 #pragma once
 
-#include "Window/Input.h"
+#include "Application/Input.h"
 #include "Common/Singleton.h"
 #include <QTimer>
 #include <QVector2D>
@@ -22,7 +22,7 @@ public:
   float inputSpeed;
   QVector2D mousePosition;
 
-  void eventLoop() {};
+  void eventLoop() {}
 
 signals:
   void draw();

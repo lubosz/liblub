@@ -22,7 +22,7 @@
 #include <xcb/xcb.h>
 
 #include "System/Timer.h"
-#include "Window/Window.h"
+#include "Application/Window.h"
 class XCBWindow: public LL::Window {
 
   friend class XCBInput;

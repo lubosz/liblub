@@ -10,8 +10,8 @@
 #include "Renderer/OpenGL.h"
 #include <QApplication>
 #include <QtGui>
-#include "Window/Qt/QtWindow.h"
-#include "Window/Qt/glWidget.h"
+#include "Application/Qt/QtWindow.h"
+#include "Application/Qt/glWidget.h"
 #include "System/FontOverlay.h"
 
 class QtApplication: public QApplication {

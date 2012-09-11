@@ -8,7 +8,7 @@
 #include <X11/keysym.h>
 #include <list>
 #include "Scene/Camera.h"
-#include "Window/Window.h"
+#include "Application/Window.h"
 #include "Shader/Uniform.h"
 #include "Scene/Scene.h"
 #include "System/Logger.h"

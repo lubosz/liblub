@@ -9,7 +9,7 @@
 
 #include <QWidget>
 #include <QSplitter>
-#include "Window/Window.h"
+#include "Application/Window.h"
 
 class QHBoxLayout;
 

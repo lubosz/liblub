@@ -12,7 +12,7 @@
 #include "System/Logger.h"
 #include "System/Timer.h"
 #include "Scene/Scene.h"
-#include "Window/Qt/QtInput.h"
+#include "Application/Qt/QtInput.h"
 
 QtWindow::QtWindow() {
   mainLayout = new QHBoxLayout;

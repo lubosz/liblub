@@ -10,8 +10,6 @@
 
 #include <time.h>
 
-#include "Window/Input.h"
-
 const float BILLION = 1000000000; // 10^9
 const float MILLION = 1000000;
 

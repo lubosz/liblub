@@ -17,7 +17,7 @@
 #include "Texture/Textures.h"
 #include "Scene/Scene.h"
 #include "Procedural/Geometry.h"
-#include "Window/Window.h"
+//#include "Window/Window.h"
 #include "System/Logger.h"
 #include "System/Timer.h"
 #include "Shader/Shaders.h"

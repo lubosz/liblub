@@ -159,7 +159,7 @@ endforeach(SOURCE_DIR)
 
 #moc qt stuff
 set(LIBLUB_MOC_INFILES 
-    src/Window/Input.h
+    src/Application/Input.h
     src/Scene/Node.h
     src/Procedural/Planets/Planet.h
 )
@@ -169,11 +169,11 @@ set(SOURCES ${SOURCES} ${LIBLUB_MOC_OUTFILES})
 if(WITH_Qt)
     set(WINDOW_TYPES ${WINDOW_TYPES} Qt)
     set(QT_MOC_INFILES 
-        src/Window/Qt/QtWindow.h
-        src/Window/Qt/glWidget.h 
-        src/Window/Qt/FloatEditorWidget.h
-        src/Window/Qt/QtApplication.h
-        src/Window/Qt/QtInput.h
+        src/Application/Qt/QtWindow.h
+        src/Application/Qt/glWidget.h 
+        src/Application/Qt/FloatEditorWidget.h
+        src/Application/Qt/QtApplication.h
+        src/Application/Qt/QtInput.h
     )
     qt4_wrap_cpp(QT_MOC_OUTFILES ${QT_MOC_INFILES})
     set(SOURCES ${SOURCES} ${QT_MOC_OUTFILES})
@@ -182,8 +182,8 @@ if(WITH_XCB)
 	list(APPEND LIBS X11-xcb xcb-keysyms xcb)
     set(WINDOW_TYPES ${WINDOW_TYPES} XCB)
     set(XCB_MOC_INFILES 
-        src/Window/XCB/XCBInput.h
-        src/Window/XCB/XCBApplication.h
+        src/Application/XCB/XCBInput.h
+        src/Application/XCB/XCBApplication.h
     )
     qt4_wrap_cpp(XCB_MOC_OUTFILES ${XCB_MOC_INFILES})
     set(SOURCES ${SOURCES} ${XCB_MOC_OUTFILES})
@@ -191,7 +191,7 @@ endif()
 
 foreach(WINDOW_TYPE ${WINDOW_TYPES})
     add_definitions(-DWITH_${WINDOW_TYPE})
-    file(GLOB_RECURSE GLOB_RESULT ${SRC_DIR}/Window/${WINDOW_TYPE}/*.cpp)
+    file(GLOB_RECURSE GLOB_RESULT ${SRC_DIR}/Application/${WINDOW_TYPE}/*.cpp)
     set(WINDOW_CODE ${WINDOW_CODE} ${GLOB_RESULT})
 endforeach()
 
@@ -200,7 +200,7 @@ else()
     message(FATAL_ERROR "You need to choose a window lib.")
 endif()
 
-file(GLOB_RECURSE GLOB_RESULT ${SRC_DIR}/Window/*.h)
+file(GLOB_RECURSE GLOB_RESULT ${SRC_DIR}/Application/*.h)
 set(WINDOW_CODE ${WINDOW_CODE} ${GLOB_RESULT})
 
 set(SOURCES ${SOURCES} ${WINDOW_CODE})

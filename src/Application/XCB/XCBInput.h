@@ -11,7 +11,7 @@
 #include <QTimer>
 #include "Shader/ShaderProgram.h"
 #include <xcb/xcb_keysyms.h>
-#include "Window/Input.h"
+#include "Application/Input.h"
 
 class XCBWindow;
 

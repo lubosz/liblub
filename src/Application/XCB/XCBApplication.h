@@ -8,7 +8,7 @@
 #pragma once
 #include <QtCore>
 #include <QApplication>
-#include "Window/XCB/XCBWindow.h"
+#include "Application/XCB/XCBWindow.h"
 #include "Scene/Scene.h"
 #include "System/Config.h"
 #include "System/FontOverlay.h"

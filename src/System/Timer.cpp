@@ -6,7 +6,8 @@
  */
 
 #include "System/Timer.h"
-#include "Window/Window.h"
+//#include "Window/Window.h"
+#include "System/Logger.h"
 
 Timer::Timer() {
     framesRendered = 0;

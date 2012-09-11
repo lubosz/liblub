@@ -11,7 +11,7 @@
 #include "Texture/Textures.h"
 #include "System/Config.h"
 #include "Renderer/OpenGL.h"
-#include "Window/Qt/FloatEditorWidget.h"
+#include "Application/Qt/FloatEditorWidget.h"
 #include "Renderer/FrameBuffer.h"
 #include "Shader/Shaders.h"
 #include "Procedural/Geometry.h"

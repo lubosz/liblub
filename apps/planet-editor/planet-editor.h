@@ -25,7 +25,7 @@
 #include <QHBoxLayout>
 #include <QComboBox>
 
-#include "Window/Qt/QtApplication.h"
+#include "Application/Qt/QtApplication.h"
 #include "Renderer/RenderPasses.h"
 #include "PlanetWidget.h"
 #include "planets/planets.h"

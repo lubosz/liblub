@@ -28,7 +28,7 @@
 #include "Scene/SceneGraph.h"
 #include "TextureModel.h"
 #include "Nodes/GraphWidget.h"
-#include "Window/Qt/FloatEditorWidget.h"
+#include "Application/Qt/FloatEditorWidget.h"
 
 #include <QSplitter>
 

@@ -10,10 +10,10 @@
 
 
 #ifdef USE_QT_WINDOWS
-#include "Window/Qt/QtApplication.h"
+#include "Application/Qt/QtApplication.h"
 typedef QtApplication Application;
 #else
-#include "Window/XCB/XCBApplication.h"
+#include "Application/XCB/XCBApplication.h"
 typedef XCBApplication Application;
 #endif
 

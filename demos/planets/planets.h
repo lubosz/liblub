@@ -10,8 +10,6 @@
 
 //#include <QtGui>
 
-#include "Window/Qt/QtWindow.h"
-#include "Window/Qt/glWidget.h"
 #include "System/Demo.h"
 #include "Procedural/Planets/Planet.h"
 
