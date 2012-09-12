@@ -7,7 +7,7 @@ set(QT_USE_QTXML true)
 
 if(WITH_Qt)
     set(QT_USE_QTUITOOLS true)
-    set(QT_USE_QTOPENGL false)
+    set(QT_USE_QTOPENGL true)
 endif()
 
 include(${QT_USE_FILE})
