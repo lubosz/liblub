@@ -9,7 +9,6 @@
 #include "System/Timer.h"
 
 XCBApplication::XCBApplication(int argc, char ** argv) {
-  LogInfo << argc << argv[0];
   argcount = argc;
   argvalues = argv;
   app = new QApplication(argcount,argvalues, false);

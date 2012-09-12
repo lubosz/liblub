@@ -16,20 +16,24 @@ struct LogSetting {
 };
 
 const LogSetting blackList[] = {
-  { "Timer.cpp", Logger::Warning },
-  { "TemplateEngine.cpp", Logger::Warning },
-  { "Shader.cpp", Logger::Warning },
-  { "ShaderProgram.cpp", Logger::Warning },
-  { "Config.cpp", Logger::Warning },
-  { "Mesh.cpp", Logger::Warning },
-  { "MeshBuffer.cpp", Logger::Warning },
-  { "XCBApplication.cpp", Logger::Warning },
-  { "SceneGraph.cpp", Logger::Warning },
-  { "SceneLoader.cpp", Logger::Warning },
-  { "Textures.cpp", Logger::Warning },
-  { "Texture.cpp", Logger::Warning },
-  { "FrameBuffer.cpp", Logger::Warning },
-  { "AssimpSceneLoader.cpp", Logger::Warning },
+  { "Timer", Logger::Info },
+  { "TemplateEngine", Logger::Info },
+  { "Shader", Logger::Info },
+  { "ShaderProgram", Logger::Info },
+  { "Config", Logger::Info },
+  { "Mesh", Logger::Info },
+  { "MeshBuffer", Logger::Info },
+  { "XCBApplication", Logger::Info },
+  { "SceneGraph", Logger::Info },
+  { "SceneLoader", Logger::Info },
+  { "Textures", Logger::Info },
+  { "Texture", Logger::Info },
+  { "FrameBuffer", Logger::Info },
+  { "AssimpSceneLoader", Logger::Info },
+  { "MeshLoader", Logger::Info },
+  { "Geometry", Logger::Info },
+  { "DeferredRenderer", Logger::Info },
+  { "Scene", Logger::Info },
 };
 
 Logger::Logger(const std::string& file, int line, Logger::LogLevel level) {
@@ -52,9 +56,8 @@ Logger::~Logger() {
 }
 
 void Logger::writeInfo(const char* longFile, int line, Logger::LogLevel level) {
-  const char* file = std::strrchr(longFile, '/')+1;
-  if(file == 0)
-    file = std::strrchr(longFile, '\\')+1;
+  string file = std::strrchr(longFile, '/')+1;
+  file = file.substr(0,file.size()-4);
 
   fatal = false;
   LogLevel curLevel = getLogLevel(file);
@@ -66,37 +69,50 @@ void Logger::writeInfo(const char* longFile, int line, Logger::LogLevel level) {
   print = true;
   switch(level) {
     case Info:
-      log(1,32,"INFO",file, line);
+      log(1,32,"I",file, line);
       break;
     case Warning:
-      log(1,33,"WARNING",file, line);
+      log(1,33,"W",file, line);
       break;
     case Error:
-      log(1,31,"ERROR",file, line);
+      log(1,31,"E",file, line);
       break;
     case Debug:
-      log(1,36,"DEBUG",file, line);
+      log(1,36,"D",file, line);
       break;
     case Fatal:
       log(4,31,"FATAL",file, line);
       fatal = true;
       break;
     default:
-      log(1,32,"INFO",file, line);
+      log(1,32,"I",file, line);
   };
 }
 
 void Logger::log(int mode, int color, const string & level,
     const string & file, int line) {
+    const unsigned alignedTextSize = 11;
 #if LIBLUB_WINDOWS
   cout<<"["<< level << "]  "<<file<<":"<<line<<"  ";
 #else
-  cout<<"[\e["<< mode <<";"<< color <<"m" << level << "\e[m]  "
-      <<"\e[0;35m"<<file<<"\e[m:\e[0;33m"<<line<<"\e[m"<<"  ";
+  cout<<"\e["<< mode <<";"<< color <<"m[" << level << "]\e[m "
+      <<"\e[1;34m"<<file<<" \e[0;33m"<<line<<"\e[m"<< getSpaces(alignedTextSize - file.size(), line);
 #endif
 }
 
-Logger::LogLevel Logger::getLogLevel(const std::string& file) {
+string Logger::getSpaces(int count, int line) {
+    string spaces = " ";
+
+    if (line < 100)
+        spaces += " ";
+
+    for (int i = 0; i < count; i++) {
+        spaces += " ";
+    }
+    return spaces;
+}
+
+Logger::LogLevel Logger::getLogLevel(const string& file) {
   for (unsigned i=0; i < sizeof(blackList)/sizeof(*blackList); i++) {
     if (blackList[i].codefile == file)
       return blackList[i].logLevel;

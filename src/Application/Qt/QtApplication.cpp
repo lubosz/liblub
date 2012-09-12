@@ -61,8 +61,8 @@ void QtApplication::run() {
 #endif
 #endif
   OpenGL::Instance().setContextCreated(true);
-  fontOverlay = new FontOverlay();
-  fontOverlay->init();
+//  fontOverlay = new FontOverlay();
+//  fontOverlay->init();
   scene();
   drawTimer = new QTimer(this);
   QtInput *input = &QtInput::Instance();
@@ -76,7 +76,7 @@ void QtApplication::run() {
 
 void QtApplication::draw() {
   renderFrame();
-  fontOverlay->draw();
+//  fontOverlay->draw();
   glError;
 }
 

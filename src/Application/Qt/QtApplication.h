@@ -20,7 +20,7 @@ Q_OBJECT
 
 public:
   GLWidget *glWidget;
-  FontOverlay* fontOverlay;
+//  FontOverlay* fontOverlay;
   QtWindow * window;
   QTimer *drawTimer;
   bool useFontOverlay;

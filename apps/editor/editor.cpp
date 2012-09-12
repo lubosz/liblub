@@ -57,6 +57,7 @@ Editor::Editor(int &argc, char **argv) :
 
     transparencyModes.insert("GL_SRC_ALPHA_SATURATE", GL_SRC_ALPHA_SATURATE);
     launcher = new DemoLauncher(argc, argv);
+    useFontOverlay = false;
 }
 
 Editor::~Editor() {

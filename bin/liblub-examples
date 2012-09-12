@@ -44,15 +44,14 @@ class ExampleRunner:
     
   def getDemos(self):
     demos = os.popen(self.loaderpath + " -l").readlines()[0].strip().split(" ")
-    print (demos)
+    print ("Available demos:\n %s\n" % demos)
     return demos
     
   def run(self, command):
-    print("Running", command)
+    print("Running %s" % command[1])
     
     if self.valgrind:
       command = ["sh", "scripts/valgrindStats.sh", command]
-    print(command)
     subprocess.call(command)
     self.waitForInput()
 

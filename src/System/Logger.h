@@ -46,7 +46,8 @@ public:
   static LogLevel logLevel;
 private:
   bool print, fatal;
-  bool isInBlackList(const std::string& file);
+  string getSpaces(int count, int line);
+  bool isInBlackList(const string& file);
   void writeInfo(const char* file, int line, Logger::LogLevel level);
   LogLevel getLogLevel(const std::string & file);
   void log(int mode, int color, const string & level,
