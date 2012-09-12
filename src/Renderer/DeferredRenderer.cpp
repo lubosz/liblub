@@ -7,9 +7,9 @@
 #include "Procedural/Geometry.h"
 
 
-DeferredRenderer::DeferredRenderer() : drawTransparency(true)
-{
+DeferredRenderer::DeferredRenderer() : drawTransparency(true) {
     timer = new Timer();
+    isInitialized = false;
 }
 
 DeferredRenderer::~DeferredRenderer() {
@@ -58,6 +58,7 @@ void DeferredRenderer::init() {
     sourcePasses = {
         aoPass,blurVPass, shadowReceivePass,shadingPass
     };
+    isInitialized = true;
 }
 
 void DeferredRenderer::initShadowCasters() {

@@ -34,7 +34,6 @@
 
 Editor::Editor(int &argc, char **argv) :
     QtApplication(argc, argv) {
-    scenePath = argv[1];
     transparencyModes.insert("GL_ZERO", GL_ZERO);
     transparencyModes.insert("GL_ONE", GL_ONE);
 
@@ -57,6 +56,7 @@ Editor::Editor(int &argc, char **argv) :
     transparencyModes.insert("GL_ONE_MINUS_CONSTANT_ALPHA", GL_ONE_MINUS_CONSTANT_ALPHA);
 
     transparencyModes.insert("GL_SRC_ALPHA_SATURATE", GL_SRC_ALPHA_SATURATE);
+    launcher = new DemoLauncher(argc, argv);
 }
 
 Editor::~Editor() {
@@ -73,27 +73,11 @@ void Editor::setOffSetUnits(double units) {
 }
 
 void Editor::scene() {
-    Scene::Instance().getCurrentCamera()->setPosition(QVector3D(-1.43765, 5.130675, -1.20157));
-    Scene::Instance().getCurrentCamera()->setDirection(QVector3D(0.741701, -0.0836778, 0.66549));
-    Scene::Instance().getCurrentCamera()->update();
-
-    DeferredRenderer::Instance().initSky("cubemaps/sky");
-
-    QString qScenePath = QString::fromStdString(scenePath);
-
-    if (qScenePath.contains(".xml")) {
-        SceneLoader * sceneLoader = new SceneLoader(qScenePath);
-        sceneLoader->load();
-    } else{
-        AssimpSceneLoader::Instance().load(scenePath);
-    }
-
-    DeferredRenderer::Instance().init();
+    launcher->init();
     initWidgets(window->splitter);
-
 }
 void Editor::renderFrame() {
-    DeferredRenderer::Instance().draw();
+    launcher->draw();
 }
 void Editor::setSelectedPlane(const QModelIndex &index) {
     selectedPlane = DeferredRenderer::Instance().sinkPass->debugPlanes[index.row()];
@@ -215,37 +199,49 @@ void Editor::initWidgets(QSplitter * mainSplitter) {
     tabWidget->addTab(renderTargetTab, "Targets");
 
 
-    QVBoxLayout *renderTargetLayout = new QVBoxLayout(renderTargetTab);
+    if (DeferredRenderer::Instance().isInitialized) {
+        QVBoxLayout *renderTargetLayout = new QVBoxLayout(renderTargetTab);
 
-    QListView *targetListView = new QListView;
-    targetModel = new TargetModel(0);
-    connect(targetModel, SIGNAL(draw()), glWidget, SLOT(updateGL()));
-    targetListView->setModel(targetModel);
-    targetListView->show();
-    renderTargetLayout->addWidget(targetListView);
-
-
-    QListView *passListView = new QListView;
-    passModel = new PassModel(0);
-    connect(passModel, SIGNAL(draw()), glWidget, SLOT(updateGL()));
-    passListView->setModel(passModel);
-    passListView->show();
-    renderTargetLayout->addWidget(passListView);
+        QListView *targetListView = new QListView;
+        targetModel = new TargetModel(0);
+        connect(targetModel, SIGNAL(draw()), glWidget, SLOT(updateGL()));
+        targetListView->setModel(targetModel);
+        targetListView->show();
+        renderTargetLayout->addWidget(targetListView);
 
 
-    passLayout = new QVBoxLayout;
-    passLayoutWidget = new QWidget;
-    passLayoutWidget->setLayout(passLayout);
-    renderTargetLayout->addWidget(passLayoutWidget);
+        QListView *passListView = new QListView;
+        passModel = new PassModel(0);
+        connect(passModel, SIGNAL(draw()), glWidget, SLOT(updateGL()));
+        passListView->setModel(passModel);
+        passListView->show();
+        renderTargetLayout->addWidget(passListView);
 
-    renderTargetSelector = new QComboBox;
 
-    vector<string> targets = DeferredRenderer::Instance().getTargetNames();
+        passLayout = new QVBoxLayout;
+        passLayoutWidget = new QWidget;
+        passLayoutWidget->setLayout(passLayout);
+        renderTargetLayout->addWidget(passLayoutWidget);
 
-    for (unsigned i = 0; i < targets.size(); ++i) {
-        renderTargetSelector->insertItem(i, QString::fromStdString(targets[i]));
+        renderTargetSelector = new QComboBox;
+
+        vector<string> targets = DeferredRenderer::Instance().getTargetNames();
+
+        for (unsigned i = 0; i < targets.size(); ++i) {
+            renderTargetSelector->insertItem(i, QString::fromStdString(targets[i]));
+        }
+        renderTargetLayout->addWidget(renderTargetSelector);
+
+        connect(targetListView, SIGNAL(clicked(QModelIndex)), this, SLOT(setSelectedPlane(QModelIndex)));
+        connect(passListView, SIGNAL(clicked(QModelIndex)), this, SLOT(setSelectedPass(QModelIndex)));
+        connect(renderTargetSelector, SIGNAL(currentIndexChanged(QString)), this, SLOT(changePlaneSource(QString)));
+        connect(renderTargetSelector, SIGNAL(currentIndexChanged(QString)), passListView, SLOT(updateGeometries()));
+
+        setSelectedPlane(targetModel->index(0, 0, QModelIndex()));
+
+        GraphWidget * graphWidget = new GraphWidget;
+        tabWidget->addTab(graphWidget, "Nodes");
     }
-    renderTargetLayout->addWidget(renderTargetSelector);
 
     QWidget * textureTab = new QWidget();
     tabWidget->addTab(textureTab, "Textures");
@@ -259,6 +255,12 @@ void Editor::initWidgets(QSplitter * mainSplitter) {
     texturelistView->resizeColumnToContents(2);
 
     textureTabLayout->addWidget(texturelistView);
+    connect(texturelistView, SIGNAL(clicked(QModelIndex)), this, SLOT(setSelectedTexture(QModelIndex)));
+
+
+    QWidget * transparencyTab = new QWidget();
+    tabWidget->addTab(transparencyTab, "Transparency");
+    QVBoxLayout *transparencyTabLayout = new QVBoxLayout(transparencyTab);
 
     transparencyModeSrc = new QComboBox;
     transparencyModeDest = new QComboBox;
@@ -276,17 +278,7 @@ void Editor::initWidgets(QSplitter * mainSplitter) {
     transparencyBoxLayout->addWidget(transparencyModeSrc);
     transparencyBoxLayout->addWidget(transparencyModeDest);
 
-    renderTargetLayout->addWidget(transparencyBoxLayoutWidget);
-
-    setSelectedPlane(targetModel->index(0, 0, QModelIndex()));
-    connect(targetListView, SIGNAL(clicked(QModelIndex)), this, SLOT(setSelectedPlane(QModelIndex)));
-    connect(passListView, SIGNAL(clicked(QModelIndex)), this, SLOT(setSelectedPass(QModelIndex)));
-    connect(texturelistView, SIGNAL(clicked(QModelIndex)), this, SLOT(setSelectedTexture(QModelIndex)));
-    connect(renderTargetSelector, SIGNAL(currentIndexChanged(QString)), this, SLOT(changePlaneSource(QString)));
-    connect(renderTargetSelector, SIGNAL(currentIndexChanged(QString)), passListView, SLOT(updateGeometries()));
-
-    GraphWidget * graphWidget = new GraphWidget;
-    tabWidget->addTab(graphWidget, "Nodes");
+    transparencyTabLayout->addWidget(transparencyBoxLayoutWidget);
 
 
     // Shadow Tab
@@ -309,9 +301,6 @@ void Editor::initWidgets(QSplitter * mainSplitter) {
 }
 
 int main(int argc, char **argv) {
-    if (argc != 2)
-      LogError << "NO SCENE SPECIFIED. Try; ./editor foo.blend";
-    else
       Editor(argc, argv).run();
 }
 

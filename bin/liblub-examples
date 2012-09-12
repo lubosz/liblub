@@ -7,13 +7,7 @@ blacklist_demos = ["tesselation", "mandelbulb", "raycasting"]
 blacklist_scenes = ["ash", "common", "csm", "multilight", "nice", "terrain", "ocean"]
 blacklist_tests = []
 
-# get binary path
-path_prefixes = ["/usr/", "/usr/local/", ""]
-path_prefix = ""
-for prefix in path_prefixes:
-	if os.path.exists(prefix + "bin/liblub-load"):
-		path_prefix = prefix
-loaderpath = path_prefix + "bin/liblub-load"
+
 
 # get media path
 media_prefixes = ["/usr/share/liblub/", "/usr/local/share/liblub/", ""]
@@ -27,6 +21,7 @@ class ExampleRunner:
   def __init__(self):
     self.pausing = False
     self.valgrind = False
+    self.getBinaryPath()
 
   def waitForInput(self):
     if self.pausing:
@@ -38,8 +33,17 @@ class ExampleRunner:
     files.sort()
     return files
     
+  # get binary path
+  def getBinaryPath(self):
+    path_prefixes = ["/usr/", "/usr/local/", ""]
+    path_prefix = ""
+    for prefix in path_prefixes:
+      if os.path.exists(prefix + "bin/liblub-load"):
+        self.path_prefix = prefix
+    self.loaderpath = self.path_prefix + "bin/liblub-load"
+    
   def getDemos(self):
-    demos = os.popen(loaderpath + " -l").readlines()[0].strip().split(" ")
+    demos = os.popen(self.loaderpath + " -l").readlines()[0].strip().split(" ")
     print (demos)
     return demos
     
@@ -55,14 +59,14 @@ class ExampleRunner:
   def runDemos(self):
     for demo in self.getDemos():
       if demo not in blacklist_demos:
-        self.run([loaderpath, demo])
+        self.run([self.loaderpath, demo])
         
   def runScenes(self):    
     for scene in self.getFiles(media_prefix + "media/scenes"):
       if not "~" in scene:
         sceneShort = scene.replace(".xml", "")
         if sceneShort not in blacklist_scenes:
-          self.run([loaderpath, scene])
+          self.run([self.loaderpath, scene])
 
   def runTests(self):
     try:
@@ -82,8 +86,12 @@ class ExampleRunner:
     parser.add_option("-t", "--tests", action="store_true", dest="tests", help="Run tests")
     parser.add_option("-p", "--pause", action="store_true", dest="pause", help="Pause after every test")
     parser.add_option("-v", "--valgrind", action="store_true", dest="valgrind", help="Run in valgrind")
+    parser.add_option("-e", "--editor", action="store_true", dest="editor", help="Run in editor")
 
     (options, args) = parser.parse_args()
+
+    if options.editor is not None:
+      self.loaderpath = self.path_prefix + "bin/liblub-editor"
 
     if options.valgrind is not None:
       self.valgrind = True

@@ -30,6 +30,8 @@
 #include "Editor/TargetModel.h"
 #include "Editor/PassModel.h"
 
+#include "DemoLauncher.h"
+
 
 class Editor: public QtApplication {
     Q_OBJECT
@@ -41,8 +43,6 @@ public:
 
     void scene();
     void renderFrame();
-
-    string scenePath;
 
     void initWidgets(QSplitter *mainSplitter);
 
@@ -61,6 +61,8 @@ public:
 
   GLuint srcMode;
   GLuint destMode;
+
+  DemoLauncher * launcher;
 
 
   void updateTransparency();

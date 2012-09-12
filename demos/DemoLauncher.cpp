@@ -16,40 +16,49 @@
 #include "load-xml.h"
 #include "planets/planets.h"
 
-DemoLauncher::DemoLauncher(int &argc, char **argv) {
+DemoLauncher::DemoLauncher() {
     addDemos();
-
     currentDemo = nullptr;
+}
 
+DemoLauncher::DemoLauncher(int &argc, char **argv) : DemoLauncher() {
     if (argc != 2) {
         LogError << "No Scene Specified. Try: ./load name";
         listDemos();
     } else {
-
-        string arg = argv[1];
-        QString qarg = QString::fromStdString(arg);
-
-        if (arg == "-l") {
-            std::cout << demoList() << "\n";
-            exit(0);
-        }
-        if (demos.contains(arg)) {
-            currentDemo = demos[arg];
-        } else if (qarg.contains(".xml")){
-            currentDemo = new LoadXml("xml scene", arg);
-        } else {
-            currentDemo = new LoadAssimp("assimp scene", arg);
-//                LogError << "No such demo" << arg;
-//                listDemos();
-        }
+        chooseDemo(argv[1]);
     }
 
     if (currentDemo == nullptr)
         exit(0);
 }
 
+DemoLauncher::DemoLauncher(string demo) : DemoLauncher() {
+    chooseDemo(demo);
+    if (currentDemo == nullptr)
+        exit(0);
+}
+
 DemoLauncher::~DemoLauncher() {
     delete currentDemo;
+}
+
+void DemoLauncher::chooseDemo(const string& demo) {
+    QString arg = QString::fromStdString(demo);
+
+    if (arg == "-l") {
+        std::cout << demoList() << "\n";
+        exit(0);
+    }
+    if (demos.contains(demo)) {
+        currentDemo = demos[demo];
+    } else if (arg.contains(".xml")){
+        currentDemo = new LoadXml("xml scene", demo);
+    } else {
+        currentDemo = new LoadAssimp("assimp scene", demo);
+//                LogError << "No such demo" << arg;
+//                listDemos();
+    }
 }
 
 void DemoLauncher::listDemos() {

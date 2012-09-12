@@ -9,7 +9,9 @@ using std::string;
 
 class DemoLauncher {
 public:
+    DemoLauncher();
     DemoLauncher(int &argc, char **argv);
+    DemoLauncher(string demo);
     ~DemoLauncher();
 
     Demo * currentDemo;
@@ -19,6 +21,7 @@ public:
     string demoList();
     void addDemos() ;
     void addDemo(Demo * demo);
+    void chooseDemo(const string& demo);
 
     void init();
     void draw();

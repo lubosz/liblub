@@ -43,6 +43,7 @@ public:
     void initSky(const string& textureName);
 
     Timer * timer;
+    bool isInitialized;
 
 };
 
