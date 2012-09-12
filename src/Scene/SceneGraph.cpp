@@ -63,7 +63,7 @@ void SceneGraph::drawNodes(DirectionNode * viewPoint) {
         if(!node->getTransparent()) {
           node->setView(viewPoint);
           node->setShadowCoords(viewPoint);
-          Scene::Instance().getShadowLight()->bindShaderUpdate(node->getShader());
+          Scene::Instance().getDefaultLight()->bindShaderUpdate(node->getShader());
           node->draw();
         } else {
           QVector3D distance = node->getCenter() - Scene::Instance().getCurrentCamera()->position;

@@ -136,22 +136,22 @@ void XCBInput::checkKey(xcb_keysym_t pressedKey) {
             break;
             // Light
         case XK_Left:
-            Scene::Instance().getShadowLight()->leftWorld(inputSpeed);
+            Scene::Instance().getDefaultLight()->leftWorld(inputSpeed);
             break;
         case XK_Right:
-            Scene::Instance().getShadowLight()->rightWorld(inputSpeed);
+            Scene::Instance().getDefaultLight()->rightWorld(inputSpeed);
             break;
         case XK_Up:
-            Scene::Instance().getShadowLight()->upWorld(inputSpeed);
+            Scene::Instance().getDefaultLight()->upWorld(inputSpeed);
             break;
         case XK_Down:
-            Scene::Instance().getShadowLight()->downWorld(inputSpeed);
+            Scene::Instance().getDefaultLight()->downWorld(inputSpeed);
             break;
         case XK_1:
-            Scene::Instance().getShadowLight()->forwardWorld(inputSpeed);
+            Scene::Instance().getDefaultLight()->forwardWorld(inputSpeed);
             break;
         case XK_7:
-            Scene::Instance().getShadowLight()->backWorld(inputSpeed);
+            Scene::Instance().getDefaultLight()->backWorld(inputSpeed);
             break;
     }
 }

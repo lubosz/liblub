@@ -88,16 +88,16 @@ Light* Scene::getLight(const string & name) {
     return light;
   } else {
     LogWarning <<  "Light not found" << name;
-    return getShadowLight();
+    return getDefaultLight();
   }
 }
 
-Light* Scene::getShadowLight() {
+Light* Scene::getDefaultLight() {
     if (lights.size() > 0) {
         return lights.values().at(0);
     } else {
         LogError << "No Light Found";
-        Light * light = new Light();
+        Light * light = new Light(QVector3D(-2.5, 21.5, -5.2), QVector3D(1, -5, 0));
         lights.insert("nonamelight", light);
         return light;
     }

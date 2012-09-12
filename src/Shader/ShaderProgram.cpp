@@ -148,7 +148,7 @@ void ShaderProgram::initUniforms() {
   initUniformsByType<float> (uniforms);
   initUniformsByType<int> (uniformsi);
   // TODO: Multiple Light sources
-  Scene::Instance().getShadowLight()->bindShaderInit(this);
+  Scene::Instance().getDefaultLight()->bindShaderInit(this);
 }
 
 void ShaderProgram::linkAndUse() {

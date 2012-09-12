@@ -56,7 +56,7 @@ public:
   void setCurrentCamera(Camera * camera);
   void addCamera(Camera * camera);
 
-  Light* getShadowLight();
+  Light* getDefaultLight();
 
   struct LightSource {
     QVector4D position;
