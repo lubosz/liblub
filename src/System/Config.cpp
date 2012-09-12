@@ -126,7 +126,7 @@ string Config::getMediaPrefix() {
         exit(0);
     }
 
-    LogInfo << "Media Prefix:" << mediaPrefix;
+    LogDebug << "Media Prefix:" << mediaPrefix;
     return mediaPrefix;
 }
 

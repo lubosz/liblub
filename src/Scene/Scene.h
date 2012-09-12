@@ -52,12 +52,11 @@ public:
   QSize getResolution();
 
   Camera * getCurrentCamera();
-  Light * getShadowLight();
-  void setShadowLight(Light * light);
-  Light * getMoveLight();
 
   void setCurrentCamera(Camera * camera);
   void addCamera(Camera * camera);
+
+  Light* getShadowLight();
 
   struct LightSource {
     QVector4D position;
@@ -73,6 +72,5 @@ public:
 
 private:
   Camera *currentCamera;
-  Light *shadowLight, *moveLight;
 };
 

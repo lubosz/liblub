@@ -12,9 +12,7 @@
 
 Scene::Scene() {
   lights = QMap<string, Light*>();
-  shadowLight = nullptr;
   currentCamera = nullptr;
-  moveLight = nullptr;
 }
 
 Scene::~Scene() {
@@ -82,12 +80,6 @@ void Scene::addLight(const string & name, Light* light) {
     lightName = "Light" + idString.toStdString();
   }
   lights.insert(lightName, light);
-
-  if(!shadowLight)
-    shadowLight = light;
-  if(!moveLight)
-    moveLight = light;
-
 }
 
 Light* Scene::getLight(const string & name) {
@@ -96,10 +88,20 @@ Light* Scene::getLight(const string & name) {
     return light;
   } else {
     LogWarning <<  "Light not found" << name;
-    return new Light();
+    return getShadowLight();
   }
 }
 
+Light* Scene::getShadowLight() {
+    if (lights.size() > 0) {
+        return lights.values().at(0);
+    } else {
+        LogError << "No Light Found";
+        Light * light = new Light();
+        lights.insert("nonamelight", light);
+        return light;
+    }
+}
 
 Texture* Scene::getTexture(const string & name) {
   Texture * texture = textures[name];
@@ -134,39 +136,6 @@ Camera * Scene::getCurrentCamera() {
   }
 
   return currentCamera;
-}
-
-Light * Scene::getShadowLight() {
-  if(!shadowLight) {
-    LogWarning << "Adding default shadow light";
-    Light * light = new Light(QVector3D(-2.5, 21.5, -5.2), QVector3D(1, -5, 0));
-    addLight("ShadowLight", light);
-  }
-  return shadowLight;
-}
-
-void Scene::setShadowLight(Light * light) {
-  shadowLight = light;
-}
-
-Light * Scene::getMoveLight() {
-//  if(!moveLight) {
-//    if(lights.size() > 0) {
-//      Logger::Instance().message << lights.size();
-//      Logger::Instance().log("DEBUG", "Light Size");
-//      foreach(Light* light, lights) {
-//        Logger::Instance().log("DEBUG", "Light Name", lights.key(light));
-//        moveLight = light;
-//      }
-////      moveLight = lights[0];
-//    } else {
-//      Light * light = new Light(QVector3D(), QVector3D(0,-1,0));
-//      moveLight = light;
-//      lights.insert("light",light);
-//    }
-//  }
-
-  return moveLight;
 }
 
 void Scene::initLightBuffer(ShaderProgram * shader, const string& bufferName) {
