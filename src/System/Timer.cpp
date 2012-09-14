@@ -60,31 +60,39 @@ float Timer::getMilliseconds() {
 float Timer::getSeconds() {
   return float(frameTime.tv_sec) + getMilliseconds()/1000.0;
 }
+
+float Timer::getTime() {
+  timespec now;
+  clock_gettime(CLOCK_MONOTONIC, &now);
+  return (float(now.tv_sec) + float(now.tv_nsec)/BILLION);
+}
+
 #else
 
-void Timer::updateFPS() {
+
+void Timer::startFrame() {
+}
+void Timer::frameDone() {
+}
+float Timer::getSeconds() {
+    return 0;
+}
+float Timer::getMilliseconds() {
+    return 0;
 }
 
 float Timer::getFPS() {
   return 0;
 }
 
-float Timer::getSPF() {
-  return 0;
+float Timer::getTime() {
+    return 0;
 }
 
 #endif
 
 void Timer::printFPS() {
   LogInfo << "FPS" << getFPS() << "," << getMilliseconds() << "ms per Frame";
-}
-
-float Timer::getTime() {
-#ifndef LIBLUB_WINDOWS
-  timespec now;
-  clock_gettime(CLOCK_MONOTONIC, &now);
-  return (float(now.tv_sec) + float(now.tv_nsec)/BILLION);
-#endif
 }
 
 void Timer::countAverage() {

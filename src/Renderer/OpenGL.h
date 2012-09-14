@@ -14,7 +14,7 @@
 #ifdef LIBLUB_WINDOWS
 # include <GL/wglew.h>
 # define glfGetProcAddress wglGetProcAddress
-# include "WinGL.h"
+//# include "Common/WinGL.h"
 #else
 # define GLCOREARB_PROTOTYPES 1
 # define GL_GLEXT_PROTOTYPES 1

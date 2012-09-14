@@ -31,8 +31,10 @@ public:
   QMatrix4x4 getViewNoTranslation();
   QMatrix4x4 getProjection() const;
 
-  void setAspect(qreal aspect);
-  void setParams(qreal fov, qreal near, qreal far);
+  void setAspect(const qreal& aspect);
+
+  void setFov(const qreal &fov);
+  void setClipping(const qreal &nearClip, const qreal &farClip);
 
   void forwardDirection(qreal distance);
   void backwardDirection(qreal distance);

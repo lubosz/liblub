@@ -1,0 +1,24 @@
+#!/usr/bin/python
+
+import subprocess, os
+
+from shutil import copyfile
+
+dlls = []
+
+process = subprocess.Popen(['wine', 'bin/liblub-editor.exe'], shell=False, stderr=subprocess.PIPE)
+
+words = process.communicate()[1].split()
+uniqueWords = list(set(words))
+for word in uniqueWords:
+	lineStr = str(word, encoding='utf8')
+	if ".dll" in lineStr:
+		if lineStr.endswith(".dll"):
+			dlls.append(lineStr.replace(".dll", ""))
+
+print (dlls)
+
+for dll in dlls:
+	locations = os.popen("find /usr/i486-mingw32/ | grep %s | grep dll" % dll).readlines()
+	dllSource = locations[0].strip()
+	copyfile(dllSource, 'bin/%s.dll' % dll)

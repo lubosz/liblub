@@ -53,13 +53,16 @@ void DirectionNode::updateView() {
     viewMatrix.lookAt(position, direction() + position, up);
 }
 
-void DirectionNode::setParams(qreal fov, qreal near, qreal far) {
+void DirectionNode::setFov(const qreal &fov) {
     this->fov = fov;
-    this->nearClip = near;
-    this->farClip = far;
 }
 
-void DirectionNode::setAspect(qreal aspect) {
+void DirectionNode::setClipping(const qreal &nearClip, const qreal &farClip) {
+    this->nearClip = nearClip;
+    this->farClip = farClip;
+}
+
+void DirectionNode::setAspect(const qreal &aspect) {
     this->aspect = aspect;
     /* Create our projection matrix with a 45 degree field of view
      * a width to height ratio of 1 and view from .1 to 100 infront of us */

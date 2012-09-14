@@ -142,12 +142,12 @@ Texture * RaycastingDemo::ballGradient(int size) {
 
 Texture * RaycastingDemo::bulbThreads(int size) {
 
-    unsigned threadCount = 8;
-    unsigned threadSize = size / threadCount;
 
     vector<GLubyte> voxels;
     vector<vector<GLubyte>*> voxelParts;
-
+#if defined(_GLIBCXX_HAS_GTHREADS)
+    unsigned threadCount = 8;
+    unsigned threadSize = size / threadCount;
     std::vector<std::thread> threads;
 
     for(unsigned i = 0; i < threadCount; i++){
@@ -163,12 +163,12 @@ Texture * RaycastingDemo::bulbThreads(int size) {
     for(auto& thread : threads){
         thread.join();
     }
-
     for (unsigned i = 0; i < threadCount; i++) {
         foreach (GLubyte voxel, *voxelParts.at(i)) {
             voxels.push_back(voxel);
         }
     }
+#endif
 
     LogDebug << "Sizes" << size*size*size*4 << voxels.size();
 

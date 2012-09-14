@@ -93,7 +93,7 @@ void Logger::log(int mode, int color, const string & level,
     const string & file, int line) {
     const unsigned alignedTextSize = 11;
 #if LIBLUB_WINDOWS
-  cout<<"["<< level << "]  "<<file<<":"<<line<<"  ";
+  cout<<"["<< level << "]  "<<file<<":"<<line<< getSpaces(alignedTextSize - file.size(), line);
 #else
   cout<<"\e["<< mode <<";"<< color <<"m[" << level << "]\e[m "
       <<"\e[1;34m"<<file<<" \e[0;33m"<<line<<"\e[m"<< getSpaces(alignedTextSize - file.size(), line);

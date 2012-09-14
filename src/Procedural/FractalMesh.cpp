@@ -122,7 +122,7 @@ FractalMesh::FractalMesh(const QList<string> & attributes, unsigned resolution, 
 
     vector<vector<GLfloat>*> positions;
     vector<vector<GLfloat>*> colors;
-
+#if defined(_GLIBCXX_HAS_GTHREADS)
     std::vector<std::thread> threads;
 
     for(unsigned i = 0; i < threadCount; ++i){
@@ -153,7 +153,14 @@ FractalMesh::FractalMesh(const QList<string> & attributes, unsigned resolution, 
         buffers["color"].insert(buffers["color"].end(), col->begin(), col->end());
         delete col;
     }
-
+#else
+    generate_static (0, resolution,
+                           &buffers["position"], &buffers["color"],
+                           resolution, IterationMax, EscapeRadius,
+                           Pixelresolution, PixelHeight,
+                           ZyMax, ZxMin,
+                           C, density);
+#endif
 //    generate(0, resolution, &positions, &colors);
 
 
@@ -287,7 +294,7 @@ void FractalMesh::regenerate() {
 
 //    vector<vector<GLfloat>*> positions;
     vector<vector<GLfloat>*> colors;
-
+#if defined(_GLIBCXX_HAS_GTHREADS)
     std::vector<std::thread> threads;
 
     for(unsigned i = 0; i < threadCount; ++i){
@@ -308,7 +315,14 @@ void FractalMesh::regenerate() {
     for(auto& thread : threads){
         thread.join();
     }
-
+#else
+    generate_static_noposition (0, resolution,
+                           &buffers["color"],
+                           resolution, IterationMax, EscapeRadius,
+                           Pixelresolution, PixelHeight,
+                           ZyMax, ZxMin,
+                           C);
+#endif
 //    for(auto* pos : positions){
 //        buffers["position"].insert(buffers["position"].end(), pos->begin(), pos->end());
 //        delete pos;

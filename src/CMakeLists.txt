@@ -11,7 +11,7 @@ if(WITH_Qt)
 endif()
 
 include(${QT_USE_FILE})
-find_package(OpenGL)
+find_package(OpenGL REQUIRED)
 if(NOT OPENGL_FOUND)
 	message("ERROR: OpenGL not found")
 endif(NOT OPENGL_FOUND)
@@ -49,16 +49,20 @@ set(LIBLUB_MOC_INFILES
 qt4_wrap_cpp(LIBLUB_MOC_OUTFILES ${LIBLUB_MOC_INFILES})
 add_library(lub ${SOURCES} ${LIBLUB_MOC_OUTFILES})
 
-message(${QT_LIBRARIES})
-
 #libs to link
 list(APPEND LIBS
     ${OPENGL_LIB}
     ${QT_LIBRARIES}
     ${Grantlee_CORE_LIBRARIES}
     assimp
-    rt
 )
+
+if(LIBLUB_WINDOWS)
+	list(APPEND LIBS grantlee_core)
+else()
+	list(APPEND LIBS rt)
+endif()
+
 
 if(USE_GLEW)
     if(LIBLUB_WINDOWS)
