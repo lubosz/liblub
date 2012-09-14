@@ -53,8 +53,8 @@ else()
     add_definitions(-D_NDEBUG)
 endif()
 
-#Set c++0x
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++0x")
+#Set c++1
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++11")
 
 #Warnings
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -Woverloaded-virtual -Wuninitialized -Wold-style-cast")
