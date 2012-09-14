@@ -3,26 +3,20 @@ Code:
 	- getter / setter
 	- public / private
 
-Engine:
 	- input verallgemeinern
-	- medialayer durch vererbung
-	- gui thread
-	- mehr config optionen
-	- recource managment verbessern
-	- mehr struct uniforms nutzen
 	- maus lag fixen
-	- multiple uv coords
 
-Shader:
-	- Shader ausmisten
-
-Scene:
+	- mehr struct uniforms nutzen
 	- performance messung
-	- umlaufbahnen
   - scene aufräumen
+	- multiple uv coords
   - node child tranformation
   - bounding boxes
   - mesh normals
+
+	
+- Style check
+- planets demo => renderpasses
 
 Rendering:
 	- wolken
@@ -31,19 +25,4 @@ Rendering:
 GUI App:
 	- runtime uniform editor
 	- shader selector
-	
-	
-- Materials klasse für deferred renderer
-- Alles bennennen
-- GL Header Updaten
-- Fix All Todos
-- Style check
-- Warnings
-- scene in gui öffnen
-- scene in gui manipulieren
-- planets demo => renderpasses
-- find out opengl version
-- new move files
-- rename "gui" class
-
 

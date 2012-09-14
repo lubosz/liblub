@@ -16,7 +16,7 @@ if(NOT OPENGL_FOUND)
 	message("ERROR: OpenGL not found")
 endif(NOT OPENGL_FOUND)
 
-#Check for nvidia libGL in ubuntu
+#Check for nvidia-current and fglrx in ubuntu
 if(EXISTS "/usr/lib/nvidia-current/libGL.so")
 	message("Taking Ubuntu Nvidia libGL")
 	SET(OPENGL_LIB /usr/lib/nvidia-current/libGL.so)
@@ -25,8 +25,6 @@ elseif(EXISTS "/usr/lib/fglrx/libGL.so")
         SET(OPENGL_LIB /usr/lib/fglrx/libGL.so)
 else()
 	message("Taking system libGL")
-	#SET(OPENGL_LIB GL)
-	#set(OPENGL_LIB opengl32)
 	set(OPENGL_LIB ${OPENGL_LIBRARY})
 endif()
 

@@ -90,6 +90,12 @@ To quickly build liblub on Ubuntu (assuming 4 cores)
 
 `sudo apt-get install build-essential cmake libqt4-dev libqt4-opengl-dev libgrantlee-dev libboost-dev libx11-xcb-dev libxcb-keysyms1-dev`
 
+In Quantal (12.10) you can use Assimp 3 from the repository
+
+`sudo apt-get install assimp`
+
+If you have 12.04 or lower you need to build Assimp 3
+
 `git clone git://github.com/assimp/assimp.git`
 
 `cd assimp`
@@ -101,6 +107,8 @@ To quickly build liblub on Ubuntu (assuming 4 cores)
 `sudo make install`
 
 `cd ..`
+
+Build liblub
 
 `git clone git://github.com/lubosz/liblub.git`
 
