@@ -13,7 +13,7 @@ SimPlanet::SimPlanet(string texturePath, const QVector3D &position, float radius
 void SimPlanet::init() {
     QList<string> attributes = QList<string>() << "uv";
     ShaderProgram * shader = new VertFragProgram("Texture/texture", attributes);
-    Texture * texture = new TextureFile(texturePath, "diffuse");
+    Texture * texture = new TextureFile(texturePath, "targetTexture");
     texture->bind();
     texture->filterMinMag(GL_LINEAR_MIPMAP_LINEAR, GL_NEAREST);
     shader->addTexture(texture);
