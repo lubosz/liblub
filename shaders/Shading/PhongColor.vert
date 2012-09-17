@@ -5,6 +5,7 @@ precision highp float;
 in vec3 in_Vertex;
 in vec3 in_Normal;
 in vec3 in_Tangent;
+in vec3 in_Bitangent;
 in vec2 in_Uv;
 
 out vec4 positionView;
