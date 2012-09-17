@@ -24,9 +24,9 @@
 	<Scene name="clouds">
 		<Light position ="0.3, 100.6, -3.3" direction="1,-5,-1" mesh="sphere" />
 		<Object name="uvmovenode" mesh="skymesh" material="CubeMap" scale="800" position="0, 0, 0" />
-		<Object name="Cloud1" mesh="cloud" material="cloudMat" scale="11" position="-21, -20, 0" transparent="true" rotation="5,20,10" />
-		<Object name="Cloud2" mesh="cloud" material="cloudMat" scale="20" position="-20, -40, 10" transparent="true" rotation="10,30,5" />
-		<Object name="Cloud3" mesh="cloud" material="cloudMat" scale="50" position="-50, -80, 30" transparent="true" rotation="5,10,10" />
-		<Object name="Cloud3" mesh="cloud" material="cloudMat" scale="39" position="-10, -60, 20" transparent="true" rotation="5,60,10" />
+		<Object name="Cloud1" mesh="cloud" material="cloudMat" scale="11" position="-21, 20, -50" transparent="true" rotation="5,20,10" />
+		<Object name="Cloud2" mesh="cloud" material="cloudMat" scale="20" position="10, 40, -70" transparent="true" rotation="10,30,5" />
+		<Object name="Cloud3" mesh="cloud" material="cloudMat" scale="50" position="20, 50, -100" transparent="true" rotation="5,10,10" />
+		<Object name="Cloud3" mesh="cloud" material="cloudMat" scale="39" position="-10, 65, -120" transparent="true" rotation="5,60,10" />
 	</Scene>
 </liblub>
