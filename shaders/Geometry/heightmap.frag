@@ -1,12 +1,12 @@
-#version 330 core
+{% extends "base.frag" %}
 
+{% block linkage %}
 uniform sampler2D color;
 
 in vec2 uv;
 in vec3 normalView;
 in vec4 positionView;
 in float zoom;
-out vec4 finalColor;
 
 uniform vec4 lightPositionView;
 
@@ -58,7 +58,9 @@ float lookup( vec2 offSet,vec4 shadowTexCoord){
 	);
 }
 
-void main(void) {
+{% endblock %}
+
+{% block main %}
 // 8x8 kernel PCF
 	vec4 shadowTexCoord = camViewToShadowMapMatrix * positionView;
 	float shadow = 0;	
@@ -85,12 +87,12 @@ void main(void) {
 
 	float lambertTerm = max( dot(N,L), 0.0);
 
-	finalColor = vec4(0,0,0,1);
-	//finalColor += diffuseColor(lambertTerm);
+	fragColor = vec4(0,0,0,1);
+	//fragColor += diffuseColor(lambertTerm);
 	if(lambertTerm > 0.0)
 	{
 		//diffuse
-		finalColor += diffuseColor(lambertTerm)* diffuseBump;
+		fragColor += diffuseColor(lambertTerm)* diffuseBump;
 		//if (shadow > 0){
 			//specular
 			//vec3 E = normalize(-positionView.xyz);
@@ -109,16 +111,16 @@ void main(void) {
 						), shininess );
 
 		
-			finalColor += specularColor(specular);
+			fragColor += specularColor(specular);
 		//}
 	}
 	
-	//finalColor *= shadow;
+	//fragColor *= shadow;
 
 
 	//fragColor = normalColor;
 	//fragColor = vec4(normalView, 1);
-    //finalColor = texture(color, uv);
-    //finalColor = vec4(N,1);
-    //finalColor = vec4(1);
-}
+    //fragColor = texture(color, uv);
+    //fragColor = vec4(N,1);
+    //fragColor = vec4(1);
+{% endblock %}

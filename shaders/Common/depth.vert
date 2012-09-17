@@ -1,12 +1,10 @@
-#version 330 core
+{% extends "base.vert" %}
 
-in vec3 in_Vertex;
+{% block linkage %}
 out vec4 viewPosition;
+{% endblock %}
 
-uniform mat4 MVPMatrix;
-//uniform mat4 MVMatrix;
-
-void main(){	
+{% block main %}
 	viewPosition = MVPMatrix * vec4(in_Vertex,1);
 	gl_Position = MVPMatrix * vec4(in_Vertex,1);
-}
+{% endblock %}

@@ -1,5 +1,6 @@
-#version 330 core
+{% extends "base.frag" %}
 
+{% block linkage %}
 uniform mat4 VPIMatrix;
 uniform mat4 VMatrix;
 uniform mat4 PMatrix;
@@ -64,12 +65,9 @@ vec2 poisson[8] = vec2[](
 	);
 
 in vec2 uv;
+{% endblock %}
 
-out vec4 fragColor;
-
-void main()
-{
-
+{% block main %}
 	fragColor = texture(color_map, uv);
 	float depth = texture(depth_map, uv).r; 
 	
@@ -118,4 +116,4 @@ void main()
 			fragColor = mix(fragColor, fetch, 0.125);
 		}
 	}	
-}
+{% endblock %}

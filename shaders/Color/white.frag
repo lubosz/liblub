@@ -1,8 +1,5 @@
-#version 330 core
+{% extends "base.frag" %}
 
-out vec4 fragColor;
-
-void main(void) {
-    fragColor = vec4(1.0,1.0,1.0,1.0);
-}
-
+{% block main %}
+    fragColor = vec4(1.0);
+{% endblock %}

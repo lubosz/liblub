@@ -1,8 +1,8 @@
-#version 330 core
+{% extends "base.vert" %}
 
+{% block linkage %}
 uniform sampler2D height;
 
-in vec3 in_Vertex;
 in vec3 in_Normal;
 in vec3 in_Tangent;
 in vec3 in_Bitangent;
@@ -12,7 +12,6 @@ out vec2 uv;
 out vec3 normalView;
 out vec4 positionView;
 
-uniform mat4 MVPMatrix;
 uniform mat4 MVMatrix;
 uniform mat3 NormalMatrix;
 uniform vec2 uvoffset;
@@ -58,8 +57,9 @@ float multiSampleHeight(vec2 position, float zoom) {
     return mix(h1, h2, zoom);
     //return texture(height, uv*(1-zoom)+position).x/2.0;
 }
+{% endblock %}
 
-void main(void) {
+{% block main %}
 	//float dist = distance(cameraPosition,in_Vertex.xyz);
 	//float dist = length(cameraPosition);
 	float dist = cameraPosition.y;
@@ -135,4 +135,4 @@ void main(void) {
 	eyeVec.x = dot(-positionView.xyz, t);
 	eyeVec.y = dot(-positionView.xyz, b);
 	eyeVec.z = dot(-positionView.xyz, n);
-}
+{% endblock %}
