@@ -138,17 +138,21 @@ void OpenGL::checkVersion() {
 
     glGetIntegerv(GL_NUM_EXTENSIONS, &numext);
     LogInfo << "Found " << numext << " GL_EXTENSIONS";
-#ifdef USE_OPENGL3
-    glGetIntegerv(GL_MAX_VERTEX_UNIFORM_BLOCKS, &uniformSize);
-    LogInfo << "GL_MAX_VERTEX_UNIFORM_BLOCKS" << uniformSize;
-    glGetIntegerv(GL_MAX_FRAGMENT_UNIFORM_BLOCKS, &uniformSize);
-    LogInfo << "GL_MAX_FRAGMENT_UNIFORM_BLOCKS" << uniformSize;
-    glGetIntegerv(GL_MAX_GEOMETRY_UNIFORM_BLOCKS, &uniformSize);
-    LogInfo << "GL_MAX_GEOMETRY_UNIFORM_BLOCKS" << uniformSize;
 
-    glGetIntegerv(GL_MAX_UNIFORM_BLOCK_SIZE, &uniformSize);
-    LogInfo << "GL_MAX_UNIFORM_BLOCK_SIZE" << uniformSize;
-#endif
+    vector<int> glContext = Config::Instance().values<int>("GLcontext");
+
+    if (glContext[0] >= 3 && glContext[1] > 0) {
+        glGetIntegerv(GL_MAX_VERTEX_UNIFORM_BLOCKS, &uniformSize);
+        LogInfo << "GL_MAX_VERTEX_UNIFORM_BLOCKS" << uniformSize;
+        glGetIntegerv(GL_MAX_FRAGMENT_UNIFORM_BLOCKS, &uniformSize);
+        LogInfo << "GL_MAX_FRAGMENT_UNIFORM_BLOCKS" << uniformSize;
+        glGetIntegerv(GL_MAX_GEOMETRY_UNIFORM_BLOCKS, &uniformSize);
+        LogInfo << "GL_MAX_GEOMETRY_UNIFORM_BLOCKS" << uniformSize;
+
+        glGetIntegerv(GL_MAX_UNIFORM_BLOCK_SIZE, &uniformSize);
+        LogInfo << "GL_MAX_UNIFORM_BLOCK_SIZE" << uniformSize;
+    }
+
     // print max # of colorbuffers supported by FBO
     int colorBufferCount = 0;
     glGetIntegerv(GL_MAX_COLOR_ATTACHMENTS, &colorBufferCount);
