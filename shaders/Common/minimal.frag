@@ -1,7 +1,7 @@
 #version {{ version }}
 
-out vec4 gl_FragColor;
+out vec4 fragColor;
 
 void main(void) {
-    gl_FragColor = vec4(0);
+    fragColor = vec4(0);
 }
