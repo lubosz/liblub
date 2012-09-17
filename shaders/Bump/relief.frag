@@ -1,4 +1,4 @@
-#version 330 core
+#version {{ version }}
 
 in vec4 positionWS;
 in vec3 normalWS;

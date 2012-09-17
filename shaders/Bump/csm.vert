@@ -1,4 +1,4 @@
-#version 330 core
+#version {{ version }}
 //  input from the user
 uniform float csm_gain;
 uniform float csm_offset;

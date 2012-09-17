@@ -1,4 +1,4 @@
-#version 330 core
+#version {{ version }}
 
 uniform sampler2D backfaces;
 uniform sampler2D frontfaces;

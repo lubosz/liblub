@@ -1,4 +1,4 @@
-#version 150 core
+#version {{ version }}
 
 precision highp float;
 

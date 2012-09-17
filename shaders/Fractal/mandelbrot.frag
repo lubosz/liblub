@@ -1,4 +1,4 @@
-#version 330
+#version {{ version }}
 
 uniform float MaxIterations;
 uniform float Zoom;

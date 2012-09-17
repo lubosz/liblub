@@ -1,4 +1,4 @@
-#version 330 core
+#version {{ version }}
 
 #define SAMPLES 10 // 10 is good
 const float invSamples = -1.38/10.0;

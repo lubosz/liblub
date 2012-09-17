@@ -1,4 +1,4 @@
-#version 330 core
+#version {{ version }}
 
 precision highp float;
 

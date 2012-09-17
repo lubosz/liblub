@@ -1,4 +1,4 @@
-#version 330 core
+#version {{ version }}
 uniform float depth;
 uniform float texsize;
 

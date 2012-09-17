@@ -1,4 +1,4 @@
-#version 150 core
+#version {{ version }}
 
 uniform vec3 BaseColor;
 uniform float SpecularPercent;
