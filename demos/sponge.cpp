@@ -22,6 +22,7 @@
 #include "Procedural/Geometry.h"
 #include "Texture/Textures.h"
 #include "Scene/SceneGraph.h"
+#include "System/TemplateEngine.h"
 
 Sponge::Sponge() : Demo("offline-sponge") {
     attributes = QList<string> () << "uv" << "normal" << "tangent";
@@ -58,11 +59,13 @@ void Sponge::initPasses() {
 }
 
 void Sponge::initMaterial() {
-    //    vector<string> flags = {
-    //        "receiveShadows",
-    //        "useSpotLight",
-    //        "usePCF"
-    //    };
+    vector<string> flags = {
+        "receiveShadows",
+        "useSpotLight",
+        "usePCF"
+    };
+    TemplateEngine::Instance().addFlags(flags);
+
     shader = new VertFragProgram("Shading/PhongColor", attributes);
     shader->setUniform("ambientSceneColor", QVector4D(0.1, 0.1,0.1, 1.0));
     shader->setUniform("diffuseMaterialColor", QVector4D(1,1,1,1));

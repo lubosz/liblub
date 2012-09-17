@@ -2,12 +2,6 @@
 
 precision highp float;
 
-#define useDiffuseTexture 1
-#define useNormalTexture 1
-#define useSpotLight 1
-#define receiveShadows 1
-#define usePCF 1
-
 in vec3 in_Vertex;
 in vec3 in_Normal;
 in vec3 in_Tangent;
@@ -15,10 +9,10 @@ in vec2 in_Uv;
 
 out vec4 positionView;
 out vec3 normalView;
-#ifdef useNormalTexture
+{% if useNormalTexture %}
 out vec3 lightVec;
 out vec3 eyeVec;
-#endif
+{% endif %}
 out vec2 uv;
 
 uniform mat4 MVMatrix;
@@ -27,30 +21,30 @@ uniform mat3 NormalMatrix;
 
 uniform vec4 lightPositionView;
 
-#ifdef useHeightMap
+{% if useHeightMap %}
 uniform sampler2D heightMap;
 uniform sampler2D vertexNormalMap;
-#endif
+{% endif %}
 
 void main() 
 { 
-#ifdef useDiffuseTexture
+{% if useDiffuseTexture %}
 	uv = in_Uv;
-#endif
+{% endif %}
 
     vec4 position = vec4(in_Vertex,1);
     
-#ifdef useHeightMap
+{% if useHeightMap %}
 	normalView = normalize(NormalMatrix * (texture(vertexNormalMap, in_Uv).rgb));
     //position.y += texture(heightMap, in_Uv).x;
     position += vec4(in_Normal,1) * (texture(heightMap, in_Uv).x);
-#else
+{% else %}
 	normalView = normalize(NormalMatrix * in_Normal);
-#endif
+{% endif %}
 	positionView = MVMatrix * position;
 	vec4 positionProjection = MVPMatrix * position;
 
-#ifdef useNormalTexture
+{% if useNormalTexture %}
 	vec3 n = normalize(NormalMatrix * in_Normal); 
 	vec3 t = normalize(NormalMatrix * in_Tangent); 
 	vec3 b = cross(n, t);
@@ -66,6 +60,6 @@ void main()
 	eyeVec.x = dot(-positionView.xyz, t);
 	eyeVec.y = dot(-positionView.xyz, b);
 	eyeVec.z = dot(-positionView.xyz, n);
-#endif
+{% endif %}
 	gl_Position = positionProjection;
 }

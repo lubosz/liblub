@@ -38,6 +38,15 @@ TemplateEngine::~TemplateEngine() {
   delete m_engine;
 }
 
+void TemplateEngine::addFlag(const string& flag) {
+    c.insert(QString::fromStdString(flag), QVariant(true));
+}
+
+void TemplateEngine::addFlags(const vector<string> & flags) {
+    foreach (string flag, flags)
+        addFlag(flag);
+}
+
 QString TemplateEngine::render(const string& file) {
   Grantlee::Template t = m_engine->loadByName(QString::fromStdString(file));
 

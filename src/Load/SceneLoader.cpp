@@ -18,6 +18,7 @@
 #include "Texture/Textures.h"
 #include "Shader/Shaders.h"
 #include "Scene/SceneGraph.h"
+#include "System/TemplateEngine.h"
 
 SceneLoader::SceneLoader(const QString & fileName)
 :
@@ -51,6 +52,10 @@ void SceneLoader::appendProgram(const QDomElement & programNode) {
     while (!programInfo.isNull()) {
         if (programInfo.tagName() == "Shader") {
             shaderUrl = programInfo.attribute("url").toStdString();
+            if (programInfo.hasAttribute("flags")) {
+                flags = splitValues<string> (programInfo.attribute("flags"));
+                TemplateEngine::Instance().addFlags(flags);
+            }
             if (programInfo.hasAttribute("type")) {
                 QString shaderType = programInfo.attribute("type");
                 if (shaderType == "VERTEX_SHADER")
@@ -64,7 +69,7 @@ void SceneLoader::appendProgram(const QDomElement & programNode) {
                 else if (shaderType == "EVALUATION_SHADER")
                     program->attachShader(shaderUrl, GL_TESS_EVALUATION_SHADER);
             } else {
-                    program->attachVertFrag(shaderUrl);
+                program->attachVertFrag(shaderUrl);
             }
         } else if (programInfo.tagName() == "Uniform") {
             program->uniforms.push_back(Uniform<float> (programInfo.attribute(

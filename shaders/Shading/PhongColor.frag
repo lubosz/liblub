@@ -1,11 +1,5 @@
 #version 330 core
 
-#define useDiffuseTexture 1
-#define useNormalTexture 1
-#define useSpotLight 1
-#define receiveShadows 1
-#define usePCF 1
-
 precision highp float;
 
 in vec4 positionView;
@@ -23,48 +17,48 @@ uniform vec4 ambientSceneColor;
 uniform float shininess;
 uniform vec4 specularMaterialColor;
 
-#ifdef useDiffuseTexture
+{% if useDiffuseTexture %}
 in vec2 uv;
 uniform sampler2D diffuseTexture;
-#else
+{% else %}
 uniform vec4 diffuseMaterialColor;
-#endif
+{% endif %}
 
-#ifdef useNormalTexture 
+{% if useNormalTexture %}
 in vec3 lightVec;
 in vec3 eyeVec;
 uniform sampler2D normalTexture;
-#endif
+{% endif %}
 
-#ifdef useAmbientTexture
+{% if useAmbientTexture %}
 uniform sampler2D ambientTexture;
-#endif
+{% endif %}
 
-#ifdef useSpotLight
+{% if useSpotLight %}
 //spot
 uniform float spotInnerAngle;
 uniform float spotOuterAngle;
 uniform vec3 spotDirectionView;
-#endif
+{% endif %}
 
-#ifdef receiveShadows
+{% if receiveShadows %}
 uniform sampler2DShadow shadowMap;
 uniform mat4 camViewToShadowMapMatrixshadowDepthSource0; //bias*perspLight*viewLight*(viewCam⁻1)
-#endif
+{% endif %}
 
-#ifdef usePCF
+{% if usePCF %}
 // This define the value to move one pixel left or right
 uniform float xPixelOffset ;
 // This define the value to move one pixel up or down
 uniform float yPixelOffset ;
-#endif
+{% endif %}
 
 //attenuation
 uniform float constantAttenuation;
 uniform float linearAttenuation;
 uniform float quadraticAttenuation;
 
-#ifdef usePCF
+{% if usePCF %}
 float lookup( vec2 offSet,vec4 shadowTexCoord){
 	// Values are multiplied by ShadowCoord.w because shadow2DProj does a W division for us.
 	return textureProj(shadowMap, 
@@ -77,17 +71,17 @@ float lookup( vec2 offSet,vec4 shadowTexCoord){
 		) 
 	);
 }
-#endif
+{% endif %}
 
 
 vec4 diffuseColor(float lambertTerm){
 
 	return	
-#ifdef useDiffuseTexture
+{% if useDiffuseTexture %}
 		texture(diffuseTexture, uv) *
-#else
+{% else %}
 		diffuseMaterialColor *
-#endif
+{% endif %}
 			lightColor * 
 			lambertTerm;
 }
@@ -102,13 +96,13 @@ vec4 specularColor(float specular){
 void main(){ 
 
 
-#ifdef useNormalTexture 
+{% if useNormalTexture %}
 	//vec3 lVec = lightVec * inversesqrt(dot(lightVec, lightVec));
 	vec3 lVec = normalize(lightVec);
 	vec3 bump = normalize( texture(normalTexture, uv).xyz * 2.0 - 1.0);
 
 	float diffuseBump = max( dot(lVec, bump), 0.0 );
-#endif
+{% endif %}
 
 	vec4 lightDirection = lightPositionView - positionView;
 
@@ -121,22 +115,19 @@ void main(){
 	);
 
 	//ambient
-#ifdef useAmbientTexture
+{% if useAmbientTexture %}
 	finalColor = texture(ambientTexture,uv)*ambientSceneColor;
-#else
+{% else %}
 	finalColor = ambientSceneColor;
-#endif
+{% endif %}
 
-#ifdef useNormalTexture 
+{% if useNormalTexture %}
 		finalColor*= diffuseBump/2.5;
-#endif
+{% endif %}
 	
-								
 	vec3 L = normalize(lightDirection.xyz);	
-	
 
-
-#ifdef usePCF
+{% if usePCF %}
 // 8x8 kernel PCF
 	vec4 shadowTexCoord = camViewToShadowMapMatrixshadowDepthSource0 * positionView;
 	float shadow = 0;	
@@ -147,19 +138,17 @@ void main(){
 				
 	shadow /= 64.0;
 	shadow += 0.2;
-#else
-	#ifdef receiveShadows
-		vec4 shadowTexCoord = camViewToShadowMapMatrixshadowDepthSource0 * positionView;
-		float shadow = textureProj(shadowMap, shadowTexCoord);
-	#endif	
-#endif
+{% else %}{% if receiveShadows %}
+	vec4 shadowTexCoord = camViewToShadowMapMatrixshadowDepthSource0 * positionView;
+	float shadow = textureProj(shadowMap, shadowTexCoord);
+{% endif %}{% endif %}
 
-#ifdef useSpotLight
+{% if useSpotLight %}
 	//Spot	
 	float spotCurAngle = dot(-L, spotDirectionView);
 	float spotAngleDiff =  spotOuterAngle - spotInnerAngle;
 	float spot = clamp((spotCurAngle - spotOuterAngle) / spotAngleDiff, 0.0, 1.0);
-#endif
+{% endif %}
 
 	vec3 N = normalize(normalView);
 	
@@ -171,19 +160,19 @@ void main(){
 	{
 		//diffuse
 		finalColor += diffuseColor(lambertTerm)
-#ifdef useSpotLight
+{% if useSpotLight %}
 		* spot
-#endif
-#ifdef useNormalTexture 
+{% endif %}
+{% if useNormalTexture %}
 		* diffuseBump
-#endif
+{% endif %}
 		* att;
 
-#ifdef receiveShadows
+{% if receiveShadows %}
 		if (shadow > 0){
-#endif	
+{% endif %}	
 		//specular
-#ifdef useNormalTexture 
+{% if useNormalTexture %}
 		float specular = pow(
 						clamp(
 							dot(
@@ -193,27 +182,27 @@ void main(){
 							0.0, 
 							1.0
 						), shininess );
-#else
+{% else %}
 		vec3 E = normalize(-positionView.xyz);
 		vec3 R = reflect(-L, N);
 
 		float specular = pow( max(dot(R, E), 0.0), shininess );
-#endif
+{% endif %}
 
 		
 		finalColor += specularColor(specular)
 		
-#ifdef useSpotLight
+{% if useSpotLight %}
 		* spot
-#endif
+{% endif %}
 		* att;
-#ifdef receiveShadows
+{% if receiveShadows %}
 		}
-#endif	
+{% endif %}	
 	}
 	
-#ifdef receiveShadows
+{% if receiveShadows %}
 	finalColor *= shadow;
-#endif
+{% endif %}
 } 
 
