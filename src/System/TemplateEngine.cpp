@@ -24,13 +24,27 @@ TemplateEngine::TemplateEngine() {
 
   vector<int> glContext = Config::Instance().values<int>("GLcontext");
 
-#ifdef USE_OPENGL3
-  QString version = QString::number(glContext[0]) +  QString::number(glContext[1]) + "0 core";
-#else
-  QString version = "130";
-#endif
+  QString version;
 
-
+  if (glContext[0] == 3 && glContext[1] < 3) {
+      switch(glContext[1]) {
+      case 0:
+          version = "130";
+          break;
+      case 1:
+          version = "140";
+          break;
+      case 2:
+          version = "150";
+          break;
+      default:
+          break;
+      }
+  } else if(glContext[0] >= 3) {
+    version = QString::number(glContext[0]) +  QString::number(glContext[1]) + "0 core";
+  } else {
+    LogFatal << "Unsupported GL Version" << glContext[0] << "." << glContext[1];
+  }
   c.insert("version", version);
 }
 
