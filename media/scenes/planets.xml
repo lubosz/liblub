@@ -12,14 +12,7 @@
 			<Layer sampler="targetTexture" texture="TychoSkymap" />
 		</Program>
 		<Program name="Ubershader">
-            <Shader url="Shading/PhongColor" 
-                flags="receiveShadows,
-                        useDiffuseTexture,
-                        useSpotLight,
-                        usePCF,
-                        useAmbientTexture,
-                        useNormalTexture"
-            />
+            <Shader url="Shading/PhongColor" />
             <Uniform value="0.1, 0.1, 0.1, 1.0" name="ambientSceneColor" />
             <Uniform value="0.1, 0.1, 0.1, 1.0" name="diffuseMaterialColor" />
             <Uniform value="0.8, 0.8, 0.8,1.0" name="specularMaterialColor" />

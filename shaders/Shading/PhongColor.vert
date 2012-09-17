@@ -2,6 +2,12 @@
 
 precision highp float;
 
+#define useDiffuseTexture 1
+#define useNormalTexture 1
+#define useSpotLight 1
+#define receiveShadows 1
+#define usePCF 1
+
 in vec3 in_Vertex;
 in vec3 in_Normal;
 in vec3 in_Tangent;

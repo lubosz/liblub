@@ -1,5 +1,11 @@
 #version 330 core
 
+#define useDiffuseTexture 1
+#define useNormalTexture 1
+#define useSpotLight 1
+#define receiveShadows 1
+#define usePCF 1
+
 precision highp float;
 
 in vec4 positionView;
