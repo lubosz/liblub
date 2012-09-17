@@ -9,8 +9,7 @@
     <Programs>
 		<Program name="universedome">
 			<Shader url="Texture/texture" />
-			<Uniform value="1.0" name="scaleUv" />
-			<Layer sampler="diffuse" texture="TychoSkymap" />
+			<Layer sampler="targetTexture" texture="TychoSkymap" />
 		</Program>
 		<Program name="Ubershader">
             <Shader url="Shading/PhongColor" 

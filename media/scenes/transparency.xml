@@ -13,8 +13,7 @@
 		</Program>
 		<Program name="cloudMat">
 			<Shader url="Texture/texture" />
-			<Uniform value="1.0" name="scaleUv" />
-			<Layer sampler="diffuse" texture="cloudTex" />
+			<Layer sampler="targetTexture" texture="cloudTex" />
 		</Program>
 	</Programs>
 	<Meshes>
