@@ -97,7 +97,7 @@ void TesselationApp::draw() {
     //    glEnable(GL_CULL_FACE);
     groundNode->setView(camera);
     glError;
-#ifdef USE_OPENGL3
+#ifdef USE_OPENGL4
     glPatchParameteri(GL_PATCH_VERTICES, 3);
     groundNode->draw();
 #endif
