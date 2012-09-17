@@ -5,8 +5,8 @@
 #include "Scene/Node.h"
 #include "Scene/Light.h"
 #include "Mesh/Mesh.h"
-#include "Window/XCB/XCBWindow.h"
-#include "Material/Shaders.h"
+#include "Application/XCB/XCBWindow.h"
+#include "Shader/Shaders.h"
 
 class NodeTest : public CppUnit::TestCase {
 public:
@@ -15,7 +15,6 @@ public:
   void runTest() {
       QList<string> attributes = QList<string>();
       attributes.push_back("uv");
-    Config::Instance().load("config.xml");
     XCBWindow * window  = new XCBWindow();
     Camera * camera = new Camera();
     Light * light = new Light(QVector3D(0, 0, 0),QVector3D(0, -5, 0));

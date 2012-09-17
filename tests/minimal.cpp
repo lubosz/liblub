@@ -1,7 +1,7 @@
 #include <cppunit/TestCase.h>
 
 #include "System/Config.h"
-#include "Window/XCB/XCBWindow.h"
+#include "Application/XCB/XCBWindow.h"
 
 class MeshTest: public CppUnit::TestCase {
 public:
@@ -10,7 +10,6 @@ public:
   }
 
   void runTest() {
-    Config::Instance().load("config.xml");
     XCBWindow * window  = new XCBWindow();
     delete window;
   }

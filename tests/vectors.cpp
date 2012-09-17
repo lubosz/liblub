@@ -9,7 +9,7 @@
 #include "Scene/Node.h"
 #include "Scene/Light.h"
 #include "Mesh/Mesh.h"
-#include "Mesh/MengerSponge.h"
+#include "Procedural/MengerSponge.h"
 
 #include <iostream>
 

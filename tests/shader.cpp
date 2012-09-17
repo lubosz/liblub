@@ -1,8 +1,7 @@
 #include "System/Config.h"
-#include "Material/Shaders.h"
-//#include <QApplication>
+#include "Shader/Shaders.h"
 #include <cppunit/TestCase.h>
-#include "Window/XCB/XCBWindow.h"
+#include "Application/XCB/XCBWindow.h"
 
 
 class TextTest: public CppUnit::TestCase {
@@ -15,7 +14,6 @@ public:
 
       QList<string> attributes = QList<string>() << "uv";
 
-      Config::Instance().load("config.xml");
       XCBWindow * window  = new XCBWindow();
       VertFragProgram * simpleProgram = new VertFragProgram("Texture/texture",attributes);
 

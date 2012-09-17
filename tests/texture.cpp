@@ -1,7 +1,7 @@
 #include <cppunit/TestCase.h>
 
-#include "Material/Textures.h"
-#include "Material/ProcTextures.h"
+#include "Texture/Textures.h"
+#include "Procedural/ProcTextures.h"
 #include "System/Config.h"
 
 class TextureTest: public CppUnit::TestCase {
@@ -11,7 +11,6 @@ public:
   }
 
   void runTest() {
-    Config::Instance().load("config.xml");
     TextureFile("bunny.png", "bunny");
     QSize size = QSize(100, 100);
     DepthTexture(size, "depth");

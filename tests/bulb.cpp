@@ -1,6 +1,6 @@
 #include <cppunit/TestCase.h>
 
-#include "Mesh/MandelBulb.h"
+#include "Procedural/MandelBulb.h"
 #include <thread>
 
 using fractal::MandelBulb;
@@ -21,7 +21,7 @@ public:
 
         std::vector<std::thread> threads;
 
-        for(int i = 0; i < threadCount; i++){
+        for(unsigned i = 0; i < threadCount; i++){
             vector<GLubyte> *voxelPart = new vector<GLubyte>();
             voxelParts.push_back(voxelPart);
 
@@ -35,7 +35,7 @@ public:
             thread.join();
         }
 
-        for (int i = 0; i < threadCount; i++) {
+        for (unsigned i = 0; i < threadCount; i++) {
             foreach (GLubyte voxel, *voxelParts.at(i)) {
                 voxels.push_back(voxel);
             }

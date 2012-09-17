@@ -1,11 +1,10 @@
 #include <cppunit/TestCase.h>
 
 #include <QRectF>
-#include "Mesh/Geometry.h"
-#include "Mesh/MeshLoader.h"
-#include "System/Config.h"
-#include "Mesh/MengerSponge.h"
-#include "Window/XCB/XCBWindow.h"
+#include "Load/MeshLoader.h"
+#include "Procedural/Geometry.h"
+#include "Procedural/MengerSponge.h"
+#include "Application/XCB/XCBWindow.h"
 
 class MeshTest: public CppUnit::TestCase {
 public:
@@ -14,7 +13,6 @@ public:
   }
 
   void runTest() {
-    Config::Instance().load("config.xml");
     XCBWindow * window  = new XCBWindow();
 
     QList<string> attributes = QList<string>() << "color";

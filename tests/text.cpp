@@ -1,7 +1,7 @@
 #include <cppunit/TestCase.h>
 
-#include "Material/Textures.h"
-#include "Material/ProcTextures.h"
+#include "Texture/Textures.h"
+#include "Procedural/ProcTextures.h"
 #include "System/Config.h"
 #include <QPainter>
 #include <QApplication>

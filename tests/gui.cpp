@@ -3,7 +3,7 @@
 #include <iostream>
 #include <QApplication>
 #include <cppunit/TestCase.h>
-#include "Window/XCB/XCBWindow.h"
+#include "Application/XCB/XCBWindow.h"
 
 
 class TextTest: public CppUnit::TestCase {
@@ -13,7 +13,7 @@ public:
   }
 
   void runTest() {
-      Config::Instance().load("config.xml");
+      Config::Instance();
       XCBWindow * window  = new XCBWindow();
       FontOverlay gui;
       gui.init();
