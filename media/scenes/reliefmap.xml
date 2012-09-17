@@ -17,12 +17,14 @@
 		</Program>
 	</Programs>
 	<Meshes>
-		<File name="cube" url="cube.obj" />
+		<File name="blendCube" url="cube.blend" />
+		<File name="objCube" url="cube.obj" />
 		<File name="monkey" url="monkey.blend" />
 	</Meshes>
 	<Scene name="Relief Mapping">
 		<Light position ="-5.1, 10.5, 3.5" direction="1,-5,-1" />
-		<Object name="bump" mesh="cube" material="Relief" scale="1.0" position="3,-2,-5" />
-		<Object name="bumpmonkey" mesh="monkey" material="Relief" scale="1.0" position="1,-2,5" />
+		<Object name="bumpmonkey" mesh="monkey" material="Relief" scale="1.0" position="3,-2,0" />
+		<Object name="bump" mesh="blendCube" material="Relief" scale="1.0" position="3,-2,-2" />
+		<Object name="bump" mesh="objCube" material="Relief" scale="1.0" position="3,-2,-5" />
 	</Scene>
 </liblub>

@@ -99,8 +99,6 @@ void main() {
     // get intersection distance
     float intersectDistance = rayIntersect(uvSearchPosition, uvSearchSize);
 
-    bool pixelInShadow = checkShadow(uvSearchPosition, uvSearchSize, 
-        lightDirectionTS, intersectDistance);
 
     // get normal and color at intersection point
     vec2 uv2 = uvSearchPosition + uvSearchSize * intersectDistance;
@@ -117,7 +115,8 @@ void main() {
     float specularTerm = saturate(dot(reflectLight, -camDirectionTS));
     specularTerm = pow(specularTerm, specularColor.w);
 
-    if (pixelInShadow) {
+    bool shadow = checkShadow(uvSearchPosition, uvSearchSize, lightDirectionTS, intersectDistance);
+    if (shadow) {
         diffuseTerm *= dot(ambientColor, vec4(1)) * 0.3333;
         specularTerm = 0;
     }

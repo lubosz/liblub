@@ -180,7 +180,8 @@ void Node::setView(
     shaderProgram->setUniform("NormalMatrix", tempMatrix.normalMatrix());
     tempMatrix = viewPoint->getProjection() * tempMatrix;
     shaderProgram->setUniform("MVPMatrix", tempMatrix);
-//    shaderProgram->setUniform("camPositionWorld",Scene::Instance().getCurrentCamera()->getPosition());
+    //Needed for relief map shader
+    shaderProgram->setUniform("camPositionWorld",Scene::Instance().getCurrentCamera()->getPosition());
 }
 
 void Node::setView(DirectionNode * viewPoint) {
