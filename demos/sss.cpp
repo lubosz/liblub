@@ -34,6 +34,9 @@ SSSApp::~SSSApp() {
 }
 
 void SSSApp::init() {
+    Scene::Instance().addCamera(QVector3D(1.31128, 0, 3.36602),
+                                QVector3D(-0.309957, 0.0680153, -0.948315));
+
     QList<string> attributes = QList<string>() << "normal" << "tangent" << "bitangent"<< "uv";
 
     //        QList<string> attributes = QList<string>() << "normal";

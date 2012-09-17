@@ -49,15 +49,11 @@ void PlanetsDemo::draw() {
 }
 
 void PlanetsDemo::initCamAndLight() {
-  camera = Scene::Instance().getCurrentCamera();
-  camera->setPosition(QVector3D(0, 11.1, -0.85));
+    Scene::Instance().addCamera(QVector3D(-10.5299, 9.96262, -8.54565),
+                                QVector3D(0.385673, -0.450878, 0.804963));
+
   light = new Light(QVector3D(0, 0, 1000), QVector3D(1, -5, 0));
   Scene::Instance().addLight("sunlight", light);
-
-  //TODO: Cam does not update
-  camera->setRotationX(2.9);
-  camera->setRotationY(176.6);
-  camera->update();
 }
 
 void PlanetsDemo::initPostProcessing() {

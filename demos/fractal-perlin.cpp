@@ -38,6 +38,10 @@ PerlinDemo::PerlinDemo() : Demo("perlin") {
 PerlinDemo::~PerlinDemo() {}
 
 void PerlinDemo::init() {
+    Scene::Instance().addCamera(QVector3D(0.034992, -0.460323, -1.51176),
+                                QVector3D(-0.057455, -0.861629, -0.504276));
+
+
     //    QImage * image = ProcTextures::makeGlow(QSize(1000,2000),40.0f, 0.1f);
     //
     //    Texture * textTexture = TextureFactory::Instance().load(image,"myTexture");

@@ -28,6 +28,12 @@ GravityDemo::~GravityDemo() {
 }
 
 void GravityDemo::init() {
+    Scene::Instance().addCamera(QVector3D(-3740.57, 0.225304, 2.12885),
+                                QVector3D(0.987211, 0.0453626, -0.152828));
+
+    Scene::Instance().getCurrentCamera()->farClip = 100000.0;
+    Scene::Instance().getCurrentCamera()->updatePerspective();
+
     float sunDistance = 1.496e+8;
     float moonDistance = 356400;
 
@@ -57,15 +63,9 @@ void GravityDemo::init() {
     foreach (SimPlanet * planet, planets)
         planet->init();
 
-    Scene::Instance().getCurrentCamera()->farClip = 100000.0;
-    Scene::Instance().getCurrentCamera()->updatePerspective();
-
     simulationTimer = new QTimer();
     connect(simulationTimer, SIGNAL(timeout()), this, SLOT(simulatePlanets()));
     simulationTimer->start(0);
-
-    Scene::Instance().getCurrentCamera()->setPosition(planets[1]->node->position + QVector3D(0,5,5));
-    Scene::Instance().getCurrentCamera()->update();
 }
 
 void GravityDemo::simulatePlanets() {
