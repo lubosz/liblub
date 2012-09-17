@@ -39,8 +39,7 @@
 		</Program>
 		<Program name="SphereMap">
 			<Shader url="Texture/sphereMap" />
-			<Layer sampler="colorMap" texture="spectrum" />
-            <Layer sampler="envMap" texture="spheremap_bar" /> 
+			<Layer sampler="envMap" texture="spheremap_bar" /> 
 		</Program>
 		<Program name="MandelMat">
 			<Shader url="Fractal/mandelbrot" />

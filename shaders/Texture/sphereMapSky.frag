@@ -1,0 +1,1 @@
+{% extends "Texture/sphereMap.frag" %}

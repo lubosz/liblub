@@ -1,0 +1,1 @@
+{% extends "Texture/cubemapSky.vert" %}

@@ -63,7 +63,7 @@ void PulseDemo::init() {
     Scene::Instance().addCamera(QVector3D(-4.01922, 2.11164, -3.81992),
                                 QVector3D(0.638677, -0.397148, 0.659064));
 
-    DeferredRenderer::Instance().initSky("cubemaps/sky");
+    Scene::Instance().initSkyMaterial("cubemaps/sky");
 
     Mesh* mesh;
 

@@ -9,6 +9,9 @@
 #include "System/Logger.h"
 #include "Renderer/OpenGL.h"
 #include "Shader/Shaders.h"
+#include "Texture/Textures.h"
+#include "Procedural/Geometry.h"
+#include "Scene/SceneGraph.h"
 
 Scene::Scene() {
   lights = QMap<string, Light*>();
@@ -53,6 +56,41 @@ void Scene::addCamera(Camera * camera) {
     QString camname = "camera" + QString::number(cameras.size() + 1);
     cameras.insert(camname.toStdString(), camera);
     LogDebug << "Adding " << camname.toStdString();
+}
+
+void Scene::initSkyMaterial(const string& textureName) {
+    new CubeTextureFile(textureName, "sky");
+    Material *skyMat = new Material("sky");
+    QList<string> attributes = QList<string> () << "uv" << "normal" << "tangent" << "bitangent";
+    Mesh * sphere = Geometry::sphere(attributes, 500, 20, 20);
+    Node * skyNode = new Node("skynode", QVector3D(0,0,0),1,  sphere, skyMat);
+    SceneGraph::Instance().addNode(skyNode);
+}
+
+void Scene::initSkyShader(const string& textureName) {
+    Texture * skyTex = new CubeTextureFile(textureName, "EnvMap");
+    QList<string> attributes = QList<string> () << "uv";
+    ShaderProgram * skyShader = new VertFragProgram("Texture/cubemapSky", attributes);
+    skyShader->addTexture(skyTex);
+
+    Mesh * sphere = Geometry::sphere(attributes, 1.0, 20, 20);
+    Node * skyNode = new Node("skynode", Scene::Instance().getCurrentCamera()->getPosition(),1.0,  sphere, skyShader);
+    skyNode->setSize(Scene::Instance().getCurrentCamera()->farClip * 0.4);
+
+    SceneGraph::Instance().addNode(skyNode);
+}
+
+void Scene::initSkyShaderSphere(const string& textureName) {
+    Texture * skyTex = new TextureFile(textureName, "envMap");
+    QList<string> attributes = QList<string> () << "uv";
+    ShaderProgram * skyShader = new VertFragProgram("Texture/sphereMapSky", attributes);
+    skyShader->addTexture(skyTex);
+
+    Mesh * sphere = Geometry::sphere(attributes, 1.0, 20, 20);
+    Node * skyNode = new Node("skynode", Scene::Instance().getCurrentCamera()->getPosition(),1.0,  sphere, skyShader);
+    skyNode->setSize(Scene::Instance().getCurrentCamera()->farClip * 0.4);
+
+    SceneGraph::Instance().addNode(skyNode);
 }
 
 ShaderProgram* Scene::getShader(const string & name) {

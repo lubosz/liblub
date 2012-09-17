@@ -66,6 +66,9 @@ void GravityDemo::init() {
     simulationTimer = new QTimer();
     connect(simulationTimer, SIGNAL(timeout()), this, SLOT(simulatePlanets()));
     simulationTimer->start(0);
+
+    Scene::Instance().initSkyShaderSphere("spheremaps/nasa-sky.jpg");
+
 }
 
 void GravityDemo::simulatePlanets() {

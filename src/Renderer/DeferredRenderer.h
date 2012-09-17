@@ -40,7 +40,6 @@ public:
     Texture* getTargetFromName(const QString &name);
 
     void changePlaneSource(DebugPlane *plane, const QString &name);
-    void initSky(const string& textureName);
 
     Timer * timer;
     bool isInitialized;

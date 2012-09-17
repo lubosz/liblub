@@ -71,6 +71,9 @@ public:
   GLint lightBufferSize;
   void initLightBuffer(ShaderProgram * shader, const string& bufferName);
 
+  void initSkyMaterial(const string& textureName);
+  void initSkyShader(const string& textureName);
+  void initSkyShaderSphere(const string& textureName);
 
 private:
   Camera *currentCamera;
