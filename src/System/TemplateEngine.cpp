@@ -41,10 +41,12 @@ TemplateEngine::TemplateEngine() {
           break;
       }
   } else if(glContext[0] >= 3) {
-    version = QString::number(glContext[0]) +  QString::number(glContext[1]) + "0 core";
+    version = QString::number(glContext[0]) +  QString::number(glContext[1]) + "0";
   } else {
     LogFatal << "Unsupported GL Version" << glContext[0] << "." << glContext[1];
   }
+  version += " core";
+
   c.insert("version", version);
 }
 
