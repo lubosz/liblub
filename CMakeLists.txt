@@ -39,39 +39,66 @@ set(EXECUTABLE_OUTPUT_PATH ${CMAKE_SOURCE_DIR}/bin)
 set(SRC_DIR ${CMAKE_SOURCE_DIR}/src)
 set(TEST_DIR ${CMAKE_SOURCE_DIR}/tests)
 
-set(CMAKE_CXX_FLAGS "-ffast-math") #Faster
+function(add_cxxflag FLAG)
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${FLAG}" PARENT_SCOPE)
+endfunction(add_cxxflag)
+
+#check if faster
+add_cxxflag("-ffast-math") 
 
 if(CMAKE_BUILD_TYPE STREQUAL Debug)
     #Debug
     message("On Debug Build")
-    set(CMAKE_CXX_FLAGS "-O0 -g3") #Debug
+    add_cxxflag("-O0") 
+    add_cxxflag("-g3") 
     add_definitions(-D_DEBUG)
 else()
     #Release
     message("On Release Build")
-    set(CMAKE_CXX_FLAGS "-O3 -msse4 -mssse3") #Optimized
+    add_cxxflag("-O3")
     add_definitions(-D_NDEBUG)
 endif()
 
 #Set c++1
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++11")
+add_cxxflag("-std=gnu++11")
 
 #Warnings
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -Woverloaded-virtual -Wuninitialized -Wold-style-cast")
+
 #Ignore Qt Headers, because they warn a lot
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -isystem /usr/include/qt4/QtGui -isystem /usr/include/qt4/QtCore")
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -isystem /usr/include/QtCore")
+add_cxxflag("-isystem /usr/include/QtCore")
+add_cxxflag("-isystem /usr/include/QtGui")
+add_cxxflag("-isystem /usr/include/QtXml")
+add_cxxflag("-isystem /usr/include/qt4/QtCore")
+add_cxxflag("-isystem /usr/include/qt4/QtGui")
+
+add_cxxflag("-Wall")
+add_cxxflag("-Wextra")
+add_cxxflag("-Wuninitialized")
+add_cxxflag("-Wold-style-cast")
+add_cxxflag("-Woverloaded-virtual")
+add_cxxflag("-Wformat=2")
+add_cxxflag("-Wundef")
+add_cxxflag("-Wpointer-arith")
+add_cxxflag("-Wcast-qual")
+add_cxxflag("-Wlogical-op")
+add_cxxflag("-Woverflow")
+add_cxxflag("-Wmissing-declarations")
+add_cxxflag("-Wredundant-decls")
+
+#add_cxxflag("-Wconversion")
+#add_cxxflag("-Wsign-conversion")
+#add_cxxflag("-Winline")
+#add_cxxflag("-Weffc++")
+#add_cxxflag("-Wsuggest-attribute=const")
+#support ISO C++ standard (remove GNU extensions)
+#add_cxxflag("-ansi")
+#warnings for strict ISO C and ISO C++
+#add_cxxflag("-pedantic")
 
 if(WARNINGS)
-	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Werror")
-	#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Winline")
-	#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Weffc++")
-	#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wsuggest-attribute=const")
-	#support ISO C++ standard (remove GNU extensions)
-	#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -ansi")
-	#warnings for strict ISO C and ISO C++
-	#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pedantic")
+	add_cxxflag("-Werror")
 endif()
+
 execute_process(COMMAND ${CMAKE_C_COMPILER} -dumpversion OUTPUT_VARIABLE GCC_VERSION)
 if (GCC_VERSION VERSION_GREATER 4.6 OR GCC_VERSION VERSION_EQUAL 4.6)
 	message(STATUS "GCC Version >= 4.6")

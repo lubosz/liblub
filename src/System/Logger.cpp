@@ -8,6 +8,10 @@
 using std::cerr;
 using std::cout;
 
+#ifndef LIBLUB_WINDOWS
+    #define LIBLUB_WINDOWS 0
+#endif
+
 Logger::LogLevel Logger::logLevel = Logger::Debug;
 
 struct LogSetting {

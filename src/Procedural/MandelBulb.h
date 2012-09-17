@@ -20,7 +20,7 @@ public:
 
     static QVector3D triplexMult(QVector3D vec1, QVector3D vec2) ;
 
-    static double distanceEstimate(QVector3D c, int n, unsigned maxIter);
+    static double distanceEstimate(QVector3D c, unsigned n, unsigned maxIter);
 
     static int mandelbulb(QVector3D c, int max);
 

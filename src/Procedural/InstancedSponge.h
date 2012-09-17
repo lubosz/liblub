@@ -17,7 +17,7 @@
 class InstancedSponge : public Node{
 public:
     vector<QVector4D> positions;
-    unsigned positionBufferDataSize;
+    GLsizei positionBufferDataSize;
     vector<UniformBuffer *> positionBuffers;
     unsigned bufferCount;
 

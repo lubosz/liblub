@@ -72,7 +72,7 @@ void FrameBuffer::attachTexture(Texture * texture) {
 void FrameBuffer::attachTextures(vector<Texture*> &textures) {
   if (textures.size() == 0)
     LogFatal << "No Textures";
-  unsigned colorTextures = 0;
+  GLsizei colorTextures = 0;
   foreach(Texture* texture, textures) {
     attachTexture(texture);
     if(!texture->isDepth)
@@ -107,12 +107,12 @@ void FrameBuffer::setDrawBuffers(vector<GLenum>& buffers) {
   glDrawBuffers(buffers.size(), buffers.data());
 }
 
-void FrameBuffer::setDrawBuffers(unsigned count) {
+void FrameBuffer::setDrawBuffers(GLsizei count) {
   // Multiple render targets
   bind();
 
   vector<GLenum> buffers;
-  for (unsigned i = 0; i < count; i++) {
+  for (GLenum i = 0; i < static_cast<GLenum>(count); i++) {
     buffers.push_back(GL_COLOR_ATTACHMENT0+i);
   }
   glDrawBuffers(count, buffers.data());
@@ -135,14 +135,17 @@ FrameBuffer::~FrameBuffer() {
 }
 
 void FrameBuffer::printFramebufferInfo() {
-    int colorBufferCount = 0;
+    GLint colorBufferCount = 0;
     glGetIntegerv(GL_MAX_COLOR_ATTACHMENTS, &colorBufferCount);
 
-    int objectType;
-    int objectId;
+    GLint objectType;
+    GLint objectId;
 
     // print info of the colorbuffer attachable image
-    for (int i = 0; i < colorBufferCount; ++i) {
+    for (GLuint i = 0; i < static_cast<GLuint>(colorBufferCount); ++i) {
+
+        //GLAPI void APIENTRY glGetFramebufferAttachmentParameteriv (GLenum target, GLenum attachment, GLenum pname, GLint *params);
+
         glGetFramebufferAttachmentParameteriv(GL_FRAMEBUFFER,
                 GL_COLOR_ATTACHMENT0 + i,
                 GL_FRAMEBUFFER_ATTACHMENT_OBJECT_TYPE, &objectType);
@@ -156,10 +159,10 @@ void FrameBuffer::printFramebufferInfo() {
             LogDebug << "Color Attachment " << i << ": ";
             if (objectType == GL_TEXTURE)
               LogDebug << "GL_TEXTURE, "
-                        << getTextureParameters(objectId);
+                        << getTextureParameters(static_cast<GLuint>(objectId));
             else if (objectType == GL_RENDERBUFFER)
               LogDebug << "GL_RENDERBUFFER, "
-                        << getRenderbufferParameters(objectId);
+                        << getRenderbufferParameters(static_cast<GLuint>(objectId));
         }
     }
 
@@ -175,11 +178,11 @@ void FrameBuffer::printFramebufferInfo() {
         switch (objectType) {
         case GL_TEXTURE:
             LogDebug << "GL_TEXTURE, "
-                    << getTextureParameters(objectId);
+                    << getTextureParameters(static_cast<GLuint>(objectId));
             break;
         case GL_RENDERBUFFER:
             LogDebug << "GL_RENDERBUFFER, "
-                    << getRenderbufferParameters(objectId);
+                    << getRenderbufferParameters(static_cast<GLuint>(objectId));
             break;
         }
     }
@@ -197,11 +200,11 @@ void FrameBuffer::printFramebufferInfo() {
         switch (objectType) {
         case GL_TEXTURE:
             LogDebug << "GL_TEXTURE, "
-                    << getTextureParameters(objectId);
+                    << getTextureParameters(static_cast<GLuint>(objectId));
             break;
         case GL_RENDERBUFFER:
             LogDebug << "GL_RENDERBUFFER, "
-                    << getRenderbufferParameters(objectId);
+                    << getRenderbufferParameters(static_cast<GLuint>(objectId));
             break;
         }
     }
@@ -249,7 +252,7 @@ string FrameBuffer::getRenderbufferParameters(GLuint id) {
     return ss.str();
 }
 
-string FrameBuffer::convertInternalFormatToString(GLenum format) {
+string FrameBuffer::convertInternalFormatToString(GLint format) {
     std::string formatName;
 
     switch (format) {

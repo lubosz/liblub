@@ -31,11 +31,11 @@ class Mesh {
 	QList<string> usedAttributes;
 
 	Mesh(const QList<string> & attributes);
-	void setDrawType(GLint drawType);
+    void setDrawType(GLenum drawType);
 	void draw();
-	void draw(unsigned amount);
+    void draw(GLsizei amount);
 	void init();
-	void initBuffer(string name, string linkage, unsigned vertexSize);
+    void initBuffer(string name, string linkage, GLint vertexSize);
 	void addSubMesh(Mesh * mesh);
 	virtual ~Mesh();
     void vertex(vector<GLfloat> * buffer, const GLfloat &x, const GLfloat &y, const GLfloat &z);
@@ -62,12 +62,12 @@ class Mesh {
  private:
     AABB * boundingBox;
 	GLuint vao;
-	GLint drawType;
+    GLenum drawType;
 
-	unsigned indexSize;
-	unsigned bufferCount;
+    GLsizei indexSize;
+    GLuint bufferCount;
 
-	void addBuffer(const vector<GLfloat> &content, unsigned size, string name);
+    void addBuffer(const vector<GLfloat> &content, GLint size, string name);
 	void addElementBuffer(const vector<GLuint> &content);
 };
 

@@ -15,7 +15,7 @@ class FrameBuffer {
 	FrameBuffer(QSize& res);
 	virtual ~FrameBuffer();
     void bind();
-    void setDrawBuffers(unsigned count);
+    void setDrawBuffers(GLsizei count);
     void setDrawBuffers(vector<GLenum>& buffers);
     void setDrawBuffer(GLenum buffer);
     void unBind();
@@ -33,8 +33,8 @@ class FrameBuffer {
 	GLuint attachmentPoint;
 
 	void printFramebufferInfo();
-	string getTextureParameters(GLuint id);
-	string getRenderbufferParameters(GLuint id);
-	string convertInternalFormatToString(GLenum format);
+    string getTextureParameters(GLuint id);
+    string getRenderbufferParameters(GLuint id);
+    string convertInternalFormatToString(GLint format);
 	void checkFramebufferStatus();
 };

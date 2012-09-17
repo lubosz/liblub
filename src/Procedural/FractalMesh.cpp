@@ -176,10 +176,10 @@ complex<double> FractalMesh::f(complex<double> z, complex<double> c) {
     return c *c + z*z*z*z*z;
 }
 
-int FractalMesh::GiveLastIteration(complex<double> C,complex<double> Z) {
+unsigned FractalMesh::GiveLastIteration(complex<double> C,complex<double> Z) {
     complex<double> h;
     distance = 0;
-    int i;
+    unsigned i;
     for(i=0; i < IterationMax && abs(Z) <= EscapeRadius; i++) {
         h = Z;
         Z = f(Z, C);
@@ -188,7 +188,7 @@ int FractalMesh::GiveLastIteration(complex<double> C,complex<double> Z) {
     return i;
 }
 
-int FractalMesh::GiveLastIteration(complex<double> C,complex<double> Z, complex<double> * distance, unsigned IterationMax, unsigned EscapeRadius) {
+unsigned FractalMesh::GiveLastIteration(complex<double> C,complex<double> Z, complex<double> * distance, unsigned IterationMax, unsigned EscapeRadius) {
     complex<double> h;
     *distance = 0;
     unsigned i;
@@ -224,7 +224,7 @@ void FractalMesh::generate(unsigned from, unsigned to, vector<GLfloat> *position
 
             complex<double> Z = complex<double>(ZxMin + iX * Pixelresolution, Zimag);
 
-            int Iteration = GiveLastIteration(C, Z);
+            unsigned Iteration = GiveLastIteration(C, Z);
 
             double measure = distance.real() / static_cast<double>(Iteration);
             QColor color(0,0,0);

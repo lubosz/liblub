@@ -61,7 +61,7 @@ void Mesh::init() {
   initialized = true;
 }
 
-void Mesh::initBuffer(string name, string linkage, unsigned vertexSize) {
+void Mesh::initBuffer(string name, string linkage, GLint vertexSize) {
   if(usedAttributes.contains(name)) {
     if(!buffers[name].empty()) {
       addBuffer(buffers[name], vertexSize, linkage);
@@ -74,7 +74,7 @@ void Mesh::initBuffer(string name, string linkage, unsigned vertexSize) {
           vector<float> zeroBuffer;
           unsigned elements = buffers["position"].size()/3;
           for (unsigned i = 0; i < elements; i++) {
-              for (unsigned j = 0; j < vertexSize; j++)
+              for (GLint j = 0; j < vertexSize; j++)
                   zeroBuffer.push_back(0);
           }
           addBuffer(zeroBuffer, vertexSize, linkage);
@@ -98,7 +98,7 @@ Mesh::~Mesh() {
         delete boundingBox;
 }
 
-void Mesh::addBuffer(const vector<GLfloat> &content, unsigned size, string name) {
+void Mesh::addBuffer(const vector<GLfloat> &content, GLint size, string name) {
     glError;
 
     meshBuffers[name] = new MeshBuffer(name, bufferCount, size);
@@ -128,7 +128,7 @@ void Mesh::addElementBuffer(const vector<GLuint> & content) {
   glError;
   /* Copy the index data from tetraindicies to our buffer
    * 6 * sizeof(GLubyte) is the size of the index array, since it contains 6 GLbyte values */
-  glBufferData(GL_ELEMENT_ARRAY_BUFFER, content.size() * sizeof(GLuint),
+  glBufferData(GL_ELEMENT_ARRAY_BUFFER, static_cast<long int>(content.size() * sizeof(GLuint)),
             content.data(), GL_STATIC_DRAW);
     LogDebug << "Adding Vertex Element Buffer #"
             << bufferCount << " Size:" << content.size();
@@ -136,7 +136,7 @@ void Mesh::addElementBuffer(const vector<GLuint> & content) {
     glError;
 }
 
-void Mesh::setDrawType(GLint drawType) {
+void Mesh::setDrawType(GLenum drawType) {
 
   if (subMeshes.size() > 0) {
     foreach(Mesh * mesh, subMeshes)
@@ -160,7 +160,7 @@ void Mesh::draw() {
   }
 }
 
-void Mesh::draw(unsigned amount) {
+void Mesh::draw(GLsizei amount) {
   glBindVertexArray(vao);
   glDrawElementsInstanced(drawType, indexSize, GL_UNSIGNED_INT, 0, amount);
   glError;

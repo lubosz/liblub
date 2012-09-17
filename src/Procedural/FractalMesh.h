@@ -23,7 +23,7 @@ public:
     double Pixelresolution;
     double PixelHeight;
 
-    int IterationMax;
+    unsigned IterationMax;
     /* bail-out value , radius of circle ;  */
     int EscapeRadius;
 
@@ -38,8 +38,8 @@ public:
 
     FractalMesh(const QList<string> & attributes, unsigned resolution, float density, double range);
     static complex<double> f(complex<double> z, complex<double> c);
-    int GiveLastIteration(complex<double> C,complex<double> Z);
-    static int GiveLastIteration(complex<double> C,complex<double> Z, complex<double> * distance, unsigned IterationMax, unsigned EscapeRadius);
+    unsigned GiveLastIteration(complex<double> C,complex<double> Z);
+    static unsigned GiveLastIteration(complex<double> C,complex<double> Z, complex<double> * distance, unsigned IterationMax, unsigned EscapeRadius);
     void setRange(double range);
     void generate(unsigned from, unsigned to, vector<GLfloat> *positions, vector<GLfloat> *colors);
     void regenerate();

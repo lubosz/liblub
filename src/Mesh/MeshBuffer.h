@@ -15,9 +15,9 @@ public:
     GLuint handle;
     GLuint id;
     string name;
-    GLuint size;
+    GLint size;
 
-    MeshBuffer(string name, GLuint id, GLuint size);
+    MeshBuffer(string name, GLuint id, GLint size);
 
     void init();
     void write(const vector<GLfloat> &content);

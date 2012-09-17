@@ -99,10 +99,7 @@
         shader->activateAndBindTextures();
         foreach (UniformBuffer * buffer, positionBuffers){
                     buffer->bind();
-                    #ifdef USE_OPENGL3
-                    shader->bindUniformBuffer("positions", 0,
-                            buffer->getHandle());
-                    #endif
+                    shader->bindUniformBuffer("positions", 0, buffer->getHandle());
                     getMesh()->draw(positionBufferDataSize);
         }
     }
@@ -114,7 +111,7 @@
         } else {
             for(unsigned currentBuffer = 0; currentBuffer < bufferCount; currentBuffer++){
                 vector<QVector4D> * foo = new vector<QVector4D>();
-                for(unsigned currentPos = 0; currentPos < positionBufferDataSize; currentPos++){
+                for(int currentPos = 0; currentPos < positionBufferDataSize; currentPos++){
                     foo->push_back(positions.back());
                     positions.pop_back();
                 }
@@ -138,11 +135,8 @@
 //          LogDebug << "Position Array Size" << positionBufferData->size();
 
           positionBuffer->write(positionBufferData->data(), positionBufferSize);
-
-          #ifdef USE_OPENGL3
           shader->bindUniformBuffer("positions", 0,
                   positionBuffer->getHandle());
-          #endif
           glError;
           return positionBuffer;
       }
@@ -151,7 +145,7 @@
            if(positions.size() <= 4096) {
                positionBufferDataSize = positions.size();
            } else {
-               bufferCount = int((positions.size() / 4096.0f)) + 1;
+               bufferCount = (positions.size() / 4096) + 1;
                positionBufferDataSize = positions.size() / bufferCount;
            }
 

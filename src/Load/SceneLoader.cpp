@@ -128,7 +128,7 @@ void SceneLoader::appendMesh(const QDomElement & meshNode) {
           QList<string> attributes;
           attributes.push_back("normal");
           MengerSponge * sponge = new MengerSponge(attributes, meshNode.attribute(
-                    "recursion").toInt());
+                    "recursion").toUInt());
           mesh = sponge->getMesh();
         } else if (meshNode.attribute("type") == "Stars") {
           QList<string> attributes;
@@ -177,7 +177,7 @@ void SceneLoader::appendMesh(const QDomElement & meshNode) {
           attributes.push_back("color");
             mesh = Geometry::spiral(
                 attributes,
-                    meshNode.attribute("resolution").toFloat());
+                    meshNode.attribute("resolution").toInt());
         } else {
           QList<string> attributes;
           attributes.push_back("color");
@@ -187,7 +187,7 @@ void SceneLoader::appendMesh(const QDomElement & meshNode) {
 
     }
     if (meshNode.hasAttribute("drawType")) {
-      GLint drawType = GL_TRIANGLES;
+      GLenum drawType = GL_TRIANGLES;
       string drawTypeString = meshNode.attribute("drawType").toStdString();
 
       if (drawTypeString == "PATCHES")

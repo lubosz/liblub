@@ -35,7 +35,7 @@ QVector3D MandelBulb::triplexMult(QVector3D vec1, QVector3D vec2) {
     return vector;
 }
 
-double MandelBulb::distanceEstimate(QVector3D c, int n, unsigned maxIter) {
+double MandelBulb::distanceEstimate(QVector3D c, unsigned n, unsigned maxIter) {
     QVector3D p = QVector3D(0, 0, 0);
     QVector3D dp = QVector3D(1, 0, 0);
     const QVector3D dir = QVector3D(1, 0, 0);
@@ -88,7 +88,7 @@ void MandelBulb::setColor(vector<GLubyte> *voxels, GLubyte r, GLubyte g, GLubyte
 
 void MandelBulb::generateVoxels(unsigned fromVoxel, unsigned toVoxel, vector<GLubyte> *voxels, int id, int size) {
 
-    int maxIter = 20;
+    unsigned maxIter = 20;
     unsigned maxIter2 = 20;
 
     double from = -1.1;

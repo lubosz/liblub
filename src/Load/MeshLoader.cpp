@@ -34,7 +34,7 @@ Mesh * MeshLoader::getMeshFromAssimp(aiMesh * assMesh, const QList<string> & att
     for (unsigned i = 0; i < assMesh->mNumFaces; i++) {
         aiFace face = assMesh->mFaces[i];
         for (unsigned j = 0; j < face.mNumIndices; j++) {
-            int vertex = face.mIndices[j];
+            unsigned vertex = face.mIndices[j];
 
             aiVector3D position = assMesh->mVertices[vertex];
             if (changePositionOrder)

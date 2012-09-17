@@ -16,7 +16,7 @@ public:
 
   void bind();
   void alloc(GLuint size);
-  void write(const void* data, GLuint size);
+  void write(const void* data, GLint size);
   void writeSub(const void* data);
   void read(void* data);
   void copy(GLuint sourceBuffer);
@@ -24,13 +24,13 @@ public:
   GLuint getHandle() {
     return handle;
   }
-  GLuint getSize() {
+  GLint getSize() {
     return size;
   }
 
 private:
   GLuint handle;
-  GLuint size;
+  GLint size;
   bool dynamic;
   GLenum target;
 };
