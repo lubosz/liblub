@@ -30,6 +30,10 @@ AnimationDemo::~AnimationDemo() {
 }
 
 void AnimationDemo::init() {
+
+    Scene::Instance().addCamera(QVector3D(-8.63725, 4.0818, 6.77053),
+                                QVector3D(0.484484, -0.036644, -0.874032));
+
     sceneLoader = new SceneLoader("nice.xml");
     sceneLoader->load();
 

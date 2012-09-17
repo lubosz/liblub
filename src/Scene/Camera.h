@@ -14,6 +14,7 @@
 class Camera: public DirectionNode {
  public:
     Camera();
+    Camera(const QVector3D & pos, const QVector3D & dir);
     ~Camera();
 	void update();
 	void setMouseLook(int mouseXrel, int mouseYrel, qreal mouseSensitivity);

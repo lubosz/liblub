@@ -29,9 +29,8 @@ LoadAssimp::~LoadAssimp() {
 }
 
 void LoadAssimp::init() {
-    Scene::Instance().getCurrentCamera()->setPosition(QVector3D(-1.43765, 5.130675, -1.20157));
-    Scene::Instance().getCurrentCamera()->setDirection(QVector3D(0.741701, -0.0836778, 0.66549));
-    Scene::Instance().getCurrentCamera()->update();
+    Scene::Instance().addCamera(QVector3D(-1.43765, 5.130675, -1.20157),
+                                QVector3D(0.741701, -0.0836778, 0.66549));
 
     DeferredRenderer::Instance().initSky("cubemaps/sky");
 

@@ -280,6 +280,7 @@ void Node::setDirection(const QVector3D & direction) {
 //    rotation = QQuaternion(1, direction);
     rotationMatrix.setToIdentity();
     rotationMatrix.lookAt(QVector3D(), -direction, up);
+    update();
 }
 
 

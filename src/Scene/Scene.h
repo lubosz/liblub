@@ -55,6 +55,7 @@ public:
 
   void setCurrentCamera(Camera * camera);
   void addCamera(Camera * camera);
+  void addCamera(const QVector3D & pos, const QVector3D & dir);
 
   Light* getDefaultLight();
 
@@ -69,6 +70,7 @@ public:
   UniformBuffer * lightBuffer;
   GLint lightBufferSize;
   void initLightBuffer(ShaderProgram * shader, const string& bufferName);
+
 
 private:
   Camera *currentCamera;

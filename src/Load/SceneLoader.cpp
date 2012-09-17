@@ -21,12 +21,10 @@
 #include "System/TemplateEngine.h"
 
 SceneLoader::SceneLoader(const QString & fileName)
-:
-    fileName(fileName) {
+: fileName(fileName) {
 }
 
 SceneLoader::~SceneLoader() {
-    // TODO(bmonkey) Auto-generated destructor stub
 }
 
 QVector3D SceneLoader::stringToVector3D(const QString& values) {
@@ -37,11 +35,7 @@ QVector3D SceneLoader::stringToVector3D(const QString& values) {
 void SceneLoader::appendProgram(const QDomElement & programNode) {
     string name, shaderUrl;
     vector<string> flags;
-    QList<string> attributes;
-    attributes.push_back("uv");
-    attributes.push_back("normal");
-    attributes.push_back("tangent");
-    attributes.push_back("bitangent");
+    QList<string> attributes = QList<string>() << "uv" << "normal" << "tangent" << "bitangent";
 
     if (programNode.hasAttribute("name"))
         name = programNode.attribute("name").toStdString();

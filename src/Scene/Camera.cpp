@@ -11,7 +11,14 @@
 #include "System/Logger.h"
 
 Camera::Camera() {
+  setPosition(QVector3D());
   setDirection(QVector3D(0,0,-1));
+  update();
+}
+
+Camera::Camera(const QVector3D & pos, const QVector3D & dir) {
+  setDirection(dir);
+  setPosition(pos);
   update();
 }
 

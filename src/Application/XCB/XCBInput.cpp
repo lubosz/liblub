@@ -88,8 +88,11 @@ void XCBInput::eventLoop() {
                     break;
                 case XK_p:
                     cam = Scene::Instance().getCurrentCamera();
-                    LogInfo << "Cam Pos" << cam->position.x() << cam->position.y() << cam->position.z();
-                    LogInfo << "Cam Dir" << cam->direction().x() << cam->direction().y() << cam->direction().z();
+                    LogInfo << "Camera Info";
+                        std::cout
+                        << "Scene::Instance().addCamera(QVector3D(" << cam->position.x() << ", " << cam->position.y() << ", " << cam->position.z() << "),\n"
+                        << "                            QVector3D(" << cam->direction().x() << ", " << cam->direction().y() << ", " << cam->direction().z() << "));\n";
+
                     break;
                 case XK_c:
                     OpenGL::Instance().toggleLightView();

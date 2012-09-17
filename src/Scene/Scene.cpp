@@ -32,10 +32,6 @@ void Scene::addShader(string & name, ShaderProgram* shader) {
 
 void Scene::setCurrentCamera(Camera * camera) {
   this->currentCamera = camera;
-  addCamera(camera);
-}
-
-void Scene::addCamera(Camera * camera) {
   bool isInCameras = false;
 
   foreach(Camera* cam, cameras) {
@@ -44,11 +40,19 @@ void Scene::addCamera(Camera * camera) {
   }
 
   if (!isInCameras) {
+      addCamera(camera);
+  }
+}
+
+void Scene::addCamera(const QVector3D & pos, const QVector3D & dir) {
+    addCamera(new Camera(pos, dir));
+}
+
+void Scene::addCamera(Camera * camera) {
+    this->currentCamera = camera;
     QString camname = "camera" + QString::number(cameras.size() + 1);
     cameras.insert(camname.toStdString(), camera);
     LogDebug << "Adding " << camname.toStdString();
-
-  }
 }
 
 ShaderProgram* Scene::getShader(const string & name) {
