@@ -29,12 +29,12 @@
 #include "Scene/Scene.h"
 
 TesselationApp::TesselationApp() : Demo("tesselation") {
-    shader = new ShaderProgram("Tesselation");
 }
 
 TesselationApp::~TesselationApp() {}
 
 void TesselationApp::init() {
+    shader = new ShaderProgram("Tesselation");
     Light * light;
 
     QList<string> attributes;
