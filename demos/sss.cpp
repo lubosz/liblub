@@ -26,6 +26,7 @@
 #include "Renderer/RenderPasses.h"
 #include "Scene/SceneGraph.h"
 #include "Load/MeshLoader.h"
+#include "Scene/Scene.h"
 
 SSSApp::SSSApp() : Demo("sss") {
 }

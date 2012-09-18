@@ -21,6 +21,7 @@
 #include "Scene/SceneGraph.h"
 #include "Renderer/RenderPasses.h"
 #include "System/Application.h"
+#include "Scene/Scene.h"
 #include <QVariantAnimation>
 
 AnimationDemo::AnimationDemo() : Demo("animation") {
