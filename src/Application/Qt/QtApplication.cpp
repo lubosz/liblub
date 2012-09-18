@@ -70,7 +70,7 @@ void QtApplication::run() {
   connect(input, SIGNAL(draw(void)), glWidget, SLOT(updateGL()));
   connect(glWidget, SIGNAL(draw()), this, SLOT(draw()));
 //  app->exec();
-  setLazy(false);
+  setLazy(true);
   exec();
 }
 
