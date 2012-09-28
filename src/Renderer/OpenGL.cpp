@@ -109,7 +109,6 @@ void OpenGL::clear() {
 
 void OpenGL::checkVersion() {
     GLint maxTex1, maxTex2, MajorVersion, MinorVersion, numext, pointSize, uniformSize;
-
     string version = glGetStringSafe(GL_VERSION);
 
     if (version == "null") {
@@ -120,7 +119,6 @@ void OpenGL::checkVersion() {
 
     glGetIntegerv(GL_MAJOR_VERSION, &MajorVersion);
     glGetIntegerv(GL_MINOR_VERSION, &MinorVersion);
-
     LogInfo << "Version" << MajorVersion << "." << MinorVersion;
 
     LogInfo << "GLSL" << glGetStringSafe(GL_SHADING_LANGUAGE_VERSION);
@@ -135,13 +133,20 @@ void OpenGL::checkVersion() {
     glGetIntegerv(GL_MAX_VERTEX_TEXTURE_IMAGE_UNITS, &maxTex1);
     glGetIntegerv(GL_MAX_TEXTURE_IMAGE_UNITS, &maxTex2);
     LogInfo << "MaxTex" << maxTex1 << " " << maxTex2;
-
     glGetIntegerv(GL_NUM_EXTENSIONS, &numext);
     LogInfo << "Found " << numext << " GL_EXTENSIONS";
 
     vector<int> glContext = Config::Instance().values<int>("GLcontext");
+    if (glContext[0] != MajorVersion || glContext[1] != MinorVersion) {
 
-    if (glContext[0] >= 3 && glContext[1] > 0) {
+        vector<int> context = {MajorVersion, MinorVersion};
+        Config::Instance().setValues<int>("GLcontext", context);
+
+        LogWarning << "Context" << MajorVersion << "." << MinorVersion
+                   << "and config" << glContext[0] << "." << glContext[1]
+                   << "version mismatch";
+    }
+    if (MajorVersion >= 3 && MinorVersion > 0) {
         glGetIntegerv(GL_MAX_VERTEX_UNIFORM_BLOCKS, &uniformSize);
         LogInfo << "GL_MAX_VERTEX_UNIFORM_BLOCKS" << uniformSize;
         glGetIntegerv(GL_MAX_FRAGMENT_UNIFORM_BLOCKS, &uniformSize);
@@ -152,7 +157,6 @@ void OpenGL::checkVersion() {
         glGetIntegerv(GL_MAX_UNIFORM_BLOCK_SIZE, &uniformSize);
         LogInfo << "GL_MAX_UNIFORM_BLOCK_SIZE" << uniformSize;
     }
-
     // print max # of colorbuffers supported by FBO
     int colorBufferCount = 0;
     glGetIntegerv(GL_MAX_COLOR_ATTACHMENTS, &colorBufferCount);
