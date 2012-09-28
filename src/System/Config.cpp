@@ -59,10 +59,22 @@ Config::Config():XmlReader() {
   delete file;
 }
 
-Config::~Config() {}
+Config::~Config() {
+    foreach (ConfigOption<int>* killMe, ints)
+        delete killMe;
+
+    foreach (ConfigOption<string>* killMe, strings)
+        delete killMe;
+
+    foreach (ConfigOption<bool>* killMe, bools)
+        delete killMe;
+
+    foreach (ConfigOption<float>* killMe, floats)
+        delete killMe;
+}
 
 void Config::addString(const string& name, const string& option) {
-    strings.push_back(ConfigOption<string> (name, option));
+    strings.push_back(new ConfigOption<string> (name, option));
 }
 
 QStringList Config::getGLVersion() {
@@ -131,13 +143,25 @@ string Config::getMediaPrefix() {
 }
 
 template<typename T>
-vector<T> Config::getValues(const string& name, const vector<ConfigOption<T>> & config) {
-    foreach(ConfigOption<T> configOption, config) {
-            if (configOption.name == name)
-                return configOption.optionVec;
+vector<T> Config::getValues(const string& name, const vector<ConfigOption<T>* > & config) {
+    foreach(ConfigOption<T> * configOption, config) {
+            if (configOption->name == name)
+                return configOption->optionVec;
     }
     LogError << "Config not found" << name;
     return vector<T>();
+}
+
+template<>
+void Config::setValues(const string & name, const vector<int> & values) {
+    foreach(ConfigOption<int> * configOption, ints) {
+        if (configOption->name == name) {
+            configOption->optionVec = values;
+            return;
+        }
+    }
+    LogWarning << "Will create option" << name;
+    ints.push_back(new ConfigOption<int> (name, values));
 }
 
 template<> vector<bool> Config::values<bool>(const string & name) {
@@ -172,15 +196,15 @@ void Config::appendOption(const QDomElement & optionNode) {
 
     if (optionNode.tagName() == "Int") {
         vector<int> options = splitValues<int> (value);
-        ints.push_back(ConfigOption<int> (name, options));
+        ints.push_back(new ConfigOption<int> (name, options));
     } else if (optionNode.tagName() == "String") {
         vector<string> options = splitValues<string> (value);
-        strings.push_back(ConfigOption<string> (name, options));
+        strings.push_back(new ConfigOption<string> (name, options));
     } else if (optionNode.tagName() == "Float") {
         vector<float> options = splitValues<float> (value);
-        floats.push_back(ConfigOption<float> (name, options));
+        floats.push_back(new ConfigOption<float> (name, options));
     } else if (optionNode.tagName() == "Bool") {
         vector<bool> options = splitValues<bool> (value);
-        bools.push_back(ConfigOption<bool> (name, options));
+        bools.push_back(new ConfigOption<bool> (name, options));
     }
 }

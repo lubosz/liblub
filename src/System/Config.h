@@ -38,15 +38,16 @@ class Config : public Singleton<Config>, public XmlReader {
 	virtual ~Config();
     void addString(const string &name, const string &option);
 	void appendOption(const QDomElement & optionNode);
-    template<typename T> vector<T> getValues(const string & name, const vector<ConfigOption<T>> & config);
+    template<typename T> vector<T> getValues(const string & name, const vector<ConfigOption<T>* > & config);
+    template<typename T> void setValues(const string & name, const vector<T> & values);
 	template<typename T> T value(const string & name);
 	template<typename T> vector<T> values(const string & name);
 //	template<typename T> vector<T> splitValues(QString values);
 
-	vector<ConfigOption<bool>> bools;
-	vector<ConfigOption<int>> ints;
-	vector<ConfigOption<string>> strings;
-	vector<ConfigOption<float>> floats;
+    vector<ConfigOption<bool>* > bools;
+    vector<ConfigOption<int>* > ints;
+    vector<ConfigOption<string>* > strings;
+    vector<ConfigOption<float>* > floats;
 
     QStringList getGLVersion();
     void createConfigFile(QFile *file);
