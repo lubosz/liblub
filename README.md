@@ -14,13 +14,16 @@ You also need assimp (i.e. from git).
 
 ### Window and Context Creation
 
-You can choose between Qt and XCB window creation. XCB will only work with X11 :)
+You can use different window backends.
+The editor can only be used with Qt.
 
-#### For Qt:
+XCB
+Qt
 
-Qt window creation is optional on XCB Systems, but can be set in the CMake options.
-
-`$ cmake . -DUSE_QT_WINDOWS=1`
+eglut
+	wayland
+	drm
+	x11
 
 ### Headers
 

@@ -16,16 +16,16 @@
     You should have received a copy of the GNU General Public License
     along with liblub.  If not, see <http://www.gnu.org/licenses/>.
 */
-#include "System/Application.h"
+#include "Application/Qt/QtApplication.h"
 
 #include "DemoLauncher.h"
 
-class LoadApp: public Application {
+class LoadApp: public QtApplication {
 public:
 
     DemoLauncher * launcher;
 
-    LoadApp(int &argc, char **argv) : Application(argc, argv) {
+    LoadApp(int &argc, char **argv) : QtApplication(argc, argv) {
         launcher = new DemoLauncher(argc, argv);
     }
 

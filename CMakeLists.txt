@@ -1,6 +1,9 @@
 cmake_minimum_required(VERSION 2.8)
 project(liblub)
 
+# For custom cmake modules.
+set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
+
 #Set Options
 option(WITH_Qt "Use Qt window/input backend" ON)
 option(WITH_XCB "Use XCB (X11) window/input backend" ON)
@@ -10,27 +13,20 @@ option(BUILD_TESTS "Build Tests" OFF)
 
 option(USE_OPENGL3 "Use OpenGL3+ Calls (can be disabled to build with mesa)" On)
 
-option(USE_QT_WINDOWS "Use Qt Windows For All Apps" OFF)
 option(USE_GLEW "Use Qt Windows For All Apps" OFF)
 
 if(LIBLUB_WINDOWS)
     set(WITH_XCB 0)
     set(USE_GLEW 1)
-    set(USE_QT_WINDOWS 1)
 endif()
 
 if(USE_GLEW)
     message("GLEW only works with Qt window backend")
-    set(USE_QT_WINDOWS 1)
     ADD_DEFINITIONS(-DUSE_GLEW)
 endif()
 
 if(USE_OPENGL3)
     ADD_DEFINITIONS(-DUSE_OPENGL3)
-endif()
-
-if(USE_QT_WINDOWS)
-    ADD_DEFINITIONS(-DUSE_QT_WINDOWS)
 endif()
 
 set(LIBRARY_OUTPUT_PATH ${CMAKE_SOURCE_DIR}/lib)
@@ -105,6 +101,8 @@ if (GCC_VERSION VERSION_GREATER 4.6 OR GCC_VERSION VERSION_EQUAL 4.6)
 else()
 	message(STATUS "GCC Version < 4.6, try to upgrade")      
 endif()
+
+find_package(EGLUT REQUIRED)
 
 find_package(Qt4 REQUIRED)
 
