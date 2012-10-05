@@ -16,7 +16,7 @@ DeferredRenderer::DeferredRenderer() : drawTransparency(true) {
 }
 
 DeferredRenderer::~DeferredRenderer() {
-    LogDebug << "Avarage Frame Time was:" << timer->avarageFrameTimeMs << "ms" << 1000.0 / timer->avarageFrameTimeMs << "fps";
+    LogInfo << "Avarage Frame Time was:" << timer->avarageFrameTimeMs << "ms" << 1000.0 / timer->avarageFrameTimeMs << "fps";
 }
 
 void DeferredRenderer::draw() {
