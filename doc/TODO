@@ -1,28 +1,33 @@
-Code:
-	- kurze konstruktoren
-	- getter / setter
-	- public / private
+- minimalism in renderer
 
-	- input verallgemeinern
-	- maus lag fixen
-
-	- mehr struct uniforms nutzen
-	- performance messung
-  - scene aufräumen
-	- multiple uv coords
-  - node child tranformation
-  - bounding boxes
-  - mesh normals
-
+- render options / profiles
+- change in gui / config
 	
+- benchmark every type of scene
+
+- dynamic res / aspect => reshape
+
+- runtime uniform editor
+- shader selector
+- rebuild shaders in editor
+- parse shaders for uniforms
+- use uniform sturcts
+
+- texture names
+
 - Style check
+
 - planets demo => renderpasses
 
-Rendering:
-	- wolken
-	- pflanzen / gras
-	
-GUI App:
-	- runtime uniform editor
-	- shader selector
+- visualize bounding boxes
+- visualize mesh normals
 
+- abstract input
+- fix mouse lag
+
+- node child tranformation
+- multiple uv coords
+
+Object generation:
+    - clouds
+    - plants
