@@ -44,7 +44,10 @@ uniform vec3 camPositionWorld;
 
 const int shininess = 32;
 //const int shininess = 1;
-{% include "Shading/ashikhmin.glsl" %}
+{% if useAshikhmin %}
+	{% include "Shading/ashikhmin.glsl" %}
+{% endif %}
+
 {% endblock %}
 
 {% block main %}
@@ -98,15 +101,7 @@ const int shininess = 32;
     //envTarget = texture(envMap, -reflectView);
     vec3 reflectView = reflect(viewDirectionTS, normalTS);
     envTarget = texture(envMap, reflectView);
-
     
-    float ambient = 
-    {% if useAO %}
-	    texture(finalAOTarget, uv).r;
-	   {% else %}
-	   	1.0;
-		{% endif %}
-
 	for(int i = 0; i < LIGHTS ; i++) {
 	   vec3 lightDirectionWS = normalize(position - lightSources[i].position.xyz);
 	   vec3 lightDirectionTS = normalize(vec3(
@@ -130,7 +125,11 @@ const int shininess = 32;
 	   finalSpecularTarget += lightSources[i].diffuse *  specular;
 	   //finalTarget += AshikhminShirley(lightDirectionWS, viewDirectionWS, normal, diffuse, tbn);
     }
-	finalTarget = (finalDiffuseTarget + finalSpecularTarget + envTarget / 3.0)*ambient;
+	finalTarget = (finalDiffuseTarget + finalSpecularTarget + envTarget / 3.0)
+    {% if useAO %}
+	    texture(finalAOTarget, uv).r
+		{% endif %}
+	   	;
 
         if (length(diffuse) == 0) {
             envTarget = texture(envMap, -position);
