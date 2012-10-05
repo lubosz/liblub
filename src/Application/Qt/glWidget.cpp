@@ -3,13 +3,13 @@
 #include "Scene/Scene.h"
 #include "QtInput.h"
 
-#ifndef GL_MULTISAMPLE
-#define GL_MULTISAMPLE  0x809D
-#endif
+#include "System/Config.h"
 
 GLWidget::GLWidget(const QGLFormat & format, QWidget *parent) :
   QGLWidget(format, parent) {
   LogDebug << "Initializing Qt GL Wiget";
+  inputSpeed = Config::Instance().value<float>("inputSpeedSlow");
+  mouseSensitivity = Config::Instance().value<float>("mouseSensitivity");
 }
 
 GLWidget::~GLWidget() {
@@ -35,7 +35,18 @@ void GLWidget::resizeGL(int width, int height) {
 }
 
 void GLWidget::mousePressEvent(QMouseEvent *event) {
-  lastMousePosition = event->pos();
+    if (event->button() == Qt::LeftButton) {
+      lastMousePosition = event->pos();
+    }
+}
+
+void GLWidget::wheelEvent(QWheelEvent *event) {
+    if (event->delta() > 0)
+        Scene::Instance().getCurrentCamera()->forwardDirection(inputSpeed);
+    else
+        Scene::Instance().getCurrentCamera()->backwardDirection(inputSpeed);
+    event->accept();
+    updateGL();
 }
 
 void GLWidget::mouseMoveEvent(QMouseEvent *event) {
@@ -46,8 +57,13 @@ void GLWidget::mouseMoveEvent(QMouseEvent *event) {
     int dy = event->y() - lastMousePosition.y();
     QtInput::Instance().mousePosition = QVector2D(dx,dy);
     QtInput::Instance().move();
-  } else if (event->buttons() & Qt::RightButton) {
+    lastMousePosition = event->pos();
   }
-  lastMousePosition = event->pos();
 }
 
+
+void GLWidget::mouseReleaseEvent(QMouseEvent * event) {
+    if (event->button() == Qt::LeftButton) {
+        QtInput::Instance().mousePosition = QVector2D();
+    }
+}

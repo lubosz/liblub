@@ -33,8 +33,10 @@ void QtWindow::keyPressEvent(QKeyEvent *e) {
     switch(e->key()) {
         case Qt::Key_Escape:
             close();
+            break;
         case Qt::Key_Shift:
             QtInput::Instance().inputSpeed = .5;
+            break;
         case Qt::Key_W:
         case Qt::Key_A:
         case Qt::Key_S:
@@ -52,6 +54,7 @@ void QtWindow::keyReleaseEvent(QKeyEvent *e) {
     switch(e->key()) {
         case Qt::Key_Shift:
             QtInput::Instance().inputSpeed = .1;
+            break;
         case Qt::Key_W:
         case Qt::Key_A:
         case Qt::Key_S:

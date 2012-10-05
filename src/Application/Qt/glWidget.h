@@ -20,7 +20,10 @@ protected:
   void resizeGL(int width, int height);
   void mousePressEvent(QMouseEvent *event);
   void mouseMoveEvent(QMouseEvent *event);
+  void wheelEvent(QWheelEvent *event);
+  void mouseReleaseEvent(QMouseEvent * event);
   QPoint lastMousePosition;
+  float inputSpeed, mouseSensitivity;
 
 signals:
   void draw();
