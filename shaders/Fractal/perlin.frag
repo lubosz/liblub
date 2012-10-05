@@ -8,6 +8,12 @@ in vec2 uv;
 {% endblock %}
 
 {% block main %}
-	float noise =  pnoise(vec3(uv * 10,time*0.8),vec3(0));
+//3d
+	//float noise =  pnoise(vec3(uv * 10,time*0.8),vec3(10));
+	float noise =  cnoise(vec3(uv * 10,time*0.8));
+
+//2d
+	//float noise =  pnoise(uv*10,vec2(10,10));
+	//float noise = cnoise(uv * 10);
 	fragColor = noise * vec4(1);
 {% endblock %}

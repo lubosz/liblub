@@ -14,7 +14,7 @@ in vec3 color1;
 in vec3 color2;
 in vec3 position;
 
-{% include "Fractal/simplex3D.glsl" %}
+{% include "Fractal/classic4D.glsl" %}
 
 /*
 float normalNoise(vec3 normal, float time) {
@@ -36,7 +36,7 @@ vec4 getColorForAltitude(float altitude){
 		return vec4(0,0,1,1);
 	}
 }
-
+/*
 float multiSampleNoise(vec3 uvw, float time) {
   	float n = snoise(uvw - vec3(0.0, 0.0, time));
 	n += 0.5 * snoise(uvw * 2.0 - vec3(0.0, 0.0, time*1.4));
@@ -47,20 +47,26 @@ float multiSampleNoise(vec3 uvw, float time) {
 	n = n * 0.7;
 	return n;
 }
+*/
 {% endblock %}
 
 {% block main %}
 
 	float timeControl = time/10.0;
+	/*
  	vec3 uvw = position + 0.1*
 	vec3(
 		snoise(position + vec3(0.0, 0.0, timeControl)),
     	snoise(position + vec3(43.0, 17.0, timeControl)),
  		snoise(position + vec3(-17.0, -43.0, timeControl))
  	);
+	*/
   //vec3 uvw = position;	
 	
-	float n = multiSampleNoise(uvw, timeControl);
+	//float n = multiSampleNoise(uvw, timeControl);
+	//float n = snoise(uvw * 2.0 - vec3(0.0, 0.0, time*1.4);
+	//float n = cnoise(position);
+	float n = cnoise(vec4(position,time),vec4(100,100,100,0));
 	fragColor = vec4(vec3(1.0, 0.5, 0.0) + vec3(n, n, n), 1.0);
 //	fragColor = vec4(n,n,n,1);
   fragColor = vec4(color1,1) + fragColor * vec4(color2,1);
