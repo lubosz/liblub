@@ -15,20 +15,24 @@ struct LightSource {
 	vec4 direction; 
 };
 
+out vec4 envTarget;
+out vec4 finalDiffuseTarget;
 out vec4 finalTarget;
 //out vec4 finalSpecularTarget;
-out vec4 finalDiffuseTarget;
-out vec4 envTarget;
 {% endblock %}
 
 {% block uniforms %}
+uniform sampler2D normalMapTarget;
 uniform sampler2D positionTarget;
 uniform sampler2D normalTarget;
-uniform sampler2D diffuseTarget;
 uniform sampler2D tangentTarget;
 uniform sampler2D binormalTarget;
-uniform sampler2D normalMapTarget;
+uniform sampler2D diffuseTarget;
+
+{% if useAO %}
 uniform sampler2D finalAOTarget;
+{% endif %}
+
 uniform samplerCube envMap;
 uniform sampler2D uvTarget;
 //uniform sampler2D diffuseTexture;
@@ -99,7 +103,13 @@ const int shininess = 32;
     vec3 reflectView = reflect(viewDirectionTS, normalTS);
     envTarget = texture(envMap, reflectView);
 
-    float ambient = texture(finalAOTarget, uv).r;
+    
+    float ambient = 
+    {% if useAO %}
+	    texture(finalAOTarget, uv).r;
+	   {% else %}
+	   	1.0;
+		{% endif %}
 
 	for(int i = 0; i < LIGHTS ; i++) {
 	   vec3 lightDirectionWS = normalize(position - lightSources[i].position.xyz);
@@ -130,8 +140,5 @@ const int shininess = 32;
             envTarget = texture(envMap, -position);
             finalTarget = envTarget;
         }
-	//finalTarget = vec4(height);
-	//finalDiffuseTarget = diffuse;
-	//finalSpecularTarget = vec4(normalTS,1);
-	//finalTarget = texture(uvTarget, uv);
+	
 {% endblock %}

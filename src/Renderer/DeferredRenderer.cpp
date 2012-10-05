@@ -10,6 +10,7 @@
 DeferredRenderer::DeferredRenderer() : drawTransparency(true) {
     timer = new Timer();
     isInitialized = false;
+    useAO = false;
 }
 
 DeferredRenderer::~DeferredRenderer() {
@@ -42,13 +43,19 @@ void DeferredRenderer::init() {
     res = Scene::Instance().getResolution();
     initShadowCasters();
     initShadowReceivers();
-    initAo();
+
+    if (useAO) {
+        initAo();
+        sourcePasses.push_back(aoPass);
+        sourcePasses.push_back(blurVPass);
+    }
+
     initShadingPass();
     initSinkPass();
 
-    sourcePasses = {
-        aoPass,blurVPass, shadowReceivePass,shadingPass
-    };
+    sourcePasses.push_back(shadowReceivePass);
+    sourcePasses.push_back(shadingPass);
+
     isInitialized = true;
 }
 
@@ -172,6 +179,7 @@ void DeferredRenderer::initShadingPass() {
     //
     // shading pass
     //
+
     vector<Texture*> shadingSources = {
         shadowReceivePass->getTarget("positionTarget"),
         shadowReceivePass->getTarget("normalTarget"),
@@ -179,10 +187,13 @@ void DeferredRenderer::initShadingPass() {
         shadowReceivePass->getTarget("tangentTarget"),
         shadowReceivePass->getTarget("binormalTarget"),
         shadowReceivePass->getTarget("normalMapTarget"),
-        blurVPass->getTarget("finalAOTarget"),
         Scene::Instance().getTexture("sky", "envMap"),
         shadowReceivePass->getTarget("uvTarget"),
     };
+
+    if (useAO)
+        shadingSources.push_back(
+                    blurVPass->getTarget("finalAOTarget"));
 
     vector<Texture*> shadingTargets = {
         new ColorTexture(res, "finalTarget"),
@@ -205,9 +216,11 @@ void DeferredRenderer::initShadingPass() {
 vector<string> DeferredRenderer::getTargetNames() {
     vector<string> names;
 
-    foreach (SourcePass * pass, sourcePasses)
-        foreach (Texture* tex, pass->targets)
+    foreach (SourcePass * pass, sourcePasses) {
+        foreach (Texture* tex, pass->targets) {
             names.push_back(tex->name);
+        }
+    }
 
     return names;
 }

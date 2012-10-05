@@ -44,6 +44,8 @@ public:
     Timer * timer;
     bool isInitialized;
 
+    bool useAO;
+
 };
 
 #endif // DEFERREDRENDERER_H
