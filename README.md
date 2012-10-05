@@ -17,13 +17,31 @@ You also need assimp (i.e. from git).
 You can use different window backends.
 The editor can only be used with Qt.
 
-XCB
-Qt
+GLX Backends:
 
-eglut
+* XCB
+* Qt
+
+EGL Backends:
+
+* eglut
 	wayland
 	drm
 	x11
+
+### Installing EGLUT
+
+You need EGL support. Install a recent MESA.
+
+git clone git://anongit.freedesktop.org/mesa/demos
+cd demos
+cmake . -DBUILD_SHARED_LIBS=1
+cd src/egl/eglut
+make
+sudo make install 
+cp eglut.h /usr/include/EGL
+
+On Arch you can install the [AUR Package](http://aur.archlinux.org/packages.php?ID=63355).
 
 ### Headers
 
