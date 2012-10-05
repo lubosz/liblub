@@ -52,6 +52,7 @@ static void special_key(int special) {
 
 int main(int argc, char *argv[]) {
    eglutInitWindowSize(1920, 1200);
+   Scene::Instance().setResolution(1920, 1200);
    eglutInitAPIMask(EGLUT_OPENGL_BIT);
    eglutInit(argc, argv);
 
