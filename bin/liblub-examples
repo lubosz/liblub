@@ -8,7 +8,6 @@ blacklist_scenes = ["ash", "common", "csm", "multilight", "nice", "terrain", "oc
 blacklist_tests = []
 
 
-
 # get media path
 media_prefixes = ["/usr/share/liblub/", "/usr/local/share/liblub/", ""]
 media_prefix = ""
@@ -21,7 +20,7 @@ class ExampleRunner:
   def __init__(self):
     self.pausing = False
     self.valgrind = False
-    self.getBinaryPath()
+    self.backend = "qt"
 
   def waitForInput(self):
     if self.pausing:
@@ -38,9 +37,9 @@ class ExampleRunner:
     path_prefixes = ["/usr/", "/usr/local/", ""]
     path_prefix = ""
     for prefix in path_prefixes:
-      if os.path.exists(prefix + "bin/liblub-load"):
+      if os.path.exists(prefix + "bin/liblub-view-" + self.backend):
         self.path_prefix = prefix
-    self.loaderpath = self.path_prefix + "bin/liblub-load"
+    self.loaderpath = self.path_prefix + "bin/liblub-view-" + self.backend
     
   def getDemos(self):
     demos = os.popen(self.loaderpath + " -l").readlines()[0].strip().split(" ")
@@ -79,6 +78,9 @@ class ExampleRunner:
     parser = OptionParser()
     #parser.add_option("-a", "--all", dest="filename",
     #                  help="Run all", metavar="FILE")
+    
+    parser.add_option('-b', '--backend', dest="backend", help='Run in backend (qt, xcb, x11, wayland, drm)')
+    
     parser.add_option("-a", "--all", action="store_true", dest="all", help="Run all")
     parser.add_option("-d", "--demos", action="store_true", dest="demos", help="Run demos")
     parser.add_option("-s", "--scenes", action="store_true", dest="scenes", help="Run scene files")
@@ -86,8 +88,14 @@ class ExampleRunner:
     parser.add_option("-p", "--pause", action="store_true", dest="pause", help="Pause after every test")
     parser.add_option("-v", "--valgrind", action="store_true", dest="valgrind", help="Run in valgrind")
     parser.add_option("-e", "--editor", action="store_true", dest="editor", help="Run in editor")
+    #parser.add_option("-b", "--backend", action="store_true", dest="backend", help="Run in backend (qt, xcb, x11, wayland, drm)")
 
     (options, args) = parser.parse_args()
+
+    if options.backend is not None:
+      self.backend = options.backend
+      
+    self.getBinaryPath()
 
     if options.editor is not None:
       self.loaderpath = self.path_prefix + "bin/liblub-editor"
