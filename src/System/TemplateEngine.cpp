@@ -22,6 +22,10 @@ TemplateEngine::TemplateEngine() {
 
   c.insert("precision", true);
 
+  vector<int> GLcontext = Config::Instance().values<int>("GLcontext");
+  bool useUniformBuffers = (GLcontext[0] == 3 && GLcontext[1] >= 1) || GLcontext[0] > 3;
+  c.insert("useUniformBuffers", useUniformBuffers);
+
   vector<int> glContext = Config::Instance().values<int>("GLcontext");
 
   QString version;

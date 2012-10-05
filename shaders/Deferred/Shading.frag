@@ -1,7 +1,12 @@
 {% extends "base.frag" %}
 
 {% block linkage %}
+{% if useUniformBuffers %}
 #define LIGHTS {{ lightCount }}
+{% else %}
+#define LIGHTS 1
+{% endif %}
+
 in vec2 uv;
 struct LightSource {
 	vec4 position;
@@ -29,9 +34,11 @@ uniform sampler2D uvTarget;
 //uniform sampler2D diffuseTexture;
 //uniform sampler2D normalTexture;
 
+{% if useUniformBuffers %}
 uniform LightSourceBuffer {
 	LightSource lightSources[LIGHTS];
 };
+{% endif %}
 
 uniform vec3 camPositionWorld;
 
@@ -41,6 +48,17 @@ const int shininess = 32;
 {% endblock %}
 
 {% block main %}
+
+{% if useUniformBuffers %}
+{% else %}
+	LightSource lightSources[LIGHTS];
+	
+	lightSources[0].position = vec4(1);
+	lightSources[0].diffuse = vec4(1);
+	lightSources[0].specular = vec4(1);
+	lightSources[0].direction = vec4(1);
+{% endif %}
+
     //vec2 uvModel = texture(uvTarget, uv).xy;
 	vec3 position = texture(positionTarget, uv).xyz;
 	vec3 normal = normalize(texture(normalTarget, uv).xyz);

@@ -12,6 +12,7 @@
 #include "Texture/Textures.h"
 #include "Procedural/Geometry.h"
 #include "Scene/SceneGraph.h"
+#include "System/Config.h"
 
 Scene::Scene() {
   lights = QMap<string, Light*>();
@@ -181,6 +182,10 @@ Camera * Scene::getCurrentCamera() {
 }
 
 void Scene::initLightBuffer(ShaderProgram * shader, const string& bufferName) {
+    vector<int> GLcontext = Config::Instance().values<int>("GLcontext");
+
+    if ((GLcontext[0] == 3 && GLcontext[1] >= 1) || GLcontext[0] > 3) {
+
   lightBuffer = new UniformBuffer();
   lightBuffer->bind();
 
@@ -216,4 +221,7 @@ void Scene::initLightBuffer(ShaderProgram * shader, const string& bufferName) {
   #ifdef USE_OPENGL3
   shader->bindUniformBuffer(bufferName,0,lightBuffer->getHandle());
     #endif
+    } else {
+        LogWarning << "Light Buffer not initialized. GL Version" << GLcontext[0] << "." << GLcontext[1];
+    }
 }
