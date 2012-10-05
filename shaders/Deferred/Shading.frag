@@ -18,7 +18,6 @@ struct LightSource {
 out vec4 envTarget;
 out vec4 finalDiffuseTarget;
 out vec4 finalTarget;
-//out vec4 finalSpecularTarget;
 {% endblock %}
 
 {% block uniforms %}
@@ -34,9 +33,6 @@ uniform sampler2D finalAOTarget;
 {% endif %}
 
 uniform samplerCube envMap;
-uniform sampler2D uvTarget;
-//uniform sampler2D diffuseTexture;
-//uniform sampler2D normalTexture;
 
 {% if useUniformBuffers %}
 uniform LightSourceBuffer {
@@ -140,5 +136,4 @@ const int shininess = 32;
             envTarget = texture(envMap, -position);
             finalTarget = envTarget;
         }
-	
 {% endblock %}

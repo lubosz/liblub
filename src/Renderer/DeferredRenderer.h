@@ -45,6 +45,8 @@ public:
     bool isInitialized;
 
     bool useAO;
+    bool useShadows;
+    bool useReflection;
 
 };
 

@@ -9,14 +9,17 @@ in vec4 normalWorld;
 in vec4 tangentWorld;
 in vec4 binormalWorld;
 
+{% if useShadows %}
 out vec4 shadowTarget;
-out vec4 positionTarget;
+{% endif %}
+
 out vec4 normalMapTarget;
-out vec4 tangentTarget;
 out vec4 binormalTarget;
+out vec4 tangentTarget;
 out vec4 diffuseTarget;
 out vec4 normalTarget;
-out vec4 uvTarget;
+out vec4 positionTarget;
+//out vec4 uvTarget;
 {% endblock %}
 
 {% block uniforms %}
@@ -24,11 +27,13 @@ uniform sampler2D diffuseTexture;
 uniform sampler2D normalTexture;
 //uniform samplerCube envMap;
 
-{% for shadowSampler in shadowSamplers %}
-uniform sampler2DShadow {{shadowSampler}};
-//bias*perspLight*viewLight*(viewCam^-1)
-uniform mat4 camViewToShadowMapMatrix{{shadowSampler}};
-{% endfor %}
+{% if useShadows %}
+	{% for shadowSampler in shadowSamplers %}
+		uniform sampler2DShadow {{shadowSampler}};
+		//bias*perspLight*viewLight*(viewCam^-1)
+		uniform mat4 camViewToShadowMapMatrix{{shadowSampler}};
+	{% endfor %}
+{% endif %}
 
 uniform vec4 matDiffuseColor;
 uniform vec4 matSpecularColor;
@@ -78,7 +83,7 @@ float lookup( vec2 offSet,vec4 shadowTexCoord){
         vec2 uv2 = uv;
 {% endif %}
 
-        uvTarget = vec4(uv,0,0);
+        //uvTarget = vec4(uv,0,0);
 
         if (!matHasTexture) {
             diffuseTarget = matDiffuseColor;
@@ -96,25 +101,24 @@ float lookup( vec2 offSet,vec4 shadowTexCoord){
                     normalTarget = vec4(0);
                     tangentTarget = vec4(0);
                     binormalTarget = vec4(0);
-                    uvTarget = vec4(0);
+                    //uvTarget = vec4(0);
                 }
                 //diffuseTarget = vec4(1,0,0,1);
         }
 
 
+{% if useShadows %}
         //shadow
         shadowTarget = vec4(0);
 
         if (diffuseTarget.a > 0.1) {
-	vec4 shadowTexCoord;
-	float shadowSum = 0;
-{% for shadowSampler in shadowSamplers %}
-	shadowTexCoord = camViewToShadowMapMatrix{{shadowSampler}} * positionView;
-	shadowSum += textureProj({{shadowSampler}}, shadowTexCoord);
-{% endfor %}
-
-	
-        shadowTarget= vec4(shadowSum/{{shadowSamplerSize}}.0);
+					vec4 shadowTexCoord;
+					float shadowSum = 0;
+					{% for shadowSampler in shadowSamplers %}
+						shadowTexCoord = camViewToShadowMapMatrix{{shadowSampler}} * positionView;
+						shadowSum += textureProj({{shadowSampler}}, shadowTexCoord);
+					{% endfor %}
+        	shadowTarget= vec4(shadowSum/{{shadowSamplerSize}}.0);
         }
 
 	/*
@@ -128,4 +132,6 @@ float lookup( vec2 offSet,vec4 shadowTexCoord){
 				
 	shadow /= 32.0;
 	*/
+{% endif %}
+
 {% endblock %}

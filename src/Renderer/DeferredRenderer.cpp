@@ -11,6 +11,8 @@ DeferredRenderer::DeferredRenderer() : drawTransparency(true) {
     timer = new Timer();
     isInitialized = false;
     useAO = false;
+    useShadows = false;
+    useReflection = false;
 }
 
 DeferredRenderer::~DeferredRenderer() {
@@ -41,7 +43,10 @@ void DeferredRenderer::draw() {
 
 void DeferredRenderer::init() {
     res = Scene::Instance().getResolution();
-    initShadowCasters();
+
+    if (useShadows) {
+        initShadowCasters();
+    }
     initShadowReceivers();
 
     if (useAO) {
@@ -88,34 +93,39 @@ void DeferredRenderer::initShadowReceivers() {
         new ColorTexture(res, "tangentTarget"),
         new ColorTexture(res, "binormalTarget"),
         new ColorTexture(res, "normalMapTarget"),
-        new ColorTexture(res, "shadowTarget"),
-        new ColorTexture(res, "uvTarget"),
-        new DepthTexture(res, "depthTarget"),
     };
+
+    if (useShadows) {
+        shadowReceiveTargets.push_back(new ColorTexture(res, "shadowTarget"));
+    }
+
+    if (useAO) {
+        shadowReceiveTargets.push_back(new DepthTexture(res, "depthTarget"));
+    }
 
     vector<Texture*> shadowReceiveSources = {
 //        Scene::Instance().getTexture("masonry-wall-normal-map","normalTexture"),
 //        Scene::Instance().getTexture("masonry-wall-texture","diffuseTexture"),
     };
 
-    foreach(ShadowCastPass * shadowCastPass, shadowCastPasses) {
-      shadowReceiveSources.push_back(shadowCastPass->targets[0]);
-    }
+    if (useShadows) {
+        foreach(ShadowCastPass * shadowCastPass, shadowCastPasses) {
+          shadowReceiveSources.push_back(shadowCastPass->targets[0]);
+        }
 
-    // set sampler "array" via template engine
-
-    QStringList shadowSamplers;
-    foreach(ShadowCastPass * shadowCastPass, shadowCastPasses) {
-      shadowSamplers <<
-          QString::fromStdString(shadowCastPass->targets[0]->name);
+        // set sampler "array" via template engine
+        QStringList shadowSamplers;
+        foreach(ShadowCastPass * shadowCastPass, shadowCastPasses) {
+          shadowSamplers <<
+              QString::fromStdString(shadowCastPass->targets[0]->name);
+        }
+        TemplateEngine::Instance().c.insert("shadowSamplers", shadowSamplers);
+        TemplateEngine::Instance().c.insert("shadowSamplerSize", shadowSamplers.size());
     }
 
     QList<string> tangentAttribs = QList<string> () << "uv" << "normal" << "tangent" << "bitangent";
 
-    TemplateEngine::Instance().c.insert("shadowSamplers", shadowSamplers);
-    TemplateEngine::Instance().c.insert("shadowSamplerSize", shadowSamplers.size());
     ShaderProgram * gatherShader = new VertFragProgram("Deferred/Gather", tangentAttribs);
-
 
     shadowReceivePass = new ShadowReceivePass(res,shadowReceiveSources,
         shadowReceiveTargets,gatherShader);
@@ -188,7 +198,7 @@ void DeferredRenderer::initShadingPass() {
         shadowReceivePass->getTarget("binormalTarget"),
         shadowReceivePass->getTarget("normalMapTarget"),
         Scene::Instance().getTexture("sky", "envMap"),
-        shadowReceivePass->getTarget("uvTarget"),
+//        shadowReceivePass->getTarget("uvTarget"),
     };
 
     if (useAO)
