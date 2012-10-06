@@ -104,7 +104,8 @@ void Mesh::addBuffer(const vector<GLfloat> &content, GLint size, string name) {
     meshBuffers[name] = new MeshBuffer(name, bufferCount, size);
 
     meshBuffers[name]->init();
-    meshBuffers[name]->write_dynamic(content);
+    //meshBuffers[name]->write_dynamic(content);
+    meshBuffers[name]->write(content);
 
   bufferCount++;
     glError;

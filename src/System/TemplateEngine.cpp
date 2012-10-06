@@ -20,7 +20,7 @@ TemplateEngine::TemplateEngine() {
   loader->setTemplateDirs(QStringList() << QString::fromStdString(dir));
   m_engine->addTemplateLoader(loader);
 
-  c.insert("precision", true);
+  c.insert("precision", false);
 
   vector<int> GLcontext = Config::Instance().values<int>("GLcontext");
   bool useUniformBuffers = (GLcontext[0] == 3 && GLcontext[1] >= 1) || GLcontext[0] > 3;
